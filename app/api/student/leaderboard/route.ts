@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getDemoStudent, DEMO_STUDENT_ID } from "@/lib/demo-db"
+import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 
 function calcProblems(student: any): number {
@@ -39,11 +39,11 @@ function calcContests(student: any): number {
   return total
 }
 
-function buildEntry(student: any, rank: number) {
+function buildEntry(student: any, rank: number, myId: string) {
   const problems = calcProblems(student)
   const rating = calcRating(student)
   const contests = calcContests(student)
-  const platforms = Object.keys(student.linkedPlatforms || {}).filter(k => student.linkedPlatforms[k])
+  const platforms = Object.keys(student.linkedPlatforms || {}).filter((k: string) => student.linkedPlatforms[k])
   return {
     rank,
     name: student.name || "Student",
@@ -55,31 +55,32 @@ function buildEntry(student: any, rank: number) {
     rating,
     contests,
     platforms,
-    isMe: student._id?.toString() === DEMO_STUDENT_ID,
+    isMe: student._id?.toString() === myId,
   }
 }
 
 export async function GET() {
   try {
-    const me = await getDemoStudent()
-    const myCollege = (me as any)?.collegeCode || null
+    const user = await getCurrentUser()
+    if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+
+    const myId = user._id as string
+    const myCollege = (user as any).collegeCode || null
 
     const allStudents = await UserModel.findAll({ role: "student" })
 
-    // Sort by problems desc, then rating desc
     const sorted = [...allStudents].sort((a: any, b: any) => {
       const pd = calcProblems(b) - calcProblems(a)
       if (pd !== 0) return pd
       return calcRating(b) - calcRating(a)
     })
 
-    const global = sorted.map((s, i) => buildEntry(s, i + 1))
+    const global = sorted.map((s, i) => buildEntry(s, i + 1, myId))
 
-    // College leaderboard
     let college: any[] = []
     if (myCollege) {
       const collegeSorted = sorted.filter((s: any) => s.collegeCode === myCollege)
-      college = collegeSorted.map((s, i) => buildEntry(s, i + 1))
+      college = collegeSorted.map((s, i) => buildEntry(s, i + 1, myId))
     }
 
     return NextResponse.json({ global, college, myCollege })

@@ -1,13 +1,18 @@
 import { NextResponse } from "next/server"
-import { getDemoStudent, DEMO_STUDENT_ID } from "@/lib/demo-db"
+import { getCurrentUser } from "@/lib/auth"
+import { UserModel } from "@/lib/models/user"
 import { PlatformAggregator } from "@/lib/services/platform-aggregator"
 
 export async function POST() {
   try {
-    const user = await getDemoStudent()
-    if (!user) return NextResponse.json({ error: "No platforms linked" }, { status: 400 })
+    const user = await getCurrentUser()
+    if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
-    const linkedPlatforms = (user.linkedPlatforms || {}) as Record<string, any>
+    const userId = user._id as string
+    const student = await UserModel.findById(userId)
+    if (!student) return NextResponse.json({ error: "User not found" }, { status: 404 })
+
+    const linkedPlatforms = ((student as any).linkedPlatforms || {}) as Record<string, any>
     const platformUsernames: Record<string, string> = {}
     for (const [platform, data] of Object.entries(linkedPlatforms)) {
       if (data) platformUsernames[platform] = typeof data === 'string' ? data : data.username
@@ -17,7 +22,7 @@ export async function POST() {
       return NextResponse.json({ error: "No platforms linked" }, { status: 400 })
     }
 
-    const aggregatedStats = await PlatformAggregator.updateUserAggregatedStats(DEMO_STUDENT_ID, platformUsernames)
+    const aggregatedStats = await PlatformAggregator.updateUserAggregatedStats(userId, platformUsernames)
     return NextResponse.json({ success: true, stats: aggregatedStats, message: "Stats synchronized successfully" })
   } catch (error) {
     console.error("Sync stats error:", error)
@@ -27,11 +32,14 @@ export async function POST() {
 
 export async function GET() {
   try {
-    const user = await getDemoStudent()
+    const user = await getCurrentUser()
+    if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+
+    const student = await UserModel.findById(user._id as string)
     return NextResponse.json({
-      stats: (user as any)?.aggregatedStats || null,
-      lastUpdate: (user as any)?.lastStatsUpdate || null,
-      hasStats: !!(user as any)?.aggregatedStats,
+      stats: (student as any)?.aggregatedStats || null,
+      lastUpdate: (student as any)?.lastStatsUpdate || null,
+      hasStats: !!(student as any)?.aggregatedStats,
     })
   } catch {
     return NextResponse.json({ stats: null, lastUpdate: null, hasStats: false })

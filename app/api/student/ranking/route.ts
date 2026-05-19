@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getDemoStudent, DEMO_STUDENT_ID } from "@/lib/demo-db"
+import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 
 function getTotalProblems(student: any): number {
@@ -16,20 +16,20 @@ function getTotalProblems(student: any): number {
 
 export async function GET() {
   try {
-    const me = await getDemoStudent()
-    if (!me) return NextResponse.json({ globalRank: null, collegeRank: null, totalGlobal: 0, totalCollege: 0 })
+    const user = await getCurrentUser()
+    if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
-    const myProblems = getTotalProblems(me)
-    const myCollege = (me as any).collegeCode || null
+    const student = await UserModel.findById(user._id as string)
+    if (!student) return NextResponse.json({ globalRank: null, collegeRank: null, totalGlobal: 0, totalCollege: 0 })
 
-    // Get all students
+    const myProblems = getTotalProblems(student)
+    const myCollege = (student as any).collegeCode || null
+
     const allStudents = await UserModel.findAll({ role: "student" })
 
-    // Global rank — count how many students have MORE problems than me
     const globalScores = allStudents.map((s: any) => getTotalProblems(s)).sort((a, b) => b - a)
     const globalRank = globalScores.filter(p => p > myProblems).length + 1
 
-    // College rank — same but filtered by same college
     let collegeRank: number | null = null
     let totalCollege = 0
     if (myCollege) {

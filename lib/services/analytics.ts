@@ -292,22 +292,11 @@ export class AnalyticsService {
   }
 
   static async getPersonalAnalytics(userId: string): Promise<any> {
-    // Load demo student from MongoDB
-    let student: any = null
-    try {
-      const { getDemoStudent, DEMO_STUDENT_ID } = await import('@/lib/demo-db')
-      if (userId === DEMO_STUDENT_ID) {
-        student = await getDemoStudent()
-      }
-    } catch {}
-
-    if (!student) {
-      const user = await UserModel.findById(userId)
-      if (!user || user.role !== 'student') {
-        throw new Error('User not found or not a student')
-      }
-      student = user
+    const user = await UserModel.findById(userId)
+    if (!user || user.role !== 'student') {
+      throw new Error('User not found or not a student')
     }
+    const student: any = user
 
     const linkedPlatforms: Record<string, any> = student.linkedPlatforms || {}
     const connectedIds = Object.keys(linkedPlatforms).filter(k => linkedPlatforms[k])

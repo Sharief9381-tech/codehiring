@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server"
-import { DEMO_STUDENT } from "@/lib/demo-user"
+import { getCurrentUser } from "@/lib/auth"
 
 export async function GET() {
-  return NextResponse.json({
-    user: DEMO_STUDENT,
-    message: "User data retrieved (demo mode)"
-  })
+  const user = await getCurrentUser()
+  if (!user) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+  }
+  return NextResponse.json({ user })
 }

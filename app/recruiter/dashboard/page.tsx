@@ -1,14 +1,18 @@
+import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { RecruiterStats } from "@/components/recruiter/recruiter-stats"
 import { RecommendedCandidates } from "@/components/recruiter/recommended-candidates"
 import { RecentShortlists } from "@/components/recruiter/recent-shortlists"
 import { HiringPipeline } from "@/components/recruiter/hiring-pipeline"
-import { DEMO_RECRUITER } from "@/lib/demo-user"
+import { getCurrentUser } from "@/lib/auth"
 
 export const dynamic = 'force-dynamic'
 
-export default function RecruiterDashboard() {
-  const recruiter = DEMO_RECRUITER
+export default async function RecruiterDashboard() {
+  const user = await getCurrentUser()
+  if (!user || user.role !== "recruiter") redirect("/login")
+
+  const recruiter = user as any
 
   return (
     <div className="flex flex-col">

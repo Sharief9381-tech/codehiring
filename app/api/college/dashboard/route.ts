@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server"
-import { DEMO_COLLEGE } from "@/lib/demo-user"
+import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 import { isDatabaseAvailable } from "@/lib/database"
 
 export async function GET() {
   try {
-    const college = DEMO_COLLEGE as any
+    const user = await getCurrentUser()
+    if (!user || user.role !== "college") {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    const college = user as any
     const collegeName = college.collegeName
     const collegeCode = college.collegeCode
 
@@ -13,10 +18,6 @@ export async function GET() {
 
     if (isDatabaseAvailable()) {
       students = await UserModel.findAll({ role: 'student', collegeCode })
-    } else {
-      const { getUsers } = await import("@/lib/auth-fallback")
-      const allUsers = await getUsers()
-      students = allUsers.filter((s: any) => s.role === 'student' && s.collegeCode === collegeCode)
     }
 
     const totalStudents = students.length

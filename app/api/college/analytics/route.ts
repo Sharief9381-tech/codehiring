@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server"
-import { DEMO_COLLEGE } from "@/lib/demo-user"
+import { getCurrentUser } from "@/lib/auth"
 import { AnalyticsService } from "@/lib/services/analytics"
 
 export async function GET() {
   try {
-    const analytics = await AnalyticsService.getEnhancedStudentAnalytics(DEMO_COLLEGE._id as string)
+    const user = await getCurrentUser()
+    if (!user || user.role !== "college") {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    const analytics = await AnalyticsService.getEnhancedStudentAnalytics(user._id as string)
 
     return NextResponse.json({
       ...analytics,
       college: {
-        name: (DEMO_COLLEGE as any).collegeName,
-        code: (DEMO_COLLEGE as any).collegeCode
+        name: (user as any).collegeName,
+        code: (user as any).collegeCode
       }
     })
   } catch (error) {

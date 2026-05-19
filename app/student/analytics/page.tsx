@@ -1,18 +1,18 @@
+import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { AnalyticsDashboard } from "@/components/student/analytics-dashboard"
-import { getDemoStudent, serializeDemoDoc } from "@/lib/demo-db"
-import { DEMO_STUDENT } from "@/lib/demo-user"
+import { getCurrentUser } from "@/lib/auth"
+import { UserModel } from "@/lib/models/user"
+import { serializeUser } from "@/lib/serialize"
 
 export const dynamic = 'force-dynamic'
 
 export default async function AnalyticsPage() {
-  let student: any = DEMO_STUDENT
-  try {
-    const doc = await getDemoStudent()
-    if (doc) student = serializeDemoDoc(doc)
-  } catch (e) {
-    console.error("Failed to load demo student:", e)
-  }
+  const user = await getCurrentUser()
+  if (!user || user.role !== "student") redirect("/login")
+
+  const student = await UserModel.findById(user._id as string)
+  if (!student) redirect("/login")
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -21,7 +21,7 @@ export default async function AnalyticsPage() {
         description="Detailed insights into your coding progress and performance"
       />
       <div className="flex-1 p-6">
-        <AnalyticsDashboard student={student} />
+        <AnalyticsDashboard student={serializeUser(student) as any} />
       </div>
     </div>
   )

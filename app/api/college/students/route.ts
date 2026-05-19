@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server"
-import { DEMO_COLLEGE } from "@/lib/demo-user"
+import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 import { isDatabaseAvailable } from "@/lib/database"
 
 export async function GET(request: Request) {
   try {
-    const college = DEMO_COLLEGE as any
+    const user = await getCurrentUser()
+    if (!user || user.role !== "college") {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    const college = user as any
     const collegeName = college.collegeName
     const collegeCode = college.collegeCode
 
@@ -22,15 +27,6 @@ export async function GET(request: Request) {
 
     if (isDatabaseAvailable()) {
       students = await UserModel.findAll(filter)
-    } else {
-      const { getUsers } = await import("@/lib/auth-fallback")
-      const allUsers = await getUsers()
-      students = allUsers.filter((s: any) => {
-        if (s.role !== 'student' || s.collegeCode !== collegeCode) return false
-        if (department && department !== 'all' && s.branch !== department) return false
-        if (year && year !== 'all' && s.graduationYear !== parseInt(year)) return false
-        return true
-      })
     }
 
     if (search?.trim()) {
