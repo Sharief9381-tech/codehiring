@@ -1,19 +1,8 @@
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
 import { getDatabase, isDatabaseAvailable } from "@/lib/database"
 
 export async function GET(request: Request) {
   try {
-    const currentUser = await getCurrentUser()
-    
-    // Only allow admin users - check email since role might not be "admin" in type system
-    if (!currentUser || currentUser.email !== "sharief9381@gmail.com") {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      )
-    }
-
     const { searchParams } = new URL(request.url)
     const email = searchParams.get('email')
 

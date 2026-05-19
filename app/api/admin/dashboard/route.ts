@@ -1,20 +1,9 @@
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
 import { getDatabase, isDatabaseAvailable } from "@/lib/database"
 import { Analytics } from "@/lib/analytics"
 
 export async function GET() {
   try {
-    const user = await getCurrentUser()
-    
-    // Only allow admin users
-    if (!user || user.email !== "sharief9381@gmail.com") {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      )
-    }
-
     // Gather comprehensive admin data
     const adminData = await gatherAdminData()
 

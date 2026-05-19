@@ -1,36 +1,11 @@
 import React from "react"
-import { redirect } from "next/navigation"
-import { getCurrentUser } from "@/lib/auth"
 import { DashboardSidebar } from "@/components/dashboard/sidebar"
-import { serializeUser } from "@/lib/serialize"
+import { DEMO_COLLEGE } from "@/lib/demo-user"
 
-export default async function CollegeLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect("/login")
-  }
-
-  // Redirect admin users to admin portal instead of college portal
-  if (user.email === "sharief9381@gmail.com") {
-    redirect("/admin")
-  }
-
-  // Regular role-based access control
-  if (user.role !== "college") {
-    redirect(`/${user.role}/dashboard`)
-  }
-
-  // Serialize the user object to remove MongoDB-specific properties
-  const serializedUser = serializeUser(user)
-
+export default function CollegeLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-background">
-      <DashboardSidebar user={serializedUser} />
+      <DashboardSidebar user={DEMO_COLLEGE} />
       <main className="flex-1 overflow-auto">
         {children}
       </main>

@@ -10,25 +10,25 @@ export function CTA() {
           Ready to Transform Your Hiring?
         </h2>
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          Join thousands of students, colleges, and companies already using CodeTrack 
+          Join thousands of students, colleges, and companies already using CodeTrack
           to make data-driven hiring decisions.
         </p>
-        
+
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/signup?role=student">
+          <Link href="/student/dashboard">
             <Button size="lg" className="gap-2 w-full sm:w-auto">
-              I'm a Student
+              Student Dashboard
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
-          <Link href="/signup?role=college">
+          <Link href="/college/dashboard">
             <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent">
-              I'm a College
+              College Dashboard
             </Button>
           </Link>
-          <Link href="/signup?role=recruiter">
+          <Link href="/recruiter/dashboard">
             <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent">
-              I'm a Recruiter
+              Recruiter Dashboard
             </Button>
           </Link>
         </div>

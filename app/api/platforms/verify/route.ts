@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
 import { fetchLeetCodeStats } from '@/lib/platforms/leetcode'
 import { fetchGitHubStats } from '@/lib/platforms/github'
 import { fetchCodeChefStats } from '@/lib/platforms/codechef'
@@ -22,22 +21,6 @@ export async function POST(request: Request) {
   try {
     console.log("=== PLATFORM VERIFICATION API CALLED ===")
     
-    const user = await getCurrentUser()
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      )
-    }
-
-    if (user.role !== "student") {
-      return NextResponse.json(
-        { error: "Only students can verify platforms" },
-        { status: 403 }
-      )
-    }
-
     const body = await request.json()
     const { platform, username } = body
 

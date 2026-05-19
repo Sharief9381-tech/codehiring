@@ -1,30 +1,11 @@
 import React from "react"
-import { redirect } from "next/navigation"
-import { getCurrentUser } from "@/lib/auth"
 import { DashboardSidebar } from "@/components/dashboard/sidebar"
-import { serializeUser } from "@/lib/serialize"
+import { DEMO_RECRUITER } from "@/lib/demo-user"
 
-export default async function RecruiterLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect("/login")
-  }
-
-  if (user.role !== "recruiter") {
-    redirect(`/${user.role}/dashboard`)
-  }
-
-  // Serialize the user object to remove MongoDB-specific properties
-  const serializedUser = serializeUser(user)
-
+export default function RecruiterLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-background">
-      <DashboardSidebar user={serializedUser} />
+      <DashboardSidebar user={DEMO_RECRUITER} />
       <main className="flex-1 overflow-auto">
         {children}
       </main>

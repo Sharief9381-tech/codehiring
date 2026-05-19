@@ -46,7 +46,7 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
       headers: {
         Accept: "application/vnd.github.v3+json",
         "User-Agent": "CodeTrack/1.0",
-        ...(process.env.GITHUB_TOKEN && {
+        ...(process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token' && {
           Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
         }),
       },
@@ -55,10 +55,36 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
     if (!userResponse.ok) {
       if (userResponse.status === 404) {
         console.log(`GitHub user "${cleanUsername}" not found`)
-        return null // Return null instead of fake data when profile doesn't exist
+        return null
+      } else if (userResponse.status === 403 || userResponse.status === 429) {
+        // Rate limited — try with a different User-Agent
+        console.log("GitHub API rate limited, retrying with alternate headers")
+        const retryResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
+          headers: {
+            Accept: "application/vnd.github.v3+json",
+            "User-Agent": `Mozilla/5.0 (compatible; stats-bot/1.0; +https://github.com/${cleanUsername})`,
+          },
+        })
+        if (retryResponse.ok) {
+          const userData = await retryResponse.json()
+          return {
+            username: cleanUsername,
+            name: userData.name || cleanUsername,
+            bio: userData.bio || "",
+            avatarUrl: userData.avatar_url || "",
+            publicRepos: userData.public_repos || 0,
+            followers: userData.followers || 0,
+            following: userData.following || 0,
+            totalContributions: 0,
+            repositories: [],
+            languages: {},
+            contributionCalendar: { totalContributions: 0, weeks: [] },
+          }
+        }
+        console.error("GitHub rate limit hit and retry failed")
+        return null
       } else if (userResponse.status === 401) {
         console.log("GitHub API: Unauthorized - using fallback approach")
-        // Try without authentication for public data
         const fallbackResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
           headers: {
             Accept: "application/vnd.github.v3+json",
@@ -73,7 +99,6 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
         
         const userData = await fallbackResponse.json()
         
-        // Return basic stats without repositories for rate limit protection
         return {
           username: cleanUsername,
           name: userData.name || cleanUsername,
@@ -82,13 +107,10 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
           publicRepos: userData.public_repos,
           followers: userData.followers,
           following: userData.following,
-          totalContributions: 0, // Not available without auth
-          repositories: [], // Not fetched to avoid rate limits
+          totalContributions: 0,
+          repositories: [],
           languages: {},
-          contributionCalendar: {
-            totalContributions: 0,
-            weeks: [],
-          },
+          contributionCalendar: { totalContributions: 0, weeks: [] },
         }
       } else {
         console.error("GitHub user API error:", userResponse.status, userResponse.statusText)
@@ -107,7 +129,7 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
           headers: {
             Accept: "application/vnd.github.v3+json",
             "User-Agent": "CodeTrack/1.0",
-            ...(process.env.GITHUB_TOKEN && {
+            ...(process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token' && {
               Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
             }),
           },
@@ -137,7 +159,7 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
       weeks: [] as { contributionDays: { date: string; contributionCount: number }[] }[],
     }
 
-    if (process.env.GITHUB_TOKEN) {
+    if (process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token') {
       try {
         const graphqlResponse = await fetch("https://api.github.com/graphql", {
           method: "POST",

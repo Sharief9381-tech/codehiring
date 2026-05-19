@@ -1,21 +1,18 @@
-import { getCurrentUser } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/header"
-import { serializeUser } from "@/lib/serialize"
-import type { StudentProfile } from "@/lib/types"
 import { DashboardClient } from "@/components/student/dashboard-client"
+import { getDemoStudent, serializeDemoDoc } from "@/lib/demo-db"
+import { DEMO_STUDENT } from "@/lib/demo-user"
 
-// Force dynamic rendering
 export const dynamic = 'force-dynamic'
 
 export default async function StudentDashboard() {
-  const user = await getCurrentUser()
-
-  if (!user || user.role !== "student") {
-    redirect("/login")
+  let student: any = DEMO_STUDENT
+  try {
+    const doc = await getDemoStudent()
+    if (doc) student = serializeDemoDoc(doc)
+  } catch (e) {
+    console.error("Failed to load demo student:", e)
   }
-
-  const student = serializeUser(user) as StudentProfile
 
   return (
     <div className="flex flex-col min-h-screen">

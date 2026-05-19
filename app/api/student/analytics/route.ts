@@ -1,26 +1,19 @@
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
+import { getDemoStudent, serializeDemoDoc, DEMO_STUDENT_ID } from "@/lib/demo-db"
 import { AnalyticsService } from "@/lib/services/analytics"
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const user = await getCurrentUser()
-    
-    if (!user || user.role !== "student") {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      )
-    }
-
-    const analytics = await AnalyticsService.getPersonalAnalytics(user._id as string)
-
+    const analytics = await AnalyticsService.getPersonalAnalytics(DEMO_STUDENT_ID)
     return NextResponse.json(analytics)
   } catch (error) {
     console.error("Get analytics error:", error)
-    return NextResponse.json(
-      { error: "Failed to get analytics" },
-      { status: 500 }
-    )
+    // Return a minimal no-stats response instead of 500
+    return NextResponse.json({
+      hasStats: false,
+      message: "Connect platforms and sync stats to see detailed analytics",
+      linkedPlatforms: [],
+      totalPlatforms: 0,
+    })
   }
 }

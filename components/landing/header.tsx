@@ -32,12 +32,10 @@ export function Header() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link href="/login">
-            <Button variant="ghost" size="sm">
-              Sign In
-            </Button>
+            <Button variant="ghost" size="sm">Sign In</Button>
           </Link>
           <Link href="/signup">
-            <Button size="sm">Get Started</Button>
+            <Button size="sm">Sign Up</Button>
           </Link>
         </div>
 
@@ -65,10 +63,10 @@ export function Header() {
             </Link>
             <div className="flex flex-col gap-2 pt-4 border-t border-border">
               <Link href="/login">
-                <Button variant="ghost" className="w-full">Sign In</Button>
+                <Button variant="ghost" className="w-full justify-start">Sign In</Button>
               </Link>
               <Link href="/signup">
-                <Button className="w-full">Get Started</Button>
+                <Button className="w-full">Sign Up</Button>
               </Link>
             </div>
           </div>

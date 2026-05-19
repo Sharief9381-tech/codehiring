@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
+import { DEMO_STUDENT } from "@/lib/demo-user"
 import { UserModel } from "@/lib/models/user"
 import { fetchAtCoderStats } from "@/lib/platforms/atcoder"
 
@@ -7,21 +7,7 @@ export async function POST() {
   try {
     console.log("=== FIXING ATCODER STATS ===")
     
-    const user = await getCurrentUser()
-    if (!user) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      )
-    }
-
-    if (user.role !== "student") {
-      return NextResponse.json(
-        { error: "Only students can fix platform connections" },
-        { status: 403 }
-      )
-    }
-
+    const user = DEMO_STUDENT
     const linkedPlatforms = user.linkedPlatforms || {}
     console.log("Current linked platforms:", Object.keys(linkedPlatforms))
     

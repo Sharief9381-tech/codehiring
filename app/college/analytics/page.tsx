@@ -1,20 +1,12 @@
-import { getCurrentUser } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { BatchAnalytics } from "@/components/college/batch-analytics"
+import { DEMO_COLLEGE } from "@/lib/demo-user"
 import { serializeUser } from "@/lib/serialize"
 
-// Force dynamic rendering
 export const dynamic = 'force-dynamic'
 
 export default async function AnalyticsPage() {
-  const user = await getCurrentUser()
-
-  if (!user || user.role !== "college") {
-    redirect("/login")
-  }
-
-  const college = serializeUser(user)
+  const college = serializeUser(DEMO_COLLEGE)
 
   return (
     <div className="flex flex-col">

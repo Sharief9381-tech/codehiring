@@ -24,12 +24,6 @@ export function Hero() {
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/signup">
-            <Button size="lg" className="gap-2 text-base">
-              Get Started Free
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
           <Link href="#how-it-works">
             <Button variant="outline" size="lg" className="text-base bg-transparent">
               Watch Demo

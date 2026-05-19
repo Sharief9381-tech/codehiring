@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import type { StudentProfile } from "@/lib/types"
 import { AddPlatformDialog } from "@/components/student/add-platform-dialog"
+
 import { 
   Code, 
   GitBranch, 
@@ -31,11 +32,14 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
   const [isUpdating, setIsUpdating] = useState(false)
   const [isAutoSyncing, setIsAutoSyncing] = useState(false)
   const [isHydrated, setIsHydrated] = useState(false)
+  const [recentActivity, setRecentActivity] = useState<any[]>([])
   const router = useRouter()
 
   // Ensure hydration is complete before rendering dynamic content
   useEffect(() => {
     setIsHydrated(true)
+    // Fetch recent activity from API
+    fetch('/api/student/activity').then(r => r.ok ? r.json() : { activity: [] }).then(d => setRecentActivity(d.activity || []))
   }, [])
 
   // Auto-sync on component mount (page load/refresh)
@@ -98,8 +102,14 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           if (userResponse.ok) {
             const userData = await userResponse.json()
             if (userData.user) {
-              console.log('Updated user data after auto-sync:', userData.user)
-              setStudent(userData.user)
+              const freshPlatforms = userData.user.linkedPlatforms || {}
+              // Only update if the fresh data has platforms (don't wipe existing state)
+              if (Object.keys(freshPlatforms).length > 0) {
+                console.log('Updated user data after auto-sync:', userData.user)
+                setStudent(userData.user)
+                // Refresh activity feed
+                fetch('/api/student/activity').then(r => r.ok ? r.json() : { activity: [] }).then(d => setRecentActivity(d.activity || []))
+              }
             }
           }
         } else {
@@ -139,14 +149,8 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       if (syncResponse.ok) {
         const syncData = await syncResponse.json()
         console.log('Platform sync completed successfully:', syncData)
-        
-        if (syncData.summary) {
-          toast.success(`Platform connected! Stats synced for ${syncData.summary.successful}/${syncData.summary.total} platforms`)
-        } else {
-          toast.success('Platform connected and stats synced!')
-        }
+        toast.success('Platform connected successfully!')
       } else {
-        console.log('Platform sync failed, continuing with user data fetch')
         toast.success('Platform connected! Stats will be available shortly.')
       }
       
@@ -661,12 +665,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           </div>
           
           <div className="flex-1 space-y-1 overflow-hidden">
-                {/* Show last sync time if available */}
-                {isHydrated && platformData && typeof platformData === 'object' && 'lastSync' in platformData && platformData.lastSync && (
-                  <div className="text-xs text-gray-500 text-center mb-2">
-                    Last sync: {formatSyncTime(platformData.lastSync)}
-                  </div>
-                )}
 
             {!stats || Object.keys(stats).length === 0 ? (
               <div className="text-center py-8">
@@ -1637,110 +1635,198 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       </Card>
 
       {/* Bottom Row: Skills Distribution and Recent Activity */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Skills Distribution */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Skills Distribution</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Easy</span>
-                  <span className="text-sm text-muted-foreground">0</span>
-                </div>
-                <Progress value={0} className="h-2" />
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Medium</span>
-                  <span className="text-sm text-muted-foreground">0</span>
-                </div>
-                <Progress value={0} className="h-2" />
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Hard</span>
-                  <span className="text-sm text-muted-foreground">0</span>
-                </div>
-                <Progress value={0} className="h-2" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {(() => {
+        // Derive real LeetCode difficulty counts from live platform data
+        const lcData = linkedPlatforms['leetcode']
+        const lcStats = lcData && typeof lcData === 'object' && 'stats' in lcData ? lcData.stats : null
+        const easy = lcStats?.easySolved || 0
+        const medium = lcStats?.mediumSolved || 0
+        const hard = lcStats?.hardSolved || 0
+        const totalLC = easy + medium + hard
 
-        {/* Recent Activity */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {hasLinkedPlatforms ? (
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                  <div className="flex-1">
-                    <p className="text-sm">Solved Two Sum</p>
-                    <p className="text-xs text-muted-foreground">LeetCode • 2 hours ago</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                  <div className="flex-1">
-                    <p className="text-sm">Pushed to portfolio</p>
-                    <p className="text-xs text-muted-foreground">GitHub • 5 hours ago</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-                  <div className="flex-1">
-                    <p className="text-sm">Solved Binary Tree Inorder</p>
-                    <p className="text-xs text-muted-foreground">LeetCode • 1 day ago</p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-muted-foreground">
-                  Connect platforms to see your recent activity
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+        // Build real recent activity from synced platform data
+        const recentItems: { color: string; text: string; sub: string }[] = []
+        const PLATFORM_COLORS_MAP: Record<string, string> = {
+          leetcode: 'bg-yellow-500', github: 'bg-green-500', codeforces: 'bg-blue-500',
+          codechef: 'bg-orange-500', hackerrank: 'bg-emerald-500', geeksforgeeks: 'bg-green-600',
+          atcoder: 'bg-gray-400', hackerearth: 'bg-blue-400', spoj: 'bg-orange-400',
+        }
+        Object.entries(linkedPlatforms).forEach(([pid, pdata]) => {
+          if (!pdata || typeof pdata !== 'object') return
+          const s = 'stats' in pdata ? (pdata as any).stats : null
+          const uname = (pdata as any).username || ''
+          const color = PLATFORM_COLORS_MAP[pid] || 'bg-purple-500'
+          const lastSync = (pdata as any).lastSync
+          const syncLabel = lastSync ? new Date(lastSync).toLocaleDateString() : 'recently'
+          if (s) {
+            const solved = s.totalSolved || s.problemsSolved || 0
+            const name = pid.charAt(0).toUpperCase() + pid.slice(1)
+            if (solved > 0) recentItems.push({ color, text: `${solved} problems solved on ${name}`, sub: `@${uname} • synced ${syncLabel}` })
+            if (pid === 'github' && s.publicRepos) recentItems.push({ color, text: `${s.publicRepos} repositories on GitHub`, sub: `@${uname} • ${s.totalContributions || 0} contributions` })
+            if (s.rating || s.currentRating) recentItems.push({ color, text: `Rating ${s.rating || s.currentRating} on ${name}`, sub: `@${uname}` })
+          } else {
+            const name = pid.charAt(0).toUpperCase() + pid.slice(1)
+            recentItems.push({ color: 'bg-gray-500', text: `${name} connected`, sub: `@${uname} • sync to load stats` })
+          }
+        })
 
-      {/* Skills Analysis */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Skills Analysis</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Your coding profile based on activity level and problem difficulty distribution
-          </p>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div>
-              <h4 className="font-medium mb-3">Activity Level</h4>
-              <Badge variant="secondary">
-                {stats.totalProblems > 100 ? 'Active' : stats.totalProblems > 50 ? 'Moderate' : 'Beginner'}
-              </Badge>
-            </div>
-            <div>
-              <h4 className="font-medium mb-3">Average Time</h4>
-              <Badge variant="secondary">
-                {hasLinkedPlatforms ? 'Regular' : 'Casual'}
-              </Badge>
-            </div>
+        return (
+          <div className="grid gap-6 lg:grid-cols-2">
+            {/* Skills Distribution — real LeetCode data */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Skills Distribution</CardTitle>
+                <p className="text-xs text-muted-foreground">LeetCode difficulty breakdown</p>
+              </CardHeader>
+              <CardContent>
+                {!lcStats ? (
+                  <div className="text-center py-8">
+                    <Code className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">
+                      {hasLinkedPlatforms ? 'Sync LeetCode to see difficulty stats' : 'Connect LeetCode to see difficulty stats'}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-green-400">Easy</span>
+                        <span className="text-sm text-muted-foreground">{easy}</span>
+                      </div>
+                      <Progress value={totalLC > 0 ? (easy / totalLC) * 100 : 0} className="h-2 [&>div]:bg-green-500" />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-yellow-400">Medium</span>
+                        <span className="text-sm text-muted-foreground">{medium}</span>
+                      </div>
+                      <Progress value={totalLC > 0 ? (medium / totalLC) * 100 : 0} className="h-2 [&>div]:bg-yellow-500" />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-red-400">Hard</span>
+                        <span className="text-sm text-muted-foreground">{hard}</span>
+                      </div>
+                      <Progress value={totalLC > 0 ? (hard / totalLC) * 100 : 0} className="h-2 [&>div]:bg-red-500" />
+                    </div>
+                    <p className="text-xs text-muted-foreground pt-1">Total: {totalLC} problems solved</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Recent Activity — from MongoDB recentActivity */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {recentActivity.length > 0 ? (
+                  <div className="space-y-4">
+                    {recentActivity.slice(0, 5).map((item: any, i: number) => {
+                      const COLORS: Record<string, string> = {
+                        leetcode: 'bg-yellow-500', github: 'bg-green-500', codeforces: 'bg-blue-500',
+                        codechef: 'bg-orange-500', hackerrank: 'bg-emerald-500', geeksforgeeks: 'bg-green-600',
+                        atcoder: 'bg-gray-400', hackerearth: 'bg-blue-400',
+                      }
+                      const dot = COLORS[item.platform] || 'bg-purple-500'
+                      return (
+                        <div key={i} className="flex items-start gap-3">
+                          <div className={`h-2 w-2 rounded-full flex-shrink-0 mt-1.5 ${dot}`} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-white">{item.title}</p>
+                            {item.detail && <p className="text-xs text-muted-foreground truncate">{item.detail}</p>}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                ) : recentItems.length > 0 ? (
+                  <div className="space-y-4">
+                    {recentItems.slice(0, 5).map((item, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className={`h-2 w-2 rounded-full flex-shrink-0 ${item.color}`} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm truncate">{item.text}</p>
+                          <p className="text-xs text-muted-foreground truncate">{item.sub}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">
+                      Connect platforms to see your activity
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+        )
+      })()}
+
+      {/* Per-platform quick comparison + Analytics CTA */}
+      {connectedPlatformIds.length > 0 && (
+        <Card className="bg-gray-900 border-gray-700">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-white text-base">Platform Ratings</CardTitle>
+              <a href="/student/analytics">
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white gap-2">
+                  <TrendingUp className="h-3 w-3" />
+                  Full Analytics
+                </Button>
+              </a>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {connectedPlatformIds.map(pid => {
+                const pdata = linkedPlatforms[pid]
+                if (!pdata || typeof pdata !== 'object') return null
+                const s = 'stats' in pdata ? (pdata as any).stats : null
+                const uname = (pdata as any).username || ''
+                const color = getUniquePlatformColor(pid, connectedPlatformIds)
+                const name = pid.charAt(0).toUpperCase() + pid.slice(1)
+
+                // Pick the most meaningful metric per platform
+                let metricLabel = ''
+                let metricValue = 0
+                if (s) {
+                  if (pid === 'github') { metricLabel = 'contributions'; metricValue = s.totalContributions || 0 }
+                  else if (pid === 'leetcode') { metricLabel = 'solved'; metricValue = s.totalSolved || 0 }
+                  else if (pid === 'hackerrank') { metricLabel = 'badges'; metricValue = s.badges?.length || 0 }
+                  else if (pid === 'geeksforgeeks') { metricLabel = 'score'; metricValue = s.codingScore || s.score || 0 }
+                  else if (s.rating || s.currentRating || s.highestRating) {
+                    metricLabel = 'rating'
+                    metricValue = s.rating || s.currentRating || s.highestRating || 0
+                  } else if (s.totalSolved || s.problemsSolved) {
+                    metricLabel = 'solved'
+                    metricValue = s.totalSolved || s.problemsSolved || 0
+                  }
+                }
+
+                return (
+                  <div key={pid} className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+                    <span className="text-sm text-gray-300 w-28 truncate">{name}</span>
+                    <span className="text-xs text-gray-500 truncate flex-1">@{uname}</span>
+                    {metricValue > 0 ? (
+                      <span className="text-sm font-semibold text-white">
+                        {metricValue.toLocaleString()} <span className="text-xs text-gray-400 font-normal">{metricLabel}</span>
+                      </span>
+                    ) : (
+                      <span className="text-xs text-gray-500">not synced</span>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
+import { DEMO_STUDENT } from "@/lib/demo-user"
 import { UserModel } from "@/lib/models/user"
 import { PlatformSyncService } from "@/lib/services/platform-sync"
 
@@ -7,23 +7,7 @@ export async function POST() {
   try {
     console.log("=== CLEARING FAKE STATS AND FORCING REAL SYNC ===")
     
-    const user = await getCurrentUser()
-    console.log("Current user:", user ? { id: user._id, role: user.role } : "null")
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      )
-    }
-
-    if (user.role !== "student") {
-      return NextResponse.json(
-        { error: "Only students can clear stats" },
-        { status: 403 }
-      )
-    }
-
+    const user = DEMO_STUDENT
     const userId = user._id as string
     const linkedPlatforms = (user as any).linkedPlatforms || {}
     
@@ -79,22 +63,7 @@ export async function POST() {
 
 export async function GET() {
   try {
-    const user = await getCurrentUser()
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      )
-    }
-
-    if (user.role !== "student") {
-      return NextResponse.json(
-        { error: "Only students can view platform data" },
-        { status: 403 }
-      )
-    }
-
+    const user = DEMO_STUDENT
     const linkedPlatforms = (user as any).linkedPlatforms || {}
     
     // Analyze current stats to identify potentially fake data

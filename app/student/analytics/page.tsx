@@ -1,15 +1,17 @@
-import { getCurrentUser } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/header"
+import { AnalyticsDashboard } from "@/components/student/analytics-dashboard"
+import { getDemoStudent, serializeDemoDoc } from "@/lib/demo-db"
+import { DEMO_STUDENT } from "@/lib/demo-user"
 
-// Force dynamic rendering
 export const dynamic = 'force-dynamic'
 
 export default async function AnalyticsPage() {
-  const user = await getCurrentUser()
-
-  if (!user || user.role !== "student") {
-    redirect("/login")
+  let student: any = DEMO_STUDENT
+  try {
+    const doc = await getDemoStudent()
+    if (doc) student = serializeDemoDoc(doc)
+  } catch (e) {
+    console.error("Failed to load demo student:", e)
   }
 
   return (
@@ -19,10 +21,7 @@ export default async function AnalyticsPage() {
         description="Detailed insights into your coding progress and performance"
       />
       <div className="flex-1 p-6">
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Analytics</h2>
-          <p className="text-gray-600">View your coding analytics and performance insights here.</p>
-        </div>
+        <AnalyticsDashboard student={student} />
       </div>
     </div>
   )

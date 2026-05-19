@@ -1,47 +1,16 @@
 import { NextResponse } from "next/server"
-import { isDatabaseAvailable } from "@/lib/database"
+import { getDemoStudent, serializeDemoDoc } from "@/lib/demo-db"
+import { DEMO_STUDENT } from "@/lib/demo-user"
 
 export async function GET() {
   try {
-    console.log("=== GET USER API CALLED ===")
-    
-    console.log("1. Checking database availability...")
-    const dbAvailable = isDatabaseAvailable()
-    
-    if (!dbAvailable) {
-      console.log("2. Database not available, using fallback...")
-      // Use fallback auth system
-      const { getCurrentUser } = await import("@/lib/auth-fallback")
-      const user = await getCurrentUser()
-
-      if (!user) {
-        return NextResponse.json(
-          { error: "Not authenticated" },
-          { status: 401 }
-        )
-      }
-
-      return NextResponse.json({ user })
+    const doc = await getDemoStudent()
+    if (doc) {
+      return NextResponse.json({ user: serializeDemoDoc(doc) })
     }
-
-    console.log("2. Database available, using MongoDB...")
-    // Use database auth system
-    const { getCurrentUser } = await import("@/lib/auth")
-    const user = await getCurrentUser()
-
-    if (!user) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      )
-    }
-
-    return NextResponse.json({ user })
-  } catch (error) {
-    console.error("=== GET USER ERROR ===", error)
-    return NextResponse.json(
-      { error: "Failed to get user" },
-      { status: 500 }
-    )
+  } catch (e) {
+    console.error("Failed to load demo student from DB:", e)
   }
+  // Fallback to static demo user if DB unavailable
+  return NextResponse.json({ user: DEMO_STUDENT })
 }

@@ -1,88 +1,45 @@
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
+import { getDemoStudent, DEMO_STUDENT_ID } from "@/lib/demo-db"
 import { PlatformSyncService } from "@/lib/services/platform-sync"
 
 export async function POST() {
   try {
-    console.log("=== PLATFORM SYNC API CALLED ===")
-    
-    const user = await getCurrentUser()
-    console.log("Current user:", user ? { id: user._id, role: user.role } : "null")
-    
+    const user = await getDemoStudent()
     if (!user) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      )
+      return NextResponse.json({ success: true, results: [], summary: { total: 0, successful: 0, failed: 0 } })
     }
 
-    if (user.role !== "student") {
-      return NextResponse.json(
-        { error: "Only students can sync platforms" },
-        { status: 403 }
-      )
+    const linkedPlatforms = user.linkedPlatforms || {}
+    const total = Object.keys(linkedPlatforms).length
+
+    if (total === 0) {
+      return NextResponse.json({ success: true, results: [], summary: { total: 0, successful: 0, failed: 0 } })
     }
 
-    console.log("Starting platform sync for user:", user._id)
-    console.log("User linked platforms:", user.linkedPlatforms)
-    
-    const results = await PlatformSyncService.syncUserPlatforms(user._id as string)
-    console.log("Sync results:", results)
-
-    // Count successful syncs
-    const successfulSyncs = results.filter(r => r.success).length
-    const totalPlatforms = results.length
+    const results = await PlatformSyncService.syncUserPlatforms(DEMO_STUDENT_ID)
+    const successful = results.filter((r: any) => r.success).length
 
     return NextResponse.json({
       success: true,
       results,
       syncedAt: new Date(),
-      summary: {
-        total: totalPlatforms,
-        successful: successfulSyncs,
-        failed: totalPlatforms - successfulSyncs
-      }
+      summary: { total: results.length, successful, failed: results.length - successful },
     })
   } catch (error) {
-    console.error("=== PLATFORM SYNC ERROR ===", error)
-    return NextResponse.json(
-      { error: `Failed to sync platforms: ${error instanceof Error ? error.message : 'Unknown error'}` },
-      { status: 500 }
-    )
+    console.error("Platform sync error:", error)
+    return NextResponse.json({ error: `Failed to sync: ${error instanceof Error ? error.message : "Unknown error"}` }, { status: 500 })
   }
 }
 
 export async function GET() {
   try {
-    console.log("Platform sync GET request received")
-    
-    const user = await getCurrentUser()
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      )
-    }
-
-    if (user.role !== "student") {
-      return NextResponse.json(
-        { error: "Only students can view platform data" },
-        { status: 403 }
-      )
-    }
-
-    console.log("Returning platform data for user:", user._id)
+    const user = await getDemoStudent()
     return NextResponse.json({
-      linkedPlatforms: (user as any).linkedPlatforms || {},
-      stats: (user as any).stats || {},
-      lastSync: user.updatedAt
+      linkedPlatforms: user?.linkedPlatforms || {},
+      stats: user?.stats || {},
+      lastSync: user?.updatedAt || null,
     })
-  } catch (error) {
-    console.error("Get platforms error:", error)
-    return NextResponse.json(
-      { error: `Failed to get platform data: ${error instanceof Error ? error.message : 'Unknown error'}` },
-      { status: 500 }
-    )
+  } catch {
+    return NextResponse.json({ linkedPlatforms: {}, stats: {}, lastSync: null })
   }
 }
