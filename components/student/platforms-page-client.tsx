@@ -37,7 +37,7 @@ function getStatsSummary(platformId: string, stats: any): string {
   if (platformId === "github") return `${stats.publicRepos || 0} repos · ${stats.totalContributions || 0} contributions`
   if (platformId === "leetcode") return `${stats.totalSolved || 0} solved · ${stats.contestRating || 0} rating`
   if (platformId === "codeforces") return `${stats.rating || 0} rating · ${stats.rank || "unrated"}`
-  if (platformId === "codechef") return `${stats.currentRating || 0} rating · ${stats.stars || "1*"}`
+  if (platformId === "codechef") return `${stats.currentRating || 0} rating · Global #${stats.globalRank || "—"}`
   if (platformId === "hackerrank") return `${stats.badges?.length || 0} badges`
   if (platformId === "geeksforgeeks") return `${stats.codingScore || 0} score · ${stats.problemsSolved || 0} solved`
   const solved = stats.totalSolved || stats.problemsSolved || 0

@@ -323,13 +323,25 @@ export function PlatformCards({ student }: PlatformCardsProps) {
                                 Rating
                               </span>
                               <span className="font-medium text-foreground">
-                                {(platformStats as CodeChefStats).currentRating}
+                                {(platformStats as CodeChefStats).currentRating || "—"}
                               </span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-muted-foreground">Stars</span>
                               <span className="font-medium text-foreground">
                                 {(platformStats as CodeChefStats).stars}
+                              </span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Global Rank</span>
+                              <span className="font-medium text-foreground">
+                                {(platformStats as CodeChefStats).globalRank || "—"}
+                              </span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Problems Solved</span>
+                              <span className="font-medium text-foreground">
+                                {(platformStats as CodeChefStats).problemsSolved || "—"}
                               </span>
                             </div>
                           </>
