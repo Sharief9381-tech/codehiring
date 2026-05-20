@@ -1,39 +1,45 @@
 /**
  * Recruiter jobs API
- * GET  /api/recruiter/jobs          — list all jobs posted by this recruiter
- * POST /api/recruiter/jobs          — create a new job posting
+ * GET  /api/recruiter/jobs  — list jobs posted by the logged-in recruiter
+ * POST /api/recruiter/jobs  — create a new job posting
  */
 import { NextResponse } from "next/server"
 import { JobModel } from "@/lib/models/job"
 import { isDatabaseAvailable } from "@/lib/database"
-
-// In-memory fallback store when DB is unavailable
-const memJobs: any[] = []
+import { getCurrentUser } from "@/lib/auth"
 
 export async function GET() {
   try {
-    if (!isDatabaseAvailable()) {
-      return NextResponse.json({ jobs: memJobs })
+    const user = await getCurrentUser()
+    if (!user || user.role !== "recruiter") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    const jobs = await JobModel.findAll()
+
+    if (!isDatabaseAvailable()) {
+      return NextResponse.json({ jobs: [] })
+    }
+
+    const jobs = await JobModel.findAll({ recruiterId: user._id?.toString() })
     return NextResponse.json({ jobs })
   } catch (error) {
     console.error("GET /api/recruiter/jobs error:", error)
-    return NextResponse.json({ jobs: memJobs })
+    return NextResponse.json({ jobs: [] })
   }
 }
 
 export async function POST(request: Request) {
   try {
+    const user = await getCurrentUser()
+    if (!user || user.role !== "recruiter") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const recruiter = user as any
     const body = await request.json()
     const {
       title, type, location, salary, description,
       skills, deadline, minProblems, minRating, minCGPA,
       status = "active",
-      // Recruiter identity — passed from the client
-      recruiterName = "Recruiter",
-      companyName = "Company",
-      companyWebsite = "",
     } = body
 
     if (!title || !type || !location || !description) {
@@ -44,10 +50,10 @@ export async function POST(request: Request) {
     }
 
     const jobData = {
-      recruiterId: "demo-recruiter",
-      recruiterName,
-      companyName,
-      companyWebsite,
+      recruiterId: recruiter._id?.toString() ?? "",
+      recruiterName: recruiter.name,
+      companyName: recruiter.companyName ?? "",
+      companyWebsite: recruiter.companyWebsite ?? "",
       title,
       type,
       location,
@@ -64,25 +70,13 @@ export async function POST(request: Request) {
     }
 
     if (!isDatabaseAvailable()) {
-      const newJob = {
-        ...jobData,
-        _id: `mem-${Date.now()}`,
-        applications: 0,
-        views: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
-      memJobs.unshift(newJob)
-      return NextResponse.json({ success: true, job: newJob }, { status: 201 })
+      return NextResponse.json({ error: "Database unavailable" }, { status: 503 })
     }
 
     const job = await JobModel.create(jobData)
     return NextResponse.json({ success: true, job }, { status: 201 })
   } catch (error) {
     console.error("POST /api/recruiter/jobs error:", error)
-    return NextResponse.json(
-      { error: "Failed to create job posting" },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: "Failed to create job posting" }, { status: 500 })
   }
 }

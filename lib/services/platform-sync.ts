@@ -1,4 +1,5 @@
 import { UserModel } from '@/lib/models/user'
+import { aggregateStudentStats } from '@/lib/services/stats-aggregator'
 import { fetchLeetCodeStats } from '@/lib/platforms/leetcode'
 import { fetchGitHubStats } from '@/lib/platforms/github'
 import { fetchCodeChefStats } from '@/lib/platforms/codechef'
@@ -204,6 +205,14 @@ export class PlatformSyncService {
         console.error(`Error syncing ${platformId}:`, error)
         results.push({ platform: platformId, success: false, error: error.message })
       }
+    }
+
+    // ── Aggregate all platform stats into user.stats ──────────────────────
+    try {
+      await aggregateStudentStats(userId)
+      console.log(`✅ Aggregated stats for user ${userId}`)
+    } catch (aggError) {
+      console.error('Failed to aggregate stats:', aggError)
     }
 
     return results

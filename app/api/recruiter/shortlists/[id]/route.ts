@@ -1,12 +1,11 @@
 /**
- * Single job management
- * PATCH  /api/recruiter/jobs/[id]  — update job (status, fields)
- * DELETE /api/recruiter/jobs/[id]  — delete job
+ * PATCH  /api/recruiter/shortlists/[id]  — update shortlist (name, status)
+ * DELETE /api/recruiter/shortlists/[id]  — delete shortlist
  */
 import { NextResponse } from "next/server"
-import { JobModel } from "@/lib/models/job"
-import { isDatabaseAvailable } from "@/lib/database"
 import { getCurrentUser } from "@/lib/auth"
+import { isDatabaseAvailable } from "@/lib/database"
+import { ShortlistModel } from "@/lib/models/shortlist"
 
 export async function PATCH(
   request: Request,
@@ -22,18 +21,18 @@ export async function PATCH(
       return NextResponse.json({ success: true })
     }
 
-    // Verify ownership
-    const job = await JobModel.findById(params.id)
-    if (!job || job.recruiterId !== user._id?.toString()) {
+    const shortlist = await ShortlistModel.findById(params.id)
+    const recruiterId = user._id?.toString() ?? ""
+    if (!shortlist || shortlist.recruiterId !== recruiterId) {
       return NextResponse.json({ error: "Not found" }, { status: 404 })
     }
 
     const body = await request.json()
-    await JobModel.update(params.id, body)
+    await ShortlistModel.update(params.id, body)
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("PATCH /api/recruiter/jobs/[id] error:", error)
-    return NextResponse.json({ error: "Failed to update job" }, { status: 500 })
+    console.error("PATCH /api/recruiter/shortlists/[id] error:", error)
+    return NextResponse.json({ error: "Failed to update shortlist" }, { status: 500 })
   }
 }
 
@@ -51,16 +50,16 @@ export async function DELETE(
       return NextResponse.json({ success: true })
     }
 
-    // Verify ownership
-    const job = await JobModel.findById(params.id)
-    if (!job || job.recruiterId !== user._id?.toString()) {
+    const shortlist = await ShortlistModel.findById(params.id)
+    const recruiterId = user._id?.toString() ?? ""
+    if (!shortlist || shortlist.recruiterId !== recruiterId) {
       return NextResponse.json({ error: "Not found" }, { status: 404 })
     }
 
-    await JobModel.delete(params.id)
+    await ShortlistModel.delete(params.id)
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("DELETE /api/recruiter/jobs/[id] error:", error)
-    return NextResponse.json({ error: "Failed to delete job" }, { status: 500 })
+    console.error("DELETE /api/recruiter/shortlists/[id] error:", error)
+    return NextResponse.json({ error: "Failed to delete shortlist" }, { status: 500 })
   }
 }

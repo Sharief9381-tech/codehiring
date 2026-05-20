@@ -1,55 +1,48 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Bookmark, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Bookmark, Loader2 } from "lucide-react"
+import Link from "next/link"
+
+interface ShortlistSummary {
+  _id: string
+  name: string
+  candidates: number
+  status: string
+  updatedAt: string
+}
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 60) return `${mins}m ago`
+  const hours = Math.floor(mins / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `${days}d ago`
+  return `${Math.floor(days / 7)}w ago`
+}
+
+function StatusBadge({ status }: { status: string }) {
+  if (status === "active") return <Badge className="bg-green-500/20 text-green-500">Active</Badge>
+  if (status === "reviewing") return <Badge className="bg-yellow-500/20 text-yellow-500">Reviewing</Badge>
+  return <Badge variant="secondary">Closed</Badge>
+}
 
 export function RecentShortlists() {
-  const shortlists = [
-    {
-      id: 1,
-      name: "SDE Intern 2025",
-      candidates: 12,
-      status: "active",
-      lastUpdated: "2 hours ago",
-    },
-    {
-      id: 2,
-      name: "Full Stack Developer",
-      candidates: 8,
-      status: "active",
-      lastUpdated: "1 day ago",
-    },
-    {
-      id: 3,
-      name: "Backend Engineer",
-      candidates: 15,
-      status: "reviewing",
-      lastUpdated: "3 days ago",
-    },
-    {
-      id: 4,
-      name: "DevOps Engineer",
-      candidates: 6,
-      status: "closed",
-      lastUpdated: "1 week ago",
-    },
-  ]
+  const [shortlists, setShortlists] = useState<ShortlistSummary[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active":
-        return <Badge className="bg-green-500/20 text-green-500">Active</Badge>
-      case "reviewing":
-        return <Badge className="bg-yellow-500/20 text-yellow-500">Reviewing</Badge>
-      case "closed":
-        return <Badge variant="secondary">Closed</Badge>
-      default:
-        return <Badge variant="secondary">{status}</Badge>
-    }
-  }
+  useEffect(() => {
+    fetch("/api/recruiter/dashboard")
+      .then((r) => r.json())
+      .then((data) => setShortlists(data.shortlists ?? []))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
 
   return (
     <Card className="bg-card">
@@ -58,27 +51,32 @@ export function RecentShortlists() {
           <Bookmark className="h-5 w-5 text-chart-2" />
           <CardTitle>Shortlists</CardTitle>
         </div>
-        <Button variant="ghost" size="icon">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
       </CardHeader>
       <CardContent className="space-y-4">
-        {shortlists.map((list) => (
-          <div
-            key={list.id}
-            className="flex items-center justify-between rounded-lg border border-border bg-secondary/30 p-3"
-          >
-            <div className="space-y-1">
-              <p className="font-medium text-foreground">{list.name}</p>
-              <p className="text-xs text-muted-foreground">
-                {list.candidates} candidates • {list.lastUpdated}
-              </p>
-            </div>
-            {getStatusBadge(list.status)}
+        {loading ? (
+          <div className="flex justify-center py-6">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
-        ))}
-        <Button variant="outline" className="w-full bg-transparent">
-          Create New Shortlist
+        ) : shortlists.length === 0 ? (
+          <p className="text-center text-sm text-muted-foreground py-4">No shortlists yet</p>
+        ) : (
+          shortlists.map((list) => (
+            <div
+              key={list._id}
+              className="flex items-center justify-between rounded-lg border border-border bg-secondary/30 p-3"
+            >
+              <div className="space-y-1">
+                <p className="font-medium text-foreground">{list.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {list.candidates} candidates • {timeAgo(list.updatedAt)}
+                </p>
+              </div>
+              <StatusBadge status={list.status} />
+            </div>
+          ))
+        )}
+        <Button variant="outline" className="w-full bg-transparent" asChild>
+          <Link href="/recruiter/shortlists">Manage Shortlists</Link>
         </Button>
       </CardContent>
     </Card>

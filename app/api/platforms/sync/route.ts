@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 import { PlatformSyncService } from "@/lib/services/platform-sync"
+import { aggregateStudentStats } from "@/lib/services/stats-aggregator"
 
 export async function POST() {
   try {
@@ -20,12 +21,21 @@ export async function POST() {
     }
 
     const results = await PlatformSyncService.syncUserPlatforms(userId)
+    // aggregateStudentStats is called inside syncUserPlatforms,
+    // but call it again here to ensure the response reflects fresh stats
+    let aggregatedStats = null
+    try {
+      aggregatedStats = await aggregateStudentStats(userId)
+    } catch (e) {
+      console.error("Aggregation error:", e)
+    }
     const successful = results.filter((r: any) => r.success).length
 
     return NextResponse.json({
       success: true,
       results,
       syncedAt: new Date(),
+      stats: aggregatedStats,
       summary: { total: results.length, successful, failed: results.length - successful },
     })
   } catch (error) {
