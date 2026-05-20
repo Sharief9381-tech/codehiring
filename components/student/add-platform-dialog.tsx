@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Code, Trophy, Loader2, Check, ExternalLink, Globe } from "lucide-react"
+import { Plus, Code, Trophy, GitBranch, Loader2, Check, ExternalLink, Globe } from "lucide-react"
 import { toast } from "sonner"
 
 interface AddPlatformDialogProps {
@@ -91,13 +91,13 @@ const predefinedPlatforms: Platform[] = [
     example: "e.g., tourist"
   },
   {
-    id: "topcoder",
-    name: "TopCoder",
-    description: "Competitive programming and software development challenges",
-    url: "https://topcoder.com",
-    icon: Trophy,
-    placeholder: "Enter your TopCoder handle",
-    example: "e.g., petr"
+    id: "github",
+    name: "GitHub",
+    description: "Showcase your projects, contributions, and open source work",
+    url: "https://github.com",
+    icon: GitBranch,
+    placeholder: "Enter your GitHub username",
+    example: "e.g., johndoe or https://github.com/johndoe"
   },
   {
     id: "interviewbit",

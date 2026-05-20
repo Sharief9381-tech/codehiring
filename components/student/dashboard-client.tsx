@@ -1610,8 +1610,21 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           {hasLinkedPlatforms ? (
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
               {Object.entries(linkedPlatforms)
-                .filter(([platformId, platformData]) => platformData != null)
-                .map(([platformId, platformData]) => 
+                .filter(([, platformData]) => platformData != null)
+                .sort(([, a], [, b]) => {
+                  const getProblems = (data: any): number => {
+                    const s = data && typeof data === 'object' && 'stats' in data ? data.stats : null
+                    if (!s) return 0
+                    return (
+                      s.totalSolved ||
+                      s.problemsSolved ||
+                      s.completedExercises ||
+                      0
+                    )
+                  }
+                  return getProblems(b) - getProblems(a)
+                })
+                .map(([platformId, platformData]) =>
                   renderPlatformCard(platformId, platformData)
                 )
                 .filter(Boolean)}

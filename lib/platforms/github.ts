@@ -201,6 +201,38 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
       }
     }
 
+    // Fallback: use public events API to estimate contributions when no token
+    if (contributionCalendar.totalContributions === 0) {
+      try {
+        const eventsRes = await fetch(
+          `https://api.github.com/users/${cleanUsername}/events/public?per_page=100`,
+          {
+            headers: {
+              Accept: "application/vnd.github.v3+json",
+              "User-Agent": "CodeTrack/1.0",
+              ...(process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token'
+                ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
+                : {}),
+            },
+          }
+        )
+        if (eventsRes.ok) {
+          const events: any[] = await eventsRes.json()
+          // Count push events (commits) + PR events + issue events as contributions
+          const contributionTypes = ['PushEvent', 'PullRequestEvent', 'IssuesEvent', 'CreateEvent', 'CommitCommentEvent']
+          const count = events.filter((e: any) => contributionTypes.includes(e.type)).length
+          // PushEvent can have multiple commits — sum them up
+          const pushCount = events
+            .filter((e: any) => e.type === 'PushEvent')
+            .reduce((sum: number, e: any) => sum + (e.payload?.commits?.length || 1), 0)
+          const nonPushCount = events.filter((e: any) => e.type !== 'PushEvent' && contributionTypes.includes(e.type)).length
+          contributionCalendar.totalContributions = pushCount + nonPushCount
+        }
+      } catch (_) {
+        // events API failed, leave at 0
+      }
+    }
+
     return {
       username: cleanUsername,
       name: userData.name || cleanUsername,

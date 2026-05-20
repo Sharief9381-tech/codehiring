@@ -13,16 +13,13 @@ export async function POST() {
     if (!student) return NextResponse.json({ error: "User not found" }, { status: 404 })
 
     const linkedPlatforms = ((student as any).linkedPlatforms || {}) as Record<string, any>
-    const platformUsernames: Record<string, string> = {}
-    for (const [platform, data] of Object.entries(linkedPlatforms)) {
-      if (data) platformUsernames[platform] = typeof data === 'string' ? data : data.username
-    }
 
-    if (Object.keys(platformUsernames).length === 0) {
+    if (Object.keys(linkedPlatforms).length === 0) {
       return NextResponse.json({ error: "No platforms linked" }, { status: 400 })
     }
 
-    const aggregatedStats = await PlatformAggregator.updateUserAggregatedStats(userId, platformUsernames)
+    // Pass full platform data (including cached stats) so aggregator can use them
+    const aggregatedStats = await PlatformAggregator.updateUserAggregatedStats(userId, linkedPlatforms)
     return NextResponse.json({ success: true, stats: aggregatedStats, message: "Stats synchronized successfully" })
   } catch (error) {
     console.error("Sync stats error:", error)
