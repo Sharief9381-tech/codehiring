@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Code, Trophy, GitBranch, Loader2, Check, ExternalLink, Globe } from "lucide-react"
+import { Plus, Code, Trophy, Loader2, Check, ExternalLink, Globe } from "lucide-react"
 import { toast } from "sonner"
 
 interface AddPlatformDialogProps {
@@ -91,15 +91,6 @@ const predefinedPlatforms: Platform[] = [
     example: "e.g., tourist"
   },
   {
-    id: "spoj",
-    name: "SPOJ",
-    description: "Sphere Online Judge with thousands of problems",
-    url: "https://spoj.com",
-    icon: Code,
-    placeholder: "Enter your SPOJ username",
-    example: "e.g., username"
-  },
-  {
     id: "topcoder",
     name: "TopCoder",
     description: "Competitive programming and software development challenges",
@@ -118,68 +109,14 @@ const predefinedPlatforms: Platform[] = [
     example: "e.g., username"
   },
   {
-    id: "cses",
-    name: "CSES Problem Set",
-    description: "High-quality competitive programming problems",
-    url: "https://cses.fi",
-    icon: Trophy,
-    placeholder: "Enter your CSES username",
-    example: "e.g., username"
-  },
-  {
     id: "codestudio",
-    name: "CodeStudio",
+    name: "Coding Ninjas",
     description: "Coding Ninjas practice platform",
-    url: "https://codestudio.com",
+    url: "https://www.naukri.com/code360",
     icon: Code,
-    placeholder: "Enter your CodeStudio username",
+    placeholder: "Enter your Coding Ninjas username",
     example: "e.g., username"
   },
-  {
-    id: "exercism",
-    name: "Exercism",
-    description: "Code practice and mentorship platform",
-    url: "https://exercism.org",
-    icon: Globe,
-    placeholder: "Enter your Exercism username",
-    example: "e.g., username"
-  },
-  {
-    id: "kaggle",
-    name: "Kaggle",
-    description: "Data science competitions and datasets",
-    url: "https://kaggle.com",
-    icon: Trophy,
-    placeholder: "Enter your Kaggle username",
-    example: "e.g., username"
-  },
-  {
-    id: "uva",
-    name: "UVa Online Judge",
-    description: "Classic competitive programming problems",
-    url: "https://onlinejudge.org",
-    icon: Code,
-    placeholder: "Enter your UVa username",
-    example: "e.g., username"
-  },
-  {
-    id: "github",
-    name: "GitHub",
-    description: "Showcase your projects and contributions",
-    url: "https://github.com",
-    icon: GitBranch,
-    placeholder: "Enter username or profile URL",
-    example: "e.g., johndoe or https://github.com/johndoe"
-  },
-  {
-    id: "kattis",
-    name: "Kattis",
-    description: "Programming contest platform used in ICPC",
-    url: "https://open.kattis.com",
-    icon: Trophy,
-    placeholder: "Enter your Kattis username",
-    example: "e.g., username"
-  }
 ]
 
 export function AddPlatformDialog({ onPlatformAdded, connectedPlatforms = [] }: AddPlatformDialogProps) {
