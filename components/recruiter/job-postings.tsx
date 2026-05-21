@@ -42,6 +42,7 @@ const EMPTY_FORM = {
   description: "", skills: "", deadline: "",
   minProblems: "", minRating: "", minCGPA: "",
   companyName: "", status: "active" as "active" | "draft",
+  applyUrl: "",
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -96,6 +97,7 @@ export function JobPostings() {
       minCGPA: String(job.minCGPA ?? ""),
       companyName: job.companyName,
       status: job.status === "closed" ? "active" : job.status,
+      applyUrl: (job as any).applyUrl ?? "",
     })
     setDialogOpen(true)
   }
@@ -255,6 +257,10 @@ export function JobPostings() {
                 <div className="space-y-2">
                   <Label>Application Deadline</Label>
                   <Input type="date" value={form.deadline} onChange={(e) => setForm({ ...form, deadline: e.target.value })} />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Apply Link <span className="text-xs text-muted-foreground">(URL where students apply)</span></Label>
+                  <Input placeholder="https://yourcompany.com/careers/apply or mailto:hr@company.com" value={form.applyUrl} onChange={(e) => setForm({ ...form, applyUrl: e.target.value })} />
                 </div>
               </div>
 

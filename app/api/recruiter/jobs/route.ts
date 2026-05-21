@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       title, type, location, salary, description,
       skills, deadline, minProblems, minRating, minCGPA,
       status = "active",
+      applyUrl = "",
     } = body
 
     if (!title || !type || !location || !description) {
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
       recruiterName: recruiter.name,
       companyName: recruiter.companyName ?? "",
       companyWebsite: recruiter.companyWebsite ?? "",
+      applyUrl: applyUrl || undefined,
       title,
       type,
       location,

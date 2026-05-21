@@ -31,12 +31,16 @@ export async function POST() {
     }
     const successful = results.filter((r: any) => r.success).length
 
+    // Re-fetch updated student data to return fresh stats to frontend
+    const updatedStudent = await UserModel.findById(userId)
+
     return NextResponse.json({
       success: true,
       results,
       syncedAt: new Date(),
       stats: aggregatedStats,
       summary: { total: results.length, successful, failed: results.length - successful },
+      linkedPlatforms: (updatedStudent as any)?.linkedPlatforms || {},
     })
   } catch (error) {
     console.error("Platform sync error:", error)

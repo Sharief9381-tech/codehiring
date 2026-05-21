@@ -28,6 +28,7 @@ interface MatchedJob {
   deadline?: string
   applications: number
   createdAt: string
+  applyUrl?: string
 }
 
 interface StudentProfile {
@@ -36,6 +37,18 @@ interface StudentProfile {
   rating: number
   platformCount: number
   isOpenToWork: boolean
+}
+
+function getApplyHref(job: MatchedJob): string {
+  const raw = job.applyUrl || (job as any).companyWebsite || ""
+  if (!raw) {
+    return `mailto:?subject=Application for ${encodeURIComponent(job.title)} at ${encodeURIComponent(job.companyName)}`
+  }
+  if (raw.startsWith("http") || raw.startsWith("mailto:")) return raw
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
+    return `mailto:${raw}?subject=Application for ${encodeURIComponent(job.title)} at ${encodeURIComponent(job.companyName)}`
+  }
+  return `https://${raw}`
 }
 
 function getMatchColor(score: number) {
@@ -277,10 +290,20 @@ export function JobMatches() {
                     </div>
 
                     <div className="flex gap-2 lg:flex-col">
-                      <Button className="flex-1 gap-2 lg:w-32 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0">
-                        Apply Now
-                        <ExternalLink className="h-4 w-4" />
-                      </Button>
+                      {(() => {
+                        const href = getApplyHref(job)
+                        return (
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-1 items-center justify-center gap-2 lg:w-32 rounded-md px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all"
+                          >
+                            Apply Now
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )
+                      })()}
                       <Button
                         variant="outline"
                         className={`flex-1 gap-2 lg:w-32 border-gray-600 ${
@@ -326,7 +349,19 @@ export function JobMatches() {
                       </Badge>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">Apply</Button>
+                      {(() => {
+                        const href = getApplyHref(job)
+                        return (
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all"
+                          >
+                            Apply
+                          </a>
+                        )
+                      })()}
                       <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white" onClick={() => toggleSave(job._id)}>
                         <Bookmark className="h-4 w-4 fill-current" />
                       </Button>

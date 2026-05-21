@@ -38,7 +38,7 @@ function getStatsSummary(platformId: string, stats: any): string {
   if (platformId === "leetcode") return `${stats.totalSolved || 0} solved · ${stats.contestRating || 0} rating`
   if (platformId === "codeforces") return `${stats.rating || 0} rating · ${stats.rank || "unrated"}`
   if (platformId === "codechef") return `${stats.currentRating || 0} rating · Global #${stats.globalRank || "—"}`
-  if (platformId === "hackerrank") return `${stats.badges?.length || 0} badges`
+  if (platformId === "hackerrank") return `${stats.badges?.length || 0} badges · score ${stats.totalScore || 0}`
   if (platformId === "geeksforgeeks") return `${stats.codingScore || 0} score · ${stats.problemsSolved || 0} solved`
   const solved = stats.totalSolved || stats.problemsSolved || 0
   const rating = stats.rating || stats.currentRating || 0
@@ -85,8 +85,21 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
     try {
       const res = await fetch("/api/platforms/sync", { method: "POST" })
       if (res.ok) {
-        toast.success("Stats synced")
-        await refreshStudent()
+        const data = await res.json()
+        // Update student state with fresh linkedPlatforms from sync response
+        if (data.linkedPlatforms) {
+          setStudent((prev: any) => ({ ...prev, linkedPlatforms: data.linkedPlatforms }))
+        } else {
+          await refreshStudent()
+        }
+        const failed = data.summary?.failed ?? 0
+        if (failed > 0) {
+          toast.warning(`Synced with ${failed} platform(s) unable to fetch data`)
+        } else {
+          toast.success("Stats synced successfully")
+        }
+      } else {
+        toast.error("Sync failed")
       }
     } catch {
       toast.error("Sync failed")

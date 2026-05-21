@@ -1,10 +1,3 @@
-/**
- * HackerRank fetcher
- *
- * Fetches profile page to confirm user exists, then tries the public
- * badges endpoint and embedded JSON for stats.
- */
-
 export interface HackerRankStats {
   username: string
   name: string
@@ -13,9 +6,15 @@ export interface HackerRankStats {
   company: string
   avatar: string
   level: number
-  badges: { name: string; level: string; badge_type: string; earned_date: string }[]
-  certifications: { name: string; level: string; issued_date: string; certificate_url: string }[]
-  skills: { name: string; level: number; max_score: number; score: number; percentage: number; stars: number }[]
+  badges: {
+    name: string
+    stars: number
+    points: number
+    badge_type: string
+    solved: number
+  }[]
+  certifications: { name: string; certificate_url: string }[]
+  skills: string[]
   contests: { name: string; rank: number; score: number; participants: number }[]
   totalScore: number
   globalRank: number
@@ -26,118 +25,102 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
   try {
     let u = username.trim()
 
-    const urlMatch = u.match(/(?:https?:\/\/)?(?:www\.)?hackerrank\.com\/(?:profile\/)?([^\/\?\s]+)/i)
+    // Extract username from URL
+    const urlMatch = u.match(/(?:https?:\/\/)?(?:www\.)?hackerrank\.com\/(?:profile\/)?([^\/\?\s#]+)/i)
     if (urlMatch) u = urlMatch[1]
-
-    u = u.replace(/^@/, '')
+    u = u.replace(/^@/, '').trim()
 
     if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
 
-    console.log(`Fetching HackerRank stats for: ${u}`)
+    console.log(`[HackerRank] Fetching stats for: ${u}`)
 
-    const profileUrl = `https://www.hackerrank.com/profile/${u}`
-
-    // 1. Fetch profile page
-    const res = await fetch(profileUrl, {
+    // ── Step 1: Fetch profile via public REST API ─────────────────────────
+    // Confirmed working: returns model with id, username, name, level, rank, avatar, etc.
+    const profileRes = await fetch(`https://www.hackerrank.com/rest/hackers/${encodeURIComponent(u)}`, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'application/json',
+        'Referer': 'https://www.hackerrank.com/',
+        'Origin': 'https://www.hackerrank.com',
       },
       signal: AbortSignal.timeout(15000),
-    }).catch(() => null)
+    }).catch(e => { console.error('[HackerRank] profile fetch error:', e.message); return null })
 
-    if (!res) return null
-    if (res.status === 404) {
-      console.log(`HackerRank: 404 for ${u}`)
+    if (!profileRes) return null
+
+    console.log(`[HackerRank] Profile API status: ${profileRes.status}`)
+
+    if (profileRes.status === 404) {
+      console.log(`[HackerRank] User not found: ${u}`)
       return null
     }
 
-    if (!res.ok) {
-      console.log(`HackerRank: HTTP ${res.status} for ${u}, returning basic profile`)
-      return buildBasic(u)
-    }
-
-    const html = await res.text()
-    const lower = html.toLowerCase()
-    const notFoundSignals = ['page not found', 'user not found', 'profile not found', "this page doesn't exist", '404 | hackerrank']
-    if (notFoundSignals.some(s => lower.includes(s))) {
-      console.log(`HackerRank: profile not found for ${u}`)
+    if (!profileRes.ok) {
+      console.log(`[HackerRank] HTTP ${profileRes.status} for ${u}`)
       return null
     }
 
-    // 2. Extract stats from embedded JSON
-    let totalScore = 0
-    let globalRank = 0
-    let name = u
-    let country = ''
-    let avatar = ''
+    const profileData = await profileRes.json()
+    const m = profileData?.model
+
+    if (!m || m.deleted) {
+      console.log(`[HackerRank] No model or deleted account for ${u}`)
+      return null
+    }
+
+    console.log(`[HackerRank] Profile found: ${m.name || m.username}, level: ${m.level}, rank: ${m.rank}`)
+
+    // ── Step 2: Fetch badges ──────────────────────────────────────────────
+    // Confirmed working: returns models array with badge_name, stars, total_points, solved, etc.
+    const badgesRes = await fetch(`https://www.hackerrank.com/rest/hackers/${encodeURIComponent(u)}/badges`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Accept': 'application/json',
+        'Referer': 'https://www.hackerrank.com/',
+      },
+      signal: AbortSignal.timeout(10000),
+    }).catch(e => { console.error('[HackerRank] badges fetch error:', e.message); return null })
+
     let badges: HackerRankStats['badges'] = []
-    let certifications: HackerRankStats['certifications'] = []
-
-    const jsonMatch =
-      html.match(/window\.__INITIAL_STATE__\s*=\s*(\{.+?\});\s*<\/script>/) ||
-      html.match(/"hacker"\s*:\s*(\{[^}]+\})/)
-
-    if (jsonMatch) {
-      try {
-        const obj = JSON.parse(jsonMatch[1])
-        const hacker = obj.hacker ?? obj
-        name       = hacker.name       ?? hacker.username ?? u
-        country    = hacker.country    ?? ''
-        avatar     = hacker.avatar     ?? ''
-        totalScore = hacker.score      ?? hacker.total_score ?? 0
-        globalRank = hacker.rank       ?? hacker.global_rank ?? 0
-      } catch { /* ignore */ }
+    if (badgesRes?.ok) {
+      const badgesData = await badgesRes.json()
+      badges = (badgesData.models ?? []).map((b: any) => ({
+        name:       b.badge_name    ?? b.display_name ?? b.name ?? '',
+        stars:      Number(b.stars  ?? b.total_stars  ?? 0),
+        points:     Number(b.total_points ?? b.current_points ?? 0),
+        badge_type: b.badge_type    ?? b.badge_category ?? '',
+        solved:     Number(b.solved ?? 0),
+      }))
+      console.log(`[HackerRank] Badges fetched: ${badges.length}`)
     }
 
-    if (totalScore === 0) {
-      const sm = html.match(/"score"\s*:\s*(\d+)/)
-      if (sm) totalScore = parseInt(sm[1])
-    }
-    if (globalRank === 0) {
-      const rm = html.match(/"rank"\s*:\s*(\d+)/)
-      if (rm) globalRank = parseInt(rm[1])
-    }
-    const nameMatch = html.match(/<title>([^|<]+)/)
-    if (nameMatch && nameMatch[1].trim() !== 'HackerRank') {
-      name = nameMatch[1].trim()
+    // ── Step 3: Fetch recent contest submissions for score ────────────────
+    let totalScore = Number(m.score ?? m.total_score ?? 0)
+    // If score not in profile, sum badge points
+    if (totalScore === 0 && badges.length > 0) {
+      totalScore = badges.reduce((sum, b) => sum + b.points, 0)
     }
 
-    // 3. Try public badges endpoint
-    try {
-      const badgesRes = await fetch(`https://www.hackerrank.com/rest/hackers/${u}/badges`, {
-        headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'application/json', Referer: 'https://www.hackerrank.com/' },
-        signal: AbortSignal.timeout(8000),
-      })
-      if (badgesRes.ok) {
-        const bd = await badgesRes.json()
-        badges = (bd.models ?? []).map((b: any) => ({
-          name: b.display_name ?? b.name ?? '',
-          level: b.level ?? '',
-          badge_type: b.badge_type ?? '',
-          earned_date: b.earned_date ?? '',
-        }))
-      }
-    } catch { /* badges are optional */ }
-
-    console.log(`HackerRank: verified ${u}, score=${totalScore}, rank=${globalRank}, badges=${badges.length}`)
+    console.log(`[HackerRank] Final - badges:${badges.length} score:${totalScore} rank:${m.rank}`)
 
     return {
-      username: u, name, country, school: '', company: '', avatar,
-      level: 0, badges, certifications, skills: [], contests: [],
-      totalScore, globalRank, countryRank: 0,
+      username:     u,
+      name:         m.name         ?? m.username ?? u,
+      country:      m.country      ?? '',
+      school:       m.school       ?? '',
+      company:      m.company      ?? '',
+      avatar:       m.avatar       ?? '',
+      level:        Number(m.level ?? 0),
+      badges,
+      certifications: [],
+      skills:       m.languages    ? (Array.isArray(m.languages) ? m.languages : [m.languages]) : [],
+      contests:     [],
+      totalScore,
+      globalRank:   Number(m.rank  ?? 0),
+      countryRank:  0,
     }
   } catch (error) {
-    console.error('HackerRank fetch error:', error)
+    console.error('[HackerRank] Unexpected error:', error)
     return null
-  }
-}
-
-function buildBasic(u: string): HackerRankStats {
-  return {
-    username: u, name: u, country: '', school: '', company: '', avatar: '',
-    level: 0, badges: [], certifications: [], skills: [], contests: [],
-    totalScore: 0, globalRank: 0, countryRank: 0,
   }
 }

@@ -42,27 +42,28 @@ export class UserModel {
 
   static async update(id: string, updates: Record<string, any>): Promise<void> {
     const db = await getDatabase()
-    
-    // Handle nested updates for MongoDB
-    const updateDoc: Record<string, any> = {}
-    
+
+    const setDoc: Record<string, any> = {}
+    const unsetDoc: Record<string, any> = {}
+
     for (const [key, value] of Object.entries(updates)) {
-      if (key.includes('.')) {
-        // Handle nested field updates like 'stats.totalProblems'
-        updateDoc[key] = value
+      if (value === null || value === undefined) {
+        unsetDoc[key] = ''
       } else {
-        updateDoc[key] = value
+        setDoc[key] = value
       }
     }
-    
+
+    const mongoUpdate: Record<string, any> = {
+      $set: { ...setDoc, updatedAt: new Date() },
+    }
+    if (Object.keys(unsetDoc).length > 0) {
+      mongoUpdate.$unset = unsetDoc
+    }
+
     await db.collection(this.collection).updateOne(
       { _id: new ObjectId(id) },
-      { 
-        $set: { 
-          ...updateDoc, 
-          updatedAt: new Date() 
-        } 
-      }
+      mongoUpdate
     )
   }
 

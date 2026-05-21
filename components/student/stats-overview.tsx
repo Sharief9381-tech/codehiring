@@ -71,35 +71,82 @@ interface AggregatedStats {
 }
 
 const platforms = [
-  {
-    id: "leetcode",
-    name: "LeetCode",
-    color: "#FFA116",
-    url: "https://leetcode.com",
-    icon: Code,
-  },
-  {
-    id: "github",
-    name: "GitHub",
-    color: "#238636",
-    url: "https://github.com",
-    icon: GitBranch,
-  },
-  {
-    id: "codeforces",
-    name: "Codeforces",
-    color: "#1890FF",
-    url: "https://codeforces.com",
-    icon: Trophy,
-  },
-  {
-    id: "codechef",
-    name: "CodeChef",
-    color: "#5B4638",
-    url: "https://codechef.com",
-    icon: Code,
-  },
+  { id: "leetcode",      name: "LeetCode",      color: "#FFA116", url: "https://leetcode.com",                    icon: Code      },
+  { id: "github",        name: "GitHub",         color: "#238636", url: "https://github.com",                     icon: GitBranch },
+  { id: "codeforces",    name: "Codeforces",     color: "#1890FF", url: "https://codeforces.com/profile",         icon: Trophy    },
+  { id: "codechef",      name: "CodeChef",       color: "#5B4638", url: "https://codechef.com/users",             icon: Code      },
+  { id: "hackerrank",    name: "HackerRank",     color: "#00EA64", url: "https://hackerrank.com/profile",         icon: Trophy    },
+  { id: "geeksforgeeks", name: "GeeksforGeeks",  color: "#2F8D46", url: "https://geeksforgeeks.org/user",         icon: Code      },
+  { id: "hackerearth",   name: "HackerEarth",    color: "#2C3E50", url: "https://hackerearth.com/@",              icon: Code      },
+  { id: "atcoder",       name: "AtCoder",        color: "#222222", url: "https://atcoder.jp/users",               icon: Trophy    },
+  { id: "codestudio",    name: "CodeStudio",     color: "#f472b6", url: "https://codingninjas.com/studio/profile",icon: Code      },
+  { id: "interviewbit",  name: "InterviewBit",   color: "#06b6d4", url: "https://interviewbit.com/profile",       icon: Code      },
+  { id: "spoj",          name: "SPOJ",           color: "#f97316", url: "https://spoj.com/users",                 icon: Code      },
+  { id: "kattis",        name: "Kattis",         color: "#8b5cf6", url: "https://open.kattis.com/users",          icon: Trophy    },
 ]
+
+function getPlatformStatLines(platformId: string, platformData: any): { label: string; value: string | number }[] {
+  const stats = typeof platformData === "object" ? (platformData.stats ?? platformData) : null
+  if (!stats) return []
+
+  switch (platformId) {
+    case "leetcode":
+      return [
+        { label: "Problems Solved", value: stats.totalSolved ?? 0 },
+        { label: "Easy / Med / Hard", value: `${stats.easySolved ?? 0} / ${stats.mediumSolved ?? 0} / ${stats.hardSolved ?? 0}` },
+        { label: "Ranking", value: stats.ranking ? `#${stats.ranking.toLocaleString()}` : "—" },
+      ]
+    case "github":
+      return [
+        { label: "Contributions", value: stats.totalContributions ?? 0 },
+        { label: "Repositories", value: stats.publicRepos ?? 0 },
+        { label: "Followers", value: stats.followers ?? 0 },
+      ]
+    case "codeforces":
+      return [
+        { label: "Rating", value: stats.rating ?? 0 },
+        { label: "Rank", value: stats.rank ?? "unrated" },
+        { label: "Max Rating", value: stats.maxRating ?? stats.rating ?? 0 },
+      ]
+    case "codechef":
+      return [
+        { label: "Rating", value: stats.currentRating ?? 0 },
+        { label: "Stars", value: stats.stars ?? "—" },
+        { label: "Problems Solved", value: stats.problemsSolved ?? 0 },
+      ]
+    case "hackerrank":
+      return [
+        { label: "Badges", value: stats.badges?.length ?? 0 },
+        { label: "Top Badge", value: stats.badges?.[0]?.name ? `${stats.badges[0].name} (${stats.badges[0].stars}★)` : "—" },
+        { label: "Total Score", value: stats.totalScore ?? 0 },
+      ]
+    case "geeksforgeeks":
+      return [
+        { label: "Problems Solved", value: stats.problemsSolved ?? 0 },
+        { label: "Coding Score", value: stats.codingScore ?? 0 },
+        { label: "Current Streak", value: stats.currentStreak ? `${stats.currentStreak} days` : "—" },
+      ]
+    case "hackerearth":
+      return [
+        { label: "Problems Solved", value: stats.problemsSolved ?? 0 },
+        { label: "Rating", value: stats.rating ?? 0 },
+      ]
+    case "atcoder":
+      return [
+        { label: "Rating", value: stats.rating ?? 0 },
+        { label: "Rank", value: stats.rank ?? "—" },
+        { label: "Problems Solved", value: stats.problemsSolved ?? 0 },
+      ]
+    default: {
+      const solved = stats.totalSolved ?? stats.problemsSolved ?? 0
+      const rating = stats.rating ?? stats.currentRating ?? 0
+      const lines = []
+      if (solved > 0) lines.push({ label: "Problems Solved", value: solved })
+      if (rating > 0) lines.push({ label: "Rating", value: rating })
+      return lines
+    }
+  }
+}
 
 export function StatsOverview({ student }: StatsOverviewProps) {
   const [stats, setStats] = useState<AggregatedStats | null>(null)
@@ -141,6 +188,7 @@ export function StatsOverview({ student }: StatsOverviewProps) {
 
   const linkedPlatforms = student.linkedPlatforms || {}
   const hasLinkedPlatforms = Object.keys(linkedPlatforms).length > 0
+  // Show all connected platforms, not just the 4 hardcoded ones
   const linkedPlatformsList = platforms.filter(p => linkedPlatforms[p.id])
 
   if (!hasLinkedPlatforms) {
@@ -302,20 +350,19 @@ export function StatsOverview({ student }: StatsOverviewProps) {
               {linkedPlatformsList.map((platform) => {
                 const linkedUsername = linkedPlatforms[platform.id]
                 const username = typeof linkedUsername === 'string' ? linkedUsername : linkedUsername?.username || ''
+                const platformData = linkedPlatforms[platform.id]
+                const statLines = getPlatformStatLines(platform.id, platformData)
 
                 return (
                   <Card key={platform.id} className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105" style={{ borderLeftColor: platform.color, borderLeftWidth: '4px' }}>
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <div 
+                          <div
                             className="h-12 w-12 rounded-xl flex items-center justify-center shadow-lg"
                             style={{ backgroundColor: platform.color + '20', border: `2px solid ${platform.color}` }}
                           >
-                            <platform.icon 
-                              className="h-6 w-6" 
-                              style={{ color: platform.color }}
-                            />
+                            <platform.icon className="h-6 w-6" style={{ color: platform.color }} />
                           </div>
                           <div>
                             <h4 className="font-bold text-lg text-white">{platform.name}</h4>
@@ -327,7 +374,22 @@ export function StatsOverview({ student }: StatsOverviewProps) {
                           Connected
                         </Badge>
                       </div>
-                      <div className="flex items-center justify-between">
+
+                      {/* Real stats */}
+                      {statLines.length > 0 ? (
+                        <div className="space-y-2 mb-4">
+                          {statLines.map(({ label, value }) => (
+                            <div key={label} className="flex justify-between text-sm">
+                              <span className="text-gray-400">{label}</span>
+                              <span className="font-semibold text-white capitalize">{value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500 mb-4">Sync to load stats</p>
+                      )}
+
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-700">
                         <a
                           href={`${platform.url}/${username}`}
                           target="_blank"

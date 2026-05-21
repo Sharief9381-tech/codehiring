@@ -170,10 +170,12 @@ export class PlatformSyncService {
         if (stats) {
           const newEvents = generateActivityEvents(platformId, pd.username, stats)
 
-          // Successfully fetched real stats - update in database
+          // Single atomic update — avoids race conditions and ensures stats object
+          // (which may contain arrays like badges[]) is stored correctly
           await UserModel.update(userId, {
             [`linkedPlatforms.${platformId}.lastSync`]: new Date(),
-            [`linkedPlatforms.${platformId}.stats`]: stats
+            [`linkedPlatforms.${platformId}.stats`]:    stats,
+            [`linkedPlatforms.${platformId}.isActive`]: true,
           })
 
           // Prepend new events to recentActivity array (keep last 20)
@@ -186,19 +188,17 @@ export class PlatformSyncService {
           results.push({ platform: platformId, success: true, data: stats })
           console.log(`✅ Successfully synced ${platformId} with real stats`)
         } else {
-          // Platform fetcher returned null (profile not found or error)
-          // Clear any cached fake data and mark as failed
-          console.log(`❌ Failed to fetch real stats for ${platformId} - clearing cached data`)
-          
+          console.log(`❌ Failed to fetch real stats for ${platformId}`)
+
           await UserModel.update(userId, {
             [`linkedPlatforms.${platformId}.lastSync`]: new Date(),
-            [`linkedPlatforms.${platformId}.stats`]: null // Clear cached fake data
+            // Do NOT null out stats — keep last known good data
           })
-          
-          results.push({ 
-            platform: platformId, 
-            success: false, 
-            error: 'Profile not found or unable to fetch real stats' 
+
+          results.push({
+            platform: platformId,
+            success: false,
+            error: 'Unable to fetch data — profile may be private or rate limited',
           })
         }
       } catch (error: any) {

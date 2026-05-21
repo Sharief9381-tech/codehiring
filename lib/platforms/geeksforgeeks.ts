@@ -2,7 +2,7 @@ export interface GeeksforGeeksStats {
   username: string
   codingScore: number
   problemsSolved: number
-  instituteRank: number
+  instituteRank: string
   articlesPublished: number
   currentStreak: number
   longestStreak: number
@@ -14,121 +14,101 @@ export async function fetchGeeksforGeeksStats(username: string): Promise<Geeksfo
   try {
     let u = username.trim()
 
+    // Extract username from URL
     for (const pattern of [
-      /(?:https?:\/\/)?(?:auth\.|www\.)?geeksforgeeks\.org\/user\/([^\/\?\s]+)(?:\/profile)?/i,
-      /(?:https?:\/\/)?(?:auth\.|www\.)?geeksforgeeks\.org\/profile\/([^\/\?\s]+)/i,
+      /(?:https?:\/\/)?(?:auth\.|www\.)?geeksforgeeks\.org\/user\/([^\/\?\s#]+)/i,
+      /(?:https?:\/\/)?(?:auth\.|www\.)?geeksforgeeks\.org\/profile\/([^\/\?\s#]+)/i,
     ]) {
       const m = u.match(pattern)
       if (m) { u = m[1]; break }
     }
-
+    u = u.replace(/\/+$/, '').trim()
     if (!u) return null
 
-    const profileUrl = `https://www.geeksforgeeks.org/user/${u}/`
-    console.log(`Fetching GFG stats for: ${u}`)
+    console.log(`[GFG] Fetching stats for: ${u}`)
 
-    // Primary: GFG unofficial stats API
-    const apiRes = await fetch(
-      `https://geeks-for-geeks-stats-api.vercel.app/?raw=Y&userName=${encodeURIComponent(u)}`,
-      {
-        headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0' },
-        signal: AbortSignal.timeout(15000),
-      }
-    ).catch(() => null)
-
-    if (apiRes?.ok) {
-      const data = await apiRes.json()
-      console.log('GFG API raw response:', JSON.stringify(data).slice(0, 300))
-
-      if (data?.error) {
-        console.log(`GFG user not found: ${u}`)
-        return null
-      }
-
-      if (data?.info) {
-        const info = data.info
-        const solved = data.solvedStats ?? {}
-        const easy   = solved?.easy?.count   ?? solved?.School?.count ?? 0
-        const medium = solved?.medium?.count ?? solved?.Medium?.count ?? 0
-        const hard   = solved?.hard?.count   ?? solved?.Hard?.count   ?? 0
-        const basic  = solved?.basic?.count  ?? solved?.Basic?.count  ?? 0
-        const school = solved?.school?.count ?? 0
-        const totalSolved = easy + medium + hard + basic + school
-
-        return {
-          username: u,
-          codingScore:       Number(info.codingScore)       || 0,
-          problemsSolved:    totalSolved || Number(info.totalProblemsSolved) || 0,
-          instituteRank:     Number(info.instituteRank)     || 0,
-          articlesPublished: Number(info.articlesPublished) || 0,
-          currentStreak:     Number(info.currentStreak)     || 0,
-          longestStreak:     Number(info.longestStreak)     || 0,
-          potdsSolved:       Number(info.pod_solved ?? info.potdSolved ?? info.pod_solved_longest_streak) || 0,
-          profileUrl,
-        }
-      }
-    }
-
-    // Fallback: second unofficial mirror
-    const mirror = await fetch(
-      `https://gfgstatsapi.vercel.app/api/${encodeURIComponent(u)}`,
-      {
-        headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0' },
-        signal: AbortSignal.timeout(12000),
-      }
-    ).catch(() => null)
-
-    if (mirror?.ok) {
-      const d = await mirror.json()
-      if (d && !d.error && (d.codingScore !== undefined || d.totalProblemsSolved !== undefined)) {
-        return {
-          username: u,
-          codingScore:       Number(d.codingScore)         || 0,
-          problemsSolved:    Number(d.totalProblemsSolved) || 0,
-          instituteRank:     Number(d.instituteRank)       || 0,
-          articlesPublished: Number(d.articlesPublished)   || 0,
-          currentStreak:     Number(d.currentStreak)       || 0,
-          longestStreak:     Number(d.longestStreak)       || 0,
-          potdsSolved:       Number(d.pod_solved)          || 0,
-          profileUrl,
-        }
-      }
-    }
-
-    // Last resort: verify profile page exists
-    const pageRes = await fetch(profileUrl, {
+    // GFG profile page embeds data as escaped JSON in a <script> tag.
+    // The URL /user/{username} redirects to /profile/{username} which contains the data.
+    const res = await fetch(`https://www.geeksforgeeks.org/user/${encodeURIComponent(u)}`, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
-        Accept: 'text/html',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-US,en;q=0.9',
       },
-      signal: AbortSignal.timeout(12000),
-    }).catch(() => null)
+      redirect: 'follow',
+      signal: AbortSignal.timeout(20000),
+    }).catch(e => { console.error('[GFG] fetch error:', e.message); return null })
 
-    if (!pageRes?.ok) {
-      console.log(`GFG profile page not found for ${u}`)
+    if (!res) return null
+
+    console.log(`[GFG] Response status: ${res.status}, url: ${res.url}`)
+
+    // 404 = user doesn't exist
+    if (res.status === 404) {
+      console.log(`[GFG] User not found: ${u}`)
       return null
     }
 
-    const html = await pageRes.text()
+    if (!res.ok) {
+      console.log(`[GFG] HTTP ${res.status} for ${u}`)
+      return null
+    }
+
+    const html = await res.text()
+    console.log(`[GFG] Page size: ${html.length}`)
+
+    // GFG embeds profile data as escaped JSON inside a React server component script.
+    // Pattern: \"score\":0,\"monthly_score\":0,\"total_problems_solved\":0,...
+    const scoreMatch       = html.match(/\\"score\\":(\d+)/)
+    const problemsMatch    = html.match(/\\"total_problems_solved\\":(\d+)/)
+    const rankMatch        = html.match(/\\"institute_rank\\":\\"([^\\"]*)\\"|\\\"institute_rank\\\":\\\"([^\\\"]*)\\\"/)
+    const podLongestMatch  = html.match(/\\"pod_solved_longest_streak\\":(\d+)/)
+    const podCurrentMatch  = html.match(/\\"pod_solved_current_streak\\":(\d+)/)
+    const streakMatch      = html.match(/\\"current_streak\\":(\d+)/)
+
+    // Also try unescaped patterns (some pages serve unescaped)
+    const scoreMatch2      = html.match(/"score":(\d+)/)
+    const problemsMatch2   = html.match(/"total_problems_solved":(\d+)/)
+    const rankMatch2       = html.match(/"institute_rank":"([^"]*)"/)
+    const podLongestMatch2 = html.match(/"pod_solved_longest_streak":(\d+)/)
+    const podCurrentMatch2 = html.match(/"pod_solved_current_streak":(\d+)/)
+    const streakMatch2     = html.match(/"current_streak":(\d+)/)
+
+    const score       = Number(scoreMatch?.[1]    ?? scoreMatch2?.[1]    ?? 0)
+    const problems    = Number(problemsMatch?.[1] ?? problemsMatch2?.[1] ?? 0)
+    const rank        = rankMatch?.[1] ?? rankMatch?.[2] ?? rankMatch2?.[1] ?? ''
+    const podLongest  = Number(podLongestMatch?.[1]  ?? podLongestMatch2?.[1]  ?? 0)
+    const podCurrent  = Number(podCurrentMatch?.[1]  ?? podCurrentMatch2?.[1]  ?? 0)
+    const streak      = Number(streakMatch?.[1]  ?? streakMatch2?.[1]  ?? 0)
+
+    console.log(`[GFG] Parsed - score:${score} problems:${problems} rank:${rank} streak:${streak} pod:${podCurrent}`)
+
+    // If page loaded but no data found, user might exist but have no activity
+    // Check for "not found" signals
     const lower = html.toLowerCase()
-    if (lower.includes('user not found') || lower.includes('profile not found') || lower.includes('this user does not exist')) {
+    if (
+      lower.includes('user not found') ||
+      lower.includes('profile not found') ||
+      lower.includes('this user does not exist') ||
+      html.length < 5000
+    ) {
+      console.log(`[GFG] Profile not found for ${u}`)
       return null
     }
-    if (html.length < 10000) return null
 
-    console.log(`GFG: user ${u} exists but API returned no data, returning zeros`)
     return {
       username: u,
-      codingScore: 0, problemsSolved: 0, instituteRank: 0,
-      articlesPublished: 0, currentStreak: 0, longestStreak: 0, potdsSolved: 0,
-      profileUrl,
+      codingScore:       score,
+      problemsSolved:    problems,
+      instituteRank:     rank,
+      articlesPublished: 0,
+      currentStreak:     streak || podCurrent,
+      longestStreak:     podLongest,
+      potdsSolved:       podCurrent,
+      profileUrl:        `https://www.geeksforgeeks.org/user/${u}/`,
     }
   } catch (error) {
-    console.error('GFG fetch error:', error)
+    console.error('[GFG] Unexpected error:', error)
     return null
   }
-}
-
-export async function extractGeeksforGeeksStats(html: string, username: string): Promise<GeeksforGeeksStats | null> {
-  return null
 }

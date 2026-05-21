@@ -12,6 +12,7 @@ export interface JobDocument {
   recruiterName: string
   companyName: string
   companyWebsite?: string
+  applyUrl?: string          // external application link
 
   // Job details
   title: string
