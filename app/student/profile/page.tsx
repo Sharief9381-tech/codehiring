@@ -11,18 +11,12 @@ export default function ProfilePage() {
   const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null)
 
   useEffect(() => {
-    // Use the dedicated profile endpoint for richer student data
     fetch("/api/student/profile")
       .then(r => r.json())
-      .then(data => {
-        if (data.user) { setFormData(data.user) }
-      })
-      .catch(() => {
-        // Fallback to auth/user
-        fetch("/api/auth/user")
-          .then(r => r.json())
-          .then(data => { if (data.user) { setFormData(data.user) } })
-      })
+      .then(data => { if (data.user) setFormData(data.user) })
+      .catch(() =>
+        fetch("/api/auth/user").then(r => r.json()).then(data => { if (data.user) setFormData(data.user) })
+      )
       .finally(() => setLoading(false))
   }, [])
 
@@ -40,49 +34,39 @@ export default function ProfilePage() {
         body: JSON.stringify(formData),
       })
       const data = await res.json()
-      setToast({ msg: data.success ? "Profile saved successfully!" : (data.error || "Save failed"), ok: !!data.success })
+      setToast({ msg: data.success ? "Profile saved!" : (data.error || "Save failed"), ok: !!data.success })
     } catch {
-      setToast({ msg: "Network error, please try again", ok: false })
+      setToast({ msg: "Network error", ok: false })
     } finally {
       setSaving(false)
     }
   }
 
   return (
-    <div
-      className="min-h-screen w-full"
-      style={{ background: "linear-gradient(135deg, #050816 0%, #0f172a 50%, #050816 100%)" }}
-    >
-      {/* Ambient glow blobs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-600/8 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-0 w-64 h-64 bg-teal-600/6 rounded-full blur-3xl" />
-      </div>
-
+    <div className="min-h-screen w-full bg-background">
       <div className="relative z-10 p-6 max-w-7xl mx-auto">
+
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 border border-purple-500/30 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-purple-400" />
+              <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-primary" />
               </div>
-              <h1 className="text-xl font-bold text-white tracking-tight">Edit Profile</h1>
+              <h1 className="text-xl font-bold text-foreground tracking-tight">Edit Profile</h1>
             </div>
-            <p className="text-xs text-white/40 ml-10">Update your information and showcase your journey</p>
+            <p className="text-xs text-muted-foreground ml-10">Update your information and showcase your journey</p>
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/8 transition-all text-xs font-medium">
+            <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-secondary border border-border text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-all text-xs font-medium">
               <Eye className="w-3.5 h-3.5" />
               Preview Profile
             </button>
             <button
               onClick={handleSave}
               disabled={saving || loading}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all duration-200 disabled:opacity-60"
-              style={{ background: "linear-gradient(135deg, #9333ea, #3b82f6)", boxShadow: "0 0 20px rgba(147,51,234,0.3)" }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-primary-foreground bg-primary hover:bg-primary/90 transition-all duration-200 disabled:opacity-60"
             >
               {saving
                 ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving...</>
@@ -94,7 +78,7 @@ export default function ProfilePage() {
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
+            <Loader2 className="w-8 h-8 text-primary animate-spin" />
           </div>
         ) : (
           <ProfileForm user={formData} onChange={setFormData} />
@@ -105,8 +89,8 @@ export default function ProfilePage() {
       {toast && (
         <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium shadow-2xl transition-all ${
           toast.ok
-            ? "bg-teal-500/20 border-teal-500/40 text-teal-300"
-            : "bg-red-500/20 border-red-500/40 text-red-300"
+            ? "bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400"
+            : "bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400"
         }`}>
           {toast.ok ? "✓" : "✕"} {toast.msg}
         </div>

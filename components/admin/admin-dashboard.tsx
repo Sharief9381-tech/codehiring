@@ -693,14 +693,14 @@ export function AdminDashboard() {
             <CardContent className="p-6">
               <div className="space-y-4">
                 {data.topPerformers.map((user, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-gray-800 border border-gray-600">
+                  <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-card border border-border">
                     <div className="flex items-center gap-3">
                       <Badge variant="outline" className="w-8 h-8 p-0 justify-center font-bold bg-yellow-500 text-black border-yellow-400">
                         #{index + 1}
                       </Badge>
                       <div>
                         <div className="font-bold text-white text-lg">{user.name}</div>
-                        <div className="text-base text-gray-300">{user.email}</div>
+                        <div className="text-base text-muted-foreground">{user.email}</div>
                         <div className="flex items-center gap-2 mt-2">
                           <Badge 
                             variant="secondary" 
@@ -853,9 +853,9 @@ export function AdminDashboard() {
             <CardContent className="p-6">
               <div className="space-y-6">
                 {data.platformHealth.map((platform, index) => (
-                  <div key={index} className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-gray-800 to-gray-900 border-2 border-gray-600 hover:shadow-lg transition-all">
+                  <div key={index} className="flex items-center justify-between p-6 rounded-xl bg-card border-2 border-border hover:shadow-lg transition-all">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-gray-700 shadow-md">
+                      <div className="p-3 rounded-full bg-secondary shadow-md">
                         {getStatusIcon(platform.status)}
                       </div>
                       <div>
@@ -1110,7 +1110,7 @@ export function AdminDashboard() {
                   return (
                     <div 
                       key={index} 
-                      className="flex items-start gap-4 p-5 rounded-lg bg-gray-800 border-l-4 border-l-green-500 hover:bg-gray-750 transition-colors cursor-pointer"
+                      className="flex items-start gap-4 p-5 rounded-lg bg-card border-l-4 border-l-green-500 hover:bg-secondary transition-colors cursor-pointer"
                       onClick={() => {
                         console.log('Clicking user:', userEmail)
                         handleUserClick(userEmail)
@@ -1363,8 +1363,8 @@ export function AdminDashboard() {
 
       {/* USER DETAILS MODAL */}
       <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-blue-500">
-          <DialogHeader className="border-b border-gray-700 pb-4">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden bg-card border-2 border-blue-500">
+          <DialogHeader className="border-b border-border pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
@@ -1401,9 +1401,9 @@ export function AdminDashboard() {
             <ScrollArea className="h-[calc(90vh-200px)] pr-4">
               <div className="space-y-6 py-4">
                 {/* BASIC INFORMATION */}
-                <Card className="bg-gray-800 border-gray-700">
+                <Card className="bg-card border-border">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-white flex items-center gap-2">
+                    <CardTitle className="text-foreground flex items-center gap-2">
                       <Users className="h-5 w-5 text-blue-400" />
                       Basic Information
                     </CardTitle>
@@ -1413,14 +1413,14 @@ export function AdminDashboard() {
                       <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700">
                         <Mail className="h-5 w-5 text-blue-400" />
                         <div>
-                          <div className="text-xs text-gray-400">Email</div>
+                          <div className="text-xs text-muted-foreground">Email</div>
                           <div className="text-sm font-medium text-white">{selectedUser.email}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700">
                         <Calendar className="h-5 w-5 text-green-400" />
                         <div>
-                          <div className="text-xs text-gray-400">Joined</div>
+                          <div className="text-xs text-muted-foreground">Joined</div>
                           <div className="text-sm font-medium text-white">
                             {new Date(selectedUser.createdAt).toLocaleDateString()}
                           </div>
@@ -1434,9 +1434,9 @@ export function AdminDashboard() {
                 {selectedUser.role === 'student' && (
                   <>
                     {/* ACADEMIC INFO */}
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-white flex items-center gap-2">
+                        <CardTitle className="text-foreground flex items-center gap-2">
                           <Award className="h-5 w-5 text-yellow-400" />
                           Academic Information
                         </CardTitle>
@@ -1446,28 +1446,28 @@ export function AdminDashboard() {
                           <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700">
                             <Database className="h-5 w-5 text-purple-400" />
                             <div>
-                              <div className="text-xs text-gray-400">College Code</div>
+                              <div className="text-xs text-muted-foreground">College Code</div>
                               <div className="text-sm font-medium text-white">{selectedUser.collegeCode || 'N/A'}</div>
                             </div>
                           </div>
                           <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700">
                             <Users className="h-5 w-5 text-blue-400" />
                             <div>
-                              <div className="text-xs text-gray-400">Roll Number</div>
+                              <div className="text-xs text-muted-foreground">Roll Number</div>
                               <div className="text-sm font-medium text-white">{selectedUser.rollNumber || 'N/A'}</div>
                             </div>
                           </div>
                           <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700">
                             <Calendar className="h-5 w-5 text-green-400" />
                             <div>
-                              <div className="text-xs text-gray-400">Graduation Year</div>
+                              <div className="text-xs text-muted-foreground">Graduation Year</div>
                               <div className="text-sm font-medium text-white">{selectedUser.graduationYear || 'N/A'}</div>
                             </div>
                           </div>
                           <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700">
                             <Code2 className="h-5 w-5 text-orange-400" />
                             <div>
-                              <div className="text-xs text-gray-400">Branch</div>
+                              <div className="text-xs text-muted-foreground">Branch</div>
                               <div className="text-sm font-medium text-white">{selectedUser.branch || 'N/A'}</div>
                             </div>
                           </div>
@@ -1476,9 +1476,9 @@ export function AdminDashboard() {
                     </Card>
 
                     {/* CODING STATISTICS */}
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-white flex items-center gap-2">
+                        <CardTitle className="text-foreground flex items-center gap-2">
                           <TrendingUp className="h-5 w-5 text-green-400" />
                           Coding Statistics
                         </CardTitle>
@@ -1509,28 +1509,28 @@ export function AdminDashboard() {
                             <div className="text-xl font-bold text-green-400">
                               {selectedUser.stats?.easyProblems || 0}
                             </div>
-                            <div className="text-xs text-gray-400">Easy</div>
+                            <div className="text-xs text-muted-foreground">Easy</div>
                           </div>
                           <div className="p-3 rounded-lg bg-gray-700 text-center">
                             <div className="text-xl font-bold text-yellow-400">
                               {selectedUser.stats?.mediumProblems || 0}
                             </div>
-                            <div className="text-xs text-gray-400">Medium</div>
+                            <div className="text-xs text-muted-foreground">Medium</div>
                           </div>
                           <div className="p-3 rounded-lg bg-gray-700 text-center">
                             <div className="text-xl font-bold text-red-400">
                               {selectedUser.stats?.hardProblems || 0}
                             </div>
-                            <div className="text-xs text-gray-400">Hard</div>
+                            <div className="text-xs text-muted-foreground">Hard</div>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
 
                     {/* LINKED PLATFORMS */}
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-white flex items-center gap-2">
+                        <CardTitle className="text-foreground flex items-center gap-2">
                           <GitBranch className="h-5 w-5 text-blue-400" />
                           Linked Platforms ({Object.keys(selectedUser.linkedPlatforms || {}).length})
                         </CardTitle>
@@ -1539,11 +1539,11 @@ export function AdminDashboard() {
                         {selectedUser.linkedPlatforms && Object.keys(selectedUser.linkedPlatforms).length > 0 ? (
                           <div className="grid grid-cols-2 gap-3">
                             {Object.entries(selectedUser.linkedPlatforms).map(([platform, data]: [string, any]) => (
-                              <div key={platform} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700 border border-gray-600">
+                              <div key={platform} className="flex items-center gap-3 p-3 rounded-lg bg-secondary border border-border">
                                 <CheckCircle className="h-5 w-5 text-green-400" />
                                 <div className="flex-1">
                                   <div className="text-sm font-bold text-white capitalize">{platform}</div>
-                                  <div className="text-xs text-gray-400">
+                                  <div className="text-xs text-muted-foreground">
                                     {typeof data === 'string' ? data : data?.username || 'Connected'}
                                   </div>
                                 </div>
@@ -1562,9 +1562,9 @@ export function AdminDashboard() {
 
                     {/* SKILLS */}
                     {selectedUser.skills && selectedUser.skills.length > 0 && (
-                      <Card className="bg-gray-800 border-gray-700">
+                      <Card className="bg-card border-border">
                         <CardHeader className="pb-3">
-                          <CardTitle className="text-white flex items-center gap-2">
+                          <CardTitle className="text-foreground flex items-center gap-2">
                             <Code2 className="h-5 w-5 text-orange-400" />
                             Skills ({selectedUser.skills.length})
                           </CardTitle>
@@ -1582,9 +1582,9 @@ export function AdminDashboard() {
                     )}
 
                     {/* JOB STATUS */}
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-white flex items-center gap-2">
+                        <CardTitle className="text-foreground flex items-center gap-2">
                           <Briefcase className="h-5 w-5 text-purple-400" />
                           Job Search Status
                         </CardTitle>
@@ -1616,9 +1616,9 @@ export function AdminDashboard() {
 
                 {/* COLLEGE-SPECIFIC DETAILS */}
                 {selectedUser.role === 'college' && (
-                  <Card className="bg-gray-800 border-gray-700">
+                  <Card className="bg-card border-border">
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-white flex items-center gap-2">
+                      <CardTitle className="text-foreground flex items-center gap-2">
                         <Database className="h-5 w-5 text-green-400" />
                         College Information
                       </CardTitle>
@@ -1626,19 +1626,19 @@ export function AdminDashboard() {
                     <CardContent className="space-y-3">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">College Name</div>
+                          <div className="text-xs text-muted-foreground">College Name</div>
                           <div className="text-sm font-medium text-white">{selectedUser.collegeName || 'N/A'}</div>
                         </div>
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">College Code</div>
+                          <div className="text-xs text-muted-foreground">College Code</div>
                           <div className="text-sm font-medium text-white">{selectedUser.collegeCode || 'N/A'}</div>
                         </div>
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">Location</div>
+                          <div className="text-xs text-muted-foreground">Location</div>
                           <div className="text-sm font-medium text-white">{selectedUser.location || 'N/A'}</div>
                         </div>
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">Total Students</div>
+                          <div className="text-xs text-muted-foreground">Total Students</div>
                           <div className="text-sm font-medium text-white">{selectedUser.totalStudents || 0}</div>
                         </div>
                       </div>
@@ -1648,9 +1648,9 @@ export function AdminDashboard() {
 
                 {/* RECRUITER-SPECIFIC DETAILS */}
                 {selectedUser.role === 'recruiter' && (
-                  <Card className="bg-gray-800 border-gray-700">
+                  <Card className="bg-card border-border">
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-white flex items-center gap-2">
+                      <CardTitle className="text-foreground flex items-center gap-2">
                         <Briefcase className="h-5 w-5 text-purple-400" />
                         Recruiter Information
                       </CardTitle>
@@ -1658,19 +1658,19 @@ export function AdminDashboard() {
                     <CardContent className="space-y-3">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">Company</div>
+                          <div className="text-xs text-muted-foreground">Company</div>
                           <div className="text-sm font-medium text-white">{selectedUser.companyName || 'N/A'}</div>
                         </div>
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">Designation</div>
+                          <div className="text-xs text-muted-foreground">Designation</div>
                           <div className="text-sm font-medium text-white">{selectedUser.designation || 'N/A'}</div>
                         </div>
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">Industry</div>
+                          <div className="text-xs text-muted-foreground">Industry</div>
                           <div className="text-sm font-medium text-white">{selectedUser.industry || 'N/A'}</div>
                         </div>
                         <div className="p-3 rounded-lg bg-gray-700">
-                          <div className="text-xs text-gray-400">Company Size</div>
+                          <div className="text-xs text-muted-foreground">Company Size</div>
                           <div className="text-sm font-medium text-white">{selectedUser.companySize || 'N/A'}</div>
                         </div>
                       </div>
@@ -1679,9 +1679,9 @@ export function AdminDashboard() {
                 )}
 
                 {/* ACCOUNT METADATA */}
-                <Card className="bg-gray-800 border-gray-700">
+                <Card className="bg-card border-border">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-white flex items-center gap-2">
+                    <CardTitle className="text-foreground flex items-center gap-2">
                       <Clock className="h-5 w-5 text-gray-400" />
                       Account Metadata
                     </CardTitle>
@@ -1689,23 +1689,23 @@ export function AdminDashboard() {
                   <CardContent>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-3 rounded-lg bg-gray-700">
-                        <div className="text-xs text-gray-400">Account Created</div>
+                        <div className="text-xs text-muted-foreground">Account Created</div>
                         <div className="text-sm font-medium text-white">
                           {new Date(selectedUser.createdAt).toLocaleString()}
                         </div>
                       </div>
                       <div className="p-3 rounded-lg bg-gray-700">
-                        <div className="text-xs text-gray-400">Last Updated</div>
+                        <div className="text-xs text-muted-foreground">Last Updated</div>
                         <div className="text-sm font-medium text-white">
                           {new Date(selectedUser.updatedAt).toLocaleString()}
                         </div>
                       </div>
                       <div className="p-3 rounded-lg bg-gray-700">
-                        <div className="text-xs text-gray-400">User ID</div>
+                        <div className="text-xs text-muted-foreground">User ID</div>
                         <div className="text-xs font-mono text-white break-all">{selectedUser._id}</div>
                       </div>
                       <div className="p-3 rounded-lg bg-gray-700">
-                        <div className="text-xs text-gray-400">Account Status</div>
+                        <div className="text-xs text-muted-foreground">Account Status</div>
                         <Badge className="bg-green-600 text-white mt-1">Active</Badge>
                       </div>
                     </div>

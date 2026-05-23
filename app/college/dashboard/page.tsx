@@ -5,6 +5,7 @@ import { TopPerformers } from "@/components/college/top-performers"
 import { PlacementOverview } from "@/components/college/placement-overview"
 import { DepartmentBreakdown } from "@/components/college/department-breakdown"
 import { getCurrentUser } from "@/lib/auth"
+import { serializeUser } from "@/lib/serialize"
 
 export const dynamic = 'force-dynamic'
 
@@ -12,7 +13,7 @@ export default async function CollegeDashboard() {
   const user = await getCurrentUser()
   if (!user || user.role !== "college") redirect("/login")
 
-  const college = user as any
+  const college = serializeUser(user) as any
 
   return (
     <div className="flex flex-col">

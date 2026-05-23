@@ -2,21 +2,13 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { useTheme } from "next-themes"
+import React from "react"
 import { cn } from "@/lib/utils"
 import {
-  LayoutDashboard,
-  Code2,
-  Trophy,
-  Briefcase,
-  User,
-  Settings,
-  LogOut,
-  GraduationCap,
-  Building2,
-  Users,
-  BarChart3,
-  Search,
-  FileText,
+  LayoutDashboard, Code2, Trophy, Briefcase, User, Settings,
+  LogOut, GraduationCap, Building2, Users, BarChart3, Search,
+  FileText, Sun, Moon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { StudentProfile, CollegeProfile, RecruiterProfile } from "@/lib/types"
@@ -55,6 +47,9 @@ const recruiterLinks = [
 export function DashboardSidebar({ user }: DashboardSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+  React.useEffect(() => setMounted(true), [])
 
   const links =
     user.role === "student"
@@ -126,7 +121,15 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         })}
       </nav>
 
-      <div className="border-t border-border p-4">
+      <div className="border-t border-border p-4 space-y-2">
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          {mounted && theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {mounted && theme === "dark" ? "Switch to Light" : "Switch to Dark"}
+        </Button>
         <Button
           variant="ghost"
           className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground"

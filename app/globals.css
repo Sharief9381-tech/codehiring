@@ -4,39 +4,39 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.13 0.01 260);
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.16 0.01 260);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.16 0.01 260);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.65 0.2 145);
-  --primary-foreground: oklch(0.13 0.01 260);
-  --secondary: oklch(0.22 0.01 260);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.22 0.01 260);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.55 0.18 280);
-  --accent-foreground: oklch(0.98 0 0);
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.13 0.01 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.13 0.01 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.01 260);
+  --primary: oklch(0.55 0.22 280);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.94 0.01 260);
+  --secondary-foreground: oklch(0.13 0.01 260);
+  --muted: oklch(0.94 0.01 260);
+  --muted-foreground: oklch(0.45 0.01 260);
+  --accent: oklch(0.94 0.01 260);
+  --accent-foreground: oklch(0.13 0.01 260);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.28 0.01 260);
-  --input: oklch(0.22 0.01 260);
-  --ring: oklch(0.65 0.2 145);
-  --chart-1: oklch(0.65 0.2 145);
-  --chart-2: oklch(0.55 0.18 280);
+  --border: oklch(0.88 0.01 260);
+  --input: oklch(0.88 0.01 260);
+  --ring: oklch(0.55 0.22 280);
+  --chart-1: oklch(0.55 0.22 280);
+  --chart-2: oklch(0.6 0.2 200);
   --chart-3: oklch(0.7 0.15 60);
-  --chart-4: oklch(0.6 0.2 200);
+  --chart-4: oklch(0.65 0.2 145);
   --chart-5: oklch(0.65 0.15 30);
   --radius: 0.625rem;
-  --sidebar: oklch(0.16 0.01 260);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.65 0.2 145);
-  --sidebar-primary-foreground: oklch(0.13 0.01 260);
-  --sidebar-accent: oklch(0.22 0.01 260);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.28 0.01 260);
-  --sidebar-ring: oklch(0.65 0.2 145);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.13 0.01 260);
+  --sidebar-primary: oklch(0.55 0.22 280);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.94 0.01 260);
+  --sidebar-accent-foreground: oklch(0.13 0.01 260);
+  --sidebar-border: oklch(0.88 0.01 260);
+  --sidebar-ring: oklch(0.55 0.22 280);
 }
 
 .dark {
@@ -122,4 +122,111 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ── Light mode overrides for hardcoded dark colors ─────────────────────────
+   Many components use hardcoded Tailwind gray-800/900 classes.
+   These overrides make them respect the light theme without touching each file.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root:not(.dark) {
+  /* Remap gray-900 → near-white card surface */
+  --tw-bg-gray-900: oklch(0.97 0 0);
+  --tw-bg-gray-800: oklch(0.94 0.005 260);
+  --tw-bg-gray-700: oklch(0.90 0.005 260);
+  --tw-border-gray-700: oklch(0.85 0.005 260);
+  --tw-border-gray-600: oklch(0.82 0.005 260);
+  --tw-text-gray-400: oklch(0.45 0.01 260);
+  --tw-text-gray-300: oklch(0.35 0.01 260);
+}
+
+/* Light mode: override hardcoded dark backgrounds on cards/containers */
+html:not(.dark) .bg-gray-900,
+html:not(.dark) .bg-gray-900\/50 {
+  background-color: oklch(0.97 0 0) !important;
+  color: oklch(0.13 0.01 260);
+}
+
+html:not(.dark) .bg-gray-800,
+html:not(.dark) .bg-gray-800\/50,
+html:not(.dark) .bg-gray-800\/70 {
+  background-color: oklch(0.94 0.005 260) !important;
+  color: oklch(0.13 0.01 260);
+}
+
+html:not(.dark) .bg-gray-700 {
+  background-color: oklch(0.90 0.005 260) !important;
+}
+
+html:not(.dark) .from-gray-900,
+html:not(.dark) .via-gray-900,
+html:not(.dark) .to-gray-900 {
+  --tw-gradient-from: oklch(0.97 0 0);
+  --tw-gradient-via: oklch(0.97 0 0);
+  --tw-gradient-to: oklch(0.97 0 0);
+}
+
+html:not(.dark) .from-gray-800,
+html:not(.dark) .via-gray-800,
+html:not(.dark) .to-gray-800 {
+  --tw-gradient-from: oklch(0.94 0.005 260);
+  --tw-gradient-via: oklch(0.94 0.005 260);
+  --tw-gradient-to: oklch(0.94 0.005 260);
+}
+
+html:not(.dark) .from-slate-800,
+html:not(.dark) .via-slate-800,
+html:not(.dark) .to-slate-800 {
+  --tw-gradient-from: oklch(0.94 0.005 260);
+  --tw-gradient-via: oklch(0.94 0.005 260);
+  --tw-gradient-to: oklch(0.94 0.005 260);
+}
+
+html:not(.dark) .border-gray-700,
+html:not(.dark) .border-gray-600,
+html:not(.dark) .border-gray-800 {
+  border-color: oklch(0.85 0.005 260) !important;
+}
+
+/* Text overrides */
+html:not(.dark) .text-white {
+  color: oklch(0.13 0.01 260) !important;
+}
+
+html:not(.dark) .text-gray-400,
+html:not(.dark) .text-gray-500 {
+  color: oklch(0.45 0.01 260) !important;
+}
+
+html:not(.dark) .text-gray-300 {
+  color: oklch(0.35 0.01 260) !important;
+}
+
+/* TabsList overrides */
+html:not(.dark) .bg-gray-900.border-gray-700 {
+  background-color: oklch(0.94 0.005 260) !important;
+  border-color: oklch(0.85 0.005 260) !important;
+}
+
+/* Input overrides */
+html:not(.dark) input.bg-gray-800,
+html:not(.dark) .bg-gray-800 input {
+  background-color: oklch(0.97 0 0) !important;
+  color: oklch(0.13 0.01 260) !important;
+}
+
+/* Leaderboard row */
+html:not(.dark) .bg-gray-900\/50 {
+  background-color: oklch(0.97 0 0) !important;
+}
+
+/* Select dropdown */
+html:not(.dark) .bg-gray-800.border-gray-700 {
+  background-color: oklch(0.97 0 0) !important;
+  border-color: oklch(0.85 0.005 260) !important;
+}
+
+/* Smooth theme transition */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
 }
