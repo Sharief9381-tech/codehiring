@@ -644,7 +644,10 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
     }
 
     return (
-      <Card key={platformId} className="bg-gray-900 border-l-4 text-white relative h-80 w-full" style={{ borderLeftColor: platformColor }}>
+      <Card key={platformId} className="bg-card border-l-4 text-foreground relative h-80 w-full cursor-pointer hover:shadow-md transition-shadow" 
+        style={{ borderLeftColor: platformColor }}
+        onClick={() => router.push('/student/platforms')}
+      >
         <CardContent className="p-3 pb-14 h-full flex flex-col">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -1525,6 +1528,12 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           <div className="flex items-center justify-between">
             <CardTitle>Connected Platforms</CardTitle>
             <div className="flex gap-2">
+              <a href="/student/platforms">
+                <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground hover:text-foreground text-xs">
+                  Manage All
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
+              </a>
               <Button
                 variant="outline"
                 size="sm"

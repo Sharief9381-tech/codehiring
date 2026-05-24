@@ -1,12 +1,13 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { AddPlatformDialog } from "@/components/student/add-platform-dialog"
-import { Code, GitBranch, Trophy, Globe, ExternalLink, Trash2, Check, RefreshCw } from "lucide-react"
+import { Code, GitBranch, Trophy, Globe, ExternalLink, Trash2, Check, RefreshCw, LayoutDashboard } from "lucide-react"
 import { toast } from "sonner"
+import Link from "next/link"
 
 interface PlatformsPageClientProps {
   student: any
@@ -19,7 +20,7 @@ const PLATFORM_CONFIG: Record<string, { name: string; color: string; icon: any; 
   codechef:     { name: "CodeChef",      color: "#5B4638", icon: Code,      profileUrl: u => `https://codechef.com/users/${u}` },
   hackerrank:   { name: "HackerRank",    color: "#00EA64", icon: Trophy,    profileUrl: u => `https://hackerrank.com/profile/${u}` },
   hackerearth:  { name: "HackerEarth",   color: "#2C3E50", icon: Code,      profileUrl: u => `https://hackerearth.com/@${u}` },
-  geeksforgeeks:{ name: "GeeksforGeeks", color: "#2F8D46", icon: Globe,     profileUrl: u => `https://auth.geeksforgeeks.org/user/${u}` },
+  geeksforgeeks:{ name: "GeeksforGeeks", color: "#2F8D46", icon: Globe,     profileUrl: u => `https://www.geeksforgeeks.org/user/${u}` },
   atcoder:      { name: "AtCoder",       color: "#222222", icon: Trophy,    profileUrl: u => `https://atcoder.jp/users/${u}` },
   spoj:         { name: "SPOJ",          color: "#f97316", icon: Code,      profileUrl: u => `https://spoj.com/users/${u}` },
   kattis:       { name: "Kattis",        color: "#8b5cf6", icon: Trophy,    profileUrl: u => `https://open.kattis.com/users/${u}` },
@@ -32,24 +33,56 @@ const PLATFORM_CONFIG: Record<string, { name: string; color: string; icon: any; 
   uva:          { name: "UVa OJ",        color: "#64748b", icon: Code,      profileUrl: u => `https://uhunt.onlinejudge.org/id/${u}` },
 }
 
-function getStatsSummary(platformId: string, stats: any): string {
-  if (!stats) return "No stats yet"
-  if (platformId === "github") return `${stats.publicRepos || 0} repos · ${stats.totalContributions || 0} contributions`
-  if (platformId === "leetcode") return `${stats.totalSolved || 0} solved · ${stats.contestRating || 0} rating`
-  if (platformId === "codeforces") return `${stats.rating || 0} rating · ${stats.rank || "unrated"}`
-  if (platformId === "codechef") return `${stats.currentRating || 0} rating · Global #${stats.globalRank || "—"}`
-  if (platformId === "hackerrank") return `${stats.badges?.length || 0} badges · score ${stats.totalScore || 0}`
-  if (platformId === "geeksforgeeks") return `${stats.codingScore || 0} score · ${stats.problemsSolved || 0} solved`
-  const solved = stats.totalSolved || stats.problemsSolved || 0
-  const rating = stats.rating || stats.currentRating || 0
-  if (solved > 0) return `${solved} solved`
-  if (rating > 0) return `${rating} rating`
-  return "Connected"
+function getStatLines(platformId: string, stats: any): { label: string; value: string | number }[] {
+  if (!stats) return []
+  switch (platformId) {
+    case "leetcode":    return [
+      { label: "Solved",  value: stats.totalSolved ?? 0 },
+      { label: "Easy",    value: stats.easySolved ?? 0 },
+      { label: "Medium",  value: stats.mediumSolved ?? 0 },
+      { label: "Hard",    value: stats.hardSolved ?? 0 },
+      { label: "Ranking", value: stats.ranking ? `#${stats.ranking.toLocaleString()}` : "—" },
+    ]
+    case "github":      return [
+      { label: "Repos",         value: stats.publicRepos ?? 0 },
+      { label: "Contributions", value: stats.totalContributions ?? 0 },
+      { label: "Followers",     value: stats.followers ?? 0 },
+    ]
+    case "codeforces":  return [
+      { label: "Rating",   value: stats.rating ?? 0 },
+      { label: "Rank",     value: stats.rank ?? "unrated" },
+      { label: "Max Rating", value: stats.maxRating ?? stats.rating ?? 0 },
+    ]
+    case "codechef":    return [
+      { label: "Rating",   value: stats.currentRating ?? 0 },
+      { label: "Stars",    value: stats.stars ?? "—" },
+      { label: "Solved",   value: stats.problemsSolved ?? 0 },
+    ]
+    case "hackerrank":  return [
+      { label: "Badges",   value: stats.badges?.length ?? 0 },
+      { label: "Score",    value: stats.totalScore ?? 0 },
+      { label: "Rank",     value: stats.globalRank ?? "—" },
+    ]
+    case "geeksforgeeks": return [
+      { label: "Solved",        value: stats.problemsSolved ?? 0 },
+      { label: "Coding Score",  value: stats.codingScore ?? 0 },
+      { label: "Streak",        value: stats.currentStreak ? `${stats.currentStreak}d` : "—" },
+      { label: "Institute Rank",value: stats.instituteRank || "—" },
+    ]
+    default: {
+      const lines = []
+      const solved = stats.totalSolved ?? stats.problemsSolved ?? 0
+      const rating = stats.rating ?? stats.currentRating ?? 0
+      if (solved > 0) lines.push({ label: "Solved", value: solved })
+      if (rating > 0) lines.push({ label: "Rating", value: rating })
+      return lines
+    }
+  }
 }
 
 export function PlatformsPageClient({ student: initialStudent }: PlatformsPageClientProps) {
   const [student, setStudent] = useState(initialStudent)
-  const [syncing, setSyncing] = useState<string | null>(null)
+  const [syncing, setSyncing] = useState(false)
 
   const linkedPlatforms: Record<string, any> = student?.linkedPlatforms || {}
   const connectedIds = Object.keys(linkedPlatforms).filter(k => linkedPlatforms[k])
@@ -80,31 +113,28 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
     }
   }
 
-  const handleSync = async (platformId: string) => {
-    setSyncing(platformId)
+  const handleSyncAll = async () => {
+    setSyncing(true)
     try {
       const res = await fetch("/api/platforms/sync", { method: "POST" })
       if (res.ok) {
         const data = await res.json()
-        // Update student state with fresh linkedPlatforms from sync response
         if (data.linkedPlatforms) {
           setStudent((prev: any) => ({ ...prev, linkedPlatforms: data.linkedPlatforms }))
         } else {
           await refreshStudent()
         }
         const failed = data.summary?.failed ?? 0
-        if (failed > 0) {
-          toast.warning(`Synced with ${failed} platform(s) unable to fetch data`)
-        } else {
-          toast.success("Stats synced successfully")
-        }
+        toast[failed > 0 ? "warning" : "success"](
+          failed > 0 ? `Synced — ${failed} platform(s) unavailable` : `All ${data.summary?.successful ?? 0} platforms synced`
+        )
       } else {
         toast.error("Sync failed")
       }
     } catch {
       toast.error("Sync failed")
     } finally {
-      setSyncing(null)
+      setSyncing(false)
     }
   }
 
@@ -116,24 +146,46 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
 
   return (
     <div className="space-y-6">
+      {/* Toolbar */}
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex items-center gap-3">
           <p className="text-sm text-muted-foreground">
             {connectedIds.length} platform{connectedIds.length !== 1 ? "s" : ""} connected
           </p>
+          <Link href="/student/dashboard">
+            <Button variant="ghost" size="sm" className="gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+              <LayoutDashboard className="h-3.5 w-3.5" />
+              View Dashboard
+            </Button>
+          </Link>
         </div>
-        <AddPlatformDialog
-          onPlatformAdded={handlePlatformAdded}
-          connectedPlatforms={connectedIds}
-        />
+        <div className="flex gap-2">
+          {connectedIds.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={handleSyncAll}
+              disabled={syncing}
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${syncing ? "animate-spin" : ""}`} />
+              {syncing ? "Syncing..." : "Sync All"}
+            </Button>
+          )}
+          <AddPlatformDialog
+            onPlatformAdded={handlePlatformAdded}
+            connectedPlatforms={connectedIds}
+          />
+        </div>
       </div>
 
+      {/* Empty state */}
       {connectedIds.length === 0 ? (
-        <Card className="bg-gray-900 border-gray-700">
+        <Card>
           <CardContent className="text-center py-16">
-            <Code className="h-12 w-12 mx-auto text-gray-500 mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">No Platforms Connected</h3>
-            <p className="text-gray-400 mb-6">Connect your coding platforms to track your progress</p>
+            <Code className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Platforms Connected</h3>
+            <p className="text-muted-foreground mb-6">Connect your coding platforms to track your progress</p>
             <AddPlatformDialog onPlatformAdded={handlePlatformAdded} connectedPlatforms={[]} />
           </CardContent>
         </Card>
@@ -153,69 +205,80 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
             const linkedAt = typeof data === "object" && data.linkedAt
               ? new Date(data.linkedAt).toLocaleDateString()
               : null
+            const lastSync = typeof data === "object" && data.lastSync
+              ? new Date(data.lastSync).toLocaleString()
+              : null
+            const statLines = getStatLines(platformId, stats)
 
             return (
               <Card
                 key={platformId}
-                className="bg-gray-900 border-l-4 border-gray-700 text-white relative"
+                className="border-l-4 bg-card relative"
                 style={{ borderLeftColor: config.color }}
               >
                 <CardContent className="p-5">
-                  <div className="flex items-start justify-between mb-3">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div
-                        className="h-10 w-10 rounded-lg flex items-center justify-center"
+                        className="h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: config.color + "20", border: `1px solid ${config.color}` }}
                       >
                         <Icon className="h-5 w-5" style={{ color: config.color }} />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-white">{config.name}</h4>
-                        <p className="text-xs text-gray-400">@{username}</p>
+                        <h4 className="font-semibold text-foreground">{config.name}</h4>
+                        <p className="text-xs text-muted-foreground">@{username}</p>
                       </div>
                     </div>
-                    <Badge className="text-xs bg-green-700 text-white border-green-600">
+                    <Badge className="text-xs bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/30">
                       <Check className="h-3 w-3 mr-1" />
                       Connected
                     </Badge>
                   </div>
 
-                  <div className="text-sm text-gray-300 mb-3">
-                    {getStatsSummary(platformId, stats)}
-                  </div>
-
-                  {linkedAt && (
-                    <p className="text-xs text-gray-500 mb-3">Linked on {linkedAt}</p>
+                  {/* Stats */}
+                  {statLines.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4">
+                      {statLines.map(({ label, value }) => (
+                        <div key={label} className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">{label}</span>
+                          <span className="font-semibold text-foreground capitalize">
+                            {value === null || value === undefined || (typeof value === 'number' && isNaN(value as number)) ? "—" : String(value)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {stats === null ? "Sync to load stats" : "No stats available"}
+                    </p>
                   )}
 
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-700">
+                  {/* Meta */}
+                  <div className="text-xs text-muted-foreground mb-3 space-y-0.5">
+                    {linkedAt && <p>Linked: {linkedAt}</p>}
+                    {lastSync && <p>Last sync: {lastSync}</p>}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-3 border-t border-border">
                     <a
                       href={config.profileUrl(username)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300"
+                      className="flex items-center gap-1 text-xs text-primary hover:underline"
                     >
                       View Profile <ExternalLink className="h-3 w-3" />
                     </a>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="h-7 px-2 text-gray-400 hover:text-white"
-                        onClick={() => handleSync(platformId)}
-                        disabled={syncing === platformId}
-                      >
-                        <RefreshCw className={`h-3 w-3 ${syncing === platformId ? "animate-spin" : ""}`} />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="h-7 px-2 text-red-400 hover:text-red-300 hover:bg-red-900/20"
-                        onClick={() => handleUnlink(platformId)}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-7 px-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => handleUnlink(platformId)}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

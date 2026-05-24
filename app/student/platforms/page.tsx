@@ -18,7 +18,8 @@ export default async function PlatformsPage() {
     <div className="flex flex-col min-h-screen">
       <DashboardHeader
         title="Platforms"
-        description="Manage your connected coding platforms"
+        description="Manage and sync your connected coding platforms"
+        backLink={{ href: "/student/dashboard", label: "Back to Dashboard" }}
       />
       <div className="flex-1 p-6">
         <PlatformsPageClient student={serializeUser(student)} />
