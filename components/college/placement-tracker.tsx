@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import Link from "next/link"
 import {
   Building2,
   Users,
@@ -110,65 +111,74 @@ export function PlacementTracker() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-primary/10 p-2">
-                <Building2 className="h-5 w-5 text-primary" />
+        <Link href="/college/placements">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-primary/10 p-2">
+                  <Building2 className="h-5 w-5 text-primary" />
+                </div>
+                <Badge className="bg-green-500/10 text-green-500">+4 this month</Badge>
               </div>
-              <Badge className="bg-green-500/10 text-green-500">+4 this month</Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">28</p>
-              <p className="text-sm text-muted-foreground">Companies Visited</p>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">28</p>
+                <p className="text-sm text-muted-foreground">Companies Visited</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/college/students">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-chart-2/10 p-2">
+                  <Users className="h-5 w-5 text-chart-2" />
+                </div>
+                <Badge className="bg-chart-2/10 text-chart-2">87% of eligible</Badge>
+              </div>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">456</p>
+                <p className="text-sm text-muted-foreground">Students Placed</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
         <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-chart-2/10 p-2">
-                <Users className="h-5 w-5 text-chart-2" />
+        <Link href="/college/placements">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-chart-3/10 p-2">
+                  <IndianRupee className="h-5 w-5 text-chart-3" />
+                </div>
+                <Badge className="bg-green-500/10 text-green-500">+12% YoY</Badge>
               </div>
-              <Badge className="bg-chart-2/10 text-chart-2">87% of eligible</Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">456</p>
-              <p className="text-sm text-muted-foreground">Students Placed</p>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">18.5 LPA</p>
+                <p className="text-sm text-muted-foreground">Avg. Package</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-chart-3/10 p-2">
-                <IndianRupee className="h-5 w-5 text-chart-3" />
+        <Link href="/college/placements">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-chart-4/10 p-2">
+                  <CheckCircle className="h-5 w-5 text-chart-4" />
+                </div>
+                <Badge className="bg-chart-4/10 text-chart-4">Top: 45 LPA</Badge>
               </div>
-              <Badge className="bg-green-500/10 text-green-500">+12% YoY</Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">18.5 LPA</p>
-              <p className="text-sm text-muted-foreground">Avg. Package</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-chart-4/10 p-2">
-                <CheckCircle className="h-5 w-5 text-chart-4" />
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">892</p>
+                <p className="text-sm text-muted-foreground">Total Offers</p>
               </div>
-              <Badge className="bg-chart-4/10 text-chart-4">Top: 45 LPA</Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">892</p>
-              <p className="text-sm text-muted-foreground">Total Offers</p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       <Tabs defaultValue="companies" className="space-y-4">

@@ -56,9 +56,9 @@ export function SkillsChart({ student }: SkillsChartProps) {
   ]
 
   return (
-    <Card className="bg-gradient-to-br from-gray-900 via-gray-800 to-black border-gray-700 shadow-2xl">
+    <Card className="bg-gradient-to-br from-gray-900 via-gray-800 to-black border-border shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-white font-bold text-lg">Skill Distribution</CardTitle>
+        <CardTitle className="text-foreground font-bold text-lg">Skill Distribution</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[250px]">

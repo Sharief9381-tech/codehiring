@@ -17,6 +17,7 @@ import {
   Eye, Edit, Trash2, Clock, CheckCircle, XCircle, Loader2,
 } from "lucide-react"
 import { toast } from "sonner"
+import Link from "next/link"
 
 interface Job {
   _id: string
@@ -178,24 +179,30 @@ export function JobPostings() {
     <div className="space-y-6">
       {/* Summary cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="bg-card">
-          <CardContent className="p-6 flex items-center gap-4">
-            <div className="rounded-lg bg-primary/10 p-2"><Briefcase className="h-5 w-5 text-primary" /></div>
-            <div><p className="text-2xl font-bold">{activeCount}</p><p className="text-sm text-muted-foreground">Active Postings</p></div>
-          </CardContent>
-        </Card>
-        <Card className="bg-card">
-          <CardContent className="p-6 flex items-center gap-4">
-            <div className="rounded-lg bg-blue-500/10 p-2"><Users className="h-5 w-5 text-blue-500" /></div>
-            <div><p className="text-2xl font-bold">{totalApps}</p><p className="text-sm text-muted-foreground">Total Applications</p></div>
-          </CardContent>
-        </Card>
-        <Card className="bg-card">
-          <CardContent className="p-6 flex items-center gap-4">
-            <div className="rounded-lg bg-green-500/10 p-2"><Eye className="h-5 w-5 text-green-500" /></div>
-            <div><p className="text-2xl font-bold">{totalViews}</p><p className="text-sm text-muted-foreground">Total Views</p></div>
-          </CardContent>
-        </Card>
+        <Link href="/recruiter/jobs">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6 flex items-center gap-4">
+              <div className="rounded-lg bg-primary/10 p-2"><Briefcase className="h-5 w-5 text-primary" /></div>
+              <div><p className="text-2xl font-bold">{activeCount}</p><p className="text-sm text-muted-foreground">Active Postings</p></div>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/recruiter/pipeline">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6 flex items-center gap-4">
+              <div className="rounded-lg bg-blue-500/10 p-2"><Users className="h-5 w-5 text-blue-500" /></div>
+              <div><p className="text-2xl font-bold">{totalApps}</p><p className="text-sm text-muted-foreground">Total Applications</p></div>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/recruiter/jobs">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6 flex items-center gap-4">
+              <div className="rounded-lg bg-green-500/10 p-2"><Eye className="h-5 w-5 text-green-500" /></div>
+              <div><p className="text-2xl font-bold">{totalViews}</p><p className="text-sm text-muted-foreground">Total Views</p></div>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       {/* Toolbar */}

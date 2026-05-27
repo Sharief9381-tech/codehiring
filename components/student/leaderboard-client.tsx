@@ -35,8 +35,8 @@ function RankBadge({ rank }: { rank: number }) {
     )
   if (rank === 2)
     return (
-      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-400/20 border border-gray-400/50">
-        <Medal className="h-4 w-4 text-gray-300" />
+      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted/50 border border-border">
+        <Medal className="h-4 w-4 text-muted-foreground" />
       </div>
     )
   if (rank === 3)
@@ -46,22 +46,22 @@ function RankBadge({ rank }: { rank: number }) {
       </div>
     )
   return (
-    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 border border-gray-700">
-      <span className="text-xs font-bold text-gray-400">#{rank}</span>
+    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-secondary border border-border">
+      <span className="text-xs font-bold text-muted-foreground">#{rank}</span>
     </div>
   )
 }
 
 function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
   return (
-    <div className="flex items-center gap-4 p-4 rounded-lg border border-gray-800 bg-gray-900/50 hover:bg-gray-800/50 transition-all">
+    <div className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card/50 hover:bg-secondary/50 transition-all">
       <div className="w-10 shrink-0 text-center">
         <RankBadge rank={entry.rank} />
       </div>
 
       <div className="flex-1 min-w-0">
-        <span className="font-semibold text-white truncate block">{entry.name}</span>
-        <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-400">
+        <span className="font-semibold text-foreground truncate block">{entry.name}</span>
+        <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
           {entry.collegeCode && <span>{entry.collegeCode}</span>}
           {entry.branch && (
             <>
@@ -82,19 +82,19 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
       <div className="hidden sm:flex items-center gap-6 text-sm">
         <div className="text-center">
           <div className="font-bold text-emerald-400">{entry.problems}</div>
-          <div className="text-xs text-gray-500">Problems</div>
+          <div className="text-xs text-muted-foreground">Problems</div>
         </div>
         <div className="text-center">
           <div className="font-bold text-blue-400">{entry.rating || "—"}</div>
-          <div className="text-xs text-gray-500">Rating</div>
+          <div className="text-xs text-muted-foreground">Rating</div>
         </div>
         <div className="text-center">
           <div className="font-bold text-purple-400">{entry.contests}</div>
-          <div className="text-xs text-gray-500">Contests</div>
+          <div className="text-xs text-muted-foreground">Contests</div>
         </div>
         <div className="text-center">
           <div className="font-bold text-orange-400">{entry.platforms.length}</div>
-          <div className="text-xs text-gray-500">Platforms</div>
+          <div className="text-xs text-muted-foreground">Platforms</div>
         </div>
       </div>
 
@@ -108,7 +108,7 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
 
 function TableHeader() {
   return (
-    <div className="hidden sm:flex items-center gap-4 px-4 py-2 text-xs text-gray-500 uppercase tracking-wider border-b border-gray-800 mb-2">
+    <div className="hidden sm:flex items-center gap-4 px-4 py-2 text-xs text-muted-foreground uppercase tracking-wider border-b border-border mb-2">
       <div className="w-10 text-center">Rank</div>
       <div className="flex-1">Student</div>
       <div className="flex items-center gap-6 text-right">
@@ -127,18 +127,18 @@ function LeaderboardSkeleton() {
       {Array.from({ length: 5 }).map((_, i) => (
         <div
           key={i}
-          className="flex items-center gap-4 p-4 rounded-lg border border-gray-800 bg-gray-900/50 animate-pulse"
+          className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card/50 animate-pulse"
         >
-          <div className="w-8 h-8 rounded-full bg-gray-700" />
+          <div className="w-8 h-8 rounded-full bg-muted" />
           <div className="flex-1 space-y-2">
-            <div className="h-4 bg-gray-700 rounded w-1/3" />
-            <div className="h-3 bg-gray-800 rounded w-1/4" />
+            <div className="h-4 bg-muted rounded w-1/3" />
+            <div className="h-3 bg-secondary rounded w-1/4" />
           </div>
           <div className="hidden sm:flex gap-6">
             {[1, 2, 3, 4].map((j) => (
               <div key={j} className="text-center space-y-1">
-                <div className="h-4 bg-gray-700 rounded w-10" />
-                <div className="h-3 bg-gray-800 rounded w-10" />
+                <div className="h-4 bg-muted rounded w-10" />
+                <div className="h-3 bg-secondary rounded w-10" />
               </div>
             ))}
           </div>
@@ -176,57 +176,63 @@ export function LeaderboardClient() {
     <div className="space-y-6">
       {/* Summary cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 border-blue-700">
-          <CardContent className="p-4 flex items-center gap-3">
-            <Globe className="h-8 w-8 text-blue-400" />
-            <div>
-              <div className="text-2xl font-bold text-white">
-                {loading ? "—" : (data?.totalStudents ?? 0)}
+        <Link href="/student/leaderboard">
+          <Card className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 border-blue-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardContent className="p-4 flex items-center gap-3">
+              <Globe className="h-8 w-8 text-blue-400" />
+              <div>
+                <div className="text-2xl font-bold text-foreground">
+                  {loading ? "—" : (data?.totalStudents ?? 0)}
+                </div>
+                <div className="text-sm text-blue-300">Total Students</div>
               </div>
-              <div className="text-sm text-blue-300">Total Students</div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900 border-emerald-700">
-          <CardContent className="p-4 flex items-center gap-3">
-            <Building2 className="h-8 w-8 text-emerald-400" />
-            <div>
-              <div className="text-2xl font-bold text-white">
-                {loading ? "—" : colleges.length}
+        <Link href="/student/leaderboard">
+          <Card className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900 border-emerald-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardContent className="p-4 flex items-center gap-3">
+              <Building2 className="h-8 w-8 text-emerald-400" />
+              <div>
+                <div className="text-2xl font-bold text-foreground">
+                  {loading ? "—" : colleges.length}
+                </div>
+                <div className="text-sm text-emerald-300">Colleges</div>
               </div>
-              <div className="text-sm text-emerald-300">Colleges</div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-yellow-900 via-yellow-800 to-yellow-900 border-yellow-700">
-          <CardContent className="p-4 flex items-center gap-3">
-            <TrendingUp className="h-8 w-8 text-yellow-400" />
-            <div>
-              <div className="text-2xl font-bold text-white truncate max-w-[120px]">
-                {loading ? "—" : (topSolver?.name ?? "—")}
+        <Link href="/student/leaderboard">
+          <Card className="bg-gradient-to-br from-yellow-900 via-yellow-800 to-yellow-900 border-yellow-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardContent className="p-4 flex items-center gap-3">
+              <TrendingUp className="h-8 w-8 text-yellow-400" />
+              <div>
+                <div className="text-2xl font-bold text-foreground truncate max-w-[120px]">
+                  {loading ? "—" : (topSolver?.name ?? "—")}
+                </div>
+                <div className="text-sm text-yellow-300">
+                  Top Solver · {topSolver?.problems ?? 0} problems
+                </div>
               </div>
-              <div className="text-sm text-yellow-300">
-                Top Solver · {topSolver?.problems ?? 0} problems
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       <Tabs defaultValue="global">
-        <TabsList className="bg-gray-900 border border-gray-700">
+        <TabsList className="bg-card border border-border">
           <TabsTrigger
             value="global"
-            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white gap-2"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-foreground gap-2"
           >
             <Globe className="h-4 w-4" />
             Global
           </TabsTrigger>
           <TabsTrigger
             value="college"
-            className="data-[state=active]:bg-emerald-600 data-[state=active]:text-white gap-2"
+            className="data-[state=active]:bg-emerald-600 data-[state=active]:text-foreground gap-2"
           >
             <Building2 className="h-4 w-4" />
             By College
@@ -235,13 +241,13 @@ export function LeaderboardClient() {
 
         {/* ── Global tab ── */}
         <TabsContent value="global" className="mt-4">
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-card/50 border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-white">
+              <CardTitle className="flex items-center gap-2 text-foreground">
                 <Globe className="h-5 w-5 text-blue-400" />
                 Global Rankings
               </CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-muted-foreground">
                 All students ranked by total problems solved across all platforms
               </CardDescription>
             </CardHeader>
@@ -260,8 +266,8 @@ export function LeaderboardClient() {
               ) : (
                 <div className="text-center py-12">
                   <Users className="h-12 w-12 mx-auto text-gray-600 mb-3" />
-                  <p className="text-gray-400">No students found</p>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-muted-foreground">No students found</p>
+                  <p className="text-sm text-muted-foreground mt-1">
                     Students will appear here once they connect platforms and sync stats
                   </p>
                 </div>
@@ -272,13 +278,13 @@ export function LeaderboardClient() {
 
         {/* ── College tab ── */}
         <TabsContent value="college" className="mt-4">
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-card/50 border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-white">
+              <CardTitle className="flex items-center gap-2 text-foreground">
                 <Building2 className="h-5 w-5 text-emerald-400" />
                 College Rankings
               </CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-muted-foreground">
                 Students ranked within their college
               </CardDescription>
             </CardHeader>
@@ -292,8 +298,8 @@ export function LeaderboardClient() {
                       onClick={() => setSelectedCollege(code)}
                       className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
                         selectedCollege === code
-                          ? "bg-emerald-600 border-emerald-500 text-white"
-                          : "bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-500"
+                          ? "bg-emerald-600 border-emerald-500 text-foreground"
+                          : "bg-secondary border-border text-muted-foreground hover:border-border"
                       }`}
                     >
                       {code}
@@ -316,8 +322,8 @@ export function LeaderboardClient() {
               ) : (
                 <div className="text-center py-12">
                   <Building2 className="h-12 w-12 mx-auto text-gray-600 mb-3" />
-                  <p className="text-gray-400">No college data available</p>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-muted-foreground">No college data available</p>
+                  <p className="text-sm text-muted-foreground mt-1">
                     Students need a college code set in their profile to appear here
                   </p>
                 </div>

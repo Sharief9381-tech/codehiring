@@ -48,7 +48,7 @@ export function TopPerformers() {
 
   const getRankBadge = (rank: number) => {
     if (rank === 1) return "bg-yellow-500/20 text-yellow-500"
-    if (rank === 2) return "bg-gray-400/20 text-gray-400"
+    if (rank === 2) return "bg-muted/50 text-muted-foreground"
     if (rank === 3) return "bg-amber-600/20 text-amber-600"
     return "bg-secondary text-muted-foreground"
   }
@@ -119,37 +119,33 @@ export function TopPerformers() {
           </div>
         ) : (
           performers.slice(0, 10).map((performer, index) => (
-            <div
-              key={performer.id}
-              className="flex items-center gap-3 rounded-lg border border-border bg-secondary/30 p-3"
-            >
-              <Badge className={`h-6 w-6 justify-center ${getRankBadge(index + 1)}`}>
-                {index + 1}
-              </Badge>
-              <Avatar className="h-10 w-10">
-                <AvatarFallback className="bg-primary/10 text-primary">
-                  {performer.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <p className="font-medium text-foreground">{performer.name}</p>
-                  {getStatusBadge(performer.placementStatus)}
+            <Link key={performer.id} href="/college/students">
+              <div className="flex items-center gap-3 rounded-lg border border-border bg-secondary/30 p-3 cursor-pointer hover:bg-secondary/60 hover:border-primary/40 transition-colors">
+                <Badge className={`h-6 w-6 justify-center ${getRankBadge(index + 1)}`}>
+                  {index + 1}
+                </Badge>
+                <Avatar className="h-10 w-10">
+                  <AvatarFallback className="bg-primary/10 text-primary">
+                    {performer.name.split(" ").map((n) => n[0]).join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium text-foreground">{performer.name}</p>
+                    {getStatusBadge(performer.placementStatus)}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span>{performer.rollNumber}</span>
+                    <span>•</span>
+                    <span>{performer.branch}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>{performer.rollNumber}</span>
-                  <span>•</span>
-                  <span>{performer.branch}</span>
+                <div className="text-right">
+                  <p className="font-medium text-foreground">{performer.totalProblems}</p>
+                  <p className="text-xs text-muted-foreground">problems</p>
                 </div>
               </div>
-              <div className="text-right">
-                <p className="font-medium text-foreground">{performer.totalProblems}</p>
-                <p className="text-xs text-muted-foreground">problems</p>
-              </div>
-            </div>
+            </Link>
           ))
         )}
         

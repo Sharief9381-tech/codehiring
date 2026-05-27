@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RefreshCw, TrendingUp } from "lucide-react"
+import Link from "next/link"
 
 interface PlacementData {
   total: number
@@ -46,9 +47,9 @@ export function PlacementOverview() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="text-center p-3 bg-gray-800 border border-gray-700 rounded-lg animate-pulse">
-                <div className="h-8 w-16 bg-gray-600 rounded mx-auto mb-2" />
-                <div className="h-4 w-20 bg-gray-600 rounded mx-auto" />
+              <div key={i} className="text-center p-3 bg-secondary border border-border rounded-lg animate-pulse">
+                <div className="h-8 w-16 bg-muted rounded mx-auto mb-2" />
+                <div className="h-4 w-20 bg-muted rounded mx-auto" />
               </div>
             ))}
           </div>
@@ -98,22 +99,30 @@ export function PlacementOverview() {
       <CardContent>
         {/* Summary Statistics Only */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center p-3 bg-gray-800 border border-gray-700 rounded-lg">
-            <p className="text-2xl font-bold text-white">{placementData.total}</p>
-            <p className="text-xs text-gray-300">Total Students</p>
-          </div>
-          <div className="text-center p-3 bg-green-900 border border-green-700 rounded-lg">
-            <p className="text-2xl font-bold text-green-400">{placementData.placed}</p>
-            <p className="text-xs text-green-300">Placed</p>
-          </div>
-          <div className="text-center p-3 bg-amber-900 border border-amber-700 rounded-lg">
-            <p className="text-2xl font-bold text-amber-400">{placementData.interviewing}</p>
-            <p className="text-xs text-amber-300">Interviewing</p>
-          </div>
-          <div className="text-center p-3 bg-red-900 border border-red-700 rounded-lg">
-            <p className="text-2xl font-bold text-red-400">{placementData.searching}</p>
-            <p className="text-xs text-red-300">Searching</p>
-          </div>
+          <Link href="/college/students">
+            <div className="text-center p-3 bg-secondary border border-border rounded-lg cursor-pointer hover:border-primary/40 hover:bg-secondary/70 transition-colors">
+              <p className="text-2xl font-bold text-foreground">{placementData.total}</p>
+              <p className="text-xs text-muted-foreground">Total Students</p>
+            </div>
+          </Link>
+          <Link href="/college/placements">
+            <div className="text-center p-3 bg-green-900 border border-green-700 rounded-lg cursor-pointer hover:border-green-500 hover:bg-green-800 transition-colors">
+              <p className="text-2xl font-bold text-green-400">{placementData.placed}</p>
+              <p className="text-xs text-green-300">Placed</p>
+            </div>
+          </Link>
+          <Link href="/college/placements">
+            <div className="text-center p-3 bg-amber-900 border border-amber-700 rounded-lg cursor-pointer hover:border-amber-500 hover:bg-amber-800 transition-colors">
+              <p className="text-2xl font-bold text-amber-400">{placementData.interviewing}</p>
+              <p className="text-xs text-amber-300">Interviewing</p>
+            </div>
+          </Link>
+          <Link href="/college/students">
+            <div className="text-center p-3 bg-red-900 border border-red-700 rounded-lg cursor-pointer hover:border-red-500 hover:bg-red-800 transition-colors">
+              <p className="text-2xl font-bold text-red-400">{placementData.searching}</p>
+              <p className="text-xs text-red-300">Searching</p>
+            </div>
+          </Link>
         </div>
 
         <div className="mt-4 text-center">

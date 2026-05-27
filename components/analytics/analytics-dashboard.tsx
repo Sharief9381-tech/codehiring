@@ -135,7 +135,7 @@ export function AnalyticsDashboard() {
       case 'student': return 'bg-blue-500/20 text-blue-500'
       case 'college': return 'bg-green-500/20 text-green-500'
       case 'recruiter': return 'bg-purple-500/20 text-purple-500'
-      default: return 'bg-gray-500/20 text-gray-500'
+      default: return 'bg-muted/50 text-muted-foreground'
     }
   }
 

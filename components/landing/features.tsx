@@ -1,4 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { SpotlightCard } from "@/components/landing/spotlight-card"
 import { 
   GraduationCap, 
   Building2, 
@@ -103,7 +104,7 @@ export function Features() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {studentFeatures.map((feature, index) => (
-              <Card key={index} className="bg-card border-border hover:border-primary/50 transition-colors">
+              <SpotlightCard key={index} spotlightColor="rgba(139,92,246,0.14)" className="hover:border-primary/50">
                 <CardHeader className="pb-2">
                   <feature.icon className="h-5 w-5 text-primary mb-2" />
                   <CardTitle className="text-base">{feature.title}</CardTitle>
@@ -111,7 +112,7 @@ export function Features() {
                 <CardContent>
                   <CardDescription>{feature.description}</CardDescription>
                 </CardContent>
-              </Card>
+              </SpotlightCard>
             ))}
           </div>
         </div>
@@ -126,7 +127,7 @@ export function Features() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {collegeFeatures.map((feature, index) => (
-              <Card key={index} className="bg-card border-border hover:border-accent/50 transition-colors">
+              <SpotlightCard key={index} spotlightColor="rgba(99,102,241,0.14)" className="hover:border-accent/50">
                 <CardHeader className="pb-2">
                   <feature.icon className="h-5 w-5 text-accent mb-2" />
                   <CardTitle className="text-base">{feature.title}</CardTitle>
@@ -134,7 +135,7 @@ export function Features() {
                 <CardContent>
                   <CardDescription>{feature.description}</CardDescription>
                 </CardContent>
-              </Card>
+              </SpotlightCard>
             ))}
           </div>
         </div>
@@ -149,7 +150,7 @@ export function Features() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {recruiterFeatures.map((feature, index) => (
-              <Card key={index} className="bg-card border-border hover:border-chart-3/50 transition-colors">
+              <SpotlightCard key={index} spotlightColor="rgba(234,179,8,0.13)" className="hover:border-chart-3/50">
                 <CardHeader className="pb-2">
                   <feature.icon className="h-5 w-5 text-chart-3 mb-2" />
                   <CardTitle className="text-base">{feature.title}</CardTitle>
@@ -157,7 +158,7 @@ export function Features() {
                 <CardContent>
                   <CardDescription>{feature.description}</CardDescription>
                 </CardContent>
-              </Card>
+              </SpotlightCard>
             ))}
           </div>
         </div>

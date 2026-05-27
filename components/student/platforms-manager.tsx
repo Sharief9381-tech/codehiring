@@ -124,7 +124,7 @@ export function PlatformsManager({ student }: PlatformsManagerProps) {
   return (
     <div className="space-y-8">
       <div className="flex justify-end">
-        <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-foreground border-0 shadow-lg hover:shadow-xl transition-all duration-300">
           <Plus className="h-4 w-4" />
           Add Platform
         </Button>
@@ -136,7 +136,7 @@ export function PlatformsManager({ student }: PlatformsManagerProps) {
             const linkedUsername = linkedPlatforms[platform.id]
 
             return (
-              <Card key={platform.id} className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-gray-500 relative h-80">
+              <Card key={platform.id} className="bg-gradient-to-br from-gray-800 to-gray-900 border-border shadow-2xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-border relative h-80">
                 <CardContent className="p-6 pb-16 h-full flex flex-col">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -150,20 +150,20 @@ export function PlatformsManager({ student }: PlatformsManagerProps) {
                         />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h4 className="font-bold text-lg text-white truncate">{platform.name}</h4>
-                        <p className="text-sm text-gray-400 truncate">@{linkedUsername}</p>
+                        <h4 className="font-bold text-lg text-foreground truncate">{platform.name}</h4>
+                        <p className="text-sm text-muted-foreground truncate">@{linkedUsername}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex-1 text-center py-6">
                     <div className="text-lg text-green-400 font-bold mb-2">✅ Platform Connected</div>
-                    <div className="text-sm text-gray-400">Ready to sync data</div>
+                    <div className="text-sm text-muted-foreground">Ready to sync data</div>
                   </div>
                 </CardContent>
 
                 {/* Bottom section with View Details link, Verified badge, and Unlink button */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-gray-800/50">
+                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border bg-secondary/50">
                   <div className="flex items-center justify-between">
                     <a
                       href={`${platform.url}/${linkedUsername}`}
@@ -175,7 +175,7 @@ export function PlatformsManager({ student }: PlatformsManagerProps) {
                       <ExternalLink className="h-4 w-4" />
                     </a>
                     <div className="flex-1 flex justify-center">
-                      <Badge className="text-xs gap-1 bg-green-600 hover:bg-green-700 text-white border-green-500 shadow-lg">
+                      <Badge className="text-xs gap-1 bg-green-600 hover:bg-green-700 text-foreground border-green-500 shadow-lg">
                         <Check className="h-3 w-3" />
                         Verified
                       </Badge>
@@ -196,16 +196,16 @@ export function PlatformsManager({ student }: PlatformsManagerProps) {
           })}
         </div>
       ) : (
-        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-border shadow-2xl">
           <CardContent className="text-center py-16">
-            <div className="mx-auto w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center mb-6 border-2 border-gray-600">
-              <Code className="h-10 w-10 text-gray-400" />
+            <div className="mx-auto w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-6 border-2 border-border">
+              <Code className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h3 className="text-2xl font-bold mb-4 text-white">No Platforms Connected</h3>
-            <p className="text-gray-400 mb-8 max-w-md mx-auto">
+            <h3 className="text-2xl font-bold mb-4 text-foreground">No Platforms Connected</h3>
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Connect your coding platforms to start tracking your progress and showcase your skills across different platforms
             </p>
-            <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-foreground border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <Plus className="h-4 w-4" />
               Add Your First Platform
             </Button>

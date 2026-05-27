@@ -50,21 +50,21 @@ export function RecentActivity({ student }: RecentActivityProps) {
   ]
 
   return (
-    <Card className="bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 border-gray-700 shadow-2xl">
+    <Card className="bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 border-border shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-white text-xl font-bold">Recent Activity</CardTitle>
+        <CardTitle className="text-foreground text-xl font-bold">Recent Activity</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {activities.map((activity) => {
           const Icon = activity.icon
           return (
-            <div key={activity.id} className="flex items-start gap-4 p-4 rounded-xl bg-gray-800/50 border border-gray-700 hover:bg-gray-800/70 transition-all duration-200">
-              <div className={`mt-1 p-2 rounded-lg bg-gray-700 ${activity.color}`}>
+            <div key={activity.id} className="flex items-start gap-4 p-4 rounded-xl bg-secondary/50 border border-border hover:bg-secondary/70 transition-all duration-200">
+              <div className={`mt-1 p-2 rounded-lg bg-muted ${activity.color}`}>
                 <Icon className="h-5 w-5" />
               </div>
               <div className="flex-1 space-y-2">
-                <p className="text-sm font-medium text-white">{activity.title}</p>
-                <p className="text-xs text-gray-400">
+                <p className="text-sm font-medium text-foreground">{activity.title}</p>
+                <p className="text-xs text-muted-foreground">
                   <span className="font-medium text-blue-400">{activity.platform}</span> • {activity.time}
                 </p>
               </div>

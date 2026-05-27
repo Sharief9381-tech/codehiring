@@ -9,6 +9,7 @@ import {
   PieChart, Pie, Cell, LineChart, Line, RadarChart, Radar, PolarGrid,
   PolarAngleAxis, PolarRadiusAxis
 } from "recharts"
+import Link from "next/link"
 import {
   TrendingUp, Award, Target, Calendar, Trophy, Star,
   RefreshCw, Code, GitBranch, Zap, Activity
@@ -85,12 +86,12 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map(i => (
-          <Card key={i} className="bg-gray-900 border-gray-700">
+          <Card key={i} className="bg-card border-border">
             <CardContent className="p-6">
               <div className="animate-pulse space-y-3">
-                <div className="h-4 bg-gray-700 rounded w-1/4" />
-                <div className="h-8 bg-gray-700 rounded w-1/2" />
-                <div className="h-32 bg-gray-700 rounded" />
+                <div className="h-4 bg-muted rounded w-1/4" />
+                <div className="h-8 bg-muted rounded w-1/2" />
+                <div className="h-32 bg-muted rounded" />
               </div>
             </CardContent>
           </Card>
@@ -101,10 +102,10 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
 
   if (!analytics || !analytics.hasStats) {
     return (
-      <Card className="bg-gray-900 border-gray-700">
+      <Card className="bg-card border-border">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <TrendingUp className="h-5 w-5" />
               Analytics Dashboard
             </CardTitle>
@@ -112,21 +113,21 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
               onClick={handleSync}
               disabled={syncing}
               size="sm"
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-foreground"
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
               {syncing ? "Syncing..." : "Sync & Load"}
             </Button>
           </div>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="text-muted-foreground">
             {analytics?.message || "Connect platforms and sync to see analytics"}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-12">
             <Target className="h-14 w-14 mx-auto text-gray-600 mb-4" />
-            <p className="text-gray-300 font-medium mb-1">No analytics data yet</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-muted-foreground font-medium mb-1">No analytics data yet</p>
+            <p className="text-sm text-muted-foreground">
               Connect a platform from the Dashboard, then click "Sync & Load" above.
             </p>
           </div>
@@ -167,8 +168,8 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
       {/* Header with sync */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-white">Your Analytics</h2>
-          <p className="text-sm text-gray-400">
+          <h2 className="text-xl font-semibold text-foreground">Your Analytics</h2>
+          <p className="text-sm text-muted-foreground">
             Based on {analytics.linkedPlatforms?.length || 0} connected platform{analytics.linkedPlatforms?.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -177,7 +178,7 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
           disabled={syncing}
           size="sm"
           variant="outline"
-          className="border-gray-600 text-gray-300 hover:bg-gray-800"
+          className="border-border text-muted-foreground hover:bg-secondary"
         >
           <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
           {syncing ? "Syncing..." : "Refresh Stats"}
@@ -186,94 +187,106 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
 
       {/* Overview stat cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-gradient-to-br from-blue-900 to-blue-800 border-blue-700">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-blue-200">Total Problems</CardTitle>
-            <Code className="h-4 w-4 text-blue-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-white">{aggregatedStats.totalProblems}</div>
-            <p className="text-xs text-blue-300 mt-1">Across all platforms</p>
-          </CardContent>
-        </Card>
+        <Link href="/student/platforms">
+          <Card className="bg-gradient-to-br from-blue-900 to-blue-800 border-blue-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-blue-200">Total Problems</CardTitle>
+              <Code className="h-4 w-4 text-blue-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{aggregatedStats.totalProblems}</div>
+              <p className="text-xs text-blue-300 mt-1">Across all platforms</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-emerald-900 to-emerald-800 border-emerald-700">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-emerald-200">GitHub Contributions</CardTitle>
-            <GitBranch className="h-4 w-4 text-emerald-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-white">{aggregatedStats.githubContributions}</div>
-            <p className="text-xs text-emerald-300 mt-1">Total contributions</p>
-          </CardContent>
-        </Card>
+        <Link href="/student/platforms">
+          <Card className="bg-gradient-to-br from-emerald-900 to-emerald-800 border-emerald-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-emerald-200">GitHub Contributions</CardTitle>
+              <GitBranch className="h-4 w-4 text-emerald-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{aggregatedStats.githubContributions}</div>
+              <p className="text-xs text-emerald-300 mt-1">Total contributions</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-purple-900 to-purple-800 border-purple-700">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-purple-200">Contests</CardTitle>
-            <Trophy className="h-4 w-4 text-purple-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-white">{aggregatedStats.contestsAttended}</div>
-            <p className="text-xs text-purple-300 mt-1">Contests participated</p>
-          </CardContent>
-        </Card>
+        <Link href="/student/analytics">
+          <Card className="bg-gradient-to-br from-purple-900 to-purple-800 border-purple-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-purple-200">Contests</CardTitle>
+              <Trophy className="h-4 w-4 text-purple-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{aggregatedStats.contestsAttended}</div>
+              <p className="text-xs text-purple-300 mt-1">Contests participated</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-amber-900 to-amber-800 border-amber-700">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-amber-200">Activity Level</CardTitle>
-            <Activity className="h-4 w-4 text-amber-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-white">{skillsAnalysis.activityLevel}</div>
-            <p className="text-xs text-amber-300 mt-1">
-              Rank: <span className="font-semibold">{skillsAnalysis.overallRank}</span>
-            </p>
-          </CardContent>
-        </Card>
+        <Link href="/student/analytics">
+          <Card className="bg-gradient-to-br from-amber-900 to-amber-800 border-amber-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-amber-200">Activity Level</CardTitle>
+              <Activity className="h-4 w-4 text-amber-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-foreground">{skillsAnalysis.activityLevel}</div>
+              <p className="text-xs text-amber-300 mt-1">
+                Rank: <span className="font-semibold">{skillsAnalysis.overallRank}</span>
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
 
         {/* Global Rank */}
-        <Card className="bg-gradient-to-br from-rose-900 to-rose-800 border-rose-700">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-rose-200">Global Rank</CardTitle>
-            <Trophy className="h-4 w-4 text-rose-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-white">
-              {ranking?.globalRank != null ? `#${ranking.globalRank}` : "—"}
-            </div>
-            <p className="text-xs text-rose-300 mt-1">
-              {ranking?.totalGlobal ? `out of ${ranking.totalGlobal} students` : "by total problems solved"}
-            </p>
-          </CardContent>
-        </Card>
+        <Link href="/student/leaderboard">
+          <Card className="bg-gradient-to-br from-rose-900 to-rose-800 border-rose-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-rose-200">Global Rank</CardTitle>
+              <Trophy className="h-4 w-4 text-rose-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">
+                {ranking?.globalRank != null ? `#${ranking.globalRank}` : "—"}
+              </div>
+              <p className="text-xs text-rose-300 mt-1">
+                {ranking?.totalGlobal ? `out of ${ranking.totalGlobal} students` : "by total problems solved"}
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
 
         {/* College Rank */}
-        <Card className="bg-gradient-to-br from-cyan-900 to-cyan-800 border-cyan-700">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-cyan-200">College Rank</CardTitle>
-            <Star className="h-4 w-4 text-cyan-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-white">
-              {ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "—"}
-            </div>
-            <p className="text-xs text-cyan-300 mt-1">
-              {ranking?.totalCollege ? `out of ${ranking.totalCollege} in ${ranking.myCollege}` : "no college data yet"}
-            </p>
-          </CardContent>
-        </Card>
+        <Link href="/student/leaderboard">
+          <Card className="bg-gradient-to-br from-cyan-900 to-cyan-800 border-cyan-700 cursor-pointer hover:scale-[1.02] transition-transform">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-cyan-200">College Rank</CardTitle>
+              <Star className="h-4 w-4 text-cyan-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">
+                {ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "—"}
+              </div>
+              <p className="text-xs text-cyan-300 mt-1">
+                {ranking?.totalCollege ? `out of ${ranking.totalCollege} in ${ranking.myCollege}` : "no college data yet"}
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       {/* Progress + Radar row */}
       <div className="grid gap-6 md:grid-cols-2">
-        <Card className="bg-gray-900 border-gray-700">
+        <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <Calendar className="h-5 w-5" />
               Progress Over Time
             </CardTitle>
-            <CardDescription className="text-gray-400">Cumulative problems solved</CardDescription>
+            <CardDescription className="text-muted-foreground">Cumulative problems solved</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={240}>
@@ -288,13 +301,13 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-900 border-gray-700">
+        <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <Zap className="h-5 w-5" />
               Skill Radar
             </CardTitle>
-            <CardDescription className="text-gray-400">Overall coding profile</CardDescription>
+            <CardDescription className="text-muted-foreground">Overall coding profile</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={240}>
@@ -313,10 +326,10 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
       {/* Platform comparison + Difficulty row */}
       <div className="grid gap-6 md:grid-cols-2">
         {platformBarData.length > 0 && (
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-white">Problems by Platform</CardTitle>
-              <CardDescription className="text-gray-400">Problems solved per platform</CardDescription>
+              <CardTitle className="text-foreground">Problems by Platform</CardTitle>
+              <CardDescription className="text-muted-foreground">Problems solved per platform</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={240}>
@@ -340,10 +353,10 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
         )}
 
         {difficultyData.length > 0 ? (
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-white">Difficulty Distribution</CardTitle>
-              <CardDescription className="text-gray-400">LeetCode problems by difficulty</CardDescription>
+              <CardTitle className="text-foreground">Difficulty Distribution</CardTitle>
+              <CardDescription className="text-muted-foreground">LeetCode problems by difficulty</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={240}>
@@ -367,9 +380,9 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
             </CardContent>
           </Card>
         ) : platformBarData.length === 0 ? (
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-card border-border">
             <CardContent className="flex items-center justify-center h-48">
-              <p className="text-gray-500 text-sm">Sync platforms to see charts</p>
+              <p className="text-muted-foreground text-sm">Sync platforms to see charts</p>
             </CardContent>
           </Card>
         ) : null}
@@ -377,46 +390,46 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
 
       {/* Per-platform stats table */}
       {platformStats.length > 0 && (
-        <Card className="bg-gray-900 border-gray-700">
+        <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle className="text-white">Platform Breakdown</CardTitle>
-            <CardDescription className="text-gray-400">Stats from each connected platform</CardDescription>
+            <CardTitle className="text-foreground">Platform Breakdown</CardTitle>
+            <CardDescription className="text-muted-foreground">Stats from each connected platform</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {platformStats.map((p: any) => (
                 <div
                   key={p.platformId}
-                  className="flex items-center justify-between p-3 rounded-lg bg-gray-800 border border-gray-700"
+                  className="flex items-center justify-between p-3 rounded-lg bg-secondary border border-border"
                   style={{ borderLeftColor: PLATFORM_COLORS[p.platformId] || "#64748b", borderLeftWidth: 3 }}
                 >
                   <div>
-                    <p className="font-medium text-white text-sm">{p.platform}</p>
-                    <p className="text-xs text-gray-400">@{p.username}</p>
+                    <p className="font-medium text-foreground text-sm">{p.platform}</p>
+                    <p className="text-xs text-muted-foreground">@{p.username}</p>
                   </div>
                   <div className="flex gap-6 text-right">
                     {p.problems > 0 && (
                       <div>
-                        <p className="text-sm font-bold text-white">{p.problems}</p>
-                        <p className="text-xs text-gray-400">solved</p>
+                        <p className="text-sm font-bold text-foreground">{p.problems}</p>
+                        <p className="text-xs text-muted-foreground">solved</p>
                       </div>
                     )}
                     {p.rating > 0 && (
                       <div>
                         <p className="text-sm font-bold text-yellow-400">{p.rating}</p>
-                        <p className="text-xs text-gray-400">rating</p>
+                        <p className="text-xs text-muted-foreground">rating</p>
                       </div>
                     )}
                     {p.contests > 0 && (
                       <div>
                         <p className="text-sm font-bold text-purple-400">{p.contests}</p>
-                        <p className="text-xs text-gray-400">contests</p>
+                        <p className="text-xs text-muted-foreground">contests</p>
                       </div>
                     )}
                     {p.contributions > 0 && (
                       <div>
                         <p className="text-sm font-bold text-green-400">{p.contributions}</p>
-                        <p className="text-xs text-gray-400">contributions</p>
+                        <p className="text-xs text-muted-foreground">contributions</p>
                       </div>
                     )}
                   </div>
@@ -428,51 +441,51 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
       )}
 
       {/* Achievements */}
-      <Card className="bg-gray-900 border-gray-700">
+      <Card className="bg-card border-border">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
+          <CardTitle className="flex items-center gap-2 text-foreground">
             <Award className="h-5 w-5" />
             Achievements
           </CardTitle>
-          <CardDescription className="text-gray-400">Milestones unlocked from your activity</CardDescription>
+          <CardDescription className="text-muted-foreground">Milestones unlocked from your activity</CardDescription>
         </CardHeader>
         <CardContent>
           {achievements.length > 0 ? (
             <div className="flex flex-wrap gap-2">
               {achievements.map((a: string) => (
-                <Badge key={a} className="gap-1 bg-orange-600/80 text-white border-orange-500">
+                <Badge key={a} className="gap-1 bg-orange-600/80 text-foreground border-orange-500">
                   <Award className="h-3 w-3" />
                   {a}
                 </Badge>
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-sm">Keep coding to unlock achievements!</p>
+            <p className="text-muted-foreground text-sm">Keep coding to unlock achievements!</p>
           )}
         </CardContent>
       </Card>
 
       {/* Skills summary */}
-      <Card className="bg-gray-900 border-gray-700">
+      <Card className="bg-card border-border">
         <CardHeader>
-          <CardTitle className="text-white">Skills Summary</CardTitle>
-          <CardDescription className="text-gray-400">Your expertise level and languages</CardDescription>
+          <CardTitle className="text-foreground">Skills Summary</CardTitle>
+          <CardDescription className="text-muted-foreground">Your expertise level and languages</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex items-center gap-3">
-            <span className="text-sm text-gray-400">Overall Rank:</span>
-            <Badge className="bg-violet-600 text-white border-violet-500">{skillsAnalysis.overallRank}</Badge>
+            <span className="text-sm text-muted-foreground">Overall Rank:</span>
+            <Badge className="bg-violet-600 text-foreground border-violet-500">{skillsAnalysis.overallRank}</Badge>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-gray-400">Activity:</span>
-            <Badge className="bg-amber-600 text-white border-amber-500">{skillsAnalysis.activityLevel}</Badge>
+            <span className="text-sm text-muted-foreground">Activity:</span>
+            <Badge className="bg-amber-600 text-foreground border-amber-500">{skillsAnalysis.activityLevel}</Badge>
           </div>
           {skillsAnalysis.primaryLanguages?.length > 0 && (
             <div>
-              <span className="text-sm text-gray-400 block mb-2">Primary Languages:</span>
+              <span className="text-sm text-muted-foreground block mb-2">Primary Languages:</span>
               <div className="flex flex-wrap gap-2">
                 {skillsAnalysis.primaryLanguages.map((lang: string) => (
-                  <Badge key={lang} className="bg-fuchsia-600/80 text-white border-fuchsia-500">{lang}</Badge>
+                  <Badge key={lang} className="bg-fuchsia-600/80 text-foreground border-fuchsia-500">{lang}</Badge>
                 ))}
               </div>
             </div>

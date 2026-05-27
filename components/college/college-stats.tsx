@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { GraduationCap, Users, Trophy, Briefcase, RefreshCw } from "lucide-react"
 import type { CollegeProfile } from "@/lib/types"

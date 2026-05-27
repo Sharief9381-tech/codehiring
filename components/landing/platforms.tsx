@@ -1,13 +1,14 @@
 import { Code2, Github, Terminal, Braces, Hash, FileCode } from "lucide-react"
+import { SpotlightCard } from "@/components/landing/spotlight-card"
 
 export function Platforms() {
   const platforms = [
-    { name: "LeetCode", icon: Code2, color: "text-chart-3" },
-    { name: "GitHub", icon: Github, color: "text-foreground" },
-    { name: "CodeChef", icon: Braces, color: "text-chart-5" },
-    { name: "Codeforces", icon: Hash, color: "text-chart-4" },
-    { name: "HackerRank", icon: Terminal, color: "text-primary" },
-    { name: "GeeksforGeeks", icon: FileCode, color: "text-primary" },
+    { name: "LeetCode", icon: Code2, color: "text-chart-3", spotlight: "rgba(234,179,8,0.14)" },
+    { name: "GitHub", icon: Github, color: "text-foreground", spotlight: "rgba(100,100,100,0.12)" },
+    { name: "CodeChef", icon: Braces, color: "text-chart-5", spotlight: "rgba(239,68,68,0.13)" },
+    { name: "Codeforces", icon: Hash, color: "text-chart-4", spotlight: "rgba(34,211,238,0.13)" },
+    { name: "HackerRank", icon: Terminal, color: "text-primary", spotlight: "rgba(139,92,246,0.14)" },
+    { name: "GeeksforGeeks", icon: FileCode, color: "text-primary", spotlight: "rgba(34,197,94,0.14)" },
   ]
 
   return (
@@ -24,13 +25,14 @@ export function Platforms() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
           {platforms.map((platform, index) => (
-            <div
+            <SpotlightCard
               key={index}
-              className="flex flex-col items-center justify-center p-6 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors"
+              spotlightColor={platform.spotlight}
+              className="flex flex-col items-center justify-center p-6 hover:border-primary/50"
             >
               <platform.icon className={`h-8 w-8 ${platform.color}`} />
               <span className="mt-3 text-sm font-medium text-foreground">{platform.name}</span>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 

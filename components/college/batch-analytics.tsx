@@ -22,6 +22,7 @@ import {
   Cell,
 } from "recharts"
 import { TrendingUp, Users, Target, Award, RefreshCw, Building } from "lucide-react"
+import Link from "next/link"
 
 interface BatchAnalyticsProps {
   college: any
@@ -138,79 +139,87 @@ export function BatchAnalytics({ college }: BatchAnalyticsProps) {
 
       {/* Overview Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-primary/10 p-2">
-                <Users className="h-5 w-5 text-primary" />
+        <Link href="/college/students">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-primary/10 p-2">
+                  <Users className="h-5 w-5 text-primary" />
+                </div>
+                <Badge className="bg-blue-500/10 text-blue-500">
+                  {analytics.activeStudents}/{analytics.totalStudents}
+                </Badge>
               </div>
-              <Badge className="bg-blue-500/10 text-blue-500">
-                {analytics.activeStudents}/{analytics.totalStudents}
-              </Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">{analytics.totalStudents}</p>
-              <p className="text-sm text-muted-foreground">Total Students</p>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">{analytics.totalStudents}</p>
+                <p className="text-sm text-muted-foreground">Total Students</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-chart-2/10 p-2">
-                <Target className="h-5 w-5 text-chart-2" />
+        <Link href="/college/analytics">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-chart-2/10 p-2">
+                  <Target className="h-5 w-5 text-chart-2" />
+                </div>
+                <Badge className="bg-green-500/10 text-green-500">
+                  Total: {analytics.aggregatedStats.totalProblems}
+                </Badge>
               </div>
-              <Badge className="bg-green-500/10 text-green-500">
-                Total: {analytics.aggregatedStats.totalProblems}
-              </Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">
-                {Math.round(analytics.aggregatedStats.totalProblems / Math.max(analytics.activeStudents, 1))}
-              </p>
-              <p className="text-sm text-muted-foreground">Avg. Problems/Student</p>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">
+                  {Math.round(analytics.aggregatedStats.totalProblems / Math.max(analytics.activeStudents, 1))}
+                </p>
+                <p className="text-sm text-muted-foreground">Avg. Problems/Student</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-chart-3/10 p-2">
-                <TrendingUp className="h-5 w-5 text-chart-3" />
+        <Link href="/college/analytics">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-chart-3/10 p-2">
+                  <TrendingUp className="h-5 w-5 text-chart-3" />
+                </div>
+                <Badge className="bg-purple-500/10 text-purple-500">
+                  Total: {analytics.aggregatedStats.totalContributions}
+                </Badge>
               </div>
-              <Badge className="bg-purple-500/10 text-purple-500">
-                Total: {analytics.aggregatedStats.totalContributions}
-              </Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">
-                {Math.round(analytics.aggregatedStats.totalContributions / Math.max(analytics.activeStudents, 1))}
-              </p>
-              <p className="text-sm text-muted-foreground">Avg. Contributions</p>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">
+                  {Math.round(analytics.aggregatedStats.totalContributions / Math.max(analytics.activeStudents, 1))}
+                </p>
+                <p className="text-sm text-muted-foreground">Avg. Contributions</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-lg bg-chart-4/10 p-2">
-                <Award className="h-5 w-5 text-chart-4" />
+        <Link href="/college/analytics">
+          <Card className="bg-card cursor-pointer hover:bg-secondary/50 hover:border-primary/40 transition-colors">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="rounded-lg bg-chart-4/10 p-2">
+                  <Award className="h-5 w-5 text-chart-4" />
+                </div>
+                <Badge className="bg-orange-500/10 text-orange-500">
+                  Avg: {analytics.aggregatedStats.averageRating}
+                </Badge>
               </div>
-              <Badge className="bg-orange-500/10 text-orange-500">
-                Avg: {analytics.aggregatedStats.averageRating}
-              </Badge>
-            </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-foreground">
-                {analytics.aggregatedStats.totalContests}
-              </p>
-              <p className="text-sm text-muted-foreground">Total Contests</p>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-foreground">
+                  {analytics.aggregatedStats.totalContests}
+                </p>
+                <p className="text-sm text-muted-foreground">Total Contests</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       {/* Top Performers */}

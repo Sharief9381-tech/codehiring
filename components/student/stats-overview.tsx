@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { RefreshCw, TrendingUp, Code, GitBranch, Trophy, Star, ExternalLink, Check, Plus } from "lucide-react"
+import Link from "next/link"
 import type { StudentProfile } from "@/lib/types"
 
 interface StatsOverviewProps {
@@ -259,86 +260,86 @@ export function StatsOverview({ student }: StatsOverviewProps) {
     <div className="space-y-6">
       {/* Primary Overview Stats - Top Priority */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 border-blue-700 shadow-2xl hover:shadow-blue-500/25 transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-blue-200">Total Problems</p>
-                <p className="text-3xl font-bold text-white">{stats.totalProblems}</p>
-                <p className="text-xs text-blue-300">
-                  Across all platforms
-                </p>
+        <Link href="/student/platforms">
+          <Card className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 border-blue-700 shadow-2xl hover:shadow-blue-500/25 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-blue-200">Total Problems</p>
+                  <p className="text-3xl font-bold text-foreground">{stats.totalProblems}</p>
+                  <p className="text-xs text-blue-300">Across all platforms</p>
+                </div>
+                <div className="h-12 w-12 rounded-xl bg-blue-500 flex items-center justify-center shadow-lg">
+                  <Code className="h-6 w-6 text-foreground" />
+                </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-blue-500 flex items-center justify-center shadow-lg">
-                <Code className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900 border-emerald-700 shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-emerald-200">GitHub Contributions</p>
-                <p className="text-3xl font-bold text-white">{stats.githubContributions}</p>
-                <p className="text-xs text-emerald-300">
-                  This year
-                </p>
+        <Link href="/student/platforms">
+          <Card className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900 border-emerald-700 shadow-2xl hover:shadow-emerald-500/25 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-emerald-200">GitHub Contributions</p>
+                  <p className="text-3xl font-bold text-foreground">{stats.githubContributions}</p>
+                  <p className="text-xs text-emerald-300">This year</p>
+                </div>
+                <div className="h-12 w-12 rounded-xl bg-emerald-500 flex items-center justify-center shadow-lg">
+                  <GitBranch className="h-6 w-6 text-foreground" />
+                </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-emerald-500 flex items-center justify-center shadow-lg">
-                <GitBranch className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 border-purple-700 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-purple-200">Contests</p>
-                <p className="text-3xl font-bold text-white">{stats.contestsAttended}</p>
-                <p className="text-xs text-purple-300">
-                  Participated
-                </p>
+        <Link href="/student/analytics">
+          <Card className="bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 border-purple-700 shadow-2xl hover:shadow-purple-500/25 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-purple-200">Contests</p>
+                  <p className="text-3xl font-bold text-foreground">{stats.contestsAttended}</p>
+                  <p className="text-xs text-purple-300">Participated</p>
+                </div>
+                <div className="h-12 w-12 rounded-xl bg-purple-500 flex items-center justify-center shadow-lg">
+                  <Trophy className="h-6 w-6 text-foreground" />
+                </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-purple-500 flex items-center justify-center shadow-lg">
-                <Trophy className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="bg-gradient-to-br from-amber-900 via-amber-800 to-amber-900 border-amber-700 shadow-2xl hover:shadow-amber-500/25 transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-amber-200">Current Rating</p>
-                <p className="text-3xl font-bold text-white">{stats.currentRating.toLocaleString()}</p>
-                <p className="text-xs text-amber-300">
-                  Highest across platforms
-                </p>
+        <Link href="/student/analytics">
+          <Card className="bg-gradient-to-br from-amber-900 via-amber-800 to-amber-900 border-amber-700 shadow-2xl hover:shadow-amber-500/25 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-amber-200">Current Rating</p>
+                  <p className="text-3xl font-bold text-foreground">{stats.currentRating.toLocaleString()}</p>
+                  <p className="text-xs text-amber-300">Highest across platforms</p>
+                </div>
+                <div className="h-12 w-12 rounded-xl bg-amber-500 flex items-center justify-center shadow-lg">
+                  <Star className="h-6 w-6 text-foreground" />
+                </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-amber-500 flex items-center justify-center shadow-lg">
-                <Star className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       {/* Connected Platforms Section */}
-      <Card className="bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 border-gray-700 shadow-2xl">
+      <Card className="bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 border-border shadow-2xl">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-white text-xl font-bold">Connected Platforms</CardTitle>
-              <CardDescription className="text-gray-300">
+              <CardTitle className="text-foreground text-xl font-bold">Connected Platforms</CardTitle>
+              <CardDescription className="text-muted-foreground">
                 Your linked coding platforms and their detailed statistics
               </CardDescription>
             </div>
-            <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-foreground border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <Plus className="h-4 w-4" />
               Add Platform
             </Button>
@@ -354,7 +355,7 @@ export function StatsOverview({ student }: StatsOverviewProps) {
                 const statLines = getPlatformStatLines(platform.id, platformData)
 
                 return (
-                  <Card key={platform.id} className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105" style={{ borderLeftColor: platform.color, borderLeftWidth: '4px' }}>
+                  <Card key={platform.id} className="bg-gradient-to-br from-gray-800 to-gray-900 border-border shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105" style={{ borderLeftColor: platform.color, borderLeftWidth: '4px' }}>
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
@@ -365,11 +366,11 @@ export function StatsOverview({ student }: StatsOverviewProps) {
                             <platform.icon className="h-6 w-6" style={{ color: platform.color }} />
                           </div>
                           <div>
-                            <h4 className="font-bold text-lg text-white">{platform.name}</h4>
-                            <p className="text-sm text-gray-400">@{username}</p>
+                            <h4 className="font-bold text-lg text-foreground">{platform.name}</h4>
+                            <p className="text-sm text-muted-foreground">@{username}</p>
                           </div>
                         </div>
-                        <Badge className="text-xs bg-green-600 text-white border-green-500 shadow-lg">
+                        <Badge className="text-xs bg-green-600 text-foreground border-green-500 shadow-lg">
                           <Check className="h-3 w-3 mr-1" />
                           Connected
                         </Badge>
@@ -407,11 +408,11 @@ export function StatsOverview({ student }: StatsOverviewProps) {
             </div>
           ) : (
             <div className="text-center py-12">
-              <div className="mx-auto w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-6 border-2 border-gray-600">
-                <Code className="h-8 w-8 text-gray-400" />
+              <div className="mx-auto w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 border-2 border-border">
+                <Code className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-white">No Platforms Connected</h3>
-              <p className="text-gray-400 mb-6">
+              <h3 className="text-xl font-bold mb-3 text-foreground">No Platforms Connected</h3>
+              <p className="text-muted-foreground mb-6">
                 Connect your coding platforms to see detailed statistics
               </p>
             </div>
@@ -422,7 +423,7 @@ export function StatsOverview({ student }: StatsOverviewProps) {
       {/* Skills Analysis Section */}
       <Card className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 border-indigo-700 shadow-2xl">
         <CardHeader>
-          <CardTitle className="text-white text-xl font-bold">Skills Analysis</CardTitle>
+          <CardTitle className="text-foreground text-xl font-bold">Skills Analysis</CardTitle>
           <CardDescription className="text-indigo-200">
             Insights based on your coding activity and performance
           </CardDescription>
@@ -432,13 +433,13 @@ export function StatsOverview({ student }: StatsOverviewProps) {
             <div className="space-y-6">
               <div>
                 <h4 className="font-bold mb-3 text-indigo-200">Activity Level</h4>
-                <Badge className="text-sm bg-blue-600 text-white border-blue-500 shadow-lg px-4 py-2">
+                <Badge className="text-sm bg-blue-600 text-foreground border-blue-500 shadow-lg px-4 py-2">
                   {stats.skillsAnalysis.activityLevel}
                 </Badge>
               </div>
               <div>
                 <h4 className="font-bold mb-3 text-indigo-200">Overall Rank</h4>
-                <Badge className="text-sm bg-purple-600 text-white border-purple-500 shadow-lg px-4 py-2">
+                <Badge className="text-sm bg-purple-600 text-foreground border-purple-500 shadow-lg px-4 py-2">
                   {stats.skillsAnalysis.overallRank}
                 </Badge>
               </div>
@@ -448,7 +449,7 @@ export function StatsOverview({ student }: StatsOverviewProps) {
                 <h4 className="font-bold mb-3 text-indigo-200">Primary Languages</h4>
                 <div className="flex flex-wrap gap-2">
                   {stats.skillsAnalysis.primaryLanguages.map((lang) => (
-                    <Badge key={lang} className="text-xs bg-emerald-600 text-white border-emerald-500 shadow-md">
+                    <Badge key={lang} className="text-xs bg-emerald-600 text-foreground border-emerald-500 shadow-md">
                       {lang}
                     </Badge>
                   ))}
@@ -462,11 +463,11 @@ export function StatsOverview({ student }: StatsOverviewProps) {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 rounded bg-emerald-500 shadow-sm"></div>
-                        <span className="text-sm font-medium text-white">Easy</span>
+                        <span className="text-sm font-medium text-foreground">Easy</span>
                       </div>
                       <span className="text-sm font-bold text-emerald-400">{stats.skillsAnalysis.difficultyDistribution.easy}</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-lg h-3 overflow-hidden">
+                    <div className="w-full bg-muted rounded-lg h-3 overflow-hidden">
                       <div 
                         className="bg-gradient-to-r from-emerald-400 to-emerald-600 h-full rounded-lg transition-all duration-500 ease-out shadow-lg" 
                         style={{ 
@@ -481,11 +482,11 @@ export function StatsOverview({ student }: StatsOverviewProps) {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 rounded bg-yellow-500 shadow-sm"></div>
-                        <span className="text-sm font-medium text-white">Medium</span>
+                        <span className="text-sm font-medium text-foreground">Medium</span>
                       </div>
                       <span className="text-sm font-bold text-yellow-400">{stats.skillsAnalysis.difficultyDistribution.medium}</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-lg h-3 overflow-hidden">
+                    <div className="w-full bg-muted rounded-lg h-3 overflow-hidden">
                       <div 
                         className="bg-gradient-to-r from-yellow-400 to-yellow-600 h-full rounded-lg transition-all duration-500 ease-out shadow-lg" 
                         style={{ 
@@ -500,11 +501,11 @@ export function StatsOverview({ student }: StatsOverviewProps) {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 rounded bg-red-500 shadow-sm"></div>
-                        <span className="text-sm font-medium text-white">Hard</span>
+                        <span className="text-sm font-medium text-foreground">Hard</span>
                       </div>
                       <span className="text-sm font-bold text-red-400">{stats.skillsAnalysis.difficultyDistribution.hard}</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-lg h-3 overflow-hidden">
+                    <div className="w-full bg-muted rounded-lg h-3 overflow-hidden">
                       <div 
                         className="bg-gradient-to-r from-red-400 to-red-600 h-full rounded-lg transition-all duration-500 ease-out shadow-lg" 
                         style={{ 

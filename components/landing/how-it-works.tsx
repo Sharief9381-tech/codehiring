@@ -1,3 +1,5 @@
+import { SpotlightCard } from "@/components/landing/spotlight-card"
+
 export function HowItWorks() {
   const studentSteps = [
     { step: "01", title: "Connect Profiles", description: "Link your LeetCode, GitHub, CodeChef, and other coding accounts" },
@@ -38,32 +40,29 @@ export function HowItWorks() {
             <h3 className="text-lg font-semibold text-primary mb-8 text-center">Student Journey</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {studentSteps.map((item, index) => (
-                <div key={index} className="relative">
-                  <div className="flex flex-col">
+                <SpotlightCard key={index} spotlightColor="rgba(139,92,246,0.14)" className="p-6 hover:border-primary/50">
+                  <div className="relative">
                     <span className="text-4xl font-bold text-primary/20">{item.step}</span>
                     <h4 className="text-base font-semibold text-foreground mt-2">{item.title}</h4>
                     <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                   </div>
-                  {index < studentSteps.length - 1 && (
-                    <div className="hidden lg:block absolute top-4 left-full w-full h-px bg-border -translate-x-4" />
-                  )}
-                </div>
+                </SpotlightCard>
               ))}
             </div>
           </div>
 
           {/* College Flow */}
           <div>
-            <h3 className="text-lg font-semibold text-accent mb-8 text-center">College Journey</h3>
+            <h3 className="text-lg font-semibold text-emerald-600 mb-8 text-center">College Journey</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {collegeSteps.map((item, index) => (
-                <div key={index} className="relative">
-                  <div className="flex flex-col">
-                    <span className="text-4xl font-bold text-accent/20">{item.step}</span>
+                <SpotlightCard key={index} spotlightColor="rgba(5,150,105,0.14)" className="p-6 hover:border-emerald-500/50">
+                  <div className="relative">
+                    <span className="text-4xl font-bold text-emerald-600/20">{item.step}</span>
                     <h4 className="text-base font-semibold text-foreground mt-2">{item.title}</h4>
                     <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                   </div>
-                </div>
+                </SpotlightCard>
               ))}
             </div>
           </div>
@@ -73,13 +72,13 @@ export function HowItWorks() {
             <h3 className="text-lg font-semibold text-chart-3 mb-8 text-center">Recruiter Journey</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {recruiterSteps.map((item, index) => (
-                <div key={index} className="relative">
-                  <div className="flex flex-col">
+                <SpotlightCard key={index} spotlightColor="rgba(234,179,8,0.13)" className="p-6 hover:border-chart-3/50">
+                  <div className="relative">
                     <span className="text-4xl font-bold text-chart-3/20">{item.step}</span>
                     <h4 className="text-base font-semibold text-foreground mt-2">{item.title}</h4>
                     <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                   </div>
-                </div>
+                </SpotlightCard>
               ))}
             </div>
           </div>
