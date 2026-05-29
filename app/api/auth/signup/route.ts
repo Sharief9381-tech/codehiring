@@ -109,6 +109,44 @@ export async function POST(request: Request) {
         }
         console.log("9a. Creating student with data:", userData)
         user = await createStudent(userData as any)
+
+        // Auto-register college if not already in the system
+        const collegeCode = (additionalData.collegeCode || "").toUpperCase()
+        if (collegeCode) {
+          try {
+            const { getDatabase } = await import("@/lib/database")
+            const db = await getDatabase()
+            const existingCollege = await db.collection("users").findOne({ role: "college", collegeCode })
+            if (!existingCollege) {
+              // Create a placeholder college entry so it appears in the explore list
+              await db.collection("users").insertOne({
+                name: collegeCode,
+                email: `auto-${collegeCode.toLowerCase()}@codehire.internal`,
+                password: "",
+                role: "college",
+                collegeName: collegeCode,
+                collegeCode,
+                location: "",
+                website: null,
+                departments: [],
+                totalStudents: 1,
+                placementOfficerName: null,
+                isAutoCreated: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              })
+              console.log("Auto-created college entry for:", collegeCode)
+            } else {
+              // Increment student count
+              await db.collection("users").updateOne(
+                { role: "college", collegeCode },
+                { $inc: { totalStudents: 1 }, $set: { updatedAt: new Date() } }
+              )
+            }
+          } catch (collegeErr) {
+            console.error("College auto-register error (non-fatal):", collegeErr)
+          }
+        }
       } else if (role === "college") {
         userData = {
           ...userData,
