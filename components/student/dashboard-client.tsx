@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import type { StudentProfile } from "@/lib/types"
 import { AddPlatformDialog } from "@/components/student/add-platform-dialog"
+import { DashboardHero } from "@/components/student/dashboard-hero"
 
 import { 
   Code, 
@@ -1465,62 +1466,29 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
   return (
     <div className="space-y-6">
       {(isUpdating || isAutoSyncing) && (
-        <div className="fixed top-4 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+        <div className="fixed top-20 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           {isAutoSyncing ? 'Auto-syncing latest stats...' : 'Updating dashboard...'}
         </div>
       )}
-      
-      {/* Top Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Problems</p>
-                <p className="text-2xl font-bold">{stats.totalProblems}</p>
-              </div>
-              <Code className="h-4 w-4 text-muted-foreground" />
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">GitHub Repositories</p>
-                <p className="text-2xl font-bold">{stats.githubRepositories}</p>
-              </div>
-              <GitBranch className="h-4 w-4 text-muted-foreground" />
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Contests</p>
-                <p className="text-2xl font-bold">{stats.totalContests}</p>
-              </div>
-              <Trophy className="h-4 w-4 text-muted-foreground" />
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Highest Rating</p>
-                <p className="text-2xl font-bold">{stats.highestRating}</p>
-              </div>
-              <Star className="h-4 w-4 text-muted-foreground" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+
+      {/* ── New Hero Section ─────────────────────────────────── */}
+      <DashboardHero
+        student={student}
+        onSync={async () => {
+          setIsUpdating(true)
+          try {
+            const res = await fetch('/api/platforms/sync', { method: 'POST', credentials: 'include' })
+            if (res.ok) {
+              toast.success('Stats synced!')
+              const ur = await fetch('/api/auth/user', { credentials: 'include', cache: 'no-store' })
+              if (ur.ok) { const ud = await ur.json(); if (ud.user) setStudent(ud.user) }
+            }
+          } catch { toast.error('Sync failed') }
+          finally { setIsUpdating(false) }
+        }}
+        isSyncing={isUpdating || isAutoSyncing}
+      />
 
       {/* Connected Platforms */}
       <Card>
@@ -1617,7 +1585,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         </CardHeader>
         <CardContent>
           {hasLinkedPlatforms ? (
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {Object.entries(linkedPlatforms)
                 .filter(([, platformData]) => platformData != null)
                 .sort(([, a], [, b]) => {

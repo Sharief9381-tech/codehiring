@@ -11,9 +11,9 @@ export default async function RecruiterLayout({ children }: { children: React.Re
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <DashboardSidebar user={serializeUser(user)} />
-      <main className="flex-1 overflow-auto">
+      <main className="min-h-screen">
         {children}
       </main>
     </div>

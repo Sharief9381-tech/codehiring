@@ -118,16 +118,39 @@ export async function POST(request: Request) {
             const db = await getDatabase()
             const existingCollege = await db.collection("users").findOne({ role: "college", collegeCode })
             if (!existingCollege) {
-              // Create a placeholder college entry so it appears in the explore list
+              // Try to fetch real college name from Hipolabs universities API
+              let resolvedName = collegeCode
+              let resolvedLocation = ""
+              let resolvedWebsite = null
+              try {
+                // Search by the college code as a name query
+                const apiRes = await fetch(
+                  `http://universities.hipolabs.com/search?name=${encodeURIComponent(collegeCode)}`,
+                  { signal: AbortSignal.timeout(4000) }
+                )
+                if (apiRes.ok) {
+                  const results = await apiRes.json()
+                  if (Array.isArray(results) && results.length > 0) {
+                    // Prefer Indian results first
+                    const indian = results.find((r: any) => r.country === "India") ?? results[0]
+                    resolvedName = indian.name ?? collegeCode
+                    resolvedLocation = indian.country ?? ""
+                    resolvedWebsite = indian.web_pages?.[0] ?? null
+                  }
+                }
+              } catch {
+                // API unavailable — use code as name
+              }
+
               await db.collection("users").insertOne({
-                name: collegeCode,
+                name: resolvedName,
                 email: `auto-${collegeCode.toLowerCase()}@codehire.internal`,
                 password: "",
                 role: "college",
-                collegeName: collegeCode,
+                collegeName: resolvedName,
                 collegeCode,
-                location: "",
-                website: null,
+                location: resolvedLocation,
+                website: resolvedWebsite,
                 departments: [],
                 totalStudents: 1,
                 placementOfficerName: null,
@@ -135,7 +158,7 @@ export async function POST(request: Request) {
                 createdAt: new Date(),
                 updatedAt: new Date(),
               })
-              console.log("Auto-created college entry for:", collegeCode)
+              console.log("Auto-created college entry for:", collegeCode, "→", resolvedName)
             } else {
               // Increment student count
               await db.collection("users").updateOne(

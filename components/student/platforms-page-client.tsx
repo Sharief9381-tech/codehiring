@@ -218,20 +218,20 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
               >
                 <CardContent className="p-5">
                   {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-start justify-between mb-4 gap-2">
+                    <div className="flex items-center gap-3 min-w-0">
                       <div
                         className="h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: config.color + "20", border: `1px solid ${config.color}` }}
                       >
                         <Icon className="h-5 w-5" style={{ color: config.color }} />
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground">{config.name}</h4>
-                        <p className="text-xs text-muted-foreground">@{username}</p>
+                      <div className="min-w-0">
+                        <h4 className="font-semibold text-foreground truncate">{config.name}</h4>
+                        <p className="text-xs text-muted-foreground truncate">@{username}</p>
                       </div>
                     </div>
-                    <Badge className="text-xs bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/30">
+                    <Badge className="shrink-0 text-xs bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/30">
                       <Check className="h-3 w-3 mr-1" />
                       Connected
                     </Badge>
