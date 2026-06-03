@@ -9,18 +9,24 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Code2, Loader2, GraduationCap, Building2, Briefcase } from "lucide-react"
+import { Code2, Loader2, GraduationCap, Building2, Briefcase, Award } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Loading from "./loading"
 
-type Role = "student" | "college" | "recruiter"
+type Role = "student" | "college" | "recruiter" | "graduate"
 
 const roles = [
   {
     id: "student" as Role,
     label: "Student",
-    description: "Track your coding progress and get matched with jobs",
+    description: "Currently enrolled — track coding progress and get matched with jobs",
     icon: GraduationCap,
+  },
+  {
+    id: "graduate" as Role,
+    label: "Graduate",
+    description: "Already passed out — showcase your profile and get hired",
+    icon: Award,
   },
   {
     id: "college" as Role,
@@ -96,7 +102,10 @@ function SignupForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          role: selectedRole,
+          // Graduate signs up as student with isGraduate flag
+          role: selectedRole === "graduate" ? "student" : selectedRole,
+          isGraduate: selectedRole === "graduate",
+          isOpenToWork: selectedRole === "graduate" ? true : undefined,
         }),
       })
 
@@ -106,12 +115,12 @@ function SignupForm() {
         throw new Error(data.error || "Signup failed")
       }
 
-      // Redirect to the URL provided by the API
       if (data.redirectTo) {
         router.push(data.redirectTo)
       } else {
-        // Fallback redirect based on user role
-        router.push(`/${selectedRole}/dashboard`)
+        // Graduates go to student dashboard
+        const portalRole = selectedRole === "graduate" ? "student" : selectedRole
+        router.push(`/${portalRole}/dashboard`)
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
@@ -140,7 +149,9 @@ function SignupForm() {
             <CardDescription>
               {step === "role"
                 ? "Select your role to get started"
-                : `Sign up as a ${selectedRole}`}
+                : selectedRole === "graduate"
+                  ? "Create your graduate profile"
+                  : `Sign up as a ${selectedRole}`}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -247,6 +258,45 @@ function SignupForm() {
                           required
                         />
                       </div>
+                    </div>
+                  </>
+                )}
+
+                {selectedRole === "graduate" && (
+                  <>
+                    <div className="rounded-lg bg-blue-500/10 border border-blue-500/20 px-4 py-3 text-xs text-blue-600 mb-2">
+                      🎓 As a graduate, you get the full student dashboard — connect your platforms, build your public profile, and get matched with jobs.
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="branch">Branch / Degree</Label>
+                        <Input
+                          id="branch"
+                          placeholder="CSE / B.Tech"
+                          value={formData.branch}
+                          onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="graduationYear">Graduation Year</Label>
+                        <Input
+                          id="graduationYear"
+                          placeholder="2024"
+                          value={formData.graduationYear}
+                          onChange={(e) => setFormData({ ...formData, graduationYear: e.target.value })}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="collegeCode">College Code <span className="text-muted-foreground text-xs">(optional)</span></Label>
+                      <Input
+                        id="collegeCode"
+                        placeholder="IITD, VIT, BITS..."
+                        value={formData.collegeCode}
+                        onChange={(e) => setFormData({ ...formData, collegeCode: e.target.value.toUpperCase() })}
+                      />
                     </div>
                   </>
                 )}

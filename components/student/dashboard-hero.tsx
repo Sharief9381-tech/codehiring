@@ -77,6 +77,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
 
   const linkedPlatforms = student.linkedPlatforms || {}
   const platformCount = Object.keys(linkedPlatforms).filter(k => linkedPlatforms[k]).length
+  const isGraduate = !!(student as any).isGraduate || (student.graduationYear && student.graduationYear <= new Date().getFullYear())
 
   // Compute stats from linked platforms
   let totalProblems = 0, highestRating = 0, contestsAttended = 0, githubContributions = 0
@@ -146,7 +147,8 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
                   Welcome back, {student.name.split(" ")[0]} 👋
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  {student.branch} · {student.collegeCode} · {student.graduationYear}
+                  {student.branch}
+                  {isGraduate ? ` · Graduate ${student.graduationYear}` : ` · ${student.collegeCode} · ${student.graduationYear}`}
                 </p>
               </div>
             </div>
@@ -208,18 +210,20 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
                 <p className="text-xs text-muted-foreground">of {ranking.totalGlobal}</p>
               ) : null}
             </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-2 mb-1">
-                <Building2 className="h-4 w-4 text-emerald-500" />
-                <span className="text-xs text-muted-foreground">College Rank</span>
+            {!isGraduate && student.collegeCode && (
+              <div className="rounded-xl border border-border bg-card p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Building2 className="h-4 w-4 text-emerald-500" />
+                  <span className="text-xs text-muted-foreground">College Rank</span>
+                </div>
+                <p className="text-2xl font-bold text-foreground">
+                  {ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "—"}
+                </p>
+                {ranking?.totalCollege ? (
+                  <p className="text-xs text-muted-foreground">of {ranking.totalCollege}</p>
+                ) : null}
               </div>
-              <p className="text-2xl font-bold text-foreground">
-                {ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "—"}
-              </p>
-              {ranking?.totalCollege ? (
-                <p className="text-xs text-muted-foreground">of {ranking.totalCollege}</p>
-              ) : null}
-            </div>
+            )}
           </div>
         </div>
       </div>

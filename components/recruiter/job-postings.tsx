@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Dialog, DialogContent, DialogDescription,
   DialogHeader, DialogTitle, DialogTrigger,
@@ -15,6 +17,7 @@ import {
 import {
   Plus, Briefcase, MapPin, IndianRupee, Calendar, Users,
   Eye, Edit, Trash2, Clock, CheckCircle, XCircle, Loader2,
+  Code2, Star, GitBranch, ExternalLink,
 } from "lucide-react"
 import { toast } from "sonner"
 import Link from "next/link"
@@ -31,6 +34,9 @@ interface Job {
   minProblems?: number
   minRating?: number
   minCGPA?: number
+  allowedBranches?: string[]     // e.g. ["CSE", "IT", "ECE"]
+  allowedGradYears?: number[]    // e.g. [2025, 2026]
+  allowedDegrees?: string[]      // e.g. ["B.Tech", "B.E.", "MCA"]
   status: "active" | "draft" | "closed"
   applications: number
   views: number
@@ -42,8 +48,10 @@ const EMPTY_FORM = {
   title: "", type: "Internship", location: "", salary: "",
   description: "", skills: "", deadline: "",
   minProblems: "", minRating: "", minCGPA: "",
+  allowedBranches: "",     // comma-separated
+  allowedGradYears: "",    // comma-separated e.g. "2025,2026"
+  allowedDegrees: "",      // comma-separated
   companyName: "", status: "active" as "active" | "draft",
-  applyUrl: "",
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -96,9 +104,11 @@ export function JobPostings() {
       minProblems: String(job.minProblems ?? ""),
       minRating: String(job.minRating ?? ""),
       minCGPA: String(job.minCGPA ?? ""),
+      allowedBranches: (job.allowedBranches ?? []).join(", "),
+      allowedGradYears: (job.allowedGradYears ?? []).join(", "),
+      allowedDegrees: (job.allowedDegrees ?? []).join(", "),
       companyName: job.companyName,
       status: job.status === "closed" ? "active" : job.status,
-      applyUrl: (job as any).applyUrl ?? "",
     })
     setDialogOpen(true)
   }
@@ -117,6 +127,15 @@ export function JobPostings() {
         minProblems: form.minProblems ? Number(form.minProblems) : 0,
         minRating: form.minRating ? Number(form.minRating) : 0,
         minCGPA: form.minCGPA ? Number(form.minCGPA) : 0,
+        allowedBranches: form.allowedBranches
+          ? form.allowedBranches.split(",").map(s => s.trim().toUpperCase()).filter(Boolean)
+          : [],
+        allowedGradYears: form.allowedGradYears
+          ? form.allowedGradYears.split(",").map(s => Number(s.trim())).filter(Boolean)
+          : [],
+        allowedDegrees: form.allowedDegrees
+          ? form.allowedDegrees.split(",").map(s => s.trim()).filter(Boolean)
+          : [],
       }
 
       if (editJob) {
@@ -174,6 +193,45 @@ export function JobPostings() {
   const activeCount = jobs.filter((j) => j.status === "active").length
   const totalApps = jobs.reduce((s, j) => s + j.applications, 0)
   const totalViews = jobs.reduce((s, j) => s + j.views, 0)
+
+  // ── Applicants dialog state ──────────────────────────────────────────────
+  const [applicantsJobId, setApplicantsJobId] = useState<string | null>(null)
+  const [applicantsJobTitle, setApplicantsJobTitle] = useState("")
+  const [applicants, setApplicants] = useState<any[]>([])
+  const [applicantsLoading, setApplicantsLoading] = useState(false)
+
+  const openApplicants = async (job: Job) => {
+    setApplicantsJobId(job._id)
+    setApplicantsJobTitle(job.title)
+    setApplicants([])
+    setApplicantsLoading(true)
+    try {
+      const res = await fetch(`/api/recruiter/jobs/${job._id}/applicants`)
+      const data = await res.json()
+      setApplicants(data.applicants ?? [])
+    } catch { toast.error("Failed to load applicants") }
+    finally { setApplicantsLoading(false) }
+  }
+
+  const updateApplicantStatus = async (studentId: string, status: string) => {
+    if (!applicantsJobId) return
+    try {
+      await fetch(`/api/recruiter/jobs/${applicantsJobId}/applicants`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentId, status }),
+      })
+      setApplicants(prev => prev.map(a => a.studentId === studentId ? { ...a, status } : a))
+      toast.success(`Applicant ${status}`)
+    } catch { toast.error("Failed to update status") }
+  }
+
+  const STATUS_COLORS: Record<string, string> = {
+    applied:     "bg-blue-500/10 text-blue-600",
+    shortlisted: "bg-emerald-500/10 text-emerald-600",
+    rejected:    "bg-red-500/10 text-red-600",
+    hired:       "bg-purple-500/10 text-purple-600",
+  }
 
   return (
     <div className="space-y-6">
@@ -299,6 +357,27 @@ export function JobPostings() {
                 </div>
               </div>
 
+              <div className="space-y-2">
+                <Label>Eligible Candidates <span className="text-xs text-muted-foreground">(leave blank = all)</span></Label>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Graduation Year(s)</Label>
+                    <Input placeholder="e.g. 2025, 2026" value={form.allowedGradYears} onChange={(e) => setForm({ ...form, allowedGradYears: e.target.value })} />
+                    <p className="text-xs text-muted-foreground">Comma-separated years</p>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Branch(es)</Label>
+                    <Input placeholder="e.g. CSE, IT, ECE" value={form.allowedBranches} onChange={(e) => setForm({ ...form, allowedBranches: e.target.value })} />
+                    <p className="text-xs text-muted-foreground">Comma-separated branches</p>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Degree(s)</Label>
+                    <Input placeholder="e.g. B.Tech, B.E., MCA" value={form.allowedDegrees} onChange={(e) => setForm({ ...form, allowedDegrees: e.target.value })} />
+                    <p className="text-xs text-muted-foreground">Comma-separated degrees</p>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex gap-2 pt-2">
                 <Button variant="outline" className="flex-1 bg-transparent" onClick={() => handleSubmit("draft")} disabled={saving}>
                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save as Draft"}
@@ -366,6 +445,10 @@ export function JobPostings() {
                       <div><p className="text-lg font-semibold">{job.applications}</p><p className="text-xs text-muted-foreground">Applications</p></div>
                     </div>
                     <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="gap-1 bg-transparent" onClick={() => openApplicants(job)}>
+                        <Users className="h-4 w-4" />
+                        Applicants {job.applications > 0 && <Badge className="ml-1 text-xs bg-primary/10 text-primary">{job.applications}</Badge>}
+                      </Button>
                       <Button variant="outline" size="sm" className="gap-1 bg-transparent" onClick={() => openEdit(job)}>
                         <Edit className="h-4 w-4" />Edit
                       </Button>
@@ -389,6 +472,110 @@ export function JobPostings() {
           ))}
         </div>
       )}
+    </div>
+
+      {/* ── Applicants Dialog ─────────────────────────────────────────────── */}
+      <Dialog open={!!applicantsJobId} onOpenChange={open => !open && setApplicantsJobId(null)}>
+        <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-primary" />
+              Applicants — {applicantsJobTitle}
+            </DialogTitle>
+            <DialogDescription>
+              {applicants.length} candidate{applicants.length !== 1 ? "s" : ""} applied
+            </DialogDescription>
+          </DialogHeader>
+
+          <ScrollArea className="flex-1 mt-2">
+            {applicantsLoading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : applicants.length === 0 ? (
+              <div className="text-center py-12">
+                <Users className="h-10 w-10 mx-auto text-muted-foreground mb-3" />
+                <p className="text-muted-foreground">No applicants yet</p>
+              </div>
+            ) : (
+              <div className="space-y-3 pr-2">
+                {applicants.map((a: any) => (
+                  <div key={a.studentId} className="rounded-xl border border-border bg-card p-4">
+                    <div className="flex items-start gap-3">
+                      <Avatar className="h-10 w-10 shrink-0">
+                        <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
+                          {a.name?.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="font-semibold text-foreground">{a.name}</p>
+                          {a.isGraduate && <Badge className="text-xs bg-blue-500/10 text-blue-600">Graduate</Badge>}
+                          <Badge className={`text-xs ${STATUS_COLORS[a.status] ?? STATUS_COLORS.applied}`}>
+                            {a.status}
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{a.email}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {a.college}{a.branch ? ` · ${a.branch}` : ""}{a.graduationYear ? ` · ${a.graduationYear}` : ""}
+                        </p>
+                        <div className="flex flex-wrap gap-3 mt-2 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1"><Code2 className="h-3 w-3" />{a.totalProblems} problems</span>
+                          {a.highestRating > 0 && <span className="flex items-center gap-1"><Star className="h-3 w-3" />{a.highestRating} rating</span>}
+                          {a.githubContributions > 0 && <span className="flex items-center gap-1"><GitBranch className="h-3 w-3" />{a.githubContributions} contrib</span>}
+                          <span>{a.platforms?.join(", ")}</span>
+                        </div>
+                        {a.skills?.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {a.skills.slice(0, 5).map((s: string) => (
+                              <Badge key={s} variant="secondary" className="text-xs">{s}</Badge>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-1.5 shrink-0">
+                        {a.linkedinUrl && (
+                          <a href={a.linkedinUrl} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" size="sm" className="gap-1.5 bg-transparent text-xs h-7">
+                              <ExternalLink className="h-3 w-3" />LinkedIn
+                            </Button>
+                          </a>
+                        )}
+                        <Link href={`/u/${a.name?.toLowerCase().replace(/\s+/g, "-")}`} target="_blank">
+                          <Button variant="outline" size="sm" className="gap-1.5 bg-transparent text-xs h-7 w-full">
+                            <Eye className="h-3 w-3" />Profile
+                          </Button>
+                        </Link>
+                        {a.status === "applied" && (
+                          <Button size="sm" className="gap-1.5 text-xs h-7 bg-emerald-600 hover:bg-emerald-700"
+                            onClick={() => updateApplicantStatus(a.studentId, "shortlisted")}>
+                            <CheckCircle className="h-3 w-3" />Shortlist
+                          </Button>
+                        )}
+                        {(a.status === "applied" || a.status === "shortlisted") && (
+                          <Button size="sm" variant="outline" className="gap-1.5 text-xs h-7 text-red-500 border-red-500/30 bg-transparent"
+                            onClick={() => updateApplicantStatus(a.studentId, "rejected")}>
+                            <XCircle className="h-3 w-3" />Reject
+                          </Button>
+                        )}
+                        {a.status === "shortlisted" && (
+                          <Button size="sm" className="gap-1.5 text-xs h-7 bg-purple-600 hover:bg-purple-700"
+                            onClick={() => updateApplicantStatus(a.studentId, "hired")}>
+                            ✓ Hire
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Applied {new Date(a.appliedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

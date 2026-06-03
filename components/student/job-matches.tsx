@@ -39,11 +39,9 @@ interface StudentProfile {
   isOpenToWork: boolean
 }
 
-function getApplyHref(job: MatchedJob): string {
+function getApplyHref(job: MatchedJob): string | null {
   const raw = job.applyUrl || (job as any).companyWebsite || ""
-  if (!raw) {
-    return `mailto:?subject=Application for ${encodeURIComponent(job.title)} at ${encodeURIComponent(job.companyName)}`
-  }
+  if (!raw || !raw.trim()) return null
   if (raw.startsWith("http") || raw.startsWith("mailto:")) return raw
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
     return `mailto:${raw}?subject=Application for ${encodeURIComponent(job.title)} at ${encodeURIComponent(job.companyName)}`
@@ -107,6 +105,7 @@ export function JobMatches() {
   const [searchQuery, setSearchQuery] = useState("")
   const [locationFilter, setLocationFilter] = useState("all")
   const [typeFilter, setTypeFilter] = useState("all")
+  const [jobsMeta, setJobsMeta] = useState<{ totalJobs: number; eligibleJobs: number } | null>(null)
 
   useEffect(() => {
     const load = async () => {
@@ -125,6 +124,7 @@ export function JobMatches() {
         const res = await fetch(`/api/student/jobs?${params}`)
         const data = await res.json()
         setJobs(data.jobs ?? [])
+        setJobsMeta({ totalJobs: data.totalJobs ?? 0, eligibleJobs: data.eligibleJobs ?? 0 })
       } catch {
         setJobs([])
       } finally {
@@ -218,6 +218,23 @@ export function JobMatches() {
           </Card>
         )}
 
+        {/* Eligibility info */}
+        {!loading && jobsMeta && jobsMeta.totalJobs > 0 && (
+          <div className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm border ${
+            jobsMeta.eligibleJobs === jobsMeta.totalJobs
+              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600"
+              : "bg-amber-500/10 border-amber-500/20 text-amber-600"
+          }`}>
+            <CheckCircle className="h-4 w-4 shrink-0" />
+            <span>
+              You are eligible for <strong>{jobsMeta.eligibleJobs}</strong> of <strong>{jobsMeta.totalJobs}</strong> active job{jobsMeta.totalJobs !== 1 ? "s" : ""}.
+              {jobsMeta.eligibleJobs < jobsMeta.totalJobs && (
+                <> Improve your problems solved and rating to unlock more.</>
+              )}
+            </span>
+          </div>
+        )}
+
         {loading ? (
           <div className="flex items-center justify-center py-16">
             <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
@@ -292,11 +309,24 @@ export function JobMatches() {
                     <div className="flex gap-2 lg:flex-col">
                       {(() => {
                         const href = getApplyHref(job)
+                        if (!href) return (
+                          <div className="flex flex-1 items-center justify-center gap-2 lg:w-32 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground bg-secondary border border-border cursor-default">
+                            Contact Recruiter
+                          </div>
+                        )
                         return (
                           <a
                             href={href}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={() => {
+                              // Record application in background
+                              fetch("/api/student/jobs/apply", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ jobId: job._id }),
+                              }).catch(() => {})
+                            }}
                             className="flex flex-1 items-center justify-center gap-2 lg:w-32 rounded-md px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all"
                           >
                             Apply Now
@@ -351,15 +381,15 @@ export function JobMatches() {
                     <div className="flex gap-2">
                       {(() => {
                         const href = getApplyHref(job)
-                        return (
-                          <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all"
-                          >
+                        return href ? (
+                          <a href={href} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all">
                             Apply
                           </a>
+                        ) : (
+                          <span className="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground bg-secondary border border-border">
+                            Contact Recruiter
+                          </span>
                         )
                       })()}
                       <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white" onClick={() => toggleSave(job._id)}>
