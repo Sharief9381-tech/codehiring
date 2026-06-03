@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
@@ -64,7 +64,7 @@ function timeAgo(dateStr: string) {
   return `${Math.floor(days / 7)} week${Math.floor(days / 7) > 1 ? "s" : ""} ago`
 }
 
-// ── Fetch student profile from auth user ─────────────────────────────────────
+// â”€â”€ Fetch student profile from auth user â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function fetchStudentProfile(): Promise<StudentProfile> {
   try {
     const res = await fetch("/api/auth/user", { credentials: "include", cache: "no-store" })
@@ -95,9 +95,6 @@ async function fetchStudentProfile(): Promise<StudentProfile> {
     }
   } catch { /* fall through */ }
   return { skills: [], totalProblems: 0, rating: 0, platformCount: 0, isOpenToWork: true }
-}
-
-export function JobMatches() {  return { skills: [], totalProblems: 0, rating: 0, platformCount: 0, isOpenToWork: true }
 }
 
 export function JobMatches() {
@@ -196,7 +193,7 @@ export function JobMatches() {
         </div>
       </div>
 
-      {/* ── Matches tab ── */}
+      {/* â”€â”€ Matches tab â”€â”€ */}
       <TabsContent value="matches" className="space-y-4">
         {/* Profile strength card */}
         {profile && (
@@ -208,8 +205,8 @@ export function JobMatches() {
               <div className="flex-1">
                 <p className="font-medium text-white">Your Job Match Profile</p>
                 <p className="text-sm text-blue-200">
-                  {profile.platformCount} platform{profile.platformCount !== 1 ? "s" : ""} connected ·{" "}
-                  {profile.totalProblems} problems solved ·{" "}
+                  {profile.platformCount} platform{profile.platformCount !== 1 ? "s" : ""} connected Â·{" "}
+                  {profile.totalProblems} problems solved Â·{" "}
                   {profile.rating > 0 ? `Rating ${profile.rating}` : "No rating yet"}
                 </p>
               </div>
@@ -358,7 +355,7 @@ export function JobMatches() {
         )}
       </TabsContent>
 
-      {/* ── Saved tab ── */}
+      {/* â”€â”€ Saved tab â”€â”€ */}
       <TabsContent value="saved" className="space-y-4">
         {savedList.length === 0 ? (
           <Card className="bg-gray-800 border-gray-700">
@@ -376,7 +373,7 @@ export function JobMatches() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-white">{job.title}</h3>
-                      <p className="text-sm text-gray-400">{job.companyName} · {job.location}</p>
+                      <p className="text-sm text-gray-400">{job.companyName} Â· {job.location}</p>
                       <Badge className={`mt-2 gap-1 border-0 text-xs ${getMatchColor(job.matchScore)}`}>
                         <Sparkles className="h-3 w-3" />{job.matchScore}% Match
                       </Badge>
