@@ -472,7 +472,6 @@ export function JobPostings() {
           ))}
         </div>
       )}
-    </div>
 
       {/* ── Applicants Dialog ─────────────────────────────────────────────── */}
       <Dialog open={!!applicantsJobId} onOpenChange={open => !open && setApplicantsJobId(null)}>

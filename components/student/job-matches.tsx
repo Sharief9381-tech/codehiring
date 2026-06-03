@@ -64,37 +64,40 @@ function timeAgo(dateStr: string) {
   return `${Math.floor(days / 7)} week${Math.floor(days / 7) > 1 ? "s" : ""} ago`
 }
 
-// ── Fetch student profile from linked platforms ───────────────────────────────
+// ── Fetch student profile from auth user ─────────────────────────────────────
 async function fetchStudentProfile(): Promise<StudentProfile> {
   try {
-    // Try to get linked platforms to compute stats
-    const res = await fetch("/api/student/linked-platforms").catch(() => null)
-    if (res?.ok) {
+    const res = await fetch("/api/auth/user", { credentials: "include", cache: "no-store" })
+    if (res.ok) {
       const data = await res.json()
-      const platforms = data.linkedPlatforms ?? {}
-      const platformCount = Object.keys(platforms).length
+      const student = data.user
+      if (student) {
+        const platforms = student.linkedPlatforms ?? {}
+        const platformCount = Object.keys(platforms).filter(k => platforms[k]).length
+        let totalProblems = 0, rating = 0
 
-      // Aggregate stats from platform data
-      let totalProblems = 0
-      let rating = 0
-      const skills: string[] = []
+        Object.entries(platforms).forEach(([pid, info]: [string, any]) => {
+          if (!info || typeof info !== "object") return
+          const s = info.stats ?? {}
+          totalProblems += Number(s.totalSolved || s.problemsSolved || 0)
+          const r = Math.max(s.rating || 0, s.currentRating || 0, s.highestRating || 0, s.contestRating || 0)
+          if (r > rating) rating = r
+        })
 
-      for (const [platform, info] of Object.entries(platforms) as any[]) {
-        if (!info || typeof info !== "object") continue
-        const s = info.stats ?? info
-        totalProblems += Number(s.totalSolved || s.problemsSolved || 0)
-        const r = Number(s.rating || s.currentRating || s.highestRating || s.contestRating || 0)
-        if (r > rating) rating = r
-        // Infer skills from platform names
-        if (platform === "leetcode" || platform === "codeforces") skills.push("Data Structures", "Algorithms")
-        if (platform === "github") skills.push("Git", "Open Source")
+        return {
+          skills: student.skills ?? [],
+          totalProblems,
+          rating,
+          platformCount,
+          isOpenToWork: student.isOpenToWork ?? true,
+        }
       }
-
-      return { skills: [...new Set(skills)], totalProblems, rating, platformCount, isOpenToWork: true }
     }
   } catch { /* fall through */ }
-
   return { skills: [], totalProblems: 0, rating: 0, platformCount: 0, isOpenToWork: true }
+}
+
+export function JobMatches() {  return { skills: [], totalProblems: 0, rating: 0, platformCount: 0, isOpenToWork: true }
 }
 
 export function JobMatches() {
