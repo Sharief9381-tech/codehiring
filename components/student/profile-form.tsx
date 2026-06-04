@@ -145,13 +145,15 @@ export function ProfileForm({ user, onChange }: Props) {
             </div>
             <div>
               <label className={formLabel}>Graduation Year</label>
-              <select className={formInput + " appearance-none cursor-pointer"}
-                value={user?.graduationYear || "2026"}
-                onChange={e => update("graduationYear", e.target.value)}>
-                {["2024","2025","2026","2027","2028"].map(y => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                <input
+                  className={formInput + " pl-9 opacity-60 cursor-not-allowed"}
+                  value={user?.graduationYear || ""}
+                  readOnly
+                />
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-1">Set at signup — cannot be changed</p>
             </div>
             <div>
               <label className={formLabel}>Roll Number</label>

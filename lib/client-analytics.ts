@@ -105,8 +105,8 @@ class ClientAnalytics {
         },
         body: JSON.stringify(eventData),
       })
-    } catch (error) {
-      console.error('Failed to send analytics event:', error)
+    } catch {
+      // Silently ignore — analytics failure should never surface to users
     }
   }
 }

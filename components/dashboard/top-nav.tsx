@@ -21,7 +21,7 @@ const studentLinks = [
   { href: "/student/platforms",  label: "Platforms",   icon: Code2 },
   { href: "/student/analytics",  label: "Analytics",   icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard", icon: Trophy },
-  { href: "/student/jobs",       label: "Job Matches", icon: Briefcase },
+  { href: "/student/jobs",       label: "Career Hub", icon: Briefcase },
   { href: "/student/profile",    label: "Profile",     icon: User },
 ]
 
