@@ -41,6 +41,7 @@ export async function POST(request: Request) {
       skills, deadline, minProblems, minRating, minCGPA,
       status = "active",
       applyUrl = "",
+      allowedBranches, allowedGradYears, allowedDegrees,
     } = body
 
     if (!title || !type || !location || !description) {
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
     const jobData = {
       recruiterId: recruiter._id?.toString() ?? "",
       recruiterName: recruiter.name,
-      companyName: recruiter.companyName ?? "",
+      companyName: body.companyName || recruiter.companyName || "",
       companyWebsite: recruiter.companyWebsite ?? "",
       applyUrl: applyUrl || undefined,
       postedByRole: "recruiter" as const,
@@ -69,6 +70,15 @@ export async function POST(request: Request) {
       minProblems: minProblems ? Number(minProblems) : 0,
       minRating: minRating ? Number(minRating) : 0,
       minCGPA: minCGPA ? Number(minCGPA) : 0,
+      allowedBranches: allowedBranches
+        ? (Array.isArray(allowedBranches) ? allowedBranches : String(allowedBranches).split(",").map((s: string) => s.trim()).filter(Boolean))
+        : [],
+      allowedGradYears: allowedGradYears
+        ? (Array.isArray(allowedGradYears) ? allowedGradYears : String(allowedGradYears).split(",").map((s: string) => Number(s.trim())).filter(Boolean))
+        : [],
+      allowedDegrees: allowedDegrees
+        ? (Array.isArray(allowedDegrees) ? allowedDegrees : String(allowedDegrees).split(",").map((s: string) => s.trim()).filter(Boolean))
+        : [],
       status,
     }
 

@@ -48,9 +48,10 @@ const EMPTY_FORM = {
   title: "", type: "Internship", location: "", salary: "",
   description: "", skills: "", deadline: "",
   minProblems: "", minRating: "", minCGPA: "",
-  allowedBranches: "",     // comma-separated
-  allowedGradYears: "",    // comma-separated e.g. "2025,2026"
-  allowedDegrees: "",      // comma-separated
+  allowedBranches: "",
+  allowedGradYears: "",
+  allowedDegrees: "",
+  applyUrl: "",
   companyName: "", status: "active" as "active" | "draft",
 }
 
@@ -107,6 +108,7 @@ export function JobPostings() {
       allowedBranches: (job.allowedBranches ?? []).join(", "),
       allowedGradYears: (job.allowedGradYears ?? []).join(", "),
       allowedDegrees: (job.allowedDegrees ?? []).join(", "),
+      applyUrl: (job as any).applyUrl ?? "",
       companyName: job.companyName,
       status: job.status === "closed" ? "active" : job.status,
     })

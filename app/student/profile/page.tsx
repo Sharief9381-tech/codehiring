@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { ProfileForm } from "@/components/student/profile-form"
-import { Pencil, Save, X, Loader2, Sparkles, User, Mail, MapPin, BookOpen, Code2, Github, Linkedin, Globe } from "lucide-react"
+import { Pencil, Save, X, Loader2, Sparkles, User, BookOpen, Code2, Github, Linkedin, Globe } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { toast } from "sonner"
 
 // ── Read-only profile view ────────────────────────────────────────────────────
 
@@ -113,7 +114,6 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false)
   const [formData, setFormData] = useState<any>(null)
   const [savedData, setSavedData] = useState<any>(null)
-  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null)
 
   useEffect(() => {
     fetch("/api/student/profile")
@@ -126,10 +126,6 @@ export default function ProfilePage() {
       )
       .finally(() => setLoading(false))
   }, [])
-
-  useEffect(() => {
-    if (toast) { const t = setTimeout(() => setToast(null), 3000); return () => clearTimeout(t) }
-  }, [toast])
 
   const handleSave = async () => {
     if (!formData) return
@@ -144,12 +140,12 @@ export default function ProfilePage() {
       if (data.success) {
         setSavedData(formData)
         setEditing(false)
-        setToast({ msg: "Profile saved!", ok: true })
+        toast.success("Profile saved!")
       } else {
-        setToast({ msg: data.error || "Save failed", ok: false })
+        toast.error(data.error || "Save failed")
       }
     } catch {
-      setToast({ msg: "Network error", ok: false })
+      toast.error("Network error")
     } finally {
       setSaving(false)
     }
@@ -218,16 +214,6 @@ export default function ProfilePage() {
           <ProfileView user={savedData} />
         )}
       </div>
-
-      {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium shadow-2xl ${
-          toast.ok
-            ? "bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400"
-            : "bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400"
-        }`}>
-          {toast.ok ? "✓" : "✕"} {toast.msg}
-        </div>
-      )}
     </div>
   )
 }

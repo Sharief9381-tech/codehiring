@@ -378,7 +378,72 @@ function LiveJobCard({ job, type }: { job: LiveJob; type: "on" | "off" }) {
   )
 }
 
-// ── Live jobs grid ────────────────────────────────────────────────────────────
+// ── External off-campus job listings ─────────────────────────────────────────
+
+interface ExternalJob {
+  company: string
+  logo: string
+  role: string
+  location: string
+  type: string
+  description: string
+  applyUrl: string
+  tags: string[]
+}
+
+const externalJobs: ExternalJob[] = [
+  { company: "Google", logo: "GO", role: "Software Engineer (New Grad)", location: "Bangalore / Hyderabad", type: "Full-time", description: "Join Google's engineering team. Work on Search, YouTube, Cloud, or Android products used by billions worldwide.", tags: ["SWE", "MNC", "New Grad"], applyUrl: "https://careers.google.com/jobs/results/?degree=BACHELOR&employment_type=FULL_TIME&jex=ENTRY_LEVEL" },
+  { company: "Microsoft", logo: "MS", role: "SDE / Software Engineer", location: "Hyderabad / Noida", type: "Full-time", description: "Work on Azure, Office 365, Xbox, LinkedIn or Windows. Microsoft India is one of the largest tech employers.", tags: ["SDE", "MNC", "PPO"], applyUrl: "https://careers.microsoft.com/students/us/en/job/fulltime" },
+  { company: "Amazon", logo: "AZ", role: "SDE-1 (New Grad)", location: "Bangalore / Chennai", type: "Full-time", description: "Join Amazon's engineering teams building the world's largest e-commerce and cloud platform (AWS).", tags: ["SDE", "AWS", "MNC"], applyUrl: "https://www.amazon.jobs/en/job_categories/software-development?job_type%5B%5D=Full-Time&experience_ids%5B%5D=1" },
+  { company: "Flipkart", logo: "FK", role: "SDE / Data Engineer", location: "Bangalore", type: "Full-time", description: "India's largest e-commerce platform. Work on supply chain, payments, ML, and massive-scale backend systems.", tags: ["SDE", "India", "Product"], applyUrl: "https://www.flipkartcareers.com/#!/joblist" },
+  { company: "Razorpay", logo: "RP", role: "Software Engineer", location: "Bangalore", type: "Full-time", description: "India's leading fintech unicorn. Build payment infrastructure, fraud ML, and developer tools used by 8M+ businesses.", tags: ["Fintech", "Unicorn", "SWE"], applyUrl: "https://razorpay.com/jobs/?team=engineering" },
+  { company: "Swiggy", logo: "SW", role: "SDE / Data Scientist", location: "Bangalore", type: "Full-time", description: "Real-time logistics and food-tech at scale. Work on ML demand forecasting, hyperlocal delivery, and consumer apps.", tags: ["SDE", "ML", "Unicorn"], applyUrl: "https://careers.swiggy.com/#/" },
+  { company: "Zomato", logo: "ZO", role: "SDE / Product Analyst", location: "Gurgaon", type: "Full-time", description: "Build the future of food delivery and quick commerce. Teams across backend, ML, Android, iOS, and data engineering.", tags: ["SDE", "Unicorn", "India"], applyUrl: "https://www.zomato.com/careers" },
+  { company: "CRED", logo: "CR", role: "Software Engineer", location: "Bangalore", type: "Full-time", description: "Premium fintech product. High-quality engineering culture — work on payments, credit, commerce, and mobile apps.", tags: ["Fintech", "Product", "Unicorn"], applyUrl: "https://careers.cred.club/" },
+  { company: "Meesho", logo: "ME", role: "SDE / ML Engineer", location: "Bangalore", type: "Full-time", description: "Social commerce unicorn. Work on seller tools, ML-powered recommendations, and supply chain at massive Indian scale.", tags: ["SDE", "ML", "Unicorn"], applyUrl: "https://meesho.io/careers" },
+  { company: "Adobe", logo: "AD", role: "Software Development Engineer", location: "Noida / Bangalore", type: "Full-time", description: "Work on Creative Cloud, Document Cloud, or Experience Cloud products. Strong comp, great engineering culture.", tags: ["SDE", "MNC", "Product"], applyUrl: "https://careers.adobe.com/us/en/search-results?keywords=software+engineer&country=India" },
+  { company: "Atlassian", logo: "AT", role: "Software Engineer", location: "Bangalore / Remote", type: "Full-time", description: "Build Jira, Confluence, and Bitbucket — tools used by 250,000+ companies. Remote-friendly with strong WFH culture.", tags: ["SWE", "Remote", "Global"], applyUrl: "https://www.atlassian.com/company/careers/all-jobs" },
+  { company: "PhonePe", logo: "PP", role: "SDE / Backend Engineer", location: "Bangalore", type: "Full-time", description: "India's #1 payments app (500M+ users). Build fintech infrastructure, fraud detection, and real-time payment systems.", tags: ["Fintech", "India", "Scale"], applyUrl: "https://www.phonepe.com/careers/" },
+  { company: "Nykaa", logo: "NY", role: "SDE / Data Engineer", location: "Mumbai / Remote", type: "Full-time", description: "India's top beauty and fashion e-commerce platform. Engineering roles across backend, data pipelines, and mobile.", tags: ["E-commerce", "India", "Product"], applyUrl: "https://careers.nykaa.com/" },
+  { company: "LinkedIn Jobs", logo: "LI", role: "Browse All Tech Roles", location: "India — All Cities", type: "All", description: "Search all fresheer software engineer and data science roles across every company, sorted by recency.", tags: ["All Companies", "Filter", "Latest"], applyUrl: "https://www.linkedin.com/jobs/search/?keywords=software+engineer&location=India&f_JT=F&f_E=1%2C2&sortBy=DD" },
+  { company: "Naukri", logo: "NK", role: "Fresher IT Jobs", location: "Pan India", type: "All", description: "India's largest job portal. Browse thousands of fresher software and IT roles across service and product companies.", tags: ["All Companies", "Fresher", "India"], applyUrl: "https://www.naukri.com/fresher-software-engineer-jobs" },
+  { company: "Wellfound", logo: "WF", role: "Startup Engineering Roles", location: "Remote / India", type: "Full-time", description: "AngelList's job board for startups. Find early-stage to growth-stage startup roles with equity compensation.", tags: ["Startup", "Equity", "Global"], applyUrl: "https://wellfound.com/jobs?role=software-engineer&jobType=fulltime" },
+]
+
+function ExternalJobCard({ job }: { job: ExternalJob }) {
+  return (
+    <div className="rounded-xl bg-card border border-border flex flex-col hover:border-primary/40 hover:shadow-md transition-all">
+      <div className="flex items-center gap-3 px-4 pt-4 pb-3 border-b border-border">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700 font-bold text-xs">
+          {job.logo}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-sm truncate">{job.company}</p>
+          <p className="text-xs text-muted-foreground truncate">{job.role}</p>
+        </div>
+        <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-medium">
+          {job.type}
+        </span>
+      </div>
+      <div className="flex flex-col flex-1 gap-3 p-4">
+        <p className="text-sm text-muted-foreground leading-relaxed flex-1">{job.description}</p>
+        <div className="flex flex-wrap gap-1.5">
+          {job.tags.map(t => <Badge key={t} variant="secondary" className="text-xs px-2 py-0.5">{t}</Badge>)}
+        </div>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground border-t border-border pt-2">
+          <MapPin className="h-3 w-3 shrink-0" />
+          <span className="truncate">{job.location}</span>
+        </div>
+        <a href={job.applyUrl} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full rounded-lg bg-emerald-600 text-white py-2 text-sm font-semibold hover:bg-emerald-700 transition-colors">
+          Apply Now <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      </div>
+    </div>
+  )
+}
+
+
 
 function LiveJobsGrid({ jobs, loading, type, search }: { jobs: LiveJob[]; loading: boolean; type: "on" | "off"; search: string }) {
   if (loading) return (
@@ -515,7 +580,7 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
               <Globe className="h-4 w-4" />
               Off Campus
               <span className={`text-xs px-1.5 py-0.5 rounded-full ${jobTab === "off" ? "bg-white/20" : "bg-secondary"}`}>
-                {offCampusJobs.length}
+                {offCampusJobs.length + externalJobs.length}
               </span>
             </button>
             <p className="text-xs text-muted-foreground ml-1">
@@ -524,12 +589,37 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
           </div>
 
           {/* Jobs grid */}
-          <LiveJobsGrid
-            jobs={jobTab === "on" ? onCampusJobs : offCampusJobs}
-            loading={jobsLoading}
-            type={jobTab}
-            search=""
-          />
+          {jobTab === "on" ? (
+            <LiveJobsGrid
+              jobs={onCampusJobs}
+              loading={jobsLoading}
+              type="on"
+              search=""
+            />
+          ) : (
+            <div className="space-y-4">
+              {/* Recruiter-posted jobs from DB */}
+              {jobsLoading ? (
+                <div className="flex items-center justify-center py-8 text-muted-foreground text-sm gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" /> Loading jobs...
+                </div>
+              ) : offCampusJobs.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Posted by Recruiters on this Platform</p>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {offCampusJobs.map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
+                  </div>
+                </div>
+              )}
+              {/* External company jobs */}
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">External Companies — Direct Apply</p>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {externalJobs.map(job => <ExternalJobCard key={job.company + job.role} job={job} />)}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       ) : isInternSection ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

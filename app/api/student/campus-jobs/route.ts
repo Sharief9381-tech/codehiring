@@ -28,6 +28,9 @@ export async function GET() {
     const collegeCode = (student as any).collegeCode || ""
     const allJobs = await JobModel.findAll({ status: "active" })
 
+    console.log("campus-jobs: total active jobs:", allJobs.length)
+    console.log("campus-jobs: postedByRole values:", allJobs.map((j: any) => ({ id: j._id, role: j.postedByRole, title: j.title })))
+
     // On-campus: posted by a college, matching the student's college code
     const onCampus = allJobs.filter((j: any) =>
       j.postedByRole === "college" &&
@@ -35,7 +38,10 @@ export async function GET() {
     )
 
     // Off-campus: posted by recruiters
-    const offCampus = allJobs.filter((j: any) => j.postedByRole === "recruiter")
+    // Also include jobs with no postedByRole (legacy jobs before the field was added)
+    const offCampus = allJobs.filter((j: any) =>
+      j.postedByRole === "recruiter" || (!j.postedByRole && j.recruiterId)
+    )
 
     return NextResponse.json({ onCampus, offCampus })
   } catch (error) {
