@@ -5,7 +5,8 @@ import { UserModel } from "@/lib/models/user"
 // Allowed fields a student can update
 const ALLOWED_FIELDS = [
   "name", "phone", "location", "bio",
-  "collegeName", "branch", "graduationYear", "rollNumber", "degree",
+  "collegeName", "branch", "rollNumber", "degree",
+  "graduationYear",   // allowed only if not already set (enforced client-side)
   "skills", "linkedinUrl", "githubUrl", "portfolioUrl", "twitterUrl",
   "isOpenToWork",
 ]
@@ -22,6 +23,14 @@ export async function PATCH(request: Request) {
     for (const field of ALLOWED_FIELDS) {
       if (body[field] !== undefined) {
         updates[field] = body[field]
+      }
+    }
+
+    // Prevent overwriting graduationYear if already set
+    if (updates.graduationYear) {
+      const existing = await UserModel.findById(user._id as string)
+      if (existing && (existing as any).graduationYear) {
+        delete updates.graduationYear
       }
     }
 

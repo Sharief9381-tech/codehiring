@@ -147,13 +147,31 @@ export function ProfileForm({ user, onChange }: Props) {
               <label className={formLabel}>Graduation Year</label>
               <div className="relative">
                 <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                <input
-                  className={formInput + " pl-9 opacity-60 cursor-not-allowed"}
-                  value={user?.graduationYear || ""}
-                  readOnly
-                />
+                {user?.graduationYear ? (
+                  <>
+                    <input
+                      className={formInput + " pl-9 opacity-60 cursor-not-allowed"}
+                      value={user.graduationYear}
+                      readOnly
+                    />
+                    <p className="text-[10px] text-muted-foreground mt-1">Set at signup — cannot be changed</p>
+                  </>
+                ) : (
+                  <>
+                    <select
+                      className={formInput + " pl-9 appearance-none cursor-pointer"}
+                      value={user?.graduationYear || ""}
+                      onChange={e => update("graduationYear", Number(e.target.value))}
+                    >
+                      <option value="">Select graduation year</option>
+                      {[2025,2026,2027,2028,2029,2030,2031].map(y => (
+                        <option key={y} value={y}>{y}</option>
+                      ))}
+                    </select>
+                    <p className="text-[10px] text-amber-500 mt-1">Not set — select your graduation year to unlock Career Hub</p>
+                  </>
+                )}
               </div>
-              <p className="text-[10px] text-muted-foreground mt-1">Set at signup — cannot be changed</p>
             </div>
             <div>
               <label className={formLabel}>Roll Number</label>

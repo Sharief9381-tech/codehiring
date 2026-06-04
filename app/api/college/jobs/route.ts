@@ -1,7 +1,7 @@
 /**
- * Recruiter jobs API
- * GET  /api/recruiter/jobs  — list jobs posted by the logged-in recruiter
- * POST /api/recruiter/jobs  — create a new job posting
+ * College jobs API
+ * GET  /api/college/jobs  — list jobs posted by the logged-in college
+ * POST /api/college/jobs  — create a new on-campus job/drive
  */
 import { NextResponse } from "next/server"
 import { JobModel } from "@/lib/models/job"
@@ -11,7 +11,7 @@ import { getCurrentUser } from "@/lib/auth"
 export async function GET() {
   try {
     const user = await getCurrentUser()
-    if (!user || user.role !== "recruiter") {
+    if (!user || user.role !== "college") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -22,7 +22,7 @@ export async function GET() {
     const jobs = await JobModel.findAll({ recruiterId: user._id?.toString() })
     return NextResponse.json({ jobs })
   } catch (error) {
-    console.error("GET /api/recruiter/jobs error:", error)
+    console.error("GET /api/college/jobs error:", error)
     return NextResponse.json({ jobs: [] })
   }
 }
@@ -30,11 +30,11 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const user = await getCurrentUser()
-    if (!user || user.role !== "recruiter") {
+    if (!user || user.role !== "college") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const recruiter = user as any
+    const college = user as any
     const body = await request.json()
     const {
       title, type, location, salary, description,
@@ -43,24 +43,25 @@ export async function POST(request: Request) {
       applyUrl = "",
     } = body
 
-    if (!title || !type || !location || !description) {
+    if (!title || !type || !description) {
       return NextResponse.json(
-        { error: "title, type, location, and description are required" },
+        { error: "title, type, and description are required" },
         { status: 400 }
       )
     }
 
     const jobData = {
-      recruiterId: recruiter._id?.toString() ?? "",
-      recruiterName: recruiter.name,
-      companyName: recruiter.companyName ?? "",
-      companyWebsite: recruiter.companyWebsite ?? "",
+      recruiterId: college._id?.toString() ?? "",
+      recruiterName: college.name,
+      companyName: college.collegeName ?? college.name,
+      companyWebsite: college.website ?? "",
       applyUrl: applyUrl || undefined,
-      postedByRole: "recruiter" as const,
+      postedByRole: "college" as const,
+      collegeCode: college.collegeCode ?? "",
       title,
       type,
-      location,
-      salary: salary || "Not specified",
+      location: location || college.location || "On Campus",
+      salary: salary || "Not disclosed",
       description,
       skills: Array.isArray(skills)
         ? skills
@@ -79,7 +80,7 @@ export async function POST(request: Request) {
     const job = await JobModel.create(jobData)
     return NextResponse.json({ success: true, job }, { status: 201 })
   } catch (error) {
-    console.error("POST /api/recruiter/jobs error:", error)
+    console.error("POST /api/college/jobs error:", error)
     return NextResponse.json({ error: "Failed to create job posting" }, { status: 500 })
   }
 }

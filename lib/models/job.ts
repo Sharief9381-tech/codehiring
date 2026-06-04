@@ -8,11 +8,13 @@ import { ObjectId } from "mongodb"
 export interface JobDocument {
   _id?: string | ObjectId
   // Who posted it
-  recruiterId: string        // recruiter user _id
+  recruiterId: string        // recruiter or college user _id
   recruiterName: string
   companyName: string
   companyWebsite?: string
-  applyUrl?: string          // external application link
+  applyUrl?: string
+  postedByRole?: "recruiter" | "college"  // distinguishes on-campus vs off-campus
+  collegeCode?: string                     // set when postedByRole === "college"
 
   // Job details
   title: string
