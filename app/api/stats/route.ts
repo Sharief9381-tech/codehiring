@@ -22,7 +22,7 @@ export async function GET() {
   try {
     const db = await getDatabase()
 
-    const [roleCounts, driveCounts, problemsResult, applicantsResult, connectionsResult] =
+    const [roleCounts, jobCounts, problemsResult, applicantsResult, connectionsResult] =
       await Promise.all([
         // User counts by role
         db
@@ -30,8 +30,8 @@ export async function GET() {
           .aggregate([{ $group: { _id: "$role", count: { $sum: 1 } } }])
           .toArray(),
 
-        // Drive counts (all statuses)
-        db.collection("drives").countDocuments(),
+        // Hiring drives = jobs posted on platform (both recruiter & college)
+        db.collection("jobs").countDocuments(),
 
         // Total problems solved across all students
         db
@@ -54,12 +54,11 @@ export async function GET() {
           ])
           .toArray(),
 
-        // Total drive applicants
+        // Total applications across all jobs
         db
-          .collection("drives")
+          .collection("jobs")
           .aggregate([
-            { $project: { count: { $size: { $ifNull: ["$applicants", []] } } } },
-            { $group: { _id: null, total: { $sum: "$count" } } },
+            { $group: { _id: null, total: { $sum: { $ifNull: ["$applications", 0] } } } },
           ])
           .toArray(),
 
@@ -88,7 +87,7 @@ export async function GET() {
       students: roleMap["student"] ?? 0,
       colleges: roleMap["college"] ?? 0,
       recruiters: roleMap["recruiter"] ?? 0,
-      drives: driveCounts ?? 0,
+      drives: jobCounts ?? 0,
       problemsSolved: problemsResult[0]?.total ?? 0,
       applications: applicantsResult[0]?.total ?? 0,
       platformConnections: connectionsResult[0]?.total ?? 0,

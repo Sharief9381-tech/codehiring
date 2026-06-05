@@ -88,28 +88,12 @@ export default function ExploreRecruitersPage() {
                 onClick={() => setSelected(r)}
                 className="text-left rounded-xl border border-border bg-card p-5 hover:border-amber-500/50 hover:shadow-md transition-all"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/10">
                     <Building2 className="h-5 w-5 text-amber-600" />
                   </div>
-                  <div className="min-w-0">
-                    <p className="font-semibold text-foreground truncate">{r.companyName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{r.designation}</p>
-                  </div>
+                  <p className="font-semibold text-foreground truncate">{r.companyName}</p>
                 </div>
-                {r.industry && (
-                  <Badge variant="secondary" className="text-xs mb-2">{r.industry}</Badge>
-                )}
-                {r.hiringFor.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {r.hiringFor.slice(0, 2).map((h) => (
-                      <Badge key={h} className="text-xs bg-amber-500/10 text-amber-700">{h}</Badge>
-                    ))}
-                    {r.hiringFor.length > 2 && (
-                      <Badge variant="secondary" className="text-xs">+{r.hiringFor.length - 2}</Badge>
-                    )}
-                  </div>
-                )}
               </button>
             ))}
           </div>
@@ -127,7 +111,6 @@ export default function ExploreRecruitersPage() {
                   </div>
                   <div>
                     <DialogTitle className="text-xl">{selected.companyName}</DialogTitle>
-                    <p className="text-sm text-muted-foreground">{selected.name} · {selected.designation}</p>
                   </div>
                 </div>
               </DialogHeader>

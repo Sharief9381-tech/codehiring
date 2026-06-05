@@ -1,8 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
-import Link from "next/link"
-import { SpotlightCard } from "@/components/landing/spotlight-card"
+import { useEffect, useRef, useState } from "react"
 import { GraduationCap, Building2, Briefcase, Code2, Trophy, Users } from "lucide-react"
 
 interface PlatformStats {
@@ -14,7 +12,7 @@ interface PlatformStats {
   applications: number
 }
 
-function useCountUp(target: number, duration = 1200) {
+function useCountUp(target: number, duration = 1400) {
   const [value, setValue] = useState(0)
   const rafRef = useRef<number | null>(null)
 
@@ -38,50 +36,39 @@ function useCountUp(target: number, duration = 1200) {
 function formatNumber(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M+`
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K+`
-  return n > 0 ? `${n}+` : "—"
+  return n > 0 ? `${n}+` : "0"
 }
 
-function StatCard({
+function StatItem({
   icon: Icon,
   label,
   sublabel,
   value,
-  spotlight,
   iconClass,
-  href,
+  loaded,
 }: {
   icon: React.ElementType
   label: string
   sublabel: string
   value: number
-  spotlight: string
   iconClass: string
-  href: string
+  loaded: boolean
 }) {
-  const count = useCountUp(value)
+  const count = useCountUp(loaded ? value : 0)
 
   return (
-    <Link href={href} className="h-full">
-      <SpotlightCard
-        spotlightColor={spotlight}
-        className="h-full min-h-[120px] p-5 hover:border-primary/40 cursor-pointer hover:scale-[1.02] transition-transform"
-      >
-        <div className="flex items-center justify-between gap-4 h-full">
-          {/* Left: icon + labels */}
-          <div className="flex flex-col gap-1.5">
-            <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${iconClass}`}>
-              <Icon className="h-6 w-6" />
-            </div>
-            <p className="text-sm font-medium text-foreground/80 mt-1">{label}</p>
-            <p className="text-xs text-muted-foreground">{sublabel}</p>
-          </div>
-          {/* Right: count */}
-          <p className="text-3xl font-bold text-foreground tabular-nums leading-none shrink-0">
-            {formatNumber(count)}
-          </p>
-        </div>
-      </SpotlightCard>
-    </Link>
+    <div className="flex flex-col items-center text-center gap-3 py-8 px-4 cursor-pointer group relative overflow-hidden rounded-xl hover:bg-primary/5 transition-colors">
+      <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${iconClass} group-hover:scale-110 transition-transform`}>
+        <Icon className="h-6 w-6" />
+      </div>
+      <p className="text-4xl font-bold text-foreground tabular-nums group-hover:text-primary transition-colors">
+        {loaded ? formatNumber(count) : "—"}
+      </p>
+      <div>
+        <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{label}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{sublabel}</p>
+      </div>
+    </div>
   )
 }
 
@@ -95,91 +82,64 @@ export function Stats() {
       .catch(() => {})
   }, [])
 
-  // Row 1: Students · Colleges · Problems Solved
-  const row1 = [
+  const items = [
     {
       icon: GraduationCap,
       label: "Students Registered",
       sublabel: "Across all colleges",
       value: data?.students ?? 0,
-      spotlight: "rgba(139,92,246,0.14)",
       iconClass: "bg-primary/10 text-primary",
-      href: "/explore/students",
     },
     {
       icon: Building2,
       label: "Colleges Onboarded",
       sublabel: "Tracking placements",
       value: data?.colleges ?? 0,
-      spotlight: "rgba(99,102,241,0.14)",
-      iconClass: "bg-chart-1/10 text-chart-1",
-      href: "/explore/colleges",
+      iconClass: "bg-indigo-500/10 text-indigo-500",
     },
     {
       icon: Code2,
       label: "Problems Solved",
       sublabel: "Across all platforms",
       value: data?.problemsSolved ?? 0,
-      spotlight: "rgba(34,197,94,0.12)",
-      iconClass: "bg-chart-2/10 text-chart-2",
-      href: "/explore/students",
+      iconClass: "bg-emerald-500/10 text-emerald-500",
     },
-  ]
-
-  // Row 2: Recruiters · Hiring Drives · Applications
-  const row2 = [
     {
       icon: Briefcase,
-      label: "Recruiters",
-      sublabel: "Hiring actively",
+      label: "Companies Hiring",
+      sublabel: "Actively recruiting",
       value: data?.recruiters ?? 0,
-      spotlight: "rgba(234,179,8,0.10)",
-      iconClass: "bg-chart-3/10 text-chart-3",
-      href: "/explore/recruiters",
+      iconClass: "bg-amber-500/10 text-amber-500",
     },
     {
       icon: Users,
       label: "Hiring Drives",
-      sublabel: "Created on platform",
+      sublabel: "Posted on platform",
       value: data?.drives ?? 0,
-      spotlight: "rgba(34,211,238,0.13)",
-      iconClass: "bg-chart-4/10 text-chart-4",
-      href: "/explore/drives",
+      iconClass: "bg-cyan-500/10 text-cyan-500",
     },
     {
       icon: Trophy,
       label: "Applications",
       sublabel: "Submitted to drives",
       value: data?.applications ?? 0,
-      spotlight: "rgba(239,68,68,0.11)",
-      iconClass: "bg-destructive/10 text-destructive",
-      href: "/explore/drives",
+      iconClass: "bg-rose-500/10 text-rose-500",
     },
   ]
 
   return (
-    <section id="stats" className="py-16 border-y border-border bg-secondary/30">
+    <section id="stats" className="py-8 border-y border-border bg-secondary/20">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center mb-10">
+        <div className="flex justify-center mb-6">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
             Live platform stats
           </span>
         </div>
-
-        <div className="space-y-4">
-          {/* Row 1 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
-            {row1.map((stat, i) => (
-              <StatCard key={i} {...stat} />
-            ))}
-          </div>
-          {/* Row 2 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
-            {row2.map((stat, i) => (
-              <StatCard key={i} {...stat} />
-            ))}
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-border">
+          {items.map((item, i) => (
+            <StatItem key={i} {...item} loaded={data !== null} />
+          ))}
         </div>
       </div>
     </section>
