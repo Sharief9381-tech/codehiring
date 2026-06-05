@@ -7,9 +7,16 @@ import { cn } from "@/lib/utils"
 import {
   LayoutDashboard, Code2, BarChart3, Trophy, Briefcase, User,
   Settings, LogOut, Search, RefreshCw, Sun, Moon, GraduationCap,
-  Building2, Users, FileText, Orbit, Zap,
+  Building2, Users, FileText, Orbit, Zap, MessageSquarePlus,
 } from "lucide-react"
 import { useState, useEffect } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { FeedbackForm } from "@/components/feedback/feedback-form"
 import type { StudentProfile, CollegeProfile, RecruiterProfile } from "@/lib/types"
 
 interface TopNavProps {
@@ -48,6 +55,7 @@ export function TopNav({ user }: TopNavProps) {
   const [syncing, setSyncing] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
 
   useEffect(() => setMounted(true), [])
 
@@ -144,6 +152,15 @@ export function TopNav({ user }: TopNavProps) {
             </button>
           )}
 
+          {/* Feedback button */}
+          <button
+            onClick={() => setFeedbackOpen(true)}
+            title="Send Feedback"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-all"
+          >
+            <MessageSquarePlus className="h-3.5 w-3.5" />
+          </button>
+
           {/* Avatar + dropdown */}
           <div className="relative">
             <button
@@ -217,6 +234,16 @@ export function TopNav({ user }: TopNavProps) {
           )
         })}
       </div>
+
+      {/* Feedback dialog */}
+      <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share Your Feedback</DialogTitle>
+          </DialogHeader>
+          <FeedbackForm onSuccess={() => setFeedbackOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </header>
   )
 }

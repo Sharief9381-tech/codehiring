@@ -35,7 +35,7 @@ interface JobMatch {
   type: string
 }
 
-// Compute CodeTrack Score (0–1000)
+// Compute CodeHiring Score (0–1000)
 function computeScore(stats: {
   totalProblems: number
   highestRating: number
@@ -94,7 +94,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
 
   const checklist = getChecklist(student, platformCount)
   const profileComplete = Math.round((checklist.filter(c => c.done).length / checklist.length) * 100)
-  const codetrackScore = computeScore({ totalProblems, highestRating, contestsAttended, githubContributions, platformCount, profileComplete })
+  const codehiringScore = computeScore({ totalProblems, highestRating, contestsAttended, githubContributions, platformCount, profileComplete })
 
   // Placement readiness
   const placementItems = [
@@ -126,8 +126,8 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
       .finally(() => setAiLoading(false))
   }, [])
 
-  const scoreColor = codetrackScore >= 700 ? "text-emerald-500" : codetrackScore >= 400 ? "text-amber-500" : "text-red-500"
-  const scoreLabel = codetrackScore >= 700 ? "Excellent" : codetrackScore >= 400 ? "Good" : "Needs Work"
+  const scoreColor = codehiringScore >= 700 ? "text-emerald-500" : codehiringScore >= 400 ? "text-amber-500" : "text-red-500"
+  const scoreLabel = codehiringScore >= 700 ? "Excellent" : codehiringScore >= 400 ? "Good" : "Needs Work"
 
   return (
     <div className="space-y-6">
@@ -184,14 +184,14 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
             </div>
           </div>
 
-          {/* Center: CodeTrack Score */}
+          {/* Center: CodeHiring Score */}
           <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card px-8 py-5 min-w-[160px]">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">CodeTrack Score</p>
-            <p className={`text-5xl font-black tabular-nums ${scoreColor}`}>{codetrackScore}</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">CodeHiring Score</p>
+            <p className={`text-5xl font-black tabular-nums ${scoreColor}`}>{codehiringScore}</p>
             <p className="text-xs text-muted-foreground mt-0.5">/ 1000</p>
             <Badge className={`mt-2 text-xs ${
-              codetrackScore >= 700 ? "bg-emerald-500/10 text-emerald-600" :
-              codetrackScore >= 400 ? "bg-amber-500/10 text-amber-600" :
+              codehiringScore >= 700 ? "bg-emerald-500/10 text-emerald-600" :
+              codehiringScore >= 400 ? "bg-amber-500/10 text-amber-600" :
               "bg-red-500/10 text-red-600"
             }`}>{scoreLabel}</Badge>
           </div>

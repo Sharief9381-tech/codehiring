@@ -1,14 +1,16 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { useTheme } from "next-themes"
 import React, { useState } from "react"
 import { cn } from "@/lib/utils"
 import {
-  LayoutDashboard, Code2, Trophy, Briefcase, User, Settings,
+  LayoutDashboard, Trophy, Briefcase, User, Settings,
+  Code2,
   LogOut, GraduationCap, Building2, Users, BarChart3, Search,
-  FileText, Sun, Moon, Bell, Menu, X, Sparkles,
+  FileText, Sun, Moon, Bell, Menu, X, Sparkles, MessageSquarePlus,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -19,6 +21,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { FeedbackForm } from "@/components/feedback/feedback-form"
 import type { StudentProfile, CollegeProfile, RecruiterProfile } from "@/lib/types"
 
 interface DashboardSidebarProps {
@@ -58,6 +67,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
   React.useEffect(() => setMounted(true), [])
 
   const links =
@@ -89,11 +99,9 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         <div className="flex h-full items-center justify-between px-4 md:px-6">
 
           {/* Left: Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-              <Code2 className="h-4 w-4" />
-            </div>
-            <span className="font-bold text-foreground hidden sm:block">CodeTrack</span>
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={130} height={32} className="h-8 w-auto block dark:hidden" />
+            <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={130} height={32} className="h-8 w-auto hidden dark:block" />
             <span className="text-xs text-muted-foreground hidden sm:block capitalize border border-border rounded-full px-2 py-0.5">
               {user.role}
             </span>
@@ -142,6 +150,18 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
             <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg relative">
               <Bell className="h-4 w-4" />
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary" />
+            </Button>
+
+            {/* Feedback button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setFeedbackOpen(true)}
+              className="h-9 w-9 rounded-lg"
+              title="Send Feedback"
+              aria-label="Send Feedback"
+            >
+              <MessageSquarePlus className="h-4 w-4" />
             </Button>
 
             {/* Profile dropdown */}
@@ -216,6 +236,16 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
       {/* Spacer so content doesn't hide under fixed navbar */}
       <div className="h-16" />
+
+      {/* Feedback dialog */}
+      <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share Your Feedback</DialogTitle>
+          </DialogHeader>
+          <FeedbackForm onSuccess={() => setFeedbackOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

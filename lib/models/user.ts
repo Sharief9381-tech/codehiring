@@ -10,6 +10,8 @@ export interface UserDocument {
   role: UserRole
   createdAt: Date
   updatedAt: Date
+  resetToken?: string | null
+  resetTokenExpires?: Date | null
   // Role-specific fields will be merged in
   [key: string]: any
 }

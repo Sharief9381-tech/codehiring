@@ -63,6 +63,8 @@
     "react-hook-form": "^7.60.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.4",
+    "framer-motion": "^10.12.4",
+    "recharts": "^2.5.0",
     "snappy": "latest",
     "socks": "latest",
     "sonner": "^1.7.4",

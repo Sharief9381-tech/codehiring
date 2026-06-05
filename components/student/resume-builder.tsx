@@ -44,10 +44,10 @@ export function ResumeBuilder() {
   const [projects, setProjects] = useState<Project[]>([
     {
       id: "1",
-      name: "CodeTrack",
+      name: "CodeHiring",
       description: "A unified coding performance platform that aggregates stats from LeetCode, GitHub, Codeforces, and CodeChef.",
       technologies: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
-      link: "https://github.com/username/codetrack",
+      link: "https://github.com/Sharief9381-tech/codehireee",
     },
   ])
 

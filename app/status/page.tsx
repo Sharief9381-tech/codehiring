@@ -80,7 +80,7 @@ export default async function StatusPage() {
       <div className="container mx-auto py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">CodeTrack System Status</h1>
+          <h1 className="text-3xl font-bold mb-2">CodeHiring System Status</h1>
           <p className="text-muted-foreground">
             Real-time monitoring of all system components
           </p>

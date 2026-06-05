@@ -22,7 +22,7 @@ const SUGGESTED = [
   "Review my coding profile",
   "How to crack DSA interviews?",
   "Which companies match my profile?",
-  "How to improve my CodeTrack score?",
+  "How to improve my CodeHiring score?",
 ]
 
 export default function AIInsightsPage() {
@@ -30,7 +30,7 @@ export default function AIInsightsPage() {
     {
       role: "assistant",
       content:
-        "Hi! I'm CodeTrack AI 👋 I have access to your coding profile and can give you personalized career advice. What would you like to know?",
+        "Hi! I'm CodeHiring AI 👋 I have access to your coding profile and can give you personalized career advice. What would you like to know?",
     },
   ])
   const [input, setInput] = useState("")

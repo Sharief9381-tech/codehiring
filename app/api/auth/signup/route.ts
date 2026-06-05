@@ -30,6 +30,7 @@ export async function POST(request: Request) {
     // Import database functions only when database is available
     const { createStudent, createCollege, createRecruiter, createSession, findUserByEmail } = await import("@/lib/auth")
     const { cookies } = await import("next/headers")
+    const cookieStore = await cookies()
     
     console.log("3. Parsing request body...")
     const body = await request.json()
@@ -215,12 +216,11 @@ export async function POST(request: Request) {
       const token = await createSession(user._id as string, role)
       console.log("12. Session created, setting cookie...")
 
-      const cookieStore = await cookies()
       cookieStore.set("session_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 7 * 24 * 60 * 60, // 7 days
+        maxAge: 7 * 24 * 60 * 60,
         path: "/",
       })
 

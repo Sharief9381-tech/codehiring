@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
-  Code2, GitBranch, Trophy, Star,
+  GitBranch, Trophy, Star,
   Globe, Briefcase, MapPin, Calendar,
   ExternalLink, CheckCircle2
 } from "lucide-react"
@@ -90,8 +91,8 @@ export default async function PublicProfilePage({ params }: Props) {
     platformEntries.push([pid, { username: uname, problems, rating, contributions: contribs }])
   })
 
-  const codetrackScore = computeScore(student)
-  const scoreColor = codetrackScore >= 700 ? "text-emerald-500" : codetrackScore >= 400 ? "text-amber-500" : "text-red-500"
+  const codehiringScore = computeScore(student)
+  const scoreColor = codehiringScore >= 700 ? "text-emerald-500" : codehiringScore >= 400 ? "text-amber-500" : "text-red-500"
 
   const currentYear = new Date().getFullYear()
   const isGraduate = student.graduationYear && student.graduationYear <= currentYear
@@ -101,15 +102,13 @@ export default async function PublicProfilePage({ params }: Props) {
       {/* Top bar */}
       <div className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Code2 className="h-4 w-4" />
-            </div>
-            <span className="font-bold text-foreground text-sm">CodeTrack</span>
+          <Link href="/" className="flex items-center">
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={130} height={32} className="h-8 w-auto block dark:hidden" />
+            <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={130} height={32} className="h-8 w-auto hidden dark:block" />
           </Link>
           <Link href="/signup">
             <Button size="sm" className="gap-2">
-              <Briefcase className="h-3.5 w-3.5" />Join CodeTrack
+              <Briefcase className="h-3.5 w-3.5" />Join CodeHiring
             </Button>
           </Link>
         </div>
@@ -164,7 +163,7 @@ export default async function PublicProfilePage({ params }: Props) {
             {/* Score */}
             <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card px-6 py-4 shrink-0">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">CTS</p>
-              <p className={`text-4xl font-black tabular-nums ${scoreColor}`}>{codetrackScore}</p>
+              <p className={`text-4xl font-black tabular-nums ${scoreColor}`}>{codehiringScore}</p>
               <p className="text-xs text-muted-foreground">/1000</p>
             </div>
           </div>
@@ -218,14 +217,12 @@ export default async function PublicProfilePage({ params }: Props) {
 
         {/* CTA */}
         <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
-          <p className="font-semibold text-foreground mb-1">Want your own CodeTrack profile?</p>
+          <p className="font-semibold text-foreground mb-1">Want your own CodeHiring profile?</p>
           <p className="text-sm text-muted-foreground mb-4">
             Track your coding progress, get AI insights, and connect with recruiters.
           </p>
           <Link href="/signup?role=student">
-            <Button className="gap-2">
-              <Code2 className="h-4 w-4" />Create Free Profile
-            </Button>
+            <Button className="gap-2">Create Free Profile</Button>
           </Link>
         </div>
       </div>

@@ -139,6 +139,15 @@ export async function findUserByEmail(email: string) {
   return null
 }
 
+export async function findUserByResetToken(token: string) {
+  for (const u of users.values()) {
+    if (u.resetToken === token && u.resetTokenExpires instanceof Date && u.resetTokenExpires > new Date()) {
+      return u
+    }
+  }
+  return null
+}
+
 export async function updateUser(userId: string, updates: Record<string, any>) {
   const u = users.get(userId)
   if (u) {

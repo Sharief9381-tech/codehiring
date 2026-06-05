@@ -240,7 +240,7 @@ export function AdminDashboard() {
           </div>
           <p className="text-base text-red-700 leading-relaxed">
             This dashboard provides comprehensive access to all user data, system metrics, and platform health monitoring. 
-            You have full oversight of students, colleges, and recruiters across the entire CodeTrack platform.
+            You have full oversight of students, colleges, and recruiters across the entire CodeHiring platform.
           </p>
           <div className="mt-4 p-3 bg-red-100 rounded-lg border border-red-200">
             <p className="text-sm font-medium text-red-800">
