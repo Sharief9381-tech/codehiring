@@ -17,18 +17,24 @@ export async function POST(req: Request) {
     if (isDatabaseAvailable()) {
       const user = await findUserByEmail(email)
       if (user) {
-        await updateUser(user._id as string, {
-          resetToken,
-          resetTokenExpires: expiresAt,
-        })
+        const userId = user._id?.toString()
+        if (userId) {
+          await updateUser(userId, {
+            resetToken,
+            resetTokenExpires: expiresAt,
+          })
+        }
       }
     } else {
       const user = await fallbackFindUserByEmail(email)
       if (user) {
-        await fallbackUpdateUser(user._id as string, {
-          resetToken,
-          resetTokenExpires: expiresAt,
-        })
+        const userId = user._id?.toString()
+        if (userId) {
+          await fallbackUpdateUser(userId, {
+            resetToken,
+            resetTokenExpires: expiresAt,
+          })
+        }
       }
     }
 

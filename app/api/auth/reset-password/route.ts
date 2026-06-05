@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { isDatabaseAvailable } from "@/lib/database"
-import { hashPassword, findUserByResetToken, clearPasswordResetToken, updateUser } from "@/lib/auth"
+import { hashPassword, findUserByResetToken, updateUser } from "@/lib/auth"
 import { findUserByResetToken as fallbackFindUserByResetToken, updateUser as fallbackUpdateUser } from "@/lib/auth-fallback"
 
 export async function POST(request: Request) {
@@ -17,7 +17,11 @@ export async function POST(request: Request) {
       if (!user) {
         return NextResponse.json({ error: "Invalid or expired reset token" }, { status: 400 })
       }
-      await updateUser(user._id as string, { password: hashedPassword, resetToken: null, resetTokenExpires: null })
+      const userId = user._id?.toString()
+      if (!userId) {
+        return NextResponse.json({ error: "Invalid user record" }, { status: 400 })
+      }
+      await updateUser(userId, { password: hashedPassword, resetToken: null, resetTokenExpires: null })
       return NextResponse.json({ success: true })
     }
 
@@ -26,7 +30,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid or expired reset token" }, { status: 400 })
     }
 
-    await fallbackUpdateUser(user._id as string, { password: hashedPassword, resetToken: null, resetTokenExpires: null })
+    const userId = user._id?.toString()
+    if (!userId) {
+      return NextResponse.json({ error: "Invalid user record" }, { status: 400 })
+    }
+
+    await fallbackUpdateUser(userId, { password: hashedPassword, resetToken: null, resetTokenExpires: null })
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Reset password error:", error)
