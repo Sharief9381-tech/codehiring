@@ -5,8 +5,9 @@ import { Badge } from "@/components/ui/badge"
 import {
   BookOpen, Code2, Briefcase, Trophy, Rocket,
   ExternalLink, Brain, Zap, Calendar,
-  TrendingUp, Building2, Globe, MapPin, IndianRupee, Loader2, Clock, Target,
+  TrendingUp, Building2, Globe, MapPin, IndianRupee, Loader2, Clock, Target, Sparkles,
 } from "lucide-react"
+import { SmartResume } from "@/components/student/smart-resume"
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -62,6 +63,7 @@ interface Section {
   internships?: Internship[]
   skills?: SkillCard[]
   liveJobs?: true
+  smartResume?: true
 }
 
 // ── Internship data ───────────────────────────────────────────────────────────
@@ -153,6 +155,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
           { label: "LeetCode Daily", description: "One problem a day to build your streak", tags: ["Daily", "Streak"], links: [{ text: "Today's Problem", url: "https://leetcode.com/problemset/" }] },
         ],
       },
+      { id: "smart-resume", title: "Smart Resume", icon: <Sparkles className="h-4 w-4" />, smartResume: true },
     ],
   },
   2: {
@@ -166,6 +169,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
         id: "internships", title: "Internships", icon: <Briefcase className="h-4 w-4" />,
         internships,
       },
+      { id: "smart-resume", title: "Smart Resume", icon: <Sparkles className="h-4 w-4" />, smartResume: true },
     ],
   },
   3: {
@@ -194,6 +198,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
         id: "live-jobs", title: "Live Jobs", icon: <Briefcase className="h-4 w-4" />,
         liveJobs: true,
       },
+      { id: "smart-resume", title: "Smart Resume", icon: <Sparkles className="h-4 w-4" />, smartResume: true },
     ],
   },
   4: {
@@ -221,6 +226,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
           { label: "Skill Gap Finder", description: "Find missing skills for your target role", tags: ["Skill Gap", "Upskill"], links: [{ text: "Coursera Career Paths", url: "https://www.coursera.org/career-academy" }, { text: "LinkedIn Skill Assess", url: "https://www.linkedin.com/skill-assessments/hub/quizzes/" }] },
         ],
       },
+      { id: "smart-resume", title: "Smart Resume", icon: <Sparkles className="h-4 w-4" />, smartResume: true },
     ],
   },
 }
@@ -517,6 +523,7 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
   const isInternSection = !!section.internships
   const isSkillsSection = !!section.skills
   const isLiveJobsSection = !!section.liveJobs
+  const isSmartResumeSection = !!section.smartResume
 
   return (
     <div className="space-y-4">
@@ -549,7 +556,9 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
       </div>
 
       {/* Content */}
-      {isSkillsSection ? (
+      {isSmartResumeSection ? (
+        <SmartResume />
+      ) : isSkillsSection ? (
         <SkillsView skills={section.skills ?? []} />
       ) : isLiveJobsSection ? (
         <div className="space-y-4">
