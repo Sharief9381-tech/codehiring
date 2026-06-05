@@ -39,7 +39,7 @@ Top-tier companies have quietly shifted their screening process. Many now ask fo
 
 The biggest shift is verification. A resume says "experienced in dynamic programming." A LeetCode profile shows 120 hard problems solved with a contest rating of 1900. One is a claim. The other is proof.
 
-CodeHire takes this further by pulling your stats directly from LeetCode's API — no self-reporting, no cherry-picking. Recruiters see exactly what the platform shows.
+CodeHiring takes this further by pulling your stats directly from LeetCode's API — no self-reporting, no cherry-picking. Recruiters see exactly what the platform shows.
 
 ## What This Means for You
 
@@ -117,7 +117,7 @@ The data advantage compounds over time. Colleges that start now will be signific
 
 Résumé inflation is not new. But it's gotten worse. With AI tools that can generate polished bullet points in seconds, the signal-to-noise ratio on resumes has collapsed. Recruiters are spending more time reading, and getting less signal.
 
-We analyzed a sample of candidate profiles on CodeHire where both self-reported resume data and verified platform stats were available. The results were striking.
+We analyzed a sample of candidate profiles on CodeHiring where both self-reported resume data and verified platform stats were available. The results were striking.
 
 ## What We Found
 
@@ -135,7 +135,7 @@ The gap between claimed and verified performance is widest at the middle of the 
 
 When every stat comes directly from the source — LeetCode's API, GitHub's contribution graph, Codeforces's rating system — the self-reporting bias disappears entirely.
 
-A recruiter looking at a CodeHire profile sees:
+A recruiter looking at a CodeHiring profile sees:
 - Problems solved: 347 (pulled live from LeetCode)
 - Contest rating: 1,654 (from Codeforces)
 - GitHub contributions in last 90 days: 89 (from GitHub API)
@@ -159,7 +159,7 @@ Resumes won't disappear. But for technical roles, they should be the last thing 
     date: "February 22, 2025",
     tag: "Product",
     tagColor: "bg-violet-500/10 text-violet-600",
-    title: "How CodeHire's AI Matching Actually Works",
+    title: "How CodeHiring's AI Matching Actually Works",
     excerpt:
       "A behind-the-scenes look at how we use coding platform data, normalized scores, and job requirements to rank candidates — without keyword matching.",
     readTime: "8 min read",
@@ -172,13 +172,13 @@ A student who built three React projects with 200 GitHub commits and a 4-star Ha
 
 ## How We Think About Matching
 
-CodeHire's matching is built on a fundamentally different premise: **match on demonstrated ability, not stated skills.**
+CodeHiring's matching is built on a fundamentally different premise: **match on demonstrated ability, not stated skills.**
 
 Here's what we actually look at:
 
 ### 1. The CodeScore
 
-Every student on CodeHire has a normalized CodeScore — a single number that synthesizes:
+Every student on CodeHiring has a normalized CodeScore — a single number that synthesizes:
 - Total problems solved across platforms (weighted by difficulty)
 - Contest participation and ratings
 - GitHub activity (commits, PRs, repos)
@@ -223,18 +223,18 @@ Early recruiter partners report 60% fewer failed technical screens and 2x more d
     `,
   },
   {
-    slug: "student-guide-to-codehire",
+    slug: "student-guide-to-codehiring",
     date: "January 30, 2025",
     tag: "Guide",
     tagColor: "bg-cyan-500/10 text-cyan-600",
-    title: "The Student's Complete Guide to Getting the Most Out of CodeHire",
+    title: "The Student's Complete Guide to Getting the Most Out of CodeHiring",
     excerpt:
       "Connect your profiles, understand your CodeScore, and position yourself for the roles that actually fit your skill set. Step-by-step walkthrough.",
     readTime: "10 min read",
     content: `
 ## Step 1: Create Your Account
 
-Sign up at CodeHire with your college email. During signup, you'll enter your college code — ask your placement officer if you don't have it. This links your profile to your college's placement cell and makes you visible to authorized recruiters.
+Sign up at CodeHiring with your college email. During signup, you'll enter your college code — ask your placement officer if you don't have it. This links your profile to your college's placement cell and makes you visible to authorized recruiters.
 
 Fill in your basic profile: branch, graduation year, and skills. Don't overthink the skills list — it's supplementary to your verified platform data.
 
@@ -249,13 +249,13 @@ Priority order:
 4. **CodeChef** — useful, especially for Indian company hiring
 5. **HackerRank** — good for certifications and skill badges
 
-For each platform, enter your username. CodeHire pulls your data automatically — no manual entry needed.
+For each platform, enter your username. CodeHiring pulls your data automatically — no manual entry needed.
 
 **Pro tip:** Connect platforms even if your stats aren't great yet. Having a verified "0 contest rating" is better than no data at all — it shows honesty and gives you a baseline to improve from.
 
 ## Step 3: Understand Your CodeScore
 
-After syncing, you'll see your CodeScore on the dashboard. This is a normalized score (0–1000) that represents your percentile among all students on CodeHire.
+After syncing, you'll see your CodeScore on the dashboard. This is a normalized score (0–1000) that represents your percentile among all students on CodeHiring.
 
 What moves your score:
 - Solving more problems (especially medium/hard on LeetCode)
@@ -267,7 +267,7 @@ Check your score weekly. The trend matters as much as the absolute number.
 
 ## Step 4: Review Your Skill Gaps
 
-CodeHire's AI analyzes your problem-solving history and flags gaps. Common examples:
+CodeHiring's AI analyzes your problem-solving history and flags gaps. Common examples:
 - Solved lots of arrays/strings but no dynamic programming
 - Strong on LeetCode but no competitive programming experience
 - Good GitHub activity but no open-source contributions
@@ -283,7 +283,7 @@ For each job, you'll see:
 - What's missing (skills the recruiter wants that you don't yet have)
 - Application instructions
 
-Apply through the platform. Your CodeHire profile is automatically shared with the recruiter — no separate resume submission needed unless requested.
+Apply through the platform. Your CodeHiring profile is automatically shared with the recruiter — no separate resume submission needed unless requested.
 
 ## Step 6: Keep Your Profile Fresh
 
@@ -300,7 +300,7 @@ Set a reminder: every Sunday, solve 2–3 LeetCode problems and push a commit to
 
 ## Final Note
 
-CodeHire surfaces your effort automatically. The more consistently you practice, the better your profile looks — no extra work required. The platform is only as useful as the data you give it.
+CodeHiring surfaces your effort automatically. The more consistently you practice, the better your profile looks — no extra work required. The platform is only as useful as the data you give it.
     `,
   },
   {
@@ -365,5 +365,5 @@ This is perhaps the most significant long-term trend: geographic and institution
 ]
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug)
+  return blogPosts.find((p) => p.slug.toLowerCase() === slug.toLowerCase())
 }

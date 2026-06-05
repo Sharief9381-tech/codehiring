@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 56" fill="none">
+  <!-- Left < bracket -->
+  <polyline points="18,10 4,28 18,46" stroke="#0284C7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Person: head -->
+  <circle cx="46" cy="15" r="7" fill="#475569"/>
+  <!-- Person: body -->
+  <path d="M34 40 Q34 28 46 28 Q58 28 58 40" fill="#475569"/>
+  <!-- Tie knot -->
+  <circle cx="46" cy="28" r="2.5" fill="#D97706"/>
+  <!-- Tie body -->
+  <polygon points="44,30 42,42 46,46 50,42 48,30" fill="#D97706"/>
+
+  <!-- Magnifier circle -->
+  <circle cx="64" cy="26" r="11" stroke="#0284C7" stroke-width="3.5" fill="none"/>
+  <!-- Magnifier handle -->
+  <line x1="72" y1="34" x2="82" y2="44" stroke="#D97706" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Right > bracket -->
+  <polyline points="76,10 90,28 76,46" stroke="#0284C7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- "Code" in blue -->
+  <text x="100" y="41" font-size="30" font-weight="700" font-family="Arial, Helvetica, sans-serif" fill="#0284C7">Code</text>
+  <!-- "Hiring" in dark navy, x=178 -->
+  <text x="178" y="41" font-size="30" font-weight="700" font-family="Arial, Helvetica, sans-serif" fill="#0F172A">Hiring</text>
+</svg>

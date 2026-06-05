@@ -45,7 +45,7 @@ export function CTA() {
             Ready to Transform Your Hiring?
           </h2>
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
-            Join students, colleges, and companies already using CodeHire to make smarter, data-driven decisions.
+            Join students, colleges, and companies already using CodeHiring to make smarter, data-driven decisions.
           </p>
         </div>
 

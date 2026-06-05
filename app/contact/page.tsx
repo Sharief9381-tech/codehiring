@@ -1,10 +1,11 @@
 import Link from "next/link"
-import { ArrowLeft, Code2, Mail, Twitter, Linkedin, Github, MessageSquare, Building2, GraduationCap, Briefcase } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft, Mail, Twitter, Linkedin, Github, MessageSquare, Building2, GraduationCap, Briefcase } from "lucide-react"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
 
 export const metadata = {
-  title: "Contact — CodeHire",
-  description: "Get in touch with the CodeHire team.",
+  title: "Contact — CodeHiring",
+  description: "Get in touch with the CodeHiring team.",
 }
 
 const contacts = [
@@ -12,36 +13,36 @@ const contacts = [
     icon: MessageSquare,
     title: "General Support",
     desc: "Questions about the platform, your account, or anything else.",
-    href: "mailto:support@codehire.io",
-    label: "support@codehire.io",
+    href: "mailto:support@CodeHiring.io",
+    label: "support@CodeHiring.io",
   },
   {
     icon: GraduationCap,
     title: "Student Help",
     desc: "Platform connections, profile issues, or job matching queries.",
-    href: "mailto:students@codehire.io",
-    label: "students@codehire.io",
+    href: "mailto:students@CodeHiring.io",
+    label: "students@CodeHiring.io",
   },
   {
     icon: Building2,
     title: "College Partnerships",
     desc: "Onboarding your institution, pricing, and integration questions.",
-    href: "mailto:colleges@codehire.io",
-    label: "colleges@codehire.io",
+    href: "mailto:colleges@CodeHiring.io",
+    label: "colleges@CodeHiring.io",
   },
   {
     icon: Briefcase,
     title: "Recruiter Enquiries",
     desc: "Access to candidate pool, enterprise plans, and hiring drives.",
-    href: "mailto:recruiters@codehire.io",
-    label: "recruiters@codehire.io",
+    href: "mailto:recruiters@CodeHiring.io",
+    label: "recruiters@CodeHiring.io",
   },
 ]
 
 const socials = [
-  { icon: Twitter, label: "Twitter / X", href: "https://twitter.com/codehire", handle: "@codehire" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/codehire", handle: "codehire" },
-  { icon: Github, label: "GitHub", href: "https://github.com/codehire", handle: "codehire" },
+  { icon: Twitter, label: "Twitter / X", href: "https://twitter.com/CodeHiring", handle: "@CodeHiring" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/CodeHiring", handle: "CodeHiring" },
+  { icon: Github, label: "GitHub", href: "https://github.com/CodeHiring", handle: "CodeHiring" },
 ]
 
 export default function ContactPage() {
@@ -51,10 +52,7 @@ export default function ContactPage() {
       <div className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Code2 className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-foreground">CodeHire</span>
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto" />
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">Contact</span>

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, Clock, Code2, Loader2, MapPin } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft, ArrowRight, Clock, Loader2, MapPin } from "lucide-react"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
 
 interface CareerPosting {
@@ -60,10 +61,7 @@ export default function CareersPage() {
       <div className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Code2 className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-foreground">CodeHire</span>
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto" />
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">Careers</span>
@@ -87,7 +85,7 @@ export default function CareersPage() {
 
         {/* Perks */}
         <div className="rounded-xl border border-border bg-card p-7 mb-14">
-          <h2 className="text-lg font-semibold text-foreground mb-5">Why CodeHire</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-5">Why CodeHiring</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {perks.map((perk) => (
               <div key={perk} className="flex items-center gap-2.5 text-sm text-muted-foreground">
@@ -168,7 +166,7 @@ export default function CareersPage() {
                       <p className="text-sm text-muted-foreground leading-relaxed">{job.desc}</p>
                     </div>
                     <a
-                      href={`mailto:careers@codehire.io?subject=Application: ${encodeURIComponent(job.title)}`}
+                      href={`mailto:careers@CodeHiring.io?subject=Application: ${encodeURIComponent(job.title)}`}
                       className="shrink-0 flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors mt-1"
                     >
                       Apply <ArrowRight className="h-3.5 w-3.5" />
@@ -187,7 +185,7 @@ export default function CareersPage() {
             We're always open to meeting exceptional people. Send us your profile and tell us how you'd contribute.
           </p>
           <a
-            href="mailto:careers@codehire.io?subject=General Application"
+            href="mailto:careers@CodeHiring.io?subject=General Application"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             Send a general application <ArrowRight className="h-4 w-4" />

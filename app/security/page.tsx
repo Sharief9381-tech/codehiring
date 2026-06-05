@@ -1,10 +1,11 @@
 import Link from "next/link"
-import { ArrowLeft, Code2, ShieldCheck, Lock, KeyRound, Server, Eye, AlertTriangle } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft, ShieldCheck, Lock, KeyRound, Server, Eye, AlertTriangle } from "lucide-react"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
 
 export const metadata = {
-  title: "Security — CodeHire",
-  description: "How CodeHire keeps your data and accounts secure.",
+  title: "Security — CodeHiring",
+  description: "How CodeHiring keeps your data and accounts secure.",
 }
 
 const practices = [
@@ -47,10 +48,7 @@ export default function SecurityPage() {
       <div className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Code2 className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-foreground">CodeHire</span>
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto" />
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">Security</span>
@@ -94,10 +92,10 @@ export default function SecurityPage() {
             We welcome responsible disclosure. If you discover a security issue, please report it privately to us before making it public. We commit to acknowledging reports within 48 hours and resolving valid issues within 14 days.
           </p>
           <a
-            href="mailto:security@codehire.io"
+            href="mailto:security@CodeHiring.io"
             className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 hover:text-amber-500 transition-colors"
           >
-            Report a vulnerability → security@codehire.io
+            Report a vulnerability → security@CodeHiring.io
           </a>
         </div>
       </div>

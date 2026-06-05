@@ -144,7 +144,7 @@ export async function POST(request: Request) {
 
               await db.collection("users").insertOne({
                 name: resolvedName,
-                email: `auto-${collegeCode.toLowerCase()}@codehire.internal`,
+                email: `auto-${collegeCode.toLowerCase()}@CodeHiring.internal`,
                 password: "",
                 role: "college",
                 collegeName: resolvedName,

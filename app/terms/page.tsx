@@ -1,9 +1,10 @@
 import Link from "next/link"
-import { ArrowLeft, Code2 } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft } from "lucide-react"
 
 export const metadata = {
-  title: "Terms of Service — CodeHire",
-  description: "Terms and conditions for using the CodeHire platform.",
+  title: "Terms of Service — CodeHiring",
+  description: "Terms and conditions for using the CodeHiring platform.",
 }
 
 export default function TermsPage() {
@@ -13,10 +14,7 @@ export default function TermsPage() {
       <div className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Code2 className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-foreground">CodeHire</span>
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto" />
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">Terms of Service</span>
@@ -38,14 +36,14 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">1. Acceptance of Terms</h2>
             <p className="text-sm leading-relaxed">
-              By creating an account or using CodeHire, you agree to be bound by these Terms of Service. If you do not agree, do not use the platform. These terms apply to all users — students, colleges, and recruiters.
+              By creating an account or using CodeHiring, you agree to be bound by these Terms of Service. If you do not agree, do not use the platform. These terms apply to all users — students, colleges, and recruiters.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">2. Eligibility</h2>
             <p className="text-sm leading-relaxed">
-              You must be at least 16 years old to use CodeHire. By using the platform, you represent that you meet this requirement and that all information you provide is accurate.
+              You must be at least 16 years old to use CodeHiring. By using the platform, you represent that you meet this requirement and that all information you provide is accurate.
             </p>
           </section>
 
@@ -55,7 +53,7 @@ export default function TermsPage() {
               <li>You are responsible for maintaining the security of your account credentials.</li>
               <li>You must not share your account with others or impersonate another person or entity.</li>
               <li>You are responsible for all activity that occurs under your account.</li>
-              <li>Notify us immediately at <a href="mailto:support@codehire.io" className="text-primary hover:underline">support@codehire.io</a> if you suspect unauthorized access.</li>
+              <li>Notify us immediately at <a href="mailto:support@CodeHiring.io" className="text-primary hover:underline">support@CodeHiring.io</a> if you suspect unauthorized access.</li>
             </ul>
           </section>
 
@@ -74,14 +72,14 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">5. Platform Data & Third Parties</h2>
             <p className="text-sm leading-relaxed">
-              When you connect a third-party coding platform (LeetCode, GitHub, etc.), you authorize CodeHire to fetch your public profile data from those platforms. You confirm you have the right to share that data. CodeHire is not affiliated with or endorsed by any third-party platform.
+              When you connect a third-party coding platform (LeetCode, GitHub, etc.), you authorize CodeHiring to fetch your public profile data from those platforms. You confirm you have the right to share that data. CodeHiring is not affiliated with or endorsed by any third-party platform.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">6. Intellectual Property</h2>
             <p className="text-sm leading-relaxed">
-              All platform content, design, and code is owned by CodeHire. You retain ownership of your own profile data. You grant CodeHire a non-exclusive license to display your profile data to authorized parties (recruiters, colleges) as configured in your settings.
+              All platform content, design, and code is owned by CodeHiring. You retain ownership of your own profile data. You grant CodeHiring a non-exclusive license to display your profile data to authorized parties (recruiters, colleges) as configured in your settings.
             </p>
           </section>
 
@@ -95,14 +93,14 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">8. Limitation of Liability</h2>
             <p className="text-sm leading-relaxed">
-              CodeHire is provided "as is". We are not liable for any indirect, incidental, or consequential damages arising from your use of the platform, including reliance on profile data for hiring decisions.
+              CodeHiring is provided "as is". We are not liable for any indirect, incidental, or consequential damages arising from your use of the platform, including reliance on profile data for hiring decisions.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">9. Changes to Terms</h2>
             <p className="text-sm leading-relaxed">
-              We may update these terms at any time. Continued use of CodeHire after changes constitutes acceptance of the new terms. We will notify users of material changes via email.
+              We may update these terms at any time. Continued use of CodeHiring after changes constitutes acceptance of the new terms. We will notify users of material changes via email.
             </p>
           </section>
 
@@ -110,7 +108,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-foreground mb-3">10. Contact</h2>
             <p className="text-sm leading-relaxed">
               Questions about these terms? Email{" "}
-              <a href="mailto:legal@codehire.io" className="text-primary hover:underline">legal@codehire.io</a>.
+              <a href="mailto:legal@CodeHiring.io" className="text-primary hover:underline">legal@CodeHiring.io</a>.
             </p>
           </section>
         </div>

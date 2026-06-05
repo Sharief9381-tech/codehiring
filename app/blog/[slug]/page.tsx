@@ -1,23 +1,25 @@
 import Link from "next/link"
+import Image from "next/image"
 import { notFound } from "next/navigation"
-import { ArrowLeft, Code2, Clock, Tag } from "lucide-react"
+import { ArrowLeft, Clock, Tag } from "lucide-react"
 import { blogPosts, getPostBySlug } from "@/lib/blog-posts"
 import type { Metadata } from "next"
 
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }))
-}
+// Allow any slug — don't restrict to static params only
+export const dynamic = "force-dynamic"
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = getPostBySlug(params.slug)
-  if (!post) return { title: "Post Not Found — CodeHire" }
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await params
+  const post = getPostBySlug(slug)
+  if (!post) return { title: "Post Not Found — CodeHiring" }
   return {
-    title: `${post.title} — CodeHire Blog`,
+    title: `${post.title} — CodeHiring Blog`,
     description: post.excerpt,
   }
 }
 
-// Render the plain-text markdown-like content into readable sections
 function renderContent(content: string) {
   const lines = content.trim().split("\n")
   const elements: React.ReactNode[] = []
@@ -45,6 +47,12 @@ function renderContent(content: string) {
           <span dangerouslySetInnerHTML={{ __html: trimmed.slice(2).replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>') }} />
         </li>
       )
+    } else if (/^\d+\.\s/.test(trimmed)) {
+      elements.push(
+        <li key={key++} className="text-sm text-muted-foreground leading-relaxed ml-4 list-decimal">
+          <span dangerouslySetInnerHTML={{ __html: trimmed.replace(/^\d+\.\s/, "").replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>') }} />
+        </li>
+      )
     } else {
       elements.push(
         <p key={key++} className="text-sm text-muted-foreground leading-relaxed">
@@ -56,8 +64,11 @@ function renderContent(content: string) {
   return elements
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug)
+export default async function BlogPostPage(
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params
+  const post = getPostBySlug(slug)
   if (!post) notFound()
 
   const otherPosts = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3)
@@ -67,11 +78,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       {/* Nav */}
       <div className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-3xl px-6 py-4 flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Code2 className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-foreground">CodeHire</span>
+          <Link href="/" className="flex items-center">
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={140} height={32} className="h-8 w-auto block dark:hidden" />
+            <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={140} height={32} className="h-8 w-auto hidden dark:block" />
           </Link>
           <span className="text-muted-foreground">/</span>
           <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link>
@@ -82,7 +91,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       </div>
 
       <div className="mx-auto max-w-3xl px-6 py-16">
-        {/* Post header */}
+        {/* Header */}
         <div className="mb-10">
           <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium mb-4 ${post.tagColor}`}>
             {post.tag}
@@ -110,26 +119,28 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           {renderContent(post.content)}
         </article>
 
-        {/* Divider */}
-        <div className="mt-16 pt-10 border-t border-border">
-          <h2 className="text-lg font-bold text-foreground mb-6">More from the blog</h2>
-          <div className="space-y-3">
-            {otherPosts.map((p) => (
-              <Link key={p.slug} href={`/blog/${p.slug}`}>
-                <div className="group flex items-start justify-between gap-4 rounded-xl border border-border bg-card p-5 hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer">
-                  <div>
-                    <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-medium mb-1.5 ${p.tagColor}`}>
-                      {p.tag}
-                    </span>
-                    <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">{p.title}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{p.date} · {p.readTime}</p>
+        {/* More posts */}
+        {otherPosts.length > 0 && (
+          <div className="mt-16 pt-10 border-t border-border">
+            <h2 className="text-lg font-bold text-foreground mb-6">More from the blog</h2>
+            <div className="space-y-3">
+              {otherPosts.map((p) => (
+                <Link key={p.slug} href={`/blog/${p.slug}`}>
+                  <div className="group flex items-start justify-between gap-4 rounded-xl border border-border bg-card p-5 hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer">
+                    <div>
+                      <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-medium mb-1.5 ${p.tagColor}`}>
+                        {p.tag}
+                      </span>
+                      <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">{p.title}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{p.date} · {p.readTime}</p>
+                    </div>
+                    <ArrowLeft className="h-4 w-4 text-muted-foreground rotate-180 shrink-0 mt-1 group-hover:text-primary transition-colors" />
                   </div>
-                  <ArrowLeft className="h-4 w-4 text-muted-foreground rotate-180 shrink-0 mt-1 group-hover:text-primary transition-colors" />
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

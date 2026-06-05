@@ -81,7 +81,7 @@ export function Features() {
             Built for Every Role in the Ecosystem
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-            Whether you are a student building your career, a college driving placements, or a company finding talent — CodeHire has you covered.
+            Whether you are a student building your career, a college driving placements, or a company finding talent — CodeHiring has you covered.
           </p>
         </div>
 

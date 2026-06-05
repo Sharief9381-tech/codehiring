@@ -1,10 +1,11 @@
 import Link from "next/link"
-import { ArrowLeft, Code2, Target, Heart, Zap, Users } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft, Target, Heart, Zap, Users } from "lucide-react"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
 
 export const metadata = {
-  title: "About — CodeHire",
-  description: "The story behind CodeHire and why we built it.",
+  title: "About — CodeHiring",
+  description: "The story behind CodeHiring and why we built it.",
 }
 
 const values = [
@@ -16,7 +17,7 @@ const values = [
   {
     icon: Zap,
     title: "Verified, Not Self-Reported",
-    desc: "Every stat on CodeHire is pulled directly from the source. No inflated numbers, no guesswork.",
+    desc: "Every stat on CodeHiring is pulled directly from the source. No inflated numbers, no guesswork.",
   },
   {
     icon: Users,
@@ -37,10 +38,7 @@ export default function AboutPage() {
       <div className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Code2 className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-foreground">CodeHire</span>
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto" />
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">About</span>
@@ -58,7 +56,7 @@ export default function AboutPage() {
             We're fixing how developers get hired.
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-            CodeHire was built because the hiring process for developers was broken. Recruiters sifted through
+            CodeHiring was built because the hiring process for developers was broken. Recruiters sifted through
             self-reported resumes. Students had no way to prove their skills beyond a PDF. Colleges had no visibility
             into what was actually happening with their students' coding activity. We set out to change all three.
           </p>
@@ -79,7 +77,7 @@ export default function AboutPage() {
               progress or demonstrate placement outcomes to accreditation bodies.
             </p>
             <p>
-              CodeHire connects all three sides of this problem. Students get a verified profile that speaks for itself.
+              CodeHiring connects all three sides of this problem. Students get a verified profile that speaks for itself.
               Colleges get real-time analytics. Recruiters get candidates ranked by actual verified performance — not
               self-reported numbers.
             </p>
@@ -106,7 +104,7 @@ export default function AboutPage() {
         <div className="rounded-xl border border-primary/20 bg-primary/5 p-8 text-center">
           <h2 className="text-xl font-bold text-foreground mb-3">Want to be part of this?</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            Whether you're a student, a college, or a company — there's a place for you on CodeHire.
+            Whether you're a student, a college, or a company — there's a place for you on CodeHiring.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/signup" className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">

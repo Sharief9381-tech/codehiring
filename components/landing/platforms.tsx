@@ -46,7 +46,7 @@ export function Platforms() {
 
         <p className="text-center text-xs text-muted-foreground mt-8">
           More platforms being added.{" "}
-          <a href="mailto:support@codehire.io" className="text-primary hover:underline">
+          <a href="mailto:support@CodeHiring.io" className="text-primary hover:underline">
             Request an integration →
           </a>
         </p>

@@ -1,9 +1,10 @@
 import Link from "next/link"
-import { ArrowLeft, Code2 } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft } from "lucide-react"
 
 export const metadata = {
-  title: "Privacy Policy — CodeHire",
-  description: "How CodeHire collects, uses, and protects your data.",
+  title: "Privacy Policy — CodeHiring",
+  description: "How CodeHiring collects, uses, and protects your data.",
 }
 
 export default function PrivacyPage() {
@@ -13,10 +14,7 @@ export default function PrivacyPage() {
       <div className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Code2 className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-foreground">CodeHire</span>
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto" />
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">Privacy Policy</span>
@@ -37,7 +35,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">1. Information We Collect</h2>
-            <p className="leading-relaxed mb-4">When you use CodeHire, we collect the following types of information:</p>
+            <p className="leading-relaxed mb-4">When you use CodeHiring, we collect the following types of information:</p>
             <ul className="list-disc list-inside space-y-2 text-sm">
               <li><strong className="text-foreground">Account data</strong> — name, email address, role (student / college / recruiter), and password (hashed).</li>
               <li><strong className="text-foreground">Profile data</strong> — college, branch, graduation year, company name, designation, and preferences you provide.</li>
@@ -50,7 +48,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">2. How We Use Your Information</h2>
             <ul className="list-disc list-inside space-y-2 text-sm">
-              <li>To operate and improve the CodeHire platform.</li>
+              <li>To operate and improve the CodeHiring platform.</li>
               <li>To display your coding performance to colleges and recruiters (based on your permissions).</li>
               <li>To provide AI-powered job matching and skill assessments.</li>
               <li>To send product updates, notifications, and essential service emails.</li>
@@ -75,7 +73,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">5. Data Retention</h2>
             <p className="leading-relaxed text-sm">
-              We retain your data for as long as your account is active. You may request deletion of your account and associated data at any time by contacting us at <a href="mailto:support@codehire.io" className="text-primary hover:underline">support@codehire.io</a>.
+              We retain your data for as long as your account is active. You may request deletion of your account and associated data at any time by contacting us at <a href="mailto:support@CodeHiring.io" className="text-primary hover:underline">support@CodeHiring.io</a>.
             </p>
           </section>
 
@@ -100,7 +98,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-foreground mb-3">8. Contact</h2>
             <p className="leading-relaxed text-sm">
               For privacy-related questions, email us at{" "}
-              <a href="mailto:privacy@codehire.io" className="text-primary hover:underline">privacy@codehire.io</a>.
+              <a href="mailto:privacy@CodeHiring.io" className="text-primary hover:underline">privacy@CodeHiring.io</a>.
             </p>
           </section>
         </div>

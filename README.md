@@ -9,8 +9,8 @@ A platform for tracking student coding performance across LeetCode, GitHub, Code
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/Sharief9381-tech/codehire.git
-cd codehire
+git clone https://github.com/Sharief9381-tech/CodeHiring.git
+cd CodeHiring
 ```
 
 ### 2. Install dependencies

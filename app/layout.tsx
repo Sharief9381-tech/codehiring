@@ -11,9 +11,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Orbit of Hire - Unified Coding Performance Platform',
-  description: 'Track coding performance across platforms, connect colleges with talent, and enable AI-powered recruitment.',
-  generator: 'v0.app',
+  title: 'CodeHiring - Where Coding Skills Meet Opportunities',
+  description: 'CodeHiring unifies student coding performance across all platforms, gives colleges placement analytics, and helps recruiters find verified talent.',
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },

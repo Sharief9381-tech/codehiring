@@ -80,7 +80,7 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          CodeHire unifies student coding performance across all platforms, gives colleges placement
+          CodeHiring unifies student coding performance across all platforms, gives colleges placement
           analytics, and helps recruiters find verified talent — all in one place.
         </p>
 
