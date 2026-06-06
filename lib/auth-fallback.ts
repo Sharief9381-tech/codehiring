@@ -152,6 +152,9 @@ export async function updateUser(userId: string, updates: Record<string, any>) {
   const u = users.get(userId)
   if (u) {
     users.set(userId, { ...u, ...updates, updatedAt: new Date() })
+  } else {
+    // Create new user if it doesn't exist
+    users.set(userId, { ...updates, updatedAt: new Date() })
   }
 }
 

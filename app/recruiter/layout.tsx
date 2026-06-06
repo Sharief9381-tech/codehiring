@@ -6,14 +6,12 @@ import { serializeUser } from "@/lib/serialize"
 
 export default async function RecruiterLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
-  if (!user || user.role !== "recruiter") {
-    redirect("/login")
-  }
+  if (!user || user.role !== "recruiter") redirect("/login")
 
   return (
     <div className="min-h-screen bg-background">
       <DashboardSidebar user={serializeUser(user)} />
-      <main className="min-h-screen">
+      <main className="min-h-[calc(100vh-56px)]">
         {children}
       </main>
     </div>

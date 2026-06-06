@@ -8,7 +8,7 @@ export default function AnalyticsPage() {
         title="Hiring Analytics"
         description="Track your recruitment metrics and hiring performance"
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <RecruiterAnalytics />
       </div>
     </div>

@@ -347,7 +347,7 @@ export function StatsOverview({ student }: StatsOverviewProps) {
         </CardHeader>
         <CardContent>
           {linkedPlatformsList.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {linkedPlatformsList.map((platform) => {
                 const linkedUsername = linkedPlatforms[platform.id]
                 const username = typeof linkedUsername === 'string' ? linkedUsername : linkedUsername?.username || ''

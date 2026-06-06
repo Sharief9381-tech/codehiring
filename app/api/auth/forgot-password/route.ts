@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { isDatabaseAvailable } from "@/lib/database"
 import { findUserByEmail, generateToken, updateUser } from "@/lib/auth"
-import { findUserByEmail as fallbackFindUserByEmail, updateUser as fallbackUpdateUser } from "@/lib/auth-fallback"
+import { findUserByEmail as fallbackFindUserByEmail, updateUser as fallbackUpdateUser, generateId, generateToken as fallbackGenerateToken } from "@/lib/auth-fallback"
 
 export async function POST(req: Request) {
   try {
@@ -14,19 +14,27 @@ export async function POST(req: Request) {
     const resetLink = `${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}/reset-password/${resetToken}`
     const expiresAt = new Date(Date.now() + 1000 * 60 * 60)
 
-    if (isDatabaseAvailable()) {
-      const user = await findUserByEmail(email)
-      if (user) {
-        const userId = user._id?.toString()
-        if (userId) {
-          await updateUser(userId, {
-            resetToken,
-            resetTokenExpires: expiresAt,
-          })
+    let user = null
+    try {
+      if (isDatabaseAvailable()) {
+        user = await findUserByEmail(email)
+        if (user) {
+          const userId = user._id?.toString()
+          if (userId) {
+            await updateUser(userId, {
+              resetToken,
+              resetTokenExpires: expiresAt,
+            })
+          }
         }
       }
-    } else {
-      const user = await fallbackFindUserByEmail(email)
+    } catch (dbError) {
+      console.log("Database unavailable, falling back to in-memory storage", dbError)
+    }
+
+    // For development/testing: if user not found in DB, try fallback
+    if (!user) {
+      user = await fallbackFindUserByEmail(email)
       if (user) {
         const userId = user._id?.toString()
         if (userId) {
@@ -35,11 +43,31 @@ export async function POST(req: Request) {
             resetTokenExpires: expiresAt,
           })
         }
+      } else {
+        // Create temporary user entry in fallback storage just for the reset token
+        const tempUserId = await generateId()
+        await fallbackUpdateUser(tempUserId, {
+          _id: tempUserId,
+          email,
+          password: "",
+          name: email.split("@")[0],
+          role: "student",
+          resetToken,
+          resetTokenExpires: expiresAt,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+        console.log(`Created temporary user entry in fallback storage for: ${email}`)
       }
     }
 
+    // Always log for development/testing
+    console.log(`[FORGOT PASSWORD] Reset requested for: ${email}`)
+    console.log(`Reset link: ${resetLink}`)
+
+    // Send email if configured
     const RESEND_API_KEY = process.env.RESEND_API_KEY
-    if (RESEND_API_KEY) {
+    if (RESEND_API_KEY && user) {
       await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -62,9 +90,6 @@ export async function POST(req: Request) {
       }).catch((error) => {
         console.error("Resend email failed:", error)
       })
-    } else {
-      console.log(`[FORGOT PASSWORD] Reset requested for: ${email}`)
-      console.log(`Reset link: ${resetLink}`)
     }
 
     return NextResponse.json({ success: true })

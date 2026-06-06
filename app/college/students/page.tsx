@@ -10,7 +10,7 @@ export default async function StudentsPage() {
         title="Students"
         description="View and manage registered students"
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <StudentsTable />
       </div>
     </div>

@@ -21,7 +21,7 @@ export default async function StudentDashboard() {
         title="Dashboard"
         description="Track your coding progress across all platforms"
       />
-      <div className="flex-1 space-y-6 p-6">
+      <div className="flex-1 space-y-6 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <DashboardClient student={serializeUser(student) as any} />
       </div>
     </div>

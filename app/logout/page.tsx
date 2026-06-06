@@ -1,93 +1,65 @@
 "use client"
 
-import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { LogOut, Loader2 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { LogOut, Loader2, CheckCircle2 } from "lucide-react"
 
 export default function LogoutPage() {
   const router = useRouter()
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
-  const [loggedOut, setLoggedOut] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
 
   const handleLogout = async () => {
-    setIsLoggingOut(true)
+    setLoading(true)
     try {
       await fetch("/api/auth/logout", { method: "POST" })
-      setLoggedOut(true)
-      setTimeout(() => {
-        router.push("/")
-        router.refresh()
-      }, 1500)
-    } catch (error) {
-      console.error("Logout error:", error)
-      setIsLoggingOut(false)
+      setDone(true)
+      setTimeout(() => { router.push("/"); router.refresh() }, 1200)
+    } catch {
+      setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
-      <div className="w-full max-w-md">
-        <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center">
-            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={160} height={40} className="h-10 w-auto block dark:hidden" />
-            <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={160} height={40} className="h-10 w-auto hidden dark:block" />
-          </Link>
-        </div>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background relative">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,oklch(0.52_0.24_285/0.07),transparent)] pointer-events-none" />
 
-        <Card className="border-border">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">
-              {loggedOut ? "Logged Out Successfully!" : "Logout"}
-            </CardTitle>
-            <CardDescription>
-              {loggedOut 
-                ? "Redirecting to homepage..." 
-                : "Click below to logout and see the homepage"
-              }
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {loggedOut ? (
-              <div className="text-center">
-                <div className="text-green-600 mb-4">✅ Successfully logged out!</div>
-                <div className="text-sm text-muted-foreground">
-                  Redirecting to homepage in a moment...
-                </div>
+      <div className="w-full max-w-sm relative z-10 text-center">
+        <Link href="/" className="inline-flex justify-center mb-8">
+          <Image src="/codehiring-logo.svg" alt="CodeHiring" width={150} height={38} className="h-9 w-auto block dark:hidden" />
+          <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={150} height={38} className="h-9 w-auto hidden dark:block" />
+        </Link>
+
+        <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+          {done ? (
+            <>
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10 mx-auto mb-4">
+                <CheckCircle2 className="h-7 w-7 text-emerald-500" />
               </div>
-            ) : (
-              <>
-                <Button 
-                  onClick={handleLogout} 
-                  disabled={isLoggingOut}
-                  className="w-full"
-                  variant="destructive"
-                >
-                  {isLoggingOut ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Logging out...
-                    </>
-                  ) : (
-                    <>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </>
-                  )}
+              <h2 className="text-lg font-semibold text-foreground mb-1">Signed out</h2>
+              <p className="text-sm text-muted-foreground">Redirecting to home...</p>
+            </>
+          ) : (
+            <>
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-destructive/10 mx-auto mb-4">
+                <LogOut className="h-6 w-6 text-destructive" />
+              </div>
+              <h2 className="text-lg font-semibold text-foreground mb-1">Sign out</h2>
+              <p className="text-sm text-muted-foreground mb-6">Are you sure you want to sign out of CodeHiring?</p>
+              <div className="flex gap-3">
+                <Link href="/" className="flex-1">
+                  <Button variant="outline" className="w-full">Cancel</Button>
+                </Link>
+                <Button variant="destructive" className="flex-1" onClick={handleLogout} disabled={loading}>
+                  {loading ? <><Loader2 className="h-4 w-4 animate-spin" />Signing out...</> : "Sign Out"}
                 </Button>
-                
-                <div className="text-center">
-                  <Link href="/" className="text-sm text-primary hover:underline">
-                    Go to Homepage
-                  </Link>
-                </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )

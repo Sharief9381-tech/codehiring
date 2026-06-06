@@ -15,7 +15,7 @@ export default async function CollegeLeaderboardPage() {
         title="Leaderboard"
         description="Top performing students ranked by coding activity"
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <CollegeLeaderboard />
       </div>
     </div>

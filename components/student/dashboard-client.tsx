@@ -649,7 +649,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         style={{ borderLeftColor: platformColor }}
         onClick={() => router.push('/student/platforms')}
       >
-        <CardContent className="p-3 pb-14 h-full flex flex-col">
+        <CardContent className="p-6 pb-14 h-full flex flex-col">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-3 min-w-0 flex-1">
               <div 
@@ -1585,7 +1585,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         </CardHeader>
         <CardContent>
           {hasLinkedPlatforms ? (
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {Object.entries(linkedPlatforms)
                 .filter(([, platformData]) => platformData != null)
                 .sort(([, a], [, b]) => {

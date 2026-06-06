@@ -17,7 +17,7 @@ export default async function JobsPage() {
         title="Career Hub"
         description="Personalized career roadmap based on your year"
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <CareerHub graduationYear={graduationYear} />
       </div>
     </div>

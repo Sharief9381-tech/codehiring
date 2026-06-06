@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     const student = await UserModel.findById(user._id as string)
     const studentContext = student ? buildStudentContext(student) : ""
 
-    const systemPrompt = `You are CodeTrack AI — a smart career advisor for software engineering students in India.
+    const systemPrompt = `You are CodeHiring AI — a smart career advisor for software engineering students in India.
 You have access to the student's coding profile below. Use it to give personalized, specific advice.
 Be concise, friendly, and actionable. Use bullet points when listing items.
 Focus on: placement preparation, coding improvement, career guidance, skill gaps, job matching.

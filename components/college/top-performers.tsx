@@ -1,159 +1,103 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Trophy, RefreshCw, Users } from "lucide-react"
 
 interface TopPerformer {
-  id: string
-  name: string
-  email: string
-  rollNumber: string
-  branch: string
-  totalProblems: number
-  githubContributions: number
-  contestsAttended: number
-  currentRating: number
-  overallRank: string
-  activityLevel: string
-  placementStatus: string
+  id: string; name: string; email: string; rollNumber: string
+  branch: string; totalProblems: number; currentRating: number
+  overallRank: string; placementStatus: string
 }
+
+const rankStyle = (i: number) =>
+  i === 0 ? "bg-amber-400/20 text-amber-500 border-amber-400/30" :
+  i === 1 ? "bg-slate-400/20 text-slate-400 border-slate-400/30" :
+  i === 2 ? "bg-orange-400/20 text-orange-500 border-orange-400/30" :
+             "bg-secondary text-muted-foreground border-border"
+
+const statusBadge = (s: string) =>
+  s === "placed"      ? <Badge className="text-[10px] px-1.5 py-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">Placed</Badge> :
+  s === "interviewing" ? <Badge className="text-[10px] px-1.5 py-0 bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20">Interviewing</Badge> :
+                         <Badge variant="secondary" className="text-[10px] px-1.5 py-0">Searching</Badge>
 
 export function TopPerformers() {
   const [performers, setPerformers] = useState<TopPerformer[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchTopPerformers()
-  }, [])
-
-  const fetchTopPerformers = async () => {
+  const fetchData = async () => {
     setLoading(true)
     try {
-      const response = await fetch('/api/college/dashboard')
-      if (response.ok) {
-        const data = await response.json()
-        setPerformers(data.topPerformers || [])
-      } else {
-        console.error('Failed to fetch top performers:', response.status)
-      }
-    } catch (error) {
-      console.error('Error fetching top performers:', error)
-    } finally {
-      setLoading(false)
-    }
+      const res = await fetch("/api/college/dashboard")
+      if (res.ok) { const d = await res.json(); setPerformers(d.topPerformers ?? []) }
+    } catch {}
+    finally { setLoading(false) }
   }
 
-  const getRankBadge = (rank: number) => {
-    if (rank === 1) return "bg-yellow-500/20 text-yellow-500"
-    if (rank === 2) return "bg-muted/50 text-muted-foreground"
-    if (rank === 3) return "bg-amber-600/20 text-amber-600"
-    return "bg-secondary text-muted-foreground"
-  }
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "placed":
-        return <Badge className="bg-green-500/20 text-green-500 text-xs">Placed</Badge>
-      case "interviewing":
-        return <Badge className="bg-yellow-500/20 text-yellow-500 text-xs">Interviewing</Badge>
-      default:
-        return <Badge variant="secondary" className="text-xs">Searching</Badge>
-    }
-  }
-
-  if (loading) {
-    return (
-      <Card className="bg-card">
-        <CardHeader className="flex flex-row items-center gap-2">
-          <Trophy className="h-5 w-5 text-chart-3" />
-          <CardTitle>Top Performers</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="animate-pulse">
-              <div className="flex items-center gap-3 rounded-lg border border-border bg-secondary/30 p-3">
-                <div className="h-6 w-6 bg-secondary rounded" />
-                <div className="h-10 w-10 bg-secondary rounded-full" />
-                <div className="flex-1 space-y-2">
-                  <div className="h-4 w-24 bg-secondary rounded" />
-                  <div className="h-3 w-16 bg-secondary rounded" />
-                </div>
-                <div className="text-right space-y-2">
-                  <div className="h-4 w-12 bg-secondary rounded" />
-                  <div className="h-3 w-16 bg-secondary rounded" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-    )
-  }
+  useEffect(() => { fetchData() }, [])
 
   return (
-    <Card className="bg-card">
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-4">
         <div className="flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-chart-3" />
-          <CardTitle>Top Performers</CardTitle>
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500/10">
+            <Trophy className="h-4 w-4 text-amber-500" />
+          </div>
+          <CardTitle className="text-base">Top Performers</CardTitle>
         </div>
-        <button
-          onClick={fetchTopPerformers}
-          disabled={loading}
-          className="p-1 text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+        <button onClick={fetchData} disabled={loading} className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-secondary/80">
+          <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {performers.length === 0 ? (
-          <div className="text-center py-8">
-            <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No student data available</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Students need to link their coding platforms to appear here
-            </p>
+      <CardContent>
+        {loading ? (
+          <div className="space-y-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="skeleton h-14 rounded-xl" />
+            ))}
+          </div>
+        ) : performers.length === 0 ? (
+          <div className="flex flex-col items-center gap-2 py-10">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary">
+              <Users className="h-6 w-6 text-muted-foreground" />
+            </div>
+            <p className="text-sm text-muted-foreground">No student data yet</p>
+            <p className="text-xs text-muted-foreground text-center max-w-xs">Students need to link coding platforms to appear here</p>
           </div>
         ) : (
-          performers.slice(0, 10).map((performer, index) => (
-            <Link key={performer.id} href="/college/students">
-              <div className="flex items-center gap-3 rounded-lg border border-border bg-secondary/30 p-3 cursor-pointer hover:bg-secondary/60 hover:border-primary/40 transition-colors">
-                <Badge className={`h-6 w-6 justify-center ${getRankBadge(index + 1)}`}>
-                  {index + 1}
-                </Badge>
-                <Avatar className="h-10 w-10">
-                  <AvatarFallback className="bg-primary/10 text-primary">
-                    {performer.name.split(" ").map((n) => n[0]).join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium text-foreground">{performer.name}</p>
-                    {getStatusBadge(performer.placementStatus)}
+          <div className="space-y-2">
+            {performers.slice(0, 10).map((p, i) => (
+              <Link key={p.id} href="/college/students">
+                <div className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card p-3 hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer">
+                  {/* Rank */}
+                  <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${rankStyle(i)}`}>
+                    {i + 1}
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span>{performer.rollNumber}</span>
-                    <span>•</span>
-                    <span>{performer.branch}</span>
+                  {/* Avatar */}
+                  <Avatar className="h-9 w-9 shrink-0">
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
+                      {p.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <p className="text-sm font-medium text-foreground truncate">{p.name}</p>
+                      {statusBadge(p.placementStatus)}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{p.rollNumber} · {p.branch}</p>
+                  </div>
+                  {/* Stats */}
+                  <div className="text-right shrink-0">
+                    <p className="text-sm font-bold text-foreground tabular-nums">{p.totalProblems}</p>
+                    <p className="text-[10px] text-muted-foreground">problems</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-medium text-foreground">{performer.totalProblems}</p>
-                  <p className="text-xs text-muted-foreground">problems</p>
-                </div>
-              </div>
-            </Link>
-          ))
-        )}
-        
-        {performers.length > 10 && (
-          <div className="text-center pt-2">
-            <p className="text-xs text-muted-foreground">
-              Showing top 10 of {performers.length} students
-            </p>
+              </Link>
+            ))}
           </div>
         )}
       </CardContent>

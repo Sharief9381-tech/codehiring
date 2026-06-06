@@ -8,7 +8,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Plus, Trash2, Download, Eye, GripVertical, Sparkles, Loader2 } from "lucide-react"
+import {
+  Plus, Trash2, Download, Sparkles, Loader2, GripVertical,
+  CheckCircle2, Target, Lightbulb, Star, RefreshCw, ChevronDown, ChevronUp
+} from "lucide-react"
+import { toast } from "sonner"
 
 interface Experience {
   id: string
@@ -18,6 +22,7 @@ interface Experience {
   startDate: string
   endDate: string
   description: string
+  enhancing?: boolean
 }
 
 interface Project {
@@ -28,342 +33,522 @@ interface Project {
   link: string
 }
 
+interface GeneratedResume {
+  professionalSummary: string
+  technicalSkills: {
+    languages: string[]
+    frameworks: string[]
+    tools: string[]
+    competitiveProgramming: string
+  }
+  codingAchievements: string[]
+  projectSuggestions: { name: string; description: string; technologies: string[]; bullets: string[] }[]
+  careerObjective: string
+  strengths: string[]
+  atsScore: number
+  atsKeywords: string[]
+  improvementTips: string[]
+  suggestedRoles: string[]
+}
+
 export function ResumeBuilder() {
-  const [experiences, setExperiences] = useState<Experience[]>([
-    {
-      id: "1",
-      title: "Software Engineering Intern",
-      company: "Google",
-      location: "Bangalore, India",
-      startDate: "May 2024",
-      endDate: "Jul 2024",
-      description: "Developed and maintained microservices using Go and Kubernetes. Improved API response times by 40%.",
-    },
-  ])
-
-  const [projects, setProjects] = useState<Project[]>([
-    {
-      id: "1",
-      name: "CodeHiring",
-      description: "A unified coding performance platform that aggregates stats from LeetCode, GitHub, Codeforces, and CodeChef.",
-      technologies: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
-      link: "https://github.com/Sharief9381-tech/codehireee",
-    },
-  ])
-
+  const [targetRole, setTargetRole] = useState("Software Engineer")
+  const [additionalInfo, setAdditionalInfo] = useState("")
   const [generating, setGenerating] = useState(false)
+  const [generated, setGenerated] = useState<GeneratedResume | null>(null)
+  const [generatedAt, setGeneratedAt] = useState<string | null>(null)
+  const [showProjectSuggestions, setShowProjectSuggestions] = useState(false)
 
-  const addExperience = () => {
-    setExperiences([
-      ...experiences,
-      {
-        id: Date.now().toString(),
-        title: "",
-        company: "",
-        location: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ])
-  }
+  const [experiences, setExperiences] = useState<Experience[]>([
+    { id: "1", title: "", company: "", location: "", startDate: "", endDate: "", description: "" },
+  ])
+  const [projects, setProjects] = useState<Project[]>([
+    { id: "1", name: "", description: "", technologies: [], link: "" },
+  ])
 
-  const removeExperience = (id: string) => {
-    setExperiences(experiences.filter((exp) => exp.id !== id))
-  }
+  // ── Generate full AI resume ───────────────────────────────────────────────
 
-  const updateExperience = (id: string, field: keyof Experience, value: string) => {
-    setExperiences(experiences.map((exp) => (exp.id === id ? { ...exp, [field]: value } : exp)))
-  }
-
-  const addProject = () => {
-    setProjects([
-      ...projects,
-      {
-        id: Date.now().toString(),
-        name: "",
-        description: "",
-        technologies: [],
-        link: "",
-      },
-    ])
-  }
-
-  const removeProject = (id: string) => {
-    setProjects(projects.filter((proj) => proj.id !== id))
-  }
-
-  const updateProject = (id: string, field: keyof Project, value: string | string[]) => {
-    setProjects(projects.map((proj) => (proj.id === id ? { ...proj, [field]: value } : proj)))
-  }
-
-  const generateWithAI = async () => {
+  const generateResume = async () => {
     setGenerating(true)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setGenerating(false)
+    try {
+      const res = await fetch("/api/student/smart-resume/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ targetRole, additionalInfo }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Generation failed")
+      setGenerated(data.resume)
+      setGeneratedAt(data.meta?.generatedAt)
+      toast.success("AI resume generated from your verified profile!")
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to generate resume")
+    } finally {
+      setGenerating(false)
+    }
   }
+
+  // ── Enhance a single experience with AI ──────────────────────────────────
+
+  const enhanceExperience = async (id: string) => {
+    const exp = experiences.find((e) => e.id === id)
+    if (!exp) return
+    setExperiences((prev) => prev.map((e) => e.id === id ? { ...e, enhancing: true } : e))
+    try {
+      const res = await fetch("/api/student/smart-resume/enhance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: exp.title, company: exp.company, description: exp.description }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Enhancement failed")
+      setExperiences((prev) => prev.map((e) => e.id === id ? { ...e, description: data.enhanced, enhancing: false } : e))
+      toast.success("Description enhanced by AI!")
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Enhancement failed")
+      setExperiences((prev) => prev.map((e) => e.id === id ? { ...e, enhancing: false } : e))
+    }
+  }
+
+  // ── Download as text ─────────────────────────────────────────────────────
+
+  const downloadResume = () => {
+    if (!generated) return
+    const lines: string[] = []
+    lines.push("═══════════════════════════════════════")
+    lines.push("           PROFESSIONAL RESUME")
+    lines.push(`  Generated by CodeHiring AI — ${new Date(generatedAt!).toLocaleDateString()}`)
+    lines.push("═══════════════════════════════════════\n")
+    lines.push("CAREER OBJECTIVE")
+    lines.push("─────────────────")
+    lines.push(generated.careerObjective + "\n")
+    lines.push("PROFESSIONAL SUMMARY")
+    lines.push("─────────────────────")
+    lines.push(generated.professionalSummary + "\n")
+    lines.push("TECHNICAL SKILLS")
+    lines.push("─────────────────")
+    lines.push(`Languages: ${generated.technicalSkills.languages.join(", ")}`)
+    lines.push(`Frameworks: ${generated.technicalSkills.frameworks.join(", ")}`)
+    lines.push(`Tools: ${generated.technicalSkills.tools.join(", ")}`)
+    lines.push(`Competitive Programming: ${generated.technicalSkills.competitiveProgramming}\n`)
+    lines.push("CODING ACHIEVEMENTS")
+    lines.push("────────────────────")
+    generated.codingAchievements.forEach((a) => lines.push(`• ${a}`))
+    lines.push("")
+    if (experiences.some((e) => e.title)) {
+      lines.push("WORK EXPERIENCE")
+      lines.push("────────────────")
+      experiences.filter((e) => e.title).forEach((e) => {
+        lines.push(`${e.title} | ${e.company} | ${e.location}`)
+        lines.push(`${e.startDate} – ${e.endDate}`)
+        lines.push(e.description)
+        lines.push("")
+      })
+    }
+    if (projects.some((p) => p.name)) {
+      lines.push("PROJECTS")
+      lines.push("─────────")
+      projects.filter((p) => p.name).forEach((p) => {
+        lines.push(`${p.name}${p.link ? ` | ${p.link}` : ""}`)
+        lines.push(`Technologies: ${p.technologies.join(", ")}`)
+        lines.push(p.description)
+        lines.push("")
+      })
+    }
+    lines.push("ATS KEYWORDS")
+    lines.push("─────────────")
+    lines.push(generated.atsKeywords.join(" • "))
+    const blob = new Blob([lines.join("\n")], { type: "text/plain" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `resume-${targetRole.replace(/\s+/g, "-").toLowerCase()}.txt`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const atsColor = !generated ? "text-muted-foreground" :
+    generated.atsScore >= 80 ? "text-emerald-500" :
+    generated.atsScore >= 60 ? "text-amber-500" : "text-red-500"
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      <div className="space-y-6">
-        <Card className="bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 border-border shadow-2xl">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle className="text-foreground">Work Experience</CardTitle>
-              <CardDescription className="text-muted-foreground">Add your internships and work experience</CardDescription>
+    <div className="space-y-6">
+      {/* ── AI Generation Panel ── */}
+      <Card className="border-primary/20 bg-primary/5">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+              <Sparkles className="h-5 w-5 text-primary" />
             </div>
-            <Button onClick={addExperience} size="sm" className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-foreground border-0 shadow-lg">
-              <Plus className="h-4 w-4" />
-              Add
-            </Button>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {experiences.map((exp, index) => (
-              <div key={exp.id} className="space-y-4 rounded-lg border border-border bg-secondary/50 p-4">
-                <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>AI Resume Generator</CardTitle>
+              <CardDescription>
+                Generates a complete resume from your verified coding profile — LeetCode, GitHub, Codeforces & more.
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label>Target Role</Label>
+              <Input
+                placeholder="e.g. Software Engineer, Backend Developer"
+                value={targetRole}
+                onChange={(e) => setTargetRole(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Additional Info <span className="text-muted-foreground text-xs">(optional)</span></Label>
+              <Input
+                placeholder="e.g. 2 years experience, prefer startup"
+                value={additionalInfo}
+                onChange={(e) => setAdditionalInfo(e.target.value)}
+              />
+            </div>
+          </div>
+          <Button onClick={generateResume} disabled={generating} className="gap-2 w-full sm:w-auto">
+            {generating ? (
+              <><Loader2 className="h-4 w-4 animate-spin" />Generating with AI...</>
+            ) : (
+              <><Sparkles className="h-4 w-4" />{generated ? "Regenerate Resume" : "Generate AI Resume"}</>
+            )}
+          </Button>
+          {generated && (
+            <p className="text-xs text-muted-foreground">
+              Last generated: {new Date(generatedAt!).toLocaleString()} — based on your verified platform data
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* ── AI Generated Resume Output ── */}
+      {generated && (
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Left: main content */}
+          <div className="lg:col-span-2 space-y-4">
+            {/* ATS Score */}
+            <Card>
+              <CardContent className="pt-5">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <GripVertical className="h-4 w-4 cursor-move text-muted-foreground" />
-                    <span className="text-sm font-medium text-muted-foreground">Experience {index + 1}</span>
+                    <Target className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-semibold text-foreground">ATS Score</span>
                   </div>
-                  <Button variant="ghost" size="icon" onClick={() => removeExperience(exp.id)} className="text-red-400 hover:text-red-300 hover:bg-red-900/20">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <span className={`text-2xl font-bold ${atsColor}`}>{generated.atsScore}/100</span>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label className="text-gray-200">Job Title</Label>
-                    <Input
-                      placeholder="Software Engineer Intern"
-                      value={exp.title}
-                      onChange={(e) => updateExperience(exp.id, "title", e.target.value)}
-                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-gray-200">Company</Label>
-                    <Input
-                      placeholder="Google"
-                      value={exp.company}
-                      onChange={(e) => updateExperience(exp.id, "company", e.target.value)}
-                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-gray-200">Location</Label>
-                    <Input
-                      placeholder="Bangalore, India"
-                      value={exp.location}
-                      onChange={(e) => updateExperience(exp.id, "location", e.target.value)}
-                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="flex-1 space-y-2">
-                      <Label className="text-gray-200">Start Date</Label>
-                      <Input
-                        placeholder="May 2024"
-                        value={exp.startDate}
-                        onChange={(e) => updateExperience(exp.id, "startDate", e.target.value)}
-                        className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-                      />
-                    </div>
-                    <div className="flex-1 space-y-2">
-                      <Label className="text-gray-200">End Date</Label>
-                      <Input
-                        placeholder="Jul 2024"
-                        value={exp.endDate}
-                        onChange={(e) => updateExperience(exp.id, "endDate", e.target.value)}
-                        className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-                      />
-                    </div>
-                  </div>
+                <div className="h-2 w-full rounded-full bg-secondary">
+                  <div
+                    className={`h-2 rounded-full transition-all ${generated.atsScore >= 80 ? "bg-emerald-500" : generated.atsScore >= 60 ? "bg-amber-500" : "bg-red-500"}`}
+                    style={{ width: `${generated.atsScore}%` }}
+                  />
                 </div>
-                <div className="space-y-2">
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {generated.atsKeywords.map((kw) => (
+                    <Badge key={kw} variant="secondary" className="text-xs">{kw}</Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Career Objective */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Career Objective</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground italic leading-relaxed">{generated.careerObjective}</p>
+              </CardContent>
+            </Card>
+
+            {/* Professional Summary */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Professional Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground leading-relaxed">{generated.professionalSummary}</p>
+              </CardContent>
+            </Card>
+
+            {/* Technical Skills */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Technical Skills</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {[
+                  { label: "Languages", items: generated.technicalSkills.languages },
+                  { label: "Frameworks", items: generated.technicalSkills.frameworks },
+                  { label: "Tools & Platforms", items: generated.technicalSkills.tools },
+                ].map(({ label, items }) => items.length > 0 && (
+                  <div key={label}>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">{label}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {items.map((i) => <Badge key={i} variant="outline" className="text-xs">{i}</Badge>)}
+                    </div>
+                  </div>
+                ))}
+                {generated.technicalSkills.competitiveProgramming && (
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">Competitive Programming</p>
+                    <p className="text-sm text-foreground">{generated.technicalSkills.competitiveProgramming}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Coding Achievements */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Coding Achievements</CardTitle>
+                <CardDescription>Generated from your verified platform stats</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {generated.codingAchievements.map((a, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />
+                      {a}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Project Suggestions */}
+            <Card>
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base">AI Project Suggestions</CardTitle>
+                  <button onClick={() => setShowProjectSuggestions(!showProjectSuggestions)} className="text-muted-foreground hover:text-foreground">
+                    {showProjectSuggestions ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </button>
+                </div>
+                <CardDescription>Projects to build based on your skill set</CardDescription>
+              </CardHeader>
+              {showProjectSuggestions && (
+                <CardContent className="space-y-4">
+                  {generated.projectSuggestions.map((p, i) => (
+                    <div key={i} className="rounded-lg border border-border p-4">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h4 className="text-sm font-semibold text-foreground">{p.name}</h4>
+                        <div className="flex flex-wrap gap-1">
+                          {p.technologies.map((t) => <Badge key={t} variant="secondary" className="text-[10px]">{t}</Badge>)}
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-2">{p.description}</p>
+                      <ul className="space-y-1">
+                        {p.bullets.map((b, j) => (
+                          <li key={j} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                            <span className="text-primary mt-0.5">•</span>{b}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </CardContent>
+              )}
+            </Card>
+          </div>
+
+          {/* Right: sidebar */}
+          <div className="space-y-4">
+            {/* Download */}
+            <Card className="border-primary/20 bg-primary/5">
+              <CardContent className="pt-5">
+                <Button onClick={downloadResume} className="w-full gap-2 mb-3">
+                  <Download className="h-4 w-4" />Download Resume (.txt)
+                </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  Copy into Word/Google Docs and format for PDF
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Strengths */}
+            <Card>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4 text-amber-500" />
+                  <CardTitle className="text-sm">Your Strengths</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-1.5">
+                  {generated.strengths.map((s, i) => (
+                    <li key={i} className="text-xs text-muted-foreground flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shrink-0" />{s}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Improvement Tips */}
+            <Card>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4 text-primary" />
+                  <CardTitle className="text-sm">Improvement Tips</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {generated.improvementTips.map((tip, i) => (
+                    <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
+                      <span className="text-primary mt-0.5 shrink-0">{i + 1}.</span>{tip}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Suggested Roles */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Suggested Roles</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-1.5">
+                  {generated.suggestedRoles.map((r) => (
+                    <Badge key={r} className="text-xs bg-primary/10 text-primary border-primary/20">{r}</Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      <Separator />
+
+      {/* ── Manual Experience Editor ── */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="space-y-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Work Experience</CardTitle>
+                <CardDescription>Add internships — use AI to enhance descriptions</CardDescription>
+              </div>
+              <Button onClick={() => setExperiences([...experiences, { id: Date.now().toString(), title: "", company: "", location: "", startDate: "", endDate: "", description: "" }])} size="sm" className="gap-1">
+                <Plus className="h-4 w-4" />Add
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {experiences.map((exp, index) => (
+                <div key={exp.id} className="space-y-3 rounded-lg border border-border bg-secondary/30 p-4">
                   <div className="flex items-center justify-between">
-                    <Label className="text-gray-200">Description</Label>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 gap-1 text-xs text-purple-400 hover:text-purple-300 hover:bg-purple-900/20"
-                      onClick={generateWithAI}
-                      disabled={generating}
-                    >
-                      {generating ? (
-                        <Loader2 className="h-3 w-3 animate-spin" />
-                      ) : (
-                        <Sparkles className="h-3 w-3" />
-                      )}
-                      Enhance with AI
+                    <div className="flex items-center gap-2">
+                      <GripVertical className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-xs font-medium text-muted-foreground">Experience {index + 1}</span>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => setExperiences(experiences.filter((e) => e.id !== exp.id))} className="h-7 w-7 text-destructive hover:text-destructive">
+                      <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
-                  <Textarea
-                    placeholder="Describe your responsibilities and achievements..."
-                    rows={3}
-                    value={exp.description}
-                    onChange={(e) => updateExperience(exp.id, "description", e.target.value)}
-                    className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
-                  />
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900 border-emerald-700 shadow-2xl">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle className="text-foreground">Projects</CardTitle>
-              <CardDescription className="text-emerald-200">Showcase your best projects</CardDescription>
-            </div>
-            <Button onClick={addProject} size="sm" className="gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-foreground border-0 shadow-lg">
-              <Plus className="h-4 w-4" />
-              Add
-            </Button>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {projects.map((proj, index) => (
-              <div key={proj.id} className="space-y-4 rounded-lg border border-emerald-600 bg-emerald-800/30 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <GripVertical className="h-4 w-4 cursor-move text-emerald-400" />
-                    <span className="text-sm font-medium text-emerald-200">Project {index + 1}</span>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">Job Title</Label>
+                      <Input placeholder="Software Intern" value={exp.title} onChange={(e) => setExperiences(experiences.map((x) => x.id === exp.id ? { ...x, title: e.target.value } : x))} className="h-8 text-sm" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">Company</Label>
+                      <Input placeholder="Google" value={exp.company} onChange={(e) => setExperiences(experiences.map((x) => x.id === exp.id ? { ...x, company: e.target.value } : x))} className="h-8 text-sm" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">Start Date</Label>
+                      <Input placeholder="May 2024" value={exp.startDate} onChange={(e) => setExperiences(experiences.map((x) => x.id === exp.id ? { ...x, startDate: e.target.value } : x))} className="h-8 text-sm" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">End Date</Label>
+                      <Input placeholder="Jul 2024 / Present" value={exp.endDate} onChange={(e) => setExperiences(experiences.map((x) => x.id === exp.id ? { ...x, endDate: e.target.value } : x))} className="h-8 text-sm" />
+                    </div>
                   </div>
-                  <Button variant="ghost" size="icon" onClick={() => removeProject(proj.id)} className="text-red-400 hover:text-red-300 hover:bg-red-900/20">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label className="text-emerald-200">Project Name</Label>
-                    <Input
-                      placeholder="Project Name"
-                      value={proj.name}
-                      onChange={(e) => updateProject(proj.id, "name", e.target.value)}
-                      className="bg-emerald-700/50 border-emerald-600 text-foreground placeholder:text-emerald-300"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-emerald-200">Project Link</Label>
-                    <Input
-                      placeholder="https://github.com/..."
-                      value={proj.link}
-                      onChange={(e) => updateProject(proj.id, "link", e.target.value)}
-                      className="bg-emerald-700/50 border-emerald-600 text-foreground placeholder:text-emerald-300"
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-xs">Description</Label>
+                      <Button variant="ghost" size="sm" onClick={() => enhanceExperience(exp.id)} disabled={exp.enhancing || !exp.title} className="h-6 gap-1 text-xs text-primary hover:text-primary/80 px-2">
+                        {exp.enhancing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                        Enhance with AI
+                      </Button>
+                    </div>
+                    <Textarea
+                      placeholder="Describe your responsibilities..."
+                      rows={3}
+                      value={exp.description}
+                      onChange={(e) => setExperiences(experiences.map((x) => x.id === exp.id ? { ...x, description: e.target.value } : x))}
+                      className="text-sm resize-none"
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-emerald-200">Description</Label>
-                  <Textarea
-                    placeholder="Describe your project..."
-                    rows={2}
-                    value={proj.description}
-                    onChange={(e) => updateProject(proj.id, "description", e.target.value)}
-                    className="bg-emerald-700/50 border-emerald-600 text-foreground placeholder:text-emerald-300"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-emerald-200">Technologies</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {proj.technologies.map((tech) => (
-                      <Badge key={tech} className="bg-emerald-600 text-foreground border-emerald-500 shadow-md">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                  <Input
-                    placeholder="Add technologies (comma separated)"
-                    className="bg-emerald-700/50 border-emerald-600 text-foreground placeholder:text-emerald-300"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        const input = e.currentTarget.value
-                        const techs = input.split(",").map((t) => t.trim()).filter(Boolean)
-                        updateProject(proj.id, "technologies", [...proj.technologies, ...techs])
-                        e.currentTarget.value = ""
-                      }
-                    }}
-                  />
-                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Projects */}
+        <div>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Projects</CardTitle>
+                <CardDescription>Add your best projects</CardDescription>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="lg:sticky lg:top-6 lg:self-start">
-        <Card className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 border-indigo-700 shadow-2xl">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-foreground">Resume Preview</CardTitle>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="gap-2 bg-indigo-800/50 border-indigo-600 text-indigo-200 hover:bg-indigo-700/50">
-                <Eye className="h-4 w-4" />
-                Preview
+              <Button onClick={() => setProjects([...projects, { id: Date.now().toString(), name: "", description: "", technologies: [], link: "" }])} size="sm" className="gap-1">
+                <Plus className="h-4 w-4" />Add
               </Button>
-              <Button size="sm" className="gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-foreground border-0 shadow-lg">
-                <Download className="h-4 w-4" />
-                Download PDF
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="aspect-[8.5/11] rounded-lg border border-indigo-600 bg-card p-6 text-xs shadow-inner">
-              <div className="space-y-4">
-                <div className="text-center">
-                  <h2 className="text-lg font-bold text-foreground">John Doe</h2>
-                  <p className="text-indigo-300">Software Engineer</p>
-                  <p className="text-indigo-400">john@example.com | +91 9876543210 | Mumbai, India</p>
-                </div>
-                
-                <Separator className="bg-indigo-600" />
-                
-                <div>
-                  <h3 className="mb-2 font-semibold text-foreground">Experience</h3>
-                  {experiences.map((exp) => (
-                    <div key={exp.id} className="mb-2">
-                      <div className="flex justify-between">
-                        <span className="font-medium text-indigo-200">{exp.title || "Job Title"}</span>
-                        <span className="text-indigo-400">{exp.startDate} - {exp.endDate}</span>
-                      </div>
-                      <p className="text-indigo-300">{exp.company || "Company"} | {exp.location}</p>
-                      <p className="mt-1 text-muted-foreground">{exp.description}</p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {projects.map((proj, index) => (
+                <div key={proj.id} className="space-y-3 rounded-lg border border-border bg-secondary/30 p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium text-muted-foreground">Project {index + 1}</span>
+                    <Button variant="ghost" size="icon" onClick={() => setProjects(projects.filter((p) => p.id !== proj.id))} className="h-7 w-7 text-destructive hover:text-destructive">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">Project Name</Label>
+                      <Input placeholder="My Project" value={proj.name} onChange={(e) => setProjects(projects.map((p) => p.id === proj.id ? { ...p, name: e.target.value } : p))} className="h-8 text-sm" />
                     </div>
-                  ))}
-                </div>
-
-                <div>
-                  <h3 className="mb-2 font-semibold text-foreground">Projects</h3>
-                  {projects.map((proj) => (
-                    <div key={proj.id} className="mb-2">
-                      <span className="font-medium text-indigo-200">{proj.name || "Project Name"}</span>
-                      <p className="mt-1 text-muted-foreground">{proj.description}</p>
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {proj.technologies.map((tech) => (
-                          <span key={tech} className="rounded bg-indigo-800/50 px-1 text-[10px] text-indigo-200">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <h3 className="mb-2 font-semibold text-foreground">Coding Stats</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="rounded bg-indigo-800/30 p-2 border border-indigo-700">
-                      <p className="font-medium text-foreground">456</p>
-                      <p className="text-indigo-300">Problems Solved</p>
-                    </div>
-                    <div className="rounded bg-indigo-800/30 p-2 border border-indigo-700">
-                      <p className="font-medium text-foreground">1892</p>
-                      <p className="text-indigo-300">Max Rating</p>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">GitHub / Link</Label>
+                      <Input placeholder="https://github.com/..." value={proj.link} onChange={(e) => setProjects(projects.map((p) => p.id === proj.id ? { ...p, link: e.target.value } : p))} className="h-8 text-sm" />
                     </div>
                   </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Description</Label>
+                    <Textarea placeholder="What does it do?" rows={2} value={proj.description} onChange={(e) => setProjects(projects.map((p) => p.id === proj.id ? { ...p, description: e.target.value } : p))} className="text-sm resize-none" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Technologies</Label>
+                    <div className="flex flex-wrap gap-1 mb-1">
+                      {proj.technologies.map((t) => (
+                        <Badge key={t} variant="secondary" className="text-xs gap-1 cursor-pointer" onClick={() => setProjects(projects.map((p) => p.id === proj.id ? { ...p, technologies: p.technologies.filter((x) => x !== t) } : p))}>
+                          {t} ×
+                        </Badge>
+                      ))}
+                    </div>
+                    <Input
+                      placeholder="Type tech and press Enter"
+                      className="h-8 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                          const techs = e.currentTarget.value.split(",").map((t) => t.trim()).filter(Boolean)
+                          setProjects(projects.map((p) => p.id === proj.id ? { ...p, technologies: [...new Set([...p.technologies, ...techs])] } : p))
+                          e.currentTarget.value = ""
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )

@@ -21,16 +21,11 @@ export default async function RecruiterDashboard() {
         title="Recruiter Dashboard"
         description={`Welcome back, ${recruiter.name} from ${recruiter.companyName}`}
       />
-      <div className="flex-1 space-y-6 p-6">
+      <div className="flex-1 space-y-6 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <RecruiterStats />
-
-        {/* Copilot — full width, most prominent */}
         <RecruiterCopilot />
-
         <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <RecommendedCandidates />
-          </div>
+          <div className="lg:col-span-2"><RecommendedCandidates /></div>
           <RecentShortlists />
         </div>
         <HiringPipeline />

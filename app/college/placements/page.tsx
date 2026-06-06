@@ -8,7 +8,7 @@ export default function PlacementsPage() {
         title="Placement Tracking"
         description="Monitor and manage student placements and company interactions"
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <PlacementTracker />
       </div>
     </div>

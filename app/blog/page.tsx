@@ -48,7 +48,7 @@ export default function BlogPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-5xl px-6 py-16">
+      <div className="mx-auto max-w-5xl px-6 py-12">
         <div className="mb-14">
           <p className="text-sm text-primary font-semibold uppercase tracking-widest mb-3">Blog</p>
           <h1 className="text-4xl font-bold text-foreground mb-4">

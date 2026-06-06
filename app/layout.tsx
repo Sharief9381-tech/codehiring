@@ -32,10 +32,10 @@ export default function RootLayout({
       <body className="font-sans antialiased" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange={false}
-          storageKey="orbit-theme"
+          storageKey="codehiring-theme"
         >
           <AnalyticsProvider>
             {children}

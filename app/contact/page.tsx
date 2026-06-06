@@ -62,7 +62,7 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-4xl px-6 py-16">
+      <div className="mx-auto max-w-4xl px-6 py-12">
         {/* Header */}
         <div className="mb-14">
           <p className="text-sm text-primary font-semibold uppercase tracking-widest mb-3">Contact</p>

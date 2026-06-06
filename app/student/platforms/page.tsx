@@ -21,7 +21,7 @@ export default async function PlatformsPage() {
         description="Manage and sync your connected coding platforms"
         backLink={{ href: "/student/dashboard", label: "Back to Dashboard" }}
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <PlatformsPageClient student={serializeUser(student)} />
       </div>
     </div>

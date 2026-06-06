@@ -239,6 +239,11 @@ export async function POST(request: Request) {
     const redirectTo = `/${role}/dashboard`
     console.log("14. Redirecting to:", redirectTo)
 
+    // Seed welcome notification (non-blocking)
+    import("@/lib/models/notification").then(({ NotificationModel }) => {
+      NotificationModel.seedWelcome(user._id?.toString() ?? "", user.name, role).catch(() => {})
+    }).catch(() => {})
+
     // Track signup event
     const visitorInfo = getVisitorInfo(request)
     await Analytics.track({

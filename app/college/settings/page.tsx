@@ -8,7 +8,7 @@ export default function SettingsPage() {
         title="Settings & Access Control"
         description="Manage recruiter access and college settings"
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <RecruiterAccess />
       </div>
     </div>

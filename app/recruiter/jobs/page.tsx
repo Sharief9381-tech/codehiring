@@ -8,7 +8,7 @@ export default function JobsPage() {
         title="Job Postings"
         description="Manage your job postings and track applications"
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <JobPostings />
       </div>
     </div>

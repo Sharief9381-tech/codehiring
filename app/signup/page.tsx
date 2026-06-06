@@ -133,8 +133,11 @@ function SignupForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,oklch(0.52_0.24_285/0.08),transparent)] pointer-events-none" />
+
+      <div className="w-full max-w-md relative z-10">
         <div className="flex justify-center mb-8">
           <Link href="/" className="flex items-center">
             <Image src="/codehiring-logo.svg" alt="CodeHiring" width={160} height={40} className="h-10 w-auto block dark:hidden" />
@@ -142,9 +145,9 @@ function SignupForm() {
           </Link>
         </div>
 
-        <Card className="border-border">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">
+        <Card className="border-border/60 shadow-lg rounded-2xl">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-2xl font-bold tracking-tight">
               {step === "role" ? "Join CodeHiring" : "Create your account"}
             </CardTitle>
             <CardDescription>
