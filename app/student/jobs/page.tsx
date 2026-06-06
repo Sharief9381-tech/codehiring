@@ -12,7 +12,7 @@ export default async function JobsPage() {
   const graduationYear = (user as any).graduationYear as number | undefined
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <DashboardHeader
         title="Career Hub"
         description="Personalized career roadmap based on your year"

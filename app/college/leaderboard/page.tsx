@@ -10,7 +10,7 @@ export default async function CollegeLeaderboardPage() {
   if (!user || user.role !== "college") redirect("/login")
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <DashboardHeader
         title="Leaderboard"
         description="Top performing students ranked by coding activity"

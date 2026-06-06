@@ -15,7 +15,7 @@ export default async function PlatformsPage() {
   if (!student) redirect("/login")
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <DashboardHeader
         title="Platforms"
         description="Manage and sync your connected coding platforms"

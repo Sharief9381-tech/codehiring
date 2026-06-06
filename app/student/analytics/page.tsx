@@ -15,7 +15,7 @@ export default async function AnalyticsPage() {
   if (!student) redirect("/login")
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <DashboardHeader
         title="Analytics"
         description="Detailed insights into your coding progress and performance"

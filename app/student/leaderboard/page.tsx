@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic"
 
 export default function LeaderboardPage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <DashboardHeader
         title="Leaderboard"
         description="See how you rank globally and within your college"
