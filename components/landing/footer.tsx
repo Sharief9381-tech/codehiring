@@ -32,7 +32,7 @@ const links = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-t border-white/8 bg-[#09090B]">
       <div className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-6">
 
@@ -87,12 +87,12 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-zinc-600">
             © {new Date().getFullYear()} CodeHiring. All rights reserved.
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-zinc-600">
             Built for students, colleges & companies who believe in{" "}
-            <span className="text-foreground font-medium">merit over keywords</span>.
+            <span className="text-zinc-400 font-medium">merit over keywords</span>.
           </p>
         </div>
       </div>
