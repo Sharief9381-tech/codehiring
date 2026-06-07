@@ -4,7 +4,7 @@ import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
-  GitBranch, Trophy, Star,
+  GitBranch, Trophy, Star, Code2,
   Globe, Briefcase, MapPin, Calendar,
   ExternalLink, CheckCircle2
 } from "lucide-react"

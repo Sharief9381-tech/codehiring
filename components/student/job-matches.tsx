@@ -10,90 +10,64 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Sparkles, MapPin, Building2, IndianRupee, Clock,
   Bookmark, ExternalLink, CheckCircle, Target, Search,
-  Loader2, Briefcase,
+  Loader2, Briefcase, ArrowRight, Star,
 } from "lucide-react"
+import { toast } from "sonner"
 
 interface MatchedJob {
-  _id: string
-  title: string
-  companyName: string
-  location: string
-  salary: string
-  type: string
-  description: string
-  skills: string[]
-  matchedSkills: string[]
-  missingSkills: string[]
-  matchScore: number
-  deadline?: string
-  applications: number
-  createdAt: string
-  applyUrl?: string
+  _id: string; title: string; companyName: string; location: string
+  salary: string; type: string; description: string; skills: string[]
+  matchedSkills: string[]; missingSkills: string[]; matchScore: number
+  deadline?: string; applications: number; createdAt: string; applyUrl?: string
 }
 
 interface StudentProfile {
-  skills: string[]
-  totalProblems: number
-  rating: number
-  platformCount: number
-  isOpenToWork: boolean
+  skills: string[]; totalProblems: number; rating: number
+  platformCount: number; isOpenToWork: boolean
 }
 
 function getApplyHref(job: MatchedJob): string | null {
-  const raw = job.applyUrl || (job as any).companyWebsite || ""
-  if (!raw || !raw.trim()) return null
+  const raw = job.applyUrl || ""
+  if (!raw.trim()) return null
   if (raw.startsWith("http") || raw.startsWith("mailto:")) return raw
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
-    return `mailto:${raw}?subject=Application for ${encodeURIComponent(job.title)} at ${encodeURIComponent(job.companyName)}`
-  }
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) return `mailto:${raw}?subject=Application for ${encodeURIComponent(job.title)} at ${encodeURIComponent(job.companyName)}`
   return `https://${raw}`
 }
 
-function getMatchColor(score: number) {
-  if (score >= 80) return "text-green-500 bg-green-500/10"
-  if (score >= 60) return "text-yellow-500 bg-yellow-500/10"
-  return "text-orange-500 bg-orange-500/10"
+function matchColor(score: number) {
+  if (score >= 80) return { badge: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20", bar: "bg-emerald-500" }
+  if (score >= 60) return { badge: "bg-amber-500/15 text-amber-400 border-amber-500/20", bar: "bg-amber-500" }
+  return { badge: "bg-orange-500/15 text-orange-400 border-orange-500/20", bar: "bg-orange-500" }
 }
 
-function timeAgo(dateStr: string) {
-  const diff = Date.now() - new Date(dateStr).getTime()
-  const days = Math.floor(diff / 86400000)
+function timeAgo(d: string) {
+  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000)
   if (days === 0) return "Today"
-  if (days === 1) return "1 day ago"
-  if (days < 7) return `${days} days ago`
-  return `${Math.floor(days / 7)} week${Math.floor(days / 7) > 1 ? "s" : ""} ago`
+  if (days === 1) return "Yesterday"
+  if (days < 7) return `${days}d ago`
+  return `${Math.floor(days / 7)}w ago`
 }
 
-// â”€â”€ Fetch student profile from auth user â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function fetchStudentProfile(): Promise<StudentProfile> {
   try {
     const res = await fetch("/api/auth/user", { credentials: "include", cache: "no-store" })
     if (res.ok) {
-      const data = await res.json()
-      const student = data.user
-      if (student) {
-        const platforms = student.linkedPlatforms ?? {}
+      const { user } = await res.json()
+      if (user) {
+        const platforms = user.linkedPlatforms ?? {}
         const platformCount = Object.keys(platforms).filter(k => platforms[k]).length
         let totalProblems = 0, rating = 0
-
-        Object.entries(platforms).forEach(([pid, info]: [string, any]) => {
-          if (!info || typeof info !== "object") return
-          const s = info.stats ?? {}
-          totalProblems += Number(s.totalSolved || s.problemsSolved || 0)
+        Object.entries(platforms).forEach(([, info]: [string, any]) => {
+          if (!info?.stats) return
+          const s = info.stats
+          totalProblems += s.totalSolved || s.problemsSolved || 0
           const r = Math.max(s.rating || 0, s.currentRating || 0, s.highestRating || 0, s.contestRating || 0)
           if (r > rating) rating = r
         })
-
-        return {
-          skills: student.skills ?? [],
-          totalProblems,
-          rating,
-          platformCount,
-          isOpenToWork: student.isOpenToWork ?? true,
-        }
+        return { skills: user.skills ?? [], totalProblems, rating, platformCount, isOpenToWork: user.isOpenToWork ?? true }
       }
     }
-  } catch { /* fall through */ }
+  } catch {}
   return { skills: [], totalProblems: 0, rating: 0, platformCount: 0, isOpenToWork: true }
 }
 
@@ -102,88 +76,150 @@ export function JobMatches() {
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState<StudentProfile | null>(null)
   const [savedJobs, setSavedJobs] = useState<string[]>([])
+  const [applying, setApplying] = useState<string | null>(null)
+  const [applied, setApplied] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState("")
-  const [locationFilter, setLocationFilter] = useState("all")
   const [typeFilter, setTypeFilter] = useState("all")
   const [jobsMeta, setJobsMeta] = useState<{ totalJobs: number; eligibleJobs: number } | null>(null)
 
   useEffect(() => {
     const load = async () => {
-      const studentProfile = await fetchStudentProfile()
-      setProfile(studentProfile)
-
-      const params = new URLSearchParams({
-        skills: studentProfile.skills.join(","),
-        problems: String(studentProfile.totalProblems),
-        rating: String(studentProfile.rating),
-        platforms: String(studentProfile.platformCount),
-        openToWork: String(studentProfile.isOpenToWork),
-      })
-
+      const p = await fetchStudentProfile()
+      setProfile(p)
       try {
+        const params = new URLSearchParams({
+          skills: p.skills.join(","), problems: String(p.totalProblems),
+          rating: String(p.rating), platforms: String(p.platformCount),
+          openToWork: String(p.isOpenToWork),
+        })
         const res = await fetch(`/api/student/jobs?${params}`)
         const data = await res.json()
         setJobs(data.jobs ?? [])
         setJobsMeta({ totalJobs: data.totalJobs ?? 0, eligibleJobs: data.eligibleJobs ?? 0 })
-      } catch {
-        setJobs([])
-      } finally {
-        setLoading(false)
-      }
+      } catch { setJobs([]) }
+      finally { setLoading(false) }
     }
     load()
   }, [])
 
-  const toggleSave = (id: string) => {
-    setSavedJobs((prev) => prev.includes(id) ? prev.filter((j) => j !== id) : [...prev, id])
+  const handleApply = async (job: MatchedJob) => {
+    const href = getApplyHref(job)
+    setApplying(job._id)
+    // Record in DB
+    fetch("/api/student/jobs/apply", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jobId: job._id }),
+    }).catch(() => {})
+    setApplied((prev) => [...prev, job._id])
+    setApplying(null)
+    if (href) { window.open(href, "_blank", "noopener,noreferrer") }
+    else { toast.info("Contact the recruiter directly to apply.") }
   }
 
   const filtered = jobs.filter((job) => {
     const q = searchQuery.toLowerCase()
-    const matchesSearch = !q || job.title.toLowerCase().includes(q) || job.companyName.toLowerCase().includes(q)
-    const matchesLocation = locationFilter === "all" || job.location.toLowerCase().includes(locationFilter.toLowerCase())
-    const matchesType = typeFilter === "all" || job.type.toLowerCase() === typeFilter.toLowerCase()
-    return matchesSearch && matchesLocation && matchesType
+    const matchSearch = !q || job.title.toLowerCase().includes(q) || job.companyName.toLowerCase().includes(q)
+    const matchType = typeFilter === "all" || job.type.toLowerCase() === typeFilter.toLowerCase()
+    return matchSearch && matchType
   })
 
   const savedList = jobs.filter((j) => savedJobs.includes(j._id))
+  const avgMatch = jobs.length > 0 ? Math.round(jobs.slice(0, 5).reduce((s, j) => s + j.matchScore, 0) / Math.min(jobs.length, 5)) : 0
 
-  // Unique locations for filter
-  const locations = [...new Set(jobs.map((j) => j.location.split(",")[0].trim()))].slice(0, 6)
+  function JobCard({ job }: { job: MatchedJob }) {
+    const mc = matchColor(job.matchScore)
+    const isApplied = applied.includes(job._id)
+    return (
+      <div className="group rounded-2xl border border-border/60 bg-card hover:border-primary/30 transition-all p-5 space-y-4">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <h3 className="text-sm font-bold text-foreground">{job.title}</h3>
+              <Badge className={`text-[10px] px-2 py-0 shrink-0 ${mc.badge}`}>
+                <Star className="h-2.5 w-2.5 mr-0.5" />{job.matchScore}% match
+              </Badge>
+              {isApplied && <Badge className="text-[10px] px-2 py-0 bg-emerald-500/15 text-emerald-400 border-emerald-500/20">✓ Applied</Badge>}
+            </div>
+            <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1"><Building2 className="h-3 w-3" />{job.companyName}</span>
+              <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{job.location}</span>
+              {job.salary && <span className="flex items-center gap-1"><IndianRupee className="h-3 w-3" />{job.salary}</span>}
+              <Badge variant="secondary" className="text-[10px]">{job.type}</Badge>
+            </div>
+          </div>
+          <button onClick={() => setSavedJobs((p) => p.includes(job._id) ? p.filter(x => x !== job._id) : [...p, job._id])}
+            className="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all">
+            <Bookmark className={`h-4 w-4 ${savedJobs.includes(job._id) ? "fill-current text-primary" : ""}`} />
+          </button>
+        </div>
 
-  const avgMatch = jobs.length > 0
-    ? Math.round(jobs.slice(0, 5).reduce((s, j) => s + j.matchScore, 0) / Math.min(jobs.length, 5))
-    : 0
+        {/* Match score bar */}
+        <div className="space-y-1">
+          <div className="h-1 w-full rounded-full bg-secondary overflow-hidden">
+            <div className={`h-full rounded-full ${mc.bar} transition-all`} style={{ width: `${job.matchScore}%` }} />
+          </div>
+        </div>
+
+        {/* Description */}
+        <p className="text-xs text-muted-foreground line-clamp-2">{job.description}</p>
+
+        {/* Skills */}
+        {job.skills.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {job.skills.map((skill) => (
+              <Badge key={skill} variant={job.matchedSkills.includes(skill) ? "default" : "secondary"}
+                className={`text-[10px] px-2 py-0 ${job.matchedSkills.includes(skill) ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/20" : ""}`}>
+                {job.matchedSkills.includes(skill) && <CheckCircle className="h-2.5 w-2.5 mr-0.5" />}
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-1">
+          <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+            <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{timeAgo(job.createdAt)}</span>
+            <span>{job.applications} applicants</span>
+            {job.deadline && <span>Due {job.deadline}</span>}
+          </div>
+          <Button size="sm" disabled={applying === job._id || isApplied}
+            className={`h-7 gap-1.5 text-xs ${isApplied ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20" : "bg-primary text-primary-foreground"}`}
+            onClick={() => handleApply(job)}>
+            {applying === job._id ? <Loader2 className="h-3 w-3 animate-spin" /> :
+              isApplied ? "✓ Applied" : <><ArrowRight className="h-3 w-3" />Apply Now</>}
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <Tabs defaultValue="matches" className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <TabsList className="bg-gray-800 border-gray-700">
-          <TabsTrigger value="matches" className="gap-2 data-[state=active]:bg-gray-700 data-[state=active]:text-white">
-            <Sparkles className="h-4 w-4" />
-            Matched Jobs {jobs.length > 0 && <span className="ml-1 text-xs opacity-70">({jobs.length})</span>}
+    <Tabs defaultValue="matches" className="space-y-5">
+      {/* Controls */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <TabsList>
+          <TabsTrigger value="matches" className="gap-1.5 text-xs">
+            <Sparkles className="h-3.5 w-3.5" />
+            Matched{jobs.length > 0 && <span className="opacity-60 ml-0.5">({jobs.length})</span>}
           </TabsTrigger>
-          <TabsTrigger value="saved" className="gap-2 data-[state=active]:bg-gray-700 data-[state=active]:text-white">
-            <Bookmark className="h-4 w-4" />
-            Saved {savedList.length > 0 && <span className="ml-1 text-xs opacity-70">({savedList.length})</span>}
+          <TabsTrigger value="saved" className="gap-1.5 text-xs">
+            <Bookmark className="h-3.5 w-3.5" />
+            Saved{savedList.length > 0 && <span className="opacity-60 ml-0.5">({savedList.length})</span>}
           </TabsTrigger>
         </TabsList>
-
         <div className="flex gap-2">
-          <div className="relative flex-1 sm:w-56">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <Input
-              placeholder="Search jobs..."
-              className="bg-gray-800 border-gray-700 text-white pl-9 placeholder:text-gray-400"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          <div className="relative flex-1 sm:w-52">
+            <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <Input placeholder="Search jobs..." className="pl-9 h-9 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           </div>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-36 bg-gray-800 border-gray-700 text-white">
+            <SelectTrigger className="w-32 h-9 text-sm">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-700">
+            <SelectContent>
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="Internship">Internship</SelectItem>
               <SelectItem value="Full-time">Full-time</SelectItem>
@@ -193,214 +229,69 @@ export function JobMatches() {
         </div>
       </div>
 
-      {/* â”€â”€ Matches tab â”€â”€ */}
-      <TabsContent value="matches" className="space-y-4">
-        {/* Profile strength card */}
+      {/* Matches tab */}
+      <TabsContent value="matches" className="space-y-4 mt-0">
+        {/* Profile card */}
         {profile && (
-          <Card className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 border-blue-700">
-            <CardContent className="flex items-center gap-4 p-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/20 border-2 border-blue-500">
-                <Target className="h-6 w-6 text-blue-400" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium text-white">Your Job Match Profile</p>
-                <p className="text-sm text-blue-200">
-                  {profile.platformCount} platform{profile.platformCount !== 1 ? "s" : ""} connected Â·{" "}
-                  {profile.totalProblems} problems solved Â·{" "}
-                  {profile.rating > 0 ? `Rating ${profile.rating}` : "No rating yet"}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-blue-400">{avgMatch}%</p>
-                <p className="text-xs text-blue-300">Avg Match Score</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 flex items-center gap-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 shrink-0">
+              <Target className="h-5 w-5 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">Your Match Profile</p>
+              <p className="text-xs text-muted-foreground">
+                {profile.platformCount} platform{profile.platformCount !== 1 ? "s" : ""} · {profile.totalProblems} problems{profile.rating > 0 ? ` · Rating ${profile.rating}` : ""}
+              </p>
+            </div>
+            <div className="text-right shrink-0">
+              <p className="text-xl font-black text-primary tabular-nums">{avgMatch}%</p>
+              <p className="text-[10px] text-muted-foreground">Avg Match</p>
+            </div>
+          </div>
         )}
 
-        {/* Eligibility info */}
+        {/* Eligibility banner */}
         {!loading && jobsMeta && jobsMeta.totalJobs > 0 && (
-          <div className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm border ${
+          <div className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs border ${
             jobsMeta.eligibleJobs === jobsMeta.totalJobs
-              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600"
-              : "bg-amber-500/10 border-amber-500/20 text-amber-600"
+              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+              : "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400"
           }`}>
-            <CheckCircle className="h-4 w-4 shrink-0" />
-            <span>
-              You are eligible for <strong>{jobsMeta.eligibleJobs}</strong> of <strong>{jobsMeta.totalJobs}</strong> active job{jobsMeta.totalJobs !== 1 ? "s" : ""}.
-              {jobsMeta.eligibleJobs < jobsMeta.totalJobs && (
-                <> Improve your problems solved and rating to unlock more.</>
-              )}
-            </span>
+            <CheckCircle className="h-3.5 w-3.5 shrink-0" />
+            You're eligible for <strong className="mx-1">{jobsMeta.eligibleJobs}</strong> of <strong className="mx-1">{jobsMeta.totalJobs}</strong> active jobs.
+            {jobsMeta.eligibleJobs < jobsMeta.totalJobs && <> Solve more problems to unlock more.</>}
           </div>
         )}
 
         {loading ? (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-          </div>
+          <div className="flex justify-center py-16"><Loader2 className="h-7 w-7 animate-spin text-muted-foreground" /></div>
         ) : filtered.length === 0 ? (
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="flex flex-col items-center justify-center py-16">
-              <Briefcase className="h-12 w-12 text-gray-500 mb-3" />
-              <p className="text-lg font-medium text-white">
-                {jobs.length === 0 ? "No job postings yet" : "No jobs match your search"}
-              </p>
-              <p className="text-sm text-gray-400 mt-1">
-                {jobs.length === 0
-                  ? "Recruiters haven't posted any jobs yet. Check back soon."
-                  : "Try adjusting your search or filters"}
-              </p>
-            </CardContent>
-          </Card>
+          <div className="flex flex-col items-center gap-3 py-16 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary">
+              <Briefcase className="h-7 w-7 text-muted-foreground" />
+            </div>
+            <p className="font-semibold text-foreground">{jobs.length === 0 ? "No job postings yet" : "No jobs match your search"}</p>
+            <p className="text-sm text-muted-foreground">{jobs.length === 0 ? "Recruiters haven't posted jobs yet. Check back soon." : "Try adjusting your search"}</p>
+          </div>
         ) : (
-          <div className="grid gap-4">
-            {filtered.map((job) => (
-              <Card key={job._id} className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01]">
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="flex-1 space-y-3">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="text-lg font-semibold text-white">{job.title}</h3>
-                          <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-gray-400">
-                            <span className="flex items-center gap-1"><Building2 className="h-4 w-4" />{job.companyName}</span>
-                            <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{job.location}</span>
-                            {job.salary && <span className="flex items-center gap-1"><IndianRupee className="h-4 w-4" />{job.salary}</span>}
-                          </div>
-                        </div>
-                        <Badge className={`gap-1 border-0 shadow-lg shrink-0 ml-2 ${getMatchColor(job.matchScore)}`}>
-                          <Sparkles className="h-3 w-3" />
-                          {job.matchScore}% Match
-                        </Badge>
-                      </div>
-
-                      <p className="text-sm text-gray-300 line-clamp-2">{job.description}</p>
-
-                      {job.skills.length > 0 && (
-                        <div className="space-y-1">
-                          <p className="text-xs font-medium text-gray-400">Required Skills</p>
-                          <div className="flex flex-wrap gap-2">
-                            {job.skills.map((skill) => (
-                              <Badge
-                                key={skill}
-                                className={
-                                  job.matchedSkills.includes(skill)
-                                    ? "bg-green-600 text-white border-green-500"
-                                    : "bg-gray-700 text-gray-300 border-gray-600"
-                                }
-                              >
-                                {job.matchedSkills.includes(skill) && <CheckCircle className="mr-1 h-3 w-3" />}
-                                {skill}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400">
-                        <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{timeAgo(job.createdAt)}</span>
-                        <span>{job.applications} applicants</span>
-                        {job.deadline && <span>Deadline: {job.deadline}</span>}
-                        <Badge variant="secondary" className="text-xs">{job.type}</Badge>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2 lg:flex-col">
-                      {(() => {
-                        const href = getApplyHref(job)
-                        if (!href) return (
-                          <div className="flex flex-1 items-center justify-center gap-2 lg:w-32 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground bg-secondary border border-border cursor-default">
-                            Contact Recruiter
-                          </div>
-                        )
-                        return (
-                          <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => {
-                              // Record application in background
-                              fetch("/api/student/jobs/apply", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ jobId: job._id }),
-                              }).catch(() => {})
-                            }}
-                            className="flex flex-1 items-center justify-center gap-2 lg:w-32 rounded-md px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all"
-                          >
-                            Apply Now
-                            <ExternalLink className="h-4 w-4" />
-                          </a>
-                        )
-                      })()}
-                      <Button
-                        variant="outline"
-                        className={`flex-1 gap-2 lg:w-32 border-gray-600 ${
-                          savedJobs.includes(job._id)
-                            ? "bg-blue-600/20 text-blue-400 border-blue-500"
-                            : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                        }`}
-                        onClick={() => toggleSave(job._id)}
-                      >
-                        <Bookmark className={`h-4 w-4 ${savedJobs.includes(job._id) ? "fill-current" : ""}`} />
-                        {savedJobs.includes(job._id) ? "Saved" : "Save"}
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="grid gap-3">
+            {filtered.map((job) => <JobCard key={job._id} job={job} />)}
           </div>
         )}
       </TabsContent>
 
-      {/* â”€â”€ Saved tab â”€â”€ */}
-      <TabsContent value="saved" className="space-y-4">
+      {/* Saved tab */}
+      <TabsContent value="saved" className="space-y-3 mt-0">
         {savedList.length === 0 ? (
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Bookmark className="h-12 w-12 text-gray-400" />
-              <p className="mt-4 text-lg font-medium text-white">No saved jobs yet</p>
-              <p className="text-sm text-gray-400">Save jobs from the Matched Jobs tab</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid gap-4">
-            {savedList.map((job) => (
-              <Card key={job._id} className="bg-gray-800 border-gray-700">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-semibold text-white">{job.title}</h3>
-                      <p className="text-sm text-gray-400">{job.companyName} Â· {job.location}</p>
-                      <Badge className={`mt-2 gap-1 border-0 text-xs ${getMatchColor(job.matchScore)}`}>
-                        <Sparkles className="h-3 w-3" />{job.matchScore}% Match
-                      </Badge>
-                    </div>
-                    <div className="flex gap-2">
-                      {(() => {
-                        const href = getApplyHref(job)
-                        return href ? (
-                          <a href={href} target="_blank" rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all">
-                            Apply
-                          </a>
-                        ) : (
-                          <span className="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground bg-secondary border border-border">
-                            Contact Recruiter
-                          </span>
-                        )
-                      })()}
-                      <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white" onClick={() => toggleSave(job._id)}>
-                        <Bookmark className="h-4 w-4 fill-current" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="flex flex-col items-center gap-3 py-16 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary">
+              <Bookmark className="h-7 w-7 text-muted-foreground" />
+            </div>
+            <p className="font-semibold text-foreground">No saved jobs yet</p>
+            <p className="text-sm text-muted-foreground">Bookmark jobs from the Matched Jobs tab</p>
           </div>
+        ) : (
+          savedList.map((job) => <JobCard key={job._id} job={job} />)
         )}
       </TabsContent>
     </Tabs>

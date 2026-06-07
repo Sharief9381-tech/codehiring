@@ -1,7 +1,14 @@
+import { redirect } from "next/navigation"
+import { getCurrentUser } from "@/lib/auth"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { JobPostings } from "@/components/recruiter/job-postings"
 
-export default function JobsPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function JobsPage() {
+  const user = await getCurrentUser()
+  if (!user || user.role !== "recruiter") redirect("/login")
+
   return (
     <div className="flex flex-col">
       <DashboardHeader
