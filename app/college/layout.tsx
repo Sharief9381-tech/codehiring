@@ -4,6 +4,8 @@ import { DashboardSidebar } from "@/components/dashboard/sidebar"
 import { getCurrentUser } from "@/lib/auth"
 import { serializeUser } from "@/lib/serialize"
 
+export const dynamic = 'force-dynamic'
+
 export default async function CollegeLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
   if (!user || user.role !== "college") redirect("/login")

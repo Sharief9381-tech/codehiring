@@ -1,6 +1,8 @@
 import { DashboardHeader } from "@/components/dashboard/header"
 import { PlacementTracker } from "@/components/college/placement-tracker"
 
+export const dynamic = 'force-dynamic'
+
 export default function PlacementsPage() {
   return (
     <div className="flex flex-col">

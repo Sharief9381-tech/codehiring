@@ -1,6 +1,8 @@
 import { DashboardHeader } from "@/components/dashboard/header"
 import { RecruiterAnalytics } from "@/components/recruiter/recruiter-analytics"
 
+export const dynamic = 'force-dynamic'
+
 export default function AnalyticsPage() {
   return (
     <div className="flex flex-col">
