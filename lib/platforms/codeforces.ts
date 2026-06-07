@@ -28,35 +28,45 @@ export interface CodeforcesStats {
   }[]
 }
 
+// In-memory cooldown to avoid hammering Codeforces API
+const _cfLastCall: Record<string, number> = {}
+const CF_COOLDOWN_MS = 10_000 // 10 seconds between calls per user
+
+async function cfFetch(url: string): Promise<Response> {
+  const res = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; CodeTrack/1.0)" },
+    signal: AbortSignal.timeout(10000),
+  })
+  if (res.status === 429) throw new Error("Codeforces rate limit hit — try again later")
+  return res
+}
+
 export async function fetchCodeforcesStats(username: string): Promise<CodeforcesStats | null> {
   try {
-    // Clean the username - handle both username and full URL
     let cleanUsername = username.trim()
-    
-    // Extract username from Codeforces URL if provided
     const urlPattern = /(?:https?:\/\/)?(?:www\.)?codeforces\.com\/profile\/([^\/\?\s]+)/i
     const match = cleanUsername.match(urlPattern)
-    if (match) {
-      cleanUsername = match[1]
+    if (match) cleanUsername = match[1]
+
+    // Cooldown check — prevent hammering the API
+    const now = Date.now()
+    const last = _cfLastCall[cleanUsername] || 0
+    if (now - last < CF_COOLDOWN_MS) {
+      console.log(`Codeforces cooldown active for ${cleanUsername}, skipping fetch`)
+      return null
     }
-    
-    console.log(`Fetching real-time Codeforces stats for: ${cleanUsername}`)
-    
-    // Method 1: Try cp-rating-api first (more reliable for some users)
+    _cfLastCall[cleanUsername] = now
+
+    console.log(`Fetching Codeforces stats for: ${cleanUsername}`)
+
+    // Method 1: cp-rating-api (faster, no rate limit issues)
     try {
-      console.log(`Trying cp-rating-api for Codeforces: ${cleanUsername}`)
-      const cpApiResponse = await fetch(`https://cp-rating-api.vercel.app/codeforces/${cleanUsername}`, {
-        headers: {
-          'Accept': 'application/json',
-          'User-Agent': 'Mozilla/5.0 (compatible; StatsBot/1.0)',
-        },
+      const cpRes = await fetch(`https://cp-rating-api.vercel.app/codeforces/${cleanUsername}`, {
+        headers: { 'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0' },
         signal: AbortSignal.timeout(8000),
       })
-
-      if (cpApiResponse.ok) {
-        const cpData = await cpApiResponse.json()
-        console.log(`cp-rating-api Codeforces response:`, cpData)
-        
+      if (cpRes.ok) {
+        const cpData = await cpRes.json()
         if (cpData && !cpData.error && cpData.success !== false) {
           return {
             username: cleanUsername,
@@ -69,116 +79,61 @@ export async function fetchCodeforcesStats(username: string): Promise<Codeforces
             avatar: cpData.avatar || 'https://userpic.codeforces.org/no-avatar.jpg',
             problemsSolved: cpData.problems_solved || cpData.solved || 0,
             contests: cpData.contests || [],
-            submissions: cpData.submissions || []
+            submissions: cpData.submissions || [],
           }
         }
       }
-    } catch (cpApiError) {
-      console.log('cp-rating-api for Codeforces failed:', cpApiError)
-    }
-    
-    // Method 2: Use official Codeforces API
-    const userResponse = await fetch(
-      `https://codeforces.com/api/user.info?handles=${cleanUsername}`,
-      {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; CodeTrack/1.0)",
-        },
-      }
-    )
+    } catch { /* fall through to official API */ }
 
-    if (!userResponse.ok) {
-      console.error("Codeforces user API error:", userResponse.status)
-      return null
-    }
+    // Method 2: Official Codeforces API with rate-limit-aware helper
+    const userRes = await cfFetch(`https://codeforces.com/api/user.info?handles=${cleanUsername}`)
+    if (!userRes.ok) return null
 
-    const userData = await userResponse.json()
-    
-    if (userData.status !== "OK" || !userData.result?.[0]) {
-      console.log(`Codeforces user "${cleanUsername}" not found`)
-      return null // Return null instead of fake data when profile doesn't exist
-    }
-
+    const userData = await userRes.json()
+    if (userData.status !== "OK" || !userData.result?.[0]) return null
     const user = userData.result[0]
 
-    // Fetch rating history
-    const ratingResponse = await fetch(
-      `https://codeforces.com/api/user.rating?handle=${cleanUsername}`,
-      {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; CodeTrack/1.0)",
-        },
-      }
-    )
-    
+    // Rating history
     let contests: CodeforcesStats["contests"] = []
-    if (ratingResponse.ok) {
-      const ratingData = await ratingResponse.json()
-      if (ratingData.status === "OK") {
-        contests = ratingData.result
-          .slice(-10)
-          .reverse()
-          .map((contest: {
-            contestId: number
-            contestName: string
-            rank: number
-            oldRating: number
-            newRating: number
-          }) => ({
-            contestId: contest.contestId,
-            contestName: contest.contestName,
-            rank: contest.rank,
-            oldRating: contest.oldRating,
-            newRating: contest.newRating,
-            ratingChange: contest.newRating - contest.oldRating,
+    try {
+      const ratingRes = await cfFetch(`https://codeforces.com/api/user.rating?handle=${cleanUsername}`)
+      if (ratingRes.ok) {
+        const ratingData = await ratingRes.json()
+        if (ratingData.status === "OK") {
+          contests = ratingData.result.slice(-10).reverse().map((c: any) => ({
+            contestId: c.contestId,
+            contestName: c.contestName,
+            rank: c.rank,
+            oldRating: c.oldRating,
+            newRating: c.newRating,
+            ratingChange: c.newRating - c.oldRating,
           }))
+        }
       }
-    }
+    } catch { /* ignore rating fetch error */ }
 
-    // Fetch submissions
-    const submissionsResponse = await fetch(
-      `https://codeforces.com/api/user.status?handle=${cleanUsername}&from=1&count=100`,
-      {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; CodeTrack/1.0)",
-        },
-      }
-    )
-
+    // Submissions — reduced count to avoid rate limits
     let submissions: CodeforcesStats["submissions"] = []
     let problemsSolved = 0
-    const solvedSet = new Set<string>()
-
-    if (submissionsResponse.ok) {
-      const submissionsData = await submissionsResponse.json()
-      if (submissionsData.status === "OK") {
-        for (const sub of submissionsData.result) {
-          if (sub.verdict === "OK") {
-            const problemKey = `${sub.problem.contestId}-${sub.problem.index}`
-            solvedSet.add(problemKey)
+    try {
+      const subRes = await cfFetch(`https://codeforces.com/api/user.status?handle=${cleanUsername}&from=1&count=50`)
+      if (subRes.ok) {
+        const subData = await subRes.json()
+        if (subData.status === "OK") {
+          const solvedSet = new Set<string>()
+          for (const sub of subData.result) {
+            if (sub.verdict === "OK") solvedSet.add(`${sub.problem.contestId}-${sub.problem.index}`)
           }
-        }
-        problemsSolved = solvedSet.size
-
-        submissions = submissionsData.result
-          .slice(0, 10)
-          .map((sub: {
-            problem: { name: string; rating: number; tags: string[] }
-            verdict: string
-            programmingLanguage: string
-            creationTimeSeconds: number
-          }) => ({
-            problem: {
-              name: sub.problem.name,
-              rating: sub.problem.rating || 0,
-              tags: sub.problem.tags || [],
-            },
+          problemsSolved = solvedSet.size
+          submissions = subData.result.slice(0, 10).map((sub: any) => ({
+            problem: { name: sub.problem.name, rating: sub.problem.rating || 0, tags: sub.problem.tags || [] },
             verdict: sub.verdict,
             language: sub.programmingLanguage,
             creationTimeSeconds: sub.creationTimeSeconds,
           }))
+        }
       }
-    }
+    } catch { /* ignore submissions fetch error */ }
 
     return {
       username: cleanUsername,
@@ -193,9 +148,9 @@ export async function fetchCodeforcesStats(username: string): Promise<Codeforces
       contests,
       submissions,
     }
-  } catch (error) {
-    console.error("Error fetching Codeforces stats:", error)
-    return null // Return null instead of fake data when error occurs
+  } catch (error: any) {
+    console.error("Codeforces fetch error:", error.message)
+    return null
   }
 }
 

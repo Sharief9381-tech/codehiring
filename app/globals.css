@@ -229,5 +229,22 @@ html.light .from-gray-900, html.light .via-gray-900, html.light .to-gray-900 {
 html.light .border-gray-700, html.light .border-gray-600, html.light .border-gray-800 {
   border-color: oklch(0.86 0.005 260) !important;
 }
-html.light .text-white { color: oklch(0.12 0.012 260) !important; }
 html.light .text-gray-400, html.light .text-gray-500 { color: oklch(0.48 0.01 260) !important; }
+
+/* ── Light mode: text visibility fixes ───────────────────────── */
+/* Ensure white text becomes dark text on light backgrounds */
+html.light .text-white { color: oklch(0.12 0.012 260) !important; }
+html.light .text-zinc-400 { color: oklch(0.42 0.01 260) !important; }
+html.light .text-zinc-500 { color: oklch(0.5 0.01 260) !important; }
+html.light .text-zinc-600 { color: oklch(0.55 0.01 260) !important; }
+
+/* ── Light mode: semi-transparent white borders → subtle gray ── */
+html.light .border-white\/6,
+html.light .border-white\/8,
+html.light .border-white\/10,
+html.light .border-white\/15 {
+  border-color: oklch(0.88 0.005 260) !important;
+}
+
+/* ── Scrollbar in light mode ────────────────────────────────── */
+html.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }

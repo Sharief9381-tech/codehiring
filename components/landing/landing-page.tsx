@@ -52,6 +52,38 @@ function useCountUp(target: number, duration = 1600) {
   return value
 }
 
+// ─── Stat sub-components (hooks must be at top level, not inside .map) ──
+function MiniStatItem({ label, val, loaded }: { label: string; val: number; loaded: boolean }) {
+  const count = useCountUp(loaded ? val : 0)
+  return (
+    <div className="flex flex-col items-center text-center">
+      <p className="text-2xl font-black text-foreground tabular-nums">
+        {loaded ? formatNum(count) : "—"}
+      </p>
+      <p className="text-xs text-zinc-500 mt-0.5">{label}</p>
+    </div>
+  )
+}
+
+function StatCard({ s, loaded, stats }: { s: typeof STAT_META[number]; loaded: boolean; stats: Record<string, number> }) {
+  const val = stats[s.key] ?? 0
+  const count = useCountUp(loaded ? val : 0)
+  const Icon = s.icon
+  return (
+    <motion.div variants={fadeUp}
+      whileHover={{ y: -3, scale: 1.03, boxShadow: "0 12px 40px rgba(139,92,246,0.2)" }}
+      className="group flex flex-col items-center text-center gap-2 rounded-2xl border border-white/8 bg-white/3 backdrop-blur-sm p-5 cursor-default transition-all">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 group-hover:bg-white/10 transition-colors">
+        <Icon className={`h-5 w-5 ${s.color}`} />
+      </div>
+      <p className={`text-2xl font-black tabular-nums ${s.color}`}>
+        {loaded ? formatNum(count) : "—"}
+      </p>
+      <p className="text-xs text-zinc-500">{s.label}</p>
+    </motion.div>
+  )
+}
+
 function formatNum(n: number) {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M+`
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K+`
@@ -128,7 +160,6 @@ const STAT_META = [
   { key: "applications", label: "Applications", icon: Trophy, color: "text-purple-400" },
 ]
 
-const COLLEGES = ["IIT Bombay", "NIT Trichy", "VIT Vellore", "SRM Chennai", "RVR & JC", "BITS Pilani", "IIT Delhi", "IIIT Hyderabad"]
 
 // ─── Dashboard mock preview ──────────────────────────────────────
 function DashboardPreview() {
@@ -143,9 +174,9 @@ function DashboardPreview() {
       {/* Glow behind */}
       <div className="absolute inset-0 bg-violet-500/20 blur-3xl rounded-3xl" />
 
-      <div className="relative rounded-2xl border border-white/10 bg-[#18181B] shadow-2xl overflow-hidden">
+      <div className="relative rounded-2xl border border-white/10 bg-card shadow-2xl overflow-hidden">
         {/* Titlebar */}
-        <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/8 bg-[#09090B]/50">
+        <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/8 bg-background/50">
           <div className="h-3 w-3 rounded-full bg-red-500/70" />
           <div className="h-3 w-3 rounded-full bg-amber-500/70" />
           <div className="h-3 w-3 rounded-full bg-emerald-500/70" />
@@ -170,7 +201,7 @@ function DashboardPreview() {
               { name: "Codeforces", val: "1654", sub: "rating", color: "text-cyan-400" },
               { name: "GitHub", val: "89", sub: "repos", color: "text-slate-300" },
             ].map((p) => (
-              <div key={p.name} className="rounded-xl bg-[#09090B]/60 border border-white/6 p-2.5 text-center">
+              <div key={p.name} className="rounded-xl bg-background/60 border border-white/6 p-2.5 text-center">
                 <p className={`text-sm font-bold ${p.color} tabular-nums`}>{p.val}</p>
                 <p className="text-[10px] text-zinc-600 mt-0.5">{p.sub}</p>
                 <p className="text-[9px] text-zinc-700">{p.name}</p>
@@ -218,11 +249,12 @@ export function LandingPage() {
   const stats = data?.stats ?? {}
   const testimonials = data?.siteConfig?.testimonials ?? []
   const openCareers = data?.openCareers ?? 0
+  const topColleges: string[] = data?.topColleges ?? []
 
   return (
     <>
       {/* ══ HERO ══════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-6 overflow-hidden">
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-6 overflow-hidden bg-background">
         {/* Background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(139,92,246,0.25),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_60%,rgba(59,130,246,0.1),transparent)]" />
@@ -272,26 +304,6 @@ export function LandingPage() {
                 </Link>
               </motion.div>
 
-              {/* Mini stats */}
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-                className="flex items-center gap-6 mt-10 pt-8 border-t border-white/8">
-                {[
-                  { label: "Students", val: stats.students },
-                  { label: "Colleges", val: stats.colleges },
-                  { label: "Companies", val: stats.recruiters },
-                ].map(({ label, val }) => {
-                  // eslint-disable-next-line react-hooks/rules-of-hooks
-                  const count = useCountUp(loaded ? (val ?? 0) : 0)
-                  return (
-                    <div key={label}>
-                      <p className="text-2xl font-black text-white tabular-nums">
-                        {loaded ? (val ? formatNum(count) : "—") : "—"}
-                      </p>
-                      <p className="text-xs text-zinc-500">{label}</p>
-                    </div>
-                  )
-                })}
-              </motion.div>
             </div>
 
             {/* Right — Dashboard preview */}
@@ -299,6 +311,7 @@ export function LandingPage() {
               <DashboardPreview />
             </div>
           </div>
+
         </div>
 
         <a href="#stats" className="absolute bottom-6 left-1/2 -translate-x-1/2 text-zinc-700 hover:text-zinc-400 transition-colors animate-bounce">
@@ -306,32 +319,51 @@ export function LandingPage() {
         </a>
       </section>
 
-      {/* ══ TRUSTED BY ════════════════════════════════════════════ */}
-      <FadeUp>
-        <section className="py-10 border-y border-white/6 bg-[#0D0D10]/50">
-          <div className="mx-auto max-w-6xl px-6">
-            <p className="text-center text-xs font-semibold uppercase tracking-widest text-zinc-600 mb-6">
-              Trusted by Students from
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-              {COLLEGES.map((c) => (
-                <motion.span key={c} whileHover={{ color: "#fff" }}
-                  className="text-sm font-semibold text-zinc-600 cursor-default transition-colors">
-                  {c}
-                </motion.span>
-              ))}
+      {/* ══ TRUSTED BY — real colleges by student count ══════════ */}
+      {topColleges.length > 0 && (
+        <FadeUp>
+          <section className="py-10 border-y border-white/6 bg-background relative overflow-hidden">
+            {/* subtle glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(139,92,246,0.06),transparent)] pointer-events-none" />
+            <div className="mx-auto max-w-6xl px-6 relative">
+              <p className="text-center text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-8">
+                Trusted by Students from
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {topColleges.map((c, i) => (
+                  <motion.div
+                    key={c}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07, duration: 0.4 }}
+                    whileHover={{ scale: 1.08, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    className="relative group cursor-default"
+                  >
+                    {/* glow behind on hover */}
+                    <div className="absolute inset-0 rounded-full bg-violet-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="relative flex items-center gap-2 rounded-full border border-white/8 bg-white/4 backdrop-blur-sm px-4 py-1.5 group-hover:border-violet-500/40 group-hover:bg-violet-500/10 transition-all duration-300">
+                      {/* colored dot */}
+                      <span className="h-1.5 w-1.5 rounded-full bg-violet-400 group-hover:bg-violet-300 transition-colors" />
+                      <span className="text-xs font-bold tracking-wide text-zinc-400 group-hover:text-white transition-colors duration-300">
+                        {c}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      </FadeUp>
+          </section>
+        </FadeUp>
+      )}
 
       {/* ══ "SEE IT IN ACTION" SCREENSHOTS ═══════════════════════ */}
-      <section className="py-20 border-b border-white/6 overflow-hidden">
+      <section className="py-10 border-b border-white/6 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="text-center mb-12">
+            <div className="text-center mb-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Product</p>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-3" style={{color:"#f4f4f5"}}>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-3 text-foreground">
                 See CodeHiring in Action
               </h2>
               <p className="text-zinc-400">Real dashboards. Real data. Real results.</p>
@@ -444,7 +476,7 @@ export function LandingPage() {
               },
             ].map((screen) => (
               <FadeUp key={screen.title} delay={screen.delay}>
-                <motion.div whileHover={{ y: -4, scale: 1.01 }} className="rounded-2xl border bg-[#18181B] overflow-hidden cursor-pointer group" style={{ borderColor: screen.border.replace("border-","") }}>
+                <motion.div whileHover={{ y: -4, scale: 1.01 }} className="rounded-2xl border bg-card overflow-hidden cursor-pointer group" style={{ borderColor: screen.border.replace("border-","") }}>
                   {/* Header */}
                   <div className={`bg-gradient-to-r ${screen.color} border-b border-white/6 px-4 py-3`}>
                     <div className="flex items-center gap-1.5 mb-1">
@@ -464,10 +496,10 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-      <section id="stats" className="py-16 border-b border-white/6 bg-[#09090B]">
+      <section id="stats" className="py-10 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="flex justify-center mb-10">
+            <div className="flex justify-center mb-6">
               <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/8 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-violet-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
                 Live Platform Stats
@@ -476,34 +508,18 @@ export function LandingPage() {
           </FadeUp>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {STAT_META.map((s) => {
-              const val = stats[s.key] ?? 0
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              const count = useCountUp(loaded ? val : 0)
-              const Icon = s.icon
-              return (
-                <motion.div key={s.key} variants={fadeUp}
-                  whileHover={{ y: -3, scale: 1.03, boxShadow: "0 12px 40px rgba(139,92,246,0.2)" }}
-                  className="group flex flex-col items-center text-center gap-2 rounded-2xl border border-white/8 bg-white/3 backdrop-blur-sm p-5 cursor-default transition-all">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 group-hover:bg-white/10 transition-colors`}>
-                    <Icon className={`h-5 w-5 ${s.color}`} />
-                  </div>
-                  <p className={`text-2xl font-black tabular-nums ${s.color}`}>
-                    {loaded ? formatNum(count) : "—"}
-                  </p>
-                  <p className="text-xs text-zinc-500">{s.label}</p>
-                </motion.div>
-              )
-            })}
+            {STAT_META.map((s) => (
+              <StatCard key={s.key} s={s} loaded={loaded} stats={stats} />
+            ))}
           </motion.div>
         </div>
       </section>
 
       {/* ══ AI FEATURES ═══════════════════════════════════════════ */}
       <FadeUp>
-        <section className="py-16 border-b border-white/6 bg-[#09090B]">
+        <section className="py-10 border-b border-white/6 bg-background">
           <div className="mx-auto max-w-5xl px-6">
-            <div className="text-center mb-10">
+            <div className="text-center mb-6">
               <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-4">
                 <Brain className="h-3.5 w-3.5" /> Powered by AI
               </div>
@@ -511,12 +527,12 @@ export function LandingPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {AI_FEATURES.map(({ icon: Icon, label, color, bg }) => (
                 <motion.div key={label} whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}
-                  className="relative rounded-2xl border border-violet-500/20 bg-[#1a1a2e] p-5 overflow-hidden cursor-pointer group">
+                  className="relative rounded-2xl border border-violet-500/20 bg-card p-5 overflow-hidden cursor-pointer group">
                   <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${bg} mb-4`}>
                     <Icon className={`h-5 w-5 ${color}`} />
                   </div>
-                  <p className="text-sm font-bold leading-tight" style={{color:'#f4f4f5'}}>{label}</p>
+                  <p className="text-sm font-bold leading-tight text-foreground">{label}</p>
                   <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-violet-300 border border-violet-500/40 bg-violet-500/15 rounded-full px-2 py-0.5">
                     <Sparkles className="h-2.5 w-2.5" /> AI
                   </div>
@@ -528,10 +544,10 @@ export function LandingPage() {
       </FadeUp>
 
       {/* ══ FEATURES (TABBED) ═════════════════════════════════════ */}
-      <section id="features" className="py-20 border-b border-white/6 bg-[#09090B]">
+      <section id="features" className="py-10 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="text-center mb-10">
+            <div className="text-center mb-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Features</p>
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">Built for Every Role</h2>
               <p className="mt-3 text-zinc-400 max-w-xl mx-auto">Student, college, or recruiter — CodeHiring has the tools you need.</p>
@@ -540,7 +556,7 @@ export function LandingPage() {
 
           {/* Tab switcher */}
           <FadeUp delay={0.1}>
-            <div className="flex items-center justify-center gap-2 mb-10">
+            <div className="flex items-center justify-center gap-2 mb-6">
               {FEATURES.map((tab, i) => {
                 const Icon = tab.icon
                 return (
@@ -581,10 +597,10 @@ export function LandingPage() {
       </section>
 
       {/* ══ PLATFORMS ═════════════════════════════════════════════ */}
-      <section id="platforms" className="py-20 border-b border-white/6 bg-[#09090B]">
+      <section id="platforms" className="py-10 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="text-center mb-12">
+            <div className="text-center mb-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Integrations</p>
               <h2 className="text-3xl font-black text-white tracking-tight">All Major Platforms, One Profile</h2>
               <p className="mt-3 text-zinc-400">Live data pulled directly — always accurate, never self-reported.</p>
@@ -611,9 +627,9 @@ export function LandingPage() {
 
       {/* ══ TESTIMONIALS ══════════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section className="py-20 border-b border-white/6 bg-[#09090B]">
+        <section className="py-10 border-b border-white/6 bg-background">
           <div className="mx-auto max-w-6xl px-6">
-            <FadeUp className="text-center mb-12">
+            <FadeUp className="text-center mb-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Testimonials</p>
               <h2 className="text-3xl font-black text-white tracking-tight">What People Are Saying</h2>
             </FadeUp>
@@ -621,7 +637,7 @@ export function LandingPage() {
               className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {testimonials.map((t: any, i: number) => (
                 <motion.div key={i} variants={fadeUp} whileHover={{ y: -2 }}
-                  className="rounded-2xl border border-white/8 bg-[#18181B] p-6">
+                  className="rounded-2xl border border-white/8 bg-card p-6">
                   <Quote className="h-5 w-5 text-violet-500/40 mb-4" />
                   <p className="text-sm text-zinc-400 leading-relaxed mb-5 italic">"{t.text}"</p>
                   <div className="flex items-center gap-3 pt-4 border-t border-white/6">
@@ -644,10 +660,10 @@ export function LandingPage() {
       )}
 
       {/* ══ BLOG ══════════════════════════════════════════════════ */}
-      <section className="py-20 border-b border-white/6 bg-[#09090B]">
+      <section className="py-10 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-6xl px-6">
           <FadeUp>
-            <div className="flex items-end justify-between mb-10">
+            <div className="flex items-end justify-between mb-6">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-2">Blog</p>
                 <h2 className="text-2xl font-black text-white tracking-tight">Latest Insights</h2>
@@ -681,10 +697,10 @@ export function LandingPage() {
       </section>
 
       {/* ══ CTA ═══════════════════════════════════════════════════ */}
-      <section className="py-24 px-6 bg-[#09090B]">
+      <section className="py-12 px-6 bg-background">
         <div className="mx-auto max-w-5xl">
           <FadeUp>
-            <div className="text-center mb-12">
+            <div className="text-center mb-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Get Started</p>
               <h2 className="text-4xl font-black text-white tracking-tight mb-4">
                 Skills First.<br /><span className="gradient-text">Hire Better.</span>
@@ -732,3 +748,4 @@ export function LandingPage() {
     </>
   )
 }
+

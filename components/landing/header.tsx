@@ -26,7 +26,7 @@ export function Header() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 h-14 transition-all duration-300 ${
       scrolled
-        ? "bg-[#09090B]/90 backdrop-blur-xl border-b border-white/8 shadow-lg shadow-black/20"
+        ? "bg-background/90 backdrop-blur-xl border-b border-white/8 shadow-lg shadow-black/20"
         : "bg-transparent"
     }`}>
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 h-full">
@@ -99,7 +99,7 @@ export function Header() {
         {mobileMenuOpen && (
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden border-t border-white/8 bg-[#09090B]/95 backdrop-blur-xl px-6 py-4 space-y-1">
+            className="md:hidden border-t border-white/8 bg-background/95 backdrop-blur-xl px-6 py-4 space-y-1">
             {[
               { href: "#features", label: "Features" },
               { href: "#platforms", label: "Platforms" },

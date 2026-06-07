@@ -32,7 +32,7 @@ const links = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/8 bg-[#09090B]">
+    <footer className="border-t border-white/8 bg-background">
       <div className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-6">
 
