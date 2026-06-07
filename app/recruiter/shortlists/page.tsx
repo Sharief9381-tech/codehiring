@@ -1,6 +1,8 @@
 import { DashboardHeader } from "@/components/dashboard/header"
 import { ShortlistManager } from "@/components/recruiter/shortlist-manager"
 
+export const dynamic = 'force-dynamic'
+
 export default function ShortlistsPage() {
   return (
     <div className="flex flex-col">

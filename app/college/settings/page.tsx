@@ -1,6 +1,8 @@
 import { DashboardHeader } from "@/components/dashboard/header"
 import { RecruiterAccess } from "@/components/college/recruiter-access"
 
+export const dynamic = 'force-dynamic'
+
 export default function SettingsPage() {
   return (
     <div className="flex flex-col">

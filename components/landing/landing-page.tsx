@@ -331,7 +331,7 @@ export function LandingPage() {
           <FadeUp>
             <div className="text-center mb-12">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Product</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-3">
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-3" style={{color:"#f4f4f5"}}>
                 See CodeHiring in Action
               </h2>
               <p className="text-zinc-400">Real dashboards. Real data. Real results.</p>
@@ -464,7 +464,7 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-      <section id="stats" className="py-16 border-b border-white/6">
+      <section id="stats" className="py-16 border-b border-white/6 bg-[#09090B]">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
             <div className="flex justify-center mb-10">
@@ -501,24 +501,23 @@ export function LandingPage() {
 
       {/* ══ AI FEATURES ═══════════════════════════════════════════ */}
       <FadeUp>
-        <section className="py-16 border-b border-white/6">
+        <section className="py-16 border-b border-white/6 bg-[#09090B]">
           <div className="mx-auto max-w-5xl px-6">
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-4">
                 <Brain className="h-3.5 w-3.5" /> Powered by AI
               </div>
-              <h2 className="text-3xl font-black text-white tracking-tight">Make It Feel Like an AI Product</h2>
-            </div>
+              <h2 className="text-3xl font-black text-white tracking-tight">Make It Feel Like an AI Product</h2>            </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {AI_FEATURES.map(({ icon: Icon, label, color, bg }) => (
                 <motion.div key={label} whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}
-                  className="relative rounded-2xl border border-white/8 bg-[#18181B] p-5 overflow-hidden cursor-pointer group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  className="relative rounded-2xl border border-violet-500/20 bg-[#1a1a2e] p-5 overflow-hidden cursor-pointer group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${bg} mb-4`}>
                     <Icon className={`h-5 w-5 ${color}`} />
                   </div>
-                  <p className="text-sm font-semibold text-white leading-tight">{label}</p>
-                  <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-violet-400 ai-badge rounded-full px-2 py-0.5">
+                  <p className="text-sm font-bold leading-tight" style={{color:'#f4f4f5'}}>{label}</p>
+                  <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-violet-300 border border-violet-500/40 bg-violet-500/15 rounded-full px-2 py-0.5">
                     <Sparkles className="h-2.5 w-2.5" /> AI
                   </div>
                 </motion.div>
@@ -529,7 +528,7 @@ export function LandingPage() {
       </FadeUp>
 
       {/* ══ FEATURES (TABBED) ═════════════════════════════════════ */}
-      <section id="features" className="py-20 border-b border-white/6">
+      <section id="features" className="py-20 border-b border-white/6 bg-[#09090B]">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
             <div className="text-center mb-10">
@@ -582,7 +581,7 @@ export function LandingPage() {
       </section>
 
       {/* ══ PLATFORMS ═════════════════════════════════════════════ */}
-      <section id="platforms" className="py-20 border-b border-white/6">
+      <section id="platforms" className="py-20 border-b border-white/6 bg-[#09090B]">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
             <div className="text-center mb-12">
@@ -612,7 +611,7 @@ export function LandingPage() {
 
       {/* ══ TESTIMONIALS ══════════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section className="py-20 border-b border-white/6">
+        <section className="py-20 border-b border-white/6 bg-[#09090B]">
           <div className="mx-auto max-w-6xl px-6">
             <FadeUp className="text-center mb-12">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Testimonials</p>
@@ -645,7 +644,7 @@ export function LandingPage() {
       )}
 
       {/* ══ BLOG ══════════════════════════════════════════════════ */}
-      <section className="py-20 border-b border-white/6">
+      <section className="py-20 border-b border-white/6 bg-[#09090B]">
         <div className="mx-auto max-w-6xl px-6">
           <FadeUp>
             <div className="flex items-end justify-between mb-10">
@@ -682,7 +681,7 @@ export function LandingPage() {
       </section>
 
       {/* ══ CTA ═══════════════════════════════════════════════════ */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 bg-[#09090B]">
         <div className="mx-auto max-w-5xl">
           <FadeUp>
             <div className="text-center mb-12">

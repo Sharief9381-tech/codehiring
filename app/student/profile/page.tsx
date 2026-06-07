@@ -6,6 +6,8 @@ import { Pencil, Save, X, Loader2, Sparkles, User, BookOpen, Code2, Github, Link
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 
+export const dynamic = 'force-dynamic'
+
 // ── Read-only profile view ────────────────────────────────────────────────────
 
 function ProfileView({ user }: { user: any }) {

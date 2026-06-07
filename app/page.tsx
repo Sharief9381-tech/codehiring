@@ -4,10 +4,10 @@ import { Footer } from "@/components/landing/footer"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
+    <div style={{ background: "#09090B", color: "#fafafa", minHeight: "100vh" }}>
       <Header />
       <LandingPage />
       <Footer />
-    </main>
+    </div>
   )
 }
