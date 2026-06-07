@@ -244,6 +244,28 @@ export async function POST(request: Request) {
       NotificationModel.seedWelcome(user._id?.toString() ?? "", user.name, role).catch(() => {})
     }).catch(() => {})
 
+    // Send email verification (non-blocking)
+    if (process.env.NEXTAUTH_URL) {
+      import("@/lib/auth").then(({ generateToken }) => generateToken()).then(async (token) => {
+        const { UserModel } = await import("@/lib/models/user")
+        const expires = new Date(Date.now() + 24 * 60 * 60 * 1000)
+        await UserModel.update(user._id as string, { emailVerificationToken: token, emailVerificationExpires: expires })
+        const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`
+        if (process.env.RESEND_API_KEY) {
+          fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "CodeHiring <onboarding@resend.dev>",
+              to: [user.email],
+              subject: "Verify your CodeHiring email",
+              html: `<h2>Welcome to CodeHiring!</h2><p>Hi ${user.name}, verify your email: <a href="${verifyUrl}">Click here</a></p>`,
+            }),
+          }).catch(() => {})
+        }
+      }).catch(() => {})
+    }
+
     // Track signup event
     const visitorInfo = getVisitorInfo(request)
     await Analytics.track({
