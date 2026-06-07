@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Search, Download, Filter, ExternalLink, RefreshCw, Users } from "lucide-react"
+import { StudentProfileModal } from "@/components/college/student-profile-modal"
 
 interface Student {
   id: string
@@ -59,6 +60,7 @@ export function StudentsTable() {
   const [department, setDepartment] = useState("all")
   const [year, setYear] = useState("all")
   const [college, setCollege] = useState<CollegeInfo | null>(null)
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
 
   useEffect(() => {
     fetchStudents()
@@ -197,6 +199,7 @@ export function StudentsTable() {
   const years = [...new Set(students.map(s => s.year))].sort((a, b) => b - a)
 
   return (
+    <>
     <Card className="bg-card">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
@@ -349,7 +352,7 @@ export function StudentsTable() {
                     </TableCell>
                     <TableCell>{getStatusBadge(student.placementStatus)}</TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon" title="View Details">
+                      <Button variant="ghost" size="icon" title="View Details" onClick={() => setSelectedStudent(student)}>
                         <ExternalLink className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -367,5 +370,12 @@ export function StudentsTable() {
         )}
       </CardContent>
     </Card>
+
+    <StudentProfileModal
+      student={selectedStudent}
+      open={!!selectedStudent}
+      onClose={() => setSelectedStudent(null)}
+    />
+    </>
   )
 }

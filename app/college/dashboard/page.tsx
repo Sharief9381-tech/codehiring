@@ -1,33 +1,23 @@
 import { redirect } from "next/navigation"
-import { DashboardHeader } from "@/components/dashboard/header"
-import { CollegeStats } from "@/components/college/college-stats"
-import { TopPerformers } from "@/components/college/top-performers"
-import { PlacementOverview } from "@/components/college/placement-overview"
-import { DepartmentBreakdown } from "@/components/college/department-breakdown"
 import { getCurrentUser } from "@/lib/auth"
 import { serializeUser } from "@/lib/serialize"
+import { DashboardHeader } from "@/components/dashboard/header"
+import { CollegeDashboardTabs } from "@/components/college/college-dashboard-tabs"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 export default async function CollegeDashboard() {
   const user = await getCurrentUser()
   if (!user || user.role !== "college") redirect("/login")
-
   const college = serializeUser(user) as any
-
   return (
     <div className="flex flex-col">
       <DashboardHeader
-        title="College Dashboard"
-        description={`Welcome back, ${college.collegeName || college.name}`}
+        title="Dashboard"
+        description={`${college.collegeName || college.name} — overview and analytics`}
       />
-      <div className="flex-1 space-y-6 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
-        <CollegeStats college={college} />
-        <div className="grid gap-6 lg:grid-cols-2">
-          <TopPerformers />
-          <PlacementOverview />
-        </div>
-        <DepartmentBreakdown />
+      <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
+        <CollegeDashboardTabs college={college} />
       </div>
     </div>
   )

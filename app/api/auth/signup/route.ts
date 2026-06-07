@@ -175,12 +175,13 @@ export async function POST(request: Request) {
         userData = {
           ...userData,
           role: "college",
+          name: additionalData.collegeName || name, // display name = college name
           collegeName: additionalData.collegeName || name,
           collegeCode: additionalData.collegeCode || "",
           location: additionalData.location || "",
           website: additionalData.website || "",
-          placementOfficerName: additionalData.placementOfficerName || "",
-          placementOfficerEmail: additionalData.placementOfficerEmail || "",
+          placementOfficerName: name, // TPO name from the form's "Full Name" field
+          placementOfficerEmail: email,
           totalStudents: 0,
           departments: additionalData.departments || [],
         }

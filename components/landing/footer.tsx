@@ -28,10 +28,10 @@ export function Footer() {
   return (
     <footer className="border-t border-white/8 bg-background">
       <div className="mx-auto max-w-7xl px-6 py-14">
-        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-6">
+        <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-6">
 
-          {/* Brand — spans 2 columns */}
-          <div className="md:col-span-2">
+          {/* Brand — full width on mobile, 2 cols on md */}
+          <div className="col-span-1 sm:col-span-2 md:col-span-2">
             <Link href="/" className="flex items-center mb-4">
               <Image src="/codehiring-logo.svg" alt="CodeHiring" width={150} height={38} className="h-8 w-auto block dark:hidden" />
               <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={150} height={38} className="h-8 w-auto hidden dark:block" />
@@ -59,9 +59,9 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Link columns — 1 column each */}
+          {/* Link columns */}
           {Object.entries(links).map(([title, items]) => (
-            <div key={title}>
+            <div key={title} className="col-span-1">
               <h4 className="text-sm font-semibold text-foreground mb-4">{title}</h4>
               <ul className="space-y-2.5">
                 {items.map((item) => (

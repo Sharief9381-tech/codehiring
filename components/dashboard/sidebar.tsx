@@ -10,6 +10,7 @@ import {
   LayoutDashboard, Trophy, Briefcase, User, Settings, Code2,
   LogOut, GraduationCap, Users, BarChart3, Search,
   FileText, Sun, Moon, Menu, X, Sparkles, MessageSquarePlus,
+  Megaphone, Handshake,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -35,12 +36,12 @@ const studentLinks = [
   { href: "/student/ai", label: "AI Insights", icon: Sparkles },
 ]
 const collegeLinks = [
-  { href: "/college/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/college/students", label: "Students", icon: GraduationCap },
-  { href: "/college/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/college/leaderboard", label: "Leaderboard", icon: Trophy },
-  { href: "/college/placements", label: "Placements", icon: Briefcase },
-  { href: "/college/settings", label: "Settings", icon: Settings },
+  { href: "/college/dashboard",     label: "Dashboard",    icon: LayoutDashboard },
+  { href: "/college/students",      label: "Students",     icon: GraduationCap },
+  { href: "/college/drives",        label: "Drives",       icon: Briefcase },
+  { href: "/college/companies",     label: "Companies",    icon: Handshake },
+  { href: "/college/announcements", label: "Announce",     icon: Megaphone },
+  { href: "/college/reports",       label: "Reports",      icon: FileText },
 ]
 const recruiterLinks = [
   { href: "/recruiter/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -121,13 +122,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
               )
             })}
             {/* Support & Feedback — desktop */}
-            <button
-              onClick={() => setFeedbackOpen(true)}
-              className="relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 text-muted-foreground hover:text-foreground hover:bg-secondary/80"
-            >
-              <MessageSquarePlus className="h-4 w-4 shrink-0" />
-              <span>Support</span>
-            </button>
+            
           </nav>
 
           {/* Actions */}
@@ -175,6 +170,19 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                       <User className="h-4 w-4" /> View Profile
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setFeedbackOpen(true)}
+                    className="gap-2 cursor-pointer rounded-lg"
+                  >
+                    <MessageSquarePlus className="h-4 w-4" /> Support & Feedback
+                  </DropdownMenuItem>
+                  {(user.role === "college" || user.role === "recruiter") && (
+                    <DropdownMenuItem asChild>
+                      <Link href={`/${user.role}/settings`} className="gap-2 cursor-pointer rounded-lg">
+                        <Settings className="h-4 w-4" /> Settings
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator className="my-1" />
                   <DropdownMenuItem
                     onClick={handleLogout}
@@ -219,14 +227,6 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                 </Link>
               )
             })}
-            {/* Support & Feedback */}
-            <button
-              onClick={() => { setFeedbackOpen(true); setMobileOpen(false) }}
-              className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary/80 hover:text-foreground transition-all"
-            >
-              <MessageSquarePlus className="h-4 w-4" />
-              Support & Feedback
-            </button>
           </div>
         )}
       </header>

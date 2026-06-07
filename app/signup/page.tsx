@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Loader2, GraduationCap, Building2, Briefcase, Award, Eye, EyeOff } from "lucide-react"
+import { Loader2, GraduationCap, Building2, Briefcase, Award, Eye, EyeOff, Search, MapPin, Mail } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { searchColleges, type CollegeEntry } from "@/lib/colleges-data"
 import Loading from "./loading"
 
 type Role = "student" | "college" | "recruiter" | "graduate"
@@ -52,6 +53,8 @@ function SignupForm() {
   const [selectedRole, setSelectedRole] = useState<Role | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [collegeSuggestions, setCollegeSuggestions] = useState<CollegeEntry[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -77,6 +80,25 @@ function SignupForm() {
       setStep("details")
     }
   }, [searchParams])
+
+  const handleCollegeNameChange = (value: string) => {
+    setFormData(prev => ({ ...prev, collegeName: value }))
+    const results = searchColleges(value)
+    setCollegeSuggestions(results)
+    setShowSuggestions(results.length > 0)
+  }
+
+  const selectCollege = (college: CollegeEntry) => {
+    setFormData(prev => ({
+      ...prev,
+      collegeName: college.name,
+      collegeCode: college.code,
+      email: prev.email || college.email,
+      location: college.location,
+    }))
+    setCollegeSuggestions([])
+    setShowSuggestions(false)
+  }
 
   const handleRoleSelect = (role: Role) => {
     setSelectedRole(role)
@@ -190,26 +212,42 @@ function SignupForm() {
                 )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">
+                    {selectedRole === "college" ? "TPO / Contact Person Name" : "Full Name"}
+                  </Label>
                   <Input
                     id="name"
-                    placeholder="John Doe"
+                    placeholder={selectedRole === "college" ? "Dr. Ramesh Kumar (Placement Officer)" : "John Doe"}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                   />
+                  {selectedRole === "college" && (
+                    <p className="text-xs text-muted-foreground">
+                      Name of the Training & Placement Officer managing this account.
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                  />
+                  <Label htmlFor="email">
+                    {selectedRole === "college" ? "Official Email" : "Email"}
+                  </Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder={selectedRole === "college" ? "principal@college.ac.in" : "you@example.com"}
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="pl-9"
+                      required
+                    />
+                  </div>
+                  {selectedRole === "college" && (
+                    <p className="text-xs text-muted-foreground">Auto-filled from college database. You can edit if needed.</p>
+                  )}
                 </div>
 
                 {/* Role-specific fields */}
@@ -307,38 +345,84 @@ function SignupForm() {
 
                 {selectedRole === "college" && (
                   <>
-                    <div className="space-y-2">
+                    {/* College Name with autocomplete */}
+                    <div className="space-y-2 relative">
                       <Label htmlFor="collegeName">College Name</Label>
-                      <Input
-                        id="collegeName"
-                        placeholder="Indian Institute of Technology Delhi"
-                        value={formData.collegeName}
-                        onChange={(e) => setFormData({ ...formData, collegeName: e.target.value })}
-                        required
-                      />
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="collegeName"
+                          placeholder="Search college name..."
+                          value={formData.collegeName}
+                          onChange={e => handleCollegeNameChange(e.target.value)}
+                          onFocus={() => formData.collegeName.length >= 2 && setShowSuggestions(collegeSuggestions.length > 0)}
+                          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                          className="pl-9"
+                          autoComplete="off"
+                          required
+                        />
+                      </div>
+                      {/* Suggestions dropdown */}
+                      {showSuggestions && (
+                        <div className="absolute z-50 w-full mt-1 rounded-xl border border-border bg-background shadow-lg overflow-hidden">
+                          {collegeSuggestions.map(c => (
+                            <button
+                              key={c.code}
+                              type="button"
+                              onMouseDown={() => selectCollege(c)}
+                              className="w-full flex items-start gap-3 px-4 py-3 hover:bg-muted/50 transition-colors text-left border-b border-border/40 last:border-0"
+                            >
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold mt-0.5">
+                                {c.code.slice(0, 2)}
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-sm font-medium text-foreground truncate">{c.name}</p>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                  <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />{c.location}
+                                  </span>
+                                  <span className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">{c.code}</span>
+                                  <span className={`text-xs px-1.5 py-0.5 rounded ${c.state === "TG" ? "bg-blue-500/10 text-blue-600" : "bg-emerald-500/10 text-emerald-600"}`}>{c.state}</span>
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        Search for AP / Telangana colleges — code, location and email will fill automatically.
+                      </p>
                     </div>
+
+                    {/* College Code — auto-filled */}
                     <div className="space-y-2">
                       <Label htmlFor="collegeCode">College Code</Label>
                       <Input
                         id="collegeCode"
-                        placeholder="IITD"
+                        placeholder="Auto-filled on college select"
                         value={formData.collegeCode}
-                        onChange={(e) => setFormData({ ...formData, collegeCode: e.target.value.toUpperCase() })}
+                        onChange={e => setFormData(prev => ({ ...prev, collegeCode: e.target.value.toUpperCase() }))}
                         required
                       />
                       <p className="text-xs text-muted-foreground">
-                        This unique code will be used by students to identify your college.
+                        Students use this code to link to your college.
                       </p>
                     </div>
+
+                    {/* Location — auto-filled */}
                     <div className="space-y-2">
                       <Label htmlFor="location">Location</Label>
-                      <Input
-                        id="location"
-                        placeholder="New Delhi, India"
-                        value={formData.location}
-                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                        required
-                      />
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="location"
+                          placeholder="Auto-filled on college select"
+                          value={formData.location}
+                          onChange={e => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                          className="pl-9"
+                          required
+                        />
+                      </div>
                     </div>
                   </>
                 )}

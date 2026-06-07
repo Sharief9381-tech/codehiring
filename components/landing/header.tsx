@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Sun, Moon } from "lucide-react"
+import { Menu, X, Sun, Moon, LayoutDashboard } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 export function Header() {
@@ -13,15 +13,26 @@ export function Header() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [loggedInUser, setLoggedInUser] = useState<{ role: string; email: string } | null>(null)
 
   useEffect(() => {
     setMounted(true)
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener("scroll", onScroll)
+    // Check if user is already logged in
+    fetch("/api/auth/user")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.user) setLoggedInUser(d.user) })
+      .catch(() => {})
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   const isDark = theme === "dark"
+  const dashboardHref = loggedInUser
+    ? (loggedInUser.role === "admin" || loggedInUser.email === "sharief9381@gmail.com"
+        ? "/admin"
+        : `/${loggedInUser.role}/dashboard`)
+    : null
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 h-14 transition-all duration-300 ${
@@ -67,18 +78,30 @@ export function Header() {
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
           )}
-          <Link href="/login">
-            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white hover:bg-white/8">
-              Sign In
-            </Button>
-          </Link>
-          <Link href="/signup">
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Button size="sm" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-lg shadow-violet-500/25">
-                Get Started
-              </Button>
-            </motion.div>
-          </Link>
+          {dashboardHref ? (
+            <Link href={dashboardHref}>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Button size="sm" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-lg shadow-violet-500/25 gap-2">
+                  <LayoutDashboard className="h-4 w-4" /> Go to Dashboard
+                </Button>
+              </motion.div>
+            </Link>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white hover:bg-white/8">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Button size="sm" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-lg shadow-violet-500/25">
+                    Get Started
+                  </Button>
+                </motion.div>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -116,12 +139,22 @@ export function Header() {
               </Link>
             ))}
             <div className="flex gap-2 pt-3 border-t border-white/8">
-              <Link href="/login" className="flex-1">
-                <Button variant="outline" className="w-full border-white/15 text-zinc-300 hover:text-white hover:bg-white/8">Sign In</Button>
-              </Link>
-              <Link href="/signup" className="flex-1">
-                <Button className="w-full bg-violet-600 hover:bg-violet-500 text-white border-0">Get Started</Button>
-              </Link>
+              {dashboardHref ? (
+                <Link href={dashboardHref} className="flex-1">
+                  <Button className="w-full bg-violet-600 hover:bg-violet-500 text-white border-0 gap-2">
+                    <LayoutDashboard className="h-4 w-4" /> Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link href="/login" className="flex-1">
+                    <Button variant="outline" className="w-full border-white/15 text-zinc-300 hover:text-white hover:bg-white/8">Sign In</Button>
+                  </Link>
+                  <Link href="/signup" className="flex-1">
+                    <Button className="w-full bg-violet-600 hover:bg-violet-500 text-white border-0">Get Started</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </motion.div>
         )}
