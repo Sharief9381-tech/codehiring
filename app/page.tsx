@@ -4,7 +4,7 @@ import { Footer } from "@/components/landing/footer"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#09090B] dark">
+    <main className="min-h-screen bg-background">
       <Header />
       <LandingPage />
       <Footer />
