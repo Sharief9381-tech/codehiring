@@ -51,6 +51,9 @@ const recruiterLinks = [
   { href: "/recruiter/settings", label: "Settings", icon: Settings },
 ]
 
+// Support link shown in mobile nav for all roles
+const supportLink = { href: "/feedback", label: "Support & Feedback", icon: MessageSquarePlus }
+
 const roleColor: Record<string, string> = {
   student: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
   college: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
@@ -117,6 +120,14 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                 </Link>
               )
             })}
+            {/* Support & Feedback — desktop */}
+            <button
+              onClick={() => setFeedbackOpen(true)}
+              className="relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 text-muted-foreground hover:text-foreground hover:bg-secondary/80"
+            >
+              <MessageSquarePlus className="h-4 w-4 shrink-0" />
+              <span>Support</span>
+            </button>
           </nav>
 
           {/* Actions */}
@@ -135,16 +146,6 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
             {/* Notifications */}
             <NotificationBell />
-
-            {/* Feedback */}
-            <button
-              onClick={() => setFeedbackOpen(true)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-all"
-              aria-label="Feedback"
-              title="Send Feedback"
-            >
-              <MessageSquarePlus className="h-4 w-4" />
-            </button>
 
             {/* Divider */}
             <div className="w-px h-5 bg-border/60 mx-1 hidden sm:block" />
@@ -218,6 +219,14 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                 </Link>
               )
             })}
+            {/* Support & Feedback */}
+            <button
+              onClick={() => { setFeedbackOpen(true); setMobileOpen(false) }}
+              className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary/80 hover:text-foreground transition-all"
+            >
+              <MessageSquarePlus className="h-4 w-4" />
+              Support & Feedback
+            </button>
           </div>
         )}
       </header>

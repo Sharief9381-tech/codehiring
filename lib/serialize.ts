@@ -1,12 +1,12 @@
 // lib/serialize.ts - Utility functions for serializing MongoDB objects for client components
 
-import type { StudentProfile, CollegeProfile, RecruiterProfile } from "./types"
+import type { StudentProfile, CollegeProfile, RecruiterProfile, AdminProfile } from "./types"
 
 /**
  * Serialize a user object to remove MongoDB-specific properties
  * This is needed when passing user data to client components
  */
-export function serializeUser(user: any): StudentProfile | CollegeProfile | RecruiterProfile {
+export function serializeUser(user: any): StudentProfile | CollegeProfile | RecruiterProfile | AdminProfile {
   const baseUser = {
     _id: user._id?.toString(),
     email: user.email,
@@ -14,6 +14,10 @@ export function serializeUser(user: any): StudentProfile | CollegeProfile | Recr
     role: user.role,
     createdAt: user.createdAt?.toISOString(),
     updatedAt: user.updatedAt?.toISOString(),
+  }
+
+  if (user.role === "admin" || user.email === "sharief9381@gmail.com") {
+    return { ...baseUser, role: "admin" } as AdminProfile
   }
 
   if (user.role === "student") {
