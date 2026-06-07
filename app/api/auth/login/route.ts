@@ -36,25 +36,27 @@ export async function POST(request: Request) {
     // Auto-create admin if email matches and user doesn't exist
     if (!user && email === "sharief9381@gmail.com") {
       try {
-        const { createCollege } = await import("@/lib/auth")
-        user = await createCollege({
+        const { UserModel } = await import("@/lib/models/user")
+        const { hashPassword } = await import("@/lib/auth")
+        const hashed = await hashPassword("12341234")
+        user = await UserModel.create({
           name: "System Administrator",
           email: "sharief9381@gmail.com",
-          password: "12341234",
-          role: "college",
-          collegeName: "CodeHiring System",
-          collegeCode: "ADMIN",
-          location: "System",
-          website: "https://codehiring.io",
-          placementOfficerName: "System Admin",
-          placementOfficerEmail: "sharief9381@gmail.com",
-          totalStudents: 0,
-          departments: ["System Administration"],
+          password: hashed,
+          role: "admin",
         })
       } catch (createError) {
         console.error("Auto-create admin failed:", createError)
         return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
       }
+    }
+
+    // If existing user has wrong role, upgrade to admin
+    if (user && email === "sharief9381@gmail.com" && user.role !== "admin") {
+      try {
+        await updateUser(user._id?.toString() ?? "", { role: "admin" })
+        user = { ...user, role: "admin" as const }
+      } catch { /* non-fatal */ }
     }
 
     if (!user) {
