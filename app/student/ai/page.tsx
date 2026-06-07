@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import {
-
-export const dynamic = 'force-dynamic'
   Send, Sparkles, User, Loader2,
   CheckCircle2, AlertCircle, RefreshCw,
   Brain, TrendingUp, Lightbulb, Target,
   Zap, ChevronRight,
 } from "lucide-react"
+
+export const dynamic = 'force-dynamic'
 
 interface Message {
   role: "user" | "assistant"
