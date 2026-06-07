@@ -3,12 +3,6 @@ import Image from "next/image"
 import { Mail, Twitter, Github, Linkedin } from "lucide-react"
 
 const links = {
-  Product: [
-    { label: "Features", href: "#features" },
-    { label: "How it Works", href: "#how-it-works" },
-    { label: "Platforms", href: "#platforms" },
-    { label: "Live Stats", href: "#stats" },
-  ],
   Company: [
     { label: "About", href: "/about" },
     { label: "Careers", href: "/careers" },

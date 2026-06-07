@@ -254,7 +254,7 @@ export function LandingPage() {
   return (
     <>
       {/* ══ HERO ══════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-6 overflow-hidden bg-background">
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-8 px-6 overflow-hidden bg-background">
         {/* Background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(139,92,246,0.25),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_60%,rgba(59,130,246,0.1),transparent)]" />
@@ -266,7 +266,7 @@ export function LandingPage() {
             <div>
               {/* AI badge */}
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-6">
+                <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-4">
                   <Sparkles className="h-3.5 w-3.5" />
                   AI-Powered Skills-First Recruitment
                 </div>
@@ -274,14 +274,14 @@ export function LandingPage() {
 
               {/* Headline */}
               <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-6">
+                className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-4">
                 Find Talent.<br />
                 <span className="gradient-text">Based on Skills,</span><br />
                 Not Resumes.
               </motion.h1>
 
               <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-lg text-zinc-400 max-w-xl leading-relaxed mb-8">
+                className="text-lg text-zinc-400 max-w-xl leading-relaxed mb-4">
                 Track coding performance across platforms, discover top talent, and hire with confidence — all backed by verified real-time data.
               </motion.p>
 
@@ -322,11 +322,11 @@ export function LandingPage() {
       {/* ══ TRUSTED BY — real colleges by student count ══════════ */}
       {topColleges.length > 0 && (
         <FadeUp>
-          <section className="py-10 border-y border-white/6 bg-background relative overflow-hidden">
+          <section className="py-6 border-y border-white/6 bg-background relative overflow-hidden">
             {/* subtle glow */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(139,92,246,0.06),transparent)] pointer-events-none" />
             <div className="mx-auto max-w-6xl px-6 relative">
-              <p className="text-center text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-8">
+              <p className="text-center text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4">
                 Trusted by Students from
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
@@ -358,10 +358,10 @@ export function LandingPage() {
       )}
 
       {/* ══ "SEE IT IN ACTION" SCREENSHOTS ═══════════════════════ */}
-      <section className="py-10 border-b border-white/6 overflow-hidden">
+      <section className="py-6 border-b border-white/6 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="text-center mb-6">
+            <div className="text-center mb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Product</p>
               <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-3 text-foreground">
                 See CodeHiring in Action
@@ -496,10 +496,10 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-      <section id="stats" className="py-10 border-b border-white/6 bg-background">
+      <section id="stats" className="py-6 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4">
               <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/8 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-violet-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
                 Live Platform Stats
@@ -517,9 +517,9 @@ export function LandingPage() {
 
       {/* ══ AI FEATURES ═══════════════════════════════════════════ */}
       <FadeUp>
-        <section className="py-10 border-b border-white/6 bg-background">
+        <section className="py-6 border-b border-white/6 bg-background">
           <div className="mx-auto max-w-5xl px-6">
-            <div className="text-center mb-6">
+            <div className="text-center mb-4">
               <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-4">
                 <Brain className="h-3.5 w-3.5" /> Powered by AI
               </div>
@@ -544,10 +544,10 @@ export function LandingPage() {
       </FadeUp>
 
       {/* ══ FEATURES (TABBED) ═════════════════════════════════════ */}
-      <section id="features" className="py-10 border-b border-white/6 bg-background">
+      <section id="features" className="py-6 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="text-center mb-6">
+            <div className="text-center mb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Features</p>
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">Built for Every Role</h2>
               <p className="mt-3 text-zinc-400 max-w-xl mx-auto">Student, college, or recruiter — CodeHiring has the tools you need.</p>
@@ -556,7 +556,7 @@ export function LandingPage() {
 
           {/* Tab switcher */}
           <FadeUp delay={0.1}>
-            <div className="flex items-center justify-center gap-2 mb-6">
+            <div className="flex items-center justify-center gap-2 mb-4">
               {FEATURES.map((tab, i) => {
                 const Icon = tab.icon
                 return (
@@ -597,10 +597,10 @@ export function LandingPage() {
       </section>
 
       {/* ══ PLATFORMS ═════════════════════════════════════════════ */}
-      <section id="platforms" className="py-10 border-b border-white/6 bg-background">
+      <section id="platforms" className="py-6 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
-            <div className="text-center mb-6">
+            <div className="text-center mb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Integrations</p>
               <h2 className="text-3xl font-black text-white tracking-tight">All Major Platforms, One Profile</h2>
               <p className="mt-3 text-zinc-400">Live data pulled directly — always accurate, never self-reported.</p>
@@ -627,9 +627,9 @@ export function LandingPage() {
 
       {/* ══ TESTIMONIALS ══════════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section className="py-10 border-b border-white/6 bg-background">
+        <section className="py-6 border-b border-white/6 bg-background">
           <div className="mx-auto max-w-6xl px-6">
-            <FadeUp className="text-center mb-6">
+            <FadeUp className="text-center mb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Testimonials</p>
               <h2 className="text-3xl font-black text-white tracking-tight">What People Are Saying</h2>
             </FadeUp>
@@ -660,10 +660,10 @@ export function LandingPage() {
       )}
 
       {/* ══ BLOG ══════════════════════════════════════════════════ */}
-      <section className="py-10 border-b border-white/6 bg-background">
+      <section className="py-6 border-b border-white/6 bg-background">
         <div className="mx-auto max-w-6xl px-6">
           <FadeUp>
-            <div className="flex items-end justify-between mb-6">
+            <div className="flex items-end justify-between mb-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-2">Blog</p>
                 <h2 className="text-2xl font-black text-white tracking-tight">Latest Insights</h2>
@@ -697,10 +697,10 @@ export function LandingPage() {
       </section>
 
       {/* ══ CTA ═══════════════════════════════════════════════════ */}
-      <section className="py-12 px-6 bg-background">
+      <section className="py-8 px-6 bg-background">
         <div className="mx-auto max-w-5xl">
           <FadeUp>
-            <div className="text-center mb-6">
+            <div className="text-center mb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Get Started</p>
               <h2 className="text-4xl font-black text-white tracking-tight mb-4">
                 Skills First.<br /><span className="gradient-text">Hire Better.</span>
@@ -748,4 +748,5 @@ export function LandingPage() {
     </>
   )
 }
+
 

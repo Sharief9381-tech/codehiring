@@ -46,7 +46,9 @@ export function Header() {
         <div className="hidden items-center gap-1 md:flex">
           {[
             { href: "#features", label: "Features" },
+            { href: "#how-it-works", label: "How it Works" },
             { href: "#platforms", label: "Platforms" },
+            { href: "#stats", label: "Live Stats" },
             { href: "/blog", label: "Blog" },
             { href: "/about", label: "About" },
           ].map((item) => (
@@ -102,7 +104,9 @@ export function Header() {
             className="md:hidden border-t border-white/8 bg-background/95 backdrop-blur-xl px-6 py-4 space-y-1">
             {[
               { href: "#features", label: "Features" },
+              { href: "#how-it-works", label: "How it Works" },
               { href: "#platforms", label: "Platforms" },
+              { href: "#stats", label: "Live Stats" },
               { href: "/blog", label: "Blog" },
               { href: "/about", label: "About" },
             ].map((item) => (

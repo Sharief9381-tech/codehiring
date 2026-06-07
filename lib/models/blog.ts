@@ -16,6 +16,8 @@ export interface BlogDocument {
   date: string
   readTime: string
   published: boolean
+  publishDate?: Date   // when to go live (defaults to now)
+  expiryDate?: Date    // auto-remove after this date (null = never expires)
   createdAt: Date
   updatedAt: Date
 }
@@ -25,7 +27,16 @@ const COLLECTION = "blogs"
 export const BlogModel = {
   async findAll(publishedOnly = true): Promise<BlogDocument[]> {
     const db = await getDatabase()
-    const filter = publishedOnly ? { published: true } : {}
+    const now = new Date()
+    const filter: any = publishedOnly
+      ? {
+          published: true,
+          // publishDate either not set or in the past
+          $or: [{ publishDate: { $exists: false } }, { publishDate: { $lte: now } }],
+          // expiryDate either not set or in the future
+          $and: [{ $or: [{ expiryDate: { $exists: false } }, { expiryDate: { $eq: null } }, { expiryDate: { $gt: now } }] }],
+        }
+      : {}
     const docs = await db.collection(COLLECTION).find(filter).sort({ createdAt: -1 }).toArray()
     return docs.map(serialize)
   },

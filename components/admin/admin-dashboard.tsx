@@ -11,7 +11,7 @@ import {
   RefreshCw, AlertTriangle, CheckCircle, XCircle, BarChart3,
   Crown, Briefcase, GraduationCap, Building2, Search,
   UserCheck, UserX, Trash2, MessageSquare, PieChart, FileText,
-  Star, ChevronDown, ChevronUp,
+  Star, ChevronDown, ChevronUp, PenLine, Eye, EyeOff, Plus, CalendarDays,
 } from "lucide-react"
 
 interface AdminData {
