@@ -95,8 +95,10 @@
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback', system-ui;
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
+  --font-sans:    var(--font-inter),    'Inter',         system-ui;
+  --font-ui:      var(--font-inter),    'Inter',         system-ui;
+  --font-brand:   var(--font-geist),    'Geist',         sans-serif;
+  --font-mono:    var(--font-mono),     'JetBrains Mono',monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -143,7 +145,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1,h2,h3,h4,h5,h6 { letter-spacing: -0.02em; font-feature-settings: "kern" 1; }
+  h1,h2,h3,h4,h5,h6 {
+    letter-spacing: -0.02em;
+    font-feature-settings: "kern" 1;
+    font-family: var(--font-brand), 'Geist', sans-serif;
+  }
+  /* Tabular numbers use JetBrains Mono for scores/rankings */
+  .tabular-nums {
+    font-family: var(--font-mono), 'JetBrains Mono', monospace;
+    font-feature-settings: "tnum" 1;
+  }
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────── */
@@ -182,6 +193,29 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ── Sci-fi accent (landing page) ──────────────────────────── */
+/* Dark: cyan terminal feel. Light: violet/indigo professional */
+:root {
+  --sci: 0, 255, 255;        /* cyan rgb values */
+  --sci-hex: #0ff;
+  --sci-fg: #0ff;
+  --sci-bg-page: #050508;
+  --sci-grid: rgba(0,255,255,0.04);
+  --sci-border: rgba(0,255,255,0.15);
+  --sci-text: rgba(0,255,255,0.6);
+  --sci-text-dim: rgba(0,255,255,0.3);
+}
+.light {
+  --sci: 99, 102, 241;          /* indigo rgb values */
+  --sci-hex: #6366f1;
+  --sci-fg: #6366f1;
+  --sci-bg-page: #f8f8fc;
+  --sci-grid: rgba(99,102,241,0.04);
+  --sci-border: rgba(99,102,241,0.2);
+  --sci-text: rgba(99,102,241,0.7);
+  --sci-text-dim: rgba(99,102,241,0.4);
 }
 
 /* ── Glow effects ───────────────────────────────────────────── */
@@ -301,3 +335,23 @@ html.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
   border: 0.8px solid rgba(124,105,255,0.4);
   box-shadow: rgba(124,105,255,0.15) 0px 0px 20px 0px;
 }
+
+/* ── Landing page light mode fixes ─────────────────────────── */
+html.light .text-foreground\/80  { color: oklch(0.2 0.012 260) !important; }
+html.light .text-muted-foreground { color: oklch(0.45 0.01 260) !important; }
+
+/* Sci-fi accent overrides for light mode */
+html.light {
+  --sci: 99, 102, 241;
+  --sci-hex: #6366f1;
+  --sci-fg: #6366f1;
+  --sci-bg-page: #f8f8fc;
+  --sci-grid: rgba(99,102,241,0.04);
+  --sci-border: rgba(99,102,241,0.2);
+  --sci-text: rgba(99,102,241,0.7);
+  --sci-text-dim: rgba(99,102,241,0.35);
+}
+
+/* Hero radial glows in light mode */
+html.light .text-\[var\(--sci-fg\)\],
+html.light [style*="var(--sci-fg)"] { color: #6366f1 !important; }
