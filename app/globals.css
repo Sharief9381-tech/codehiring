@@ -248,3 +248,56 @@ html.light .border-white\/15 {
 
 /* ── Scrollbar in light mode ────────────────────────────────── */
 html.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
+
+/* ══ Terminal Design System ═════════════════════════════════════ */
+
+/* Terminal grid background */
+.terminal-grid {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Scanline sweep */
+.scanline {
+  width: 100%;
+  height: 100px;
+  z-index: 5;
+  background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,243,255,0.02) 50%, rgba(0,0,0,0) 100%);
+  opacity: 0.12;
+  position: absolute;
+  bottom: 100%;
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanline {
+  0%   { bottom: 100%; }
+  100% { bottom: -100px; }
+}
+
+/* SVG data-trace paths */
+.data-trace {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: draw-trace 16s linear infinite;
+  filter: drop-shadow(0 0 2px rgba(0,243,255,0.35));
+}
+
+@keyframes draw-trace {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Terminal progress bar sweep */
+@keyframes terminal-progress {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+/* AI badge — terminal variant (purple glow) */
+.ai-badge-terminal {
+  background: linear-gradient(135deg, rgba(124,105,255,0.2), rgba(124,105,255,0.1));
+  border: 0.8px solid rgba(124,105,255,0.4);
+  box-shadow: rgba(124,105,255,0.15) 0px 0px 20px 0px;
+}
