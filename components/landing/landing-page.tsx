@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { motion, useInView } from "framer-motion"
+import { motion, useInView, AnimatePresence } from "framer-motion"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
+import { ProductShowcase } from "@/components/landing/product-showcase"
 import {
   ArrowRight, Sparkles, ChevronDown,
   GraduationCap, Building2, Briefcase, Award,
@@ -266,7 +267,7 @@ export function LandingPage() {
             <div>
               {/* AI badge */}
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-4">
+                <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-3">
                   <Sparkles className="h-3.5 w-3.5" />
                   AI-Powered Skills-First Recruitment
                 </div>
@@ -274,14 +275,14 @@ export function LandingPage() {
 
               {/* Headline */}
               <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-4">
+                className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-3">
                 Find Talent.<br />
                 <span className="gradient-text">Based on Skills,</span><br />
                 Not Resumes.
               </motion.h1>
 
               <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-lg text-zinc-400 max-w-xl leading-relaxed mb-4">
+                className="text-lg text-zinc-400 max-w-xl leading-relaxed mb-3">
                 Track coding performance across platforms, discover top talent, and hire with confidence — all backed by verified real-time data.
               </motion.p>
 
@@ -322,11 +323,11 @@ export function LandingPage() {
       {/* ══ TRUSTED BY — real colleges by student count ══════════ */}
       {topColleges.length > 0 && (
         <FadeUp>
-          <section className="py-6 border-y border-white/6 bg-background relative overflow-hidden">
+          <section className="py-4 bg-background relative overflow-hidden">
             {/* subtle glow */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(139,92,246,0.06),transparent)] pointer-events-none" />
             <div className="mx-auto max-w-6xl px-6 relative">
-              <p className="text-center text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4">
+              <p className="text-center text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-3">
                 Trusted by Students from
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
@@ -357,268 +358,147 @@ export function LandingPage() {
         </FadeUp>
       )}
 
-      {/* ══ "SEE IT IN ACTION" SCREENSHOTS ═══════════════════════ */}
-      <section className="py-6 border-b border-white/6 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6">
+      {/* ══ "SEE IT IN ACTION" — APPLE-STYLE PRODUCT SHOWCASE ══ */}
+      <ProductShowcase />
+      {/* ══ LIVE STATS ════════════════════════════════════════════ */}
+      <section id="stats" className="py-10 bg-background">
+        <div className="mx-auto max-w-5xl px-6">
           <FadeUp>
-            <div className="text-center mb-4">
-              <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Product</p>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-3 text-foreground">
-                See CodeHiring in Action
+            <p className="text-center text-[10px] font-black uppercase tracking-widest text-zinc-600 mb-6 flex items-center justify-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+              Live Platform Stats
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+            </p>
+            <div className="flex items-stretch gap-3">
+              {STAT_META.map((s, i) => {
+                const Icon = s.icon
+                const val = stats[s.key] ?? 0
+                return (
+                  <motion.div key={s.key}
+                    initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                    transition={{ delay: i * 0.06, type: "spring", stiffness: 200 }}
+                    whileHover={{ y: -5, scale: 1.04, transition: { type: "spring", stiffness: 400, damping: 15 } }}
+                    whileTap={{ scale: 0.97 }}
+                    className="flex-1 flex flex-col items-center justify-center gap-2 py-6 px-3 rounded-2xl border border-white/8 bg-white/3 hover:bg-white/5 hover:border-white/15 cursor-default transition-colors">
+                    {/* icon circle */}
+                    <div className={`w-9 h-9 rounded-xl bg-white/6 flex items-center justify-center mb-1`}>
+                      <Icon className={`h-4.5 w-4.5 ${s.color}`} style={{ width: 18, height: 18 }} />
+                    </div>
+                    {/* number */}
+                    <span className={`text-2xl font-black tabular-nums leading-none ${s.color}`}>
+                      {loaded ? (val > 0 ? formatNum(val) : "—") : "—"}
+                    </span>
+                    {/* label */}
+                    <span className="text-[11px] text-zinc-500 text-center leading-tight">{s.label}</span>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ══ FEATURES — role switcher, modern editorial ═══════════ */}
+      <section id="features" className="py-10 bg-background">
+        <div className="mx-auto max-w-6xl px-6">
+
+          {/* Header */}
+          <FadeUp>
+            <div className="mb-10">
+              <p className="text-[10px] font-black uppercase tracking-widest text-violet-400 mb-2">Features</p>
+              <h2 className="text-4xl sm:text-5xl font-black text-foreground tracking-tight leading-none">
+                Built for<br />
+                <span className={`${FEATURES[activeTab].accent}`}>
+                  {FEATURES[activeTab].role === "Students" ? "Students" : FEATURES[activeTab].role === "Colleges" ? "Colleges" : "Recruiters"}
+                </span>
               </h2>
-              <p className="text-zinc-400">Real dashboards. Real data. Real results.</p>
             </div>
           </FadeUp>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                title: "Student Dashboard",
-                desc: "Track all platforms in one place",
-                color: "from-violet-500/20 to-purple-600/5",
-                border: "border-violet-500/20",
-                accent: "text-violet-400",
-                delay: 0,
-                preview: (
-                  <div className="space-y-3 p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-[10px] text-zinc-500">CodeHiring Score</p>
-                        <p className="text-2xl font-black text-white">742<span className="text-sm text-zinc-600">/1000</span></p>
-                      </div>
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/20 border border-violet-500/30">
-                        <Sparkles className="h-5 w-5 text-violet-400" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-1.5">
-                      {[["LeetCode","442","solved","text-amber-400"],["Codeforces","1654","rating","text-cyan-400"],["GitHub","89","repos","text-slate-300"]].map(([n,v,s,c]) => (
-                        <div key={n} className="rounded-lg bg-white/4 border border-white/6 p-2 text-center">
-                          <p className={`text-xs font-bold tabular-nums ${c}`}>{v}</p>
-                          <p className="text-[8px] text-zinc-600">{s}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="space-y-1.5">
-                      {[["Placement Ready","78","bg-violet-500"],["Profile Complete","92","bg-emerald-500"]].map(([l,v,c]) => (
-                        <div key={l}>
-                          <div className="flex justify-between text-[9px] mb-1"><span className="text-zinc-500">{l}</span><span className="text-zinc-400">{v}%</span></div>
-                          <div className="h-1 rounded-full bg-white/6"><div className={`h-full rounded-full ${c}`} style={{width:`${v}%`}} /></div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )
-              },
-              {
-                title: "Recruiter Dashboard",
-                desc: "AI-matched candidates ranked by skill",
-                color: "from-amber-500/15 to-orange-600/5",
-                border: "border-amber-500/20",
-                accent: "text-amber-400",
-                delay: 0.1,
-                preview: (
-                  <div className="space-y-2 p-4">
-                    <div className="grid grid-cols-2 gap-2">
-                      {[["Active Jobs","4","text-violet-400"],["Applications","127","text-blue-400"],["Shortlisted","23","text-amber-400"],["Interviewed","8","text-emerald-400"]].map(([l,v,c]) => (
-                        <div key={l} className="rounded-lg bg-white/4 border border-white/6 p-2">
-                          <p className={`text-lg font-black tabular-nums ${c}`}>{v}</p>
-                          <p className="text-[9px] text-zinc-600">{l}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="rounded-lg bg-amber-500/8 border border-amber-500/20 p-2.5">
-                      <p className="text-[10px] font-semibold text-amber-400 mb-1.5">🤖 Top AI Matches</p>
-                      {[["Arjun S.","95%","442 solved"],["Priya K.","91%","380 solved"],["Rahul M.","88%","320 solved"]].map(([n,s,p]) => (
-                        <div key={n} className="flex items-center justify-between text-[9px] mb-1">
-                          <span className="text-zinc-400">{n}</span>
-                          <span className="text-emerald-400 font-bold">{s}</span>
-                          <span className="text-zinc-600">{p}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )
-              },
-              {
-                title: "College Analytics",
-                desc: "Real-time placement tracking",
-                color: "from-emerald-500/15 to-teal-600/5",
-                border: "border-emerald-500/20",
-                accent: "text-emerald-400",
-                delay: 0.2,
-                preview: (
-                  <div className="space-y-2.5 p-4">
-                    <div className="rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-2.5 text-center">
-                      <p className="text-2xl font-black text-emerald-400">78%</p>
-                      <p className="text-[9px] text-zinc-500">Placement Rate</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {[["Placed","234","text-emerald-400"],["Interviewing","45","text-amber-400"],["Searching","67","text-blue-400"],["Total","346","text-zinc-400"]].map(([l,v,c]) => (
-                        <div key={l} className="rounded-lg bg-white/4 border border-white/6 p-2">
-                          <p className={`text-sm font-bold tabular-nums ${c}`}>{v}</p>
-                          <p className="text-[8px] text-zinc-600">{l}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="space-y-1">
-                      {[["CSE","92%","bg-violet-500"],["IT","85%","bg-blue-500"],["ECE","71%","bg-amber-500"]].map(([d,r,c]) => (
-                        <div key={d} className="flex items-center gap-2">
-                          <span className="text-[9px] text-zinc-500 w-8">{d}</span>
-                          <div className="flex-1 h-1 rounded-full bg-white/6">
-                            <div className={`h-full rounded-full ${c}`} style={{width:r}} />
-                          </div>
-                          <span className="text-[9px] text-zinc-400 w-7 text-right">{r}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )
-              },
-            ].map((screen) => (
-              <FadeUp key={screen.title} delay={screen.delay}>
-                <motion.div whileHover={{ y: -4, scale: 1.01 }} className="rounded-2xl border bg-card overflow-hidden cursor-pointer group" style={{ borderColor: screen.border.replace("border-","") }}>
-                  {/* Header */}
-                  <div className={`bg-gradient-to-r ${screen.color} border-b border-white/6 px-4 py-3`}>
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <div className="h-2 w-2 rounded-full bg-red-500/60" />
-                      <div className="h-2 w-2 rounded-full bg-amber-500/60" />
-                      <div className="h-2 w-2 rounded-full bg-emerald-500/60" />
-                      <span className="ml-2 text-[10px] text-zinc-500">codehiring.io</span>
-                    </div>
-                    <p className={`text-sm font-bold ${screen.accent}`}>{screen.title}</p>
-                    <p className="text-[10px] text-zinc-600">{screen.desc}</p>
-                  </div>
-                  {/* Preview */}
-                  {screen.preview}
-                </motion.div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section id="stats" className="py-6 border-b border-white/6 bg-background">
-        <div className="mx-auto max-w-7xl px-6">
-          <FadeUp>
-            <div className="flex justify-center mb-4">
-              <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/8 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-violet-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
-                Live Platform Stats
-              </span>
-            </div>
-          </FadeUp>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {STAT_META.map((s) => (
-              <StatCard key={s.key} s={s} loaded={loaded} stats={stats} />
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ══ AI FEATURES ═══════════════════════════════════════════ */}
-      <FadeUp>
-        <section className="py-6 border-b border-white/6 bg-background">
-          <div className="mx-auto max-w-5xl px-6">
-            <div className="text-center mb-4">
-              <div className="inline-flex items-center gap-2 ai-badge rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-4">
-                <Brain className="h-3.5 w-3.5" /> Powered by AI
-              </div>
-              <h2 className="text-3xl font-black text-white tracking-tight">Make It Feel Like an AI Product</h2>            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {AI_FEATURES.map(({ icon: Icon, label, color, bg }) => (
-                <motion.div key={label} whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}
-                  className="relative rounded-2xl border border-violet-500/20 bg-card p-5 overflow-hidden cursor-pointer group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${bg} mb-4`}>
-                    <Icon className={`h-5 w-5 ${color}`} />
-                  </div>
-                  <p className="text-sm font-bold leading-tight text-foreground">{label}</p>
-                  <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-violet-300 border border-violet-500/40 bg-violet-500/15 rounded-full px-2 py-0.5">
-                    <Sparkles className="h-2.5 w-2.5" /> AI
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </FadeUp>
-
-      {/* ══ FEATURES (TABBED) ═════════════════════════════════════ */}
-      <section id="features" className="py-6 border-b border-white/6 bg-background">
-        <div className="mx-auto max-w-7xl px-6">
-          <FadeUp>
-            <div className="text-center mb-4">
-              <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Features</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">Built for Every Role</h2>
-              <p className="mt-3 text-zinc-400 max-w-xl mx-auto">Student, college, or recruiter — CodeHiring has the tools you need.</p>
-            </div>
-          </FadeUp>
-
-          {/* Tab switcher */}
-          <FadeUp delay={0.1}>
-            <div className="flex items-center justify-center gap-2 mb-4">
+          {/* Role pill switcher */}
+          <FadeUp delay={0.05}>
+            <div className="flex items-center gap-2 mb-10">
               {FEATURES.map((tab, i) => {
                 const Icon = tab.icon
+                const active = activeTab === i
                 return (
                   <motion.button key={tab.role} onClick={() => setActiveTab(i)}
                     whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                      activeTab === i
-                        ? `${tab.bgAccent} ${tab.accent} border border-current/30`
-                        : "text-zinc-500 hover:text-zinc-300 border border-transparent"
-                    }`}>
-                    <Icon className="h-4 w-4" />{tab.role}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all border
+                      ${active
+                        ? `${tab.bgAccent} ${tab.accent} border-current/40 shadow-lg`
+                        : "text-zinc-600 border-white/6 hover:text-zinc-300 hover:border-white/12"
+                      }`}>
+                    <Icon className="h-4 w-4" />
+                    {tab.role}
                   </motion.button>
                 )
               })}
             </div>
           </FadeUp>
 
-          {/* Feature grid */}
-          <motion.div key={activeTab} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES[activeTab].features.map((f, i) => {
-              const FIcon = f.icon
-              const tab = FEATURES[activeTab]
-              return (
-                <motion.div key={i} whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
-                  <SpotlightCard spotlightColor={tab.spotlight} className={`p-6 ${tab.border} transition-all cursor-pointer h-full`}>
-                    <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${tab.bgAccent} mb-4`}>
-                      <FIcon className={`h-4 w-4 ${tab.accent}`} />
-                    </div>
-                    <h4 className="text-sm font-semibold text-white mb-1.5">{f.title}</h4>
-                    <p className="text-sm text-zinc-500 leading-relaxed">{f.desc}</p>
-                  </SpotlightCard>
-                </motion.div>
-              )
-            })}
-          </motion.div>
+          {/* Feature list — full editorial stacked rows */}
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTab}
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25 }}>
+
+              {/* Role intro strip */}
+              <div className={`rounded-2xl border ${FEATURES[activeTab].border.replace("hover:","").trim()} ${FEATURES[activeTab].bgAccent} px-6 py-4 mb-6 flex items-center gap-4`}>
+                {(() => { const Icon = FEATURES[activeTab].icon; return <Icon className={`h-6 w-6 ${FEATURES[activeTab].accent} shrink-0`} /> })()}
+                <p className="text-sm font-medium text-zinc-300">{FEATURES[activeTab].description}</p>
+              </div>
+
+              {/* Features as horizontal rows */}
+              <div className="space-y-3">
+                {FEATURES[activeTab].features.map((f, i) => {
+                  const FIcon = f.icon
+                  const tab = FEATURES[activeTab]
+                  return (
+                    <motion.div key={f.title}
+                      initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.06, duration: 0.3 }}
+                      whileHover={{ x: 4 }}
+                      className="group flex items-center gap-5 rounded-2xl border border-white/5 bg-card hover:border-white/10 transition-all px-5 py-4 cursor-default">
+                      <div className={`w-9 h-9 rounded-xl ${tab.bgAccent} flex items-center justify-center shrink-0`}>
+                        <FIcon className={`h-4 w-4 ${tab.accent}`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-foreground">{f.title}</p>
+                        <p className="text-xs text-zinc-500 mt-0.5">{f.desc}</p>
+                      </div>
+                      <div className={`shrink-0 w-1.5 h-1.5 rounded-full ${tab.bgAccent.replace("bg-","bg-").replace("/10","").replace("bg-","").trim()} opacity-0 group-hover:opacity-100 transition-opacity ${tab.accent.replace("text-","bg-")}`} />
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
       {/* ══ PLATFORMS ═════════════════════════════════════════════ */}
-      <section id="platforms" className="py-6 border-b border-white/6 bg-background">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="platforms" className="py-8 bg-background">
+        <div className="mx-auto max-w-5xl px-6">
           <FadeUp>
-            <div className="text-center mb-4">
-              <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Integrations</p>
-              <h2 className="text-3xl font-black text-white tracking-tight">All Major Platforms, One Profile</h2>
-              <p className="mt-3 text-zinc-400">Live data pulled directly — always accurate, never self-reported.</p>
+            <div className="text-center mb-6">
+              <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-2">Integrations</p>
+              <h2 className="text-3xl font-black text-foreground tracking-tight">All Major Platforms, One Profile</h2>
+              <p className="mt-2 text-zinc-500 text-sm">Live data pulled directly — always accurate, never self-reported.</p>
             </div>
           </FadeUp>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-            className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+            className="flex gap-3">
             {PLATFORMS.map((p) => (
-              <motion.div key={p.name} variants={fadeUp} whileHover={{ scale: 1.06, y: -3 }} whileTap={{ scale: 0.97 }}>
-                <SpotlightCard spotlightColor={p.spotlight} className="flex flex-col items-center gap-3 p-4 text-center cursor-pointer group">
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${p.bg}`}>
-                    <p.icon className={`h-5 w-5 ${p.color}`} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-white group-hover:text-violet-300 transition-colors">{p.name}</p>
-                    <p className="text-[9px] text-zinc-600 mt-0.5">{p.desc}</p>
-                  </div>
-                </SpotlightCard>
+              <motion.div key={p.name} variants={fadeUp}
+                whileHover={{ scale: 1.06, y: -5, transition: { type: "spring", stiffness: 400, damping: 15 } }}
+                whileTap={{ scale: 0.96 }}
+                className="flex-1 flex flex-col items-center justify-center gap-2.5 py-5 px-2 rounded-2xl border border-white/8 bg-white/3 hover:bg-white/5 hover:border-white/15 cursor-pointer group transition-colors text-center">
+                <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${p.bg} mx-auto`}>
+                  <p.icon className={`h-5 w-5 ${p.color}`} />
+                </div>
+                <p className="text-[11px] font-bold text-zinc-300 group-hover:text-white transition-colors leading-tight">{p.name}</p>
+                <p className="text-[9px] text-zinc-600 leading-tight">{p.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -627,9 +507,9 @@ export function LandingPage() {
 
       {/* ══ TESTIMONIALS ══════════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section className="py-6 border-b border-white/6 bg-background">
+        <section className="py-4 bg-background">
           <div className="mx-auto max-w-6xl px-6">
-            <FadeUp className="text-center mb-4">
+            <FadeUp className="text-center mb-3">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Testimonials</p>
               <h2 className="text-3xl font-black text-white tracking-tight">What People Are Saying</h2>
             </FadeUp>
@@ -660,10 +540,10 @@ export function LandingPage() {
       )}
 
       {/* ══ BLOG ══════════════════════════════════════════════════ */}
-      <section className="py-6 border-b border-white/6 bg-background">
+      <section className="py-4 bg-background">
         <div className="mx-auto max-w-6xl px-6">
           <FadeUp>
-            <div className="flex items-end justify-between mb-4">
+            <div className="flex items-end justify-between mb-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-2">Blog</p>
                 <h2 className="text-2xl font-black text-white tracking-tight">Latest Insights</h2>
@@ -697,12 +577,12 @@ export function LandingPage() {
       </section>
 
       {/* ══ CTA ═══════════════════════════════════════════════════ */}
-      <section className="py-8 px-6 bg-background">
+      <section className="py-6 px-6 bg-background">
         <div className="mx-auto max-w-5xl">
           <FadeUp>
-            <div className="text-center mb-4">
+            <div className="text-center mb-3">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Get Started</p>
-              <h2 className="text-4xl font-black text-white tracking-tight mb-4">
+              <h2 className="text-4xl font-black text-white tracking-tight mb-3">
                 Skills First.<br /><span className="gradient-text">Hire Better.</span>
               </h2>
               <p className="text-zinc-400 max-w-lg mx-auto">
@@ -748,5 +628,7 @@ export function LandingPage() {
     </>
   )
 }
+
+
 
 
