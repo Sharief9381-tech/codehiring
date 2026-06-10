@@ -207,6 +207,55 @@ export function ProfileForm({ user, onChange }: Props) {
             ))}
           </div>
         </div>
+
+        {/* Open to Work — shown for 3rd/4th year students and graduates */}
+        {(() => {
+          const gradYear = user?.graduationYear
+          const currentYear = new Date().getFullYear()
+          const isGraduate = !!(user as any)?.isGraduate || (gradYear && gradYear <= currentYear)
+          const yearsLeft = gradYear ? gradYear - currentYear : null
+          const show = isGraduate || (yearsLeft !== null && yearsLeft <= 2)
+          if (!show) return null
+          return (
+            <div className={formCard}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-7 h-7 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                  <Zap className="w-3.5 h-3.5 text-emerald-500" />
+                </div>
+                <h3 className="text-sm font-semibold text-foreground">Job Availability</h3>
+              </div>
+              <div className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Open to Work</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {isGraduate
+                      ? "Let recruiters know you're actively looking"
+                      : `Visible to recruiters — Class of ${gradYear}`}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => update("isOpenToWork", !user?.isOpenToWork)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                    user?.isOpenToWork ? "bg-emerald-500" : "bg-muted"
+                  }`}
+                  role="switch"
+                  aria-checked={!!user?.isOpenToWork}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                    user?.isOpenToWork ? "translate-x-6" : "translate-x-1"
+                  }`} />
+                </button>
+              </div>
+              {user?.isOpenToWork && (
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2 flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Your profile is visible to recruiters as available
+                </p>
+              )}
+            </div>
+          )
+        })()}
       </div>
 
       {/* ── RIGHT COLUMN ── */}

@@ -1,23 +1,18 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Inter, JetBrains_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider'
 import './globals.css'
 
-// Brand headings & hero text
-const geist = Geist({
+// Primary font — warm, professional, premium SaaS feel
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-geist",
-})
-
-// UI, body, content
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["300","400","500","600","700"],
+  variable: "--font-sans",
+  weight: ["300","400","500","600","700","800"],
+  display: "swap",
 })
 
 // Scores, rankings, code, numbers
@@ -25,6 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   weight: ["400","500","600","700","800"],
+  display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -46,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={`${geist.variable} ${inter.variable} ${jetbrainsMono.variable} font-ui antialiased`} suppressHydrationWarning>
+      <body className={`${jakarta.variable} ${jetbrainsMono.variable} font-sans antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

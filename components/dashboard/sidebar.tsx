@@ -28,12 +28,12 @@ interface DashboardSidebarProps {
 }
 
 const studentLinks = [
-  { href: "/student/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/student/platforms", label: "Platforms", icon: Code2 },
-  { href: "/student/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/student/leaderboard", label: "Leaderboard", icon: Trophy },
-  { href: "/student/jobs", label: "Career Hub", icon: Briefcase },
-  { href: "/student/ai", label: "AI Insights", icon: Sparkles },
+  { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
+  { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
+  { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
+  { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
+  { href: "/student/jobs",       label: "Career Hub",   icon: Briefcase },
+  { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
 ]
 const collegeLinks = [
   { href: "/college/dashboard",     label: "Dashboard",    icon: LayoutDashboard },
@@ -44,12 +44,13 @@ const collegeLinks = [
   { href: "/college/reports",       label: "Reports",      icon: FileText },
 ]
 const recruiterLinks = [
-  { href: "/recruiter/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/recruiter/search", label: "Search Talent", icon: Search },
-  { href: "/recruiter/shortlists", label: "Shortlists", icon: Users },
-  { href: "/recruiter/jobs", label: "Job Postings", icon: FileText },
-  { href: "/recruiter/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/recruiter/settings", label: "Settings", icon: Settings },
+  { href: "/recruiter/dashboard", label: "Dashboard",    icon: LayoutDashboard },
+  { href: "/recruiter/drives",    label: "Drives",       icon: Briefcase },
+  { href: "/recruiter/search",    label: "Search Talent",icon: Search },
+  { href: "/recruiter/shortlists",label: "Shortlists",   icon: Users },
+  { href: "/recruiter/jobs",      label: "Job Postings", icon: FileText },
+  { href: "/recruiter/analytics", label: "Analytics",    icon: BarChart3 },
+  { href: "/recruiter/settings",  label: "Settings",     icon: Settings },
 ]
 
 // Support link shown in mobile nav for all roles

@@ -11,6 +11,8 @@ import { isDatabaseAvailable } from "@/lib/database"
 import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 
+export const dynamic = "force-dynamic"
+
 export async function GET() {
   try {
     if (!isDatabaseAvailable()) {

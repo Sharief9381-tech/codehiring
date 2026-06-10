@@ -40,7 +40,6 @@ export async function POST(request: Request) {
       title, type, location, salary, description,
       skills, deadline, minProblems, minRating, minCGPA,
       status = "active",
-      applyUrl = "",
       allowedBranches, allowedGradYears, allowedDegrees,
     } = body
 
@@ -56,7 +55,6 @@ export async function POST(request: Request) {
       recruiterName: recruiter.name,
       companyName: body.companyName || recruiter.companyName || "",
       companyWebsite: recruiter.companyWebsite ?? "",
-      applyUrl: applyUrl || undefined,
       postedByRole: "recruiter" as const,
       title,
       type,

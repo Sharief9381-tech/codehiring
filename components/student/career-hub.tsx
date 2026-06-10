@@ -1,15 +1,16 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
+import { toast } from "sonner"
 import {
   BookOpen, Code2, Briefcase, Trophy, Rocket,
   ExternalLink, Brain, Zap, Calendar,
-  TrendingUp, Building2, Globe, MapPin, IndianRupee, Loader2, Clock, Target, Sparkles,
+  TrendingUp, Building2, Globe, MapPin, IndianRupee, Loader2, Clock, Target, Sparkles, FileText,
 } from "lucide-react"
 import { SmartResume } from "@/components/student/smart-resume"
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------------
 
 interface ContentItem {
   label: string
@@ -66,7 +67,7 @@ interface Section {
   smartResume?: true
 }
 
-// ── Internship data ───────────────────────────────────────────────────────────
+// -- Internship data -----------------------------------------------------------
 
 const tierLabel: Record<Internship["tier"], string> = {
   startup: "Startup", unicorn: "Unicorn", mnc: "MNC",
@@ -79,8 +80,8 @@ const tierColor: Record<Internship["tier"], string> = {
 
 const internships: Internship[] = [
   { company: "Internshala", logo: "IN", role: "CS / Web Dev / ML / Android", description: "India's #1 internship platform. 1000+ live tech internships daily. Filter by role, stipend, remote, and duration.", stipend: "Rs 5K-30K/month", deadline: "Ongoing", tags: ["All Roles", "Remote", "Fresher"], applyUrl: "https://internshala.com/internships/computer-science-internship/", tier: "startup" },
-  { company: "Cutshort", logo: "CS", role: "Tech Intern — Vetted Startups", description: "AI-matched live internships at vetted Indian product companies and startups. No spam, quality roles only.", stipend: "Rs 10K-50K/month", deadline: "Ongoing", tags: ["Startup", "AI-matched", "India"], applyUrl: "https://cutshort.io/jobs?type=internship", tier: "startup" },
-  { company: "Wellfound", logo: "WF", role: "Startup Intern — All Roles", description: "AngelList's job board with thousands of live startup internships in SWE, design, data, and product.", stipend: "Varies", deadline: "Ongoing", tags: ["Startup", "Global", "All Roles"], applyUrl: "https://wellfound.com/jobs?jobType=internship", tier: "startup" },
+  { company: "Cutshort", logo: "CS", role: "Tech Intern · Vetted Startups", description: "AI-matched live internships at vetted Indian product companies and startups. No spam, quality roles only.", stipend: "Rs 10K-50K/month", deadline: "Ongoing", tags: ["Startup", "AI-matched", "India"], applyUrl: "https://cutshort.io/jobs?type=internship", tier: "startup" },
+  { company: "Wellfound", logo: "WF", role: "Startup Intern · All Roles", description: "AngelList's job board with thousands of live startup internships in SWE, design, data, and product.", stipend: "Varies", deadline: "Ongoing", tags: ["Startup", "Global", "All Roles"], applyUrl: "https://wellfound.com/jobs?jobType=internship", tier: "startup" },
   { company: "GirlScript SoC", logo: "GS", role: "Open Source Contributor", description: "India's largest student open source program. Contribute to live projects, earn points, get certificates.", stipend: "Goodies + Certificate", deadline: "Ongoing", tags: ["Open Source", "India", "GSSoC"], applyUrl: "https://gssoc.girlscript.tech/", tier: "startup" },
   { company: "Razorpay", logo: "RP", role: "SWE / ML / DevOps Intern", description: "India's top fintech unicorn. Work on payment infrastructure, ML fraud detection, and platform engineering.", stipend: "Rs 60K-1L/month", deadline: "Ongoing", tags: ["Fintech", "Unicorn", "PPO"], applyUrl: "https://razorpay.com/jobs/?team=engineering&type=intern", tier: "unicorn" },
   { company: "Swiggy", logo: "SW", role: "SDE / Data Science Intern", description: "Real-time logistics, ML demand forecasting, and consumer engineering at India's top delivery unicorn.", stipend: "Rs 50K-80K/month", deadline: "Ongoing", tags: ["SDE", "ML", "Unicorn"], applyUrl: "https://careers.swiggy.com/#/", tier: "unicorn" },
@@ -90,11 +91,11 @@ const internships: Internship[] = [
   { company: "Google", logo: "GO", role: "STEP / SWE Intern", description: "Google's engineering intern program. Work on products used by billions, with mentorship and strong PPO history.", stipend: "Rs 1.2L-2L/month", deadline: "Applications open Nov-Dec", tags: ["SWE", "MNC", "PPO"], applyUrl: "https://careers.google.com/jobs/results/?category=INTERNSHIP&employment_type=INTERN", tier: "mnc" },
   { company: "Microsoft", logo: "MS", role: "Software Engineer Intern", description: "Summer internship across SWE, data science, and PM. Strong PPO culture across India and global offices.", stipend: "Rs 1L-1.8L/month", deadline: "Applications open Oct-Jan", tags: ["SWE", "MNC", "PPO"], applyUrl: "https://careers.microsoft.com/students/us/en/job/internship", tier: "mnc" },
   { company: "Amazon", logo: "AZ", role: "SDE Intern", description: "Build features used by millions on Amazon's platform. Excellent PPO conversion and competitive stipend.", stipend: "Rs 90K-1.5L/month", deadline: "Applications open Aug-Oct", tags: ["SDE", "MNC", "PPO"], applyUrl: "https://www.amazon.jobs/en/job_categories/software-development?job_type%5B%5D=Internship", tier: "mnc" },
-  { company: "Adobe", logo: "AD", role: "Software Development Intern", description: "Adobe India intern program — Creative Cloud, Document Cloud, and Experience Cloud product teams.", stipend: "Rs 80K-1.3L/month", deadline: "Applications open Nov-Feb", tags: ["SWE", "MNC", "Product"], applyUrl: "https://careers.adobe.com/us/en/search-results?keywords=intern", tier: "mnc" },
+  { company: "Adobe", logo: "AD", role: "Software Development Intern", description: "Adobe India intern program · Creative Cloud, Document Cloud, and Experience Cloud product teams.", stipend: "Rs 80K-1.3L/month", deadline: "Applications open Nov-Feb", tags: ["SWE", "MNC", "Product"], applyUrl: "https://careers.adobe.com/us/en/search-results?keywords=intern", tier: "mnc" },
   { company: "LinkedIn", logo: "LI", role: "SWE / Data / PM Intern", description: "Browse all live intern listings across every company. Sort by recency for the freshest openings.", stipend: "Varies", deadline: "Ongoing", tags: ["All Companies", "Global", "Filter"], applyUrl: "https://www.linkedin.com/jobs/search/?keywords=software+engineer+intern&f_JT=I&sortBy=DD", tier: "mnc" },
 ]
 
-// ── Trending skills ───────────────────────────────────────────────────────────
+// -- Trending skills -----------------------------------------------------------
 
 const trendingSkills: SkillCard[] = [
   { name: "Python", hot: true, category: "Language", description: "The #1 language for AI, data science, backend, and automation. Easiest to learn, hardest to master.", tags: ["AI/ML", "Backend", "Scripting"], learnUrl: "https://docs.python.org/3/tutorial/" },
@@ -102,17 +103,17 @@ const trendingSkills: SkillCard[] = [
   { name: "React", hot: true, category: "Frontend", description: "The most widely-used UI library. Powers Facebook, Instagram, Airbnb, and thousands of startups.", tags: ["Frontend", "UI", "Popular"], learnUrl: "https://react.dev/learn" },
   { name: "LLM / GenAI", hot: true, category: "AI/ML", description: "Build with GPT, Gemini, Claude. The most demanded skill in 2025 across product and research roles.", tags: ["AI", "GenAI", "Trending"], learnUrl: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" },
   { name: "Next.js", hot: true, category: "Full Stack", description: "React-based full stack framework. Used by Vercel, TikTok, Notion. Best for modern web apps.", tags: ["Full Stack", "React", "SSR"], learnUrl: "https://nextjs.org/learn" },
-  { name: "AWS", hot: true, category: "Cloud", description: "World's #1 cloud. EC2, S3, Lambda — knowing AWS is a must for any backend or DevOps role.", tags: ["Cloud", "DevOps", "MNC"], learnUrl: "https://aws.amazon.com/training/learn-about/cloud-essentials/" },
+  { name: "AWS", hot: true, category: "Cloud", description: "World's #1 cloud. EC2, S3, Lambda · knowing AWS is a must for any backend or DevOps role.", tags: ["Cloud", "DevOps", "MNC"], learnUrl: "https://aws.amazon.com/training/learn-about/cloud-essentials/" },
   { name: "Docker", hot: true, category: "DevOps", description: "Containerisation platform used by every company. Makes your apps run the same everywhere.", tags: ["DevOps", "Containers", "CI/CD"], learnUrl: "https://docs.docker.com/get-started/" },
-  { name: "LangChain", hot: true, category: "AI/ML", description: "Framework for building LLM-powered apps — chatbots, RAG pipelines, AI agents. Exploding demand.", tags: ["AI", "LLM", "Agents"], learnUrl: "https://python.langchain.com/docs/get_started/introduction" },
+  { name: "LangChain", hot: true, category: "AI/ML", description: "Framework for building LLM-powered apps · chatbots, RAG pipelines, AI agents. Exploding demand.", tags: ["AI", "LLM", "Agents"], learnUrl: "https://python.langchain.com/docs/get_started/introduction" },
   { name: "HuggingFace", hot: true, category: "AI/ML", description: "Open-source hub for pretrained ML models. Standard tool for NLP, CV, and speech research roles.", tags: ["AI", "NLP", "Models"], learnUrl: "https://huggingface.co/learn/nlp-course/chapter1/1" },
   { name: "Go (Golang)", hot: true, category: "Language", description: "Fast, simple, concurrent. Used at Google, Uber, Dropbox. Great for microservices and backend.", tags: ["Backend", "Microservices", "Google"], learnUrl: "https://go.dev/tour/welcome/1" },
   { name: "PostgreSQL", hot: true, category: "Database", description: "Most advanced open-source relational DB. Standard choice for startups and product companies.", tags: ["Database", "SQL", "Backend"], learnUrl: "https://www.postgresql.org/docs/current/tutorial.html" },
   { name: "Redis", hot: true, category: "Database", description: "In-memory data store for caching, sessions, queues. Found in virtually every scalable system.", tags: ["Database", "Caching", "Real-time"], learnUrl: "https://redis.io/docs/get-started/" },
   { name: "CI/CD", hot: true, category: "DevOps", description: "Automate build, test, deploy pipelines with GitHub Actions. Expected skill in every SDE role.", tags: ["DevOps", "Automation", "GitHub"], learnUrl: "https://docs.github.com/en/actions/learn-github-actions" },
   { name: "PyTorch", hot: true, category: "AI/ML", description: "Facebook's deep learning framework. Industry standard for research and production ML models.", tags: ["AI", "Deep Learning", "Research"], learnUrl: "https://pytorch.org/tutorials/beginner/basics/intro.html" },
-  { name: "Data Structures", hot: false, category: "Core CS", description: "Foundation of every coding interview. Arrays, trees, graphs, heaps — master these to crack any OA.", tags: ["DSA", "Interviews", "Must Do"], learnUrl: "https://www.geeksforgeeks.org/data-structures/" },
-  { name: "Algorithms", hot: false, category: "Core CS", description: "Sorting, searching, DP, greedy — the building blocks that interviewers test in every round.", tags: ["DSA", "LeetCode", "Must Do"], learnUrl: "https://neetcode.io/roadmap" },
+  { name: "Data Structures", hot: false, category: "Core CS", description: "Foundation of every coding interview. Arrays, trees, graphs, heaps · master these to crack any OA.", tags: ["DSA", "Interviews", "Must Do"], learnUrl: "https://www.geeksforgeeks.org/data-structures/" },
+  { name: "Algorithms", hot: false, category: "Core CS", description: "Sorting, searching, DP, greedy · the building blocks that interviewers test in every round.", tags: ["DSA", "LeetCode", "Must Do"], learnUrl: "https://neetcode.io/roadmap" },
   { name: "System Design", hot: false, category: "Core CS", description: "Design scalable systems like YouTube, WhatsApp. Critical for SDE-2+ and senior roles.", tags: ["Architecture", "HLD", "Senior"], learnUrl: "https://github.com/donnemartin/system-design-primer" },
   { name: "Node.js", hot: false, category: "Backend", description: "JavaScript on the server. Powers Netflix, LinkedIn, PayPal. Paired with Express for REST APIs.", tags: ["Backend", "JavaScript", "APIs"], learnUrl: "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" },
   { name: "Kubernetes", hot: false, category: "DevOps", description: "Container orchestration platform. Manages Docker containers at scale. Big tech standard.", tags: ["DevOps", "Containers", "Scale"], learnUrl: "https://kubernetes.io/docs/tutorials/kubernetes-basics/" },
@@ -130,19 +131,19 @@ const trendingSkills: SkillCard[] = [
   { name: "Rust", hot: false, category: "Language", description: "Memory-safe systems language. Fastest-growing in Stack Overflow surveys. Used at Mozilla, Discord.", tags: ["Systems", "Performance", "Safe"], learnUrl: "https://doc.rust-lang.org/book/" },
 ]
 
-// ── Year content ──────────────────────────────────────────────────────────────
+// -- Year content --------------------------------------------------------------
 
 const yearContent: Record<number, { label: string; emoji: string; tagline: string; color: string; sections: Section[] }> = {
   1: {
-    label: "1st Year", emoji: "🎓", tagline: "Learn & Build Foundation", color: "from-blue-600 to-cyan-600",
+    label: "1st Year", emoji: "🌱", tagline: "Learn & Build Foundation", color: "from-blue-600 to-cyan-600",
     sections: [
       {
         id: "learning", title: "Learning Paths", icon: <BookOpen className="h-4 w-4" />,
         items: [
-          { label: "Programming Basics — C", description: "Variables, loops, functions, pointers", tags: ["C", "Beginner"], links: [{ text: "GFG C Course", url: "https://www.geeksforgeeks.org/c-programming-language/" }, { text: "CS50x Harvard", url: "https://cs50.harvard.edu/x/2024/" }] },
-          { label: "Programming Basics — Python", description: "Syntax, OOP, data types, file handling", tags: ["Python", "Beginner"], links: [{ text: "Python.org Tutorial", url: "https://docs.python.org/3/tutorial/" }, { text: "freeCodeCamp Python", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/" }] },
+          { label: "Programming Basics · C", description: "Variables, loops, functions, pointers", tags: ["C", "Beginner"], links: [{ text: "GFG C Course", url: "https://www.geeksforgeeks.org/c-programming-language/" }, { text: "CS50x Harvard", url: "https://cs50.harvard.edu/x/2024/" }] },
+          { label: "Programming Basics · Python", description: "Syntax, OOP, data types, file handling", tags: ["Python", "Beginner"], links: [{ text: "Python.org Tutorial", url: "https://docs.python.org/3/tutorial/" }, { text: "freeCodeCamp Python", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/" }] },
           { label: "DSA Beginner", description: "Arrays, Strings, Linked Lists, Stacks, Recursion", tags: ["Arrays", "DSA"], links: [{ text: "GFG DSA Self-Paced", url: "https://www.geeksforgeeks.org/courses/dsa-self-paced" }, { text: "CodeChef DSA Course", url: "https://www.codechef.com/learn/course/dsa" }] },
-          { label: "Web Dev Basics", description: "HTML, CSS, JavaScript — build your first webpage", tags: ["HTML", "CSS", "JS"], links: [{ text: "freeCodeCamp Web", url: "https://www.freecodecamp.org/learn/responsive-web-design/" }, { text: "The Odin Project", url: "https://www.theodinproject.com/paths/foundations/courses/foundations" }] },
+          { label: "Web Dev Basics", description: "HTML, CSS, JavaScript · build your first webpage", tags: ["HTML", "CSS", "JS"], links: [{ text: "freeCodeCamp Web", url: "https://www.freecodecamp.org/learn/responsive-web-design/" }, { text: "The Odin Project", url: "https://www.theodinproject.com/paths/foundations/courses/foundations" }] },
           { label: "AI/ML Basics", description: "Intro to ML, math foundations, Python for data", tags: ["Python", "NumPy", "Pandas"], links: [{ text: "Kaggle Intro to ML", url: "https://www.kaggle.com/learn/intro-to-machine-learning" }, { text: "Kaggle Python Course", url: "https://www.kaggle.com/learn/python" }] },
         ],
       },
@@ -159,7 +160,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
     ],
   },
   2: {
-    label: "2nd Year", emoji: "💻", tagline: "Skill + Internship Mode", color: "from-violet-600 to-purple-600",
+    label: "2nd Year", emoji: "📘", tagline: "Skill + Internship Mode", color: "from-violet-600 to-purple-600",
     sections: [
       {
         id: "skills", title: "Trending Skills", icon: <TrendingUp className="h-4 w-4" />,
@@ -173,12 +174,12 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
     ],
   },
   3: {
-    label: "3rd Year", emoji: "🎯", tagline: "Placement Preparation", color: "from-orange-600 to-amber-600",
+    label: "3rd Year", emoji: "📘", tagline: "Placement Preparation", color: "from-orange-600 to-amber-600",
     sections: [
       {
         id: "placement", title: "Placement Tools", icon: <Trophy className="h-4 w-4" />,
         items: [
-          { label: "Company-wise Questions — GFG", description: "Interview questions sorted by company", tags: ["Amazon", "Google", "TCS"], links: [{ text: "Amazon Prep", url: "https://www.geeksforgeeks.org/amazon-interview-preparation/" }, { text: "Google Prep", url: "https://www.geeksforgeeks.org/google-interview-preparation/" }, { text: "TCS NQT Prep", url: "https://www.geeksforgeeks.org/tcs-nqt-preparation/" }] },
+          { label: "Company-wise Questions · GFG", description: "Interview questions sorted by company", tags: ["Amazon", "Google", "TCS"], links: [{ text: "Amazon Prep", url: "https://www.geeksforgeeks.org/amazon-interview-preparation/" }, { text: "Google Prep", url: "https://www.geeksforgeeks.org/google-interview-preparation/" }, { text: "TCS NQT Prep", url: "https://www.geeksforgeeks.org/tcs-nqt-preparation/" }] },
           { label: "LeetCode Company Tags", description: "Filter problems by the company that asked them", tags: ["LeetCode", "OA"], links: [{ text: "Company Tags", url: "https://leetcode.com/company/" }, { text: "LeetCode Mock", url: "https://leetcode.com/interview/" }] },
           { label: "Mock Interviews", description: "Practice live mock interviews with peers or AI", tags: ["Mock", "Technical", "HR"], links: [{ text: "Pramp Free Mock", url: "https://www.pramp.com/#/" }, { text: "InterviewBit Mock", url: "https://www.interviewbit.com/mock-interview/" }] },
           { label: "Aptitude Practice", description: "Quant, verbal, logical reasoning for placement tests", tags: ["Quant", "Verbal"], links: [{ text: "IndiaBix Quant", url: "https://www.indiabix.com/aptitude/questions-and-answers/" }, { text: "PrepInsta TCS", url: "https://prepinsta.com/tcs-nqt/" }, { text: "PrepInsta Infosys", url: "https://prepinsta.com/infosys/" }] },
@@ -194,10 +195,6 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
           { label: "GFG OA Questions", description: "Online assessment questions from campus placements", tags: ["OA", "Campus"], links: [{ text: "GFG OA Portal", url: "https://www.geeksforgeeks.org/online-assessment-questions/" }] },
         ],
       },
-      {
-        id: "live-jobs", title: "Live Jobs", icon: <Briefcase className="h-4 w-4" />,
-        liveJobs: true,
-      },
       { id: "smart-resume", title: "Smart Resume", icon: <Sparkles className="h-4 w-4" />, smartResume: true },
     ],
   },
@@ -205,33 +202,18 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
     label: "4th Year", emoji: "🏆", tagline: "Get Placed", color: "from-emerald-600 to-teal-600",
     sections: [
       {
-        id: "live-jobs", title: "Live Jobs", icon: <Briefcase className="h-4 w-4" />,
-        liveJobs: true,
-      },
-      {
-        id: "jobs", title: "Job Openings", icon: <Rocket className="h-4 w-4" />,
-        items: [
-          { label: "SDE / Software Engineer", description: "Full-time SWE roles at product companies", tags: ["SDE", "Full-time"], links: [{ text: "LinkedIn SDE Jobs", url: "https://www.linkedin.com/jobs/search/?keywords=software+engineer&f_JT=F&f_E=1%2C2" }, { text: "Wellfound Startups", url: "https://wellfound.com/jobs?role=software-engineer" }, { text: "Naukri Fresher IT", url: "https://www.naukri.com/fresher-software-engineer-jobs" }] },
-          { label: "Data Science / ML", description: "Data analyst, ML engineer, AI research openings", tags: ["Data", "ML"], links: [{ text: "LinkedIn DS Jobs", url: "https://www.linkedin.com/jobs/search/?keywords=data+scientist+fresher&f_JT=F" }, { text: "Kaggle Jobs", url: "https://www.kaggle.com/jobs" }] },
-          { label: "Campus Drives", description: "On-campus placement drives by top companies", tags: ["Campus", "On-site"], links: [{ text: "CampusHire Drives", url: "https://www.campushire.in/drives" }, { text: "Placement India", url: "https://www.placementindia.com/fresher-jobs.htm" }] },
-          { label: "TCS / Infosys / Wipro", description: "Mass recruiters — fresher drives open year-round", tags: ["TCS", "Infosys", "Wipro"], links: [{ text: "TCS NextStep", url: "https://nextstep.tcs.com/campus/" }, { text: "Infosys InfyTQ", url: "https://www.infytq.com/" }, { text: "Wipro NLTH", url: "https://nlth.wipro.com/" }] },
-          { label: "Off-campus — Cutshort", description: "Vetted startup and product company roles", tags: ["Startup", "Product"], links: [{ text: "Cutshort 0-1yr", url: "https://cutshort.io/jobs?type=fulltime&experience=0-1" }, { text: "Instahyre Fresher", url: "https://www.instahyre.com/search-jobs/?experience=0" }] },
-        ],
-      },
-      {
         id: "ai", title: "AI-Powered Prep", icon: <Zap className="h-4 w-4" />,
         items: [
-          { label: "AI Resume Scorer", description: "ATS score, keyword suggestions, instant feedback", tags: ["ATS", "Resume"], links: [{ text: "Resume Worded", url: "https://resumeworded.com/score" }, { text: "Jobscan Scanner", url: "https://www.jobscan.co/resume-scanner" }] },
-          { label: "AI Interview Prep", description: "Practice with AI mock interviews, get instant feedback", tags: ["Mock", "AI"], links: [{ text: "Interviewing.io", url: "https://interviewing.io/" }, { text: "Google Interview Warmup", url: "https://grow.google/certificates/interview-warmup/" }] },
-          { label: "Skill Gap Finder", description: "Find missing skills for your target role", tags: ["Skill Gap", "Upskill"], links: [{ text: "Coursera Career Paths", url: "https://www.coursera.org/career-academy" }, { text: "LinkedIn Skill Assess", url: "https://www.linkedin.com/skill-assessments/hub/quizzes/" }] },
+          { label: "AI Resume Scorer", description: "ATS score, keyword suggestions, instant feedback", tags: ["ATS", "Resume"], links: [{ text: "Resume Worded", url: "https://resumeworded.com/score" }] },
+          { label: "AI Interview Prep", description: "Practice with AI mock interviews, get instant feedback", tags: ["Mock", "AI"], links: [{ text: "Interviewing.io", url: "https://interviewing.io/" }] },
+          { label: "Skill Gap Finder", description: "Find missing skills for your target role", tags: ["Skill Gap", "Upskill"], links: [{ text: "Coursera Career Paths", url: "https://www.coursera.org/career-academy" }] },
         ],
       },
       { id: "smart-resume", title: "Smart Resume", icon: <Sparkles className="h-4 w-4" />, smartResume: true },
     ],
   },
 }
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------------
 
 function detectYear(graduationYear: number): number {
   const now = new Date()
@@ -243,7 +225,7 @@ function detectYear(graduationYear: number): number {
   return Math.min(Math.max(year, 1), 4)
 }
 
-// ── Skills view ───────────────────────────────────────────────────────────────
+// -- Skills view ---------------------------------------------------------------
 
 function SkillsView({ skills }: { skills: SkillCard[] }) {
   const categoryColor: Record<string, string> = {
@@ -264,7 +246,7 @@ function SkillsView({ skills }: { skills: SkillCard[] }) {
     <div className="space-y-3">
       <p className="flex items-center gap-2 text-sm text-muted-foreground">
         <TrendingUp className="h-4 w-4 text-primary" />
-        Most demanded skills in 2025 — click any card to start learning
+        Most demanded skills in 2025 · click any card to start learning
       </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {skills.map(skill => (
@@ -293,7 +275,7 @@ function SkillsView({ skills }: { skills: SkillCard[] }) {
   )
 }
 
-// ── Internship card ───────────────────────────────────────────────────────────
+// -- Internship card -----------------------------------------------------------
 
 function InternCard({ intern }: { intern: Internship }) {
   return (
@@ -331,125 +313,42 @@ function InternCard({ intern }: { intern: Internship }) {
   )
 }
 
-// ── Live job card ─────────────────────────────────────────────────────────────
+// -- Live job card -------------------------------------------------------------
 
 function LiveJobCard({ job, type }: { job: LiveJob; type: "on" | "off" }) {
-  const applyHref = job.applyUrl?.startsWith("http") ? job.applyUrl : null
   return (
     <div className="rounded-xl bg-card border border-border flex flex-col hover:border-primary/40 hover:shadow-md transition-all">
       <div className="flex items-center gap-3 px-4 pt-4 pb-3 border-b border-border">
-        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${type === "on" ? "bg-blue-500/10 text-blue-600" : "bg-emerald-500/10 text-emerald-600"}`}>
-          {type === "on" ? <Building2 className="h-5 w-5" /> : <Globe className="h-5 w-5" />}
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-xs">
+          {job.companyName?.slice(0,2).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-sm truncate">{job.title}</p>
           <p className="text-xs text-muted-foreground truncate">{job.companyName}</p>
         </div>
-        <span className={`shrink-0 text-[10px] px-2 py-0.5 rounded-full border font-medium ${type === "on" ? "bg-blue-500/10 text-blue-600 border-blue-500/20" : "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"}`}>
-          {type === "on" ? "On Campus" : "Off Campus"}
-        </span>
+        <span className={`shrink-0 text-[10px] px-2 py-0.5 rounded-full border font-medium ${
+          type === "on" ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" : "bg-blue-500/10 text-blue-600 border-blue-500/20"
+        }`}>{type === "on" ? "On-Campus" : "Off-Campus"}</span>
       </div>
       <div className="flex flex-col flex-1 gap-3 p-4">
-        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 flex-1">{job.description}</p>
-        {job.skills.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {job.skills.slice(0, 4).map(s => <Badge key={s} variant="secondary" className="text-xs px-2 py-0.5">{s}</Badge>)}
-            {job.skills.length > 4 && <Badge variant="secondary" className="text-xs px-2 py-0.5">+{job.skills.length - 4}</Badge>}
-          </div>
-        )}
-        <div className="flex flex-wrap items-center gap-3 text-xs border-t border-border pt-2">
-          <span className="flex items-center gap-1 text-muted-foreground"><MapPin className="h-3 w-3" />{job.location}</span>
-          {job.salary && job.salary !== "Not specified" && (
-            <span className="flex items-center gap-1 font-medium text-foreground"><IndianRupee className="h-3 w-3" />{job.salary}</span>
-          )}
-          {job.deadline && (
-            <span className="flex items-center gap-1 text-muted-foreground ml-auto">
-              <Clock className="h-3 w-3" />
-              {new Date(job.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
-            </span>
-          )}
-        </div>
-        {applyHref ? (
-          <a href={applyHref} target="_blank" rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full rounded-lg bg-primary text-primary-foreground py-2 text-sm font-semibold hover:opacity-90 transition-opacity">
-            Apply Now <ExternalLink className="h-3.5 w-3.5" />
-          </a>
-        ) : (
-          <div className="flex items-center justify-center w-full rounded-lg bg-secondary text-muted-foreground py-2 text-sm font-medium">
-            Contact Recruiter
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ── External off-campus job listings ─────────────────────────────────────────
-
-interface ExternalJob {
-  company: string
-  logo: string
-  role: string
-  location: string
-  type: string
-  description: string
-  applyUrl: string
-  tags: string[]
-}
-
-const externalJobs: ExternalJob[] = [
-  { company: "Google", logo: "GO", role: "Software Engineer (New Grad)", location: "Bangalore / Hyderabad", type: "Full-time", description: "Join Google's engineering team. Work on Search, YouTube, Cloud, or Android products used by billions worldwide.", tags: ["SWE", "MNC", "New Grad"], applyUrl: "https://careers.google.com/jobs/results/?degree=BACHELOR&employment_type=FULL_TIME&jex=ENTRY_LEVEL" },
-  { company: "Microsoft", logo: "MS", role: "SDE / Software Engineer", location: "Hyderabad / Noida", type: "Full-time", description: "Work on Azure, Office 365, Xbox, LinkedIn or Windows. Microsoft India is one of the largest tech employers.", tags: ["SDE", "MNC", "PPO"], applyUrl: "https://careers.microsoft.com/students/us/en/job/fulltime" },
-  { company: "Amazon", logo: "AZ", role: "SDE-1 (New Grad)", location: "Bangalore / Chennai", type: "Full-time", description: "Join Amazon's engineering teams building the world's largest e-commerce and cloud platform (AWS).", tags: ["SDE", "AWS", "MNC"], applyUrl: "https://www.amazon.jobs/en/job_categories/software-development?job_type%5B%5D=Full-Time&experience_ids%5B%5D=1" },
-  { company: "Flipkart", logo: "FK", role: "SDE / Data Engineer", location: "Bangalore", type: "Full-time", description: "India's largest e-commerce platform. Work on supply chain, payments, ML, and massive-scale backend systems.", tags: ["SDE", "India", "Product"], applyUrl: "https://www.flipkartcareers.com/#!/joblist" },
-  { company: "Razorpay", logo: "RP", role: "Software Engineer", location: "Bangalore", type: "Full-time", description: "India's leading fintech unicorn. Build payment infrastructure, fraud ML, and developer tools used by 8M+ businesses.", tags: ["Fintech", "Unicorn", "SWE"], applyUrl: "https://razorpay.com/jobs/?team=engineering" },
-  { company: "Swiggy", logo: "SW", role: "SDE / Data Scientist", location: "Bangalore", type: "Full-time", description: "Real-time logistics and food-tech at scale. Work on ML demand forecasting, hyperlocal delivery, and consumer apps.", tags: ["SDE", "ML", "Unicorn"], applyUrl: "https://careers.swiggy.com/#/" },
-  { company: "Zomato", logo: "ZO", role: "SDE / Product Analyst", location: "Gurgaon", type: "Full-time", description: "Build the future of food delivery and quick commerce. Teams across backend, ML, Android, iOS, and data engineering.", tags: ["SDE", "Unicorn", "India"], applyUrl: "https://www.zomato.com/careers" },
-  { company: "CRED", logo: "CR", role: "Software Engineer", location: "Bangalore", type: "Full-time", description: "Premium fintech product. High-quality engineering culture — work on payments, credit, commerce, and mobile apps.", tags: ["Fintech", "Product", "Unicorn"], applyUrl: "https://careers.cred.club/" },
-  { company: "Meesho", logo: "ME", role: "SDE / ML Engineer", location: "Bangalore", type: "Full-time", description: "Social commerce unicorn. Work on seller tools, ML-powered recommendations, and supply chain at massive Indian scale.", tags: ["SDE", "ML", "Unicorn"], applyUrl: "https://meesho.io/careers" },
-  { company: "Adobe", logo: "AD", role: "Software Development Engineer", location: "Noida / Bangalore", type: "Full-time", description: "Work on Creative Cloud, Document Cloud, or Experience Cloud products. Strong comp, great engineering culture.", tags: ["SDE", "MNC", "Product"], applyUrl: "https://careers.adobe.com/us/en/search-results?keywords=software+engineer&country=India" },
-  { company: "Atlassian", logo: "AT", role: "Software Engineer", location: "Bangalore / Remote", type: "Full-time", description: "Build Jira, Confluence, and Bitbucket — tools used by 250,000+ companies. Remote-friendly with strong WFH culture.", tags: ["SWE", "Remote", "Global"], applyUrl: "https://www.atlassian.com/company/careers/all-jobs" },
-  { company: "PhonePe", logo: "PP", role: "SDE / Backend Engineer", location: "Bangalore", type: "Full-time", description: "India's #1 payments app (500M+ users). Build fintech infrastructure, fraud detection, and real-time payment systems.", tags: ["Fintech", "India", "Scale"], applyUrl: "https://www.phonepe.com/careers/" },
-  { company: "Nykaa", logo: "NY", role: "SDE / Data Engineer", location: "Mumbai / Remote", type: "Full-time", description: "India's top beauty and fashion e-commerce platform. Engineering roles across backend, data pipelines, and mobile.", tags: ["E-commerce", "India", "Product"], applyUrl: "https://careers.nykaa.com/" },
-  { company: "LinkedIn Jobs", logo: "LI", role: "Browse All Tech Roles", location: "India — All Cities", type: "All", description: "Search all fresheer software engineer and data science roles across every company, sorted by recency.", tags: ["All Companies", "Filter", "Latest"], applyUrl: "https://www.linkedin.com/jobs/search/?keywords=software+engineer&location=India&f_JT=F&f_E=1%2C2&sortBy=DD" },
-  { company: "Naukri", logo: "NK", role: "Fresher IT Jobs", location: "Pan India", type: "All", description: "India's largest job portal. Browse thousands of fresher software and IT roles across service and product companies.", tags: ["All Companies", "Fresher", "India"], applyUrl: "https://www.naukri.com/fresher-software-engineer-jobs" },
-  { company: "Wellfound", logo: "WF", role: "Startup Engineering Roles", location: "Remote / India", type: "Full-time", description: "AngelList's job board for startups. Find early-stage to growth-stage startup roles with equity compensation.", tags: ["Startup", "Equity", "Global"], applyUrl: "https://wellfound.com/jobs?role=software-engineer&jobType=fulltime" },
-]
-
-function ExternalJobCard({ job }: { job: ExternalJob }) {
-  return (
-    <div className="rounded-xl bg-card border border-border flex flex-col hover:border-primary/40 hover:shadow-md transition-all">
-      <div className="flex items-center gap-3 px-4 pt-4 pb-3 border-b border-border">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700 font-bold text-xs">
-          {job.logo}
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="font-semibold text-sm truncate">{job.company}</p>
-          <p className="text-xs text-muted-foreground truncate">{job.role}</p>
-        </div>
-        <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-medium">
-          {job.type}
-        </span>
-      </div>
-      <div className="flex flex-col flex-1 gap-3 p-4">
-        <p className="text-sm text-muted-foreground leading-relaxed flex-1">{job.description}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-3">{job.description}</p>
         <div className="flex flex-wrap gap-1.5">
-          {job.tags.map(t => <Badge key={t} variant="secondary" className="text-xs px-2 py-0.5">{t}</Badge>)}
+          {(job.skills || []).slice(0,4).map((t: string) => (
+            <Badge key={t} variant="secondary" className="text-xs px-2 py-0.5">{t}</Badge>
+          ))}
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground border-t border-border pt-2">
-          <MapPin className="h-3 w-3 shrink-0" />
-          <span className="truncate">{job.location}</span>
+        <div className="flex flex-wrap items-center gap-3 text-xs border-t border-border pt-2">
+          {job.salary && <span className="font-medium text-foreground">{job.salary}</span>}
+          {job.location && <span className="flex items-center gap-1 text-muted-foreground"><MapPin className="h-3 w-3" />{job.location}</span>}
+          {job.deadline && <span className="flex items-center gap-1 text-muted-foreground ml-auto"><Calendar className="h-3 w-3" />{new Date(job.deadline).toLocaleDateString()}</span>}
         </div>
-        <a href={job.applyUrl} target="_blank" rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full rounded-lg bg-emerald-600 text-white py-2 text-sm font-semibold hover:bg-emerald-700 transition-colors">
-          Apply Now <ExternalLink className="h-3.5 w-3.5" />
+        <a href="/student/jobs" className="flex items-center justify-center gap-2 w-full rounded-lg bg-primary text-primary-foreground py-2 text-sm font-semibold hover:opacity-90 transition-opacity">
+          Apply on CodeHiring
         </a>
       </div>
     </div>
   )
 }
-
-
 
 function LiveJobsGrid({ jobs, loading, type, search }: { jobs: LiveJob[]; loading: boolean; type: "on" | "off"; search: string }) {
   if (loading) return (
@@ -471,13 +370,15 @@ function LiveJobsGrid({ jobs, loading, type, search }: { jobs: LiveJob[]; loadin
   )
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// -- Main component ------------------------------------------------------------
 
 interface CareerHubProps {
   graduationYear?: number
+  student?: any
 }
 
-export function CareerHub({ graduationYear }: CareerHubProps) {
+export function CareerHub({ graduationYear, student }: CareerHubProps) {
+  const [hubTab, setHubTab] = useState<"drives" | "roadmap">("drives")
   const [year, setYear] = useState<number | null>(null)
   const [activeSection, setActiveSection] = useState(0)
   const [jobTab, setJobTab] = useState<"on" | "off">("on")
@@ -527,6 +428,28 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
 
   return (
     <div className="space-y-4">
+      {/* Top-level tab: Drives | Roadmap */}
+      <div className="flex gap-1 border-b border-border pb-px">
+        {[
+          { id: "drives",  label: "Hiring Drives" },
+          { id: "roadmap", label: "Career Roadmap" },
+        ].map(t => (
+          <button key={t.id} onClick={() => setHubTab(t.id as any)}
+            className={`px-5 py-2 text-sm font-semibold border-b-2 -mb-px transition-all ${
+              hubTab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* DRIVES TAB · on-campus + off-campus */}
+      {hubTab === "drives" && (
+        <StudentDrivesInline student={student} />
+      )}
+
+      {/* ROADMAP TAB · existing career hub content */}
+      {hubTab === "roadmap" && (
+      <div className="space-y-4">
       {/* Banner */}
       <div className={`rounded-xl bg-gradient-to-r ${content.color} p-5 text-white`}>
         {/* Title */}
@@ -589,7 +512,7 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
               <Globe className="h-4 w-4" />
               Off Campus
               <span className={`text-xs px-1.5 py-0.5 rounded-full ${jobTab === "off" ? "bg-white/20" : "bg-secondary"}`}>
-                {offCampusJobs.length + externalJobs.length}
+                {offCampusJobs.length}
               </span>
             </button>
             <p className="text-xs text-muted-foreground ml-1">
@@ -597,36 +520,25 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
             </p>
           </div>
 
-          {/* Jobs grid */}
           {jobTab === "on" ? (
-            <LiveJobsGrid
-              jobs={onCampusJobs}
-              loading={jobsLoading}
-              type="on"
-              search=""
-            />
+            <LiveJobsGrid jobs={onCampusJobs} loading={jobsLoading} type="on" search="" />
           ) : (
-            <div className="space-y-4">
-              {/* Recruiter-posted jobs from DB */}
+            <div className="space-y-2">
               {jobsLoading ? (
                 <div className="flex items-center justify-center py-8 text-muted-foreground text-sm gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" /> Loading jobs...
                 </div>
-              ) : offCampusJobs.length > 0 && (
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Posted by Recruiters on this Platform</p>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {offCampusJobs.map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
-                  </div>
+              ) : offCampusJobs.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm gap-2">
+                  <Briefcase className="h-8 w-8 opacity-30" />
+                  <p>No off-campus jobs posted yet</p>
+                  <p className="text-xs opacity-70">Recruiters haven't posted any jobs on this platform yet</p>
+                </div>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {offCampusJobs.map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
                 </div>
               )}
-              {/* External company jobs */}
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">External Companies — Direct Apply</p>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {externalJobs.map(job => <ExternalJobCard key={job.company + job.role} job={job} />)}
-                </div>
-              </div>
             </div>
           )}
         </div>
@@ -636,9 +548,23 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {(section.items ?? []).map(item => (
-              <div key={item.label} className="rounded-xl bg-card border border-border p-4 flex flex-col gap-2.5">
-                <p className="text-base font-semibold">{item.label}</p>
+          {(section.items ?? []).map(item => {
+            const isOnCampusItem  = item.label.includes("On-Campus") || item.label.startsWith("🏫")
+            const isOffCampusItem = item.label.includes("Off-Campus") || item.label.startsWith("🌐")
+            const cleanLabel = item.label
+              .replace(/^[🏫🌐]\s*/, "")
+              .replace(/^On-Campus\s*[—–-]\s*/i, "")
+              .replace(/^Off-Campus\s*[—–-]\s*/i, "")
+            return (
+              <div key={item.label} className={`rounded-xl bg-card border flex flex-col gap-2.5 p-4 ${
+                isOnCampusItem ? "border-l-4 border-l-emerald-500 border-border" :
+                isOffCampusItem ? "border-l-4 border-l-blue-500 border-border" :
+                "border-border"}`}>
+                <div className="flex items-start gap-2">
+                  {isOnCampusItem && <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">ON-CAMPUS</span>}
+                  {isOffCampusItem && <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">OFF-CAMPUS</span>}
+                  <p className="text-base font-semibold">{cleanLabel}</p>
+                </div>
                 {item.description && <p className="text-sm text-muted-foreground">{item.description}</p>}
                 {item.tags && (
                   <div className="flex flex-wrap gap-1.5">
@@ -656,9 +582,236 @@ export function CareerHub({ graduationYear }: CareerHubProps) {
                   </div>
                 )}
               </div>
-            ))}
+            )
+          })}
         </div>
+      )}
+    </div>
+    )} {/* end roadmap tab */}
+    </div>
+  )
+}
+
+// -- Inline drives for Career Hub ----------------------------------------------
+function StudentDrivesInline({ student }: { student?: any }) {
+  const [drives, setDrives]          = useState<any[]>([])
+  const [myDrives, setMyDrives]      = useState<any[]>([])
+  const [onCampusJobs, setOnCampus]  = useState<any[]>([])
+  const [offCampusJobs, setOffCampus]= useState<any[]>([])
+  const [loading, setLoading]        = useState(true)
+  const [applying, setApplying]      = useState<string | null>(null)
+  const [applied, setApplied]        = useState<Set<string>>(new Set())
+  const [driveTab, setDriveTab]      = useState<"campus" | "offcampus" | "livejobs" | "mine">("campus")
+
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/drives").then(r => r.ok ? r.json() : { drives: [] }),
+      fetch("/api/student/my-drives").then(r => r.ok ? r.json() : { drives: [] }),
+      fetch("/api/student/campus-jobs").then(r => r.ok ? r.json() : { onCampus: [], offCampus: [] }),
+    ]).then(([avail, mine, jobs]) => {
+      setDrives(avail.drives || [])
+      const myList = mine.drives || []
+      setMyDrives(myList)
+      setApplied(new Set(myList.map((d: any) => d._id)))
+      setOnCampus(jobs.onCampus || [])
+      setOffCampus(jobs.offCampus || [])
+    }).finally(() => setLoading(false))
+  }, [])
+
+  function isOnCampus(drive: any) {
+    if (!student?.collegeCode) return false
+    return drive.postedByRole === "college" ||
+      drive.collegeCode === student.collegeCode ||
+      drive.eligibility?.collegeCodes?.includes(student.collegeCode)
+  }
+
+  async function applyToDrive(driveId: string) {
+    setApplying(driveId)
+    try {
+      const res = await fetch(`/api/drives/${driveId}/apply`, { method: "POST" })
+      const data = await res.json()
+      if (res.ok) { toast("Application submitted!"); setApplied(prev => new Set([...prev, driveId])) }
+      else if (data.alreadyApplied) setApplied(prev => new Set([...prev, driveId]))
+      else toast(data.error || "Failed")
+    } catch {}
+    setApplying(null)
+  }
+
+  const campusDrives = drives.filter(d => isOnCampus(d))
+  const offDrives    = drives.filter(d => !isOnCampus(d))
+  const filtered     = driveTab === "campus" ? campusDrives : driveTab === "offcampus" ? offDrives : []
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-1 border-b border-border pb-px">
+        {[
+          { id: "campus",    label: `On-Campus (${campusDrives.length})` },
+          { id: "offcampus", label: `Off-Campus (${offDrives.length})` },
+          { id: "livejobs",  label: "Live Jobs" },
+          { id: "mine",      label: `My Applications (${myDrives.length})` },
+        ].map(t => (
+          <button key={t.id} onClick={() => setDriveTab(t.id as any)}
+            className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-all ${
+              driveTab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {loading && <div className="flex justify-center py-12"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground"/></div>}
+
+      {/* Live Jobs tab */}
+      {!loading && driveTab === "livejobs" && (
+        <div className="space-y-5">
+          {/* On-Campus Live Jobs */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-black px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">ON-CAMPUS</span>
+              <span className="text-xs text-muted-foreground">Posted by your college / campus recruiters</span>
+            </div>
+            {onCampusJobs.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-4 text-center">No on-campus jobs posted yet</p>
+            ) : (
+              <div className="space-y-2">
+                {onCampusJobs.map((job: any) => (
+                  <div key={job._id} className="rounded-xl border border-emerald-500/15 bg-card p-4 flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-sm font-black text-emerald-600 dark:text-emerald-400 shrink-0">
+                      {job.companyName?.slice(0,2).toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-foreground text-sm">{job.title}</p>
+                      <p className="text-xs text-primary">{job.companyName} Â· {job.type} Â· {job.location}</p>
+                      {job.salary && <p className="text-xs text-muted-foreground mt-0.5">{job.salary}</p>}
+                    </div>
+                    <a href="/student/jobs">Apply â†’</a>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Off-Campus Live Jobs */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-black px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">OFF-CAMPUS</span>
+              <span className="text-xs text-muted-foreground">Open to all â€” posted by recruiters</span>
+            </div>
+            {offCampusJobs.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-4 text-center">No off-campus jobs posted yet</p>
+            ) : (
+              <div className="space-y-2">
+                {offCampusJobs.map((job: any) => (
+                  <div key={job._id} className="rounded-xl border border-blue-500/15 bg-card p-4 flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-sm font-black text-blue-600 dark:text-blue-400 shrink-0">
+                      {job.companyName?.slice(0,2).toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-foreground text-sm">{job.title}</p>
+                      <p className="text-xs text-primary">{job.companyName} Â· {job.type} Â· {job.location}</p>
+                      {job.salary && <p className="text-xs text-muted-foreground mt-0.5">{job.salary}</p>}
+                    </div>
+                    <a href="/student/jobs">Apply â†’</a>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* My Applications */}
+      {!loading && driveTab === "mine" && (
+        myDrives.length === 0
+          ? <div className="text-center py-16 rounded-2xl border border-dashed border-border"><p className="text-sm text-muted-foreground">No applications yet</p></div>
+          : <div className="space-y-3">
+              {myDrives.map((d: any) => (
+                <div key={d._id} className="rounded-xl border border-border bg-card p-4 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-black text-primary shrink-0">
+                    {d.companyName?.slice(0,2).toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-foreground text-sm">{d.title}</p>
+                    <p className="text-xs text-primary">{d.companyName} · {d.type}</p>
+                    {d.assessmentScore != null && <p className="text-xs mt-1 text-violet-500 font-bold">Score: {d.assessmentScore}%{d.assessmentRank ? ` · Rank #${d.assessmentRank}` : ""}</p>}
+                  </div>
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      d.myStatus === "shortlisted" ? "bg-emerald-500/10 text-emerald-500" :
+                      d.myStatus === "rejected"    ? "bg-red-500/10 text-red-500" :
+                      d.myStatus === "offer_sent"  ? "bg-amber-500/10 text-amber-500" :
+                      "bg-blue-500/10 text-blue-500"}`}>
+                      {d.myStatus === "applied" ? "Applied" : d.myStatus === "shortlisted" ? "Shortlisted ?" : d.myStatus === "rejected" ? "Not Selected" : d.myStatus === "offer_sent" ? "Offer Sent →" : d.myStatus}
+                    </span>
+                    {d.status === "assessment" && d.assessmentId && d.myStatus === "applied" && (
+                      <a href={`/student/assessment/${d._id}`} className="text-[10px] text-violet-500 hover:underline font-bold">Take Assessment ?</a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+      )}
+
+      {/* On-Campus / Off-Campus */}
+      {!loading && (driveTab === "campus" || driveTab === "offcampus") && (
+        filtered.length === 0
+          ? <div className="text-center py-16 rounded-2xl border border-dashed border-border">
+              <Building2 className="h-10 w-10 mx-auto text-muted-foreground/30 mb-3"/>
+              <p className="text-sm text-muted-foreground">
+                {driveTab === "campus" ? "No on-campus drives from your college yet" : "No off-campus drives available"}
+              </p>
+            </div>
+          : <div className="space-y-3">
+              {filtered.map((drive: any, i: number) => {
+                const isApplied = applied.has(drive._id)
+                const deadline  = drive.applicationDeadline ? new Date(drive.applicationDeadline) : null
+                const past      = deadline && deadline < new Date()
+                const campus    = isOnCampus(drive)
+                return (
+                  <div key={drive._id} className={`rounded-xl border bg-card p-4 hover:border-primary/20 transition-all ${campus ? "border-emerald-500/15" : "border-border"}`}>
+                    <div className="flex items-start gap-3">
+                      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-black text-primary shrink-0">
+                        {drive.companyName?.slice(0,2).toUpperCase()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <p className="font-bold text-foreground text-sm">{drive.title}</p>
+                              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${campus ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : "bg-blue-500/10 text-blue-500"}`}>
+                                {campus ? "ON-CAMPUS" : "OFF-CAMPUS"}
+                              </span>
+                            </div>
+                            <p className="text-xs text-primary">{drive.companyName}</p>
+                          </div>
+                          {isApplied
+                            ? <span className="text-[10px] font-bold text-emerald-500 shrink-0">? Applied</span>
+                            : !past && drive.status === "active"
+                            ? <button onClick={() => applyToDrive(drive._id)} disabled={applying === drive._id}
+                                className="shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1">
+                                {applying === drive._id ? <Loader2 className="h-3 w-3 animate-spin"/> : null}
+                                Apply
+                              </button>
+                            : null}
+                        </div>
+                        <div className="flex flex-wrap gap-3 text-[10px] text-muted-foreground mt-1.5">
+                          <span>{drive.type} · {drive.location}</span>
+                          {drive.salary && <span>{drive.salary}</span>}
+                          {deadline && <span className={past ? "text-red-500" : ""}>{past ? "Closed" : `Due ${deadline.toLocaleDateString()}`}</span>}
+                        </div>
+                        {drive.status === "assessment" && isApplied && (
+                          <a href={`/student/assessment/${drive._id}`}
+                            className="inline-flex items-center gap-1 mt-2 text-[10px] font-bold text-violet-500 hover:underline">
+                            <FileText className="h-3 w-3"/>Take Assessment ?
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
       )}
     </div>
   )
 }
+

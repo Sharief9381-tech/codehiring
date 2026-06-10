@@ -24,6 +24,8 @@ function getStudentStats(student: any) {
   return { totalProblems, rating }
 }
 
+export const dynamic = "force-dynamic"
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
@@ -34,12 +36,13 @@ export async function GET(request: Request) {
     let skills: string[] = []
     let platformCount = Number(searchParams.get("platforms") || 0)
     let isOpenToWork = searchParams.get("openToWork") !== "false"
-    let minCGPA = 0 // future use
+    let minCGPA = 0
+    let student: any = null
 
     try {
       const user = await getCurrentUser()
       if (user) {
-        const student = await UserModel.findById(user._id as string)
+        student = await UserModel.findById(user._id as string)
         if (student) {
           const realStats = getStudentStats(student)
           totalProblems = realStats.totalProblems
@@ -49,10 +52,10 @@ export async function GET(request: Request) {
             k => (student as any).linkedPlatforms[k]
           ).length
           isOpenToWork = (student as any).isOpenToWork ?? true
+          minCGPA = (student as any).cgpa || 0
         }
       }
     } catch {
-      // Fall back to query params if auth fails
       const skillsParam = searchParams.get("skills") || ""
       skills = skillsParam ? skillsParam.split(",").map(s => s.trim()).filter(Boolean) : []
     }

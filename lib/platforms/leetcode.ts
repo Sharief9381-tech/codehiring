@@ -7,6 +7,7 @@ export interface LeetCodeStats {
   ranking: number
   contributionPoints: number
   reputation: number
+  submissionCalendar?: Record<string, number>  // unix timestamp (day) → count
 }
 
 export async function fetchLeetCodeStats(username: string): Promise<LeetCodeStats | null> {
@@ -41,6 +42,7 @@ export async function fetchLeetCodeStats(username: string): Promise<LeetCodeStat
           contributions {
             points
           }
+          submissionCalendar
         }
       }
     `
@@ -91,7 +93,12 @@ export async function fetchLeetCodeStats(username: string): Promise<LeetCodeStat
       hardSolved,
       ranking: user.profile?.ranking || 0,
       contributionPoints: user.contributions?.points || 0,
-      reputation: 0, // Not available in LeetCode API
+      reputation: 0,
+      // submissionCalendar: JSON string like '{"1735689600":3,"1735776000":1,...}'
+      // Keys are unix timestamps (day start), values are submission counts
+      submissionCalendar: user.submissionCalendar
+        ? JSON.parse(user.submissionCalendar)
+        : undefined,
     }
   } catch (error) {
     console.error("Error fetching LeetCode stats:", error)

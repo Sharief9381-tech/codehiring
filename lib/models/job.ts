@@ -12,7 +12,6 @@ export interface JobDocument {
   recruiterName: string
   companyName: string
   companyWebsite?: string
-  applyUrl?: string
   postedByRole?: "recruiter" | "college"  // distinguishes on-campus vs off-campus
   collegeCode?: string                     // set when postedByRole === "college"
 

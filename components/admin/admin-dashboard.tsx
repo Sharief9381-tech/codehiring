@@ -83,6 +83,8 @@ export function AdminDashboard() {
   const [feedbackLoading, setFeedbackLoading] = useState(false)
   const [feedbackFilter, setFeedbackFilter] = useState("all")
   const [expandedFeedback, setExpandedFeedback] = useState<string | null>(null)
+  const [pendingDrives, setPendingDrives] = useState<any[]>([])
+  const [drivesLoading, setDrivesLoading] = useState(false)
 
   useEffect(() => {
     fetchAdminData()
@@ -117,6 +119,28 @@ export function AdminDashboard() {
     finally { setFeedbackLoading(false) }
   }
 
+  const fetchPendingDrives = async (status = "pending_review") => {
+    setDrivesLoading(true)
+    try {
+      const res = await fetch(`/api/admin/drives?status=${status}`)
+      if (res.ok) { const r = await res.json(); setPendingDrives(r.drives ?? []) }
+    } catch {}
+    finally { setDrivesLoading(false) }
+  }
+
+  const verifyDrive = async (id: string, approved: boolean, note = "") => {
+    try {
+      const res = await fetch(`/api/drives/${id}/verify`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ approved, note }),
+      })
+      if (res.ok) {
+        setPendingDrives(prev => prev.filter(d => d._id !== id))
+      }
+    } catch {}
+  }
+
   const updateFeedbackStatus = async (id: string, status: "approved" | "rejected") => {
     await fetch(`/api/admin/feedback?id=${id}&status=${status}`, { method: "PATCH" })
     setFeedbackList(prev => prev.map(f => f._id?.toString() === id ? { ...f, status } : f))
@@ -126,6 +150,7 @@ export function AdminDashboard() {
     setActiveTab(v)
     if (v === "users" && users.length === 0) fetchUsers()
     if (v === "feedback") fetchFeedback()
+    if (v === "drives") fetchPendingDrives()
   }
 
   const filteredUsers = users.filter(u => {
@@ -177,10 +202,11 @@ export function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-          <TabsList className="w-full grid grid-cols-3 sm:grid-cols-6 h-auto gap-1 bg-muted p-1 rounded-xl">
+          <TabsList className="w-full grid grid-cols-3 sm:grid-cols-7 h-auto gap-1 bg-muted p-1 rounded-xl">
             <TabsTrigger value="overview"     className="text-xs py-2 rounded-lg">Overview</TabsTrigger>
             <TabsTrigger value="users"        className="text-xs py-2 rounded-lg">Users</TabsTrigger>
             <TabsTrigger value="verification" className="text-xs py-2 rounded-lg">Verification</TabsTrigger>
+            <TabsTrigger value="drives"       className="text-xs py-2 rounded-lg">Drives</TabsTrigger>
             <TabsTrigger value="jobs"         className="text-xs py-2 rounded-lg">Jobs</TabsTrigger>
             <TabsTrigger value="feedback"     className="text-xs py-2 rounded-lg">Feedback</TabsTrigger>
             <TabsTrigger value="analytics"    className="text-xs py-2 rounded-lg">Analytics</TabsTrigger>
@@ -452,6 +478,65 @@ export function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* DRIVES — Step 2: Requirement Verification */}
+          <TabsContent value="drives" className="space-y-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold text-foreground">Hiring Drive Verification</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Review and approve company hiring requests (Step 2 of workflow)</p>
+              </div>
+              <Button onClick={() => fetchPendingDrives("pending_review")} variant="outline" size="sm" disabled={drivesLoading}>
+                <RefreshCw className={`h-4 w-4 mr-1.5 ${drivesLoading ? "animate-spin" : ""}`} />Refresh
+              </Button>
+            </div>
+            {drivesLoading ? (
+              <div className="flex justify-center py-12"><RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+            ) : pendingDrives.length === 0 ? (
+              <Card><CardContent className="py-12 text-center">
+                <CheckCircle className="h-8 w-8 mx-auto mb-3 text-emerald-500/50" />
+                <p className="text-muted-foreground text-sm">No drives pending review</p>
+              </CardContent></Card>
+            ) : (
+              <div className="space-y-3">
+                {pendingDrives.map((drive: any) => (
+                  <Card key={drive._id} className="overflow-hidden">
+                    <CardContent className="p-5">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-bold text-foreground">{drive.title}</p>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">Pending Review</span>
+                          </div>
+                          <p className="text-sm text-primary font-medium">{drive.companyName}</p>
+                          <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mt-2">
+                            <span>{drive.type} · {drive.location}</span>
+                            {drive.salary && <span>{drive.salary}</span>}
+                            <span>{drive.openPositions} position{drive.openPositions > 1 ? "s" : ""}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{drive.description}</p>
+                          {drive.selectionProcess?.length > 0 && (
+                            <p className="text-xs text-muted-foreground mt-1">Process: {drive.selectionProcess.join(" → ")}</p>
+                          )}
+                          <p className="text-[10px] text-muted-foreground/60 mt-2">Submitted {new Date(drive.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <div className="flex flex-col gap-2 shrink-0">
+                          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white h-8 text-xs gap-1"
+                            onClick={() => verifyDrive(drive._id, true)}>
+                            <CheckCircle className="h-3 w-3" />Approve
+                          </Button>
+                          <Button size="sm" variant="destructive" className="h-8 text-xs gap-1"
+                            onClick={() => verifyDrive(drive._id, false, "Does not meet requirements")}>
+                            <XCircle className="h-3 w-3" />Reject
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           {/* FEEDBACK */}
