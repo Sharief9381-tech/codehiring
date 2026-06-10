@@ -1,12 +1,17 @@
 import React from "react"
 import type { Metadata } from 'next'
+<<<<<<< HEAD
 import { Geist, Geist_Mono, Inter, JetBrains_Mono } from 'next/font/google'
+=======
+import { Barlow, Barlow_Condensed } from 'next/font/google'
+>>>>>>> 6941afd (Add AI company prep module, Barlow fonts, live jobs expire filter, 3-col grids, placement drives auto-expire)
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider'
 import './globals.css'
 
+<<<<<<< HEAD
 // Brand headings & hero text
 const geist = Geist({
   subsets: ["latin"],
@@ -25,6 +30,22 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   weight: ["400","500","600","700","800"],
+=======
+// F1-style display font — Barlow Condensed: wide, clean, technical
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+// Body font — Barlow: clean readable companion
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+>>>>>>> 6941afd (Add AI company prep module, Barlow fonts, live jobs expire filter, 3-col grids, placement drives auto-expire)
 })
 
 export const metadata: Metadata = {
@@ -46,7 +67,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
+<<<<<<< HEAD
       <body className={`${geist.variable} ${inter.variable} ${jetbrainsMono.variable} font-ui antialiased`} suppressHydrationWarning>
+=======
+      <body className={`${barlowCondensed.variable} ${barlow.variable} antialiased`} suppressHydrationWarning>
+>>>>>>> 6941afd (Add AI company prep module, Barlow fonts, live jobs expire filter, 3-col grids, placement drives auto-expire)
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

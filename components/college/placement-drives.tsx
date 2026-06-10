@@ -28,7 +28,7 @@ const STATUS: Record<string, { label: string; color: string; icon: any }> = {
 }
 
 export function PlacementDrives() {
-  const [drives, setDrives] = useState(MOCK_DRIVES)
+  const [rawDrives, setDrives] = useState(MOCK_DRIVES)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ company: "", role: "", package: "", deadline: "", branches: "", skills: "", description: "", minCGPA: "" })
 
@@ -51,9 +51,21 @@ export function PlacementDrives() {
     setShowForm(false)
   }
 
-  const totalApplied = drives.reduce((s, d) => s + d.applied, 0)
-  const totalSelected = drives.reduce((s, d) => s + d.selected, 0)
-  const active = drives.filter(d => d.status === "active").length
+  const today = new Date()
+
+  // Auto-expire drives past deadline
+  const drives = rawDrives.map(d => {
+    if (d.deadline && new Date(d.deadline) < today && d.status !== "closed") {
+      return { ...d, status: "closed" }
+    }
+    return d
+  })
+
+  // Only show non-closed drives (live + upcoming)
+  const liveDrives = drives.filter(d => d.status !== "closed")
+  const totalApplied = liveDrives.reduce((s, d) => s + d.applied, 0)
+  const totalSelected = liveDrives.reduce((s, d) => s + d.selected, 0)
+  const active = liveDrives.filter(d => d.status === "active").length
 
   return (
     <div className="space-y-6">
@@ -72,7 +84,7 @@ export function PlacementDrives() {
       {/* Inline stat strip */}
       <div className="flex items-center gap-1 flex-wrap">
         {[
-          { label: "Drives",    value: drives.length,  color: "bg-primary/10 text-primary" },
+          { label: "Drives",    value: liveDrives.length,  color: "bg-primary/10 text-primary" },
           { label: "Active",    value: active,          color: "bg-emerald-500/10 text-emerald-600" },
           { label: "Applied",   value: totalApplied,    color: "bg-blue-500/10 text-blue-600" },
           { label: "Selected",  value: totalSelected,   color: "bg-violet-500/10 text-violet-600" },
@@ -85,7 +97,7 @@ export function PlacementDrives() {
 
       {/* 3-column grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {drives.map(drive => {
+        {liveDrives.map(drive => {
           const st = STATUS[drive.status] ?? STATUS.closed
           const Icon = st.icon
           const pct = drive.total > 0 ? Math.round((drive.applied / drive.total) * 100) : 0
