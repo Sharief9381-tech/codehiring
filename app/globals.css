@@ -95,24 +95,11 @@
 }
 
 @theme inline {
-<<<<<<< HEAD
   --font-sans:    var(--font-sans),  'Plus Jakarta Sans', system-ui;
   --font-ui:      var(--font-sans),  'Plus Jakarta Sans', system-ui;
   --font-brand:   var(--font-sans),  'Plus Jakarta Sans', system-ui;
   --font-display: var(--font-sans),  'Plus Jakarta Sans', system-ui;
   --font-mono:    var(--font-mono),  'JetBrains Mono',    monospace;
-=======
-<<<<<<< HEAD
-  --font-sans:    var(--font-inter),    'Inter',         system-ui;
-  --font-ui:      var(--font-inter),    'Inter',         system-ui;
-  --font-brand:   var(--font-geist),    'Geist',         sans-serif;
-  --font-mono:    var(--font-mono),     'JetBrains Mono',monospace;
-=======
-  --font-sans: var(--font-body, 'Barlow', system-ui, sans-serif);
-  --font-display: var(--font-display, 'Barlow Condensed', system-ui, sans-serif);
-  --font-mono: 'Geist Mono', ui-monospace, monospace;
->>>>>>> 6941afd (Add AI company prep module, Barlow fonts, live jobs expire filter, 3-col grids, placement drives auto-expire)
->>>>>>> fa191379276f47ebf9aec1dc7ac9ea965a345f20
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -159,20 +146,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-<<<<<<< HEAD
   h1,h2,h3,h4,h5,h6 {
     letter-spacing: -0.02em;
     font-feature-settings: "kern" 1;
-    font-family: var(--font-brand), 'Geist', sans-serif;
+    font-family: var(--font-brand), 'Plus Jakarta Sans', sans-serif;
   }
   /* Tabular numbers use JetBrains Mono for scores/rankings */
   .tabular-nums {
     font-family: var(--font-mono), 'JetBrains Mono', monospace;
     font-feature-settings: "tnum" 1;
   }
-=======
-  h1,h2,h3,h4,h5,h6 { letter-spacing: 0.03em; font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; }
->>>>>>> 6941afd (Add AI company prep module, Barlow fonts, live jobs expire filter, 3-col grids, placement drives auto-expire)
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────── */
@@ -301,7 +284,6 @@ html.light .border-white\/15 {
 /* ── Scrollbar in light mode ────────────────────────────────── */
 html.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
 
-<<<<<<< HEAD
 /* ══ Terminal Design System ═════════════════════════════════════ */
 
 /* Terminal grid background */
@@ -374,70 +356,3 @@ html.light {
 /* Hero radial glows in light mode */
 html.light .text-\[var\(--sci-fg\)\],
 html.light [style*="var(--sci-fg)"] { color: #6366f1 !important; }
-=======
-/* ═══════════════════════════════════════════════════════════════
-   F1 TYPOGRAPHY SYSTEM — Landing Page
-   Formula 1 · Telemetry Dashboard · Premium SaaS
-═══════════════════════════════════════════════════════════════ */
-
-/* Font utility classes */
-.font-display { font-family: var(--font-display, 'Barlow Condensed', sans-serif); }
-.font-body    { font-family: var(--font-body,    'Barlow', sans-serif); }
-
-/* ── Base: Barlow for everything ────────────────────────────── */
-body, * {
-  font-family: var(--font-body, 'Barlow', system-ui, sans-serif);
-  font-feature-settings: "kern" 1, "liga" 1;
-}
-
-/* ── Headings: Barlow Condensed ─────────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display, 'Barlow Condensed', sans-serif);
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-
-/* ── Nav links & buttons: Condensed ────────────────────────── */
-nav a, nav button,
-button, [role="button"],
-.btn {
-  font-family: var(--font-display, 'Barlow Condensed', sans-serif);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-
-/* ── Badge / label text ─────────────────────────────────────── */
-[class*="badge"], [class*="Badge"],
-.uppercase {
-  font-family: var(--font-display, 'Barlow Condensed', sans-serif);
-  letter-spacing: 0.08em;
-}
-
-/* ── Numbers / stats ────────────────────────────────────────── */
-.tabular-nums {
-  font-family: var(--font-display, 'Barlow Condensed', sans-serif);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-/* ── Gradient text ──────────────────────────────────────────── */
-.gradient-text {
-  font-family: var(--font-display, 'Barlow Condensed', sans-serif);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-/* ── Footer section titles ──────────────────────────────────── */
-footer h4 {
-  font-family: var(--font-display, 'Barlow Condensed', sans-serif);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  h1, h2 { letter-spacing: 0.01em; }
-  nav a, nav button { letter-spacing: 0.03em; }
-}
->>>>>>> 6941afd (Add AI company prep module, Barlow fonts, live jobs expire filter, 3-col grids, placement drives auto-expire)

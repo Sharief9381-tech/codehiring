@@ -534,7 +534,6 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
                 <div className="flex items-center justify-center py-8 text-muted-foreground text-sm gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" /> Loading jobs...
                 </div>
-<<<<<<< HEAD
               ) : offCampusJobs.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm gap-2">
                   <Briefcase className="h-8 w-8 opacity-30" />
@@ -542,16 +541,11 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
                   <p className="text-xs opacity-70">Recruiters haven't posted any jobs on this platform yet</p>
                 </div>
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {offCampusJobs.map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
-=======
-              ) : offCampusJobs.length > 0 && (
                 <div className="space-y-2">
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Posted by Recruiters on this Platform</p>
                   <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {offCampusJobs.filter(j => !j.deadline || new Date(j.deadline) >= new Date()).map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
                   </div>
->>>>>>> fa191379276f47ebf9aec1dc7ac9ea965a345f20
                 </div>
               )}
             </div>
