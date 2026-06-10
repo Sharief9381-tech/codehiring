@@ -351,21 +351,27 @@ function LiveJobCard({ job, type }: { job: LiveJob; type: "on" | "off" }) {
 }
 
 function LiveJobsGrid({ jobs, loading, type, search }: { jobs: LiveJob[]; loading: boolean; type: "on" | "off"; search: string }) {
+  const today = new Date()
+  const liveJobs = jobs.filter(job => {
+    if (!job.deadline) return true
+    return new Date(job.deadline) >= today
+  })
+
   if (loading) return (
     <div className="flex items-center justify-center py-16 text-muted-foreground text-sm gap-2">
       <Loader2 className="h-4 w-4 animate-spin" /> Loading jobs...
     </div>
   )
-  if (jobs.length === 0) return (
+  if (liveJobs.length === 0) return (
     <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm gap-2">
       <Briefcase className="h-8 w-8 opacity-30" />
-      <p>{search ? `No results for "${search}"` : type === "on" ? "No on-campus jobs posted yet" : "No off-campus jobs posted yet"}</p>
-      <p className="text-xs opacity-70">{type === "on" ? "Your college has not posted any jobs" : "Recruiters have not posted any jobs yet"}</p>
+      <p>{search ? `No results for "${search}"` : type === "on" ? "No active campus jobs right now" : "No live jobs right now"}</p>
+      <p className="text-xs opacity-70">{type === "on" ? "Your college has not posted any active jobs" : "Check back soon for new postings"}</p>
     </div>
   )
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      {jobs.map(job => <LiveJobCard key={job._id} job={job} type={type} />)}
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {liveJobs.map(job => <LiveJobCard key={job._id} job={job} type={type} />)}
     </div>
   )
 }
@@ -528,6 +534,7 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
                 <div className="flex items-center justify-center py-8 text-muted-foreground text-sm gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" /> Loading jobs...
                 </div>
+<<<<<<< HEAD
               ) : offCampusJobs.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm gap-2">
                   <Briefcase className="h-8 w-8 opacity-30" />
@@ -537,6 +544,14 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2">
                   {offCampusJobs.map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
+=======
+              ) : offCampusJobs.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Posted by Recruiters on this Platform</p>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {offCampusJobs.filter(j => !j.deadline || new Date(j.deadline) >= new Date()).map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
+                  </div>
+>>>>>>> fa191379276f47ebf9aec1dc7ac9ea965a345f20
                 </div>
               )}
             </div>

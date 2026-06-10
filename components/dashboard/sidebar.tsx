@@ -10,7 +10,7 @@ import {
   LayoutDashboard, Trophy, Briefcase, User, Settings, Code2,
   LogOut, GraduationCap, Users, BarChart3, Search,
   FileText, Sun, Moon, Menu, X, Sparkles, MessageSquarePlus,
-  Megaphone, Handshake,
+  Megaphone, Handshake, Flag,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -28,12 +28,22 @@ interface DashboardSidebarProps {
 }
 
 const studentLinks = [
+<<<<<<< HEAD
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
   { href: "/student/jobs",       label: "Career Hub",   icon: Briefcase },
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
+=======
+  { href: "/student/dashboard", label: "Dashboard",  icon: LayoutDashboard },
+  { href: "/student/platforms", label: "Platforms",  icon: Code2           },
+  { href: "/student/analytics", label: "Analytics",  icon: BarChart3       },
+  { href: "/student/leaderboard",label: "Leaderboard",icon: Trophy         },
+  { href: "/student/jobs",      label: "Career Hub", icon: Briefcase       },
+  { href: "/student/prep",      label: "Prep Track", icon: Flag            },
+  { href: "/student/ai",        label: "AI Insights",icon: Sparkles        },
+>>>>>>> fa191379276f47ebf9aec1dc7ac9ea965a345f20
 ]
 const collegeLinks = [
   { href: "/college/dashboard",     label: "Dashboard",    icon: LayoutDashboard },
