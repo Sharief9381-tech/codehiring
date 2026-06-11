@@ -434,17 +434,19 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       leetcode: {
         name: "LeetCode", icon: Code,
         getStatLines: (s) => [
-          { label: "Rating", value: s?.ranking ? `#${s.ranking.toLocaleString()}` : "—" },
-          { label: "Solved", value: s?.totalSolved ?? 0 },
+          { label: "Solved",     value: s?.totalSolved ?? 0 },
+          { label: "Easy",       value: s?.easySolved ?? 0 },
+          { label: "Medium",     value: s?.mediumSolved ?? 0 },
+          { label: "Hard",       value: s?.hardSolved ?? 0 },
         ],
         getProfileUrl: (u) => `https://leetcode.com/u/${u}/`,
       },
-      codechef: { 
+      codechef: {
         name: "CodeChef", icon: Code,
         getStatLines: (s) => [
-          { label: "Rating", value: s?.currentRating ?? 0 },
-          { label: "Stars",  value: s?.stars ?? "—" },
-          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Rating",     value: s?.currentRating ?? 0 },
+          { label: "Stars",      value: s?.stars ?? "—" },
+          { label: "Solved",     value: s?.problemsSolved ?? 0 },
           { label: "Max Rating", value: s?.highestRating ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.codechef.com/users/${u}`,
@@ -452,18 +454,20 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       hackerrank: {
         name: "HackerRank", icon: Trophy,
         getStatLines: (s) => [
-          { label: "Badges", value: s?.badges?.length ?? 0 },
-          { label: "Score",  value: s?.totalScore ?? 0 },
-          { label: "Rank",   value: s?.globalRank ? `#${s.globalRank}` : "—" },
+          { label: "Badges",        value: s?.badges?.length ?? 0 },
+          { label: "Certifications",value: s?.certifications?.length ?? 0 },
+          { label: "Score",         value: s?.totalScore ?? 0 },
+          { label: "Rank",          value: s?.globalRank ? `#${s.globalRank}` : "—" },
         ],
         getProfileUrl: (u) => `https://www.hackerrank.com/profile/${u}`,
       },
       github: {
         name: "GitHub", icon: GitBranch,
         getStatLines: (s) => [
-          { label: "Repos",         value: s?.publicRepos ?? 0 },
-          { label: "Contributions", value: s?.totalContributions ?? 0 },
-          { label: "Followers",     value: s?.followers ?? 0 },
+          { label: "Repos",          value: s?.publicRepos ?? 0 },
+          { label: "Contributions",  value: s?.totalContributions ?? 0 },
+          { label: "Stars",          value: s?.totalStars ?? 0 },
+          { label: "Followers",      value: s?.followers ?? 0 },
         ],
         getProfileUrl: (u) => `https://github.com/${u}`,
       },
@@ -473,24 +477,27 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           { label: "Rating",     value: s?.rating ?? 0 },
           { label: "Rank",       value: s?.rank ?? "Unrated" },
           { label: "Max Rating", value: s?.maxRating ?? 0 },
+          { label: "Contests",   value: s?.contestsParticipated ?? 0 },
         ],
         getProfileUrl: (u) => `https://codeforces.com/profile/${u}`,
       },
       hackerearth: {
         name: "HackerEarth", icon: Code,
         getStatLines: (s) => [
-          { label: "Solved", value: s?.problemsSolved ?? 0 },
-          { label: "Rating", value: s?.rating ?? 0 },
+          { label: "Solved",     value: s?.problemsSolved ?? 0 },
+          { label: "Rating",     value: s?.rating ?? 0 },
+          { label: "Accuracy",   value: s?.accuracy ? `${s.accuracy}%` : "—" },
+          { label: "Challenges", value: s?.challengesSolved ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.hackerearth.com/@${u}`,
       },
       geeksforgeeks: {
         name: "GeeksforGeeks", icon: Globe,
         getStatLines: (s) => [
-          { label: "Coding Score",  value: s?.codingScore ?? s?.score ?? 0 },
+          { label: "Score",         value: s?.codingScore ?? s?.score ?? 0 },
           { label: "Problems",      value: s?.problemsSolved ?? 0 },
-          { label: "Institute Rank",value: s?.instituteRank ?? "—" },
-          { label: "Streak",        value: s?.currentStreak ? `${s.currentStreak}d` : "—" },
+          { label: "Institute Rank",value: (s?.instituteRank && s.instituteRank !== "" && s.instituteRank !== "0") ? s.instituteRank : 0 },
+          { label: "Streak",        value: s?.currentStreak ?? s?.streak ?? 0 },
         ],
         getProfileUrl: (u) => `https://auth.geeksforgeeks.org/user/${u}/profile`,
       },
@@ -500,6 +507,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           { label: "Rating",     value: s?.rating ?? 0 },
           { label: "Max Rating", value: s?.highestRating ?? 0 },
           { label: "Rank",       value: s?.rank ?? "Unrated" },
+          { label: "Contests",   value: s?.contestsParticipated ?? 0 },
         ],
         getProfileUrl: (u) => `https://atcoder.jp/users/${u}`,
       },
@@ -509,49 +517,57 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           { label: "Solved",     value: s?.problemsSolved ?? 0 },
           { label: "Score",      value: s?.score ?? 0 },
           { label: "World Rank", value: s?.rank ?? s?.worldRank ?? "—" },
+          { label: "Accepted",   value: s?.acceptedSubmissions ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.spoj.com/users/${u}/`,
       },
       kattis: {
         name: "Kattis", icon: Trophy,
         getStatLines: (s) => [
-          { label: "Solved", value: s?.problemsSolved ?? 0 },
-          { label: "Score",  value: s?.score ?? 0 },
-          { label: "Rank",   value: s?.rank ?? "—" },
+          { label: "Solved",    value: s?.problemsSolved ?? 0 },
+          { label: "Score",     value: s?.score ?? 0 },
+          { label: "Rank",      value: s?.rank ?? "—" },
+          { label: "Countries", value: s?.countriesRank ?? "—" },
         ],
         getProfileUrl: (u) => `https://open.kattis.com/users/${u}`,
       },
       topcoder: {
         name: "TopCoder", icon: Trophy,
         getStatLines: (s) => [
-          { label: "Rating", value: s?.rating ?? 0 },
-          { label: "Rank",   value: s?.rank ?? "Unrated" },
+          { label: "Algorithm",    value: s?.rating ?? 0 },
+          { label: "Rank",         value: s?.rank ?? "Unrated" },
+          { label: "Max Rating",   value: s?.maxRating ?? 0 },
+          { label: "Competitions", value: s?.competitions ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.topcoder.com/members/${u}`,
       },
       interviewbit: {
         name: "InterviewBit", icon: Code,
         getStatLines: (s) => [
-          { label: "Solved", value: s?.problemsSolved ?? 0 },
-          { label: "Score",  value: s?.score ?? 0 },
-          { label: "Rank",   value: s?.rank ?? "—" },
+          { label: "Solved",   value: s?.problemsSolved ?? 0 },
+          { label: "Score",    value: s?.score ?? 0 },
+          { label: "Rank",     value: s?.rank ?? "—" },
+          { label: "Streaks",  value: s?.streak ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.interviewbit.com/profile/${u}`,
       },
       cses: {
         name: "CSES Problem Set", icon: Trophy,
         getStatLines: (s) => [
-          { label: "Solved", value: s?.problemsSolved ?? 0 },
-          { label: "Total",  value: s?.totalProblems ?? 300 },
+          { label: "Solved",   value: s?.problemsSolved ?? 0 },
+          { label: "Total",    value: s?.totalProblems ?? 300 },
+          { label: "Progress", value: s?.totalProblems ? `${Math.round(((s?.problemsSolved ?? 0) / s.totalProblems) * 100)}%` : "—" },
+          { label: "Accepted", value: s?.acceptedSubmissions ?? 0 },
         ],
         getProfileUrl: (u) => `https://cses.fi/user/${u}`,
       },
       codestudio: {
         name: "CodeStudio", icon: Code,
         getStatLines: (s) => [
-          { label: "Solved", value: s?.problemsSolved ?? 0 },
-          { label: "Score",  value: s?.score ?? 0 },
-          { label: "Rank",   value: s?.rank ?? "—" },
+          { label: "Solved",  value: s?.problemsSolved ?? 0 },
+          { label: "Score",   value: s?.score ?? 0 },
+          { label: "Rank",    value: s?.rank ?? "—" },
+          { label: "Streaks", value: s?.streak ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.codingninjas.com/studio/profile/${u}`,
       },
@@ -561,6 +577,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           { label: "Exercises",  value: s?.completedExercises ?? 0 },
           { label: "Languages",  value: s?.languages?.length ?? 0 },
           { label: "Reputation", value: s?.reputation ?? 0 },
+          { label: "Mentoring",  value: s?.mentoringSolutions ?? 0 },
         ],
         getProfileUrl: (u) => `https://exercism.org/profiles/${u}`,
       },
@@ -570,14 +587,17 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           { label: "Tier",         value: s?.tier ?? "Novice" },
           { label: "Competitions", value: s?.competitions ?? 0 },
           { label: "Notebooks",    value: s?.notebooks ?? 0 },
+          { label: "Datasets",     value: s?.datasets ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.kaggle.com/${u}`,
       },
       uva: {
         name: "UVa Online Judge", icon: Code,
         getStatLines: (s) => [
-          { label: "Solved", value: s?.problemsSolved ?? 0 },
-          { label: "Rank",   value: s?.rank ?? "—" },
+          { label: "Solved",    value: s?.problemsSolved ?? 0 },
+          { label: "Rank",      value: s?.rank ?? "—" },
+          { label: "Accepted",  value: s?.acceptedSubmissions ?? 0 },
+          { label: "Attempted", value: s?.attempted ?? 0 },
         ],
         getProfileUrl: (u) => `https://uhunt.onlinejudge.org/id/${u}`,
       },
@@ -638,13 +658,13 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
             </Badge>
           </div>
 
-          {/* Stats */}
+          {/* Stats — always 2x2 grid */}
           {statLines.length > 0 ? (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4">
-              {statLines.map(({ label, value }) => (
-                <div key={label} className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{label}</span>
-                  <span className="font-semibold text-foreground">{value ?? "—"}</span>
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              {statLines.slice(0, 4).map(({ label, value }) => (
+                <div key={label} className="rounded-lg bg-muted/40 px-3 py-2">
+                  <p className="text-[10px] text-muted-foreground leading-none mb-0.5">{label}</p>
+                  <p className="text-sm font-bold text-foreground">{value ?? "—"}</p>
                 </div>
               ))}
             </div>

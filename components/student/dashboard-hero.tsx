@@ -219,19 +219,23 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
             </div>
           </div>
 
-          {/* Stats strip — compact, with top border */}
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 pt-4 border-t border-border/60">
+          {/* Stats strip — icon left, bigger number */}
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 pt-4 border-t border-border/60">
             {[
-              { label: "Problems",      val: totalProblems,        color: "text-violet-500", bg: "bg-violet-500/8",  icon: Code2    },
-              { label: "Rating",        val: highestRating,        color: "text-amber-500",  bg: "bg-amber-500/8",   icon: Star     },
-              { label: "Contests",      val: contestsAttended,     color: "text-blue-500",   bg: "bg-blue-500/8",    icon: Trophy   },
-              { label: "Contributions", val: githubContributions,  color: "text-emerald-500",bg: "bg-emerald-500/8", icon: Activity },
-              { label: "Platforms",     val: platformCount,        color: "text-pink-500",   bg: "bg-pink-500/8",    icon: Globe    },
+              { label: "Problems",      val: totalProblems,        color: "text-violet-500", bg: "bg-violet-500/10",  icon: Code2    },
+              { label: "Rating",        val: highestRating,        color: "text-amber-500",  bg: "bg-amber-500/10",   icon: Star     },
+              { label: "Contests",      val: contestsAttended,     color: "text-blue-500",   bg: "bg-blue-500/10",    icon: Trophy   },
+              { label: "Contributions", val: githubContributions,  color: "text-emerald-500",bg: "bg-emerald-500/10", icon: Activity },
+              { label: "Platforms",     val: platformCount,        color: "text-pink-500",   bg: "bg-pink-500/10",    icon: Globe    },
             ].map(({ label, val, color, bg, icon: Icon }) => (
-              <div key={label} className={`flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg ${bg} text-center`}>
-                <Icon className={`h-3.5 w-3.5 ${color}`} />
-                <span className={`text-base font-black tabular-nums leading-none ${color}`}>{val || "—"}</span>
-                <span className="text-[10px] text-muted-foreground leading-none">{label}</span>
+              <div key={label} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl ${bg}`}>
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-background/60 shrink-0`}>
+                  <Icon className={`h-4 w-4 ${color}`} />
+                </div>
+                <div className="min-w-0">
+                  <p className={`text-xl font-black tabular-nums leading-none ${color}`}>{val || "—"}</p>
+                  <p className="text-[11px] text-muted-foreground leading-none mt-0.5 truncate">{label}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -269,56 +273,82 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
 
         {/* Ranks */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-          className="flex flex-col gap-3">
-          <div className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 flex-1">
-            <div className="w-11 h-11 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
-              <Globe className="h-5 w-5 text-blue-500" />
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground mb-0.5">Global Rank</p>
-              <p className="text-2xl font-black tabular-nums text-foreground">
+          className="flex flex-col gap-2">
+
+          {/* Global + College rank — small square cards */}
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl border border-border bg-card p-3 text-center">
+              <Globe className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+              <p className="text-xl font-black tabular-nums text-foreground">
                 {ranking?.globalRank != null ? `#${ranking.globalRank.toLocaleString()}` : "—"}
               </p>
-              {ranking?.totalGlobal ? <p className="text-[10px] text-muted-foreground">of {ranking.totalGlobal.toLocaleString()}</p> : null}
+              <p className="text-[10px] text-muted-foreground">Global Rank</p>
+              {ranking?.totalGlobal ? <p className="text-[9px] text-muted-foreground/60">of {ranking.totalGlobal.toLocaleString()}</p> : null}
             </div>
-          </div>
-          {!isGraduate && student.collegeCode && (
-            <div className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 flex-1">
-              <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                <Building2 className="h-5 w-5 text-emerald-500" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-0.5">College Rank</p>
-                <p className="text-2xl font-black tabular-nums text-foreground">
+            {!isGraduate && student.collegeCode ? (
+              <div className="rounded-xl border border-border bg-card p-3 text-center">
+                <Building2 className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+                <p className="text-xl font-black tabular-nums text-foreground">
                   {ranking?.collegeRank != null ? `#${ranking.collegeRank.toLocaleString()}` : "—"}
                 </p>
-                {ranking?.totalCollege ? <p className="text-[10px] text-muted-foreground">of {ranking.totalCollege.toLocaleString()}</p> : null}
+                <p className="text-[10px] text-muted-foreground">College Rank</p>
+                {ranking?.totalCollege ? <p className="text-[9px] text-muted-foreground/60">of {ranking.totalCollege.toLocaleString()}</p> : null}
               </div>
-            </div>
-          )}
-          {/* Profile completion */}
-          <div className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 flex-1">
-            <div className="w-11 h-11 rounded-xl bg-violet-500/10 flex items-center justify-center shrink-0">
-              <Eye className="h-5 w-5 text-violet-500" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted-foreground mb-1">Recruiter Visibility</p>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
-                  <motion.div initial={{ width: 0 }} animate={{ width: `${profileComplete}%` }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="h-full rounded-full bg-violet-500" />
-                </div>
-                <span className="text-sm font-bold tabular-nums text-violet-500">{profileComplete}%</span>
+            ) : (
+              <div className="rounded-xl border border-border bg-card p-3 text-center">
+                <Eye className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+                <p className="text-xl font-black tabular-nums text-foreground">{profileComplete}%</p>
+                <p className="text-[10px] text-muted-foreground">Visibility</p>
               </div>
+            )}
+          </div>
+
+          {/* Recruiter visibility bar */}
+          <div className="rounded-xl border border-border bg-card p-3">
+            <div className="flex items-center justify-between mb-1.5">
+              <p className="text-xs text-muted-foreground">Recruiter Visibility</p>
+              <span className="text-xs font-bold text-violet-500">{profileComplete}%</span>
             </div>
+            <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+              <motion.div initial={{ width: 0 }} animate={{ width: `${profileComplete}%` }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="h-full rounded-full bg-violet-500" />
+            </div>
+          </div>
+
+          {/* Top Job Matches — compact */}
+          <div className="rounded-xl border border-border bg-card p-3 flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-1.5">
+                <Zap className="h-3.5 w-3.5 text-amber-500" />
+                <span className="text-xs font-semibold text-foreground">Job Matches</span>
+              </div>
+              <Link href="/student/jobs" className="text-[10px] text-primary hover:underline">View all</Link>
+            </div>
+            {jobs.length === 0 ? (
+              <p className="text-xs text-muted-foreground text-center py-2">Connect platforms to see matches</p>
+            ) : (
+              <div className="space-y-1.5">
+                {jobs.slice(0, 3).map(job => (
+                  <Link key={job._id} href="/student/jobs">
+                    <div className="flex items-center justify-between rounded-lg border border-border/60 hover:border-primary/30 p-2 transition-colors">
+                      <div className="min-w-0">
+                        <p className="text-xs font-medium truncate">{job.title}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{job.companyName}</p>
+                      </div>
+                      <span className="text-[10px] font-bold text-emerald-500 shrink-0 ml-2">{job.matchScore}%</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </motion.div>
 
         {/* Placement readiness */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="flex-1 rounded-2xl border border-border bg-card p-5">
-          <div className="flex items-center justify-between mb-4">
+          className="rounded-2xl border border-border bg-card p-5">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
               <h3 className="font-semibold text-sm text-foreground">Placement Readiness</h3>
@@ -327,74 +357,26 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
               placementScore >= 80 ? "text-emerald-500" : placementScore >= 60 ? "text-amber-500" : "text-red-500"
             }`}>{placementScore}%</span>
           </div>
-
-          <div className="h-2 rounded-full bg-muted overflow-hidden mb-4">
+          <div className="h-2 rounded-full bg-muted overflow-hidden mb-3">
             <motion.div initial={{ width: 0 }} animate={{ width: `${placementScore}%` }}
               transition={{ duration: 1.2, delay: 0.4 }}
               className={`h-full rounded-full ${placementScore >= 80 ? "bg-emerald-500" : placementScore >= 60 ? "bg-amber-500" : "bg-red-500"}`} />
           </div>
-
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {placementItems.map((item, i) => (
               <motion.div key={item.label}
                 initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 + i * 0.06 }}
-                className="flex items-center gap-2.5 text-sm">
+                className="flex items-center gap-2 text-xs">
                 {item.done
-                  ? <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                  : <Circle className="h-4 w-4 text-muted-foreground/40 shrink-0" />}
+                  ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                  : <Circle className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0" />}
                 <span className={item.done ? "text-foreground" : "text-muted-foreground"}>{item.label}</span>
               </motion.div>
             ))}
           </div>
         </motion.div>
-      </div>
-
-      {/* ── JOB MATCHES + ACHIEVEMENTS ───────────────────────────── */}
-      <div className="grid gap-5 lg:grid-cols-2">
-
-        {/* Job matches */}
-        <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="flex-1 rounded-2xl border border-border bg-card p-5">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-amber-500" />
-              <h3 className="font-semibold text-sm text-foreground">Top Job Matches</h3>
-            </div>
-            <Link href="/student/jobs" className="text-xs text-primary hover:underline flex items-center gap-1">
-              View all <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-          {jobs.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <Briefcase className="h-8 w-8 text-muted-foreground/30 mb-2" />
-              <p className="text-sm text-muted-foreground">Connect platforms to see job matches</p>
-            </div>
-          ) : (
-            <div className="space-y-2.5">
-              {jobs.map((job, i) => (
-                <motion.div key={job._id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + i * 0.07 }}>
-                  <Link href="/student/jobs">
-                    <div className="flex items-center gap-3 rounded-xl border border-border hover:border-primary/30 hover:bg-primary/3 transition-all p-3 cursor-pointer group">
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-foreground text-sm truncate group-hover:text-primary transition-colors">{job.title}</p>
-                        <p className="text-xs text-muted-foreground">{job.companyName} · {job.type}</p>
-                      </div>
-                      <div className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-bold ${
-                        job.matchScore >= 80 ? "bg-emerald-500/10 text-emerald-600" :
-                        job.matchScore >= 60 ? "bg-amber-500/10 text-amber-600" :
-                        "bg-blue-500/10 text-blue-600"
-                      }`}>{job.matchScore}%</div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </motion.div>
-
-      </div>
+      </div>{/* end grid gap-5 lg:grid-cols-3 */}
     </div>
   )
 }
