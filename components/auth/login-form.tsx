@@ -24,6 +24,10 @@ export function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
+      const ct = response.headers.get("content-type") ?? ""
+      if (!ct.includes("application/json")) {
+        throw new Error("Server error. Please try again.")
+      }
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || "Login failed")
       router.push(data.redirectTo ?? `/${data.user.role}/dashboard`)

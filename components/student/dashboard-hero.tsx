@@ -133,13 +133,21 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
   const placementScore = Math.round((placementItems.filter(p => p.done).length / placementItems.length) * 100)
 
   useEffect(() => {
-    fetch("/api/student/ranking").then(r => r.json()).then(setRanking).catch(() => {})
+    const safeJson = async (url: string) => {
+      try {
+        const r = await fetch(url)
+        const ct = r.headers.get("content-type") ?? ""
+        if (r.ok && ct.includes("application/json")) return r.json()
+      } catch {}
+      return null
+    }
+    safeJson("/api/student/ranking").then(d => { if (d) setRanking(d) })
     const skills = (student.skills ?? []).join(",")
-    fetch(`/api/student/jobs?skills=${skills}&problems=${totalProblems}&rating=${highestRating}&platforms=${platformCount}&openToWork=${student.isOpenToWork}`)
-      .then(r => r.json()).then(d => setJobs((d.jobs ?? []).slice(0, 3))).catch(() => {})
-    fetch("/api/student/analytics").then(r => r.json()).then(setAnalytics).catch(() => {})
+    safeJson(`/api/student/jobs?skills=${skills}&problems=${totalProblems}&rating=${highestRating}&platforms=${platformCount}&openToWork=${student.isOpenToWork}`)
+      .then(d => { if (d?.jobs) setJobs(d.jobs.slice(0, 3)) })
+    safeJson("/api/student/analytics").then(d => { if (d) setAnalytics(d) })
     setAiLoading(true)
-    fetch("/api/student/ai-insights").then(r => r.json()).then(setAiInsights).catch(() => {}).finally(() => setAiLoading(false))
+    safeJson("/api/student/ai-insights").then(d => { if (d) setAiInsights(d) }).finally(() => setAiLoading(false))
   }, [])
 
   const initials = student.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase()
@@ -151,28 +159,28 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
         className="relative rounded-2xl border border-border bg-card overflow-hidden">
         {/* gradient banner */}
-        <div className="h-28 bg-gradient-to-r from-violet-600/20 via-primary/10 to-blue-600/10 relative">
+        <div className="h-20 bg-gradient-to-r from-violet-600/20 via-primary/10 to-blue-600/10 relative">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),transparent)]" />
         </div>
 
-        <div className="px-6 pb-6 -mt-14">
-          <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-5">
+        <div className="px-5 pb-4 -mt-8">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
             {/* Avatar */}
             <div className="relative shrink-0">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-violet-500 to-blue-600 flex items-center justify-center text-2xl font-black text-white shadow-lg ring-4 ring-card">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-blue-600 flex items-center justify-center text-xl font-black text-white shadow-lg ring-4 ring-card">
                 {initials}
               </div>
               {student.isOpenToWork && (
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-card flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-card flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                 </div>
               )}
             </div>
 
-            {/* Name + meta */}
-            <div className="flex-1 pb-1">
-              <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h2 className="text-xl font-bold text-foreground">{student.name}</h2>
+            {/* Name + meta + achievements */}
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-0.5">
+                <h2 className="text-lg font-bold text-foreground">{student.name}</h2>
                 {student.isOpenToWork && (
                   <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-xs">
                     Open to Work
@@ -181,15 +189,21 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
                 {analytics?.skillsAnalysis?.activityLevel && (
                   <Badge variant="secondary" className="text-xs">{analytics.skillsAnalysis.activityLevel} Activity</Badge>
                 )}
+                {/* Achievements inline */}
+                {analytics?.achievements?.slice(0, 3).map((a: string) => (
+                  <span key={a} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[10px] font-semibold text-amber-600 dark:text-amber-400">
+                    <Trophy className="h-2.5 w-2.5 shrink-0" />{a}
+                  </span>
+                ))}
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {student.branch}
                 {isGraduate ? ` · Graduate ${student.graduationYear}` : ` · ${student.collegeCode} · Class of ${student.graduationYear}`}
               </p>
             </div>
 
             {/* Actions */}
-            <div className="flex flex-wrap gap-2 pb-1 shrink-0">
+            <div className="flex flex-wrap gap-2 shrink-0">
               <Button size="sm" onClick={onSync} disabled={isSyncing} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
                 <RefreshCw className={`h-3.5 w-3.5 ${isSyncing ? "animate-spin" : ""}`} />
                 {isSyncing ? "Syncing…" : "Sync Stats"}
@@ -205,19 +219,19 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
             </div>
           </div>
 
-          {/* Stats strip */}
-          <div className="flex flex-wrap gap-3">
+          {/* Stats strip — compact, with top border */}
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 pt-4 border-t border-border/60">
             {[
-              { label: "Problems Solved", val: totalProblems,   color: "text-violet-500", bg: "bg-violet-500/8",  icon: Code2    },
-              { label: "Highest Rating",  val: highestRating,   color: "text-amber-500",  bg: "bg-amber-500/8",   icon: Star     },
-              { label: "Contests",        val: contestsAttended,color: "text-blue-500",   bg: "bg-blue-500/8",    icon: Trophy   },
-              { label: "Contributions",   val: githubContributions, color: "text-emerald-500", bg: "bg-emerald-500/8", icon: Activity },
-              { label: "Platforms",       val: platformCount,   color: "text-pink-500",   bg: "bg-pink-500/8",    icon: Globe    },
+              { label: "Problems",      val: totalProblems,        color: "text-violet-500", bg: "bg-violet-500/8",  icon: Code2    },
+              { label: "Rating",        val: highestRating,        color: "text-amber-500",  bg: "bg-amber-500/8",   icon: Star     },
+              { label: "Contests",      val: contestsAttended,     color: "text-blue-500",   bg: "bg-blue-500/8",    icon: Trophy   },
+              { label: "Contributions", val: githubContributions,  color: "text-emerald-500",bg: "bg-emerald-500/8", icon: Activity },
+              { label: "Platforms",     val: platformCount,        color: "text-pink-500",   bg: "bg-pink-500/8",    icon: Globe    },
             ].map(({ label, val, color, bg, icon: Icon }) => (
-              <div key={label} className={`flex items-center gap-2.5 px-3.5 py-2 rounded-xl ${bg} border border-white/5`}>
-                <Icon className={`h-4 w-4 ${color} shrink-0`} />
-                <span className={`text-lg font-black tabular-nums ${color}`}>{val || "—"}</span>
-                <span className="text-xs text-muted-foreground">{label}</span>
+              <div key={label} className={`flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg ${bg} text-center`}>
+                <Icon className={`h-3.5 w-3.5 ${color}`} />
+                <span className={`text-base font-black tabular-nums leading-none ${color}`}>{val || "—"}</span>
+                <span className="text-[10px] text-muted-foreground leading-none">{label}</span>
               </div>
             ))}
           </div>
@@ -225,11 +239,11 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
       </motion.div>
 
       {/* ── SCORE + RANKS + PLACEMENT ────────────────────────────── */}
-      <div className="flex flex-col lg:flex-row gap-5">
+      <div className="grid gap-5 lg:grid-cols-3">
 
         {/* Score ring */}
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
-          className="flex-1 rounded-2xl border border-border bg-card p-6 flex flex-col items-center justify-center gap-4">
+          className="rounded-2xl border border-border bg-card p-6 flex flex-col items-center justify-center gap-4">
           <ScoreRing score={codehiringScore} />
           {/* Score breakdown mini bars */}
           <div className="w-full space-y-2 pt-2 border-t border-border">
@@ -255,7 +269,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
 
         {/* Ranks */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-          className="flex flex-col gap-3 min-w-[200px]">
+          className="flex flex-col gap-3">
           <div className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 flex-1">
             <div className="w-11 h-11 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
               <Globe className="h-5 w-5 text-blue-500" />
@@ -337,7 +351,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
       </div>
 
       {/* ── JOB MATCHES + ACHIEVEMENTS ───────────────────────────── */}
-      <div className="flex flex-col lg:flex-row gap-5">
+      <div className="grid gap-5 lg:grid-cols-2">
 
         {/* Job matches */}
         <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -380,79 +394,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
           )}
         </motion.div>
 
-        {/* Achievements */}
-        {analytics?.achievements?.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="flex-1 rounded-2xl border border-border bg-card p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <Award className="h-4 w-4 text-amber-500" />
-              <h3 className="font-semibold text-sm text-foreground">Achievements</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {analytics.achievements.map((a: string, i: number) => (
-                <motion.div key={a} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + i * 0.06, type: "spring", stiffness: 200 }}>
-                  <Badge className="gap-1.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20 px-3 py-1">
-                    <Trophy className="h-3 w-3" />{a}
-                  </Badge>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
-
-      {/* ── AI INSIGHTS ──────────────────────────────────────────── */}
-      <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        className="rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/5 to-blue-500/5 p-5">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Sparkles className="h-4 w-4 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-sm text-foreground">AI Career Insights</h3>
-              <p className="text-[10px] text-muted-foreground">Powered by Groq</p>
-            </div>
-          </div>
-          <Button size="sm" className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
-            <Link href="/student/ai"><Sparkles className="h-3.5 w-3.5" />AI Advisor</Link>
-          </Button>
-        </div>
-
-        {aiLoading ? (
-          <div className="flex items-center gap-3 py-3">
-            <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">Analyzing your profile…</p>
-          </div>
-        ) : !aiInsights?.available ? (
-          <div className="flex items-start gap-3 rounded-xl bg-muted/50 p-4">
-            <AlertCircle className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
-            <p className="text-sm text-muted-foreground">
-              {aiInsights?.message || "Add GROQ_API_KEY to enable AI insights (free at console.groq.com)"}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <p className="text-sm text-foreground leading-relaxed">{aiInsights.insights.overallAssessment}</p>
-            <div className="flex flex-wrap gap-1.5">
-              {aiInsights.insights.strengths?.slice(0, 2).map((s: string) => (
-                <Badge key={s} className="gap-1 bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-xs">
-                  <CheckCircle2 className="h-3 w-3" />{s}
-                </Badge>
-              ))}
-              {aiInsights.insights.skillGaps?.slice(0, 2).map((s: string) => (
-                <Badge key={s} variant="outline" className="text-xs text-destructive border-destructive/30">{s}</Badge>
-              ))}
-            </div>
-            {aiInsights.insights.placementTip && (
-              <p className="text-xs text-muted-foreground border-l-2 border-primary/40 pl-3">
-                💡 {aiInsights.insights.placementTip}
-              </p>
-            )}
-          </div>
-        )}
-      </motion.div>
     </div>
   )
 }

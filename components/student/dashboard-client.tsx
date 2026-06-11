@@ -686,9 +686,9 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
   return (
     <div className="space-y-6">
       {(isUpdating || isAutoSyncing) && (
-        <div className="fixed top-20 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
-          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-          {isAutoSyncing ? 'Auto-syncing latest stats...' : 'Updating dashboard...'}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-xs text-primary w-fit">
+          <div className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          {isAutoSyncing ? 'Auto-syncing…' : 'Updating…'}
         </div>
       )}
 
@@ -805,7 +805,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         </CardHeader>
         <CardContent>
           {hasLinkedPlatforms ? (
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {Object.entries(linkedPlatforms)
                 .filter(([, platformData]) => platformData != null)
                 .sort(([, a], [, b]) => {
