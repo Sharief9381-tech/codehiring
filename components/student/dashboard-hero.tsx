@@ -12,6 +12,7 @@ import {
   ArrowRight, Activity,
 } from "lucide-react"
 import type { StudentProfile } from "@/lib/types"
+import { computeCodeHiringScore } from "@/lib/score"
 
 interface DashboardHeroProps {
   student: StudentProfile
@@ -32,19 +33,6 @@ interface JobMatch {
   companyName: string
   matchScore: number
   type: string
-}
-
-function computeScore(stats: {
-  totalProblems: number; highestRating: number; contestsAttended: number
-  githubContributions: number; platformCount: number; profileComplete: number
-}): number {
-  return Math.round(
-    Math.min((stats.totalProblems / 500) * 400, 400) +
-    Math.min((stats.highestRating / 1600) * 200, 200) +
-    Math.min((stats.githubContributions / 365) * 150, 150) +
-    Math.min((stats.contestsAttended / 20) * 150, 150) +
-    stats.profileComplete
-  )
 }
 
 function useCountUp(target: number, duration = 1200) {
@@ -133,7 +121,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
     { label: "GitHub Connected",    done: !!student.linkedPlatforms?.github },
   ]
   const profileComplete = Math.round((checklistItems.filter(c => c.done).length / checklistItems.length) * 100)
-  const codehiringScore = computeScore({ totalProblems, highestRating, contestsAttended, githubContributions, platformCount, profileComplete })
+  const codehiringScore = computeCodeHiringScore(student)
 
   const placementItems = [
     { label: "Resume / Profile",    done: profileComplete >= 60 },

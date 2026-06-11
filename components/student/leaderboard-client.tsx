@@ -1,11 +1,12 @@
 ﻿"use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Trophy, Medal, Award, Users, Globe, Building2, TrendingUp, Star } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Trophy, Medal, Award, Users, Globe, Building2, TrendingUp, Star, Search } from "lucide-react"
 
 interface LeaderboardEntry {
   rank: number
@@ -198,6 +199,7 @@ export function LeaderboardClient() {
   const [isGraduate, setIsGraduate] = useState(false)
   const [loading, setLoading] = useState(true)
   const [selectedCollege, setSelectedCollege] = useState<string>("")
+  const [collegeSearch, setCollegeSearch] = useState("")
 
   useEffect(() => {
     Promise.all([
@@ -223,6 +225,11 @@ export function LeaderboardClient() {
 
   const topSolver = data?.global[0]
   const colleges = Object.keys(data?.college ?? {})
+  const filteredColleges = useMemo(() => {
+    if (!collegeSearch.trim()) return colleges
+    const q = collegeSearch.trim().toLowerCase()
+    return colleges.filter(code => code.toLowerCase().includes(q))
+  }, [colleges, collegeSearch])
   const collegeEntries = selectedCollege ? (data?.college[selectedCollege] ?? []) : []
 
   return (
@@ -315,20 +322,37 @@ export function LeaderboardClient() {
             </CardHeader>
             <CardContent>
               {colleges.length > 1 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {colleges.map(code => (
-                    <button
-                      key={code}
-                      onClick={() => setSelectedCollege(code)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
-                        selectedCollege === code
-                          ? "bg-emerald-600 border-emerald-500 text-foreground"
-                          : "bg-secondary border-border text-muted-foreground hover:border-border"
-                      }`}
-                    >
-                      {code}
-                    </button>
-                  ))}
+                <div className="space-y-3 mb-4">
+                  {/* Search bar */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search college..."
+                      value={collegeSearch}
+                      onChange={e => setCollegeSearch(e.target.value)}
+                      className="pl-9 h-9 text-sm bg-background"
+                    />
+                  </div>
+                  {/* College chips */}
+                  <div className="flex flex-wrap gap-2">
+                    {filteredColleges.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">No colleges match your search</p>
+                    ) : (
+                      filteredColleges.map(code => (
+                        <button
+                          key={code}
+                          onClick={() => setSelectedCollege(code)}
+                          className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
+                            selectedCollege === code
+                              ? "bg-emerald-600 border-emerald-500 text-white"
+                              : "bg-secondary border-border text-muted-foreground hover:border-emerald-500/50 hover:text-foreground"
+                          }`}
+                        >
+                          {code}
+                        </button>
+                      ))
+                    )}
+                  </div>
                 </div>
               )}
               {loading ? <LeaderboardSkeleton /> : collegeEntries.length

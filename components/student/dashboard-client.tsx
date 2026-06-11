@@ -426,1039 +426,259 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
   }
 
   const renderPlatformCard = (platformId: string, platformData: any) => {
-    // Handle null or undefined platformData
-    if (!platformData) {
-      return null
-    }
+    if (!platformData) return null
 
-    // Get dynamic color for this platform
     const platformColor = getUniquePlatformColor(platformId, connectedPlatformIds)
 
-    const platformConfigs = {
-      leetcode: { 
-        name: "LeetCode", 
-        icon: Code,
-        getSummary: (stats: any) => `${stats?.totalSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://leetcode.com/u/${username}/`
+    const platformConfigs: Record<string, { name: string; icon: any; getStatLines: (s: any) => { label: string; value: any }[]; getProfileUrl: (u: string) => string }> = {
+      leetcode: {
+        name: "LeetCode", icon: Code,
+        getStatLines: (s) => [
+          { label: "Rating", value: s?.ranking ? `#${s.ranking.toLocaleString()}` : "—" },
+          { label: "Solved", value: s?.totalSolved ?? 0 },
+        ],
+        getProfileUrl: (u) => `https://leetcode.com/u/${u}/`,
       },
       codechef: { 
-        name: "CodeChef", 
-        icon: Code,
-        getSummary: (stats: any) => stats?.stars || '1*',
-        getProfileUrl: (username: string) => `https://www.codechef.com/users/${username}`
+        name: "CodeChef", icon: Code,
+        getStatLines: (s) => [
+          { label: "Rating", value: s?.currentRating ?? 0 },
+          { label: "Stars",  value: s?.stars ?? "—" },
+          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Max Rating", value: s?.highestRating ?? 0 },
+        ],
+        getProfileUrl: (u) => `https://www.codechef.com/users/${u}`,
       },
-      hackerrank: { 
-        name: "HackerRank", 
-        icon: Trophy,
-        getSummary: (stats: any) => `${stats?.badges?.length || 0} badges`,
-        getProfileUrl: (username: string) => `https://www.hackerrank.com/profile/${username}`
+      hackerrank: {
+        name: "HackerRank", icon: Trophy,
+        getStatLines: (s) => [
+          { label: "Badges", value: s?.badges?.length ?? 0 },
+          { label: "Score",  value: s?.totalScore ?? 0 },
+          { label: "Rank",   value: s?.globalRank ? `#${s.globalRank}` : "—" },
+        ],
+        getProfileUrl: (u) => `https://www.hackerrank.com/profile/${u}`,
       },
-      github: { 
-        name: "GitHub", 
-        icon: GitBranch,
-        getSummary: (stats: any) => `${stats?.publicRepos || 0} repos`,
-        getProfileUrl: (username: string) => `https://github.com/${username}`
+      github: {
+        name: "GitHub", icon: GitBranch,
+        getStatLines: (s) => [
+          { label: "Repos",         value: s?.publicRepos ?? 0 },
+          { label: "Contributions", value: s?.totalContributions ?? 0 },
+          { label: "Followers",     value: s?.followers ?? 0 },
+        ],
+        getProfileUrl: (u) => `https://github.com/${u}`,
       },
-      codeforces: { 
-        name: "Codeforces", 
-        icon: Trophy,
-        getSummary: (stats: any) => `${stats?.rating || 0} rating`,
-        getProfileUrl: (username: string) => `https://codeforces.com/profile/${username}`
+      codeforces: {
+        name: "Codeforces", icon: Trophy,
+        getStatLines: (s) => [
+          { label: "Rating",     value: s?.rating ?? 0 },
+          { label: "Rank",       value: s?.rank ?? "Unrated" },
+          { label: "Max Rating", value: s?.maxRating ?? 0 },
+        ],
+        getProfileUrl: (u) => `https://codeforces.com/profile/${u}`,
       },
-      hackerearth: { 
-        name: "HackerEarth", 
-        icon: Code,
-        getSummary: (stats: any) => `${stats?.problemsSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://www.hackerearth.com/@${username}`
+      hackerearth: {
+        name: "HackerEarth", icon: Code,
+        getStatLines: (s) => [
+          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Rating", value: s?.rating ?? 0 },
+        ],
+        getProfileUrl: (u) => `https://www.hackerearth.com/@${u}`,
       },
-      geeksforgeeks: { 
-        name: "GeeksforGeeks", 
-        icon: Globe,
-        getSummary: (stats: any) => {
-          const score = stats?.codingScore || stats?.stats?.score || stats?.score || 0
-          return `${score} score`
-        },
-        getProfileUrl: (username: string) => `https://auth.geeksforgeeks.org/user/${username}/profile`
+      geeksforgeeks: {
+        name: "GeeksforGeeks", icon: Globe,
+        getStatLines: (s) => [
+          { label: "Coding Score",  value: s?.codingScore ?? s?.score ?? 0 },
+          { label: "Problems",      value: s?.problemsSolved ?? 0 },
+          { label: "Institute Rank",value: s?.instituteRank ?? "—" },
+          { label: "Streak",        value: s?.currentStreak ? `${s.currentStreak}d` : "—" },
+        ],
+        getProfileUrl: (u) => `https://auth.geeksforgeeks.org/user/${u}/profile`,
       },
-      atcoder: { 
-        name: "AtCoder", 
-        icon: Trophy,
-        getSummary: (stats: any) => `${stats?.rating || 0} rating`,
-        getProfileUrl: (username: string) => `https://atcoder.jp/users/${username}`
+      atcoder: {
+        name: "AtCoder", icon: Trophy,
+        getStatLines: (s) => [
+          { label: "Rating",     value: s?.rating ?? 0 },
+          { label: "Max Rating", value: s?.highestRating ?? 0 },
+          { label: "Rank",       value: s?.rank ?? "Unrated" },
+        ],
+        getProfileUrl: (u) => `https://atcoder.jp/users/${u}`,
       },
-      spoj: { 
-        name: "SPOJ", 
-        icon: Code,
-        getSummary: (stats: any) => `${stats?.problemsSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://www.spoj.com/users/${username}/`
+      spoj: {
+        name: "SPOJ", icon: Code,
+        getStatLines: (s) => [
+          { label: "Solved",     value: s?.problemsSolved ?? 0 },
+          { label: "Score",      value: s?.score ?? 0 },
+          { label: "World Rank", value: s?.rank ?? s?.worldRank ?? "—" },
+        ],
+        getProfileUrl: (u) => `https://www.spoj.com/users/${u}/`,
       },
-      kattis: { 
-        name: "Kattis", 
-        icon: Trophy,
-        getSummary: (stats: any) => `${stats?.problemsSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://open.kattis.com/users/${username}`
+      kattis: {
+        name: "Kattis", icon: Trophy,
+        getStatLines: (s) => [
+          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Score",  value: s?.score ?? 0 },
+          { label: "Rank",   value: s?.rank ?? "—" },
+        ],
+        getProfileUrl: (u) => `https://open.kattis.com/users/${u}`,
       },
-      topcoder: { 
-        name: "TopCoder", 
-        icon: Trophy,
-        getSummary: (stats: any) => `${stats?.rating || 0} rating`,
-        getProfileUrl: (username: string) => `https://www.topcoder.com/members/${username}`
+      topcoder: {
+        name: "TopCoder", icon: Trophy,
+        getStatLines: (s) => [
+          { label: "Rating", value: s?.rating ?? 0 },
+          { label: "Rank",   value: s?.rank ?? "Unrated" },
+        ],
+        getProfileUrl: (u) => `https://www.topcoder.com/members/${u}`,
       },
-      interviewbit: { 
-        name: "InterviewBit", 
-        icon: Code,
-        getSummary: (stats: any) => `${stats?.problemsSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://www.interviewbit.com/profile/${username}`
+      interviewbit: {
+        name: "InterviewBit", icon: Code,
+        getStatLines: (s) => [
+          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Score",  value: s?.score ?? 0 },
+          { label: "Rank",   value: s?.rank ?? "—" },
+        ],
+        getProfileUrl: (u) => `https://www.interviewbit.com/profile/${u}`,
       },
-      cses: { 
-        name: "CSES Problem Set", 
-        icon: Trophy,
-        getSummary: (stats: any) => `${stats?.problemsSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://cses.fi/user/${username}`
+      cses: {
+        name: "CSES Problem Set", icon: Trophy,
+        getStatLines: (s) => [
+          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Total",  value: s?.totalProblems ?? 300 },
+        ],
+        getProfileUrl: (u) => `https://cses.fi/user/${u}`,
       },
-      codestudio: { 
-        name: "CodeStudio", 
-        icon: Code,
-        getSummary: (stats: any) => `${stats?.problemsSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://www.codingninjas.com/studio/profile/${username}`
+      codestudio: {
+        name: "CodeStudio", icon: Code,
+        getStatLines: (s) => [
+          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Score",  value: s?.score ?? 0 },
+          { label: "Rank",   value: s?.rank ?? "—" },
+        ],
+        getProfileUrl: (u) => `https://www.codingninjas.com/studio/profile/${u}`,
       },
-      exercism: { 
-        name: "Exercism", 
-        icon: Globe,
-        getSummary: (stats: any) => `${stats?.completedExercises || 0} exercises`,
-        getProfileUrl: (username: string) => `https://exercism.org/profiles/${username}`
+      exercism: {
+        name: "Exercism", icon: Globe,
+        getStatLines: (s) => [
+          { label: "Exercises",  value: s?.completedExercises ?? 0 },
+          { label: "Languages",  value: s?.languages?.length ?? 0 },
+          { label: "Reputation", value: s?.reputation ?? 0 },
+        ],
+        getProfileUrl: (u) => `https://exercism.org/profiles/${u}`,
       },
-      kaggle: { 
-        name: "Kaggle", 
-        icon: Trophy,
-        getSummary: (stats: any) => `${stats?.tier || 'Novice'} tier`,
-        getProfileUrl: (username: string) => `https://www.kaggle.com/${username}`
+      kaggle: {
+        name: "Kaggle", icon: Trophy,
+        getStatLines: (s) => [
+          { label: "Tier",         value: s?.tier ?? "Novice" },
+          { label: "Competitions", value: s?.competitions ?? 0 },
+          { label: "Notebooks",    value: s?.notebooks ?? 0 },
+        ],
+        getProfileUrl: (u) => `https://www.kaggle.com/${u}`,
       },
-      uva: { 
-        name: "UVa Online Judge", 
-        icon: Code,
-        getSummary: (stats: any) => `${stats?.problemsSolved || 0} solved`,
-        getProfileUrl: (username: string) => `https://uhunt.onlinejudge.org/id/${username}`
-      }
+      uva: {
+        name: "UVa Online Judge", icon: Code,
+        getStatLines: (s) => [
+          { label: "Solved", value: s?.problemsSolved ?? 0 },
+          { label: "Rank",   value: s?.rank ?? "—" },
+        ],
+        getProfileUrl: (u) => `https://uhunt.onlinejudge.org/id/${u}`,
+      },
     }
 
-    // Get config or create default for non-predefined platforms
-    const config = platformConfigs[platformId as keyof typeof platformConfigs] || {
+    const config = platformConfigs[platformId] || {
       name: platformId.charAt(0).toUpperCase() + platformId.slice(1),
       icon: Globe,
-      getSummary: (stats: any) => {
-        // Handle both direct stats and nested stats structure
-        const actualStats = stats?.stats || stats
-        
-        // Platform-specific summaries
-        if (platformId.toLowerCase().includes('geek')) {
-          const score = actualStats?.codingScore || actualStats?.score || 0
-          return `${score} score`
-        }
-        if (platformId.toLowerCase().includes('atcoder')) {
-          const rating = actualStats?.rating || actualStats?.highestRating || 0
-          return `${rating} rating`
-        }
-        if (platformId.toLowerCase().includes('usaco')) {
-          const division = actualStats?.division || 'Bronze'
-          return `${division} div`
-        }
-        if (platformId.toLowerCase().includes('spoj') || platformId.toLowerCase().includes('kattis')) {
-          const solved = actualStats?.problemsSolved || actualStats?.totalSolved || 0
-          return `${solved} solved`
-        }
-        
-        // Generic fallback
-        if (actualStats?.totalSolved) return `${actualStats.totalSolved} solved`
-        if (actualStats?.problemsSolved) return `${actualStats.problemsSolved} solved`
-        if (actualStats?.rating) return `${actualStats.rating} rating`
-        if (actualStats?.score) return `${actualStats.score} score`
-        return 'Connected'
+      getStatLines: (s: any) => {
+        const lines = []
+        if (s?.totalSolved)      lines.push({ label: "Solved", value: s.totalSolved })
+        if (s?.problemsSolved)   lines.push({ label: "Solved", value: s.problemsSolved })
+        if (s?.rating)           lines.push({ label: "Rating", value: s.rating })
+        if (s?.score)            lines.push({ label: "Score",  value: s.score })
+        return lines
       },
-      getProfileUrl: (username: string) => {
-        // Platform-specific profile URLs
-        if (platformId.toLowerCase().includes('atcoder')) {
-          return `https://atcoder.jp/users/${username}`
-        }
-        if (platformId.toLowerCase().includes('topcoder')) {
-          return `https://www.topcoder.com/members/${username}`
-        }
-        if (platformId.toLowerCase().includes('spoj')) {
-          return `https://www.spoj.com/users/${username}`
-        }
-        if (platformId.toLowerCase().includes('kattis')) {
-          return `https://open.kattis.com/users/${username}`
-        }
-        if (platformId.toLowerCase().includes('usaco')) {
-          return `http://www.usaco.org/index.php?page=viewuser&uid=${username}`
-        }
-        
-        // Try to construct a reasonable profile URL from platformData
-        const customUrl = (typeof platformData === 'object' && platformData && 'platformUrl' in platformData) ? platformData.platformUrl : null
-        if (customUrl) {
-          return `${customUrl}/profile/${username}`
-        }
-        return `https://${platformId}.com/profile/${username}`
-      }
+      getProfileUrl: (u: string) => `https://${platformId}.com/profile/${u}`,
     }
 
     const IconComponent = config.icon
-    
-    // Safely handle different platformData structures
     const stats = (platformData && typeof platformData === 'object' && 'stats' in platformData) ? platformData.stats : {}
-    let username = 'username'
-    
-    // Extract username from the platform data structure
-    if (platformData && typeof platformData === 'object' && 'username' in platformData && platformData.username) {
-      // Standard structure: { username: "user", linkedAt: Date, isActive: true, stats: {...} }
-      username = platformData.username
-    } else if (typeof platformData === 'string') {
-      // Fallback: direct string username
-      username = platformData
-    }
-    
-    // Clean username (remove any URL parts if user entered full URL or if it contains path segments)
-    username = username.replace(/^https?:\/\/[^\/]+\//, '') // Remove full URL prefix
-                      .replace(/^u\//, '')                    // Remove LeetCode /u/ prefix
-                      .replace(/^profile\//, '')              // Remove HackerRank /profile/ prefix
-                      .replace(/^users\//, '')                // Remove CodeChef /users/ prefix
-                      .replace(/^@/, '')                      // Remove @ prefix if present
-                      .replace(/\/$/, '')                     // Remove trailing slash
-    
-    console.log(`Platform ${platformId} - Cleaned Username: ${username}, Stats:`, stats, 'Original Data:', platformData)
+    let username = typeof platformData === 'object' && platformData?.username ? platformData.username : (typeof platformData === 'string' ? platformData : 'username')
+    username = username
+      .replace(/^https?:\/\/[^\/]+\//, '')
+      .replace(/^u\//, '')
+      .replace(/^profile\//, '')
+      .replace(/^users\//, '')
+      .replace(/^@/, '')
+      .replace(/\/$/, '')
 
-    // Debug GeeksforGeeks data structure
-    if (platformId === 'geeksforgeeks') {
-      console.log('=== GEEKSFORGEEKS DEBUG ===')
-      console.log('stats.codingScore:', stats?.codingScore)
-      console.log('stats.stats?.score:', stats?.stats?.score)
-      console.log('stats.score:', stats?.score)
-      console.log('stats.problemsSolved:', stats?.problemsSolved)
-      console.log('stats.stats?.problemsSolved:', stats?.stats?.problemsSolved)
-      console.log('stats.instituteRank:', stats?.instituteRank)
-      console.log('stats.stats?.rank:', stats?.stats?.rank)
-      console.log('stats.currentStreak:', stats?.currentStreak)
-      console.log('stats.stats?.streak:', stats?.stats?.streak)
-      console.log('stats.potdsSolved:', stats?.potdsSolved)
-      console.log('stats.stats?.articles:', stats?.stats?.articles)
-      console.log('========================')
-    }
+    const linkedAt  = typeof platformData === 'object' && platformData?.linkedAt  ? new Date(platformData.linkedAt).toLocaleDateString()  : null
+    const lastSync  = typeof platformData === 'object' && platformData?.lastSync   ? new Date(platformData.lastSync).toLocaleString()       : null
+    const statLines = config.getStatLines(stats || {})
 
     return (
-      <Card key={platformId} className="bg-card border-l-4 text-foreground relative h-80 w-full cursor-pointer hover:shadow-md transition-shadow" 
+      <Card
+        key={platformId}
+        className="border-l-4 bg-card relative hover:shadow-md transition-shadow"
         style={{ borderLeftColor: platformColor }}
-        onClick={() => router.push('/student/platforms')}
       >
-        <CardContent className="p-6 pb-14 h-full flex flex-col">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div 
-                className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: platformColor }}
+        <CardContent className="p-5">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-4 gap-2">
+            <div className="flex items-center gap-3 min-w-0">
+              <div
+                className="h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: platformColor + "20", border: `1px solid ${platformColor}` }}
               >
-                <IconComponent className="h-4 w-4 text-white" />
+                <IconComponent className="h-5 w-5" style={{ color: platformColor }} />
               </div>
-              <div className="min-w-0 flex-1">
-                <h4 className="font-semibold text-white truncate">{config.name}</h4>
-                <p className="text-xs text-gray-400 truncate">@{username}</p>
+              <div className="min-w-0">
+                <h4 className="font-semibold text-foreground truncate">{config.name}</h4>
+                <p className="text-xs text-muted-foreground truncate">@{username}</p>
               </div>
             </div>
-            <div className="text-right flex-shrink-0">
-              <p className="text-sm font-medium text-white">{config.getSummary(stats)}</p>
+            <Badge className="shrink-0 text-xs bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/30">
+              <Check className="h-3 w-3 mr-1" /> Connected
+            </Badge>
+          </div>
+
+          {/* Stats */}
+          {statLines.length > 0 ? (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4">
+              {statLines.map(({ label, value }) => (
+                <div key={label} className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">{label}</span>
+                  <span className="font-semibold text-foreground">{value ?? "—"}</span>
+                </div>
+              ))}
             </div>
+          ) : (
+            <p className="text-sm text-muted-foreground mb-4">Sync to load stats</p>
+          )}
+
+          {/* Meta */}
+          <div className="text-xs text-muted-foreground mb-3 space-y-0.5">
+            {linkedAt && <p>Linked: {linkedAt}</p>}
+            {lastSync  && <p>Last sync: {lastSync}</p>}
           </div>
-          
-          <div className="flex-1 space-y-1 overflow-hidden">
 
-            {!stats || Object.keys(stats).length === 0 ? (
-              <div className="text-center py-8">
-                <div className="animate-pulse">
-                  <div className="h-4 bg-gray-700 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-700 rounded"></div>
-                </div>
-                <div className="mt-4">
-                  <div className="inline-flex items-center gap-2 text-xs text-gray-400">
-                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                    Fetching latest stats...
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-
-            {platformId === 'geeksforgeeks' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">GeeksforGeeks Performance</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-orange-400">
-                        {stats.codingScore || stats.stats?.score || stats.score || 0}
-                      </div>
-                      <div className="text-xs text-gray-400">Coding Score</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">
-                        {stats.problemsSolved || stats.stats?.problemsSolved || stats.stats?.totalSolved || 0}
-                      </div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">
-                        {stats.instituteRank || stats.stats?.rank || stats.stats?.institutionRank || 0}
-                      </div>
-                      <div className="text-xs text-gray-400">Institute Rank</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-green-400">
-                          {stats.currentStreak || stats.stats?.streak || 0}
-                        </div>
-                        <div className="text-xs text-gray-400">Current Streak</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">
-                          {stats.potdsSolved || stats.stats?.articles || 0}
-                        </div>
-                        <div className="text-xs text-gray-400">POTDs Solved</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* New Platform Sections */}
-            {platformId === 'topcoder' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Competitive Programming</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.rating || 0}</div>
-                      <div className="text-xs text-gray-400">Rating</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.competitions || 0}</div>
-                      <div className="text-xs text-gray-400">Competitions</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.wins || 0}</div>
-                      <div className="text-xs text-gray-400">Wins</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.maxRating || 0}</div>
-                        <div className="text-xs text-gray-400">Max Rating</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">{stats.rank || 'Unrated'}</div>
-                        <div className="text-xs text-gray-400">Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'interviewbit' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Interview Preparation</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.score || 0}</div>
-                      <div className="text-xs text-gray-400">Score</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.rank || 0}</div>
-                      <div className="text-xs text-gray-400">Rank</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.streakDays || 0}</div>
-                        <div className="text-xs text-gray-400">Streak Days</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">Active</div>
-                        <div className="text-xs text-gray-400">Status</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'cses' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Problem Set Progress</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Solved</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.totalProblems || 300}</div>
-                      <div className="text-xs text-gray-400">Total</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{Math.round(stats.completionRate || 0)}%</div>
-                      <div className="text-xs text-gray-400">Complete</div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'codestudio' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Coding Ninjas Studio</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.score || 0}</div>
-                      <div className="text-xs text-gray-400">Score</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.rank || 0}</div>
-                      <div className="text-xs text-gray-400">Rank</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.streakDays || 0}</div>
-                        <div className="text-xs text-gray-400">Streak Days</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">Active</div>
-                        <div className="text-xs text-gray-400">Status</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'exercism' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Code Practice & Mentorship</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.completedExercises || 0}</div>
-                      <div className="text-xs text-gray-400">Exercises</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.languages?.length || 0}</div>
-                      <div className="text-xs text-gray-400">Languages</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.badges || 0}</div>
-                      <div className="text-xs text-gray-400">Badges</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.reputation || 0}</div>
-                        <div className="text-xs text-gray-400">Reputation</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">Active</div>
-                        <div className="text-xs text-gray-400">Status</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'kaggle' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Data Science Platform</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.competitions || 0}</div>
-                      <div className="text-xs text-gray-400">Competitions</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.datasets || 0}</div>
-                      <div className="text-xs text-gray-400">Datasets</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.notebooks || 0}</div>
-                      <div className="text-xs text-gray-400">Notebooks</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.tier || 'Novice'}</div>
-                        <div className="text-xs text-gray-400">Tier</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">{stats.discussions || 0}</div>
-                        <div className="text-xs text-gray-400">Discussions</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'uva' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Online Judge</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.submissions || 0}</div>
-                      <div className="text-xs text-gray-400">Submissions</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.rank || 0}</div>
-                      <div className="text-xs text-gray-400">Rank</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.country || 'Unknown'}</div>
-                        <div className="text-xs text-gray-400">Country</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">Active</div>
-                        <div className="text-xs text-gray-400">Status</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {!['leetcode', 'codechef', 'hackerrank', 'github', 'codeforces', 'hackerearth', 'geeksforgeeks', 'atcoder', 'spoj', 'kattis', 'topcoder', 'interviewbit', 'cses', 'codestudio', 'exercism', 'kaggle', 'uva'].includes(platformId) ? (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Platform Performance</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">
-                        {stats.problemsSolved || stats.totalSolved || stats.stats?.problemsSolved || stats.stats?.totalSolved || 0}
-                      </div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">
-                        {stats.rating || stats.score || stats.stats?.rating || stats.stats?.score || 0}
-                      </div>
-                      <div className="text-xs text-gray-400">
-                        {platformId.toLowerCase().includes('geek') ? 'Score' : 'Rating'}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">
-                        {stats.rank || stats.globalRank || stats.stats?.rank || stats.stats?.globalRank || 0}
-                      </div>
-                      <div className="text-xs text-gray-400">Rank</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">
-                          {stats.contests?.length || stats.stats?.contests?.length || 
-                           stats.articlesPublished || stats.stats?.articles || 
-                           stats.division || 'N/A'}
-                        </div>
-                        <div className="text-xs text-gray-400">
-                          {platformId.toLowerCase().includes('geek') ? 'Articles' : 
-                           platformId.toLowerCase().includes('usaco') ? 'Division' : 'Contests'}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">
-                          {stats.badges?.length || stats.stats?.badges?.length || 
-                           stats.currentStreak || stats.streak || stats.stats?.streak || 0}
-                        </div>
-                        <div className="text-xs text-gray-400">
-                          {platformId.toLowerCase().includes('geek') ? 'Streak' : 'Badges'}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            ) : null}
-
-            {platformId === 'leetcode' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Problems Solved</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.easySolved || 0}</div>
-                      <div className="text-xs text-gray-400">Easy</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-yellow-400">{stats.mediumSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Medium</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-red-400">{stats.hardSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Hard</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/12"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-blue-400">{safeNumberDisplay(stats.ranking, 'N/A')}</div>
-                        <div className="text-xs text-gray-400">Global Ranking</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-purple-400">{stats.contributionPoints || 0}</div>
-                        <div className="text-xs text-gray-400">Contribution Points</div>
-                      </div>
-                    </div>
-                    <div className="w-1/12"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'codechef' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Coding Performance</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-orange-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.currentRating || 0}</div>
-                      <div className="text-xs text-gray-400">Current Rating</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-yellow-400">{stats.stars || '1*'}</div>
-                      <div className="text-xs text-gray-400">Stars</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/12"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-red-400">{stats.highestRating || 0}</div>
-                        <div className="text-xs text-gray-400">Highest Rating</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-purple-400">{safeNumberDisplay(stats.globalRank, 'N/A')}</div>
-                        <div className="text-xs text-gray-400">Global Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/12"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'hackerrank' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Achievements Overview</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-yellow-400">{stats.badges?.length || 0}</div>
-                      <div className="text-xs text-gray-400">Badges</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.certifications?.length || 0}</div>
-                      <div className="text-xs text-gray-400">Certifications</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.skills?.length || 0}</div>
-                      <div className="text-xs text-gray-400">Skills</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/12"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-green-400">{stats.totalScore || 0}</div>
-                        <div className="text-xs text-gray-400">Total Score</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{safeNumberDisplay(stats.globalRank, 'N/A')}</div>
-                        <div className="text-xs text-gray-400">Global Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/12"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'github' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Development Activity</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.totalContributions || 0}</div>
-                      <div className="text-xs text-gray-400">Contributions</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.publicRepos || 0}</div>
-                      <div className="text-xs text-gray-400">Repositories</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{safeNumberDisplay(stats.followers, '0')}</div>
-                      <div className="text-xs text-gray-400">Followers</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/12"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-yellow-400">{Object.keys(stats.languages || {}).length}</div>
-                        <div className="text-xs text-gray-400">Languages</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{safeNumberDisplay(stats.following, '0')}</div>
-                        <div className="text-xs text-gray-400">Following</div>
-                      </div>
-                    </div>
-                    <div className="w-1/12"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'codeforces' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Competitive Programming</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-orange-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.rating || 0}</div>
-                      <div className="text-xs text-gray-400">Rating</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.contests?.length || 0}</div>
-                      <div className="text-xs text-gray-400">Contests</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/12"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-red-400">{stats.maxRating || 0}</div>
-                        <div className="text-xs text-gray-400">Max Rating</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-green-400">{stats.rank || 'Unrated'}</div>
-                        <div className="text-xs text-gray-400">Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/12"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'hackerearth' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Coding Performance</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.rating || 0}</div>
-                      <div className="text-xs text-gray-400">Rating</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.contests?.length || 0}</div>
-                      <div className="text-xs text-gray-400">Contests</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/12"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-red-400">{stats.maxRating || 0}</div>
-                        <div className="text-xs text-gray-400">Max Rating</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-yellow-400">{safeNumberDisplay(stats.globalRank, 'N/A')}</div>
-                        <div className="text-xs text-gray-400">Global Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/12"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'atcoder' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Competitive Programming</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.rating || 0}</div>
-                      <div className="text-xs text-gray-400">Rating</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.contests?.length || 0}</div>
-                      <div className="text-xs text-gray-400">Contests</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.highestRating || 0}</div>
-                        <div className="text-xs text-gray-400">Highest Rating</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">{stats.rank || 'Unrated'}</div>
-                        <div className="text-xs text-gray-400">Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'spoj' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Judge Performance</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.score || 0}</div>
-                      <div className="text-xs text-gray-400">Score</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.rank || stats.worldRank || 0}</div>
-                      <div className="text-xs text-gray-400">World Rank</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{safeNumberDisplay(stats.countryRank, '0')}</div>
-                        <div className="text-xs text-gray-400">Country Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">{stats.institutionRank || 0}</div>
-                        <div className="text-xs text-gray-400">Institution Rank</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {platformId === 'kattis' && (
-              <>
-                <div>
-                  <p className="text-xs text-gray-400">Contest Performance</p>
-                  <div className="flex justify-between items-end">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-400">{stats.problemsSolved || 0}</div>
-                      <div className="text-xs text-gray-400">Problems</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-400">{stats.score || 0}</div>
-                      <div className="text-xs text-gray-400">Score</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-purple-400">{stats.rank || 0}</div>
-                      <div className="text-xs text-gray-400">Rank</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="flex w-full relative">
-                    <div className="w-1/6"></div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-orange-400">{stats.country || 'Unknown'}</div>
-                        <div className="text-xs text-gray-400">Country</div>
-                      </div>
-                    </div>
-                    <div className="w-1/3 flex justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-cyan-400">{stats.university || 'Unknown'}</div>
-                        <div className="text-xs text-gray-400">University</div>
-                      </div>
-                    </div>
-                    <div className="w-1/6"></div>
-                  </div>
-                </div>
-              </>
-            )}
-              </div>
-            )}
-          </div>
-        </CardContent>
-        
-        {/* Bottom section with View Details link, Verified badge, and Unlink button */}
-        <div className="absolute bottom-0 left-0 right-0 p-2 border-t border-gray-700 bg-gray-800/50">
-          <div className="flex items-center justify-between">
+          {/* Footer */}
+          <div className="flex items-center justify-between pt-2 border-t border-border">
             <a
               href={config.getProfileUrl(username)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 hover:underline transition-colors duration-200"
+              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline transition-colors"
             >
-              View Details
-              <ExternalLink className="h-4 w-4" />
+              View Profile <ExternalLink className="h-3.5 w-3.5" />
             </a>
-            <div className="flex-1 flex justify-center">
-              <Badge className="text-xs gap-1 bg-green-600 hover:bg-green-700 text-white border-green-500 shadow-lg">
-                <Check className="h-3 w-3" />
-                Verified
-              </Badge>
-            </div>
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => handleUnlinkPlatform(platformId, config.name)}
+              onClick={(e) => { e.stopPropagation(); handleUnlinkPlatform(platformId, config.name) }}
               className="text-red-400 hover:text-red-300 hover:bg-red-900/20 p-2"
               title={`Unlink ${config.name}`}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>
-        </div>
+        </CardContent>
       </Card>
     )
   }
@@ -1585,7 +805,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         </CardHeader>
         <CardContent>
           {hasLinkedPlatforms ? (
-            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {Object.entries(linkedPlatforms)
                 .filter(([, platformData]) => platformData != null)
                 .sort(([, a], [, b]) => {

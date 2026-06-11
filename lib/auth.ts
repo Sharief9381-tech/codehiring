@@ -7,6 +7,7 @@ import type {
   StudentProfile,
   CollegeProfile,
   RecruiterProfile,
+  AdminProfile,
 } from "./types"
 
 // ── Password hashing ──────────────────────────────────────────────
@@ -105,6 +106,7 @@ export async function getCurrentUser(): Promise<
   | Omit<StudentProfile, "password">
   | Omit<CollegeProfile, "password">
   | Omit<RecruiterProfile, "password">
+  | Omit<AdminProfile, "password">
   | null
 > {
   try {

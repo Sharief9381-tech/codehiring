@@ -1,13 +1,20 @@
 // Dynamic API clients for various coding platforms
 
 export interface PlatformStats {
-  totalProblems: number
-  easyProblems: number
-  mediumProblems: number
-  hardProblems: number
-  rating: number
-  contestsParticipated: number
-  lastActive: Date
+  totalProblems?: number
+  totalSolved?: number
+  easyProblems?: number
+  easySolved?: number
+  mediumProblems?: number
+  mediumSolved?: number
+  hardProblems?: number
+  hardSolved?: number
+  rating?: number
+  ranking?: number
+  contestsParticipated?: number
+  contributionPoints?: number
+  reputation?: number
+  lastActive?: Date
 }
 
 export interface GitHubStats {

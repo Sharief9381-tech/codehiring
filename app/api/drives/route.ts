@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     if (!isDatabaseAvailable()) return NextResponse.json({ drives: [] })
 
-    let drives
+    let drives: any[]
     if (user.role === "admin") {
       drives = await DriveModel.findAll()
     } else if (user.role === "recruiter") {

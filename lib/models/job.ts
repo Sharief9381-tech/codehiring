@@ -51,7 +51,7 @@ export const JobModel = {
       createdAt: now,
       updatedAt: now,
     }
-    const result = await db.collection(COLLECTION).insertOne(doc)
+    const result = await db.collection(COLLECTION).insertOne(doc as any)
     return { ...doc, _id: result.insertedId.toString() }
   },
 

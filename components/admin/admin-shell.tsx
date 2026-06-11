@@ -10,7 +10,7 @@ export function AdminShell({ user }: { user: any }) {
   return (
     <>
       <AdminSidebar user={user} activeTab={activeTab} onTabChange={setActiveTab} />
-      <AdminDashboard activeTab={activeTab} onTabChange={setActiveTab} />
+      <AdminDashboard />
     </>
   )
 }

@@ -47,6 +47,11 @@ export interface StudentProfile extends BaseProfile {
   rollNumber: string
   graduationYear: number
   branch: string
+  degree?: string
+  bio?: string
+  phone?: string
+  location?: string
+  collegeName?: string
   skills: string[]
   linkedPlatforms?: {
     leetcode?: PlatformConnection
@@ -55,11 +60,14 @@ export interface StudentProfile extends BaseProfile {
     codechef?: PlatformConnection
     hackerrank?: PlatformConnection
     hackerearth?: PlatformConnection
-    [key: string]: PlatformConnection | undefined // Allow custom platforms
+    [key: string]: PlatformConnection | undefined
   }
   stats?: StudentStats
   isOpenToWork: boolean
   linkedinUrl?: string
+  githubUrl?: string
+  portfolioUrl?: string
+  twitterUrl?: string
 }
 
 export interface CollegeProfile extends BaseProfile {

@@ -18,7 +18,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     if (!isDatabaseAvailable()) return NextResponse.json({ applicants: [] })
 
     const { id } = await params
-    const drive = await DriveModel.findById(id)
+    const drive: any = await DriveModel.findById(id)
     if (!drive) return NextResponse.json({ error: "Not found" }, { status: 404 })
 
     const isCollegeDrive   = drive.postedByRole === "college"
@@ -37,8 +37,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     // Recruiter: sees shortlisted candidates after assessment
     if (user.role === "recruiter" && isRecruiterDrive) {
       const shortlisted = (drive.applicants || [])
-        .filter(a => a.status === "shortlisted" || a.status === "hired" || a.status === "offer_sent")
-        .sort((a, b) => (b.assessmentScore ?? 0) - (a.assessmentScore ?? 0))
+        .filter((a: any) => a.status === "shortlisted" || a.status === "hired" || a.status === "offer_sent")
+        .sort((a: any, b: any) => (b.assessmentScore ?? 0) - (a.assessmentScore ?? 0))
 
       // Get assessment details if available
       let assessmentStats = null

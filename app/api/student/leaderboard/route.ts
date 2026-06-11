@@ -2,7 +2,68 @@ import { NextResponse } from "next/server"
 import { UserModel } from "@/lib/models/user"
 import { isDatabaseAvailable } from "@/lib/database"
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+/**
+ * Normalize college codes so variants of the same institution are grouped together.
+ * Key = raw code stored in DB → Value = canonical code to display
+ */
+const COLLEGE_CODE_ALIASES: Record<string, string> = {
+  // Aditya University / ADTPPU variants
+  "ADTPPU": "ADITYA",
+  "ADITYA UNIVERSITY": "ADITYA",
+  "ADITYAUNIVERSITY": "ADITYA",
+  "ADITYA-UNIVERSITY": "ADITYA",
+  "ADITYA ENGINEERING COLLEGE": "ADITYA",
+  "ADITYAEC": "ADITYA",
+
+  // IIT variants
+  "IIT-H": "IITH",
+  "IIT HYDERABAD": "IITH",
+  "IIT-B": "IITB",
+  "IIT BOMBAY": "IITB",
+  "IIT-D": "IITD",
+  "IIT DELHI": "IITD",
+  "IIT-M": "IITM",
+  "IIT MADRAS": "IITM",
+  "IIT-KGP": "IITKGP",
+  "IIT KHARAGPUR": "IITKGP",
+
+  // BITS variants
+  "BITS-HYD": "BITSHYD",
+  "BITS PILANI HYDERABAD": "BITSHYD",
+  "BITS HYDERABAD": "BITSHYD",
+  "BITS-PIL": "BITSPILANI",
+  "BITS PILANI": "BITSPILANI",
+
+  // JNTU variants
+  "JNTU": "JNTUH",
+  "JNTU-H": "JNTUH",
+  "JNTUH-CEH": "JNTUHJCEH",
+
+  // KL variants
+  "KL UNIVERSITY": "KLEF",
+  "KLU": "KLEF",
+
+  // VIT variants
+  "VIT AP": "VITAP",
+  "VIT-AP": "VITAP",
+
+  // SRM variants
+  "SRM AP": "SRMAP",
+  "SRM-AP": "SRMAP",
+
+  // Generic case-insensitive handled below
+}
+
+function normalizeCollegeCode(raw: string | undefined): string {
+  if (!raw) return ""
+  const trimmed = raw.trim()
+  const upper = trimmed.toUpperCase()
+  // Check direct alias map (case-insensitive)
+  const alias = COLLEGE_CODE_ALIASES[upper] ?? COLLEGE_CODE_ALIASES[trimmed]
+  if (alias) return alias
+  // Return uppercased trimmed original
+  return upper
+}
 
 function calcProblems(student: any): number {
   const platforms = student.linkedPlatforms || {}
@@ -43,7 +104,7 @@ function buildEntry(student: any, rank: number) {
     rank,
     name: student.name || "Student",
     email: student.email || "",
-    collegeCode: student.collegeCode || "",
+    collegeCode: normalizeCollegeCode(student.collegeCode),
     branch: student.branch || "",
     graduationYear: student.graduationYear || null,
     problems: calcProblems(student),

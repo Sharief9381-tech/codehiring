@@ -91,9 +91,10 @@ export function PlatformCards({ student }: PlatformCardsProps) {
   }
 
   useEffect(() => {
-    for (const [platform, username] of Object.entries(linkedPlatforms)) {
-      if (username) {
-        fetchPlatformStats(platform, username)
+    for (const [platform, platformData] of Object.entries(linkedPlatforms)) {
+      if (platformData) {
+        const username = typeof platformData === "object" ? (platformData as any).username : platformData
+        if (username) fetchPlatformStats(platform, username)
       }
     }
   }, [])
@@ -191,7 +192,10 @@ export function PlatformCards({ student }: PlatformCardsProps) {
       </CardHeader>
       <CardContent className="grid gap-4 md:grid-cols-2">
         {platforms.map((platform) => {
-          const username = linkedPlatforms[platform.id as keyof typeof linkedPlatforms]
+          const rawPlatform = linkedPlatforms[platform.id as keyof typeof linkedPlatforms]
+          const username = rawPlatform
+            ? typeof rawPlatform === "object" ? (rawPlatform as any).username : rawPlatform
+            : null
           const platformStats = stats[platform.id as keyof PlatformStats]
           const isLoading = loading[platform.id]
 

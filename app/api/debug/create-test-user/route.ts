@@ -10,6 +10,8 @@ export async function POST() {
       password: "password123",
       role: "student",
       collegeName: "Test College",
+      collegeCode: "TC",
+      rollNumber: "TC001",
       graduationYear: 2025,
       branch: "Computer Science",
       linkedPlatforms: {},
@@ -24,7 +26,7 @@ export async function POST() {
       },
       skills: [],
       isOpenToWork: true,
-    })
+    } as any)
 
     // Create a test college
     const college = await createCollege({

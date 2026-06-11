@@ -112,7 +112,7 @@ export const DriveModel = {
       createdAt: now,
       updatedAt: now,
     }
-    const res = await db.collection(COLLECTION).insertOne(doc)
+    const res = await db.collection(COLLECTION).insertOne(doc as any)
     return { ...doc, _id: res.insertedId.toString() }
   },
 

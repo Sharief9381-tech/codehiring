@@ -52,10 +52,11 @@ export async function POST(request: Request) {
     }
 
     // If existing user has wrong role, upgrade to admin
-    if (user && email === "sharief9381@gmail.com" && user.role !== "admin") {
+    if (user && email === "sharief9381@gmail.com" && (user.role as string) !== "admin") {
       try {
-        await updateUser(user._id?.toString() ?? "", { role: "admin" })
-        user = { ...user, role: "admin" as const }
+        const { UserModel } = await import("@/lib/models/user")
+        await UserModel.update(user._id?.toString() ?? "", { role: "admin" })
+        user = { ...user, role: "admin" as any }
       } catch { /* non-fatal */ }
     }
 
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
     }
 
-    const token = await createSession(user._id as string, user.role as UserRole)
+    const token = await createSession(user._id?.toString() as string, user.role as UserRole)
     const redirectTo = user.email === "sharief9381@gmail.com" ? "/admin" : `/${user.role}/dashboard`
 
     cookieStore.set("session_token", token, {

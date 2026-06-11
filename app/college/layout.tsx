@@ -12,7 +12,7 @@ export default async function CollegeLayout({ children }: { children: React.Reac
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardSidebar user={serializeUser(user)} />
+      <DashboardSidebar user={serializeUser(user) as any} />
       <main className="min-h-[calc(100vh-56px)]">
         {children}
       </main>

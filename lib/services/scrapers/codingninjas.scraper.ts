@@ -43,7 +43,7 @@ export async function scrapeCodingNinjas(username: string): Promise<NormalizedPl
   // Try __NEXT_DATA__ first
   let solved = 0, score = 0, rank = 0, streak = 0
 
-  const nextDataMatch = html.match(/<script id="__NEXT_DATA__"[^>]*>(.+?)<\/script>/s)
+  const nextDataMatch = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]+?)<\/script>/)
   if (nextDataMatch) {
     try {
       const nd = JSON.parse(nextDataMatch[1])

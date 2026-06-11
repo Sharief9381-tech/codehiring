@@ -63,7 +63,7 @@ export async function GET() {
           // 4. Sort by student count desc, take top 8
           // 5. Return the collegeCode
           db.collection("users").aggregate([
-            { $match: { role: "student", collegeCode: { $exists: true, $ne: null, $ne: "" } } },
+            { $match: { role: "student", collegeCode: { $exists: true, $nin: [null, ""] } } },
             { $group: { _id: "$collegeCode", studentCount: { $sum: 1 } } },
             { $sort: { studentCount: -1 } },
             { $lookup: {

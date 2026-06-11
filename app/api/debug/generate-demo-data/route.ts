@@ -108,11 +108,11 @@ export async function POST() {
       try {
         let createdUser
         if (user.type === 'student') {
-          createdUser = await createStudent(user.data)
+          createdUser = await createStudent(user.data as any)
         } else if (user.type === 'college') {
-          createdUser = await createCollege(user.data)
+          createdUser = await createCollege(user.data as any)
         } else if (user.type === 'recruiter') {
-          createdUser = await createRecruiter(user.data)
+          createdUser = await createRecruiter(user.data as any)
         }
 
         if (createdUser) {

@@ -21,10 +21,10 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { FeedbackForm } from "@/components/feedback/feedback-form"
 import { NotificationBell } from "@/components/dashboard/notification-bell"
-import type { StudentProfile, CollegeProfile, RecruiterProfile } from "@/lib/types"
+import type { StudentProfile, CollegeProfile, RecruiterProfile, AdminProfile } from "@/lib/types"
 
 interface DashboardSidebarProps {
-  user: StudentProfile | CollegeProfile | RecruiterProfile
+  user: StudentProfile | CollegeProfile | RecruiterProfile | AdminProfile
 }
 
 const studentLinks = [

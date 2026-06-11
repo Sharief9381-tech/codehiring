@@ -26,7 +26,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
     if (approved) {
       await DriveModel.update(id, {
-        verifiedBy: user._id as string,
+        verifiedBy: (user as any)._id?.toString() as string,
         verifiedAt: new Date(),
       })
       await DriveModel.advanceStatus(id, "active", note || "Verified and activated by CodeHiring")

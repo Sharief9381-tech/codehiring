@@ -5,41 +5,11 @@
  */
 import { NextResponse } from "next/server"
 import { getDatabase, isDatabaseAvailable } from "@/lib/database"
-
-function computeCodeTrackScore(student: any): number {
-  let totalProblems = 0, highestRating = 0, githubContributions = 0, contests = 0
-  const platforms = Object.keys(student.linkedPlatforms || {})
-
-  Object.entries(student.linkedPlatforms || {}).forEach(([pid, data]: [string, any]) => {
-    if (!data?.stats) return
-    const s = data.stats
-    totalProblems += s.totalSolved || s.problemsSolved || 0
-    if (pid === "github") githubContributions = s.totalContributions || 0
-    const r = Math.max(s.rating || 0, s.currentRating || 0, s.highestRating || 0, s.contestRating || 0)
-    if (r > highestRating) highestRating = r
-    contests += s.contests?.length || s.contestsParticipated || s.attendedContestsCount || 0
-  })
-
-  const profileComplete = [
-    !!student.linkedinUrl,
-    (student.skills?.length ?? 0) > 0,
-    student.isOpenToWork !== undefined,
-    !!student.linkedPlatforms?.github,
-    platforms.length > 0,
-  ].filter(Boolean).length * 20
-
-  return Math.min(1000, Math.round(
-    Math.min(totalProblems / 5, 400) +
-    Math.min(highestRating / 5, 200) +
-    Math.min(githubContributions / 5, 150) +
-    Math.min(contests * 5, 150) +
-    profileComplete / 10
-  ))
-}
+import { computeCodeHiringScore } from "@/lib/score"
 
 export async function GET(
   _req: Request,
-  { params }: { params: { username: string } }
+  { params }: { params: Promise<{ username: string }> }
 ) {
   if (!isDatabaseAvailable()) {
     return NextResponse.json({ error: "Service unavailable" }, { status: 503 })
@@ -47,7 +17,8 @@ export async function GET(
 
   try {
     const db = await getDatabase()
-    const slug = params.username.toLowerCase()
+    const { username } = await params
+    const slug = username.toLowerCase()
 
     // Search by name slug (lowercase, spaces→hyphens) or email prefix
     const students = await db
@@ -87,7 +58,7 @@ export async function GET(
       platformSummary[pid] = { username, problems, rating, contributions: contribs }
     })
 
-    const codetrackScore = computeCodeTrackScore(student)
+    const codetrackScore = computeCodeHiringScore(student)
 
     return NextResponse.json({
       profile: {

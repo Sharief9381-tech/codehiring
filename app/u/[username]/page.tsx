@@ -9,6 +9,7 @@ import {
   ExternalLink, CheckCircle2
 } from "lucide-react"
 import { getDatabase, isDatabaseAvailable } from "@/lib/database"
+import { computeCodeHiringScore } from "@/lib/score"
 
 interface Props { params: Promise<{ username: string }> }
 
@@ -16,37 +17,6 @@ const PLATFORM_COLORS: Record<string, string> = {
   leetcode: "#FFA116", github: "#238636", codeforces: "#1890FF",
   codechef: "#5B4638", hackerrank: "#00EA64", geeksforgeeks: "#2F8D46",
   atcoder: "#888888", hackerearth: "#2C3E50",
-}
-
-function computeScore(student: any): number {
-  let totalProblems = 0, highestRating = 0, githubContributions = 0, contests = 0
-  const platforms = Object.keys(student.linkedPlatforms || {})
-
-  Object.entries(student.linkedPlatforms || {}).forEach(([pid, data]: [string, any]) => {
-    if (!data?.stats) return
-    const s = data.stats
-    totalProblems += s.totalSolved || s.problemsSolved || 0
-    if (pid === "github") githubContributions = s.totalContributions || 0
-    const r = Math.max(s.rating || 0, s.currentRating || 0, s.highestRating || 0, s.contestRating || 0)
-    if (r > highestRating) highestRating = r
-    contests += s.contests?.length || s.contestsParticipated || s.attendedContestsCount || 0
-  })
-
-  const profilePts = [
-    !!student.linkedinUrl,
-    (student.skills?.length ?? 0) > 0,
-    !!student.linkedPlatforms?.github,
-    platforms.length > 0,
-    student.isOpenToWork !== undefined,
-  ].filter(Boolean).length * 20
-
-  return Math.min(1000, Math.round(
-    Math.min((totalProblems / 500) * 400, 400) +
-    Math.min((highestRating / 1600) * 200, 200) +
-    Math.min((githubContributions / 365) * 150, 150) +
-    Math.min((contests / 20) * 150, 150) +
-    profilePts / 10
-  ))
 }
 
 async function getProfile(slug: string) {
@@ -91,7 +61,7 @@ export default async function PublicProfilePage({ params }: Props) {
     platformEntries.push([pid, { username: uname, problems, rating, contributions: contribs }])
   })
 
-  const codehiringScore = computeScore(student)
+  const codehiringScore = computeCodeHiringScore(student)
   const scoreColor = codehiringScore >= 700 ? "text-emerald-500" : codehiringScore >= 400 ? "text-amber-500" : "text-red-500"
 
   const currentYear = new Date().getFullYear()

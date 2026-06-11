@@ -25,8 +25,14 @@ export function serializeUser(user: any): StudentProfile | CollegeProfile | Recr
       ...baseUser,
       role: "student",
       collegeName: user.collegeName,
+      collegeCode: user.collegeCode || "",
+      rollNumber: user.rollNumber || "",
       graduationYear: user.graduationYear,
       branch: user.branch,
+      degree: user.degree,
+      bio: user.bio,
+      phone: user.phone,
+      location: user.location,
       linkedPlatforms: user.linkedPlatforms || {},
       stats: user.stats || {
         totalProblems: 0,
@@ -39,6 +45,10 @@ export function serializeUser(user: any): StudentProfile | CollegeProfile | Recr
       },
       skills: user.skills || [],
       isOpenToWork: user.isOpenToWork ?? true,
+      linkedinUrl: user.linkedinUrl,
+      githubUrl: user.githubUrl,
+      portfolioUrl: user.portfolioUrl,
+      twitterUrl: user.twitterUrl,
     } as StudentProfile
   }
 

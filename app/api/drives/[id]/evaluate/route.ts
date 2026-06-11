@@ -40,7 +40,7 @@ Respond with ONLY a JSON object: {"score": <number>, "feedback": "<brief>", "qua
     if (!res.ok) return Math.round(question.points * 0.5)
     const data = await res.json()
     const text = data.choices?.[0]?.message?.content || "{}"
-    const parsed = JSON.parse(text.match(/\{.*\}/s)?.[0] || "{}")
+    const parsed = JSON.parse(text.match(/\{[\s\S]*\}/)?.[0] || "{}")
     return Math.min(question.points, Math.max(0, parsed.score || 0))
   } catch {
     return Math.round(question.points * 0.5)

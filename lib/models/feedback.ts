@@ -32,7 +32,7 @@ export const FeedbackModel = {
     const db = await getDatabase()
     const now = new Date()
     const doc: FeedbackDocument = { ...data, status: "pending", createdAt: now, updatedAt: now }
-    const result = await db.collection(COLLECTION).insertOne(doc)
+    const result = await db.collection(COLLECTION).insertOne(doc as any)
     return { ...doc, _id: result.insertedId.toString() }
   },
 
