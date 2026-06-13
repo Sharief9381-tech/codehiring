@@ -182,9 +182,11 @@ export class PlatformAggregator {
       } else if (pid === 'hackerearth') {
         totalProblems += stats.problemsSolved || 0
         currentRating = Math.max(currentRating, stats.rating || 0)
+        // _apiLimited means profile is verified but full stats aren't scrapable
 
       } else if (pid === 'interviewbit') {
         totalProblems += stats.problemsSolved || 0
+        // _apiLimited means profile verified but stats couldn't be fully scraped
 
       } else if (pid === 'codestudio') {
         totalProblems += stats.problemsSolved || 0

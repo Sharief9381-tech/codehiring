@@ -8,7 +8,7 @@ const ALLOWED_FIELDS = [
   "collegeName", "branch", "rollNumber", "degree",
   "graduationYear",   // allowed only if not already set (enforced client-side)
   "skills", "linkedinUrl", "githubUrl", "portfolioUrl", "twitterUrl",
-  "isOpenToWork",
+  "isOpenToWork", "resumeUrl",
 ]
 
 export async function PATCH(request: Request) {
@@ -59,6 +59,13 @@ export async function GET() {
     if (!student) return NextResponse.json({ error: "User not found" }, { status: 404 })
 
     const { password, ...safe } = student as any
+
+    // Strip the heavy base64 payload — only send metadata to the client
+    if (safe.resumeFile?.dataUri) {
+      const { dataUri: _omit, ...fileMeta } = safe.resumeFile
+      safe.resumeFile = fileMeta
+    }
+
     return NextResponse.json({ user: safe })
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch profile" }, { status: 500 })

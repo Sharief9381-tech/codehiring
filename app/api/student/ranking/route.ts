@@ -2,20 +2,46 @@ import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 
-// Same alias map as leaderboard — keep in sync
+// Explicit alias map for known variants
 const COLLEGE_CODE_ALIASES: Record<string, string> = {
+  // Aditya
   "ADTPPU": "ADITYA", "ADITYA UNIVERSITY": "ADITYA", "ADITYAUNIVERSITY": "ADITYA",
   "ADITYA-UNIVERSITY": "ADITYA", "ADITYA ENGINEERING COLLEGE": "ADITYA", "ADITYAEC": "ADITYA",
+  // IIT
   "IIT-H": "IITH", "IIT HYDERABAD": "IITH", "IIT-B": "IITB", "IIT BOMBAY": "IITB",
-  "IIT-D": "IITD", "IIT DELHI": "IITD", "BITS-HYD": "BITSHYD", "BITS PILANI HYDERABAD": "BITSHYD",
-  "KL UNIVERSITY": "KLEF", "KLU": "KLEF", "VIT AP": "VITAP", "VIT-AP": "VITAP",
+  "IIT-D": "IITD", "IIT DELHI": "IITD", "IIT-M": "IITM", "IIT MADRAS": "IITM",
+  "IIT-KGP": "IITKGP", "IIT KHARAGPUR": "IITKGP", "IIT-BHU": "IITBHU", "IIT BHU": "IITBHU",
+  "IIT-R": "IITR", "IIT ROORKEE": "IITR", "IIT-G": "IITG", "IIT GUWAHATI": "IITG",
+  // BITS
+  "BITS-HYD": "BITSHYD", "BITS PILANI HYDERABAD": "BITSHYD", "BITS HYDERABAD": "BITSHYD",
+  "BITS-PIL": "BITSPILANI", "BITS PILANI": "BITSPILANI",
+  // KL
+  "KL UNIVERSITY": "KLEF", "KLU": "KLEF",
+  // VIT
+  "VIT AP": "VITAP", "VIT-AP": "VITAP",
+  // SRM
   "SRM AP": "SRMAP", "SRM-AP": "SRMAP",
+  // KITS variants
+  "KITSW": "KITS", "KAKATIYA INSTITUTE OF TECHNOLOGY": "KITS",
+  "KAKATIYA INSTITUTE OF TECHNOLOGY AND SCIENCE": "KITS",
+  // JNTU variants
+  "JNTU": "JNTUH", "JNTU-H": "JNTUH", "JNTUHCEH": "JNTUHJCEH",
+  // NIT variants
+  "NIT WARANGAL": "NITW", "NITW": "NITW", "NIT-W": "NITW",
+  "NIT AP": "NITAP", "NIT ANDHRA PRADESH": "NITAP",
 }
 
 function normalizeCollegeCode(raw: string | undefined): string {
   if (!raw) return ""
+  // Trim and uppercase
   const upper = raw.trim().toUpperCase()
-  return COLLEGE_CODE_ALIASES[upper] ?? COLLEGE_CODE_ALIASES[raw.trim()] ?? upper
+  // Check alias map
+  if (COLLEGE_CODE_ALIASES[upper]) return COLLEGE_CODE_ALIASES[upper]
+  // Strip common noise: spaces, dashes, dots → canonical form
+  const stripped = upper.replace(/[\s\-\.]+/g, "")
+  if (COLLEGE_CODE_ALIASES[stripped]) return COLLEGE_CODE_ALIASES[stripped]
+  // Return stripped canonical (so "KITS" and "kits" both become "KITS")
+  return stripped || upper
 }
 
 function getTotalProblems(student: any): number {
@@ -62,6 +88,9 @@ export async function GET() {
       collegeRank,
       totalGlobal: allStudents.length,
       totalCollege,
+      totalColleges: new Set(
+        allStudents.map((s: any) => normalizeCollegeCode(s.collegeCode)).filter(Boolean)
+      ).size,
       myProblems,
       myCollege,
     })

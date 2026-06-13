@@ -112,11 +112,11 @@ export async function fetchCodeforcesStats(username: string): Promise<Codeforces
       }
     } catch { /* ignore rating fetch error */ }
 
-    // Submissions — reduced count to avoid rate limits
+    // Submissions — fetch enough to cover the full year
     let submissions: CodeforcesStats["submissions"] = []
     let problemsSolved = 0
     try {
-      const subRes = await cfFetch(`https://codeforces.com/api/user.status?handle=${cleanUsername}&from=1&count=50`)
+      const subRes = await cfFetch(`https://codeforces.com/api/user.status?handle=${cleanUsername}&from=1&count=500`)
       if (subRes.ok) {
         const subData = await subRes.json()
         if (subData.status === "OK") {
@@ -125,7 +125,8 @@ export async function fetchCodeforcesStats(username: string): Promise<Codeforces
             if (sub.verdict === "OK") solvedSet.add(`${sub.problem.contestId}-${sub.problem.index}`)
           }
           problemsSolved = solvedSet.size
-          submissions = subData.result.slice(0, 10).map((sub: any) => ({
+          // Keep all submissions with timestamps for heatmap
+          submissions = subData.result.map((sub: any) => ({
             problem: { name: sub.problem.name, rating: sub.problem.rating || 0, tags: sub.problem.tags || [] },
             verdict: sub.verdict,
             language: sub.programmingLanguage,

@@ -68,6 +68,7 @@ export interface StudentProfile extends BaseProfile {
   githubUrl?: string
   portfolioUrl?: string
   twitterUrl?: string
+  resumeUrl?: string
 }
 
 export interface CollegeProfile extends BaseProfile {

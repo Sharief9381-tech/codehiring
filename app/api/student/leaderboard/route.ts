@@ -7,62 +7,40 @@ import { isDatabaseAvailable } from "@/lib/database"
  * Key = raw code stored in DB → Value = canonical code to display
  */
 const COLLEGE_CODE_ALIASES: Record<string, string> = {
-  // Aditya University / ADTPPU variants
-  "ADTPPU": "ADITYA",
-  "ADITYA UNIVERSITY": "ADITYA",
-  "ADITYAUNIVERSITY": "ADITYA",
-  "ADITYA-UNIVERSITY": "ADITYA",
-  "ADITYA ENGINEERING COLLEGE": "ADITYA",
-  "ADITYAEC": "ADITYA",
-
-  // IIT variants
-  "IIT-H": "IITH",
-  "IIT HYDERABAD": "IITH",
-  "IIT-B": "IITB",
-  "IIT BOMBAY": "IITB",
-  "IIT-D": "IITD",
-  "IIT DELHI": "IITD",
-  "IIT-M": "IITM",
-  "IIT MADRAS": "IITM",
-  "IIT-KGP": "IITKGP",
-  "IIT KHARAGPUR": "IITKGP",
-
-  // BITS variants
-  "BITS-HYD": "BITSHYD",
-  "BITS PILANI HYDERABAD": "BITSHYD",
-  "BITS HYDERABAD": "BITSHYD",
-  "BITS-PIL": "BITSPILANI",
-  "BITS PILANI": "BITSPILANI",
-
-  // JNTU variants
-  "JNTU": "JNTUH",
-  "JNTU-H": "JNTUH",
-  "JNTUH-CEH": "JNTUHJCEH",
-
-  // KL variants
-  "KL UNIVERSITY": "KLEF",
-  "KLU": "KLEF",
-
-  // VIT variants
-  "VIT AP": "VITAP",
-  "VIT-AP": "VITAP",
-
-  // SRM variants
-  "SRM AP": "SRMAP",
-  "SRM-AP": "SRMAP",
-
-  // Generic case-insensitive handled below
+  // Aditya
+  "ADTPPU": "ADITYA", "ADITYA UNIVERSITY": "ADITYA", "ADITYAUNIVERSITY": "ADITYA",
+  "ADITYA-UNIVERSITY": "ADITYA", "ADITYA ENGINEERING COLLEGE": "ADITYA", "ADITYAEC": "ADITYA",
+  // IIT
+  "IIT-H": "IITH", "IIT HYDERABAD": "IITH", "IIT-B": "IITB", "IIT BOMBAY": "IITB",
+  "IIT-D": "IITD", "IIT DELHI": "IITD", "IIT-M": "IITM", "IIT MADRAS": "IITM",
+  "IIT-KGP": "IITKGP", "IIT KHARAGPUR": "IITKGP", "IIT-R": "IITR", "IIT ROORKEE": "IITR",
+  "IIT-G": "IITG", "IIT GUWAHATI": "IITG", "IIT-BHU": "IITBHU", "IIT BHU": "IITBHU",
+  // BITS
+  "BITS-HYD": "BITSHYD", "BITS PILANI HYDERABAD": "BITSHYD", "BITS HYDERABAD": "BITSHYD",
+  "BITS-PIL": "BITSPILANI", "BITS PILANI": "BITSPILANI",
+  // JNTU
+  "JNTU": "JNTUH", "JNTU-H": "JNTUH", "JNTUH-CEH": "JNTUHJCEH",
+  // KL
+  "KL UNIVERSITY": "KLEF", "KLU": "KLEF",
+  // VIT
+  "VIT AP": "VITAP", "VIT-AP": "VITAP",
+  // SRM
+  "SRM AP": "SRMAP", "SRM-AP": "SRMAP",
+  // KITS
+  "KITSW": "KITS", "KAKATIYA INSTITUTE OF TECHNOLOGY": "KITS",
+  "KAKATIYA INSTITUTE OF TECHNOLOGY AND SCIENCE": "KITS",
+  // NIT
+  "NIT WARANGAL": "NITW", "NIT-W": "NITW", "NIT AP": "NITAP", "NIT ANDHRA PRADESH": "NITAP",
 }
 
 function normalizeCollegeCode(raw: string | undefined): string {
   if (!raw) return ""
-  const trimmed = raw.trim()
-  const upper = trimmed.toUpperCase()
-  // Check direct alias map (case-insensitive)
-  const alias = COLLEGE_CODE_ALIASES[upper] ?? COLLEGE_CODE_ALIASES[trimmed]
-  if (alias) return alias
-  // Return uppercased trimmed original
-  return upper
+  const upper = raw.trim().toUpperCase()
+  if (COLLEGE_CODE_ALIASES[upper]) return COLLEGE_CODE_ALIASES[upper]
+  // Strip spaces/dashes/dots for a canonical form
+  const stripped = upper.replace(/[\s\-\.]+/g, "")
+  if (COLLEGE_CODE_ALIASES[stripped]) return COLLEGE_CODE_ALIASES[stripped]
+  return stripped || upper
 }
 
 function calcProblems(student: any): number {

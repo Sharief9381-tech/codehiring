@@ -94,6 +94,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, user: userWithoutPassword, redirectTo })
   } catch (error) {
     console.error("Login error:", error)
+    const msg = error instanceof Error ? error.message : "Unknown error"
+    if (msg.includes("ETIMEOUT") || msg.includes("connect") || msg.includes("MongoDB")) {
+      return NextResponse.json({ error: "Database connection failed. Please try again in a moment." }, { status: 503 })
+    }
     return NextResponse.json({ error: "Failed to login" }, { status: 500 })
   }
 }

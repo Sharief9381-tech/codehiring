@@ -105,13 +105,13 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
       hackerrank:   { name: "HackerRank",        icon: Trophy,    getSummary: (s: any) => `${s?.badges?.length || 0} badges`,       getProfileUrl: (u: string) => `https://www.hackerrank.com/profile/${u}` },
       github:       { name: "GitHub",            icon: GitBranch, getSummary: (s: any) => `${s?.publicRepos || 0} repos`,           getProfileUrl: (u: string) => `https://github.com/${u}` },
       codeforces:   { name: "Codeforces",        icon: Trophy,    getSummary: (s: any) => `${s?.rating || 0} rating`,               getProfileUrl: (u: string) => `https://codeforces.com/profile/${u}` },
-      hackerearth:  { name: "HackerEarth",       icon: Code,      getSummary: (s: any) => `${s?.problemsSolved || 0} solved`,       getProfileUrl: (u: string) => `https://www.hackerearth.com/@${u}` },
+      hackerearth:  { name: "HackerEarth",       icon: Code,      getSummary: (s: any) => s?._apiLimited && !s?.problemsSolved ? 'Connected' : `${s?.problemsSolved || 0} solved`, getProfileUrl: (u: string) => `https://www.hackerearth.com/@${u}` },
       geeksforgeeks:{ name: "GeeksforGeeks",     icon: Globe,     getSummary: (s: any) => `${s?.codingScore || s?.score || 0} score`, getProfileUrl: (u: string) => `https://auth.geeksforgeeks.org/user/${u}/profile` },
       atcoder:      { name: "AtCoder",           icon: Trophy,    getSummary: (s: any) => `${s?.rating || 0} rating`,               getProfileUrl: (u: string) => `https://atcoder.jp/users/${u}` },
       spoj:         { name: "SPOJ",              icon: Code,      getSummary: (s: any) => `${s?.problemsSolved || 0} solved`,       getProfileUrl: (u: string) => `https://www.spoj.com/users/${u}/` },
       kattis:       { name: "Kattis",            icon: Trophy,    getSummary: (s: any) => `${s?.problemsSolved || 0} solved`,       getProfileUrl: (u: string) => `https://open.kattis.com/users/${u}` },
       topcoder:     { name: "TopCoder",          icon: Trophy,    getSummary: (s: any) => `${s?.rating || 0} rating`,               getProfileUrl: (u: string) => `https://www.topcoder.com/members/${u}` },
-      interviewbit: { name: "InterviewBit",      icon: Code,      getSummary: (s: any) => `${s?.problemsSolved || 0} solved`,       getProfileUrl: (u: string) => `https://www.interviewbit.com/profile/${u}` },
+      interviewbit: { name: "InterviewBit",      icon: Code,      getSummary: (s: any) => s?._apiLimited && !s?.problemsSolved ? 'Connected' : `${s?.problemsSolved || 0} solved`, getProfileUrl: (u: string) => `https://www.interviewbit.com/profile/${u}` },
       cses:         { name: "CSES Problem Set",  icon: Trophy,    getSummary: (s: any) => `${s?.problemsSolved || 0} solved`,       getProfileUrl: (u: string) => `https://cses.fi/user/${u}` },
       codestudio:   { name: "CodeStudio",        icon: Code,      getSummary: (s: any) => `${s?.problemsSolved || 0} solved`,       getProfileUrl: (u: string) => `https://www.codingninjas.com/studio/profile/${u}` },
       exercism:     { name: "Exercism",          icon: Globe,     getSummary: (s: any) => `${s?.completedExercises || 0} exercises`, getProfileUrl: (u: string) => `https://exercism.org/profiles/${u}` },
@@ -175,6 +175,29 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                   <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
                   Fetching latest stats...
                 </div>
+              </div>
+            ) : stats?._apiLimited && !stats?.problemsSolved && !stats?.score && !stats?.rating ? (
+              /* Profile verified but stats not publicly accessible */
+              <div className="flex flex-col items-center justify-center py-5 gap-3 text-center">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                  <Check className="h-5 w-5 text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-200">Profile Verified</p>
+                  <p className="text-xs text-gray-500 mt-1 leading-relaxed px-1">
+                    {platformId === 'interviewbit'
+                      ? 'InterviewBit stats require login — all their data APIs are auth-only. Your profile is linked and counts toward your score.'
+                      : 'Stats are loaded client-side and not publicly accessible. Your profile is linked.'}
+                  </p>
+                </div>
+                <a
+                  href={config.getProfileUrl(username)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 border border-blue-400/20 rounded-lg px-3 py-1.5 transition-colors hover:bg-blue-500/5"
+                >
+                  Open Profile <ExternalLink className="h-3 w-3" />
+                </a>
               </div>
             ) : (
               <div className="space-y-4">
@@ -315,6 +338,9 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       <div className="w-1/3 flex justify-center"><div className="text-center"><div className="text-sm font-bold text-yellow-400">{safeNum(stats.globalRank)}</div><div className="text-xs text-gray-400">Global Rank</div></div></div>
                       <div className="w-1/12" />
                     </div></div>
+                    {stats._apiLimited && (
+                      <p className="text-[10px] text-amber-400/70 text-center">⚠ Stats from page meta · HackerEarth API is private</p>
+                    )}
                   </>
                 )}
 
@@ -360,6 +386,27 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                         <div className="text-center"><div className="text-lg font-bold text-purple-400">{stats.rank || 0}</div><div className="text-xs text-gray-400">Rank</div></div>
                       </div>
                     </div>
+                  </>
+                )}
+
+                {platformId === 'interviewbit' && (
+                  <>
+                    <div>
+                      <p className="text-xs text-gray-400">Interview Prep</p>
+                      <div className="flex justify-between items-end">
+                        <div className="text-center"><div className="text-lg font-bold text-blue-400">{stats.problemsSolved || 0}</div><div className="text-xs text-gray-400">Solved</div></div>
+                        <div className="text-center"><div className="text-lg font-bold text-green-400">{stats.score || 0}</div><div className="text-xs text-gray-400">Score</div></div>
+                        <div className="text-center"><div className="text-lg font-bold text-purple-400">{stats.rank || 0}</div><div className="text-xs text-gray-400">Rank</div></div>
+                      </div>
+                    </div>
+                    {stats.streakDays > 0 && (
+                      <div className="flex justify-center">
+                        <div className="text-center"><div className="text-sm font-bold text-orange-400">{stats.streakDays}</div><div className="text-xs text-gray-400">Day Streak</div></div>
+                      </div>
+                    )}
+                    {stats._apiLimited && (
+                      <p className="text-[10px] text-amber-400/70 text-center">⚠ Stats via page scraping · InterviewBit API is private</p>
+                    )}
                   </>
                 )}
 
@@ -443,6 +490,165 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
           {connectedIds.map(platformId => renderCard(platformId, linkedPlatforms[platformId]))}
         </div>
       )}
+
+      {/* Difficulty Distribution — shown when platforms are connected */}
+      {connectedIds.length > 0 && (() => {
+        // Aggregate difficulty per platform — each platform contributes to its known tiers
+        // Sources:
+        //   Easy:   LeetCode easySolved, GFG easy_count/easyCount
+        //   Medium: LeetCode mediumSolved, GFG medium_count/mediumCount
+        //   Hard:   LeetCode hardSolved, GFG hard_count/hardCount, AtCoder problems (all rated hard)
+        const breakdown: {
+          platform: string
+          easy: number
+          medium: number
+          hard: number
+          other: number   // solved but no difficulty tag (Codeforces, CodeChef, etc.)
+          color: string
+        }[] = []
+
+        const COLORS: Record<string, string> = {
+          leetcode:      '#f59e0b',
+          geeksforgeeks: '#0d9488',
+          atcoder:       '#8b5cf6',
+          codeforces:    '#3b82f6',
+          codechef:      '#f97316',
+          hackerrank:    '#22c55e',
+          hackerearth:   '#6366f1',
+          spoj:          '#f43f5e',
+          kattis:        '#ec4899',
+          cses:          '#84cc16',
+          interviewbit:  '#06b6d4',
+        }
+
+        connectedIds.forEach(pid => {
+          const pdata = linkedPlatforms[pid]
+          if (!pdata || typeof pdata !== 'object') return
+          const s = 'stats' in pdata ? (pdata as any).stats : null
+          if (!s) return
+
+          let easy = 0, medium = 0, hard = 0, other = 0
+
+          if (pid === 'leetcode') {
+            easy   = s.easySolved   || 0
+            medium = s.mediumSolved || 0
+            hard   = s.hardSolved   || 0
+          } else if (pid === 'geeksforgeeks') {
+            easy   = s.easyCount   || s.easy_count   || 0
+            medium = s.mediumCount || s.medium_count || 0
+            hard   = s.hardCount   || s.hard_count   || 0
+            // GFG also has a total — if breakdown not available, count as other
+            if (easy + medium + hard === 0) {
+              other = s.problemsSolved || 0
+            }
+          } else if (pid === 'atcoder') {
+            // AtCoder doesn't expose difficulty — all count as rated (treat as hard)
+            hard  = s.problemsSolved || 0
+          } else {
+            // All other platforms: solved count goes into "other"
+            other = s.totalSolved || s.problemsSolved || s.completedExercises || 0
+          }
+
+          const total = easy + medium + hard + other
+          if (total > 0) {
+            breakdown.push({
+              platform: pid.charAt(0).toUpperCase() + pid.slice(1),
+              easy, medium, hard, other,
+              color: COLORS[pid] || '#94a3b8',
+            })
+          }
+        })
+
+        if (breakdown.length === 0) return null
+
+        const totalEasy   = breakdown.reduce((s, p) => s + p.easy,   0)
+        const totalMedium = breakdown.reduce((s, p) => s + p.medium, 0)
+        const totalHard   = breakdown.reduce((s, p) => s + p.hard,   0)
+        const totalOther  = breakdown.reduce((s, p) => s + p.other,  0)
+        const grandTotal  = totalEasy + totalMedium + totalHard + totalOther
+
+        return (
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-foreground">Difficulty Distribution</h3>
+            <div className="grid gap-4 lg:grid-cols-2">
+
+              {/* Overall difficulty bars */}
+              <Card>
+                <CardContent className="p-5 space-y-3">
+                  <p className="text-xs font-medium text-muted-foreground mb-3">Overall — {grandTotal.toLocaleString()} problems</p>
+                  {[
+                    { label: "Easy",   val: totalEasy,   color: "#10b981", bg: "bg-emerald-500", note: "LeetCode · GFG" },
+                    { label: "Medium", val: totalMedium, color: "#f59e0b", bg: "bg-amber-500",   note: "LeetCode · GFG" },
+                    { label: "Hard",   val: totalHard,   color: "#ef4444", bg: "bg-red-500",     note: "LeetCode · GFG · AtCoder" },
+                    { label: "Unrated",val: totalOther,  color: "#94a3b8", bg: "bg-slate-400",   note: "CF · CC · HR · others" },
+                  ].filter(d => d.val > 0).map(d => (
+                    <div key={d.label}>
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
+                          <span className="text-xs font-medium text-foreground">{d.label}</span>
+                          <span className="text-[10px] text-muted-foreground">{d.note}</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {d.val.toLocaleString()} <span className="text-muted-foreground/60">({grandTotal > 0 ? Math.round((d.val / grandTotal) * 100) : 0}%)</span>
+                        </span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div className={`h-full rounded-full ${d.bg}`} style={{ width: `${grandTotal > 0 ? (d.val / grandTotal) * 100 : 0}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Per-platform stacked bar */}
+              <Card>
+                <CardContent className="p-5 space-y-3">
+                  <p className="text-xs font-medium text-muted-foreground mb-3">By Platform</p>
+                  {breakdown.map(p => {
+                    const total = p.easy + p.medium + p.hard + p.other
+                    const easyPct   = (p.easy   / total) * 100
+                    const medPct    = (p.medium / total) * 100
+                    const hardPct   = (p.hard   / total) * 100
+                    return (
+                      <div key={p.platform}>
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: p.color }} />
+                            <span className="text-xs font-medium text-foreground">{p.platform}</span>
+                          </div>
+                          <span className="text-xs text-muted-foreground">{total.toLocaleString()}</span>
+                        </div>
+                        {/* Stacked bar — easy (green) / medium (amber) / hard (red) / other (slate) */}
+                        <div className="h-2 rounded-full bg-muted overflow-hidden flex">
+                          {easyPct > 0  && <div className="h-full bg-emerald-500" style={{ width: `${easyPct}%` }} />}
+                          {medPct  > 0  && <div className="h-full bg-amber-500"   style={{ width: `${medPct}%` }} />}
+                          {hardPct > 0  && <div className="h-full bg-red-500"     style={{ width: `${hardPct}%` }} />}
+                          {p.other > 0  && <div className="h-full bg-slate-400"   style={{ width: `${(p.other / total) * 100}%` }} />}
+                        </div>
+                      </div>
+                    )
+                  })}
+                  {/* Legend */}
+                  <div className="flex flex-wrap gap-3 pt-2 border-t border-border">
+                    {[
+                      { label: "Easy",    color: "bg-emerald-500" },
+                      { label: "Medium",  color: "bg-amber-500"   },
+                      { label: "Hard",    color: "bg-red-500"     },
+                      { label: "Unrated", color: "bg-slate-400"   },
+                    ].map(l => (
+                      <div key={l.label} className="flex items-center gap-1.5">
+                        <div className={`h-2 w-2 rounded-full ${l.color}`} />
+                        <span className="text-[10px] text-muted-foreground">{l.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )
+      })()}
     </div>
   )
 }

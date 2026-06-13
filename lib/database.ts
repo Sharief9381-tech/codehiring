@@ -5,54 +5,67 @@ if (!process.env.MONGODB_URI) {
 }
 
 const uri = process.env.MONGODB_URI
-const options = {}
 
-let client: MongoClient
+let client: MongoClient | null = null
 let clientPromise: Promise<MongoClient> | null = null
 
-if (uri) {
+function getClientPromise(): Promise<MongoClient> | null {
+  if (!uri) return null
+  
   if (process.env.NODE_ENV === 'development') {
-    // In development mode, use a global variable so that the value
-    // is preserved across module reloads caused by HMR (Hot Module Replacement).
-    let globalWithMongo = global as typeof globalThis & {
+    const globalWithMongo = global as typeof globalThis & {
       _mongoClientPromise?: Promise<MongoClient>
     }
-
     if (!globalWithMongo._mongoClientPromise) {
-      client = new MongoClient(uri, options)
+      client = new MongoClient(uri, {
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
+        socketTimeoutMS: 10000,
+      })
       globalWithMongo._mongoClientPromise = client.connect()
     }
-    clientPromise = globalWithMongo._mongoClientPromise
+    return globalWithMongo._mongoClientPromise
   } else {
-    // In production mode, it's best to not use a global variable.
-    client = new MongoClient(uri, options)
-    clientPromise = client.connect()
+    if (!clientPromise) {
+      client = new MongoClient(uri, {
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
+        socketTimeoutMS: 10000,
+      })
+      clientPromise = client.connect()
+    }
+    return clientPromise
   }
 }
 
 export async function getDatabase(): Promise<Db> {
+  if (!uri) {
+    throw new Error('MONGODB_URI is not configured. Please set up your database connection.')
+  }
+
+  const promise = getClientPromise()
+  if (!promise) {
+    throw new Error('MongoDB client not initialized')
+  }
+
   try {
-    if (!uri) {
-      throw new Error('MONGODB_URI is not configured. Please set up your database connection.')
-    }
-    
-    if (!clientPromise) {
-      throw new Error('MongoDB client not initialized')
-    }
-    
-    console.log("Attempting to connect to MongoDB...")
-    const client = await clientPromise
-    const db = client.db('codetrack')
-    console.log("Successfully connected to MongoDB")
-    return db
+    const connectedClient = await promise
+    return connectedClient.db('codetrack')
   } catch (error) {
-    console.error("MongoDB connection error:", error)
+    // Reset the promise so the next call retries the connection
+    if (process.env.NODE_ENV === 'development') {
+      const g = global as typeof globalThis & { _mongoClientPromise?: Promise<MongoClient> }
+      delete g._mongoClientPromise
+    } else {
+      clientPromise = null
+    }
+    console.error('MongoDB connection error:', error)
     throw new Error(`Failed to connect to MongoDB: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
 export function isDatabaseAvailable(): boolean {
-  return !!uri && !!clientPromise
+  return !!uri
 }
 
-export default clientPromise
+export default getClientPromise()

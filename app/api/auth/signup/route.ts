@@ -91,7 +91,7 @@ export async function POST(request: Request) {
         userData = {
           ...userData,
           role: "student",
-          collegeCode: additionalData.collegeCode || "",
+          collegeCode: (additionalData.collegeCode || "").trim().toUpperCase().replace(/[\s\-\.]+/g, "") || "",
           rollNumber: additionalData.rollNumber || "",
           graduationYear: parseInt(additionalData.graduationYear) || new Date().getFullYear() + 4,
           branch: additionalData.branch || "",
@@ -112,7 +112,7 @@ export async function POST(request: Request) {
         user = await createStudent(userData as any)
 
         // Auto-register college if not already in the system
-        const collegeCode = (additionalData.collegeCode || "").toUpperCase()
+        const collegeCode = (additionalData.collegeCode || "").trim().toUpperCase().replace(/[\s\-\.]+/g, "")
         if (collegeCode) {
           try {
             const { getDatabase } = await import("@/lib/database")

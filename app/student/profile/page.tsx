@@ -17,5 +17,11 @@ export default async function ProfilePage() {
   // Strip only the password, serialize everything else (ObjectIds, Dates → strings)
   const { password, ...safe } = student as any
 
+  // Don't send the heavy base64 payload to the client — only metadata
+  if (safe.resumeFile?.dataUri) {
+    const { dataUri: _omit, ...fileMeta } = safe.resumeFile
+    safe.resumeFile = fileMeta
+  }
+
   return <ProfileClient initialUser={serializeDocument(safe)} />
 }

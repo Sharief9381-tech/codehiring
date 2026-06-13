@@ -1,5 +1,6 @@
 import { UserModel } from '@/lib/models/user'
 import { aggregateStudentStats } from '@/lib/services/stats-aggregator'
+import { detectNewAchievements } from '@/lib/services/achievements'
 import { fetchLeetCodeStats } from '@/lib/platforms/leetcode'
 import { fetchGitHubStats } from '@/lib/platforms/github'
 import { fetchCodeChefStats } from '@/lib/platforms/codechef'
@@ -183,6 +184,17 @@ export class PlatformSyncService {
             const existing = (student.recentActivity || []) as any[]
             const merged = [...newEvents, ...existing.filter((e: any) => e.platform !== platformId)]
             await UserModel.update(userId, { recentActivity: merged.slice(0, 20) })
+          }
+
+          // Detect and save newly earned achievements
+          const freshStudent = await UserModel.findById(userId)
+          if (freshStudent) {
+            const updatedAchievements = detectNewAchievements(freshStudent, platformId)
+            if (updatedAchievements !== (freshStudent as any).achievements) {
+              await UserModel.update(userId, { achievements: updatedAchievements })
+              // Keep student in sync for subsequent platform loops
+              ;(student as any).achievements = updatedAchievements
+            }
           }
 
           results.push({ platform: platformId, success: true, data: stats })

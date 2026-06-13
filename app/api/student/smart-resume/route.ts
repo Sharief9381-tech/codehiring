@@ -41,30 +41,56 @@ export async function POST(request: Request) {
     const user = await getCurrentUser()
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
-    const formData = await request.formData()
-    const file = formData.get("file") as File | null
-    if (!file) return NextResponse.json({ error: "No file uploaded" }, { status: 400 })
-
-    const ext = file.name.split(".").pop()?.toLowerCase()
-    if (!ext || !["pdf", "doc", "docx", "txt"].includes(ext)) {
-      return NextResponse.json({ error: "Only PDF, DOC, DOCX, or TXT files are supported" }, { status: 400 })
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: "File too large (max 5 MB)" }, { status: 400 })
-    }
-
-    const arrayBuffer = await file.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
-
+    // Check if request is multipart (file upload) or JSON (re-analyse stored file)
+    const contentType = request.headers.get("content-type") ?? ""
     let rawText = ""
-    if (ext === "txt") {
-      rawText = buffer.toString("utf-8")
-    } else if (ext === "pdf") {
-      rawText = extractTextFromPDF(buffer)
+    let fileName = "resume"
+
+    if (contentType.includes("application/json")) {
+      // Re-analyse the stored resumeFile from MongoDB
+      const doc = await UserModel.findById(user._id as string)
+      const resumeFile = (doc as any)?.resumeFile
+      if (!resumeFile?.dataUri) {
+        return NextResponse.json({ error: "No uploaded resume found. Please upload a file first." }, { status: 400 })
+      }
+
+      const ext = resumeFile.fileName?.split(".").pop()?.toLowerCase() ?? ""
+      const base64 = resumeFile.dataUri.replace(/^data:[^;]+;base64,/, "")
+      const buffer = Buffer.from(base64, "base64")
+      fileName = resumeFile.fileName ?? "resume"
+
+      if (ext === "txt") {
+        rawText = buffer.toString("utf-8")
+      } else if (ext === "pdf") {
+        rawText = extractTextFromPDF(buffer)
+      } else {
+        rawText = cleanText(buffer.toString("utf-8"))
+      }
     } else {
-      // DOCX / DOC — extract readable strings (xml-like content)
-      rawText = cleanText(buffer.toString("utf-8"))
+      // Standard file upload
+      const formData = await request.formData()
+      const file = formData.get("file") as File | null
+      if (!file) return NextResponse.json({ error: "No file uploaded" }, { status: 400 })
+
+      const ext = file.name.split(".").pop()?.toLowerCase()
+      if (!ext || !["pdf", "doc", "docx", "txt"].includes(ext)) {
+        return NextResponse.json({ error: "Only PDF, DOC, DOCX, or TXT files are supported" }, { status: 400 })
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        return NextResponse.json({ error: "File too large (max 5 MB)" }, { status: 400 })
+      }
+
+      const arrayBuffer = await file.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      fileName = file.name
+
+      if (ext === "txt") {
+        rawText = buffer.toString("utf-8")
+      } else if (ext === "pdf") {
+        rawText = extractTextFromPDF(buffer)
+      } else {
+        rawText = cleanText(buffer.toString("utf-8"))
+      }
     }
 
     if (rawText.length < 50) {
@@ -73,8 +99,23 @@ export async function POST(request: Request) {
       }, { status: 422 })
     }
 
+    // Also enrich with platform stats for better analysis
+    const doc = await UserModel.findById(user._id as string)
+    const platforms = Object.entries((doc as any)?.linkedPlatforms ?? {})
+      .filter(([, v]: any) => v?.username)
+      .map(([pid, pd]: any) => {
+        const s = pd.stats ?? {}
+        const solved = s.totalSolved ?? s.problemsSolved ?? 0
+        const rating = s.rating ?? s.currentRating ?? 0
+        return `${pid}: @${pd.username}${solved ? ` (${solved} solved)` : ""}${rating ? ` rating ${rating}` : ""}`
+      }).join(", ")
+
+    const profileContext = platforms
+      ? `\nStudent's coding platforms: ${platforms}`
+      : ""
+
     // Limit input to Groq to avoid token overflow
-    const truncated = rawText.slice(0, 6000)
+    const truncated = rawText.slice(0, 5000) + profileContext
 
     const systemPrompt = `You are an expert resume coach and ATS specialist. 
 Analyse the resume text provided and return a JSON object with this exact shape:
@@ -98,11 +139,10 @@ Analyse the resume text provided and return a JSON object with this exact shape:
 }
 Return ONLY valid JSON, no markdown, no explanation.`
 
-    const aiResponse = await groqChat(systemPrompt, truncated, 1200)
+    const aiResponse = await groqChat(systemPrompt, truncated, 1400)
 
     let analysis: Record<string, any>
     try {
-      // strip possible markdown code fences
       const cleaned = aiResponse.replace(/^```[\w]*\n?/, "").replace(/\n?```$/, "").trim()
       analysis = JSON.parse(cleaned)
     } catch {
@@ -111,10 +151,10 @@ Return ONLY valid JSON, no markdown, no explanation.`
 
     const smartResume = {
       analysis,
-      originalFileName: file.name,
+      originalFileName: fileName,
       analyzedAt: new Date().toISOString(),
-      sharedWithCollege: false,
-      sharedWithRecruiters: false,
+      sharedWithCollege: (doc as any)?.smartResume?.sharedWithCollege ?? false,
+      sharedWithRecruiters: (doc as any)?.smartResume?.sharedWithRecruiters ?? false,
     }
 
     await UserModel.update(user._id as string, { smartResume })

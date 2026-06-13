@@ -6,6 +6,8 @@ export interface CodeChefStats {
   globalRank: number
   countryRank: number
   problemsSolved: number
+  // Daily heatmap: { "YYYY-MM-DD": count } — last 6 months from codechef-api
+  heatMap?: Record<string, number>
 }
 
 export async function fetchCodeChefStats(username: string): Promise<CodeChefStats | null> {
@@ -50,7 +52,19 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
             0
           const stars = data.stars ?? getStarsFromRating(currentRating)
 
-          return { username: cleanUsername, currentRating, highestRating, stars, globalRank, countryRank, problemsSolved }
+          // heatMap comes as array of { date: "YYYY-MM-DD", value: N }
+          // or as object { "YYYY-MM-DD": N } — normalise to Record<string,number>
+          let heatMap: Record<string, number> | undefined
+          if (Array.isArray(data.heatMap)) {
+            heatMap = {}
+            for (const entry of data.heatMap) {
+              if (entry.date && entry.value != null) heatMap[entry.date] = Number(entry.value)
+            }
+          } else if (data.heatMap && typeof data.heatMap === "object") {
+            heatMap = data.heatMap as Record<string, number>
+          }
+
+          return { username: cleanUsername, currentRating, highestRating, stars, globalRank, countryRank, problemsSolved, heatMap }
         }
       }
     } catch (e: any) {

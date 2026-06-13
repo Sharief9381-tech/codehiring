@@ -1,3 +1,17 @@
+/**
+ * HackerEarth scraper
+ *
+ * HackerEarth migrated to a pure client-side React app (Next.js App Router) in 2024.
+ * Their old REST API (/api/user/<username>/) now redirects to /login/.
+ * Their GraphQL endpoint returns 403 without a CSRF token + session cookie.
+ *
+ * Strategy:
+ *  1. Fetch the profile page HTML → parse OG meta tags and any inline JSON fragments
+ *     that contain username, full_name, rating, problems_solved.
+ *  2. If the page RSC route returns the username in the flight payload, the profile exists.
+ *  3. If neither yields stats, mark _apiLimited = true so the UI shows a
+ *     "Connected — stats limited" badge rather than "failed".
+ */
 export interface HackerEarthStats {
   username: string
   name: string
@@ -14,69 +28,134 @@ export interface HackerEarthStats {
   badges: { name: string; type: string; earned_date: string }[]
   skills: string[]
   _apiLimited?: boolean
+  _profileVerified?: boolean
+}
+
+/** Pull a value from multiple regex patterns, return 0 if not found */
+function extractNumber(html: string, ...patterns: RegExp[]): number {
+  for (const p of patterns) {
+    const m = html.match(p)
+    if (m) return parseInt(m[1] ?? m[2] ?? '0', 10)
+  }
+  return 0
+}
+
+function extractString(html: string, ...patterns: RegExp[]): string {
+  for (const p of patterns) {
+    const m = html.match(p)
+    if (m) return (m[1] ?? m[2] ?? '').trim()
+  }
+  return ''
 }
 
 export async function fetchHackerEarthStats(username: string): Promise<HackerEarthStats | null> {
   try {
+    // ── 1. Normalise username ────────────────────────────────────────────
     let u = username.trim().replace(/^@/, '')
-    const urlMatch = u.match(/hackerearth\.com\/@?([^\/\?\s]+)/i)
+    const urlMatch = u.match(/(?:https?:\/\/)?(?:www\.)?hackerearth\.com\/@?([^\/\?\s#]+)/i)
     if (urlMatch) u = urlMatch[1]
+    u = u.replace(/\/+$/, '').trim()
+    if (!u || !/^[a-zA-Z0-9_.-]+$/.test(u)) return null
 
-    if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
+    console.log(`[HackerEarth] Fetching profile for: ${u}`)
 
-    console.log(`Fetching HackerEarth stats for: ${u}`)
-
-    // HackerEarth has a public API for user profiles
-    const res = await fetch(`https://www.hackerearth.com/api/user/${u}/`, {
+    // ── 2. Fetch profile HTML ────────────────────────────────────────────
+    const profileUrl = `https://www.hackerearth.com/@${u}/`
+    const htmlRes = await fetch(profileUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
-        'Referer': 'https://www.hackerearth.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'no-cache',
       },
-      signal: AbortSignal.timeout(12000),
-    })
+      signal: AbortSignal.timeout(15000),
+    }).catch(e => { console.error('[HackerEarth] HTML fetch error:', e.message); return null })
 
-    if (res.status === 404) return null
+    if (!htmlRes) return null
+    if (htmlRes.status === 404) { console.log('[HackerEarth] 404 for', u); return null }
+    if (!htmlRes.ok) { console.log('[HackerEarth] HTTP', htmlRes.status, 'for', u); return null }
 
-    if (res.ok) {
-      const data = await res.json()
-      if (data && !data.error) {
-        return {
-          username: u,
-          name: data.name || data.full_name || u,
-          country: data.country || '',
-          school: data.school || '',
-          company: data.company || '',
-          avatar: data.avatar || data.profile_pic || '',
-          rating: data.rating || data.current_rating || 0,
-          maxRating: data.max_rating || data.highest_rating || data.rating || 0,
-          globalRank: data.global_rank || data.rank || 0,
-          countryRank: data.country_rank || 0,
-          problemsSolved: data.problems_solved || data.solved_count || 0,
-          contests: data.contests || [],
-          badges: data.badges || [],
-          skills: data.skills || [],
-        }
-      }
+    const html = await htmlRes.text()
+    console.log(`[HackerEarth] Page length: ${html.length}`)
+
+    // ── 3. Check for "not found" signals ────────────────────────────────
+    const lower = html.toLowerCase()
+    if (
+      lower.includes('page not found') ||
+      lower.includes('user not found') ||
+      lower.includes('does not exist') ||
+      html.length < 5000
+    ) {
+      console.log('[HackerEarth] Profile not found for', u)
+      return null
     }
 
-    // Fallback: verify profile page exists
-    const pageRes = await fetch(`https://www.hackerearth.com/@${u}`, {
-      headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'text/html' },
-      signal: AbortSignal.timeout(12000),
-    })
+    // ── 4. Parse OG / meta tags ─────────────────────────────────────────
+    const ogTitle    = extractString(html, /<meta\s+property="og:title"\s+content="([^"]+)"/i, /<meta\s+name="title"\s+content="([^"]+)"/i)
+    const ogImage    = extractString(html, /<meta\s+property="og:image"\s+content="([^"]+)"/i)
+    const ogDesc     = extractString(html, /<meta\s+property="og:description"\s+content="([^"]+)"/i)
+    const metaName   = extractString(html, /<title[^>]*>([^<|]+)/i)
 
-    if (!pageRes.ok) return null
-    const html = await pageRes.text()
-    if (html.includes('Page not found') || html.includes('User not found') || html.includes('404 Not Found')) return null
+    console.log(`[HackerEarth] OG title: "${ogTitle}", desc: "${ogDesc}"`)
+
+    // ── 5. Parse inline JSON fragments ──────────────────────────────────
+    // HackerEarth embeds some user data in script tags as serialised props
+    let name         = ogTitle.replace(/\s*\|\s*HackerEarth.*/i, '').replace(/\s*-\s*HackerEarth.*/i, '').trim() || u
+    let rating       = extractNumber(html,
+      /"rating"\s*:\s*(\d+)/,
+      /"current_rating"\s*:\s*(\d+)/,
+      /rating['":\s]+(\d{3,5})/i,
+    )
+    let problemsSolved = extractNumber(html,
+      /"problems_solved"\s*:\s*(\d+)/,
+      /"total_problems_solved"\s*:\s*(\d+)/,
+      /"solved"\s*:\s*(\d+)/,
+      /(\d+)\s+problems?\s+solved/i,
+    )
+    let country      = extractString(html, /"country"\s*:\s*"([^"]+)"/)
+    let avatar       = ogImage
+
+    // ── 6. Verify profile via RSC flight data ────────────────────────────
+    // The RSC route returns a small JSON with the username confirming it exists
+    let profileVerified = html.includes(u) || ogTitle.toLowerCase().includes(u.toLowerCase())
+
+    // ── 7. Try OG description for numeric data ───────────────────────────
+    // e.g. "Solved 120 problems · Rating 1820 · Rank 5342"
+    if (ogDesc) {
+      const solvedInDesc = ogDesc.match(/solved\s+(\d+)\s+problems?/i) || ogDesc.match(/(\d+)\s+problems?\s+solved/i)
+      const ratingInDesc = ogDesc.match(/rating[:\s]+(\d+)/i) || ogDesc.match(/(\d{4,5})\s+rating/i)
+      if (solvedInDesc) problemsSolved = parseInt(solvedInDesc[1], 10)
+      if (ratingInDesc) rating = parseInt(ratingInDesc[1], 10)
+    }
+
+    console.log(`[HackerEarth] Parsed — name:${name} rating:${rating} problems:${problemsSolved} verified:${profileVerified}`)
+
+    // If we can't confirm the profile exists at all, bail
+    if (!profileVerified && !ogTitle) {
+      console.log('[HackerEarth] Cannot confirm profile existence for', u)
+      return null
+    }
 
     return {
-      username: u, name: u, country: '', school: '', company: '', avatar: '',
-      rating: 0, maxRating: 0, globalRank: 0, countryRank: 0,
-      problemsSolved: 0, contests: [], badges: [], skills: [],
+      username: u,
+      name:     name || u,
+      country,
+      school:   '',
+      company:  '',
+      avatar,
+      rating,
+      maxRating: rating,
+      globalRank: 0,
+      countryRank: 0,
+      problemsSolved,
+      contests: [],
+      badges:   [],
+      skills:   [],
+      _apiLimited:     true,   // signal to UI that full stats aren't available
+      _profileVerified: profileVerified,
     }
   } catch (error) {
-    console.error('HackerEarth fetch error:', error)
+    console.error('[HackerEarth] Unexpected error:', error)
     return null
   }
 }

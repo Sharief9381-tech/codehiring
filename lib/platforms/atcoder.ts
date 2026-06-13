@@ -5,6 +5,8 @@ export interface AtCoderStats {
   rank: string
   problemsSolved: number
   contests: Array<{ name: string; rank: number; rating: number; date: string }>
+  // Accepted submissions with timestamps for heatmap
+  acSubmissions?: Array<{ epoch_second: number; problem_id: string }>
   profileUrl: string
 }
 
@@ -67,8 +69,9 @@ export async function fetchAtCoderStats(username: string): Promise<AtCoderStats 
       }
     } catch (_) {}
 
-    // 3. Problems solved from kenkoooo AC rank API (real public API)
+    // 3. Problems solved + submission timestamps from kenkoooo
     let problemsSolved = 0
+    let acSubmissions: Array<{ epoch_second: number; problem_id: string }> = []
     try {
       const acRes = await fetch(
         `https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank?user=${u}`,
@@ -80,6 +83,23 @@ export async function fetchAtCoderStats(username: string): Promise<AtCoderStats 
       }
     } catch (_) {}
 
+    // Fetch actual AC submissions with timestamps for heatmap
+    try {
+      const subRes = await fetch(
+        `https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${u}&from_second=0`,
+        { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(10000) }
+      )
+      if (subRes.ok) {
+        const subs: any[] = await subRes.json()
+        acSubmissions = subs
+          .filter((s: any) => s.result === "AC")
+          .map((s: any) => ({ epoch_second: s.epoch_second, problem_id: s.problem_id }))
+        if (problemsSolved === 0) {
+          problemsSolved = new Set(acSubmissions.map(s => s.problem_id)).size
+        }
+      }
+    } catch (_) {}
+
     return {
       username: u,
       rating,
@@ -87,6 +107,7 @@ export async function fetchAtCoderStats(username: string): Promise<AtCoderStats 
       rank: getRankFromRating(rating),
       problemsSolved,
       contests,
+      acSubmissions,
       profileUrl,
     }
   } catch (error) {

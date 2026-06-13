@@ -8,7 +8,7 @@ import {
   GraduationCap, Mail, Phone, Briefcase,
   Trophy, Activity, Star, Download, FileText,
   TrendingUp, ExternalLink, ArrowUpRight,
-  Info,
+  Info, Code2, Plus,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
@@ -149,7 +149,11 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
   const [ranking, setRanking] = useState<any>(null)
 
   const agg      = user?.aggregatedStats ?? user?.stats ?? {}
-  const total    = agg?.totalProblems ?? agg?.totalSolved ?? 0
+  // Compute total problems directly from live platform stats
+  const total    = Object.values(user?.linkedPlatforms ?? {}).reduce((sum: number, pd: any) => {
+    if (!pd?.stats) return sum
+    return sum + (pd.stats.totalSolved || pd.stats.problemsSolved || pd.stats.completedExercises || 0)
+  }, 0) || (agg?.totalProblems ?? agg?.totalSolved ?? 0)
   const cf       = user?.linkedPlatforms?.codeforces?.stats?.rating ?? 0
   const lc       = user?.linkedPlatforms?.leetcode?.stats?.totalSolved ?? 0
   const gh       = user?.linkedPlatforms?.github?.stats?.totalContributions ?? 0
@@ -199,10 +203,9 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
               </button>
             </div>
             {/* Info */}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
                 <h1 className="text-xl font-bold text-foreground">{user?.name || "Your Name"}</h1>
-                <CheckCircle2 className="h-5 w-5 text-blue-500" />
                 {user?.isOpenToWork && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />Open to Work
@@ -242,24 +245,36 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
           </div>
 
           {/* Stats strip */}
-          <div className="flex flex-wrap gap-4 pt-4 border-t border-border">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 pt-4 border-t border-border">
             {[
-              { label: "Global Rank",          val: ranking?.globalRank  ? `#${ranking.globalRank.toLocaleString()}`  : "—", icon: Globe,         color: "text-blue-500",    bg: "bg-blue-500/8",    trend: ranking?.globalRank  ? `of ${ranking.totalGlobal?.toLocaleString() ?? "?"}` : "" },
-              { label: "College Rank",          val: ranking?.collegeRank ? `#${ranking.collegeRank.toLocaleString()}` : "—", icon: GraduationCap, color: "text-violet-500",  bg: "bg-violet-500/8",  trend: ranking?.collegeRank ? `of ${ranking.totalCollege?.toLocaleString() ?? "?"}` : "" },
-              { label: "Placement Probability", val: `${placementProb}%`,                                                     icon: TrendingUp,    color: "text-emerald-500", bg: "bg-emerald-500/8", trend: placementLabel },
-              { label: "CodeHiring Score",      val: score > 0 ? score.toString() : "—",                                     icon: Star,          color: "text-amber-500",   bg: "bg-amber-500/8",   trend: score > 0 ? "/1000" : "" },
-              { label: "Platforms",             val: platforms.length > 0 ? `${platforms.length}` : "—",                     icon: Activity,      color: "text-pink-500",    bg: "bg-pink-500/8",    trend: platforms.length > 0 ? "connected" : "" },
-            ].map(({ label, val, icon: Icon, color, bg, trend }) => (
-              <div key={label} className="flex items-center gap-2">
-                <div className={`w-8 h-8 rounded-lg ${bg} flex items-center justify-center`}>
+              { label: "Global Rank",      val: ranking?.globalRank  ? `#${ranking.globalRank.toLocaleString()}`  : "—", icon: Globe,         color: "text-blue-500",    bg: "bg-blue-500/10",    sub: ranking?.globalRank  ? `of ${ranking.totalGlobal?.toLocaleString() ?? "?"} students` : "not ranked" },
+              { label: "College Rank",     val: ranking?.collegeRank ? `#${ranking.collegeRank.toLocaleString()}` : "—", icon: GraduationCap, color: "text-violet-500",  bg: "bg-violet-500/10",  sub: ranking?.collegeRank ? `of ${(ranking.totalColleges ?? ranking.totalCollege ?? "?").toLocaleString()} students` : "not ranked" },
+              { label: "Placement",        val: `${placementProb}%`,                                                     icon: TrendingUp,    color: "text-emerald-500", bg: "bg-emerald-500/10", sub: placementLabel },
+              { label: "CodeHiring Score", val: score > 0 ? score.toString() : "—",                                     icon: Star,          color: "text-amber-500",   bg: "bg-amber-500/10",   sub: score > 0 ? "out of 1000" : "link platforms" },
+              { label: "Platforms",        val: platforms.length > 0 ? `${platforms.length}` : "—",                     icon: Activity,      color: "text-pink-500",    bg: "bg-pink-500/10",    sub: platforms.length > 0 ? "connected" : "none linked" },
+            ].map(({ label, val, icon: Icon, color, bg, sub }, i) => (
+              <div
+                key={label}
+                className={[
+                  "flex items-center gap-3 px-4 py-3",
+                  // right border on all except last in each row
+                  "border-b border-border lg:border-b-0",
+                  // vertical dividers: every cell except the last in a 5-col row
+                  i < 4 ? "lg:border-r lg:border-border" : "",
+                  // on sm (3-col): add right border except col 3 and 6 (mod 3 === 2)
+                  i % 3 !== 2 ? "sm:border-r sm:border-border" : "",
+                  // on 2-col (xs): right border on even columns
+                  i % 2 === 0 ? "border-r border-border sm:border-r-0" : "",
+                  i % 2 === 0 && i % 3 !== 2 ? "sm:border-r sm:border-border" : "",
+                ].join(" ")}
+              >
+                <div className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center shrink-0`}>
                   <Icon className={`h-4 w-4 ${color}`} />
                 </div>
-                <div>
-                  <div className="flex items-baseline gap-1">
-                    <span className={`text-lg font-black tabular-nums ${color}`}>{val}</span>
-                    {trend && <span className="text-[10px] text-emerald-500 font-semibold">↑ {trend}</span>}
-                  </div>
-                  <p className="text-[10px] text-muted-foreground leading-none">{label}</p>
+                <div className="min-w-0">
+                  <p className={`text-base font-black tabular-nums leading-tight ${color}`}>{val}</p>
+                  <p className="text-[10px] text-muted-foreground leading-tight truncate">{label}</p>
+                  <p className="text-[10px] text-muted-foreground/60 leading-tight truncate">{sub}</p>
                 </div>
               </div>
             ))}
@@ -313,10 +328,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
             <span className="text-xs border border-border rounded-lg px-2 py-1 text-muted-foreground">365 Days</span>
           </div>
           <ActivityHeatmap
-            lcCalendar={user?.linkedPlatforms?.leetcode?.stats?.submissionCalendar}
-            cfSubmissions={user?.linkedPlatforms?.codeforces?.stats?.submissions}
-            ghContributions={gh}
-            recentActivity={user?.recentActivity}
+            linkedPlatforms={user?.linkedPlatforms ?? {}}
             streak={str}
           />
         </motion.div>
@@ -344,20 +356,83 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
             <h3 className="text-sm font-semibold text-foreground">Achievements</h3>
           </div>
           <div className="space-y-3">
-            {[
-              { icon: "🔥", title: "30 Day Coding Streak",                  desc: "Solved problems for 30 days continuously",  color: "text-orange-500", bg: "bg-orange-500/10", show: str >= 30 || total > 0 },
-              { icon: "⚡", title: "LeetCode Knight",                        desc: "Solved 500+ problems on LeetCode",           color: "text-amber-500",  bg: "bg-amber-500/10",  show: lc >= 200 },
-              { icon: "🏆", title: `Top ${cf > 1400 ? "10" : "20"} in College`, desc: "Reached top in college leaderboard",    color: "text-violet-500", bg: "bg-violet-500/10", show: total > 0 || cf > 0 },
-              { icon: "💯", title: "1000 Problems Solved",                   desc: "Solved 1000+ problems across platforms",    color: "text-blue-500",   bg: "bg-blue-500/10",   show: total >= 100 },
-            ].filter(a => a.show || total === 0).slice(0, 4).map(a => (
-              <div key={a.title} className="flex items-center gap-3">
-                <div className={`w-9 h-9 rounded-xl ${a.bg} flex items-center justify-center text-lg shrink-0`}>{a.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <p className={`text-xs font-semibold ${a.color}`}>{a.title}</p>
-                  <p className="text-[10px] text-muted-foreground truncate">{a.desc}</p>
+            {(() => {
+              // Use DB-saved achievements, fall back to live computation
+              let saved: any[] = user?.achievements ?? []
+
+              // If nothing saved yet, compute live from platform data
+              if (saved.length === 0) {
+                const lp = user?.linkedPlatforms ?? {}
+                const lcS = lp.leetcode?.stats?.totalSolved ?? 0
+                const cfR = lp.codeforces?.stats?.rating ?? 0
+                const ccR = lp.codechef?.stats?.currentRating ?? 0
+                const ghC = lp.github?.stats?.totalContributions ?? 0
+                const hrB = lp.hackerrank?.stats?.badges?.length ?? 0
+                const gfgS = lp.geeksforgeeks?.stats?.problemsSolved ?? 0
+                const acS = lp.atcoder?.stats?.problemsSolved ?? 0
+                const streak = lp.leetcode?.stats?.streak ?? 0
+                const pCount = Object.keys(lp).filter(k => lp[k]).length
+                const today = new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"})
+
+                const candidates = [
+                  lcS >= 500 && { icon:"👑", title:"LeetCode Guardian",        desc:`LeetCode · ${lcS} problems solved`,            color:"text-yellow-500", bg:"bg-yellow-500/10", earnedAt: today },
+                  lcS >= 200 && { icon:"🗡️", title:"LeetCode Knight",          desc:`LeetCode · ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  lcS >= 100 && { icon:"💯", title:"LeetCode — 100 Solved",    desc:`LeetCode · ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  lcS >= 50  && { icon:"⚡", title:"LeetCode — 50 Solved",     desc:`LeetCode · ${lcS} problems solved`,            color:"text-amber-400",  bg:"bg-amber-400/10",  earnedAt: today },
+                  cfR >= 2100 && { icon:"🏆", title:"Codeforces Master",       desc:`Codeforces · Rating ${cfR}`,                   color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  cfR >= 1900 && { icon:"🏅", title:"CF Candidate Master",     desc:`Codeforces · Rating ${cfR}`,                   color:"text-purple-500", bg:"bg-purple-500/10", earnedAt: today },
+                  cfR >= 1600 && { icon:"🟣", title:"Codeforces Expert",       desc:`Codeforces · Rating ${cfR}`,                   color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
+                  cfR >= 1400 && { icon:"🔵", title:"Codeforces Specialist",   desc:`Codeforces · Rating ${cfR}`,                   color:"text-cyan-500",   bg:"bg-cyan-500/10",   earnedAt: today },
+                  cfR >= 1200 && { icon:"🟢", title:"Codeforces Pupil",        desc:`Codeforces · Rating ${cfR}`,                   color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  ccR >= 2000 && { icon:"🏅", title:"CodeChef 5★",             desc:`CodeChef · Rating ${ccR}`,                     color:"text-red-500",    bg:"bg-red-500/10",    earnedAt: today },
+                  ccR >= 1800 && { icon:"🌟", title:"CodeChef 4★",             desc:`CodeChef · Rating ${ccR}`,                     color:"text-orange-500", bg:"bg-orange-500/10", earnedAt: today },
+                  ccR >= 1600 && { icon:"⭐⭐⭐", title:"CodeChef 3★",          desc:`CodeChef · Rating ${ccR}`,                     color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  ccR >= 1400 && { icon:"⭐⭐", title:"CodeChef 2★",            desc:`CodeChef · Rating ${ccR}`,                     color:"text-amber-400",  bg:"bg-amber-400/10",  earnedAt: today },
+                  ccR >= 1    && { icon:"⭐",   title:"CodeChef 1★",            desc:`CodeChef · Rating ${ccR}`,                     color:"text-gray-400",   bg:"bg-gray-400/10",   earnedAt: today },
+                  ghC >= 500  && { icon:"💚", title:"GitHub Power User",       desc:`GitHub · ${ghC} contributions`,                color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  ghC >= 200  && { icon:"🦑", title:"GitHub Active",           desc:`GitHub · ${ghC} contributions`,                color:"text-emerald-600",bg:"bg-emerald-600/10",earnedAt: today },
+                  ghC >= 50   && { icon:"🐙", title:"GitHub Contributor",      desc:`GitHub · ${ghC} contributions`,                color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
+                  hrB >= 10   && { icon:"🥇", title:"HackerRank — 10 Badges", desc:`HackerRank · ${hrB} badges earned`,            color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
+                  hrB >= 5    && { icon:"🥈", title:"HackerRank — 5 Badges",  desc:`HackerRank · ${hrB} badges earned`,            color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  hrB >= 1    && { icon:"🥉", title:"HackerRank — First Badge",desc:`HackerRank · ${hrB} badges earned`,            color:"text-green-400",  bg:"bg-green-400/10",  earnedAt: today },
+                  gfgS >= 200 && { icon:"🏆", title:"GFG — 200 Problems",     desc:`GeeksforGeeks · ${gfgS} problems`,             color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
+                  gfgS >= 100 && { icon:"🌲", title:"GFG — 100 Problems",     desc:`GeeksforGeeks · ${gfgS} problems`,             color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  gfgS >= 50  && { icon:"🌿", title:"GFG — 50 Problems",      desc:`GeeksforGeeks · ${gfgS} problems`,             color:"text-green-600",  bg:"bg-green-600/10",  earnedAt: today },
+                  acS >= 200  && { icon:"🏅", title:"AtCoder — 200 Problems", desc:`AtCoder · ${acS} problems solved`,             color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
+                  acS >= 50   && { icon:"🎯", title:"AtCoder — 50 Problems",  desc:`AtCoder · ${acS} problems solved`,             color:"text-violet-400", bg:"bg-violet-400/10", earnedAt: today },
+                  streak >= 30 && { icon:"🔥", title:"LeetCode — 30 Day Streak",desc:"LeetCode · 30 consecutive days",             color:"text-orange-500", bg:"bg-orange-500/10", earnedAt: today },
+                  streak >= 7  && { icon:"🔥", title:"LeetCode — 7 Day Streak", desc:"LeetCode · 7 consecutive days",              color:"text-orange-400", bg:"bg-orange-400/10", earnedAt: today },
+                  pCount >= 6  && { icon:"🌍", title:"Platform Master",        desc:`Active on ${pCount} coding platforms`,        color:"text-blue-500",   bg:"bg-blue-500/10",   earnedAt: today },
+                  pCount >= 3  && { icon:"🌐", title:"Multi-Platform Coder",   desc:`Active on ${pCount} coding platforms`,        color:"text-sky-500",    bg:"bg-sky-500/10",    earnedAt: today },
+                ].filter(Boolean) as any[]
+
+                saved = candidates.slice(0, 5)
+              }
+
+              if (saved.length === 0) return (
+                <div className="text-center py-6">
+                  <p className="text-sm text-muted-foreground">No achievements yet.</p>
+                  <p className="text-xs text-muted-foreground mt-1">Solve problems and sync platforms to earn badges.</p>
                 </div>
-              </div>
-            ))}
+              )
+
+              return saved.slice(0, 5).map((a: any, i: number) => (
+                <div key={a.id ?? i} className="flex items-center gap-3">
+                  <div className={`w-9 h-9 rounded-xl ${a.bg} flex items-center justify-center text-lg shrink-0`}>{a.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-xs font-semibold ${a.color}`}>{a.title}</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{a.desc}</p>
+                  </div>
+                  {(a.earnedAt) && (
+                    <span className="text-[9px] text-muted-foreground shrink-0">
+                      {typeof a.earnedAt === "string" && a.earnedAt.includes("T")
+                        ? new Date(a.earnedAt).toLocaleDateString("en-US",{month:"short",day:"numeric"})
+                        : a.earnedAt}
+                    </span>
+                  )}
+                </div>
+              ))
+            })()}
           </div>
         </motion.div>
 
@@ -415,21 +490,72 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
               <Pencil className="h-3.5 w-3.5" />
             </button>
           </div>
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border mb-4">
-            <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
-              <FileText className="h-5 w-5 text-blue-500" />
+
+          {/* Upload Resume row */}
+          <div className={`flex items-center gap-3 p-3 rounded-xl mb-3 ${
+            user?.resumeFile || user?.resumeUrl
+              ? "bg-emerald-500/5 border border-emerald-500/20"
+              : "bg-blue-500/5 border border-blue-500/20"
+          }`}>
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+              user?.resumeFile || user?.resumeUrl ? "bg-emerald-500/10" : "bg-blue-500/10"
+            }`}>
+              <FileText className={`h-5 w-5 ${user?.resumeFile || user?.resumeUrl ? "text-emerald-500" : "text-blue-500"}`} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-foreground">
+                {user?.resumeFile ? user.resumeFile.fileName : user?.resumeUrl ? "Resume Link" : "Upload Resume"}
+              </p>
+              <p className="text-[10px] text-muted-foreground truncate">
+                {user?.resumeFile
+                  ? `${(user.resumeFile.sizeBytes / 1024).toFixed(0)} KB · click Edit to replace`
+                  : user?.resumeUrl
+                    ? user.resumeUrl
+                    : "PDF, Word, or link"}
+              </p>
+            </div>
+            <a
+              href="/student/resume"
+              className={`flex items-center gap-1 text-xs font-semibold border rounded-lg px-2.5 py-1.5 transition-colors ${
+                user?.resumeFile || user?.resumeUrl
+                  ? "text-emerald-600 hover:text-emerald-700 border-emerald-500/30 hover:border-emerald-500/60 hover:bg-emerald-500/5"
+                  : "text-blue-600 hover:text-blue-700 border-blue-500/30 hover:border-blue-500/60 hover:bg-blue-500/5"
+              }`}
+            >
+              {user?.resumeFile || user?.resumeUrl ? (
+                <><Pencil className="h-3 w-3" />Edit</>
+              ) : (
+                <><Plus className="h-3 w-3" />Add</>
+              )}
+            </a>
+          </div>
+
+          {/* Smart Resume row */}
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-primary/5 border border-primary/20 mb-4">
+            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+              <Sparkles className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-foreground">Smart Resume</p>
-              <p className="text-[10px] text-muted-foreground">AI-generated · verified data</p>
+              <p className="text-[10px] text-muted-foreground">
+                {user?.resumeFile || user?.resumeUrl
+                  ? "AI analysis ready — go to Career Hub"
+                  : "Upload a resume then analyse in Career Hub"}
+              </p>
             </div>
-            <a href="/student/jobs"
-              className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline border border-border rounded-lg px-2.5 py-1.5">
-              <Download className="h-3 w-3" />Download
+            <a
+              href="/student/jobs#smart-resume"
+              className="flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary/80 border border-primary/30 hover:border-primary/50 hover:bg-primary/5 rounded-lg px-2.5 py-1.5 transition-colors"
+            >
+              <Sparkles className="h-3 w-3" />
+              {user?.resumeFile || user?.resumeUrl ? "Analyse" : "Open"}
             </a>
           </div>
+
+          {/* Links list */}
           <div className="space-y-2.5">
             {[
+              { icon: FileText, label: "Resume",     url: user?.resumeUrl },
               { icon: Globe,    label: "Portfolio",  url: user?.portfolioUrl },
               { icon: Linkedin, label: "LeetCode",   url: user?.linkedPlatforms?.leetcode?.username ? `https://leetcode.com/${user.linkedPlatforms.leetcode.username}` : undefined },
               { icon: Trophy,   label: "Codeforces", url: user?.linkedPlatforms?.codeforces?.username ? `https://codeforces.com/profile/${user.linkedPlatforms.codeforces.username}` : undefined },
@@ -444,8 +570,8 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
                 </a>
               </div>
             ))}
-            {!user?.portfolioUrl && !user?.githubUrl && (
-              <button onClick={onEdit} className="text-xs text-primary hover:underline">+ Add links</button>
+            {!user?.portfolioUrl && !user?.githubUrl && !user?.resumeUrl && !user?.resumeFile && (
+              <button onClick={onEdit} className="text-xs text-primary hover:underline">+ Add social links</button>
             )}
           </div>
         </motion.div>

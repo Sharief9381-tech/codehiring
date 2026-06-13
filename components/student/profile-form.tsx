@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import {
   X, Plus, User, Mail, Phone, MapPin, BookOpen,
   GraduationCap, Code2, Linkedin, Github, Globe, Twitter,
-  Trophy, Star, Zap, Target, CheckCircle, Award
+  Trophy, Star, Zap, Target, CheckCircle, Award, FileText
 } from "lucide-react"
 
 // Theme-aware classes
@@ -195,14 +195,20 @@ export function ProfileForm({ user, onChange }: Props) {
               { icon: Github,   label: "GitHub",      key: "githubUrl",    placeholder: "github.com/username"      },
               { icon: Globe,    label: "Portfolio",   key: "portfolioUrl", placeholder: "yourportfolio.com"        },
               { icon: Twitter,  label: "Twitter / X", key: "twitterUrl",   placeholder: "twitter.com/username"     },
+              { icon: FileText, label: "Resume URL",  key: "resumeUrl",    placeholder: "drive.google.com/... or your-website.com/resume.pdf" },
             ].map(({ icon: Icon, label, key, placeholder }) => (
-              <div key={key}>
+              <div key={key} className={key === "resumeUrl" ? "sm:col-span-2" : ""}>
                 <label className={formLabel}>{label}</label>
                 <div className="relative">
                   <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                   <input className={formInput + " pl-9"} placeholder={placeholder}
                     value={user?.[key] || ""} onChange={e => update(key, e.target.value)} />
                 </div>
+                {key === "resumeUrl" && (
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Link to your resume (Google Drive, Dropbox, personal website, etc.)
+                  </p>
+                )}
               </div>
             ))}
           </div>
