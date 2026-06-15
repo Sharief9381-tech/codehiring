@@ -4,12 +4,35 @@ import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2, Eye, EyeOff } from "lucide-react"
 
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  background: "rgba(255,255,255,0.05)",
+  border: "1px solid rgba(255,255,255,0.10)",
+  color: "#ffffff",
+  borderRadius: 12,
+  padding: "10px 16px",
+  fontSize: 14,
+  outline: "none",
+  transition: "border-color 0.2s",
+}
+
+const labelStyle: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 600,
+  color: "rgba(167,139,250,0.8)",
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+  display: "block",
+  marginBottom: 6,
+}
+
 export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [error, setError]         = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [formData, setFormData] = useState({ email: "", password: "" })
+  const [focused, setFocused]     = useState<string | null>(null)
+  const [formData, setFormData]   = useState({ email: "", password: "" })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,43 +56,104 @@ export function LoginForm() {
     }
   }
 
+  const focusStyle = (field: string): React.CSSProperties => focused === field
+    ? { ...inputStyle, borderColor: "rgba(139,92,246,0.6)", boxShadow: "0 0 0 1px rgba(139,92,246,0.4)" }
+    : inputStyle
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {error && (
-        <div className="p-3 text-sm text-red-400 bg-red-500/10 rounded-xl border border-red-500/20">{error}</div>
+        <div style={{
+          padding: "10px 14px", fontSize: 13,
+          color: "#f87171",
+          background: "rgba(239,68,68,0.10)",
+          borderRadius: 12,
+          border: "1px solid rgba(239,68,68,0.20)",
+        }}>{error}</div>
       )}
-      <div className="space-y-1.5">
-        <label htmlFor="email" className="text-xs font-medium text-violet-300/80 uppercase tracking-widest block">Email</label>
-        <input id="email" type="email" placeholder="you@example.com"
-          value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
+
+      {/* Email */}
+      <div>
+        <label htmlFor="email" style={labelStyle}>Email</label>
+        <input
+          id="email" type="email" placeholder="you@example.com"
+          value={formData.email}
+          onChange={e => setFormData({ ...formData, email: e.target.value })}
+          onFocus={() => setFocused("email")}
+          onBlur={() => setFocused(null)}
           required autoComplete="email"
-          className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/25 rounded-xl px-4 py-2.5 focus:outline-none focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/40 transition-all text-sm"
+          style={{
+            ...focusStyle("email"),
+            // placeholder via ::placeholder in global css — force color inline for webkit
+            WebkitTextFillColor: "#ffffff",
+          }}
         />
       </div>
-      <div className="space-y-1.5">
-        <div className="flex items-center justify-between">
-          <label htmlFor="password" className="text-xs font-medium text-violet-300/80 uppercase tracking-widest">Password</label>
-          <a href="/forgot-password" className="text-xs text-violet-400 hover:text-violet-300 transition-colors">Forgot password?</a>
+
+      {/* Password */}
+      <div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+          <label htmlFor="password" style={{ ...labelStyle, marginBottom: 0 }}>Password</label>
+          <a href="/forgot-password" style={{ fontSize: 12, color: "#a78bfa", textDecoration: "none" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#c4b5fd")}
+            onMouseLeave={e => (e.currentTarget.style.color = "#a78bfa")}>
+            Forgot password?
+          </a>
         </div>
-        <div className="relative">
-          <input id="password" type={showPassword ? "text" : "password"} placeholder="Enter your password"
-            value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })}
+        <div style={{ position: "relative" }}>
+          <input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={e => setFormData({ ...formData, password: e.target.value })}
+            onFocus={() => setFocused("password")}
+            onBlur={() => setFocused(null)}
             required autoComplete="current-password"
-            className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/25 rounded-xl px-4 py-2.5 pr-10 focus:outline-none focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/40 transition-all text-sm"
+            style={{
+              ...focusStyle("password"),
+              paddingRight: 42,
+              WebkitTextFillColor: "#ffffff",
+            }}
           />
           <button type="button" onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors"
-            aria-label={showPassword ? "Hide password" : "Show password"}>
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            style={{
+              position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+              background: "none", border: "none", cursor: "pointer",
+              color: "rgba(255,255,255,0.35)", padding: 0, display: "flex",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#ffffff")}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}>
+            {showPassword
+              ? <EyeOff style={{ width: 16, height: 16 }} />
+              : <Eye style={{ width: 16, height: 16 }} />}
           </button>
         </div>
       </div>
+
+      {/* Submit */}
       <button type="submit" disabled={isLoading}
-        className="w-full h-11 rounded-xl font-semibold text-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-1"
-        style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-        {isLoading ? <><Loader2 className="h-4 w-4 animate-spin" />Signing in…</> : "Sign In"}
+        style={{
+          width: "100%", height: 44, borderRadius: 12,
+          fontWeight: 600, fontSize: 15, color: "#ffffff",
+          background: "linear-gradient(135deg,#7c3aed,#6366f1)",
+          border: "none", cursor: isLoading ? "not-allowed" : "pointer",
+          opacity: isLoading ? 0.6 : 1,
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          transition: "opacity 0.2s",
+          marginTop: 4,
+        }}>
+        {isLoading
+          ? <><Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} />Signing in…</>
+          : "Sign In"}
       </button>
+
+      <style>{`
+        #email::placeholder, #password::placeholder { color: rgba(255,255,255,0.25) !important; }
+        #email, #password { caret-color: #a78bfa; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+      `}</style>
     </form>
   )
 }
-

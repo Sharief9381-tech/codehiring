@@ -6,7 +6,7 @@ import Link from "next/link"
 import { LoginForm } from "@/components/auth/login-form"
 import { ClientOnly } from "@/components/client-only"
 import { SignupBackground } from "@/components/signup-background"
-import { GitBranch, Trophy, Zap, Shield, Users, Code2 } from "lucide-react"
+import { Code2, GitBranch, Trophy, Zap, Shield, Users } from "lucide-react"
 
 const features = [
   { icon: Code2,     text: "Verified coding stats from 8+ platforms" },
@@ -20,10 +20,7 @@ const features = [
 interface LiveStats {
   students: number
   companies: number
-  problems: number
   platforms: number
-  colleges: number
-  placements: number
 }
 
 function useCountUp(target: number, duration = 1400) {
@@ -58,10 +55,10 @@ function StatCard({ value, label, suffix = "" }: { value: number; label: string;
       textAlign: "center",
       minWidth: 72,
     }}>
-      <p className="text-xl font-black text-white tabular-nums">
+      <p style={{ fontSize: 20, fontWeight: 900, color: "#ffffff", fontVariantNumeric: "tabular-nums", margin: 0 }}>
         {display}{suffix}
       </p>
-      <p style={{ fontSize: 11, color: "rgba(167,139,250,0.6)" }}>{label}</p>
+      <p style={{ fontSize: 11, color: "rgba(167,139,250,0.6)", margin: 0 }}>{label}</p>
     </div>
   )
 }
@@ -73,18 +70,25 @@ function LiveIndicator() {
     return () => clearInterval(t)
   }, [])
   return (
-    <div className="flex items-center gap-1.5 mb-3">
-      <div className="relative">
-        <div className="w-2 h-2 rounded-full bg-emerald-400" />
-        {pulse && <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-400 animate-ping opacity-75" />}
+    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+      <div style={{ position: "relative", width: 8, height: 8 }}>
+        <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#34d399" }} />
+        {pulse && (
+          <div style={{
+            position: "absolute", inset: 0, width: 8, height: 8,
+            borderRadius: "50%", background: "#34d399",
+            animation: "livePing 0.9s ease-out forwards", opacity: 0.75,
+          }} />
+        )}
       </div>
-      <span style={{ fontSize: 11, color: "rgba(52,211,153,0.8)", fontWeight: 600 }}>LIVE DATA</span>
+      <span style={{ fontSize: 11, color: "rgba(52,211,153,0.85)", fontWeight: 700, letterSpacing: "0.06em" }}>LIVE DATA</span>
+      <style>{`@keyframes livePing { 0%{transform:scale(1);opacity:.75} 100%{transform:scale(2.5);opacity:0} }`}</style>
     </div>
   )
 }
 
 export default function LoginPage() {
-  const [stats, setStats] = useState<LiveStats | null>(null)
+  const [stats, setStats]   = useState<LiveStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -94,97 +98,104 @@ export default function LoginPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  const statCards = stats
-    ? [
-        { value: stats.students,   label: "Students",  suffix: "+" },
-        { value: stats.companies,  label: "Recruiters",suffix: "+" },
-        { value: stats.platforms,  label: "Platforms",  suffix: "" },
-      ]
-    : [
-        { value: 0, label: "Students",  suffix: "+" },
-        { value: 0, label: "Recruiters",suffix: "+" },
-        { value: 0, label: "Platforms", suffix: "" },
-      ]
+  const statCards = [
+    { value: stats?.students  ?? 0, label: "Students",   suffix: "+" },
+    { value: stats?.companies ?? 0, label: "Recruiters", suffix: "+" },
+    { value: stats?.platforms ?? 8, label: "Platforms",  suffix: ""  },
+  ]
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#050508]">
+    /* force dark background — immune to light/dark mode */
+    <div style={{ minHeight: "100vh", position: "relative", overflow: "hidden", background: "#050508" }}>
       <SignupBackground />
 
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-4xl flex flex-col lg:flex-row gap-10 items-center">
+      <div style={{
+        position: "relative", zIndex: 10,
+        minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
+        padding: "48px 16px",
+      }}>
+        <div style={{
+          width: "100%", maxWidth: 896,
+          display: "flex", flexDirection: "row", gap: 40, alignItems: "center",
+        }} className="flex-col-mobile">
 
-          {/* ── LEFT: Brand panel ──────────────────────────────────────── */}
-          <div className="flex-1 hidden lg:flex flex-col justify-center">
-            <Link href="/" className="mb-10 inline-flex">
-              <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={160} height={40} className="h-9 w-auto" />
+          {/* ── LEFT: Brand panel ────────────────────────────────── */}
+          <div style={{ flex: 1 }} className="hide-mobile">
+            <Link href="/" style={{ display: "inline-flex", marginBottom: 40 }}>
+              <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={160} height={40} style={{ height: 36, width: "auto" }} />
             </Link>
 
-            <h2 className="text-4xl font-black text-white leading-tight mb-4"
-              style={{ textShadow: "0 0 40px rgba(139,92,246,0.4)" }}>
+            <h2 style={{
+              fontSize: 38, fontWeight: 900, color: "#ffffff",
+              lineHeight: 1.2, marginBottom: 16,
+              textShadow: "0 0 40px rgba(139,92,246,0.4)",
+            }}>
               Where Coding Skills<br />
-              <span style={{ background: "linear-gradient(135deg,#a78bfa,#818cf8,#60a5fa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span style={{
+                background: "linear-gradient(135deg,#a78bfa,#818cf8,#60a5fa)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>
                 Meet Opportunities
               </span>
             </h2>
-            <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(167,139,250,0.65)" }}>
+
+            <p style={{ fontSize: 14, color: "rgba(167,139,250,0.65)", marginBottom: 24, lineHeight: 1.6 }}>
               Join thousands of students, colleges, and recruiters using verified coding data to make smarter hiring decisions.
             </p>
 
-            {/* Live indicator */}
             <LiveIndicator />
 
-            {/* Real-time stats — fixed height so page doesn't shift on load */}
-            <div className="flex gap-4 mb-8" style={{ minHeight: 62 }}>
-              {loading ? (
-                [0,1,2].map(i => (
+            {/* Stats row — fixed height prevents layout shift */}
+            <div style={{ display: "flex", gap: 16, marginBottom: 32, minHeight: 62 }}>
+              {loading
+                ? [0,1,2].map(i => (
                   <div key={i} style={{
-                    background: "rgba(124,58,237,0.08)",
-                    border: "1px solid rgba(139,92,246,0.12)",
+                    background: "rgba(124,58,237,0.08)", border: "1px solid rgba(139,92,246,0.12)",
                     borderRadius: 12, padding: "10px 18px", minWidth: 72,
                   }}>
                     <div style={{ height: 24, background: "rgba(139,92,246,0.15)", borderRadius: 4, marginBottom: 4 }} />
                     <div style={{ height: 11, background: "rgba(139,92,246,0.10)", borderRadius: 4, width: "70%" }} />
                   </div>
                 ))
-              ) : (
-                statCards.map(s => (
-                  <StatCard key={s.label} value={s.value} label={s.label} suffix={s.suffix} />
-                ))
-              )}
+                : statCards.map(s => <StatCard key={s.label} {...s} />)
+              }
             </div>
 
             {/* Features */}
-            <div className="space-y-3">
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {features.map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-3">
-                  <div style={{ background: "rgba(124,58,237,0.18)", border: "1px solid rgba(139,92,246,0.25)", borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <Icon className="h-4 w-4 text-violet-400" />
+                <div key={text} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{
+                    background: "rgba(124,58,237,0.18)", border: "1px solid rgba(139,92,246,0.25)",
+                    borderRadius: 8, width: 32, height: 32,
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                  }}>
+                    <Icon style={{ width: 16, height: 16, color: "#a78bfa" }} />
                   </div>
-                  <span className="text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>{text}</span>
+                  <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>{text}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── RIGHT: Login card ──────────────────────────────────────── */}
-          <div className="w-full lg:w-[400px] shrink-0">
+          {/* ── RIGHT: Login card ─────────────────────────────────── */}
+          <div style={{ width: "100%", maxWidth: 400, flexShrink: 0 }}>
             {/* Mobile logo */}
-            <div className="flex justify-center mb-7 lg:hidden">
+            <div className="show-mobile" style={{ display: "none", justifyContent: "center", marginBottom: 28 }}>
               <Link href="/">
-                <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={150} height={38} className="h-9 w-auto" />
+                <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={150} height={38} style={{ height: 36, width: "auto" }} />
               </Link>
             </div>
 
-            {/* Mobile live stats strip */}
-            <div className="flex lg:hidden justify-center gap-3 mb-5">
-              {!loading && statCards.map(s => (
-                <StatCard key={s.label} value={s.value} label={s.label} suffix={s.suffix} />
-              ))}
+            {/* Mobile stats */}
+            <div className="show-mobile" style={{ display: "none", justifyContent: "center", gap: 12, marginBottom: 20 }}>
+              {!loading && statCards.map(s => <StatCard key={s.label} {...s} />)}
             </div>
 
             {/* Glass card */}
             <div style={{
-              background: "rgba(12,8,28,0.80)",
+              background: "rgba(12,8,28,0.85)",
               backdropFilter: "blur(28px)",
               WebkitBackdropFilter: "blur(28px)",
               border: "1px solid rgba(139,92,246,0.28)",
@@ -192,20 +203,26 @@ export default function LoginPage() {
               boxShadow: "0 0 0 1px rgba(139,92,246,0.06), 0 32px 80px rgba(0,0,0,0.7), 0 0 80px rgba(124,58,237,0.10)",
               padding: "36px 32px 28px",
             }}>
-              <div className="mb-7">
-                <h1 className="text-2xl font-bold text-white tracking-tight">Welcome back</h1>
-                <p className="text-sm mt-1.5" style={{ color: "rgba(167,139,250,0.6)" }}>
+              <div style={{ marginBottom: 28 }}>
+                <h1 style={{ fontSize: 24, fontWeight: 700, color: "#ffffff", margin: 0, letterSpacing: "-0.02em" }}>
+                  Welcome back
+                </h1>
+                <p style={{ fontSize: 14, color: "rgba(167,139,250,0.6)", marginTop: 6, marginBottom: 0 }}>
                   Sign in to your CodeHiring account
                 </p>
               </div>
 
-              <ClientOnly fallback={<div className="h-48 rounded-xl animate-pulse" style={{ background: "rgba(255,255,255,0.05)" }} />}>
+              <ClientOnly fallback={
+                <div style={{ height: 192, borderRadius: 12, background: "rgba(255,255,255,0.05)", animation: "pulse 1.5s ease-in-out infinite" }} />
+              }>
                 <LoginForm />
               </ClientOnly>
 
-              <p className="mt-6 text-center text-sm" style={{ color: "rgba(167,139,250,0.5)" }}>
+              <p style={{ marginTop: 24, textAlign: "center", fontSize: 14, color: "rgba(167,139,250,0.5)" }}>
                 Don&apos;t have an account?{" "}
-                <Link href="/signup" className="text-violet-400 hover:text-violet-300 font-semibold transition-colors">
+                <Link href="/signup" style={{ color: "#a78bfa", fontWeight: 600, textDecoration: "none" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#c4b5fd")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "#a78bfa")}>
                   Create one
                 </Link>
               </p>
@@ -214,6 +231,14 @@ export default function LoginPage() {
 
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 1023px) {
+          .hide-mobile { display: none !important; }
+          .show-mobile { display: flex !important; }
+          .flex-col-mobile { flex-direction: column !important; }
+        }
+      `}</style>
     </div>
   )
 }
