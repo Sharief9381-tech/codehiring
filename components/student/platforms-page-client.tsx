@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useCallback } from "react"
 import { Card, CardContent } from "@/components/ui/card"
@@ -74,7 +74,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
         }
         const failed = data.summary?.failed ?? 0
         toast[failed > 0 ? "warning" : "success"](
-          failed > 0 ? `Synced — ${failed} platform(s) unavailable` : `All ${data.summary?.successful ?? 0} platforms synced`
+          failed > 0 ? `Synced â€” ${failed} platform(s) unavailable` : `All ${data.summary?.successful ?? 0} platforms synced`
         )
         // Invalidate server cache so dashboard picks up fresh stats
         router.refresh()
@@ -186,7 +186,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                   <p className="text-sm font-semibold text-gray-200">Profile Verified</p>
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed px-1">
                     {platformId === 'interviewbit'
-                      ? 'InterviewBit stats require login — all their data APIs are auth-only. Your profile is linked and counts toward your score.'
+                      ? 'InterviewBit stats require login â€” all their data APIs are auth-only. Your profile is linked and counts toward your score.'
                       : 'Stats are loaded client-side and not publicly accessible. Your profile is linked.'}
                   </p>
                 </div>
@@ -339,7 +339,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       <div className="w-1/12" />
                     </div></div>
                     {stats._apiLimited && (
-                      <p className="text-[10px] text-amber-400/70 text-center">⚠ Stats from page meta · HackerEarth API is private</p>
+                      <p className="text-[10px] text-amber-400/70 text-center">âš  Stats from page meta Â· HackerEarth API is private</p>
                     )}
                   </>
                 )}
@@ -405,7 +405,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       </div>
                     )}
                     {stats._apiLimited && (
-                      <p className="text-[10px] text-amber-400/70 text-center">⚠ Stats via page scraping · InterviewBit API is private</p>
+                      <p className="text-[10px] text-amber-400/70 text-center">âš  Stats via page scraping Â· InterviewBit API is private</p>
                     )}
                   </>
                 )}
@@ -426,7 +426,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
           </div>
         </CardContent>
 
-        {/* Footer bar — View Details | Verified | Delete */}
+        {/* Footer bar â€” View Details | Verified | Delete */}
         <div className="absolute bottom-0 left-0 right-0 p-2 border-t border-gray-700 bg-gray-800/50">
           <div className="flex items-center justify-between">
             <a
@@ -491,162 +491,87 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
         </div>
       )}
 
-      {/* Difficulty Distribution — shown when platforms are connected */}
+      {/* Problems by Platform — segmented colour bar with hover tooltip */}
       {connectedIds.length > 0 && (() => {
-        // Aggregate difficulty per platform — each platform contributes to its known tiers
-        // Sources:
-        //   Easy:   LeetCode easySolved, GFG easy_count/easyCount
-        //   Medium: LeetCode mediumSolved, GFG medium_count/mediumCount
-        //   Hard:   LeetCode hardSolved, GFG hard_count/hardCount, AtCoder problems (all rated hard)
-        const breakdown: {
-          platform: string
-          easy: number
-          medium: number
-          hard: number
-          other: number   // solved but no difficulty tag (Codeforces, CodeChef, etc.)
-          color: string
-        }[] = []
-
         const COLORS: Record<string, string> = {
-          leetcode:      '#f59e0b',
-          geeksforgeeks: '#0d9488',
-          atcoder:       '#8b5cf6',
-          codeforces:    '#3b82f6',
-          codechef:      '#f97316',
-          hackerrank:    '#22c55e',
-          hackerearth:   '#6366f1',
-          spoj:          '#f43f5e',
-          kattis:        '#ec4899',
-          cses:          '#84cc16',
-          interviewbit:  '#06b6d4',
+          leetcode: '#f59e0b', geeksforgeeks: '#0d9488', atcoder: '#8b5cf6',
+          codeforces: '#3b82f6', codechef: '#f97316', hackerrank: '#22c55e',
+          hackerearth: '#6366f1', spoj: '#f43f5e', kattis: '#ec4899',
+          cses: '#84cc16', interviewbit: '#06b6d4', github: '#10b981',
         }
-
-        connectedIds.forEach(pid => {
+        const bars = connectedIds.map(pid => {
           const pdata = linkedPlatforms[pid]
-          if (!pdata || typeof pdata !== 'object') return
+          if (!pdata || typeof pdata !== 'object') return null
           const s = 'stats' in pdata ? (pdata as any).stats : null
-          if (!s) return
-
-          let easy = 0, medium = 0, hard = 0, other = 0
-
-          if (pid === 'leetcode') {
-            easy   = s.easySolved   || 0
-            medium = s.mediumSolved || 0
-            hard   = s.hardSolved   || 0
-          } else if (pid === 'geeksforgeeks') {
-            easy   = s.easyCount   || s.easy_count   || 0
-            medium = s.mediumCount || s.medium_count || 0
-            hard   = s.hardCount   || s.hard_count   || 0
-            // GFG also has a total — if breakdown not available, count as other
-            if (easy + medium + hard === 0) {
-              other = s.problemsSolved || 0
-            }
-          } else if (pid === 'atcoder') {
-            // AtCoder doesn't expose difficulty — all count as rated (treat as hard)
-            hard  = s.problemsSolved || 0
-          } else {
-            // All other platforms: solved count goes into "other"
-            other = s.totalSolved || s.problemsSolved || s.completedExercises || 0
+          const solved = s ? (s.totalSolved || s.problemsSolved || s.completedExercises || 0) : 0
+          if (solved === 0) return null
+          // difficulty breakdown if available
+          const easy   = s?.easySolved   || s?.easyCount   || 0
+          const medium = s?.mediumSolved || s?.mediumCount || 0
+          const hard   = s?.hardSolved   || s?.hardCount   || 0
+          return {
+            pid,
+            name: pid.charAt(0).toUpperCase() + pid.slice(1),
+            solved,
+            easy, medium, hard,
+            color: COLORS[pid] || '#94a3b8',
           }
+        }).filter(Boolean) as { pid: string; name: string; solved: number; easy: number; medium: number; hard: number; color: string }[]
 
-          const total = easy + medium + hard + other
-          if (total > 0) {
-            breakdown.push({
-              platform: pid.charAt(0).toUpperCase() + pid.slice(1),
-              easy, medium, hard, other,
-              color: COLORS[pid] || '#94a3b8',
-            })
-          }
-        })
-
-        if (breakdown.length === 0) return null
-
-        const totalEasy   = breakdown.reduce((s, p) => s + p.easy,   0)
-        const totalMedium = breakdown.reduce((s, p) => s + p.medium, 0)
-        const totalHard   = breakdown.reduce((s, p) => s + p.hard,   0)
-        const totalOther  = breakdown.reduce((s, p) => s + p.other,  0)
-        const grandTotal  = totalEasy + totalMedium + totalHard + totalOther
+        if (bars.length === 0) return null
+        bars.sort((a, b) => b.solved - a.solved)
+        const total = bars.reduce((s, p) => s + p.solved, 0)
 
         return (
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-foreground">Difficulty Distribution</h3>
-            <div className="grid gap-4 lg:grid-cols-2">
+          <Card>
+            <CardContent className="p-5">
+              <p className="text-sm font-semibold text-foreground mb-4">Problems by Platform</p>
 
-              {/* Overall difficulty bars */}
-              <Card>
-                <CardContent className="p-5 space-y-3">
-                  <p className="text-xs font-medium text-muted-foreground mb-3">Overall — {grandTotal.toLocaleString()} problems</p>
-                  {[
-                    { label: "Easy",   val: totalEasy,   color: "#10b981", bg: "bg-emerald-500", note: "LeetCode · GFG" },
-                    { label: "Medium", val: totalMedium, color: "#f59e0b", bg: "bg-amber-500",   note: "LeetCode · GFG" },
-                    { label: "Hard",   val: totalHard,   color: "#ef4444", bg: "bg-red-500",     note: "LeetCode · GFG · AtCoder" },
-                    { label: "Unrated",val: totalOther,  color: "#94a3b8", bg: "bg-slate-400",   note: "CF · CC · HR · others" },
-                  ].filter(d => d.val > 0).map(d => (
-                    <div key={d.label}>
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center gap-2">
-                          <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-                          <span className="text-xs font-medium text-foreground">{d.label}</span>
-                          <span className="text-[10px] text-muted-foreground">{d.note}</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">
-                          {d.val.toLocaleString()} <span className="text-muted-foreground/60">({grandTotal > 0 ? Math.round((d.val / grandTotal) * 100) : 0}%)</span>
-                        </span>
-                      </div>
-                      <div className="h-2 rounded-full bg-muted overflow-hidden">
-                        <div className={`h-full rounded-full ${d.bg}`} style={{ width: `${grandTotal > 0 ? (d.val / grandTotal) * 100 : 0}%` }} />
-                      </div>
+              {/* Per-platform rows with hover tooltip */}
+              <div className="space-y-2.5">
+                {bars.map(p => (
+                  <div key={p.pid} className="group relative flex items-center gap-3 cursor-pointer">
+                    <span className="text-xs font-medium text-foreground w-28 shrink-0 truncate">{p.name}</span>
+                    <div className="flex-1 h-2.5 rounded-full bg-muted overflow-hidden flex">
+                      {/* If difficulty data available — stacked Easy/Med/Hard colours */}
+                      {(p.easy > 0 || p.medium > 0 || p.hard > 0) ? (
+                        <>
+                          {p.easy   > 0 && <div className="h-full bg-emerald-500" style={{ width: `${(p.easy   / p.solved) * 100}%` }} />}
+                          {p.medium > 0 && <div className="h-full bg-amber-500"   style={{ width: `${(p.medium / p.solved) * 100}%` }} />}
+                          {p.hard   > 0 && <div className="h-full bg-red-500"     style={{ width: `${(p.hard   / p.solved) * 100}%` }} />}
+                          {/* remaining = unrated */}
+                          {(p.easy + p.medium + p.hard) < p.solved && (
+                            <div className="h-full bg-slate-400" style={{ width: `${((p.solved - p.easy - p.medium - p.hard) / p.solved) * 100}%` }} />
+                          )}
+                        </>
+                      ) : (
+                        /* No difficulty data — single platform colour */
+                        <div className="h-full rounded-full" style={{ width: `${(p.solved / bars[0].solved) * 100}%`, backgroundColor: p.color }} />
+                      )}
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Per-platform stacked bar */}
-              <Card>
-                <CardContent className="p-5 space-y-3">
-                  <p className="text-xs font-medium text-muted-foreground mb-3">By Platform</p>
-                  {breakdown.map(p => {
-                    const total = p.easy + p.medium + p.hard + p.other
-                    const easyPct   = (p.easy   / total) * 100
-                    const medPct    = (p.medium / total) * 100
-                    const hardPct   = (p.hard   / total) * 100
-                    return (
-                      <div key={p.platform}>
-                        <div className="flex items-center justify-between mb-1">
-                          <div className="flex items-center gap-2">
-                            <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: p.color }} />
-                            <span className="text-xs font-medium text-foreground">{p.platform}</span>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{total.toLocaleString()}</span>
-                        </div>
-                        {/* Stacked bar — easy (green) / medium (amber) / hard (red) / other (slate) */}
-                        <div className="h-2 rounded-full bg-muted overflow-hidden flex">
-                          {easyPct > 0  && <div className="h-full bg-emerald-500" style={{ width: `${easyPct}%` }} />}
-                          {medPct  > 0  && <div className="h-full bg-amber-500"   style={{ width: `${medPct}%` }} />}
-                          {hardPct > 0  && <div className="h-full bg-red-500"     style={{ width: `${hardPct}%` }} />}
-                          {p.other > 0  && <div className="h-full bg-slate-400"   style={{ width: `${(p.other / total) * 100}%` }} />}
-                        </div>
-                      </div>
-                    )
-                  })}
-                  {/* Legend */}
-                  <div className="flex flex-wrap gap-3 pt-2 border-t border-border">
-                    {[
-                      { label: "Easy",    color: "bg-emerald-500" },
-                      { label: "Medium",  color: "bg-amber-500"   },
-                      { label: "Hard",    color: "bg-red-500"     },
-                      { label: "Unrated", color: "bg-slate-400"   },
-                    ].map(l => (
-                      <div key={l.label} className="flex items-center gap-1.5">
-                        <div className={`h-2 w-2 rounded-full ${l.color}`} />
-                        <span className="text-[10px] text-muted-foreground">{l.label}</span>
-                      </div>
-                    ))}
+                    <span className="text-xs text-muted-foreground w-12 text-right shrink-0">{p.solved.toLocaleString()}</span>
+                    {/* Hover tooltip */}
+                    <div className="absolute left-28 right-12 bottom-full mb-1.5 hidden group-hover:flex items-center gap-2 bg-popover border border-border rounded-lg px-3 py-1.5 shadow-lg z-10 pointer-events-none">
+                      <span className="text-[10px] font-semibold text-foreground">{p.name}:</span>
+                      {(p.easy > 0 || p.medium > 0 || p.hard > 0) ? (
+                        <>
+                          <span className="text-[10px] text-emerald-500 font-medium">Easy {p.easy}</span>
+                          <span className="text-muted-foreground/40">·</span>
+                          <span className="text-[10px] text-amber-500 font-medium">Med {p.medium}</span>
+                          <span className="text-muted-foreground/40">·</span>
+                          <span className="text-[10px] text-red-500 font-medium">Hard {p.hard}</span>
+                        </>
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground">{p.solved.toLocaleString()} problems</span>
+                      )}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                ))}
+              </div>
+
+              <p className="text-xs text-muted-foreground mt-3">Total: {total.toLocaleString()} problems · hover a bar for details</p>
+            </CardContent>
+          </Card>
         )
       })()}
     </div>

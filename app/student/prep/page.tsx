@@ -148,7 +148,7 @@ function Quiz({company,type,onDone}:{company:Company;type:string;onDone:(s:numbe
           </button>
         ))}
       </div>
-      <Button className="w-full gap-2 font-bold disabled={sel===null} onClick={next}>{cur+1===qs.length?"Finish":"NEXT"}<ChevronRight className="h-4 w-4"/></Button>
+      <Button className="w-full gap-2" disabled={sel===null} onClick={next}>{cur+1===qs.length?"Finish":"Next"}<ChevronRight className="h-4 w-4"/></Button>
     </div>
   )
 }

@@ -865,6 +865,141 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         </CardContent>
       </Card>
 
+      {/* Platform Ratings + Recent Activity — side by side below platforms */}
+      {hasLinkedPlatforms && (
+        <div className="grid gap-5 lg:grid-cols-2">
+
+          {/* Platform Ratings */}
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm">Platform Ratings</CardTitle>
+                <a href="/student/analytics">
+                  <Button size="sm" className="gap-1.5 text-xs h-7">
+                    <TrendingUp className="h-3 w-3" />Full Analytics
+                  </Button>
+                </a>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0 space-y-2.5">
+              {connectedPlatformIds.map(pid => {
+                const pdata = linkedPlatforms[pid]
+                if (!pdata || typeof pdata !== 'object') return null
+                const s = 'stats' in pdata ? (pdata as any).stats : null
+                const uname = (pdata as any).username || ''
+                const color = getUniquePlatformColor(pid, connectedPlatformIds)
+                const name = pid.charAt(0).toUpperCase() + pid.slice(1)
+                let metricLabel = '', metricValue = 0
+                if (s) {
+                  if (pid === 'github')        { metricLabel = 'contributions'; metricValue = s.totalContributions || 0 }
+                  else if (pid === 'leetcode') { metricLabel = 'solved';        metricValue = s.totalSolved || 0 }
+                  else if (pid === 'hackerrank'){ metricLabel = 'badges';       metricValue = s.badges?.length || 0 }
+                  else if (pid === 'geeksforgeeks'){ metricLabel = 'score';     metricValue = s.codingScore || s.score || 0 }
+                  else if (s.rating || s.currentRating || s.highestRating) {
+                    metricLabel = 'rating'; metricValue = s.rating || s.currentRating || s.highestRating || 0
+                  } else if (s.totalSolved || s.problemsSolved) {
+                    metricLabel = 'solved'; metricValue = s.totalSolved || s.problemsSolved || 0
+                  }
+                }
+                return (
+                  <div key={pid} className="flex items-center gap-3 text-sm">
+                    <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                    <span className="text-muted-foreground w-24 truncate shrink-0">{name}</span>
+                    <span className="text-xs text-muted-foreground truncate flex-1">@{uname}</span>
+                    {metricValue > 0 ? (
+                      <span className="font-semibold text-foreground shrink-0">
+                        {metricValue.toLocaleString()} <span className="text-xs text-muted-foreground font-normal">{metricLabel}</span>
+                      </span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground shrink-0">not synced</span>
+                    )}
+                  </div>
+                )
+              })}
+            </CardContent>
+          </Card>
+
+          {/* Recent Activity */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">Recent Activity</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              {recentActivity.length > 0 ? (
+                <div className="space-y-3">
+                  {recentActivity.slice(0, 6).map((item: any, i: number) => {
+                    const COLORS: Record<string, string> = {
+                      leetcode: '#f59e0b', github: '#10b981', codeforces: '#3b82f6',
+                      codechef: '#f97316', hackerrank: '#22c55e', geeksforgeeks: '#0d9488',
+                      atcoder: '#8b5cf6', hackerearth: '#6366f1',
+                    }
+                    const dot = COLORS[item.platform] || '#94a3b8'
+                    return (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="h-2 w-2 rounded-full shrink-0 mt-1.5" style={{ backgroundColor: dot }} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-foreground">{item.title}</p>
+                          {item.detail && <p className="text-xs text-muted-foreground truncate">{item.detail}</p>}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : connectedPlatformIds.length > 0 ? (
+                <div className="space-y-3">
+                  {connectedPlatformIds.slice(0, 5).map(pid => {
+                    const pdata = linkedPlatforms[pid]
+                    if (!pdata || typeof pdata !== 'object') return null
+                    const s = 'stats' in pdata ? (pdata as any).stats : null
+                    const uname = (pdata as any).username || ''
+                    const name = pid.charAt(0).toUpperCase() + pid.slice(1)
+                    const COLORS: Record<string, string> = {
+                      leetcode: '#f59e0b', github: '#10b981', codeforces: '#3b82f6',
+                      codechef: '#f97316', hackerrank: '#22c55e', geeksforgeeks: '#0d9488',
+                      atcoder: '#8b5cf6', hackerearth: '#6366f1',
+                    }
+                    const dot = COLORS[pid] || '#94a3b8'
+                    if (!s) return (
+                      <div key={pid} className="flex items-start gap-3">
+                        <div className="h-2 w-2 rounded-full shrink-0 mt-1.5 bg-muted-foreground/40" />
+                        <p className="text-sm text-muted-foreground">{name} connected · @{uname}</p>
+                      </div>
+                    )
+                    const solved = s.totalSolved || s.problemsSolved || 0
+                    const rating = s.rating || s.currentRating || 0
+                    const text = pid === 'github'
+                      ? `${s.totalContributions || 0} contributions on GitHub`
+                      : rating > 0
+                        ? `${name} rating: ${rating}${solved > 0 ? ` ${solved} solved` : ''}`
+                        : solved > 0 ? `${solved} problems solved on ${name}` : `${name} connected`
+                    const detail = pid === 'leetcode' && s.easySolved != null
+                      ? `Easy: ${s.easySolved} · Medium: ${s.mediumSolved || 0} · Hard: ${s.hardSolved || 0}`
+                      : pid === 'github' ? `${s.publicRepos || 0} public repos · ${s.followers || 0} followers`
+                      : pid === 'codechef' ? `Highest: ${s.highestRating || rating} · ${solved} problems solved`
+                      : s.codingScore ? `Coding score: ${s.codingScore}` : null
+                    return (
+                      <div key={pid} className="flex items-start gap-3">
+                        <div className="h-2 w-2 rounded-full shrink-0 mt-1.5" style={{ backgroundColor: dot }} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-foreground">{text}</p>
+                          {detail && <p className="text-xs text-muted-foreground truncate">{detail}</p>}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Activity className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">Connect platforms to see activity</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+        </div>
+      )}
+
     </div>
   )
 }

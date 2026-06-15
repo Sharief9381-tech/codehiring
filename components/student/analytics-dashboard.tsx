@@ -6,10 +6,10 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, LineChart, Line, RadarChart, Radar, PolarGrid,
-  PolarAngleAxis, PolarRadiusAxis
+  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
 } from "recharts"
 import Link from "next/link"
+import { MonthlyProblemsChart } from "@/components/student/monthly-problems-chart"
 import {
   TrendingUp, Award, Target, Calendar, Trophy, Star,
   RefreshCw, Code, GitBranch, Zap, Activity
@@ -22,23 +22,12 @@ interface AnalyticsDashboardProps {
 }
 
 const PLATFORM_COLORS: Record<string, string> = {
-  leetcode: "#FFA116",
-  github: "#238636",
-  codeforces: "#1890FF",
-  codechef: "#5B4638",
-  hackerrank: "#00EA64",
-  hackerearth: "#2C3E50",
-  geeksforgeeks: "#2F8D46",
-  atcoder: "#888888",
-  spoj: "#f97316",
-  kattis: "#8b5cf6",
-  topcoder: "#ef4444",
-  interviewbit: "#06b6d4",
-  cses: "#84cc16",
-  codestudio: "#f472b6",
-  exercism: "#a855f7",
-  kaggle: "#22c55e",
-  uva: "#64748b",
+  leetcode: "#FFA116", github: "#238636", codeforces: "#1890FF",
+  codechef: "#5B4638", hackerrank: "#00EA64", hackerearth: "#2C3E50",
+  geeksforgeeks: "#2F8D46", atcoder: "#888888", spoj: "#f97316",
+  kattis: "#8b5cf6", topcoder: "#ef4444", interviewbit: "#06b6d4",
+  cses: "#84cc16", codestudio: "#f472b6", exercism: "#a855f7",
+  kaggle: "#22c55e", uva: "#64748b",
 }
 
 export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
@@ -72,21 +61,16 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
         toast.success("Stats synced! Refreshing analytics...")
         setLoading(true)
         await fetchAnalytics()
-      } else {
-        toast.error("Sync failed")
-      }
-    } catch {
-      toast.error("Sync failed")
-    } finally {
-      setSyncing(false)
-    }
+      } else { toast.error("Sync failed") }
+    } catch { toast.error("Sync failed") }
+    finally { setSyncing(false) }
   }
 
   if (loading) {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map(i => (
-          <Card key={i} className="bg-card border-border">
+          <Card key={i}>
             <CardContent className="p-6">
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-muted rounded w-1/4" />
@@ -102,34 +86,22 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
 
   if (!analytics || !analytics.hasStats) {
     return (
-      <Card className="bg-card border-border">
+      <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2 text-foreground">
-              <TrendingUp className="h-5 w-5" />
-              Analytics Dashboard
-            </CardTitle>
-            <Button
-              onClick={handleSync}
-              disabled={syncing}
-              size="sm"
-              className="bg-blue-600 hover:bg-blue-700 text-foreground"
-            >
+            <CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5" />Analytics</CardTitle>
+            <Button onClick={handleSync} disabled={syncing} size="sm">
               <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
               {syncing ? "Syncing..." : "Sync & Load"}
             </Button>
           </div>
-          <CardDescription className="text-muted-foreground">
-            {analytics?.message || "Connect platforms and sync to see analytics"}
-          </CardDescription>
+          <CardDescription>{analytics?.message || "Connect platforms and sync to see analytics"}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-12">
-            <Target className="h-14 w-14 mx-auto text-gray-600 mb-4" />
+            <Target className="h-14 w-14 mx-auto text-muted-foreground/30 mb-4" />
             <p className="text-muted-foreground font-medium mb-1">No analytics data yet</p>
-            <p className="text-sm text-muted-foreground">
-              Connect a platform from the Dashboard, then click "Sync & Load" above.
-            </p>
+            <p className="text-sm text-muted-foreground">Connect a platform, then click "Sync & Load".</p>
           </div>
         </CardContent>
       </Card>
@@ -138,360 +110,187 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
 
   const { aggregatedStats, skillsAnalysis, progressData, platformStats, achievements } = analytics
 
-  const difficultyData = [
-    { name: "Easy", value: skillsAnalysis.difficultyDistribution.easy, color: "#10B981" },
-    { name: "Medium", value: skillsAnalysis.difficultyDistribution.medium, color: "#F59E0B" },
-    { name: "Hard", value: skillsAnalysis.difficultyDistribution.hard, color: "#EF4444" },
-  ].filter(d => d.value > 0)
+  // ── Combined stacked chart ────────────────────────────────────────────────
+  // For each platform build a stacked bar: Easy (green), Medium (amber), Hard (red), Other (slate)
+  const combinedData = platformStats
+    .filter((p: any) => (p.problems || 0) > 0)
+    .map((p: any) => {
+      // Try to get difficulty from the raw linked platform data
+      const lp: any = student.linkedPlatforms
+      const raw = lp?.[p.platformId]
+      const s = raw && typeof raw === 'object' && 'stats' in raw ? (raw as any).stats : null
 
-  const platformBarData = platformStats
-    .filter((p: any) => p.problems > 0 || p.contributions > 0)
-    .map((p: any) => ({
-      name: p.platform.length > 10 ? p.platform.slice(0, 10) + "…" : p.platform,
-      fullName: p.platform,
-      problems: p.problems || 0,
-      contributions: p.contributions || 0,
-      rating: p.rating || 0,
-      color: PLATFORM_COLORS[p.platformId] || "#64748b",
-    }))
+      const easy   = s?.easySolved   || s?.easyCount   || 0
+      const medium = s?.mediumSolved || s?.mediumCount || 0
+      const hard   = s?.hardSolved   || s?.hardCount   || 0
+      const total  = p.problems || 0
+      const other  = Math.max(0, total - easy - medium - hard)
+
+      return {
+        name: p.platform.length > 10 ? p.platform.slice(0, 9) + "…" : p.platform,
+        fullName: p.platform,
+        easy,
+        medium,
+        hard,
+        other,
+        total,
+        color: PLATFORM_COLORS[p.platformId] || "#64748b",
+      }
+    })
+    .sort((a: any, b: any) => b.total - a.total)
 
   const radarData = [
     { subject: "Problems", value: Math.min(100, (aggregatedStats.totalProblems / 5)) },
     { subject: "Contests", value: Math.min(100, aggregatedStats.contestsAttended * 5) },
-    { subject: "Rating", value: Math.min(100, aggregatedStats.currentRating / 30) },
-    { subject: "GitHub", value: Math.min(100, aggregatedStats.githubContributions / 10) },
-    { subject: "Platforms", value: Math.min(100, (analytics.linkedPlatforms?.length || 0) * 15) },
+    { subject: "Rating",   value: Math.min(100, aggregatedStats.currentRating / 30) },
+    { subject: "GitHub",   value: Math.min(100, aggregatedStats.githubContributions / 10) },
+    { subject: "Platforms",value: Math.min(100, (analytics.linkedPlatforms?.length || 0) * 15) },
   ]
+
+  const tooltipStyle = {
+    contentStyle: { backgroundColor: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "8px", color: "hsl(var(--foreground))" }
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header with sync */}
+
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-foreground">Your Analytics</h2>
+          <h2 className="text-xl font-semibold text-foreground">Analytics</h2>
           <p className="text-sm text-muted-foreground">
-            Based on {analytics.linkedPlatforms?.length || 0} connected platform{analytics.linkedPlatforms?.length !== 1 ? "s" : ""}
+            {analytics.linkedPlatforms?.length || 0} platform{analytics.linkedPlatforms?.length !== 1 ? "s" : ""} connected
           </p>
         </div>
-        <Button
-          onClick={handleSync}
-          disabled={syncing}
-          size="sm"
-          variant="outline"
-          className="border-border text-muted-foreground hover:bg-secondary"
-        >
+        <Button onClick={handleSync} disabled={syncing} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
-          {syncing ? "Syncing..." : "Refresh Stats"}
+          {syncing ? "Syncing..." : "Refresh"}
         </Button>
       </div>
 
-      {/* Overview stat cards */}
+      {/* Stat cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Link href="/student/platforms">
-          <Card className="bg-gradient-to-br from-blue-900 to-blue-800 border-blue-700 cursor-pointer hover:scale-[1.02] transition-transform">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-blue-200">Total Problems</CardTitle>
-              <Code className="h-4 w-4 text-blue-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">{aggregatedStats.totalProblems}</div>
-              <p className="text-xs text-blue-300 mt-1">Across all platforms</p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Link href="/student/platforms">
-          <Card className="bg-gradient-to-br from-emerald-900 to-emerald-800 border-emerald-700 cursor-pointer hover:scale-[1.02] transition-transform">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-emerald-200">GitHub Contributions</CardTitle>
-              <GitBranch className="h-4 w-4 text-emerald-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">{aggregatedStats.githubContributions}</div>
-              <p className="text-xs text-emerald-300 mt-1">Total contributions</p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Link href="/student/analytics">
-          <Card className="bg-gradient-to-br from-purple-900 to-purple-800 border-purple-700 cursor-pointer hover:scale-[1.02] transition-transform">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-purple-200">Contests</CardTitle>
-              <Trophy className="h-4 w-4 text-purple-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">{aggregatedStats.contestsAttended}</div>
-              <p className="text-xs text-purple-300 mt-1">Contests participated</p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Link href="/student/analytics">
-          <Card className="bg-gradient-to-br from-amber-900 to-amber-800 border-amber-700 cursor-pointer hover:scale-[1.02] transition-transform">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-amber-200">Activity Level</CardTitle>
-              <Activity className="h-4 w-4 text-amber-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-foreground">{skillsAnalysis.activityLevel}</div>
-              <p className="text-xs text-amber-300 mt-1">
-                Rank: <span className="font-semibold">{skillsAnalysis.overallRank}</span>
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        {/* Global Rank */}
-        <Link href="/student/leaderboard">
-          <Card className="bg-gradient-to-br from-rose-900 to-rose-800 border-rose-700 cursor-pointer hover:scale-[1.02] transition-transform">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-rose-200">Global Rank</CardTitle>
-              <Trophy className="h-4 w-4 text-rose-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">
-                {ranking?.globalRank != null ? `#${ranking.globalRank}` : "—"}
-              </div>
-              <p className="text-xs text-rose-300 mt-1">
-                {ranking?.totalGlobal ? `out of ${ranking.totalGlobal} students` : "by total problems solved"}
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        {/* College Rank */}
-        <Link href="/student/leaderboard">
-          <Card className="bg-gradient-to-br from-cyan-900 to-cyan-800 border-cyan-700 cursor-pointer hover:scale-[1.02] transition-transform">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-cyan-200">College Rank</CardTitle>
-              <Star className="h-4 w-4 text-cyan-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">
-                {ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "—"}
-              </div>
-              <p className="text-xs text-cyan-300 mt-1">
-                {ranking?.totalCollege ? `out of ${ranking.totalCollege} in ${ranking.myCollege}` : "no college data yet"}
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
+        {[
+          { label: "Total Problems", val: aggregatedStats.totalProblems, sub: "Across all platforms", icon: Code, gradient: "from-blue-900 to-blue-800", border: "border-blue-700", text: "text-blue-200", sub2: "text-blue-300", iconC: "text-blue-400", href: "/student/platforms" },
+          { label: "GitHub Contributions", val: aggregatedStats.githubContributions, sub: "Total contributions", icon: GitBranch, gradient: "from-emerald-900 to-emerald-800", border: "border-emerald-700", text: "text-emerald-200", sub2: "text-emerald-300", iconC: "text-emerald-400", href: "/student/platforms" },
+          { label: "Contests", val: aggregatedStats.contestsAttended, sub: "Participated", icon: Trophy, gradient: "from-purple-900 to-purple-800", border: "border-purple-700", text: "text-purple-200", sub2: "text-purple-300", iconC: "text-purple-400", href: "/student/analytics" },
+          { label: "Activity Level", val: skillsAnalysis.activityLevel, sub: `Rank: ${skillsAnalysis.overallRank}`, icon: Activity, gradient: "from-amber-900 to-amber-800", border: "border-amber-700", text: "text-amber-200", sub2: "text-amber-300", iconC: "text-amber-400", href: "/student/analytics" },
+          { label: "Global Rank", val: ranking?.globalRank != null ? `#${ranking.globalRank}` : "—", sub: ranking?.totalGlobal ? `of ${ranking.totalGlobal} students` : "by problems", icon: Trophy, gradient: "from-rose-900 to-rose-800", border: "border-rose-700", text: "text-rose-200", sub2: "text-rose-300", iconC: "text-rose-400", href: "/student/leaderboard" },
+          { label: "College Rank", val: ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "—", sub: ranking?.totalCollege ? `of ${ranking.totalCollege}` : "no data yet", icon: Star, gradient: "from-cyan-900 to-cyan-800", border: "border-cyan-700", text: "text-cyan-200", sub2: "text-cyan-300", iconC: "text-cyan-400", href: "/student/leaderboard" },
+        ].map(c => (
+          <Link key={c.label} href={c.href}>
+            <Card className={`bg-gradient-to-br ${c.gradient} ${c.border} cursor-pointer hover:scale-[1.02] transition-transform`}>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className={`text-sm font-medium ${c.text}`}>{c.label}</CardTitle>
+                <c.icon className={`h-4 w-4 ${c.iconC}`} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-foreground">{c.val}</div>
+                <p className={`text-xs ${c.sub2} mt-1`}>{c.sub}</p>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
       </div>
 
-      {/* Progress + Radar row */}
+      {/* Monthly Problems Chart + Skill Radar */}
       <div className="grid gap-6 md:grid-cols-2">
-        <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-foreground">
-              <Calendar className="h-5 w-5" />
-              Progress Over Time
-            </CardTitle>
-            <CardDescription className="text-muted-foreground">Cumulative problems solved</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={240}>
-              <LineChart data={progressData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="month" tick={{ fill: "#9ca3af", fontSize: 12 }} />
-                <YAxis tick={{ fill: "#9ca3af", fontSize: 12 }} />
-                <Tooltip contentStyle={{ backgroundColor: "#111827", border: "1px solid #374151", borderRadius: "8px", color: "#f9fafb" }} />
-                <Line type="monotone" dataKey="problems" stroke="#60a5fa" strokeWidth={3} dot={{ fill: "#60a5fa", r: 4 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        <MonthlyProblemsChart />
 
-        <Card className="bg-card border-border">
+        <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-foreground">
-              <Zap className="h-5 w-5" />
-              Skill Radar
-            </CardTitle>
-            <CardDescription className="text-muted-foreground">Overall coding profile</CardDescription>
+            <CardTitle className="flex items-center gap-2 text-base"><Zap className="h-4 w-4 text-violet-500" />Skill Radar</CardTitle>
+            <CardDescription>Overall coding profile strength</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={240}>
               <RadarChart data={radarData}>
-                <PolarGrid stroke="#374151" />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: "#9ca3af", fontSize: 12 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "#6b7280", fontSize: 10 }} />
-                <Radar name="You" dataKey="value" stroke="#818cf8" fill="#818cf8" fillOpacity={0.3} />
-                <Tooltip contentStyle={{ backgroundColor: "#111827", border: "1px solid #374151", borderRadius: "8px", color: "#f9fafb" }} />
+                <defs>
+                  <linearGradient id="radarGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#818cf8" />
+                    <stop offset="100%" stopColor="#c084fc" />
+                  </linearGradient>
+                </defs>
+                <PolarGrid stroke="hsl(var(--border))" />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }} />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} />
+                <Radar name="You" dataKey="value" stroke="#818cf8" fill="#818cf8" fillOpacity={0.25} strokeWidth={2} />
+                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "10px", color: "hsl(var(--foreground))" }} />
               </RadarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
 
-      {/* Platform comparison + Difficulty row */}
-      <div className="grid gap-6 md:grid-cols-2">
-        {platformBarData.length > 0 && (
-          <Card className="bg-card border-border">
+      {/* Difficulty Distribution by Platform — half grid */}
+      {combinedData.length > 0 && (
+        <div className="grid gap-6 md:grid-cols-2">
+          <Card>
             <CardHeader>
-              <CardTitle className="text-foreground">Problems by Platform</CardTitle>
-              <CardDescription className="text-muted-foreground">Problems solved per platform</CardDescription>
+              <CardTitle className="text-base">Difficulty by Platform</CardTitle>
+              <CardDescription>
+                <span className="text-emerald-500 font-medium">■ Easy</span>
+                {' · '}
+                <span className="text-amber-500 font-medium">■ Medium</span>
+                {' · '}
+                <span className="text-red-500 font-medium">■ Hard</span>
+                {' · '}
+                <span className="text-slate-400 font-medium">■ Unrated</span>
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={platformBarData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="name" tick={{ fill: "#9ca3af", fontSize: 11 }} />
-                  <YAxis tick={{ fill: "#9ca3af", fontSize: 11 }} />
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={combinedData} margin={{ top: 8, right: 8, left: -20, bottom: 8 }} barCategoryGap="30%">
+                  <defs>
+                    <linearGradient id="easyGrad"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#34d399" /><stop offset="100%" stopColor="#10b981" /></linearGradient>
+                    <linearGradient id="medGrad"   x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#fcd34d" /><stop offset="100%" stopColor="#f59e0b" /></linearGradient>
+                    <linearGradient id="hardGrad"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#f87171" /><stop offset="100%" stopColor="#ef4444" /></linearGradient>
+                    <linearGradient id="otherGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#cbd5e1" /><stop offset="100%" stopColor="#94a3b8" /></linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} axisLine={false} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: "#111827", border: "1px solid #374151", borderRadius: "8px", color: "#f9fafb" }}
-                    formatter={(value: any, name: any, props: any) => [value, props.payload.fullName]}
+                    cursor={false}
+                    contentStyle={{ backgroundColor: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "10px", color: "hsl(var(--foreground))" }}
+                    formatter={(value: any, name: string, props: any) => {
+                      const labels: Record<string, string> = { easy: "Easy", medium: "Medium", hard: "Hard", other: "Unrated" }
+                      return [value, labels[name] || name]
+                    }}
+                    labelFormatter={(_: any, payload: any[]) => payload?.[0]?.payload?.fullName || _}
                   />
-                  <Bar dataKey="problems" radius={[4, 4, 0, 0]}>
-                    {platformBarData.map((entry: any, index: number) => (
-                      <Cell key={index} fill={entry.color} />
-                    ))}
-                  </Bar>
+                  <Bar dataKey="easy"   stackId="s" fill="url(#easyGrad)"  name="easy"   radius={[0,0,0,0]} />
+                  <Bar dataKey="medium" stackId="s" fill="url(#medGrad)"   name="medium" radius={[0,0,0,0]} />
+                  <Bar dataKey="hard"   stackId="s" fill="url(#hardGrad)"  name="hard"   radius={[0,0,0,0]} />
+                  <Bar dataKey="other"  stackId="s" fill="url(#otherGrad)" name="other"  radius={[6,6,0,0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
-        )}
 
-        {difficultyData.length > 0 ? (
-          <Card className="bg-card border-border">
+          {/* Achievements — beside the bar chart */}
+          <Card>
             <CardHeader>
-              <CardTitle className="text-foreground">Difficulty Distribution</CardTitle>
-              <CardDescription className="text-muted-foreground">LeetCode problems by difficulty</CardDescription>
+              <CardTitle className="flex items-center gap-2 text-base"><Award className="h-4 w-4 text-amber-500" />Achievements</CardTitle>
+              <CardDescription>Milestones unlocked from your activity</CardDescription>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={240}>
-                <PieChart>
-                  <Pie
-                    data={difficultyData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={90}
-                    dataKey="value"
-                    label={({ name, value }) => `${name}: ${value}`}
-                    labelLine={false}
-                  >
-                    {difficultyData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: "#111827", border: "1px solid #374151", borderRadius: "8px", color: "#f9fafb" }} />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        ) : platformBarData.length === 0 ? (
-          <Card className="bg-card border-border">
-            <CardContent className="flex items-center justify-center h-48">
-              <p className="text-muted-foreground text-sm">Sync platforms to see charts</p>
-            </CardContent>
-          </Card>
-        ) : null}
-      </div>
-
-      {/* Per-platform stats table */}
-      {platformStats.length > 0 && (
-        <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle className="text-foreground">Platform Breakdown</CardTitle>
-            <CardDescription className="text-muted-foreground">Stats from each connected platform</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {platformStats.map((p: any) => (
-                <div
-                  key={p.platformId}
-                  className="flex items-center justify-between p-3 rounded-lg bg-secondary border border-border"
-                  style={{ borderLeftColor: PLATFORM_COLORS[p.platformId] || "#64748b", borderLeftWidth: 3 }}
-                >
-                  <div>
-                    <p className="font-medium text-foreground text-sm">{p.platform}</p>
-                    <p className="text-xs text-muted-foreground">@{p.username}</p>
-                  </div>
-                  <div className="flex gap-6 text-right">
-                    {p.problems > 0 && (
-                      <div>
-                        <p className="text-sm font-bold text-foreground">{p.problems}</p>
-                        <p className="text-xs text-muted-foreground">solved</p>
-                      </div>
-                    )}
-                    {p.rating > 0 && (
-                      <div>
-                        <p className="text-sm font-bold text-yellow-400">{p.rating}</p>
-                        <p className="text-xs text-muted-foreground">rating</p>
-                      </div>
-                    )}
-                    {p.contests > 0 && (
-                      <div>
-                        <p className="text-sm font-bold text-purple-400">{p.contests}</p>
-                        <p className="text-xs text-muted-foreground">contests</p>
-                      </div>
-                    )}
-                    {p.contributions > 0 && (
-                      <div>
-                        <p className="text-sm font-bold text-green-400">{p.contributions}</p>
-                        <p className="text-xs text-muted-foreground">contributions</p>
-                      </div>
-                    )}
-                  </div>
+              {achievements.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {achievements.map((a: string) => (
+                    <Badge key={a} className="gap-1 bg-orange-600/80 text-foreground border-orange-500">
+                      <Award className="h-3 w-3" />{a}
+                    </Badge>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              ) : (
+                <p className="text-muted-foreground text-sm">Keep coding to unlock achievements!</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       )}
 
-      {/* Achievements */}
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <Award className="h-5 w-5" />
-            Achievements
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">Milestones unlocked from your activity</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {achievements.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {achievements.map((a: string) => (
-                <Badge key={a} className="gap-1 bg-orange-600/80 text-foreground border-orange-500">
-                  <Award className="h-3 w-3" />
-                  {a}
-                </Badge>
-              ))}
-            </div>
-          ) : (
-            <p className="text-muted-foreground text-sm">Keep coding to unlock achievements!</p>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Skills summary */}
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="text-foreground">Skills Summary</CardTitle>
-          <CardDescription className="text-muted-foreground">Your expertise level and languages</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">Overall Rank:</span>
-            <Badge className="bg-violet-600 text-foreground border-violet-500">{skillsAnalysis.overallRank}</Badge>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">Activity:</span>
-            <Badge className="bg-amber-600 text-foreground border-amber-500">{skillsAnalysis.activityLevel}</Badge>
-          </div>
-          {skillsAnalysis.primaryLanguages?.length > 0 && (
-            <div>
-              <span className="text-sm text-muted-foreground block mb-2">Primary Languages:</span>
-              <div className="flex flex-wrap gap-2">
-                {skillsAnalysis.primaryLanguages.map((lang: string) => (
-                  <Badge key={lang} className="bg-fuchsia-600/80 text-foreground border-fuchsia-500">{lang}</Badge>
-                ))}
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
     </div>
   )
 }
