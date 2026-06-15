@@ -7,7 +7,7 @@ import React, { useState } from "react"
 import { cn } from "@/lib/utils"
 import {
   LayoutDashboard, Users, BarChart3, Building2, Briefcase,
-  MessageSquare, LogOut, Sun, Moon, Menu, X, Crown,
+  MessageSquare, LogOut, Sun, Moon, Menu, X, Crown, BookOpen,
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -22,6 +22,7 @@ const adminLinks = [
   { tab: "jobs",         label: "Jobs",         icon: Briefcase },
   { tab: "feedback",     label: "Feedback",     icon: MessageSquare },
   { tab: "analytics",    label: "Analytics",    icon: BarChart3 },
+  { tab: "blog",         label: "Blog",         icon: BookOpen },
 ]
 
 interface AdminSidebarProps {

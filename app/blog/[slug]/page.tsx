@@ -2,17 +2,41 @@ import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Clock, Tag } from "lucide-react"
+import { isDatabaseAvailable } from "@/lib/database"
+import { BlogModel } from "@/lib/models/blog"
 import { blogPosts, getPostBySlug } from "@/lib/blog-posts"
 import type { Metadata } from "next"
+import React from "react"
 
-// Allow any slug — don't restrict to static params only
 export const dynamic = "force-dynamic"
+
+async function getPost(slug: string) {
+  // DB first
+  if (isDatabaseAvailable()) {
+    try {
+      const post = await BlogModel.findBySlug(slug)
+      if (post) return post
+    } catch {}
+  }
+  // Static fallback
+  return getPostBySlug(slug) ?? null
+}
+
+async function getAllPosts() {
+  if (isDatabaseAvailable()) {
+    try {
+      const posts = await BlogModel.findAll(true)
+      if (posts.length > 0) return posts
+    } catch {}
+  }
+  return blogPosts
+}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const post = getPostBySlug(slug)
+  const post = await getPost(slug)
   if (!post) return { title: "Post Not Found — CodeHiring" }
   return {
     title: `${post.title} — CodeHiring Blog`,
@@ -68,10 +92,13 @@ export default async function BlogPostPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const post = getPostBySlug(slug)
+  const post = await getPost(slug)
   if (!post) notFound()
 
-  const otherPosts = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3)
+  const allPosts = await getAllPosts()
+  const otherPosts = allPosts
+    .filter((p: any) => p.slug !== post.slug)
+    .slice(0, 3)
 
   return (
     <div className="min-h-screen bg-background">
@@ -124,7 +151,7 @@ export default async function BlogPostPage(
           <div className="mt-16 pt-10 border-t border-border">
             <h2 className="text-lg font-bold text-foreground mb-6">More from the blog</h2>
             <div className="space-y-3">
-              {otherPosts.map((p) => (
+              {otherPosts.map((p: any) => (
                 <Link key={p.slug} href={`/blog/${p.slug}`}>
                   <div className="group flex items-start justify-between gap-4 rounded-xl border border-border bg-card p-5 hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer">
                     <div>

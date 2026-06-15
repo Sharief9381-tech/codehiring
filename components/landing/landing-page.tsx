@@ -12,11 +12,21 @@ import {
   Star, TrendingUp, CheckCircle2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { blogPosts } from "@/lib/blog-posts"
 
-const RECENT_POSTS = blogPosts.slice(0, 3).map(({ slug, title, tag, tagColor, date, readTime, excerpt }) => ({
-  slug, title, tag, tagColor, date, readTime, excerpt,
-}))
+interface RecentPost {
+  slug: string; title: string; tag: string; tagColor: string; date: string; readTime: string; excerpt: string
+}
+
+function useLivePosts() {
+  const [posts, setPosts] = useState<RecentPost[]>([])
+  useEffect(() => {
+    fetch("/api/public/blog")
+      .then(r => r.ok ? r.json() : { posts: [] })
+      .then(d => setPosts((d.posts ?? []).slice(0, 3)))
+      .catch(() => {})
+  }, [])
+  return posts
+}
 
 // ─── animation ───────────────────────────────────────────────────
 const fadeUp  = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }
@@ -215,6 +225,7 @@ export function LandingPage() {
   const [data, setData]           = useState<any>(null)
   const [loaded, setLoaded]       = useState(false)
   const [activeTab, setActiveTab] = useState(0)
+  const recentPosts               = useLivePosts()
 
   useEffect(() => {
     fetch("/api/landing").then(r => r.json()).then(d => { setData(d); setLoaded(true) }).catch(() => setLoaded(true))
@@ -626,7 +637,11 @@ export function LandingPage() {
             </div>
           </FadeUp>
           <div className="space-y-3">
-            {RECENT_POSTS.map((post, i) => (
+            {recentPosts.length === 0
+              ? [0,1,2].map(i => (
+                  <div key={i} className="h-14 rounded-xl border border-border bg-card animate-pulse" />
+                ))
+              : recentPosts.map((post, i) => (
               <motion.div key={post.slug}
                 initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                 transition={{ delay: i * 0.07 }}
