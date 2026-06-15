@@ -6,7 +6,7 @@ import Link from "next/link"
 import { LoginForm } from "@/components/auth/login-form"
 import { ClientOnly } from "@/components/client-only"
 import { SignupBackground } from "@/components/signup-background"
-import { Code2, GitBranch, Trophy, Zap, Shield, Users } from "lucide-react"
+import { GitBranch, Trophy, Zap, Shield, Users, Code2 } from "lucide-react"
 
 const features = [
   { icon: Code2,     text: "Verified coding stats from 8+ platforms" },
@@ -133,16 +133,14 @@ export default function LoginPage() {
             {/* Live indicator */}
             <LiveIndicator />
 
-            {/* Real-time stats */}
-            <div className="flex gap-4 mb-8">
+            {/* Real-time stats — fixed height so page doesn't shift on load */}
+            <div className="flex gap-4 mb-8" style={{ minHeight: 62 }}>
               {loading ? (
-                // Skeleton
                 [0,1,2].map(i => (
                   <div key={i} style={{
                     background: "rgba(124,58,237,0.08)",
                     border: "1px solid rgba(139,92,246,0.12)",
                     borderRadius: 12, padding: "10px 18px", minWidth: 72,
-                    animation: "pulse 1.5s ease-in-out infinite",
                   }}>
                     <div style={{ height: 24, background: "rgba(139,92,246,0.15)", borderRadius: 4, marginBottom: 4 }} />
                     <div style={{ height: 11, background: "rgba(139,92,246,0.10)", borderRadius: 4, width: "70%" }} />
@@ -154,22 +152,6 @@ export default function LoginPage() {
                 ))
               )}
             </div>
-
-            {/* Extra live stat — problems solved */}
-            {stats && stats.problems > 0 && (
-              <div className="mb-8 flex items-center gap-3 px-4 py-3 rounded-xl"
-                style={{ background: "rgba(124,58,237,0.10)", border: "1px solid rgba(139,92,246,0.18)" }}>
-                <Code2 className="h-5 w-5 text-violet-400 shrink-0" />
-                <div>
-                  <p className="text-sm font-bold text-white">
-                    {stats.problems.toLocaleString()} problems solved
-                  </p>
-                  <p style={{ fontSize: 11, color: "rgba(167,139,250,0.55)" }}>
-                    across {stats.colleges} colleges · {stats.platformConnections?.toLocaleString?.() ?? "—"} platform connections
-                  </p>
-                </div>
-              </div>
-            )}
 
             {/* Features */}
             <div className="space-y-3">
