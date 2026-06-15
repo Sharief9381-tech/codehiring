@@ -75,24 +75,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // 8b. Verify that OTP was confirmed for this email before creating account
-    try {
-      const { getDatabase } = await import("@/lib/database")
-      const db = await getDatabase()
-      const otpRecord = await db.collection("email_otps").findOne({ email, verified: true })
-      if (!otpRecord) {
-        return NextResponse.json(
-          { error: "Email not verified. Please verify your email with the OTP before creating an account." },
-          { status: 400 }
-        )
-      }
-      // Clean up the used OTP record
-      await db.collection("email_otps").deleteOne({ email })
-    } catch (otpErr) {
-      console.error("8b. OTP check error:", otpErr)
-      // Non-fatal in fallback mode — allow signup without OTP if DB collection missing
-    }
-
     // Build user data based on role
     let userData: Record<string, unknown> = {
       email,
