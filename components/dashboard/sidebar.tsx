@@ -10,7 +10,7 @@ import {
   LayoutDashboard, Trophy, Briefcase, User, Settings, Code2,
   LogOut, GraduationCap, Users, BarChart3, Search,
   FileText, Sun, Moon, Menu, X, Sparkles, MessageSquarePlus,
-  Megaphone, Handshake, Flag,
+  Megaphone, Handshake, Flag, BookOpen, Target, Star, Heart,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -27,15 +27,26 @@ interface DashboardSidebarProps {
   user: StudentProfile | CollegeProfile | RecruiterProfile | AdminProfile
 }
 
+// ── Standard student nav (year 2-4) ──────────────────────────────────────────
 const studentLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
-  { href: "/student/jobs",       label: "Career Hub",   icon: Briefcase },
   { href: "/student/prep",       label: "Prep Track",   icon: Flag },
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
 ]
+
+// ── 1st-year dedicated nav ────────────────────────────────────────────────────
+const firstYearLinks = [
+  { href: "/student/dashboard",  label: "Dashboard",   icon: LayoutDashboard },
+  { href: "/student/platforms",  label: "Platforms",   icon: Code2 },
+  { href: "/student/analytics",  label: "Analytics",   icon: BarChart3 },
+  { href: "/student/leaderboard",label: "Leaderboard", icon: Trophy },
+  { href: "/student/learn",      label: "Learn",       icon: BookOpen },
+  { href: "/student/ai",         label: "AI Insights", icon: Sparkles },
+]
+
 const collegeLinks = [
   { href: "/college/dashboard",     label: "Dashboard",    icon: LayoutDashboard },
   { href: "/college/students",      label: "Students",     icon: GraduationCap },
@@ -63,6 +74,19 @@ const roleColor: Record<string, string> = {
   recruiter: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
 }
 
+// Detect year from graduationYear
+function detectStudentYear(graduationYear?: number): number {
+  if (!graduationYear || isNaN(graduationYear)) return 0
+  const now = new Date()
+  const cur = now.getFullYear()
+  // Academic year starts in July (month 6) in India
+  const academicYear = now.getMonth() >= 6 ? cur : cur - 1
+  const yearsLeft = Number(graduationYear) - academicYear
+  // yearsLeft: 4=1st year, 3=2nd year, 2=3rd year, 1=4th year
+  if (yearsLeft <= 0 || yearsLeft > 5) return 0
+  return Math.min(Math.max(5 - yearsLeft, 1), 4)
+}
+
 export function DashboardSidebar({ user }: DashboardSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
@@ -72,9 +96,17 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   React.useEffect(() => setMounted(true), [])
 
+  const gradYear = (user as any).graduationYear
+  const gradYearNum = gradYear ? Number(gradYear) : undefined
+  const studentYear = user.role === "student" ? detectStudentYear(gradYearNum) : 0
+  const isFirstYear = studentYear === 1
+
   const links =
-    user.role === "student" ? studentLinks :
-    user.role === "college" ? collegeLinks : recruiterLinks
+    user.role === "student"
+      ? (isFirstYear ? firstYearLinks : studentLinks)
+      : user.role === "college"
+      ? collegeLinks
+      : recruiterLinks
 
   const initials = user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
   const isDark = mounted && theme === "dark"
@@ -94,9 +126,16 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
             <Image src="/codehiring-logo.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto block dark:hidden transition-opacity group-hover:opacity-80" />
             <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto hidden dark:block transition-opacity group-hover:opacity-80" />
-            <span className={cn("text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize hidden sm:block", roleColor[user.role])}>
-              {user.role}
-            </span>
+            {/* Show year badge for 1st year students */}
+            {isFirstYear ? (
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full hidden sm:block bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                1st Year
+              </span>
+            ) : (
+              <span className={cn("text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize hidden sm:block", roleColor[user.role])}>
+                {user.role}
+              </span>
+            )}
           </Link>
 
           {/* Nav — desktop */}
@@ -123,8 +162,6 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                 </Link>
               )
             })}
-            {/* Support & Feedback — desktop */}
-            
           </nav>
 
           {/* Actions */}
@@ -165,6 +202,9 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                 <div className="px-3 py-2.5 border-b border-border/60">
                   <p className="text-sm font-semibold text-foreground truncate">{user.name}</p>
                   <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  {isFirstYear && (
+                    <p className="text-[10px] text-blue-400 font-semibold mt-0.5">1st Year Student</p>
+                  )}
                 </div>
                 <div className="p-1">
                   <DropdownMenuItem asChild>

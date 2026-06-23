@@ -1,30 +1,78 @@
 # CodeHiring
 
-> Where coding skills meet opportunities.
-
-CodeHiring is a full-stack platform that unifies student coding performance across all major competitive programming and development platforms — giving students a single profile, colleges placement analytics, and recruiters a verified talent pool.
+> The complete campus placement platform — verified coding stats, AI-powered hiring simulations, smart resume analysis, and personalised career roadmaps for students, colleges, and recruiters.
 
 ---
 
-## What it does
+## What is CodeHiring?
 
-**For Students**
-- Connect 10+ coding platforms (LeetCode, Codeforces, CodeChef, GitHub, GeeksforGeeks, HackerRank, AtCoder, and more)
-- Auto-sync stats every 5 minutes
-- View aggregated analytics, leaderboard ranking, and AI-powered insights
-- Access a Career Hub with internships, live jobs, trending skills, and smart resume tools
-- Apply to campus placement drives and track application status
+CodeHiring bridges the gap between student coding ability and recruiter expectations by pulling **verified, real-time data** from LeetCode, Codeforces, GitHub, CodeChef, HackerRank, GeeksforGeeks and 8+ other platforms — making hiring decisions data-driven instead of resume-guesswork.
 
-**For Colleges**
-- Dashboard with department-wise placement analytics
-- Manage campus drives and shortlisted students
-- Post announcements and track student leaderboards
-- Export placement reports
+---
 
-**For Recruiters**
-- Search verified talent by platform rating, problems solved, and skills
-- Post jobs and placement drives
-- Manage shortlists and hiring pipelines
+## Core Features
+
+### For Students
+
+| Feature | Description |
+|---|---|
+| **Coding Dashboard** | Live stats synced from 8+ platforms — problems solved, contest ratings, GitHub contributions |
+| **CodeHiring Score** | Normalised 0–1000 score across all platforms — single signal for recruiters |
+| **Leaderboard** | Global and college-wise ranks updated in real time |
+| **Career Hub** | Year-personalised roadmap (1st–4th year) with courses, skills, internships, jobs |
+| **Prep Track** | 189-company assessment library — AI generates real-pattern questions per company |
+| **Company Assessments** | Proctored simulation — TCS NQT, Infosys InfyTQ, Amazon OA, Google, etc. |
+| **AI Hiring Report** | Full recruitment-quality report after every assessment — readiness score, selection probability per round, HR verdict, 30-day prep plan |
+| **Assessment History** | All past attempts stored with rank, percentile, and improvement trend |
+| **Leaderboard (post-assessment)** | Rank vs all students who took the same company test |
+| **Smart Resume** | ResumeWorded-style deep analysis — ATS score, bullet grading, job match %, section grades A–F |
+| **Resume Studio** | 4 templates (Technical, Minimal, Creative, Executive) built from live platform data |
+| **AI Career Chat** | Full context AI assistant — knows your platforms, problems, rating, resume, placements |
+| **Blog** | AI auto-generates a fresh placement/career article daily via Groq |
+
+### For Colleges
+
+| Feature | Description |
+|---|---|
+| **Placement Analytics** | Batch-wide coding activity, top performers, skill gap reports |
+| **Student Monitoring** | Real-time platform stats per student |
+| **Hiring Drives** | Post on-campus drives — students apply, track status |
+| **Announcements** | Broadcast announcements to all enrolled students |
+
+### For Recruiters
+
+| Feature | Description |
+|---|---|
+| **Job Posting** | Post on-campus and off-campus jobs |
+| **AI Matching** | Students ranked by CodeHiring Score, skill overlap, and recency |
+| **Verified Profiles** | No self-reported data — all stats pulled directly from platform APIs |
+
+---
+
+## Prep Track — 189 Companies
+
+Categories: IT Services · Product/FAANG · Indian Startups · Consulting · BFSI · Core Engineering · Telecom · FMCG · Pharma · EV/Auto · Defence
+
+**How it works:**
+1. Student selects a company (e.g. TCS, Amazon, Google)
+2. Proctored environment activates — fullscreen enforced, camera on, copy/paste disabled
+3. Groq AI generates company-pattern questions by first scraping IndiaBix/PrepInsta for real previous-year papers
+4. After submission → AI Hiring Report generated:
+   - Readiness Score (0–100)
+   - Selection probability per round
+   - Section-wise analysis
+   - HR verdict (Strongly Recommended → Not Recommended)
+   - 30-day personalised prep plan
+   - Integrity analysis (violation log)
+
+---
+
+## First-Year Student Mode
+
+When a 1st-year student logs in (auto-detected from graduation year):
+
+- **Career Hub** — Hiring Drives tab hidden; shows Learning Paths, Skills to Build, Daily Practice with YouTube videos, notes/cheatsheets, and course links
+- **Prep Track** — Company assessments hidden; shows beginner learning resources (CS50, freeCodeCamp, Kaggle, etc.)
 
 ---
 
@@ -34,142 +82,79 @@ CodeHiring is a full-stack platform that unifies student coding performance acro
 |---|---|
 | Framework | Next.js 16 (App Router, Turbopack) |
 | Language | TypeScript |
-| Database | MongoDB (native driver) |
-| Styling | Tailwind CSS v4 + shadcn/ui |
-| AI | Groq (LLaMA) — assessment generation & evaluation |
-| Auth | Custom session-based auth (no NextAuth) |
-| Animation | Framer Motion |
-| Charts | Recharts |
-| Notifications | Sonner |
-| Deployment | Vercel |
+| Styling | Tailwind CSS + shadcn/ui |
+| Database | MongoDB Atlas |
+| AI | Groq (`llama-3.3-70b-versatile`) |
+| Analytics | Vercel Analytics |
+| Email | Resend (optional) |
+| Resume Parsing | APILayer Resume Parser (optional, free tier) |
+
+---
+
+## Environment Variables
+
+```env
+# Required
+MONGODB_URI=mongodb+srv://...
+NEXTAUTH_SECRET=your_secret
+NEXTAUTH_URL=http://localhost:3000
+GROQ_API_KEY=gsk_...
+
+# Optional — enhances resume analysis
+APILAYER_RESUME_KEY=...
+
+# Optional — email verification
+RESEND_API_KEY=...
+```
 
 ---
 
 ## Getting Started
 
-### 1. Clone the repo
-
 ```bash
-git clone https://github.com/Sharief9381-tech/codehiring.git
+# 1. Clone
+git clone https://github.com/Sharief9381-tech/codehiring
 cd codehiring
-```
 
-### 2. Install dependencies
-
-```bash
+# 2. Install
 npm install
-```
 
-### 3. Set up environment variables
-
-```bash
+# 3. Configure
 cp .env.example .env
-```
+# Edit .env with your MongoDB URI and Groq API key
 
-Open `.env` and fill in the values:
-
-| Variable | Required | Description |
-|---|---|---|
-| `MONGODB_URI` | ✅ | MongoDB Atlas connection string |
-| `NEXTAUTH_SECRET` | ✅ | Long random string for signing sessions |
-| `NEXTAUTH_URL` | ✅ | `http://localhost:3000` for local dev |
-| `GROQ_API_KEY` | ✅ | Required for AI assessments — free at [console.groq.com](https://console.groq.com) |
-
-**Get a MongoDB URI** — create a free cluster at [cloud.mongodb.com](https://cloud.mongodb.com), click Connect → Drivers, copy the string and replace `<password>`.
-
-**Generate NEXTAUTH_SECRET:**
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
-
-### 4. Run the dev server
-
-```bash
+# 4. Run
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## First account
+## Admin Access
 
-The database starts empty. Go to `/signup` and create an account as a **student**, **college**, or **recruiter**. Admin access is at `/admin`.
+1. Visit `http://localhost:3000/api/debug/create-admin` once to create the admin account
+2. Log in at `/login` with:
+   - Email: `sharief9381@gmail.com`
+   - Password: `12341234`
+3. Access admin panel at `/admin`
 
----
-
-## Project Structure
-
-```
-app/
-  page.tsx              → Landing page
-  student/              → Student dashboard, platforms, analytics, jobs, AI, prep, drives
-  college/              → College dashboard, students, drives, analytics, reports
-  recruiter/            → Recruiter dashboard, search, jobs, shortlists
-  admin/                → Admin panel (user management, site config)
-  api/                  → All API routes (auth, platforms, drives, jobs, analytics...)
-  blog/                 → Blog
-  explore/              → Public explore pages (students, colleges, drives, recruiters)
-  u/[username]/         → Public student profiles
-
-components/
-  student/              → Dashboard, platforms, analytics, career hub, AI insights
-  college/              → Placement drives, student tables, announcements
-  recruiter/            → Search, shortlists, job postings
-  dashboard/            → Shared nav, sidebar, notification bell
-  ui/                   → shadcn/ui primitives
-
-lib/
-  auth.ts               → Session-based authentication
-  database.ts           → MongoDB connection
-  groq.ts               → Groq AI client
-  models/               → MongoDB models (User, Drive, Job, Assessment, Notification...)
-  platforms/            → Platform scrapers (LeetCode, GitHub, Codeforces, CodeChef, GFG, HackerRank, AtCoder, SPOJ, Kattis, and more)
-  services/             → Sync engine, analytics, job matcher, stats aggregator
-
-scripts/                → DB setup and utility scripts
-```
+Admin features: user management, blog management (AI auto-generates daily posts), analytics, feedback, drives.
 
 ---
 
-## Supported Platforms
+## Automatic Blog
 
-LeetCode · GitHub · Codeforces · CodeChef · GeeksforGeeks · HackerRank · HackerEarth · AtCoder 
-
----
-
-## Scripts
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run setup` | Run DB setup script |
-| `npm run verify` | Verify environment setup |
+A Vercel cron job (`vercel.json`) calls `/api/cron/generate-blog` daily at 6 AM UTC. Groq AI picks a topic from 25 placement/career topics and writes a full article. On localhost, the blog page self-triggers generation on first daily load.
 
 ---
 
-## Roles & Permissions
+## Platforms Supported
 
-| Role | Dashboard | Key Features |
-|---|---|---|
-| **Student** | `/student/dashboard` | Platform linking, analytics, leaderboard, career hub, AI insights, placement drives |
-| **College** | `/college/dashboard` | Student overview, placement drives, department analytics, reports |
-| **Recruiter** | `/recruiter/dashboard` | Talent search, job postings, placement drives, shortlists |
-| **Admin** | `/admin` | Full user management, blog, site config, feedback |
+LeetCode · GitHub · Codeforces · CodeChef · HackerRank · GeeksforGeeks · AtCoder · HackerEarth · SPOJ · Kattis · TopCoder · InterviewBit · Kaggle · Exercism · and more
 
 ---
 
-## Contributing
+## License
 
-```bash
-git checkout -b feature/your-feature
-# make changes
-git commit -m "feat: describe your change"
-git push origin feature/your-feature
-# open a pull request
-```
-
-> Never commit `.env` — it's gitignored and contains secrets.
+MIT — built with ❤️ for Indian CS/IT students

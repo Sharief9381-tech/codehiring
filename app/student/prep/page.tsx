@@ -6,14 +6,16 @@ import {
   Play, Trophy, Target, CheckCircle2, XCircle, Timer, Loader2,
   BarChart3, Zap, AlertCircle, RotateCcw, Star, TrendingUp,
   FileText, Cpu, Users, Award, ChevronDown, ChevronUp, Flag,
+  ExternalLink, Sparkles, MessageCircle,
 } from "lucide-react"
 import { HiringReport } from "@/components/student/hiring-report"
 import { ProctoredShell, type ViolationLog } from "@/components/student/proctor"
 import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/student/assessment-history"
 import { ALL_COMPANIES } from "@/lib/companies-data"
+import { SmartResume } from "@/components/student/smart-resume"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-type Path = "aptitude" | "coding" | "cs" | "company"
+type Path = "aptitude" | "coding" | "cs" | "company" | "communication"
 
 interface MCQ { id: number; question: string; options: string[]; correct: number; explanation: string; topic: string }
 interface CodingQ { id: number; title: string; difficulty: string; statement: string; constraints: string; example: { input: string; output: string; explanation: string }; hints: string[]; topic: string }
@@ -71,6 +73,16 @@ const CS_TOPICS = [
   { id: "oops", name: "OOP Concepts",        icon: "🧩", color: "#f59e0b" },
   { id: "java", name: "Java",                icon: "☕", color: "#ef4444" },
   { id: "sql",  name: "SQL",                 icon: "🔍", color: "#10b981" },
+]
+
+// ─── Communication topics ─────────────────────────────────────────────────────
+const COMM_TOPICS = [
+  { id: "grammar",       name: "Grammar & Sentence Correction", icon: "G",  color: "#10b981" },
+  { id: "vocabulary",    name: "Vocabulary & Word Meaning",     icon: "V",  color: "#06b6d4" },
+  { id: "reading",       name: "Reading Comprehension",         icon: "RC", color: "#8b5cf6" },
+  { id: "para-jumbles",  name: "Para Jumbles",                  icon: "PJ", color: "#f59e0b" },
+  { id: "email-writing", name: "Email & Tech Communication",    icon: "E",  color: "#ec4899" },
+  { id: "verbal-logic",  name: "Verbal Reasoning",              icon: "VR", color: "#ef4444" },
 ]
 
 // ─── DSA topics ───────────────────────────────────────────────────────────────
@@ -950,6 +962,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
     cs: "logical",
     coding: "coding",
     company: "quantitative",
+    communication: "verbal",
   }
 
   const companyMap: Record<Path, string> = {
@@ -957,6 +970,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
     cs: "infosys",
     coding: "amazon",
     company: "tcs",
+    communication: "infosys",
   }
 
   useEffect(() => {
@@ -1176,6 +1190,34 @@ export default function PrepHubPage() {
   const [activeTopic, setActiveTopic] = useState<{ id: string; name: string } | null>(null)
   const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock">("home")
   const [showHistory, setShowHistory] = useState(false)
+  const [showLearningPaths, setShowLearningPaths] = useState(false)
+  const [showSmartResume, setShowSmartResume] = useState(false)
+  const [studentYear, setStudentYear] = useState<number>(0)
+
+  // Detect student year
+  useEffect(() => {
+    fetch("/api/auth/user", { credentials: "include", cache: "no-store" })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        const gy = d?.user?.graduationYear
+        if (!gy) return
+        const now = new Date()
+        const cur = now.getFullYear()
+        const academicYear = now.getMonth() >= 6 ? cur : cur - 1
+        const yr = Math.min(Math.max(5 - (Number(gy) - academicYear), 1), 4)
+        setStudentYear(yr)
+      })
+      .catch(() => {})
+  }, [])
+
+  // Lock body scroll when any overlay is open
+  useEffect(() => {
+    const anyOpen = showHistory || showLearningPaths || showSmartResume
+    document.body.style.overflow = anyOpen ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
+  }, [showHistory, showLearningPaths, showSmartResume])
+
+  const isFirstYear = studentYear === 1
 
   // ── COMPANY ASSESSMENT ──
   if (activePath === "company" && activeCompany) {
@@ -1198,11 +1240,12 @@ export default function PrepHubPage() {
   // ── PATH DETAIL ──
   if (activePath) {
     const pathMeta = {
-      aptitude: { label: "Aptitude", color: "#f59e0b", topics: APT_TOPICS },
-      coding: { label: "Coding / DSA", color: "#6366f1", topics: DSA_TOPICS.map(t => ({ ...t, icon: "💻" })) },
-      cs: { label: "CS Fundamentals", color: "#10b981", topics: CS_TOPICS },
-      company: { label: "Company Assessments", color: "#7c3aed", topics: [] },
-    }[activePath]
+      aptitude:      { label: "Aptitude",           color: "#f59e0b", topics: APT_TOPICS },
+      coding:        { label: "Coding / DSA",        color: "#6366f1", topics: DSA_TOPICS.map(t => ({ ...t, icon: "💻" })) },
+      cs:            { label: "CS Fundamentals",     color: "#10b981", topics: CS_TOPICS },
+      company:       { label: "Company Assessments", color: "#7c3aed", topics: [] },
+      communication: { label: "Communication",       color: "#10b981", topics: COMM_TOPICS },
+    }[activePath] ?? { label: "Practice", color: "#7c3aed", topics: [] }
 
     if (activePath === "company") {
       return <CompanyAssessmentGrid onSelect={(c) => setActiveCompany(c as any)} onBack={() => setActivePath(null)} />
@@ -1379,85 +1422,175 @@ export default function PrepHubPage() {
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full space-y-6">
 
-      {/* History page overlay */}
+      {/* History overlay */}
       {showHistory && (
-        <div className="fixed inset-0 z-40 bg-background overflow-y-auto">
-          <div className="max-w-4xl mx-auto px-4 py-6 space-y-5">
-            <div className="flex items-center gap-4">
-              <button onClick={() => setShowHistory(false)}
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
+          <div className="pt-14 max-w-4xl mx-auto px-4 py-6 space-y-5">
+            <div className="flex items-center gap-3 sticky top-14 z-10 py-3 border-b border-border" style={{ background: "var(--background)" }}>
+              <button onClick={() => setShowHistory(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
                 <ArrowLeft className="h-4 w-4" /> Back to Prep
               </button>
-              <h2 className="text-xl font-bold text-foreground">Assessment History</h2>
+              <div className="w-px h-4 bg-border" />
+              <h2 className="text-lg font-bold text-foreground">Assessment History</h2>
             </div>
             <AssessmentHistoryPage />
           </div>
         </div>
       )}
 
-      {/* Header */}
-      <div className="rounded-2xl bg-gradient-to-br from-primary/15 via-primary/5 to-background border border-primary/20 p-6">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/20">
-              <Flag className="h-5 w-5 text-primary" />
+      {/* Learning Paths overlay */}
+      {showLearningPaths && (
+        <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
+          <div className="pt-14 max-w-5xl mx-auto px-4 py-6 space-y-5">
+            <div className="flex items-center gap-3 sticky top-14 z-10 py-3 border-b border-border" style={{ background: "var(--background)" }}>
+              <button onClick={() => setShowLearningPaths(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="h-4 w-4" /> Back to Prep
+              </button>
+              <div className="w-px h-4 bg-border" />
+              <h2 className="text-lg font-bold text-foreground">Learning Paths</h2>
             </div>
-            <div>
-              <h2 className="text-xl font-semibold">Prep Track</h2>
-              <p className="text-xs text-muted-foreground">Select a company track · practice tests · then apply via Career Hub</p>
-            </div>
+            <LearningPathsContent />
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <button onClick={() => setShowHistory(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors">
-              <Trophy className="h-3.5 w-3.5" /> History
-            </button>
+        </div>
+      )}
+
+      {/* Smart Resume overlay */}
+      {showSmartResume && (
+        <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
+          <div className="pt-14 max-w-4xl mx-auto px-4 py-6 space-y-5">
+            <div className="flex items-center gap-3 sticky top-14 z-10 py-3 border-b border-border" style={{ background: "var(--background)" }}>
+              <button onClick={() => setShowSmartResume(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="h-4 w-4" /> Back to Prep
+              </button>
+              <div className="w-px h-4 bg-border" />
+              <h2 className="text-lg font-bold text-foreground">Smart Resume</h2>
+            </div>
+            <SmartResume />
+          </div>
+        </div>
+      )}
+
+      {/* 3D Hero Header */}
+      <div className="relative overflow-hidden rounded-3xl p-8"
+        style={{
+          background: "linear-gradient(135deg,rgba(124,58,237,0.85) 0%,rgba(99,102,241,0.85) 50%,rgba(79,70,229,0.85) 100%)",
+          boxShadow: "0 20px 40px rgba(124,58,237,0.25),inset 0 1px 0 rgba(255,255,255,0.15)",
+        }}>
+        <div className="absolute -top-16 -left-16 h-64 w-64 rounded-full opacity-20 blur-3xl pointer-events-none" style={{ background:"radial-gradient(#7c3aed,transparent)" }} />
+        <div className="absolute -bottom-16 -right-16 h-64 w-64 rounded-full opacity-20 blur-3xl pointer-events-none" style={{ background:"radial-gradient(#6366f1,transparent)" }} />
+        <div className="relative z-10 flex items-center gap-4 flex-wrap">
+          <div className="relative shrink-0">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background:"linear-gradient(135deg,#7c3aed,#6366f1)", boxShadow:"0 8px 24px rgba(124,58,237,0.4),inset 0 1px 0 rgba(255,255,255,0.2)" }}>
+              <Flag className="h-7 w-7 text-white" />
+            </div>
+            <div className="absolute top-1.5 left-1.5 h-2 w-2 rounded-full bg-white/30 blur-sm" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-2xl font-black text-white tracking-tight">Prep Track</h2>
+            <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments · company patterns · real results</p>
+          </div>
+          <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
             {[
-              { label: "Aptitude", color: "#f59e0b", icon: <Brain className="h-3.5 w-3.5" />, path: "aptitude" as Path },
-              { label: "Coding",   color: "#6366f1", icon: <Code2 className="h-3.5 w-3.5" />, path: "coding" as Path },
-              { label: "CS",       color: "#10b981", icon: <BookOpen className="h-3.5 w-3.5" />, path: "cs" as Path },
+              { label:"Learning Paths", color:"#93c5fd", bg:"rgba(96,165,250,0.22)",  border:"rgba(96,165,250,0.55)",  icon:<BookOpen className="h-5 w-5" />,     onClick:() => setShowLearningPaths(true) },
+              { label:"Smart Resume",   color:"#f9a8d4", bg:"rgba(236,72,153,0.22)",  border:"rgba(236,72,153,0.55)",  icon:<Sparkles className="h-5 w-5" />,    onClick:() => setShowSmartResume(true) },
+              { label:"Aptitude",       color:"#fcd34d", bg:"rgba(245,158,11,0.22)",  border:"rgba(245,158,11,0.55)",  icon:<Brain className="h-5 w-5" />,        onClick:() => { setActivePath("aptitude"); setSubView("home") } },
+              { label:"Coding / DSA",   color:"#ffffff", bg:"rgba(255,255,255,0.18)", border:"rgba(255,255,255,0.45)", icon:<Code2 className="h-5 w-5" />,        onClick:() => { setActivePath("coding"); setSubView("home") } },
+              { label:"Communication",  color:"#6ee7b7", bg:"rgba(52,211,153,0.22)",  border:"rgba(52,211,153,0.55)",  icon:<MessageCircle className="h-5 w-5" />,onClick:() => { setActivePath("communication"); setSubView("home") } },
             ].map(p => (
-              <button key={p.path} onClick={() => { setActivePath(p.path); setSubView("home") }}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors"
-                style={{ background: `${p.color}15`, color: p.color, border: `1px solid ${p.color}25` }}>
+              <button key={p.label} onClick={p.onClick}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
+                style={{ background:p.bg, color:p.color, border:`1.5px solid ${p.border}` }}>
                 {p.icon}{p.label}
               </button>
             ))}
+            <button onClick={() => setShowHistory(true)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
+              style={{ background:"rgba(245,158,11,0.22)", color:"#fcd34d", border:"1.5px solid rgba(245,158,11,0.55)" }}>
+              <Trophy className="h-5 w-5" /> History
+            </button>
           </div>
         </div>
-      </div>
-
-      {/* Free Mock Tests & Practice Platforms */}
-      <div>
-        <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
-          <Target className="h-3.5 w-3.5" />Free Mock Tests &amp; Practice Platforms
-        </p>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative z-10 mt-6 pt-5 border-t border-white/20 grid grid-cols-3 gap-4">
           {[
-            { name:"LeetCode Mock",      desc:"Full OA simulation — company-tagged problems, timed sessions",                    badge:"Coding",       color:"bg-amber-500/10 text-amber-600 border-amber-500/20",   url:"https://leetcode.com/interview/" },
-            { name:"HackerRank Tests",   desc:"Free certification tests — Problem Solving, SQL, Python, Java",                  badge:"Certification",color:"bg-emerald-500/10 text-emerald-600 border-emerald-500/20", url:"https://www.hackerrank.com/skills-verification" },
-            { name:"Pramp Mock Interview",desc:"Live peer-to-peer and AI mock interviews — free, no signup needed",            badge:"Interview",    color:"bg-blue-500/10 text-blue-600 border-blue-500/20",      url:"https://www.pramp.com/#/" },
-            { name:"IndiaBix Aptitude",  desc:"TCS, Infosys, Wipro aptitude tests with solutions",                              badge:"Aptitude",     color:"bg-violet-500/10 text-violet-600 border-violet-500/20", url:"https://www.indiabix.com/aptitude/questions-and-answers/" },
-            { name:"PrepInsta TCS NQT",  desc:"Full TCS NQT mock tests with previous year questions",                           badge:"TCS",          color:"bg-cyan-500/10 text-cyan-600 border-cyan-500/20",       url:"https://prepinsta.com/tcs-nqt/" },
-            { name:"PrepInsta Infosys",  desc:"InfyTQ mock tests, previous papers, and coding round prep",                     badge:"Infosys",      color:"bg-indigo-500/10 text-indigo-600 border-indigo-500/20",  url:"https://prepinsta.com/infosys/" },
-            { name:"Neetcode Practice",  desc:"150 curated LeetCode problems — video explanations for every solution",          badge:"DSA",          color:"bg-rose-500/10 text-rose-600 border-rose-500/20",       url:"https://neetcode.io/practice" },
-            { name:"InterviewBit Mock",  desc:"Company-wise mock interviews and coding challenges",                             badge:"Full Stack",   color:"bg-teal-500/10 text-teal-600 border-teal-500/20",       url:"https://www.interviewbit.com/mock-interview/" },
-          ].map(p => (
-            <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer"
-              className="rounded-xl bg-card border border-border p-4 flex flex-col gap-2 hover:border-primary/40 hover:shadow-md transition-all group">
-              <div className="flex items-start justify-between gap-2">
-                <p className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{p.name}</p>
-                <span className={`shrink-0 text-[10px] px-2 py-0.5 rounded-full border font-medium ${p.color}`}>{p.badge}</span>
+            { label:"Companies",   value:"189+",            icon:<Building2 className="h-4 w-4" />, color:"#c4b5fd" },
+            { label:"AI Questions",value:"Real Patterns",    icon:<Cpu className="h-4 w-4" />,       color:"#6ee7b7" },
+            { label:"Topics",      value:"Apt · DSA · Comm", icon:<Target className="h-4 w-4" />,   color:"#fcd34d" },
+          ].map(s => (
+            <div key={s.label} className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg" style={{ background:"rgba(255,255,255,0.15)", border:"1px solid rgba(255,255,255,0.25)", color:s.color }}>{s.icon}</div>
+              <div>
+                <p className="text-sm font-black text-white">{s.value}</p>
+                <p className="text-[11px] font-medium" style={{ color:"rgba(255,255,255,0.75)" }}>{s.label}</p>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
-              <p className="text-[10px] text-primary font-semibold flex items-center gap-1 mt-auto">
-                Open <ChevronRight className="h-3 w-3" />
-              </p>
-            </a>
+            </div>
           ))}
         </div>
       </div>
 
+      {/* 3D Practice Track Cards */}
+      <div className="space-y-3">
+        <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2 px-1">
+          <Zap className="h-3.5 w-3.5 text-primary" />Practice Tracks — click to start
+        </p>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {[
+            { path:"aptitude" as Path,      label:"Aptitude",      sub:"Quant · Logical · Data Interp.",  desc:"Master the foundation of every placement test.", color:"#f59e0b", glow:"rgba(245,158,11,0.25)", grad:"linear-gradient(135deg,rgba(245,158,11,0.25),rgba(245,158,11,0.08))", icon:<Brain className="h-7 w-7" />,        topics:["Percentages","Profit & Loss","Time & Work","Probability","Series"] },
+            { path:"coding" as Path,        label:"Coding / DSA",  sub:"Arrays · Trees · DP · Graphs",    desc:"Build algorithmic thinking with AI-generated problems.", color:"#818cf8", glow:"rgba(129,140,248,0.25)", grad:"linear-gradient(135deg,rgba(129,140,248,0.25),rgba(99,102,241,0.08))", icon:<Code2 className="h-7 w-7" />,        topics:["Arrays","Strings","Linked Lists","Trees","Dynamic Prog."] },
+            { path:"communication" as Path, label:"Communication", sub:"Grammar · Vocab · Reading",       desc:"Polish verbal and written skills companies test.", color:"#34d399", glow:"rgba(52,211,153,0.25)", grad:"linear-gradient(135deg,rgba(52,211,153,0.25),rgba(16,185,129,0.08))", icon:<MessageCircle className="h-7 w-7" />, topics:["Grammar","Vocabulary","Para Jumbles","Comprehension","Email Writing"] },
+          ].map(track => (
+            <button key={track.path} onClick={() => { setActivePath(track.path); setSubView("home") }}
+              className="group relative overflow-hidden rounded-2xl text-left transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
+              style={{ background:track.grad, border:`1px solid ${track.color}40`, boxShadow:`0 4px 24px ${track.glow}` }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 20px 40px ${track.glow},0 0 40px ${track.glow}` }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 4px 24px ${track.glow}` }}>
+              <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full opacity-20 blur-2xl pointer-events-none group-hover:opacity-40 transition-opacity" style={{ background:`radial-gradient(${track.color},transparent)` }} />
+              <div className="relative z-10 p-5 space-y-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl" style={{ background:`${track.color}25`, border:`1px solid ${track.color}50`, color:track.color }}>{track.icon}</div>
+                  <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" style={{ color:track.color }} />
+                </div>
+                <div>
+                  <p className="font-black text-lg text-foreground">{track.label}</p>
+                  <p className="text-xs font-semibold mt-0.5" style={{ color:track.color }}>{track.sub}</p>
+                  <p className="text-xs mt-2 leading-relaxed text-muted-foreground">{track.desc}</p>
+                </div>
+                <div className="flex flex-wrap gap-1.5 pt-1 border-t" style={{ borderColor:`${track.color}20` }}>
+                  {track.topics.map(t => <span key={t} className="text-[10px] px-2 py-0.5 rounded-full font-medium" style={{ background:`${track.color}15`, color:track.color, border:`1px solid ${track.color}30` }}>{t}</span>)}
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Free Platforms */}
+      <div className="space-y-3">
+        <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2 px-1">
+          <Star className="h-3.5 w-3.5 text-amber-400" />Free Mock Tests &amp; Practice Platforms
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { name:"LeetCode Mock",        desc:"OA simulation — company-tagged, timed",                    badge:"Coding",    col:"#f59e0b", url:"https://leetcode.com/interview/" },
+            { name:"HackerRank Tests",     desc:"Free certs — Problem Solving, SQL, Python, Java",          badge:"Cert",      col:"#10b981", url:"https://www.hackerrank.com/skills-verification" },
+            { name:"Pramp Mock Interview", desc:"Live peer-to-peer & AI mock interviews — free",            badge:"Interview", col:"#3b82f6", url:"https://www.pramp.com/#/" },
+            { name:"IndiaBix Aptitude",    desc:"TCS, Infosys, Wipro aptitude tests + solutions",           badge:"Aptitude",  col:"#8b5cf6", url:"https://www.indiabix.com/aptitude/questions-and-answers/" },
+            { name:"PrepInsta TCS NQT",    desc:"Full TCS NQT mocks with previous year questions",          badge:"TCS",       col:"#06b6d4", url:"https://prepinsta.com/tcs-nqt/" },
+            { name:"PrepInsta Infosys",    desc:"InfyTQ mocks, previous papers, coding round prep",         badge:"Infosys",   col:"#6366f1", url:"https://prepinsta.com/infosys/" },
+            { name:"Neetcode Practice",    desc:"150 curated LeetCode problems + video explanations",       badge:"DSA",       col:"#ef4444", url:"https://neetcode.io/practice" },
+            { name:"InterviewBit Mock",    desc:"Company-wise mock interviews and coding challenges",        badge:"Full Stack",col:"#14b8a6", url:"https://www.interviewbit.com/mock-interview/" },
+          ].map(p => (
+            <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer"
+              className="group rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-2 hover:border-primary/30 hover:shadow-md transition-all">
+              <div className="flex items-start justify-between gap-2">
+                <p className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">{p.name}</p>
+                <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ background:`${p.col}15`, color:p.col, border:`1px solid ${p.col}30` }}>{p.badge}</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
+              <p className="text-[10px] font-bold flex items-center gap-1" style={{ color:p.col }}>Open <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" /></p>
+            </a>
+          ))}
+        </div>
+      </div>
       {/* Company Prep Tracks */}
       <div>
         <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
