@@ -1492,10 +1492,10 @@ export default function PrepHubPage() {
           <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
             {[
               { label:"Learning Paths", color:"#93c5fd", bg:"rgba(96,165,250,0.22)",  border:"rgba(96,165,250,0.55)",  icon:<BookOpen className="h-5 w-5" />,     onClick:() => setShowLearningPaths(true) },
-              { label:"Smart Resume",   color:"#f9a8d4", bg:"rgba(236,72,153,0.22)",  border:"rgba(236,72,153,0.55)",  icon:<Sparkles className="h-5 w-5" />,    onClick:() => setShowSmartResume(true) },
               { label:"Aptitude",       color:"#fcd34d", bg:"rgba(245,158,11,0.22)",  border:"rgba(245,158,11,0.55)",  icon:<Brain className="h-5 w-5" />,        onClick:() => { setActivePath("aptitude"); setSubView("home") } },
               { label:"Coding / DSA",   color:"#ffffff", bg:"rgba(255,255,255,0.18)", border:"rgba(255,255,255,0.45)", icon:<Code2 className="h-5 w-5" />,        onClick:() => { setActivePath("coding"); setSubView("home") } },
               { label:"Communication",  color:"#6ee7b7", bg:"rgba(52,211,153,0.22)",  border:"rgba(52,211,153,0.55)",  icon:<MessageCircle className="h-5 w-5" />,onClick:() => { setActivePath("communication"); setSubView("home") } },
+              { label:"Smart Resume",   color:"#f9a8d4", bg:"rgba(236,72,153,0.22)",  border:"rgba(236,72,153,0.55)",  icon:<Sparkles className="h-5 w-5" />,    onClick:() => setShowSmartResume(true) },
             ].map(p => (
               <button key={p.label} onClick={p.onClick}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
@@ -1591,8 +1591,8 @@ export default function PrepHubPage() {
           ))}
         </div>
       </div>
-      {/* Company Prep Tracks */}
-      <div>
+      {/* Company Prep Tracks — hidden for 1st year */}
+      {!isFirstYear && <div>
         <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
           <Flag className="h-3.5 w-3.5" />Company Prep Tracks
           <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">⭐ AI-Generated Questions</span>
@@ -1642,7 +1642,7 @@ export default function PrepHubPage() {
             </div>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   )
 }

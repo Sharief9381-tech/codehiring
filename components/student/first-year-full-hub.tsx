@@ -249,6 +249,42 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [xpPop, setXpPop] = useState<string | null>(null)
   const [monthlySolved, setMonthlySolved] = useState(0)
 
+  // Daily problem — rotates by day of year
+  const DAILY_PROBLEMS = [
+    { title: "Sum of Two Numbers",          desc: "Write a program that takes two numbers as input and prints their sum.", input: "5, 3", output: "8", explain: "Simply add the two numbers.", url: "https://leetcode.com/problems/two-sum/" },
+    { title: "Reverse a String",            desc: "Write a function to reverse a given string without using built-in reverse.", input: '"hello"', output: '"olleh"', explain: "Use a loop from end to start.", url: "https://leetcode.com/problems/reverse-string/" },
+    { title: "Find Maximum in Array",       desc: "Given an array of integers, find and return the largest element.", input: "[3, 7, 1, 9, 4]", output: "9", explain: "Iterate and track the max.", url: "https://leetcode.com/problems/find-maximum-in-array/" },
+    { title: "Count Vowels",                desc: "Count the number of vowels (a, e, i, o, u) in a given string.", input: '"education"', output: "5", explain: "Check each character against vowels.", url: "https://leetcode.com/problems/count-vowel-substrings-of-a-string/" },
+    { title: "Check Palindrome",            desc: "Determine if a given string reads the same forwards and backwards.", input: '"racecar"', output: "true", explain: "Compare string with its reverse.", url: "https://leetcode.com/problems/valid-palindrome/" },
+    { title: "FizzBuzz",                    desc: "Print numbers 1 to N. For multiples of 3 print Fizz, for 5 print Buzz, for both print FizzBuzz.", input: "15", output: "1 2 Fizz 4 Buzz ... FizzBuzz", explain: "Use modulo % operator.", url: "https://leetcode.com/problems/fizz-buzz/" },
+    { title: "Sum of Digits",               desc: "Given a number, compute the sum of its digits.", input: "1234", output: "10", explain: "Extract each digit using % and / operators.", url: "https://leetcode.com/problems/add-digits/" },
+    { title: "Check Even or Odd",           desc: "Write a function that returns 'Even' if a number is even, 'Odd' otherwise.", input: "7", output: '"Odd"', explain: "A number is even if n % 2 === 0.", url: "https://leetcode.com/problems/number-of-even-and-odd-bits/" },
+    { title: "Find Second Largest",         desc: "Find the second largest number in an array of integers.", input: "[4, 1, 7, 3, 9]", output: "7", explain: "Sort or use two variables to track top two.", url: "https://leetcode.com/problems/second-largest-digit-in-a-string/" },
+    { title: "Count Occurrences",           desc: "Count how many times a given character appears in a string.", input: '"banana", "a"', output: "3", explain: "Loop through string and count matches.", url: "https://leetcode.com/problems/count-occurrences-in-text/" },
+    { title: "Factorial of a Number",       desc: "Calculate the factorial of a given non-negative integer N.", input: "5", output: "120", explain: "Multiply N * (N-1) * ... * 1. Base case: 0! = 1.", url: "https://leetcode.com/problems/n-th-tribonacci-number/" },
+    { title: "Print Fibonacci Sequence",    desc: "Print the first N numbers of the Fibonacci sequence.", input: "7", output: "0 1 1 2 3 5 8", explain: "Each number = sum of previous two.", url: "https://leetcode.com/problems/fibonacci-number/" },
+    { title: "Check Prime Number",          desc: "Write a program to check if a given number is prime.", input: "17", output: "true", explain: "Check divisibility from 2 to sqrt(n).", url: "https://leetcode.com/problems/count-primes/" },
+    { title: "Remove Duplicates from Array",desc: "Given an array, return a new array with all duplicate values removed.", input: "[1,2,2,3,3,4]", output: "[1,2,3,4]", explain: "Use a Set or check if element already seen.", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/" },
+    { title: "Swap Two Variables",          desc: "Swap two variables without using a third temporary variable.", input: "a=5, b=10", output: "a=10, b=5", explain: "Use arithmetic: a=a+b; b=a-b; a=a-b.", url: "https://leetcode.com/problems/swap-nodes-in-pairs/" },
+    { title: "Linear Search",              desc: "Implement linear search: find the index of a target in an array.", input: "[4,2,8,1], target=8", output: "2", explain: "Iterate and check each element.", url: "https://leetcode.com/problems/search-insert-position/" },
+    { title: "Reverse an Array",           desc: "Reverse the elements of an array in place.", input: "[1,2,3,4,5]", output: "[5,4,3,2,1]", explain: "Use two pointers from both ends.", url: "https://leetcode.com/problems/reverse-string/" },
+    { title: "Sum of Array Elements",      desc: "Calculate the sum of all elements in an integer array.", input: "[1,2,3,4,5]", output: "15", explain: "Iterate with a running total variable.", url: "https://leetcode.com/problems/running-sum-of-1d-array/" },
+    { title: "Count Words in a String",    desc: "Count the number of words in a given sentence.", input: '"Hello World Today"', output: "3", explain: "Split the string by spaces.", url: "https://leetcode.com/problems/number-of-words-in-a-sentence/" },
+    { title: "Find GCD of Two Numbers",    desc: "Find the Greatest Common Divisor (GCD) of two integers.", input: "12, 8", output: "4", explain: "Use Euclidean algorithm: gcd(a,b) = gcd(b, a%b).", url: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/" },
+    { title: "Matrix Diagonal Sum",        desc: "Find the sum of both diagonals of an N×N matrix.", input: "[[1,2,3],[4,5,6],[7,8,9]]", output: "25", explain: "Add matrix[i][i] and matrix[i][n-1-i].", url: "https://leetcode.com/problems/matrix-diagonal-sum/" },
+    { title: "Check Armstrong Number",     desc: "Check if a number is an Armstrong number (sum of digits^n = number).", input: "153", output: "true", explain: "153 = 1³ + 5³ + 3³ = 153.", url: "https://leetcode.com/problems/sum-of-digits-in-base-k/" },
+    { title: "Binary to Decimal",          desc: "Convert a binary number (string) to its decimal equivalent.", input: '"1010"', output: "10", explain: "Multiply each bit by 2^position from right.", url: "https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/" },
+    { title: "Find Missing Number",        desc: "Given array 0 to N with one missing, find the missing number.", input: "[0,1,3,4]", output: "2", explain: "Sum 0..N = N*(N+1)/2. Subtract array sum.", url: "https://leetcode.com/problems/missing-number/" },
+    { title: "Bubble Sort",                desc: "Implement bubble sort to sort an array of integers in ascending order.", input: "[64,34,25,12,22]", output: "[12,22,25,34,64]", explain: "Repeatedly swap adjacent elements if in wrong order.", url: "https://leetcode.com/problems/sort-an-array/" },
+    { title: "Count Negative Numbers",     desc: "Count all negative numbers in a 2D grid.", input: "[[4,3,2],[1,-1,-2],[-3,-4,-5]]", output: "5", explain: "Iterate all elements, count where val < 0.", url: "https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/" },
+    { title: "Power of Two",               desc: "Determine if a given integer is a power of two.", input: "16", output: "true", explain: "A power of 2 has only one bit set: n & (n-1) === 0.", url: "https://leetcode.com/problems/power-of-two/" },
+    { title: "Reverse Words in a String",  desc: "Reverse the order of words in a sentence.", input: '"the sky is blue"', output: '"blue is sky the"', explain: "Split by space, reverse array, join.", url: "https://leetcode.com/problems/reverse-words-in-a-string/" },
+    { title: "Find Duplicate Number",      desc: "Find the one duplicate number in an array containing n+1 integers in range [1,n].", input: "[1,3,4,2,2]", output: "2", explain: "Use a Set: first number seen twice is the answer.", url: "https://leetcode.com/problems/find-the-duplicate-number/" },
+    { title: "Celsius to Fahrenheit",      desc: "Convert a temperature from Celsius to Fahrenheit.", input: "100", output: "212", explain: "Formula: F = C × 9/5 + 32.", url: "https://leetcode.com/problems/convert-the-temperature/" },
+  ]
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000)
+  const todayProblem = DAILY_PROBLEMS[dayOfYear % DAILY_PROBLEMS.length]
+
   const ROADMAP_STEPS = [
     { id: "py-basics",    title: "Learn Programming Basics",  color: "#3b82f6", xp: 50  },
     { id: "git-basics",   title: "Master Git & GitHub",       color: "#10b981", xp: 30  },
@@ -318,10 +354,8 @@ export function FirstYearFullHub({ student }: { student: any }) {
     { id: "progress",    label: "My Progress",  icon: <TrendingUp className="h-4 w-4" /> },
     { id: "practice",    label: "Practice",     icon: <Target className="h-4 w-4" /> },
     { id: "challenges",  label: "Challenges",   icon: <Code2 className="h-4 w-4" /> },
-    { id: "resources",   label: "Resources",    icon: <BookMarked className="h-4 w-4" /> },
     { id: "soft",        label: "Soft Skills",  icon: <MessageCircle className="h-4 w-4" /> },
     { id: "community",   label: "Community",    icon: <Users className="h-4 w-4" /> },
-    { id: "leaderboard", label: "Leaderboard",  icon: <Trophy className="h-4 w-4" /> },
   ]
 
   return (
@@ -350,13 +384,21 @@ export function FirstYearFullHub({ student }: { student: any }) {
       {!standaloneMode && (
       <div className="flex gap-2 flex-wrap">
         {TABS.map(t => (
-          <button key={t.id} onClick={() => setActiveTab(t.id)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
-            style={activeTab === t.id
-              ? { background: "rgba(124,58,237,0.20)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.35)" }
-              : { background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
-            {t.icon}{t.label}
-          </button>
+          t.id === "practice" ? (
+            <a key={t.id} href="/student/prep"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+              style={{ background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
+              {t.icon}{t.label}
+            </a>
+          ) : (
+            <button key={t.id} onClick={() => setActiveTab(t.id)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+              style={activeTab === t.id
+                ? { background: "rgba(124,58,237,0.20)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.35)" }
+                : { background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
+              {t.icon}{t.label}
+            </button>
+          )
         ))}
       </div>
       )}
@@ -410,27 +452,33 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   </div>
                 </div>
                 <div>
-                  <p className="text-base font-black text-foreground">Sum of Two Numbers</p>
-                  <p className="text-xs text-muted-foreground mt-1">Write a program that takes two numbers as input and prints their sum.</p>
+                  <p className="text-base font-black text-foreground">{todayProblem.title}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{todayProblem.desc}</p>
                 </div>
                 <div className="rounded-lg border border-border bg-black/20 p-3 text-xs font-mono space-y-1">
                   <p className="font-semibold text-muted-foreground text-[10px] mb-2">Example</p>
-                  <p><span className="text-blue-400">Input:</span> <span className="text-foreground">5, 3</span></p>
-                  <p><span className="text-emerald-400">Output:</span> <span className="text-foreground">8</span></p>
+                  <p><span className="text-blue-400">Input:</span> <span className="text-foreground">{todayProblem.input}</span></p>
+                  <p><span className="text-emerald-400">Output:</span> <span className="text-foreground">{todayProblem.output}</span></p>
+                  <p className="text-muted-foreground pt-1 text-[10px]">{todayProblem.explain}</p>
                 </div>
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs text-muted-foreground">Earn <span className="text-primary font-bold">10 points</span></p>
+                  <p className="text-xs text-muted-foreground">Earn <span className="text-primary font-bold">10 points</span> · self-report when solved</p>
                   {dailyDone ? (
                     <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-sm font-semibold">
-                      <CheckCircle2 className="h-4 w-4" /> Done today!
+                      <CheckCircle2 className="h-4 w-4" /> Done today! +10 XP
                     </div>
                   ) : (
-                    <a href="https://leetcode.com/problemset/?difficulty=EASY" target="_blank" rel="noopener noreferrer"
-                      onClick={doDailyChallenge}
-                      className="flex items-center gap-2 px-5 py-2 rounded-xl font-semibold text-sm text-white"
-                      style={{ background: "linear-gradient(135deg,#3b82f6,#2563eb)" }}>
-                      Attempt Challenge <ArrowRight className="h-4 w-4" />
-                    </a>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <a href={todayProblem.url} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm border border-border text-foreground hover:border-primary/40 transition-all">
+                        <ArrowRight className="h-4 w-4" /> Try Problem
+                      </a>
+                      <button onClick={doDailyChallenge}
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all"
+                        style={{ background: "linear-gradient(135deg,#3b82f6,#2563eb)" }}>
+                        <CheckCircle2 className="h-4 w-4" /> Mark as Solved
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -520,9 +568,12 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 </div>
                 <p className="text-5xl font-black tabular-nums text-amber-400">{streak}</p>
                 <p className="text-xs text-muted-foreground">days</p>
-                <p className="text-xs font-semibold text-foreground">{streak === 0 ? "Start your streak today!" : `${streak} day streak — keep it up!`}</p>
+                <p className="text-xs font-semibold text-foreground">{streak === 0 ? "Solve today's problem to start!" : streak === 1 ? "Great start! Come back tomorrow." : `${streak} day streak — keep it up!`}</p>
                 <div className="rounded-lg bg-amber-500/5 border border-amber-500/15 p-2 mt-2">
-                  <p className="text-[10px] text-amber-400">{Math.max(0, 30 - streak)} days to 30-day badge</p>
+                  <p className="text-[10px] text-amber-400">
+                    {dailyDone ? "Today's problem solved!" : "Solve today's problem to extend your streak"}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{Math.max(0, 30 - streak)} days to 30-day badge</p>
                 </div>
               </div>
 
@@ -679,33 +730,137 @@ export function FirstYearFullHub({ student }: { student: any }) {
 
       {/* Challenges */}
       {activeTab === "challenges" && (
-        <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Daily and weekly coding challenges to build consistency. Start easy, build confidence.</p>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { title: "LeetCode Easy",          difficulty: "Beginner",     color: "#f59e0b", url: "https://leetcode.com/problemset/?difficulty=EASY" },
-              { title: "HackerRank Algorithms",  difficulty: "Beginner",     color: "#10b981", url: "https://www.hackerrank.com/domains/algorithms" },
-              { title: "GFG School Level",       difficulty: "Beginner",     color: "#3b82f6", url: "https://practice.geeksforgeeks.org/explore?difficulty%5B%5D=School" },
-              { title: "LeetCode Daily",         difficulty: "Intermediate", color: "#8b5cf6", url: "https://leetcode.com/problemset/" },
-              { title: "100 Days of Code",       difficulty: "Challenge",    color: "#ec4899", url: "https://www.100daysofcode.com/" },
-              { title: "CodeChef Div4",          difficulty: "Intermediate", color: "#f97316", url: "https://www.codechef.com/contests" },
-            ].map(c => {
-              const diffColor = c.difficulty === "Beginner" ? "#10b981" : c.difficulty === "Intermediate" ? "#f59e0b" : "#ec4899"
-              return (
-                <div key={c.title} className="rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-3 hover:border-primary/30 transition-all">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-semibold text-foreground">{c.title}</p>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0"
-                      style={{ background: `${diffColor}20`, color: diffColor }}>{c.difficulty}</span>
+        <div className="space-y-6">
+          {/* Hero banner */}
+          <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-violet-500/5 to-transparent p-5">
+            <p className="text-lg font-black text-foreground">Coding Challenges</p>
+            <p className="text-xs text-muted-foreground mt-1">Real-world problems · Story series · Streak rewards · Skill badges</p>
+          </div>
+
+          {/* Real-world project challenges */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+              <Zap className="h-3.5 w-3.5 text-violet-400" />Build Real Things — Project Challenges
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { title:"Build a Calculator",      desc:"Build a calculator that handles +, -, ×, ÷ operations with keyboard input.",         badge:"Beginner",     color:"#3b82f6", url:"https://leetcode.com/problems/basic-calculator/" },
+                { title:"Attendance Tracker",      desc:"Create a college attendance tracker that flags < 75% attendance.",                    badge:"Beginner",     color:"#10b981", url:"https://leetcode.com/problems/design-parking-system/" },
+                { title:"Simple Chatbot",          desc:"Build a rule-based chatbot that replies to greetings, questions and goodbyes.",       badge:"Intermediate", color:"#8b5cf6", url:"https://leetcode.com/problems/design-hashmap/" },
+                { title:"Weather Fetcher",         desc:"Use a free weather API to display temperature and conditions for any city.",          badge:"Intermediate", color:"#f59e0b", url:"https://open-meteo.com/en/docs" },
+                { title:"Personal Portfolio Page", desc:"Build a clean portfolio page with your name, skills, and a project section.",        badge:"Beginner",     color:"#ec4899", url:"https://www.frontendmentor.io/challenges/personal-portfolio-webpage-449TFEOrBO" },
+                { title:"Basic To-Do App",         desc:"Create a to-do app with add, complete, and delete functionality.",                   badge:"Beginner",     color:"#f97316", url:"https://leetcode.com/problems/design-hashmap/" },
+              ].map(c => {
+                const bColor = c.badge === "Beginner" ? "#10b981" : "#f59e0b"
+                return (
+                  <div key={c.title} className="rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-3 hover:border-primary/30 transition-all group">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{c.title}</p>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0" style={{ background:`${bColor}20`, color:bColor }}>{c.badge}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground flex-1">{c.desc}</p>
+                    <a href={c.url} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold text-white transition-all"
+                      style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}>
+                      <ExternalLink className="h-3.5 w-3.5" /> Try Challenge
+                    </a>
                   </div>
-                  <a href={c.url} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold text-white transition-all"
-                    style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-                    <ExternalLink className="h-3.5 w-3.5" /> Open
-                  </a>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Debugging challenges */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+              <Code2 className="h-3.5 w-3.5 text-red-400" />Debug & Fix — Sharpen Your Eye
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { title:"Fix the Loop Bug",       desc:'This code should print 1–10 but prints 0–9. Find and fix the off-by-one error.', snippet:"for i in range(0,10):\n  print(i)", fix:"range(1,11)", color:"#ef4444" },
+                { title:"Output Prediction",      desc:'What does this print? Think before you run. "if 0: print(A) else: print(B)"',     snippet:'if 0:\n  print("A")\nelse:\n  print("B")', fix:'"B" — 0 is falsy', color:"#f59e0b" },
+                { title:"Null Pointer Trap",       desc:"This code crashes. Identify why and write the fix.",                              snippet:"arr = None\nprint(arr[0])", fix:"Check arr is not None first", color:"#8b5cf6" },
+              ].map(c => (
+                <div key={c.title} className="rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-3 hover:border-red-500/30 transition-all">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:`${c.color}20`, color:c.color }}>Debug</span>
+                    <p className="text-sm font-bold text-foreground">{c.title}</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{c.desc}</p>
+                  <div className="rounded-lg bg-black/20 border border-border p-2 font-mono text-xs text-emerald-400 whitespace-pre">{c.snippet}</div>
+                  <details className="text-xs">
+                    <summary className="cursor-pointer text-primary font-semibold hover:underline">Reveal Answer</summary>
+                    <p className="mt-1 text-muted-foreground">{c.fix}</p>
+                  </details>
                 </div>
-              )
-            })}
+              ))}
+            </div>
+          </div>
+
+          {/* Skill badge challenges */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+              <Star className="h-3.5 w-3.5 text-amber-400" />Skill Badge Challenges — Earn Recognition
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { badge:"Array Pro",       desc:"Complete 5 array problems on LeetCode Easy",     color:"#3b82f6", earned: completedMilestones.length >= 2, url:"https://leetcode.com/tag/array/" },
+                { badge:"Loop Master",     desc:"Solve 3 loop-based problems without hints",       color:"#10b981", earned: completedMilestones.length >= 3, url:"https://leetcode.com/problemset/?difficulty=EASY" },
+                { badge:"String Wizard",   desc:"Complete 5 string manipulation problems",         color:"#8b5cf6", earned: completedMilestones.length >= 4, url:"https://leetcode.com/tag/string/" },
+                { badge:"Git Committer",   desc:"Make 10 real commits on a GitHub project",       color:"#f59e0b", earned: completedMilestones.includes("git-basics"), url:"https://skills.github.com/" },
+              ].map(b => (
+                <div key={b.badge} className={`rounded-xl border p-4 flex flex-col gap-2 transition-all ${b.earned ? "border-emerald-500/30 bg-emerald-500/5" : "border-border bg-card/30 opacity-80"}`}>
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background:`${b.color}20`, color:b.color }}>
+                      <Trophy className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-foreground">{b.badge}</p>
+                      {b.earned && <span className="text-[9px] text-emerald-400 font-bold">EARNED</span>}
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">{b.desc}</p>
+                  {!b.earned && (
+                    <a href={b.url} target="_blank" rel="noopener noreferrer"
+                      className="text-[10px] text-primary hover:underline flex items-center gap-1 font-semibold">
+                      <ExternalLink className="h-3 w-3" /> Start earning
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Practice platforms */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+              <Target className="h-3.5 w-3.5 text-primary" />Daily Practice Platforms
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { title:"LeetCode Easy",         difficulty:"Beginner",     color:"#f59e0b", url:"https://leetcode.com/problemset/?difficulty=EASY" },
+                { title:"HackerRank Algorithms", difficulty:"Beginner",     color:"#10b981", url:"https://www.hackerrank.com/domains/algorithms" },
+                { title:"GFG School Level",      difficulty:"Beginner",     color:"#3b82f6", url:"https://practice.geeksforgeeks.org/explore?difficulty%5B%5D=School" },
+                { title:"LeetCode Daily",        difficulty:"Intermediate", color:"#8b5cf6", url:"https://leetcode.com/problemset/" },
+                { title:"100 Days of Code",      difficulty:"Challenge",    color:"#ec4899", url:"https://www.100daysofcode.com/" },
+                { title:"CodeChef Div4",         difficulty:"Intermediate", color:"#f97316", url:"https://www.codechef.com/contests" },
+              ].map(c => {
+                const diffColor = c.difficulty === "Beginner" ? "#10b981" : c.difficulty === "Intermediate" ? "#f59e0b" : "#ec4899"
+                return (
+                  <div key={c.title} className="rounded-xl border border-border bg-card/40 p-4 flex items-center justify-between gap-3 hover:border-primary/30 transition-all">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{c.title}</p>
+                      <span className="text-[10px] font-bold" style={{ color:diffColor }}>{c.difficulty}</span>
+                    </div>
+                    <a href={c.url} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white shrink-0"
+                      style={{ background:`linear-gradient(135deg,#7c3aed,#6366f1)` }}>
+                      <ExternalLink className="h-3 w-3" /> Open
+                    </a>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       )}
