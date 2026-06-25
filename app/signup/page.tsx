@@ -275,7 +275,7 @@ function SignupForm() {
               {error && (
                 <div style={{ padding: "10px 14px", fontSize: 13, color: "#f87171", background: "rgba(239,68,68,0.10)", border: "1px solid rgba(239,68,68,0.20)", borderRadius: 12 }}>{error}</div>
               )}
-              {devOtp && process.env.NODE_ENV === 'development' && (
+              {devOtp && (
                 <div style={{ padding: "10px 14px", fontSize: 13, color: "#34d399", background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.20)", borderRadius: 12, textAlign: "center" }}>
                   Dev mode — OTP: <strong style={{ letterSpacing: 6 }}>{devOtp}</strong>
                 </div>
