@@ -11,26 +11,33 @@ let clientPromise: Promise<MongoClient> | null = null
 
 function getClientPromise(): Promise<MongoClient> | null {
   if (!uri) return null
-  
+
   if (process.env.NODE_ENV === 'development') {
     const globalWithMongo = global as typeof globalThis & {
       _mongoClientPromise?: Promise<MongoClient>
     }
     if (!globalWithMongo._mongoClientPromise) {
       client = new MongoClient(uri, {
-        serverSelectionTimeoutMS: 10000,
-        connectTimeoutMS: 10000,
-        socketTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 30000,
+        connectTimeoutMS: 30000,
+        socketTimeoutMS: 30000,
+        maxPoolSize: 10,
       })
-      globalWithMongo._mongoClientPromise = client.connect()
+      globalWithMongo._mongoClientPromise = client.connect().catch(err => {
+        // Clear on failure so next request retries
+        delete (global as any)._mongoClientPromise
+        throw err
+      })
     }
     return globalWithMongo._mongoClientPromise
   } else {
+    // Production — single module-level promise
     if (!clientPromise) {
       client = new MongoClient(uri, {
-        serverSelectionTimeoutMS: 10000,
-        connectTimeoutMS: 10000,
-        socketTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 30000,
+        connectTimeoutMS: 30000,
+        socketTimeoutMS: 30000,
+        maxPoolSize: 10,
       })
       clientPromise = client.connect()
     }
@@ -50,12 +57,11 @@ export async function getDatabase(): Promise<Db> {
 
   try {
     const connectedClient = await promise
-    return connectedClient.db('codetrack')
+    return connectedClient.db()
   } catch (error) {
-    // Reset the promise so the next call retries the connection
+    // Reset so next request retries
     if (process.env.NODE_ENV === 'development') {
-      const g = global as typeof globalThis & { _mongoClientPromise?: Promise<MongoClient> }
-      delete g._mongoClientPromise
+      delete (global as any)._mongoClientPromise
     } else {
       clientPromise = null
     }

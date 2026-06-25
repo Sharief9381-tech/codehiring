@@ -92,16 +92,17 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/public/stats")
+    fetch("/api/public/stats", { cache: "no-store" })
       .then(r => r.ok ? r.json() : null)
       .then(d => { if (d) setStats(d) })
+      .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 
   const statCards = [
-    { value: stats?.students  ?? 0, label: "Students",   suffix: "+" },
-    { value: stats?.companies ?? 0, label: "Recruiters", suffix: "+" },
-    { value: stats?.platforms ?? 8, label: "Platforms",  suffix: ""  },
+    { value: loading ? "..." : (stats?.students  ?? 0), label: "Students",   suffix: stats?.students ? "+" : "" },
+    { value: loading ? "..." : (stats?.companies ?? 0), label: "Recruiters", suffix: stats?.companies ? "+" : "" },
+    { value: stats?.platforms ?? 8, label: "Platforms", suffix: "" },
   ]
 
   return (

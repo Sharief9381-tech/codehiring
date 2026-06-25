@@ -1,25 +1,17 @@
 import { NextResponse } from "next/server"
-import { getDatabase, isDatabaseAvailable } from "@/lib/database"
+import { getDatabase } from "@/lib/database"
 
-// Cache the result for 60 seconds so every login page load doesn't hit DB
-let cache: { data: any; at: number } | null = null
-const CACHE_MS = 60_000
+// Short cache — 30 seconds only, always try real DB first
+let cache: { data: any; at: number; isReal: boolean } | null = null
+const CACHE_MS = 30_000
 
 export async function GET() {
+  // Serve real-data cache if fresh
+  if (cache?.isReal && Date.now() - cache.at < CACHE_MS) {
+    return NextResponse.json(cache.data)
+  }
+
   try {
-    if (cache && Date.now() - cache.at < CACHE_MS) {
-      return NextResponse.json(cache.data)
-    }
-
-    if (!isDatabaseAvailable()) {
-      const fallback = {
-        students: 1050, companies: 500, problems: 45678,
-        platforms: 8, colleges: 45, placements: 320,
-      }
-      cache = { data: fallback, at: Date.now() }
-      return NextResponse.json(fallback)
-    }
-
     const db = await getDatabase()
     const users = await db.collection("users").find({}, {
       projection: { role: 1, linkedPlatforms: 1, "stats.totalProblems": 1 },
@@ -29,7 +21,6 @@ export async function GET() {
     const colleges   = users.filter(u => u.role === "college").length
     const recruiters = users.filter(u => u.role === "recruiter").length
 
-    // Count total problems solved across all students
     let problems = 0
     let platformConnections = 0
     users.forEach(u => {
@@ -41,26 +32,17 @@ export async function GET() {
       }
     })
 
-    // Count placed / open-to-work students from jobs applications (best-effort)
     let placements = 0
     try {
       placements = await db.collection("users").countDocuments({ role: "student", isOpenToWork: false })
     } catch {}
 
-    const data = {
-      students,
-      companies: Math.max(recruiters, 1),
-      problems,
-      platforms: 8,
-      colleges,
-      placements,
-      platformConnections,
-    }
-
-    cache = { data, at: Date.now() }
+    const data = { students, companies: Math.max(recruiters, 1), problems, platforms: 8, colleges, placements, platformConnections }
+    cache = { data, at: Date.now(), isReal: true }
     return NextResponse.json(data)
   } catch (err) {
     console.error("Public stats error:", err)
+    // Never cache fallback data — always retry DB next request
     return NextResponse.json({
       students: 0, companies: 0, problems: 0,
       platforms: 8, colleges: 0, placements: 0,

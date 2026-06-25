@@ -1,10 +1,10 @@
-﻿"use client"
+"use client"
 
-import React, { useState, useEffect, Suspense } from "react"
+import React, { useState, useEffect, useRef, Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Loader2, GraduationCap, Building2, Briefcase, Award, Eye, EyeOff, Search, MapPin, Mail } from "lucide-react"
+import { Loader2, GraduationCap, Building2, Briefcase, Award, Eye, EyeOff, Search, MapPin, Mail, CheckCircle2, ShieldCheck } from "lucide-react"
 import { searchColleges, type CollegeEntry } from "@/lib/colleges-data"
 import { SignupBackground } from "@/components/signup-background"
 
@@ -20,7 +20,9 @@ const roles = [
 /* ── shared inline style constants ── */
 const inputS: React.CSSProperties = {
   background: "rgba(255,255,255,0.05)",
-  border: "1px solid rgba(255,255,255,0.10)",
+  borderWidth: "1px",
+  borderStyle: "solid",
+  borderColor: "rgba(255,255,255,0.10)",
   color: "#ffffff",
   borderRadius: 12, padding: "10px 16px",
   fontSize: 14, outline: "none", width: "100%",
@@ -81,12 +83,23 @@ function SignupForm() {
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError]         = useState("")
-  const [step, setStep]           = useState<"role" | "details">("role")
+  // Email verification step: "email" | "otp" | "verified" | "role" | "details"
+  const [step, setStep]           = useState<"email" | "otp" | "verified" | "role" | "details">("email")
   const [selectedRole, setSelectedRole] = useState<Role | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm]   = useState(false)
   const [collegeSuggestions, setCollegeSuggestions] = useState<CollegeEntry[]>([])
   const [showSuggestions, setShowSuggestions]       = useState(false)
+
+  // Email verification state
+  const [verifyEmail, setVerifyEmail] = useState("")
+  const [otp, setOtp]                 = useState(["", "", "", ""])
+  const [otpSending, setOtpSending]   = useState(false)
+  const [otpVerifying, setOtpVerifying] = useState(false)
+  const [resendCooldown, setResendCooldown] = useState(0)
+  const [devOtp, setDevOtp]           = useState<string | null>(null)
+  const otpRefs                       = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)]
+
   const [formData, setFormData] = useState({
     name: "", email: "", password: "", confirmPassword: "",
     collegeCode: "", rollNumber: "", branch: "", graduationYear: "",
@@ -98,7 +111,78 @@ function SignupForm() {
     if (rp && roles.some(r => r.id === rp)) { setSelectedRole(rp); setStep("details") }
   }, [searchParams])
 
+  // Resend cooldown timer
+  useEffect(() => {
+    if (resendCooldown <= 0) return
+    const t = setInterval(() => setResendCooldown(c => Math.max(0, c - 1)), 1000)
+    return () => clearInterval(t)
+  }, [resendCooldown])
+
   const set = (k: keyof typeof formData) => (v: string) => setFormData(p => ({ ...p, [k]: v }))
+
+  // ── OTP handlers ──────────────────────────────────────────
+  const sendOtp = async () => {
+    if (!verifyEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(verifyEmail)) {
+      setError("Please enter a valid email address"); return
+    }
+    setError(""); setOtpSending(true)
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: verifyEmail, purpose: "signup" }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setError(data.error || "Failed to send code"); return }
+      if (data.dev && data.otp) setDevOtp(data.otp) // dev mode
+      setFormData(p => ({ ...p, email: verifyEmail }))
+      setStep("otp")
+      setResendCooldown(30)
+      setTimeout(() => otpRefs[0].current?.focus(), 100)
+    } catch { setError("Network error. Please try again.") }
+    finally { setOtpSending(false) }
+  }
+
+  const handleOtpChange = (idx: number, val: string) => {
+    const digit = val.replace(/\D/g, "").slice(-1)
+    const next = [...otp]; next[idx] = digit; setOtp(next)
+    if (digit && idx < 3) otpRefs[idx + 1].current?.focus()
+    if (!digit && idx > 0) otpRefs[idx - 1].current?.focus()
+  }
+
+  const handleOtpKeyDown = (idx: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !otp[idx] && idx > 0) {
+      const next = [...otp]; next[idx - 1] = ""; setOtp(next)
+      otpRefs[idx - 1].current?.focus()
+    }
+    if (e.key === "ArrowLeft" && idx > 0) otpRefs[idx - 1].current?.focus()
+    if (e.key === "ArrowRight" && idx < 3) otpRefs[idx + 1].current?.focus()
+  }
+
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 4)
+    if (pasted.length === 4) {
+      setOtp(pasted.split(""))
+      otpRefs[3].current?.focus()
+    }
+  }
+
+  const verifyOtp = async () => {
+    const code = otp.join("")
+    if (code.length < 4) { setError("Please enter all 4 digits"); return }
+    setError(""); setOtpVerifying(true)
+    try {
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: verifyEmail, otp: code }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setError(data.error || "Invalid code"); return }
+      setDevOtp(null)
+      setStep("verified")
+      setTimeout(() => setStep("role"), 1800)
+    } catch { setError("Network error. Please try again.") }
+    finally { setOtpVerifying(false) }
+  }
 
   const handleCollegeName = (v: string) => {
     set("collegeName")(v)
@@ -150,14 +234,100 @@ function SignupForm() {
           {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 24 }}>
             <h1 style={{ fontSize: 22, fontWeight: 700, color: "#ffffff", margin: 0, letterSpacing: "-0.02em" }}>
-              {step === "role" ? "Join CodeHiring" : "Create your account"}
+              {step === "email" ? "Verify Your Email" : step === "otp" ? "Enter Verification Code" : step === "verified" ? "Email Verified!" : step === "role" ? "Join CodeHiring" : "Create your account"}
             </h1>
             <p style={{ fontSize: 13, marginTop: 6, marginBottom: 0, color: "rgba(167,139,250,0.65)" }}>
-              {step === "role" ? "Select your role to get started"
+              {step === "email" ? "Enter your email to get a 4-digit verification code"
+                : step === "otp" ? `Code sent to ${verifyEmail}`
+                : step === "verified" ? "Your email has been verified"
+                : step === "role" ? "Select your role to get started"
                 : selectedRole === "graduate" ? "Create your graduate profile"
                 : `Sign up as a ${selectedRole}`}
             </p>
           </div>
+
+          {/* ── EMAIL STEP ── */}
+          {step === "email" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {error && (
+                <div style={{ padding: "10px 14px", fontSize: 13, color: "#f87171", background: "rgba(239,68,68,0.10)", border: "1px solid rgba(239,68,68,0.20)", borderRadius: 12 }}>{error}</div>
+              )}
+              <div>
+                <label style={labelS}>Email Address</label>
+                <GlassInput type="email" placeholder="you@example.com" value={verifyEmail}
+                  onChange={v => { setVerifyEmail(v); setError("") }} required
+                  iconLeft={<Mail style={{ width: 16, height: 16 }} />} />
+              </div>
+              <button type="button" onClick={sendOtp} disabled={otpSending || !verifyEmail}
+                style={{ height: 46, borderRadius: 12, fontWeight: 600, fontSize: 14, color: "#ffffff", background: "linear-gradient(135deg,#7c3aed,#6366f1)", border: "none", cursor: (otpSending || !verifyEmail) ? "not-allowed" : "pointer", opacity: (otpSending || !verifyEmail) ? 0.6 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                {otpSending ? <><Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} />Sending code…</> : "Send Verification Code"}
+              </button>
+              <p style={{ textAlign: "center", fontSize: 13, color: "rgba(167,139,250,0.5)", margin: 0 }}>
+                Already have an account?{" "}
+                <Link href="/login" style={{ color: "#a78bfa", fontWeight: 600, textDecoration: "none" }}>Sign in</Link>
+              </p>
+            </div>
+          )}
+
+          {/* ── OTP STEP ── */}
+          {step === "otp" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              {error && (
+                <div style={{ padding: "10px 14px", fontSize: 13, color: "#f87171", background: "rgba(239,68,68,0.10)", border: "1px solid rgba(239,68,68,0.20)", borderRadius: 12 }}>{error}</div>
+              )}
+              {devOtp && (
+                <div style={{ padding: "10px 14px", fontSize: 13, color: "#34d399", background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.20)", borderRadius: 12, textAlign: "center" }}>
+                  Dev mode — OTP: <strong style={{ letterSpacing: 6 }}>{devOtp}</strong>
+                </div>
+              )}
+              {/* 4-digit OTP boxes */}
+              <div style={{ display: "flex", gap: 12, justifyContent: "center" }} onPaste={handleOtpPaste}>
+                {otp.map((digit, idx) => (
+                  <input key={idx} ref={otpRefs[idx]} type="text" inputMode="numeric" maxLength={1} value={digit}
+                    onChange={e => handleOtpChange(idx, e.target.value)}
+                    onKeyDown={e => handleOtpKeyDown(idx, e)}
+                    style={{
+                      width: 64, height: 68, textAlign: "center", fontSize: 28, fontWeight: 800,
+                      background: digit ? "rgba(124,58,237,0.15)" : "rgba(255,255,255,0.05)",
+                      border: `2px solid ${digit ? "rgba(139,92,246,0.6)" : "rgba(255,255,255,0.10)"}`,
+                      borderRadius: 16, color: "#ffffff", outline: "none", cursor: "text",
+                      transition: "border-color 0.2s, background 0.2s",
+                      caretColor: "#a78bfa",
+                    }}
+                    onFocus={e => (e.target.style.border = `2px solid rgba(139,92,246,0.8)`)}
+                    onBlur={e => (e.target.style.border = `2px solid ${digit ? "rgba(139,92,246,0.6)" : "rgba(255,255,255,0.10)"}`)}
+                  />
+                ))}
+              </div>
+              <p style={{ textAlign: "center", fontSize: 12, color: "rgba(167,139,250,0.5)", margin: 0 }}>Code expires in 5 minutes · Max 5 attempts</p>
+              <button type="button" onClick={verifyOtp} disabled={otpVerifying || otp.join("").length < 4}
+                style={{ height: 46, borderRadius: 12, fontWeight: 600, fontSize: 14, color: "#ffffff", background: "linear-gradient(135deg,#7c3aed,#6366f1)", border: "none", cursor: (otpVerifying || otp.join("").length < 4) ? "not-allowed" : "pointer", opacity: (otpVerifying || otp.join("").length < 4) ? 0.6 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                {otpVerifying ? <><Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} />Verifying…</> : <><ShieldCheck style={{ width: 16, height: 16 }} />Verify Code</>}
+              </button>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                <button type="button" onClick={() => { setStep("email"); setOtp(["","","",""]); setError("") }}
+                  style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                  ← Change email
+                </button>
+                <button type="button" onClick={sendOtp} disabled={resendCooldown > 0 || otpSending}
+                  style={{ fontSize: 13, color: resendCooldown > 0 ? "rgba(167,139,250,0.35)" : "#a78bfa", background: "none", border: "none", cursor: resendCooldown > 0 ? "not-allowed" : "pointer", padding: 0, fontWeight: 600 }}>
+                  {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : otpSending ? "Sending…" : "Resend Code"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ── VERIFIED SUCCESS ── */}
+          {step === "verified" && (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: "16px 0" }}>
+              <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(52,211,153,0.15)", border: "2px solid rgba(52,211,153,0.4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CheckCircle2 style={{ width: 32, height: 32, color: "#34d399" }} />
+              </div>
+              <p style={{ fontSize: 16, fontWeight: 700, color: "#34d399", margin: 0 }}>Email Verified!</p>
+              <p style={{ fontSize: 13, color: "rgba(167,139,250,0.6)", margin: 0, textAlign: "center" }}>{verifyEmail}</p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>Redirecting to sign up…</p>
+            </div>
+          )}
 
           {/* ── ROLE STEP ── */}
           {step === "role" && (
@@ -336,6 +506,7 @@ function SignupForm() {
             </form>
           )}
 
+          {(step === "role" || step === "details") && (
           <p style={{ marginTop: 20, textAlign: "center", fontSize: 13, color: "rgba(167,139,250,0.5)" }}>
             Already have an account?{" "}
             <Link href="/login" style={{ color: "#a78bfa", fontWeight: 600, textDecoration: "none" }}
@@ -344,6 +515,7 @@ function SignupForm() {
               Sign in
             </Link>
           </p>
+          )}
         </div>
       </div>
 
