@@ -133,7 +133,10 @@ function SignupForm() {
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error || "Failed to send code"); return }
-      if (data.dev && data.otp) setDevOtp(data.otp) // dev mode
+      if (data.dev && data.otp) {
+        // Dev OTP received but never show on screen in any env
+        console.log('[DEV] OTP:', data.otp)
+      }
       setFormData(p => ({ ...p, email: verifyEmail }))
       setStep("otp")
       setResendCooldown(30)
