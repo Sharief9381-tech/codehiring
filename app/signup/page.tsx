@@ -288,8 +288,8 @@ function SignupForm() {
                     onKeyDown={e => handleOtpKeyDown(idx, e)}
                     style={{
                       width: 64, height: 68, textAlign: "center", fontSize: 28, fontWeight: 800,
-                      background: digit ? "rgba(124,58,237,0.15)" : "rgba(255,255,255,0.05)",
-                      border: `2px solid ${digit ? "rgba(139,92,246,0.6)" : "rgba(255,255,255,0.10)"}`,
+                      background: digit ? "rgba(124,58,237,0.20)" : "rgba(255,255,255,0.08)",
+                      border: `2px solid ${digit ? "rgba(139,92,246,0.6)" : "rgba(255,255,255,0.25)"}`,
                       borderRadius: 16, color: "#ffffff", outline: "none", cursor: "text",
                       transition: "border-color 0.2s, background 0.2s",
                       caretColor: "#a78bfa",
