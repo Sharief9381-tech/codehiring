@@ -23,8 +23,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email and OTP are required" }, { status: 400 })
     }
 
-    if (!/^\d{6}$/.test(otp)) {
-      return NextResponse.json({ error: "OTP must be 6 digits" }, { status: 400 })
+    if (!/^\d{4}$/.test(otp)) {
+      return NextResponse.json({ error: "OTP must be 4 digits" }, { status: 400 })
     }
 
     if (!isDatabaseAvailable()) {

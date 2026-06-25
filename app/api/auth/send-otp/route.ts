@@ -84,9 +84,12 @@ export async function POST(request: Request) {
 
     if (!success) {
       console.error("OTP email failed:", error)
-      // Always fall back to dev mode — show OTP in response so signup works
-      console.log(`[DEV OTP] ${email} → ${otp}`)
-      return NextResponse.json({ success: true, dev: true, otp })
+      // In dev without valid key — show OTP on screen for testing
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`[DEV OTP] ${email} → ${otp}`)
+        return NextResponse.json({ success: true, dev: true, otp })
+      }
+      return NextResponse.json({ error: "Failed to send email. Please try again." }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })

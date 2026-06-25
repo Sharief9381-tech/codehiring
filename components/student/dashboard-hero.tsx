@@ -134,7 +134,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
   return (
     <div className="space-y-5">
 
-      {/* â”€â”€ HERO BANNER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ”€”€ HERO BANNER ”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€ */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
         className="relative rounded-2xl border border-border bg-card overflow-hidden">
         {/* gradient banner */}
@@ -177,7 +177,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
               </div>
               <p className="text-xs text-muted-foreground">
                 {student.branch}
-                {isGraduate ? ` Â· Graduate ${student.graduationYear}` : ` Â· ${student.collegeCode} Â· Class of ${student.graduationYear}`}
+                {isGraduate ? ` · Graduate ${student.graduationYear}` : ` · ${student.collegeCode} · Class of ${student.graduationYear}`}
               </p>
             </div>
 
@@ -185,15 +185,10 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
             <div className="flex flex-wrap gap-2 shrink-0">
               <Button size="sm" onClick={onSync} disabled={isSyncing} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
                 <RefreshCw className={`h-3.5 w-3.5 ${isSyncing ? "animate-spin" : ""}`} />
-                {isSyncing ? "Syncingâ€¦" : "Sync Stats"}
+                {isSyncing ? "Syncing€¦" : "Sync Stats"}
               </Button>
               <Button size="sm" variant="outline" className="gap-2" asChild>
                 <Link href="/student/analytics"><BarChart3 className="h-3.5 w-3.5" />Analytics</Link>
-              </Button>
-              <Button size="sm" variant="outline" className="gap-2" asChild>
-                <Link href={`/u/${student.name.toLowerCase().replace(/\s+/g, "-")}`} target="_blank">
-                  <ExternalLink className="h-3.5 w-3.5" />Profile
-                </Link>
               </Button>
             </div>
           </div>
