@@ -650,7 +650,6 @@ export function LandingPage() {
                   <div className="flex items-center gap-4 border border-border bg-card hover:bg-violet-500/5 hover:border-violet-500/30 transition-all px-5 py-4 cursor-pointer group rounded-xl">
                     <span className={`text-[10px] font-semibold border rounded-full px-2.5 py-0.5 shrink-0 ${post.tagColor} border-current/30`}>{post.tag}</span>
                     <p className="flex-1 text-sm font-bold text-foreground/80 group-hover:text-foreground transition-colors truncate">{post.title}</p>
-                    <span className="text-xs text-muted-foreground shrink-0 hidden sm:block">{post.date}</span>
                     <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-violet-400 transition-colors shrink-0" />
                   </div>
                 </Link>

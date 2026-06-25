@@ -50,12 +50,28 @@ export async function GET(req: Request) {
       triggerDailyPostIfNeeded(origin)
 
       const posts = await BlogModel.findAll(true)
-      if (posts.length > 0) {
+      if (posts.length >= 3) {
         return NextResponse.json({
           posts: posts.map(({ _id, slug, title, excerpt, tag, tagColor, date, readTime, published }) => ({
             _id, slug, title, excerpt, tag, tagColor, date, readTime, published,
           })),
         })
+      }
+      // Less than 3 DB posts — pad with static posts
+      if (posts.length > 0) {
+        const dbSlugs = new Set(posts.map((p: any) => p.slug))
+        const staticPad = [...blogPosts]
+          .filter(p => !dbSlugs.has(p.slug))
+          .slice(0, 3 - posts.length)
+        const combined = [
+          ...posts.map(({ _id, slug, title, excerpt, tag, tagColor, date, readTime, published }: any) => ({
+            _id, slug, title, excerpt, tag, tagColor, date, readTime, published,
+          })),
+          ...staticPad.map(({ slug, title, excerpt, tag, tagColor, date, readTime }) => ({
+            slug, title, excerpt, tag, tagColor, date, readTime, published: true,
+          })),
+        ]
+        return NextResponse.json({ posts: combined })
       }
     } catch {}
   }
