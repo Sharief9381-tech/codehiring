@@ -30,11 +30,14 @@ export async function sendEmail({
     try {
       const nodemailer = await import("nodemailer")
       const transporter = nodemailer.default.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
         auth: {
           user: gmailUser,
-          pass: gmailPass.replace(/\s/g, ""), // remove spaces from app password
+          pass: gmailPass.replace(/\s/g, ""),
         },
+        tls: { rejectUnauthorized: false },
       })
       await transporter.sendMail({
         from: `"CodeHiring" <${gmailUser}>`,
@@ -42,9 +45,10 @@ export async function sendEmail({
         subject,
         html,
       })
+      console.log(`[EMAIL] Sent via Gmail SMTP to ${to}`)
       return { success: true }
     } catch (e) {
-      console.error("Gmail SMTP error:", e)
+      console.error("Gmail SMTP error:", JSON.stringify(e))
       // Fall through to Resend
     }
   }

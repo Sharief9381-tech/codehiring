@@ -84,12 +84,9 @@ export async function POST(request: Request) {
 
     if (!success) {
       console.error("OTP email failed:", error)
-      // In dev without valid key — show OTP on screen for testing
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`[DEV OTP] ${email} → ${otp}`)
-        return NextResponse.json({ success: true, dev: true, otp })
-      }
-      return NextResponse.json({ error: "Failed to send email. Please try again." }, { status: 500 })
+      // Log OTP server-side only — NEVER send to client
+      console.log(`[OTP for ${email}]: ${otp}`)
+      return NextResponse.json({ error: "Failed to send verification email. Please check your email address and try again." }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
