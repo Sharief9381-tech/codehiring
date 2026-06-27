@@ -1,14 +1,7 @@
 /**
  * POST /api/auth/send-otp
- * Generates a 4-digit OTP, stores it in MongoDB, and sends via Resend.
- *
+ * Generates a 4-digit OTP, stores in MongoDB, sends via Gmail SMTP.
  * Body: { email: string, name?: string, purpose?: "signup" | "login" | "reset" }
- *
- * Security:
- *  - 4-digit OTP
- *  - 5 minute expiry
- *  - Max 5 verification attempts
- *  - 30 second resend cooldown
  */
 import { NextResponse } from "next/server"
 import { getDatabase, isDatabaseAvailable } from "@/lib/database"
@@ -50,32 +43,15 @@ export async function POST(request: Request) {
     const otpExpires = new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
     const now = new Date()
 
-    // Upsert OTP document
     await otps.updateOne(
       { email },
       {
-        $set: {
-          email,
-          otp,
-          otpExpires,
-          verified: false,
-          attempts: 0,
-          lastSent: now,
-          purpose,
-          updatedAt: now,
-        },
+        $set: { email, otp, otpExpires, verified: false, attempts: 0, lastSent: now, purpose, updatedAt: now },
         $setOnInsert: { createdAt: now },
       },
       { upsert: true }
     )
 
-    // In dev with no Resend key — return OTP in response for testing
-    if (!process.env.RESEND_API_KEY) {
-      console.log(`[DEV OTP] ${email} → ${otp}`)
-      return NextResponse.json({ success: true, dev: true, otp })
-    }
-
-    // Send email
     const { success, error } = await sendEmail({
       to: email,
       subject: "Your CodeHiring verification code",
@@ -84,9 +60,7 @@ export async function POST(request: Request) {
 
     if (!success) {
       console.error("OTP email failed:", error)
-      // Log OTP server-side only — NEVER send to client
-      console.log(`[OTP for ${email}]: ${otp}`)
-      return NextResponse.json({ error: "Failed to send verification email. Please check your email address and try again." }, { status: 500 })
+      return NextResponse.json({ error: "Failed to send verification email. Please try again." }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
@@ -95,4 +69,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to send OTP" }, { status: 500 })
   }
 }
-

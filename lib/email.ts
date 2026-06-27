@@ -1,17 +1,9 @@
 /**
- * Email utility — tries Resend first, falls back to Gmail SMTP (nodemailer)
- * Gmail SMTP can send to ANY email address.
- *
- * Setup Gmail SMTP:
- * 1. Enable 2-Step Verification on your Google account
- * 2. Go to myaccount.google.com/apppasswords → create "CodeHiring" app password
- * 3. Add to .env:
- *    GMAIL_USER=yourname@gmail.com
- *    GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
+ * Email utility — Gmail SMTP only via nodemailer
+ * Setup:
+ *   GMAIL_USER=yourname@gmail.com
+ *   GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx  (from myaccount.google.com/apppasswords)
  */
-
-const RESEND_API_URL = "https://api.resend.com/emails"
-const FROM_RESEND = "CodeHiring <onboarding@resend.dev>"
 
 export async function sendEmail({
   to,
@@ -22,64 +14,39 @@ export async function sendEmail({
   subject: string
   html: string
 }): Promise<{ success: boolean; error?: string }> {
-  // Try Gmail SMTP first if configured (works with any recipient)
-  const gmailUser = process.env.GMAIL_USER
-  const gmailPass = process.env.GMAIL_APP_PASSWORD
+  const gmailUser = process.env.GMAIL_USER || process.env.EMAIL_USER
+  const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS
 
-  if (gmailUser && gmailPass) {
-    try {
-      const nodemailer = await import("nodemailer")
-      const transporter = nodemailer.default.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: gmailUser,
-          pass: gmailPass.replace(/\s/g, ""),
-        },
-        tls: { rejectUnauthorized: false },
-      })
-      await transporter.sendMail({
-        from: `"CodeHiring" <${gmailUser}>`,
-        to,
-        subject,
-        html,
-      })
-      console.log(`[EMAIL] Sent via Gmail SMTP to ${to}`)
-      return { success: true }
-    } catch (e) {
-      console.error("Gmail SMTP error:", JSON.stringify(e))
-      // Fall through to Resend
-    }
+  if (!gmailUser || !gmailPass) {
+    console.error("[EMAIL] GMAIL_USER or GMAIL_APP_PASSWORD not configured")
+    return { success: false, error: "Email not configured" }
   }
 
-  // Try Resend
-  const key = process.env.RESEND_API_KEY
-  if (key && key.startsWith("re_")) {
-    try {
-      const res = await fetch(RESEND_API_URL, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${key}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ from: FROM_RESEND, to: [to], subject, html }),
-      })
-      if (!res.ok) {
-        const err = await res.text()
-        console.error("Resend error:", err)
-        return { success: false, error: err }
-      }
-      return { success: true }
-    } catch (e) {
-      console.error("Email send error:", e)
-      return { success: false, error: String(e) }
-    }
-  }
+  try {
+    const nodemailer = await import("nodemailer")
+    const transporter = nodemailer.default.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // TLS
+      auth: {
+        user: gmailUser,
+        pass: gmailPass.replace(/\s/g, ""), // remove spaces from app password
+      },
+    })
 
-  // No email provider configured
-  console.log(`[EMAIL NO-OP] To: ${to} | Subject: ${subject}`)
-  return { success: false, error: "No email provider configured" }
+    await transporter.sendMail({
+      from: `"CodeHiring" <${gmailUser}>`,
+      to,
+      subject,
+      html,
+    })
+
+    console.log(`[EMAIL] Sent via Gmail to ${to}`)
+    return { success: true }
+  } catch (e: any) {
+    console.error("[EMAIL] Gmail SMTP error:", e?.message || e)
+    return { success: false, error: e?.message || "Email send failed" }
+  }
 }
 
 export function otpEmailHtml(otp: string, name?: string): string {
