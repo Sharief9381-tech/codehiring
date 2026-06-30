@@ -1,4 +1,4 @@
-export interface CodeforcesStats {
+﻿export interface CodeforcesStats {
   username: string
   rating: number
   maxRating: number
@@ -52,12 +52,10 @@ export async function fetchCodeforcesStats(username: string): Promise<Codeforces
     const now = Date.now()
     const last = _cfLastCall[cleanUsername] || 0
     if (now - last < CF_COOLDOWN_MS) {
-      console.log(`Codeforces cooldown active for ${cleanUsername}, skipping fetch`)
       return null
     }
     _cfLastCall[cleanUsername] = now
 
-    console.log(`Fetching Codeforces stats for: ${cleanUsername}`)
 
     // Method 1: cp-rating-api (faster, no rate limit issues)
     try {

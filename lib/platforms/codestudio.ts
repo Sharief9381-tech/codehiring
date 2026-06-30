@@ -1,4 +1,4 @@
-export interface CodeStudioStats {
+﻿export interface CodeStudioStats {
   username: string
   problemsSolved: number
   score: number
@@ -19,8 +19,6 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
       cleanUsername = match[1]
     }
     
-    console.log(`Fetching real-time CodeStudio stats for: ${cleanUsername}`)
-    console.log(`Fetching real-time CodeStudio stats for: ${cleanUsername}`)
     
     const profileUrl = `https://www.codingninjas.com/studio/profile/${cleanUsername}`
     
@@ -34,7 +32,6 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
 
     for (const apiUrl of thirdPartyApis) {
       try {
-        console.log(`Trying CodeStudio third-party API: ${apiUrl}`)
         const response = await fetch(apiUrl, {
           headers: {
             'Accept': 'application/json',
@@ -45,7 +42,6 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
 
         if (response.ok) {
           const data = await response.json()
-          console.log(`CodeStudio third-party API response:`, data)
           
           if (data && !data.error && data.success !== false) {
             return {
@@ -59,7 +55,6 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
           }
         }
       } catch (apiError) {
-        console.log(`CodeStudio third-party API ${apiUrl} failed:`, apiError)
         continue
       }
     }
@@ -75,7 +70,6 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
       })
       
       if (!response.ok) {
-        console.log(`CodeStudio profile not found for ${cleanUsername}`)
         return null
       }
       
@@ -83,11 +77,9 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
       
       // Check if profile exists
       if (html.includes('User not found') || html.includes('404') || html.includes('Profile not found')) {
-        console.log(`CodeStudio profile not found for: ${cleanUsername}`)
         return null
       }
       
-      console.log(`CodeStudio profile exists for: ${cleanUsername}`)
       
       // Extract stats from HTML
       let problemsSolved = 0
@@ -123,7 +115,6 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
         streakDays = parseInt(streakMatch[0].match(/\d+/)![0])
       }
       
-      console.log(`CodeStudio real-time stats: problems=${problemsSolved}, score=${score}, rank=${rank}, streak=${streakDays}`)
       
       const stats: CodeStudioStats = {
         username: cleanUsername,
@@ -134,16 +125,13 @@ export async function fetchCodeStudioStats(username: string): Promise<CodeStudio
         profileUrl
       }
       
-      console.log(`CodeStudio stats for ${cleanUsername}:`, stats)
       return stats
       
     } catch (error) {
-      console.log('CodeStudio fetch failed:', error)
     }
 
     // Method 3: Basic profile validation (fallback)
     if (cleanUsername && cleanUsername.length > 0 && /^[a-zA-Z0-9_-]+$/.test(cleanUsername)) {
-      console.log(`CodeStudio: returning basic profile for ${cleanUsername}`)
       
       return {
         username: cleanUsername,

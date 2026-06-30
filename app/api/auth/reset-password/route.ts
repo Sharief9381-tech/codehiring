@@ -17,14 +17,12 @@ export async function POST(request: Request) {
       if (isDatabaseAvailable()) {
         user = await findUserByResetToken(token)
       }
-    } catch (dbError) {
-      console.log("Database unavailable, falling back to in-memory storage", dbError)
+    } catch {
+      // DB unavailable, will fall through to fallback
     }
 
     if (!user) {
-      console.log("[RESET PASSWORD] Trying fallback storage for token:", token)
       user = await fallbackFindUserByResetToken(token)
-      console.log("[RESET PASSWORD] Fallback result:", user ? "User found" : "User not found")
     }
 
     if (!user) {
@@ -40,8 +38,8 @@ export async function POST(request: Request) {
       if (isDatabaseAvailable()) {
         await updateUser(userId, { password: hashedPassword, resetToken: null, resetTokenExpires: null })
       }
-    } catch (dbError) {
-      console.log("Database update failed, using fallback", dbError)
+    } catch {
+      // DB unavailable, fallback handles it
     }
 
     await fallbackUpdateUser(userId, { password: hashedPassword, resetToken: null, resetTokenExpires: null })

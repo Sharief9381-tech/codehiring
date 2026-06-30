@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import React, { useState, useEffect, useRef, Suspense } from "react"
 import Link from "next/link"
@@ -135,7 +135,6 @@ function SignupForm() {
       if (!res.ok) { setError(data.error || "Failed to send code"); return }
       if (data.dev && data.otp) {
         // Dev OTP received but never show on screen in any env
-        console.log('[DEV] OTP:', data.otp)
       }
       setFormData(p => ({ ...p, email: verifyEmail }))
       setStep("otp")
@@ -406,8 +405,8 @@ function SignupForm() {
                   <div><label style={labelS}>Grad Year</label><GlassInput placeholder="2024" value={formData.graduationYear} onChange={set("graduationYear")} required /></div>
                 </div>
                 <div>
-                  <label style={labelS}>College Code <span style={{ textTransform: "none", color: "rgba(255,255,255,0.3)", fontWeight: 400 }}>(optional)</span></label>
-                  <GlassInput placeholder="IITD, VIT, BITS…" value={formData.collegeCode} onChange={v => set("collegeCode")(v.toUpperCase())} />
+                  <label style={labelS}>College Code</label>
+                  <GlassInput placeholder="IITD, VIT, BITS…" value={formData.collegeCode} onChange={v => set("collegeCode")(v.toUpperCase())} required />
                 </div>
               </>}
 

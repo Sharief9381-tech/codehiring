@@ -74,7 +74,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
         }
         const failed = data.summary?.failed ?? 0
         toast[failed > 0 ? "warning" : "success"](
-          failed > 0 ? `Synced â€” ${failed} platform(s) unavailable` : `All ${data.summary?.successful ?? 0} platforms synced`
+          failed > 0 ? `Synced €” ${failed} platform(s) unavailable` : `All ${data.summary?.successful ?? 0} platforms synced`
         )
         // Invalidate server cache so dashboard picks up fresh stats
         router.refresh()
@@ -186,7 +186,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                   <p className="text-sm font-semibold text-gray-200">Profile Verified</p>
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed px-1">
                     {platformId === 'interviewbit'
-                      ? 'InterviewBit stats require login â€” all their data APIs are auth-only. Your profile is linked and counts toward your score.'
+                      ? 'InterviewBit stats require login €” all their data APIs are auth-only. Your profile is linked and counts toward your score.'
                       : 'Stats are loaded client-side and not publicly accessible. Your profile is linked.'}
                   </p>
                 </div>
@@ -339,7 +339,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       <div className="w-1/12" />
                     </div></div>
                     {stats._apiLimited && (
-                      <p className="text-[10px] text-amber-400/70 text-center">âš  Stats from page meta Â· HackerEarth API is private</p>
+                      <p className="text-[10px] text-amber-400/70 text-center">š  Stats from page meta · HackerEarth API is private</p>
                     )}
                   </>
                 )}
@@ -405,7 +405,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       </div>
                     )}
                     {stats._apiLimited && (
-                      <p className="text-[10px] text-amber-400/70 text-center">âš  Stats via page scraping Â· InterviewBit API is private</p>
+                      <p className="text-[10px] text-amber-400/70 text-center">š  Stats via page scraping · InterviewBit API is private</p>
                     )}
                   </>
                 )}
@@ -426,7 +426,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
           </div>
         </CardContent>
 
-        {/* Footer bar â€” View Details | Verified | Delete */}
+        {/* Footer bar €” View Details | Verified | Delete */}
         <div className="absolute bottom-0 left-0 right-0 p-2 border-t border-gray-700 bg-gray-800/50">
           <div className="flex items-center justify-between">
             <a

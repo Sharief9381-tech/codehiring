@@ -4,14 +4,10 @@ import { Analytics, getVisitorInfo } from "@/lib/analytics"
 import type { UserRole } from "@/lib/types"
 
 export async function POST(request: Request) {
-  console.log("=== SIGNUP API CALLED ===")
-  
   try {
-    console.log("1. Checking database availability...")
     const dbAvailable = isDatabaseAvailable()
-    
+
     if (!dbAvailable) {
-      console.log("2. Database not available, redirecting to fallback...")
       // Forward the request to the fallback API
       const fallbackResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/signup-fallback`, {
         method: 'POST',
@@ -20,26 +16,20 @@ export async function POST(request: Request) {
         },
         body: JSON.stringify(await request.json()),
       })
-      
+
       const fallbackData = await fallbackResponse.json()
       return NextResponse.json(fallbackData, { status: fallbackResponse.status })
     }
 
-    console.log("2. Database available, using MongoDB...")
-    
     // Import database functions only when database is available
     const { createStudent, createCollege, createRecruiter, createSession, findUserByEmail } = await import("@/lib/auth")
     const { cookies } = await import("next/headers")
     const cookieStore = await cookies()
-    
-    console.log("3. Parsing request body...")
+
     const body = await request.json()
     const { email, password, name, role, ...additionalData } = body
 
-    console.log("4. Signup attempt:", { email, name, role, additionalData })
-
     if (!email || !password || !name || !role) {
-      console.log("5. Missing required fields")
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -48,27 +38,23 @@ export async function POST(request: Request) {
 
     const validRoles: UserRole[] = ["student", "college", "recruiter"]
     if (!validRoles.includes(role)) {
-      console.log("6. Invalid role:", role)
       return NextResponse.json(
         { error: "Invalid role" },
         { status: 400 }
       )
     }
 
-    console.log("7. Checking if user exists...")
     // Check if user already exists
     try {
       const existingUser = await findUserByEmail(email)
       if (existingUser) {
-        console.log("8. User already exists")
         return NextResponse.json(
           { error: "User with this email already exists" },
           { status: 400 }
         )
       }
-      console.log("8. User doesn't exist, proceeding...")
     } catch (dbError) {
-      console.error("8. Database error checking user:", dbError)
+      console.error("Database error checking user:", dbError)
       return NextResponse.json(
         { error: "Database connection failed" },
         { status: 500 }
@@ -83,8 +69,6 @@ export async function POST(request: Request) {
     }
 
     let user: any
-
-    console.log("9. Creating user based on role:", role)
 
     try {
       if (role === "student") {
@@ -108,7 +92,6 @@ export async function POST(request: Request) {
           skills: [],
           isOpenToWork: true,
         }
-        console.log("9a. Creating student with data:", userData)
         user = await createStudent(userData as any)
 
         // Auto-register college if not already in the system
@@ -124,7 +107,6 @@ export async function POST(request: Request) {
               let resolvedLocation = ""
               let resolvedWebsite = null
               try {
-                // Search by the college code as a name query
                 const apiRes = await fetch(
                   `http://universities.hipolabs.com/search?name=${encodeURIComponent(collegeCode)}`,
                   { signal: AbortSignal.timeout(4000) }
@@ -132,7 +114,6 @@ export async function POST(request: Request) {
                 if (apiRes.ok) {
                   const results = await apiRes.json()
                   if (Array.isArray(results) && results.length > 0) {
-                    // Prefer Indian results first
                     const indian = results.find((r: any) => r.country === "India") ?? results[0]
                     resolvedName = indian.name ?? collegeCode
                     resolvedLocation = indian.country ?? ""
@@ -159,7 +140,6 @@ export async function POST(request: Request) {
                 createdAt: new Date(),
                 updatedAt: new Date(),
               })
-              console.log("Auto-created college entry for:", collegeCode, "→", resolvedName)
             } else {
               // Increment student count
               await db.collection("users").updateOne(
@@ -175,17 +155,16 @@ export async function POST(request: Request) {
         userData = {
           ...userData,
           role: "college",
-          name: additionalData.collegeName || name, // display name = college name
+          name: additionalData.collegeName || name,
           collegeName: additionalData.collegeName || name,
           collegeCode: additionalData.collegeCode || "",
           location: additionalData.location || "",
           website: additionalData.website || "",
-          placementOfficerName: name, // TPO name from the form's "Full Name" field
+          placementOfficerName: name,
           placementOfficerEmail: email,
           totalStudents: 0,
           departments: additionalData.departments || [],
         }
-        console.log("9b. Creating college with data:", userData)
         user = await createCollege(userData as any)
       } else if (role === "recruiter") {
         userData = {
@@ -199,23 +178,18 @@ export async function POST(request: Request) {
           hiringFor: additionalData.hiringFor || [],
           preferredSkills: additionalData.preferredSkills || [],
         }
-        console.log("9c. Creating recruiter with data:", userData)
         user = await createRecruiter(userData as any)
       }
-      
-      console.log("10. User created successfully:", { id: user._id, email: user.email, role: user.role })
     } catch (createError) {
-      console.error("10. Error creating user:", createError)
+      console.error("Error creating user:", createError)
       return NextResponse.json(
         { error: `Failed to create user: ${createError instanceof Error ? createError.message : 'Unknown error'}` },
         { status: 500 }
       )
     }
 
-    console.log("11. Creating session...")
     try {
       const token = await createSession(user._id as string, role)
-      console.log("12. Session created, setting cookie...")
 
       cookieStore.set("session_token", token, {
         httpOnly: true,
@@ -224,10 +198,8 @@ export async function POST(request: Request) {
         maxAge: 7 * 24 * 60 * 60,
         path: "/",
       })
-
-      console.log("13. Cookie set, preparing response...")
     } catch (sessionError) {
-      console.error("12. Error creating session:", sessionError)
+      console.error("Error creating session:", sessionError)
       return NextResponse.json(
         { error: `Failed to create session: ${sessionError instanceof Error ? sessionError.message : 'Unknown error'}` },
         { status: 500 }
@@ -238,7 +210,6 @@ export async function POST(request: Request) {
     const { password: _, ...userWithoutPassword } = user
 
     const redirectTo = `/${role}/dashboard`
-    console.log("14. Redirecting to:", redirectTo)
 
     // Seed welcome notification (non-blocking)
     import("@/lib/models/notification").then(({ NotificationModel }) => {
@@ -273,7 +244,7 @@ export async function POST(request: Request) {
       type: 'user_signup',
       userId: user._id?.toString(),
       userRole: role,
-      metadata: { 
+      metadata: {
         email: user.email,
         name: user.name,
         collegeCode: role === 'student' ? additionalData.collegeCode : undefined,
@@ -287,11 +258,10 @@ export async function POST(request: Request) {
       redirectTo,
     })
   } catch (error) {
-    console.error("=== SIGNUP ERROR ===", error)
+    console.error("Signup error:", error)
     const message = error instanceof Error ? error.message : "Failed to create account"
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: `Signup failed: ${message}`,
-      details: error instanceof Error ? error.stack : 'Unknown error'
     }, { status: 500 })
   }
 }

@@ -67,12 +67,45 @@ Categories: IT Services · Product/FAANG · Indian Startups · Consulting · BFS
 
 ---
 
-## First-Year Student Mode
+## First-Year Student Hub
 
-When a 1st-year student logs in (auto-detected from graduation year):
+When a 1st-year student logs in (auto-detected from graduation year), they get a dedicated gamified learning hub:
 
-- **Career Hub** — Hiring Drives tab hidden; shows Learning Paths, Skills to Build, Daily Practice with YouTube videos, notes/cheatsheets, and course links
-- **Prep Track** — Company assessments hidden; shows beginner learning resources (CS50, freeCodeCamp, Kaggle, etc.)
+### Progress & Gamification
+- **XP System** — earn XP by completing milestones, challenges, daily problems, and skill badges
+- **Levels** — Seedling → Explorer → Builder → Coder → Developer
+- **Streak Tracker** — daily streak counter with rewards
+- **Roadmap Milestones** — 8 progressive milestones shown as interactive cards (Start + Done buttons); completed ones are replaced by the next pending milestone automatically
+
+### Challenges Tab
+- **Project Challenges** — pool of 16 real-world projects (Beginner → Intermediate → Advanced); completing one replaces it with the next unseen project instantly (+20 XP each)
+- **Debug Challenges** — pool of 15 code debugging problems (Easy → Hard); same replacement behaviour — done card disappears, next one slides in with a "New!" highlight
+- **Skill Badge Tracks** — 12 tracks × 3 levels = 36 badges total, awarded automatically from real platform stats:
+  - Initial 4: Arrays, Algorithms, Strings, Git
+  - Tier 2 (unlock after completing initial): Trees, Dynamic Programming, Graphs, SQL
+  - Tier 3 (expert): Binary Search, Sorting, Recursion, Hashing
+  - Completed tracks are replaced by the next available track — always 4 active tracks shown
+  - Progress bars show live `current / required` from synced platform stats
+
+### Other Tabs
+- **Practice** → links to the full Prep Track (Aptitude, Coding/DSA, Communication)
+- **Soft Skills** — 4 bite-sized modules with video + mark-done
+- **Self-Check Quizzes** — Python, DSA, Git topic quizzes with explanations
+- **Community (Discussions)** — LeetCode-style discussion board: post, reply, upvote, tag filter (Question / Tip / Resource / Achievement / Help / General), sort by Latest / Top / Unanswered, paginated
+- **Leaderboard** — top 1st-year students ranked by XP
+
+---
+
+## Learn Pages (All Years)
+
+`/student/learn` is fully dynamic — content adapts to the student's academic year:
+
+| Year | Content |
+|---|---|
+| 1st Year | Full gamified hub (see above) |
+| 2nd Year | Trending skills (60+ cards), internship listings (14 companies), Smart Resume |
+| 3rd Year | Placement tools, company-wise DSA, mock interviews, aptitude prep |
+| 4th Year | AI-powered prep, skill gap finder, Smart Resume |
 
 ---
 
@@ -86,7 +119,7 @@ When a 1st-year student logs in (auto-detected from graduation year):
 | Database | MongoDB Atlas |
 | AI | Groq (`llama-3.3-70b-versatile`) |
 | Analytics | Vercel Analytics |
-| Email | Resend (optional) |
+| Email | Gmail SMTP via Nodemailer (GMAIL_USER + GMAIL_APP_PASSWORD) |
 | Resume Parsing | APILayer Resume Parser (optional, free tier) |
 
 ---
@@ -100,10 +133,14 @@ NEXTAUTH_SECRET=your_secret
 NEXTAUTH_URL=http://localhost:3000
 GROQ_API_KEY=gsk_...
 
+# Email (Gmail SMTP)
+GMAIL_USER=yourname@gmail.com
+GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
+
 # Optional — enhances resume analysis
 APILAYER_RESUME_KEY=...
 
-# Optional — email verification
+# Optional — Resend email (alternative to Gmail)
 RESEND_API_KEY=...
 ```
 
@@ -133,13 +170,13 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Admin Access
 
-1. Visit `http://localhost:3000/api/debug/create-admin` once to create the admin account
-2. Log in at `/login` with:
-   - Email: `sharief9381@gmail.com`
-   - Password: `12341234`
-3. Access admin panel at `/admin`
+Log in at `/login` with:
+- Email: `sharief9381@gmail.com`
+- Password: `12341234`
 
-Admin features: user management, blog management (AI auto-generates daily posts), analytics, feedback, drives.
+Access admin panel at `/admin`
+
+Admin features: user management, blog management (AI auto-generates daily posts), analytics, feedback, drives, site config (Discord URL, senior stories).
 
 ---
 
@@ -152,6 +189,25 @@ A Vercel cron job (`vercel.json`) calls `/api/cron/generate-blog` daily at 6 AM 
 ## Platforms Supported
 
 LeetCode · GitHub · Codeforces · CodeChef · HackerRank · GeeksforGeeks · AtCoder · HackerEarth · SPOJ · Kattis · TopCoder · InterviewBit · Kaggle · Exercism · and more
+
+---
+
+## MongoDB Collections
+
+| Collection | Purpose |
+|---|---|
+| `users` | All user profiles (students, colleges, recruiters, admin) |
+| `sessions` | Auth sessions |
+| `first_year_progress` | XP, streak, completed milestones, badges, challenges per 1st-year student |
+| `discussions` | Community discussion posts and replies |
+| `drives` | Hiring drives |
+| `assessments` | Assessment definitions |
+| `assessment_attempts` | Student assessment submissions |
+| `jobs` | Job postings |
+| `notifications` | User notifications |
+| `blogs` | Auto-generated blog posts |
+| `site_config` | Admin-editable site content (hero, testimonials, Discord URL, senior stories) |
+| `feedback` | User feedback submissions |
 
 ---
 

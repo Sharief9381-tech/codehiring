@@ -1,4 +1,4 @@
-export interface CSESStats {
+﻿export interface CSESStats {
   username: string
   problemsSolved: number
   totalProblems: number
@@ -14,7 +14,6 @@ export async function fetchCSESStats(username: string): Promise<CSESStats | null
 
     if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
 
-    console.log(`Fetching CSES stats for: ${u}`)
 
     const profileUrl = `https://cses.fi/user/${u}`
 

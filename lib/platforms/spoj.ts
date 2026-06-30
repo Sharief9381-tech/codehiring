@@ -1,4 +1,4 @@
-export interface SPOJStats {
+﻿export interface SPOJStats {
   username: string
   problemsSolved: number
   score: number
@@ -19,7 +19,6 @@ export async function fetchSPOJStats(username: string): Promise<SPOJStats | null
 
     if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
 
-    console.log(`Fetching SPOJ stats for: ${u}`)
 
     const profileUrl = `https://www.spoj.com/users/${u}/`
 

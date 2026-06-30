@@ -1,4 +1,4 @@
-export interface GenericPlatformStats {
+﻿export interface GenericPlatformStats {
   username: string
   platformName: string
   platformUrl: string
@@ -24,7 +24,6 @@ export async function fetchGenericPlatformStats(
   platformUrl?: string
 ): Promise<GenericPlatformStats | null> {
   try {
-    console.log(`Fetching generic stats for ${platformId} - ${username}`)
     
     // Clean the username
     const cleanUsername = username.trim()
@@ -48,7 +47,6 @@ export async function fetchGenericPlatformStats(
       _fetchMethod: 'mock_data'
     }
 
-    console.log(`Generic platform stats for ${platformId}:`, platformStats)
     return platformStats
 
   } catch (error) {
@@ -279,7 +277,6 @@ async function extractStatsFromHTML(html: string, platformId: string): Promise<a
     // Platform-specific extraction
     if (platformId.toLowerCase().includes('geek')) {
       // GeeksforGeeks specific patterns
-      console.log('Applying GeeksforGeeks-specific extraction patterns')
       
       const gfgPatterns = {
         score: [
@@ -312,7 +309,6 @@ async function extractStatsFromHTML(html: string, platformId: string): Promise<a
           const match = html.match(pattern)
           if (match) {
             const value = parseInt(match[1])
-            console.log(`Found ${key}: ${value}`)
             if (key === 'score') {
               stats.score = value
               stats.rating = value
@@ -339,13 +335,11 @@ async function extractStatsFromHTML(html: string, platformId: string): Promise<a
         const match = html.match(pattern)
         if (match) {
           stats.rank = parseInt(match[1])
-          console.log(`Found rank: ${stats.rank}`)
           break
         }
       }
     }
 
-    console.log(`Extracted stats for ${platformId}:`, stats)
     return stats
 
   } catch (error) {

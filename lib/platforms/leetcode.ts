@@ -1,4 +1,4 @@
-export interface LeetCodeStats {
+﻿export interface LeetCodeStats {
   username: string
   totalSolved: number
   easySolved: number
@@ -22,7 +22,6 @@ export async function fetchLeetCodeStats(username: string): Promise<LeetCodeStat
       cleanUsername = match[1]
     }
     
-    console.log(`Fetching real-time LeetCode stats for: ${cleanUsername}`)
     
     // Using the public LeetCode GraphQL API
     const query = `
@@ -74,7 +73,6 @@ export async function fetchLeetCodeStats(username: string): Promise<LeetCodeStat
     }
     
     if (!data.data?.matchedUser) {
-      console.log(`LeetCode user "${cleanUsername}" not found`)
       return null // Return null instead of fake data when profile doesn't exist
     }
 

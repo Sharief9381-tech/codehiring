@@ -7,7 +7,9 @@ import { Loader2, Eye, EyeOff } from "lucide-react"
 const inputStyle: React.CSSProperties = {
   width: "100%",
   background: "rgba(255,255,255,0.05)",
-  border: "1px solid rgba(255,255,255,0.10)",
+  borderWidth: "1px",
+  borderStyle: "solid",
+  borderColor: "rgba(255,255,255,0.10)",
   color: "#ffffff",
   borderRadius: 12,
   padding: "10px 16px",

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+﻿import { NextRequest, NextResponse } from "next/server"
 
 interface SearchResult {
   title: string
@@ -40,7 +40,6 @@ export async function POST(request: NextRequest) {
 
     if (!searchResponse.ok) {
       // Fallback to mock results if search API fails
-      console.log('Search API failed, using mock results')
       return getMockPlatforms(query)
     }
 
@@ -112,7 +111,6 @@ async function processPlatformResults(results: SearchResult[], query: string): P
         platforms.push(platform)
       }
     } catch (error) {
-      console.log('Error processing result:', error)
       continue
     }
   }

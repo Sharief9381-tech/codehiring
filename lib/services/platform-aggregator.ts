@@ -1,4 +1,4 @@
-import {
+﻿import {
   fetchLeetCodeStats,
   fetchGitHubStats,
   fetchCodeforcesStats,
@@ -63,13 +63,11 @@ const FETCHERS: Record<string, (username: string) => Promise<any>> = {
  */
 async function getStats(platformId: string, username: string, cachedStats: any): Promise<any> {
   if (cachedStats && Object.keys(cachedStats).length > 1) {
-    console.log(`Using cached stats for ${platformId}`)
     return cachedStats
   }
   const fetcher = FETCHERS[platformId.toLowerCase()]
   if (!fetcher) return null
   try {
-    console.log(`Fetching live stats for ${platformId}`)
     return await fetcher(username)
   } catch (e) {
     console.error(`Failed to fetch ${platformId}:`, e)

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/student/generate-assessment
  * Body: { company: string, section: string, count: number }
  * Generates real assessment questions via Groq for a specific company pattern.
@@ -123,7 +123,6 @@ export async function POST(req: Request) {
       if (scrapeRes.ok) {
         const scrapeData = await scrapeRes.json()
         if (scrapeData.questions?.length >= count) {
-          console.log(`✓ Scraped ${scrapeData.questions.length} real questions from ${scrapeData.source}`)
           return NextResponse.json({
             questions: scrapeData.questions,
             company: pattern.name,
@@ -133,11 +132,9 @@ export async function POST(req: Request) {
         }
         // Partial scrape — use what we got and generate the rest
         if (scrapeData.questions?.length > 0) {
-          console.log(`Partial scrape: ${scrapeData.questions.length} questions, generating ${count - scrapeData.questions.length} more`)
         }
       }
     } catch (scrapeErr) {
-      console.log("Scraping unavailable, using Groq generation:", scrapeErr)
     }
 
     // ── Step 2: Groq generation with PYQ context ──────────────────────────────
@@ -226,7 +223,6 @@ Return ONLY valid JSON array (no markdown, no explanation):
 
     const data = await res.json()
     const raw = data.choices?.[0]?.message?.content?.trim() ?? ""
-    console.log("Groq raw response (first 200 chars):", raw.slice(0, 200))
     const json = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
 
     try {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/drives/[id]/interview — Step 10: Schedule interview for a candidate
  * GET  — list all interviews for a drive
  * PATCH — update interview result/feedback
@@ -72,7 +72,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
     // Send notification (non-blocking)
     if (studentEmail) {
-      console.log(`Interview scheduled: ${studentEmail} @ ${scheduledAt}`)
     }
 
     return NextResponse.json({ success: true, interviewId: res.insertedId.toString() }, { status: 201 })

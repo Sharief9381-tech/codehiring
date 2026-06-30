@@ -1,4 +1,4 @@
-export interface GitHubStats {
+﻿export interface GitHubStats {
   username: string
   name: string
   bio: string
@@ -39,7 +39,6 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
       cleanUsername = match[1]
     }
     
-    console.log(`Fetching real-time GitHub stats for: ${cleanUsername}`)
     
     // Fetch basic user info with better error handling
     const userResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
@@ -54,11 +53,9 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
 
     if (!userResponse.ok) {
       if (userResponse.status === 404) {
-        console.log(`GitHub user "${cleanUsername}" not found`)
         return null
       } else if (userResponse.status === 403 || userResponse.status === 429) {
         // Rate limited — try with a different User-Agent
-        console.log("GitHub API rate limited, retrying with alternate headers")
         const retryResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
           headers: {
             Accept: "application/vnd.github.v3+json",
@@ -84,7 +81,6 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
         console.error("GitHub rate limit hit and retry failed")
         return null
       } else if (userResponse.status === 401) {
-        console.log("GitHub API: Unauthorized - using fallback approach")
         const fallbackResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
           headers: {
             Accept: "application/vnd.github.v3+json",
@@ -139,10 +135,8 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
       if (reposResponse.ok) {
         reposData = await reposResponse.json()
       } else {
-        console.log("GitHub repos API error, skipping repositories")
       }
     } catch (error) {
-      console.log("Error fetching repositories, continuing without them")
     }
 
     // Calculate language statistics
@@ -197,7 +191,6 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
           }
         }
       } catch (error) {
-        console.log("GraphQL contributions fetch failed, using fallback")
       }
     }
 

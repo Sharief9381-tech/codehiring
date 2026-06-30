@@ -1,4 +1,4 @@
-import { UserModel } from '@/lib/models/user'
+﻿import { UserModel } from '@/lib/models/user'
 import { aggregateStudentStats } from '@/lib/services/stats-aggregator'
 import { detectNewAchievements } from '@/lib/services/achievements'
 import { fetchLeetCodeStats } from '@/lib/platforms/leetcode'
@@ -141,31 +141,23 @@ export class PlatformSyncService {
       try {
         let stats = null
         
-        console.log(`\n=== SYNCING PLATFORM: ${platformId} ===`)
-        console.log('Platform data:', pd)
-        console.log('Username:', pd.username)
         
         // Check if it's a predefined platform (including GeeksforGeeks)
         const platformKey = platformId.toLowerCase()
         const isGeeksforGeeks = platformKey === 'geeksforgeeks' || platformKey.includes('geek')
         
         if (predefinedPlatforms[platformKey as keyof typeof predefinedPlatforms] || isGeeksforGeeks) {
-          console.log(`Using predefined fetcher for: ${platformId}`)
           let fetchFunction
           
           if (isGeeksforGeeks) {
             fetchFunction = predefinedPlatforms['geeksforgeeks']
-            console.log('Forcing GeeksforGeeks to use specific fetcher')
           } else {
             fetchFunction = predefinedPlatforms[platformKey as keyof typeof predefinedPlatforms]
           }
           
           stats = await fetchFunction(pd.username)
-          console.log(`Predefined platform ${platformId} stats:`, stats)
         } else {
-          console.log(`Syncing custom platform: ${platformId}`)
           stats = await fetchGenericPlatformStats(platformId, pd.username, pd.platformUrl)
-          console.log(`Custom platform ${platformId} stats:`, stats)
         }
 
         if (stats) {
@@ -198,9 +190,7 @@ export class PlatformSyncService {
           }
 
           results.push({ platform: platformId, success: true, data: stats })
-          console.log(`✅ Successfully synced ${platformId} with real stats`)
         } else {
-          console.log(`❌ Failed to fetch real stats for ${platformId}`)
 
           await UserModel.update(userId, {
             [`linkedPlatforms.${platformId}.lastSync`]: new Date(),
@@ -222,7 +212,6 @@ export class PlatformSyncService {
     // ── Aggregate all platform stats into user.stats ──────────────────────
     try {
       await aggregateStudentStats(userId)
-      console.log(`✅ Aggregated stats for user ${userId}`)
     } catch (aggError) {
       console.error('Failed to aggregate stats:', aggError)
     }

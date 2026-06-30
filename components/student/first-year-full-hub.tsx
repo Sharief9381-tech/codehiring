@@ -42,26 +42,497 @@ const SOFT_SKILLS = [
   },
 ]
 
-const MENTORSHIP_STORIES = [
-  {
-    name: "Priya S.", year: "Now at Google (SWE)",
-    story: "I started in 1st year not knowing what a variable was. CS50 on YouTube changed everything. By 3rd year I had 3 internships. Start early, stay consistent.",
-    tip: "Do CS50. Seriously. Just do it.",
-    avatar: "PS",
-  },
-  {
-    name: "Rahul M.", year: "Now at Swiggy (SDE-2)",
-    story: "Failed my first coding interview badly in 2nd year. Instead of quitting, I started solving 1 LeetCode Easy per day. 200 days later I was getting calls from product companies.",
-    tip: "1 problem per day beats 10 in one day.",
-    avatar: "RM",
-  },
-  {
-    name: "Anjali K.", year: "Placed at Infosys, now upskilling",
-    story: "I focused on Python and web dev in first year instead of competitive programming. Built 2 projects that I showed in every interview. Projects > grades for placements.",
-    tip: "Build something. Anything. Then build something better.",
-    avatar: "AK",
-  },
-]
+interface SeniorStory {
+  name: string
+  year: string
+  story: string
+  tip: string
+  avatar: string
+}
+
+// ── Tag config ────────────────────────────────────────────────────────────────
+const TAG_COLORS: Record<string, string> = {
+  Question:    "bg-blue-500/15 text-blue-400 border-blue-500/20",
+  Tip:         "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
+  Resource:    "bg-amber-500/15 text-amber-500 border-amber-500/20",
+  Achievement: "bg-violet-500/15 text-violet-400 border-violet-500/20",
+  Help:        "bg-rose-500/15 text-rose-400 border-rose-500/20",
+  General:     "bg-secondary text-muted-foreground border-border",
+}
+
+const ALL_TAGS = ["All", "Question", "Tip", "Resource", "Achievement", "Help", "General"] as const
+
+// ── Types ──────────────────────────────────────────────────────────────────────
+interface DiscussionPost {
+  _id: string
+  authorId: string
+  authorName: string
+  authorAvatar: string
+  title: string
+  content: string
+  tag: string
+  upvoteCount: number
+  upvoted: boolean
+  views: number
+  replyCount: number
+  pinned: boolean
+  createdAt: string
+}
+
+interface DiscussionReply {
+  _id: string
+  authorId: string
+  authorName: string
+  authorAvatar: string
+  content: string
+  upvoteCount: number
+  upvoted: boolean
+  createdAt: string
+}
+
+interface DiscussionDetail extends DiscussionPost {
+  replies: DiscussionReply[]
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const mins  = Math.floor(diff / 60000)
+  if (mins < 1)  return "just now"
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24)  return `${hrs}h ago`
+  const days = Math.floor(hrs / 24)
+  if (days < 30) return `${days}d ago`
+  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+}
+
+// ── Thread view ────────────────────────────────────────────────────────────────
+function ThreadView({
+  post,
+  currentUserId,
+  onBack,
+  onPostUpdate,
+}: {
+  post: DiscussionDetail
+  currentUserId: string
+  onBack: () => void
+  onPostUpdate: (updated: DiscussionDetail) => void
+}) {
+  const [replyText, setReplyText]   = useState("")
+  const [submitting, setSubmitting] = useState(false)
+  const [localPost, setLocalPost]   = useState<DiscussionDetail>(post)
+
+  const upvotePost = async () => {
+    const res  = await fetch(`/api/student/discussions/${localPost._id}?action=upvote`, { method: "POST" })
+    const data = await res.json()
+    const updated = { ...localPost, upvoteCount: data.upvotes, upvoted: data.upvoted }
+    setLocalPost(updated)
+    onPostUpdate(updated)
+  }
+
+  const upvoteReply = async (replyId: string) => {
+    const res  = await fetch(`/api/student/discussions/${localPost._id}?action=upvote-reply&replyId=${replyId}`, { method: "POST" })
+    const data = await res.json()
+    setLocalPost(p => ({
+      ...p,
+      replies: p.replies.map(r => r._id === replyId ? { ...r, upvoteCount: data.upvotes, upvoted: data.upvoted } : r),
+    }))
+  }
+
+  const submitReply = async () => {
+    if (!replyText.trim()) return
+    setSubmitting(true)
+    try {
+      const res  = await fetch(`/api/student/discussions/${localPost._id}?action=reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: replyText.trim() }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        const updated = { ...localPost, replies: [...localPost.replies, data.reply], replyCount: localPost.replyCount + 1 }
+        setLocalPost(updated)
+        onPostUpdate(updated)
+        setReplyText("")
+      }
+    } finally { setSubmitting(false) }
+  }
+
+  const deleteReply = async (replyId: string) => {
+    await fetch(`/api/student/discussions/${localPost._id}?replyId=${replyId}`, { method: "DELETE" })
+    const updated = {
+      ...localPost,
+      replies: localPost.replies.filter(r => r._id !== replyId),
+      replyCount: localPost.replyCount - 1,
+    }
+    setLocalPost(updated)
+    onPostUpdate(updated)
+  }
+
+  const deletePost = async () => {
+    await fetch(`/api/student/discussions/${localPost._id}`, { method: "DELETE" })
+    onBack()
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Back */}
+      <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <ChevronRight className="h-4 w-4 rotate-180" /> Back to Discussions
+      </button>
+
+      {/* Post */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
+        <div className="flex items-start gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-black">
+            {localPost.authorAvatar}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <p className="text-sm font-semibold text-foreground">{localPost.authorName}</p>
+              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${TAG_COLORS[localPost.tag] ?? TAG_COLORS.General}`}>
+                {localPost.tag}
+              </span>
+              {localPost.pinned && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-500/15 text-amber-400 border-amber-500/20">📌 Pinned</span>}
+              <span className="text-[10px] text-muted-foreground ml-auto">{timeAgo(localPost.createdAt)}</span>
+            </div>
+            <h2 className="text-base font-bold text-foreground mt-1">{localPost.title}</h2>
+          </div>
+        </div>
+        <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{localPost.content}</p>
+        <div className="flex items-center gap-3 pt-2 border-t border-border">
+          <button onClick={upvotePost}
+            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${
+              localPost.upvoted
+                ? "bg-primary/15 text-primary border-primary/30"
+                : "bg-transparent text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
+            }`}>
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill={localPost.upvoted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+              <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+            </svg>
+            {localPost.upvoteCount}
+          </button>
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <MessageCircle className="h-3.5 w-3.5" />{localPost.replies.length} replies
+          </span>
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            {localPost.views}
+          </span>
+          {localPost.authorId === currentUserId && (
+            <button onClick={deletePost}
+              className="ml-auto flex items-center gap-1 text-[10px] text-red-500 hover:underline">
+              Delete
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Replies */}
+      {localPost.replies.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-xs font-semibold text-muted-foreground">{localPost.replies.length} {localPost.replies.length === 1 ? "Reply" : "Replies"}</p>
+          {localPost.replies.map(reply => (
+            <div key={reply._id} className="rounded-xl border border-border bg-card/60 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-foreground text-[10px] font-black">
+                  {reply.authorAvatar}
+                </div>
+                <p className="text-xs font-semibold text-foreground">{reply.authorName}</p>
+                <span className="text-[10px] text-muted-foreground ml-auto">{timeAgo(reply.createdAt)}</span>
+              </div>
+              <p className="text-xs text-foreground/90 leading-relaxed whitespace-pre-wrap pl-9">{reply.content}</p>
+              <div className="flex items-center gap-2 pl-9">
+                <button onClick={() => upvoteReply(reply._id)}
+                  className={`flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-lg border transition-all ${
+                    reply.upvoted
+                      ? "bg-primary/15 text-primary border-primary/30"
+                      : "bg-transparent text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
+                  }`}>
+                  <svg viewBox="0 0 24 24" className="h-3 w-3" fill={reply.upvoted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+                    <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                  </svg>
+                  {reply.upvoteCount}
+                </button>
+                {reply.authorId === currentUserId && (
+                  <button onClick={() => deleteReply(reply._id)}
+                    className="text-[10px] text-red-500 hover:underline ml-auto">
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Reply box */}
+      <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+        <p className="text-xs font-semibold text-foreground">Add a Reply</p>
+        <textarea
+          value={replyText}
+          onChange={e => setReplyText(e.target.value)}
+          placeholder="Share your thoughts, tips, or resources..."
+          rows={3}
+          className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
+        />
+        <div className="flex justify-end">
+          <button
+            onClick={submitReply}
+            disabled={submitting || !replyText.trim()}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white disabled:opacity-40 transition-all"
+            style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+            {submitting ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <ArrowRight className="h-3.5 w-3.5" />}
+            {submitting ? "Posting..." : "Post Reply"}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Community Discussions ──────────────────────────────────────────────────────
+function CommunityDiscussions({ student }: { student: any }) {
+  const [posts, setPosts]           = useState<DiscussionPost[]>([])
+  const [loading, setLoading]       = useState(true)
+  const [activeTag, setActiveTag]   = useState<string>("All")
+  const [sort, setSort]             = useState<"latest" | "top" | "unanswered">("latest")
+  const [page, setPage]             = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [total, setTotal]           = useState(0)
+
+  // new post form
+  const [showForm, setShowForm]     = useState(false)
+  const [newTitle, setNewTitle]     = useState("")
+  const [newContent, setNewContent] = useState("")
+  const [newTag, setNewTag]         = useState<string>("General")
+  const [posting, setPosting]       = useState(false)
+
+  // thread view
+  const [openPost, setOpenPost]     = useState<DiscussionDetail | null>(null)
+  const [threadLoading, setThreadLoading] = useState(false)
+
+  const currentUserId = student?._id?.toString() ?? ""
+
+  const fetchPosts = async (tag = activeTag, s = sort, p = page) => {
+    setLoading(true)
+    try {
+      const res  = await fetch(`/api/student/discussions?tag=${tag}&sort=${s}&page=${p}`)
+      const data = await res.json()
+      setPosts(data.posts ?? [])
+      setTotalPages(data.pages ?? 1)
+      setTotal(data.total ?? 0)
+    } finally { setLoading(false) }
+  }
+
+  useEffect(() => { fetchPosts() }, [activeTag, sort, page])
+
+  const openThread = async (postId: string) => {
+    setThreadLoading(true)
+    try {
+      const res  = await fetch(`/api/student/discussions/${postId}`)
+      const data = await res.json()
+      if (data.post) setOpenPost(data.post)
+    } finally { setThreadLoading(false) }
+  }
+
+  const submitPost = async () => {
+    if (!newTitle.trim() || !newContent.trim()) return
+    setPosting(true)
+    try {
+      const res  = await fetch("/api/student/discussions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: newTitle.trim(), content: newContent.trim(), tag: newTag }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setShowForm(false)
+        setNewTitle(""); setNewContent(""); setNewTag("General")
+        setPage(1); setActiveTag("All"); setSort("latest")
+        await fetchPosts("All", "latest", 1)
+      }
+    } finally { setPosting(false) }
+  }
+
+  // Thread view
+  if (openPost) {
+    return (
+      <ThreadView
+        post={openPost}
+        currentUserId={currentUserId}
+        onBack={() => { setOpenPost(null); fetchPosts() }}
+        onPostUpdate={updated => setOpenPost(updated)}
+      />
+    )
+  }
+
+  if (threadLoading) {
+    return (
+      <div className="flex items-center justify-center py-16 gap-2 text-muted-foreground text-sm">
+        <RefreshCw className="h-4 w-4 animate-spin" /> Loading...
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <MessageCircle className="h-5 w-5 text-primary" /> Discussions
+          </h2>
+          <p className="text-xs text-muted-foreground mt-0.5">Ask questions, share tips, celebrate wins — {total} posts</p>
+        </div>
+        <button
+          onClick={() => setShowForm(v => !v)}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white"
+          style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+          {showForm ? "Cancel" : <><Users className="h-4 w-4" /> New Post</>}
+        </button>
+      </div>
+
+      {/* New Post Form */}
+      {showForm && (
+        <div className="rounded-2xl border border-primary/30 bg-card p-5 space-y-4">
+          <p className="text-sm font-bold text-foreground">Create a Post</p>
+          <input
+            value={newTitle}
+            onChange={e => setNewTitle(e.target.value)}
+            placeholder="Title — what's this about?"
+            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
+          />
+          <textarea
+            value={newContent}
+            onChange={e => setNewContent(e.target.value)}
+            placeholder="Write your post... be specific, share context, include links if helpful."
+            rows={5}
+            className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
+          />
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex gap-1.5 flex-wrap">
+              {ALL_TAGS.slice(1).map(tag => (
+                <button key={tag} onClick={() => setNewTag(tag)}
+                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all ${
+                    newTag === tag ? TAG_COLORS[tag] : "bg-transparent text-muted-foreground border-border hover:border-primary/30"
+                  }`}>
+                  {tag}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={submitPost}
+              disabled={posting || !newTitle.trim() || !newContent.trim()}
+              className="ml-auto flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white disabled:opacity-40 transition-all"
+              style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+              {posting ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <ArrowRight className="h-3.5 w-3.5" />}
+              {posting ? "Posting..." : "Post"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Filters */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {/* Tag filter */}
+        <div className="flex gap-1 flex-wrap">
+          {ALL_TAGS.map(tag => (
+            <button key={tag} onClick={() => { setActiveTag(tag); setPage(1) }}
+              className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all ${
+                activeTag === tag
+                  ? tag === "All" ? "bg-primary/20 text-primary border-primary/30" : TAG_COLORS[tag]
+                  : "bg-transparent text-muted-foreground border-border hover:border-primary/30"
+              }`}>
+              {tag}
+            </button>
+          ))}
+        </div>
+        {/* Sort */}
+        <div className="ml-auto flex gap-1">
+          {(["latest", "top", "unanswered"] as const).map(s => (
+            <button key={s} onClick={() => { setSort(s); setPage(1) }}
+              className={`text-[11px] px-2.5 py-1 rounded-full border font-medium capitalize transition-all ${
+                sort === s ? "bg-primary/15 text-primary border-primary/30" : "text-muted-foreground border-border hover:text-foreground"
+              }`}>
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Post list */}
+      {loading ? (
+        <div className="flex justify-center py-12"><RefreshCw className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+      ) : posts.length === 0 ? (
+        <div className="text-center py-16 rounded-2xl border border-dashed border-border">
+          <MessageCircle className="h-10 w-10 mx-auto text-muted-foreground/30 mb-3" />
+          <p className="text-sm font-semibold text-muted-foreground">No posts yet</p>
+          <p className="text-xs text-muted-foreground mt-1 opacity-70">Be the first to start a discussion!</p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {posts.map(post => (
+            <button key={post._id} onClick={() => openThread(post._id)}
+              className="w-full text-left rounded-xl border border-border bg-card/60 hover:border-primary/30 hover:bg-card transition-all p-4 group">
+              <div className="flex items-start gap-3">
+                {/* Avatar */}
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-[10px] font-black mt-0.5">
+                  {post.authorAvatar}
+                </div>
+                <div className="flex-1 min-w-0 space-y-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {post.pinned && <span className="text-[10px] text-amber-400">📌</span>}
+                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${TAG_COLORS[post.tag] ?? TAG_COLORS.General}`}>
+                      {post.tag}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">{post.authorName}</span>
+                    <span className="text-[10px] text-muted-foreground ml-auto">{timeAgo(post.createdAt)}</span>
+                  </div>
+                  <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors truncate">{post.title}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{post.content}</p>
+                  <div className="flex items-center gap-3 pt-1">
+                    <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                      <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+                      </svg>
+                      {post.upvoteCount}
+                    </span>
+                    <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                      <MessageCircle className="h-3 w-3" />{post.replyCount}
+                    </span>
+                    <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                      <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      {post.views}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 pt-2">
+          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
+            className="px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground disabled:opacity-40 transition-all">
+            ← Prev
+          </button>
+          <span className="text-xs text-muted-foreground">Page {page} of {totalPages}</span>
+          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
+            className="px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground disabled:opacity-40 transition-all">
+            Next →
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
 
 const RECOMMENDED_BOOKS = [
   { title: "The Pragmatic Programmer", author: "Hunt & Thomas", why: "Timeless advice on becoming a better developer. Read chapter by chapter.", url: "https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/", tag: "Must Read" },
@@ -244,6 +715,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
   const [completedMilestones, setCompletedMilestones] = useState<string[]>([])
+  const [completedBadges, setCompletedBadges] = useState<string[]>([])
   const [completing, setCompleting] = useState<string | null>(null)
   const [dailyDone, setDailyDone] = useState(false)
   const [xpPop, setXpPop] = useState<string | null>(null)
@@ -282,8 +754,14 @@ export function FirstYearFullHub({ student }: { student: any }) {
     { title: "Find Duplicate Number",      desc: "Find the one duplicate number in an array containing n+1 integers in range [1,n].", input: "[1,3,4,2,2]", output: "2", explain: "Use a Set: first number seen twice is the answer.", url: "https://leetcode.com/problems/find-the-duplicate-number/" },
     { title: "Celsius to Fahrenheit",      desc: "Convert a temperature from Celsius to Fahrenheit.", input: "100", output: "212", explain: "Formula: F = C × 9/5 + 32.", url: "https://leetcode.com/problems/convert-the-temperature/" },
   ]
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000)
-  const todayProblem = DAILY_PROBLEMS[dayOfYear % DAILY_PROBLEMS.length]
+
+  // Compute once on mount so the problem never changes mid-session / between tab switches
+  const [todayProblem] = useState(() => {
+    const now = new Date()
+    const startOfYear = new Date(now.getFullYear(), 0, 0)
+    const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / 86400000)
+    return DAILY_PROBLEMS[dayOfYear % DAILY_PROBLEMS.length]
+  })
 
   const ROADMAP_STEPS = [
     { id: "py-basics",    title: "Learn Programming Basics",  color: "#3b82f6", xp: 50  },
@@ -305,6 +783,29 @@ export function FirstYearFullHub({ student }: { student: any }) {
           setStreak(d.progress.streak ?? 0)
           setCompletedMilestones(d.progress.completed ?? [])
           setMonthlySolved(d.progress.monthlyChallengesSolved ?? 0)
+        }
+        if (d.completedBadges) setCompletedBadges(d.completedBadges)
+        if (d.badgeProgress)   setBadgeProgress(d.badgeProgress)
+        if (d.completedChallenges) setCompletedChallenges(d.completedChallenges)
+        // Toast for any badges auto-awarded this session
+        if (d.newlyAwarded?.length) {
+          d.newlyAwarded.forEach((id: string, i: number) => {
+            const titles: Record<string, string> = {
+              "badge-array-1":"Array Starter","badge-array-2":"Array Pro","badge-array-3":"Array Master",
+              "badge-algo-1":"Loop Learner","badge-algo-2":"Loop Master","badge-algo-3":"Algorithm Ace",
+              "badge-str-1":"String Starter","badge-str-2":"String Wizard","badge-str-3":"String Legend",
+              "badge-git-1":"Git Starter","badge-git-2":"Git Committer","badge-git-3":"Open Source Hero",
+              "badge-tree-1":"Tree Sprout","badge-tree-2":"Tree Climber","badge-tree-3":"Tree Expert",
+              "badge-dp-1":"DP Initiate","badge-dp-2":"DP Practitioner","badge-dp-3":"DP Master",
+              "badge-graph-1":"Graph Walker","badge-graph-2":"Graph Traverser","badge-graph-3":"Graph Master",
+              "badge-sql-1":"SQL Beginner","badge-sql-2":"SQL Writer","badge-sql-3":"SQL Expert",
+              "badge-bin-1":"Binary Initiate","badge-bin-2":"Binary Searcher","badge-bin-3":"Binary Expert",
+              "badge-sort-1":"Sort Learner","badge-sort-2":"Sort Pro","badge-sort-3":"Sort Master",
+              "badge-rec-1":"Recursion Starter","badge-rec-2":"Recursion Pro","badge-rec-3":"Recursion Master",
+              "badge-hash-1":"Hash Beginner","badge-hash-2":"Hash Builder","badge-hash-3":"Hash Master",
+            }
+            setTimeout(() => showXpPop(`🏆 ${titles[id] ?? id} badge earned!`), i * 2800)
+          })
         }
       })
   }, [])
@@ -334,6 +835,77 @@ export function FirstYearFullHub({ student }: { student: any }) {
         showXpPop(`+${data.xpGained} XP`)
       }
     } finally { setCompleting(null) }
+  }
+
+  const [badgeProgress, setBadgeProgress] = useState<Record<string, { current: number; required: number }>>({})
+  const [completedChallenges, setCompletedChallenges] = useState<string[]>([])
+  const [completingChallenge, setCompletingChallenge] = useState<string | null>(null)
+  const [newChallenge, setNewChallenge] = useState<string | null>(null)
+
+  // Flat project pool (beginner → advanced, 16 total)
+  const PROJECT_POOL = [
+    { id:"p1-calc",      title:"Build a Calculator",       desc:"Handles +, -, ×, ÷ with keyboard input.",                    badge:"Beginner",     color:"#3b82f6", url:"https://leetcode.com/problems/basic-calculator/" },
+    { id:"p1-attend",    title:"Attendance Tracker",       desc:"Flags students below 75% attendance.",                       badge:"Beginner",     color:"#10b981", url:"https://leetcode.com/problems/design-parking-system/" },
+    { id:"p1-portfolio", title:"Personal Portfolio Page",  desc:"Your name, skills, and a project section.",                  badge:"Beginner",     color:"#ec4899", url:"https://www.frontendmentor.io/challenges/personal-portfolio-webpage-449TFEOrBO" },
+    { id:"p1-todo",      title:"Basic To-Do App",          desc:"Add, complete, and delete tasks.",                           badge:"Beginner",     color:"#f97316", url:"https://leetcode.com/problems/design-hashmap/" },
+    { id:"p1-weather",   title:"Weather Fetcher",          desc:"Use an API to display temperature for any city.",            badge:"Beginner",     color:"#f59e0b", url:"https://open-meteo.com/en/docs" },
+    { id:"p1-chatbot",   title:"Simple Rule-based Chatbot",desc:"Replies to greetings, questions, and goodbyes.",             badge:"Beginner",     color:"#8b5cf6", url:"https://leetcode.com/problems/design-hashmap/" },
+    { id:"p2-quiz",      title:"Quiz App",                 desc:"Multi-question quiz with score tracking and timer.",         badge:"Intermediate", color:"#3b82f6", url:"https://www.frontendmentor.io/challenges/quiz-app-suIoV2SOt" },
+    { id:"p2-expense",   title:"Expense Tracker",          desc:"Track income/expenses with category breakdown charts.",      badge:"Intermediate", color:"#10b981", url:"https://www.frontendmentor.io/challenges/personal-finance-app-JfjtZgyMt1" },
+    { id:"p2-markdown",  title:"Markdown Previewer",       desc:"Real-time markdown editor with live HTML preview.",          badge:"Intermediate", color:"#8b5cf6", url:"https://www.frontendmentor.io/challenges/markdown-previewer-QJD0MBNft" },
+    { id:"p2-github",    title:"GitHub Profile Viewer",    desc:"Search any GitHub user and display their repos and stats.",  badge:"Intermediate", color:"#f59e0b", url:"https://www.frontendmentor.io/challenges/github-user-search-app-Q09YOgaH6" },
+    { id:"p2-pomodoro",  title:"Pomodoro Timer",           desc:"25/5 work-break cycle with settings and sound.",             badge:"Intermediate", color:"#ef4444", url:"https://www.frontendmentor.io/challenges/pomodoro-app-KBFnycJ6G" },
+    { id:"p2-blog",      title:"Blog with CMS",            desc:"Simple blog with CRUD posts stored in localStorage.",       badge:"Intermediate", color:"#f97316", url:"https://www.frontendmentor.io/challenges/blogr-landing-page-1HHp6YjAzq" },
+    { id:"p3-chat",      title:"Real-time Chat App",       desc:"WebSocket-based chat with rooms and online presence.",       badge:"Advanced",     color:"#8b5cf6", url:"https://socket.io/get-started/chat" },
+    { id:"p3-ecommerce", title:"E-Commerce Store",         desc:"Product listings, cart, checkout, and order history.",       badge:"Advanced",     color:"#3b82f6", url:"https://www.frontendmentor.io/challenges/ecommerce-product-page-UPsZ9MFp_" },
+    { id:"p3-dashboard", title:"Analytics Dashboard",      desc:"Charts, KPI cards, and date-filtered data from an API.",     badge:"Advanced",     color:"#10b981", url:"https://www.frontendmentor.io/challenges/entertainment-web-app-J-UhgAW1X" },
+    { id:"p3-auth",      title:"Auth System",              desc:"JWT login/signup with protected routes and refresh tokens.", badge:"Advanced",     color:"#f59e0b", url:"https://www.freecodecamp.org/news/how-to-implement-jwt-authentication/" },
+  ]
+
+  // Flat debug pool (easy → hard, 15 total for sustained replacement)
+  const DEBUG_POOL = [
+    { id:"d1-loop",    title:"Fix the Loop Bug",       desc:"Should print 1–10 but prints 0–9. Find the off-by-one error.",      badge:"Beginner",     color:"#ef4444", snippet:"for i in range(0,10):\n  print(i)",                          fix:"range(1,11)",                         url:"https://leetcode.com/problems/find-the-difference/" },
+    { id:"d1-predict", title:"Output Prediction",      desc:"What does this print? Think before you run.",                        badge:"Beginner",     color:"#f59e0b", snippet:'if 0:\n  print("A")\nelse:\n  print("B")',                   fix:'"B" — 0 is falsy',                    url:"https://leetcode.com/problems/find-the-difference/" },
+    { id:"d1-null",    title:"Null Pointer Trap",       desc:"This code crashes. Identify why and write the fix.",                badge:"Beginner",     color:"#8b5cf6", snippet:"arr = None\nprint(arr[0])",                                  fix:"Check arr is not None first",         url:"https://leetcode.com/problems/find-the-difference/" },
+    { id:"d2-recur",   title:"Infinite Recursion",     desc:"This function never stops. Add the missing base case.",              badge:"Intermediate", color:"#ef4444", snippet:"def factorial(n):\n  return n * factorial(n-1)",              fix:"if n == 0: return 1",                 url:"https://leetcode.com/problems/climbing-stairs/" },
+    { id:"d2-type",    title:"Type Error Crash",        desc:"Find why this code throws a TypeError at runtime.",                  badge:"Intermediate", color:"#f59e0b", snippet:'print("Age: " + 25)',                                       fix:"str(25) — can't concat str + int",    url:"https://leetcode.com/problems/find-the-difference/" },
+    { id:"d2-scope",   title:"Variable Scope Bug",      desc:"The function always prints 0. Explain and fix it.",                 badge:"Intermediate", color:"#8b5cf6", snippet:"x = 10\ndef show():\n  x = 0\n  print(x)\nshow()",           fix:"Use global x or pass x as param",     url:"https://leetcode.com/problems/find-the-difference/" },
+    { id:"d3-async",   title:"Race Condition",          desc:"Two async calls run in wrong order. Fix the sequencing.",           badge:"Advanced",     color:"#ef4444", snippet:"fetch(A).then(() => fetch(B))\nfetch(C)",                    fix:"Use Promise.all or await chain",      url:"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" },
+    { id:"d3-mem",     title:"Memory Leak",             desc:"Event listeners are added but never removed. Fix it.",               badge:"Advanced",     color:"#f59e0b", snippet:"btn.addEventListener('click', handler)",                     fix:"removeEventListener on cleanup",      url:"https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener" },
+    { id:"d3-sql",     title:"SQL Injection",           desc:"This query is vulnerable. Rewrite it safely.",                      badge:"Advanced",     color:"#8b5cf6", snippet:'f"SELECT * WHERE id={input}"',                              fix:"Use parameterized queries",           url:"https://owasp.org/www-community/attacks/SQL_Injection" },
+    { id:"d4-index",   title:"Off-by-One Index",        desc:"This crashes on the last element. Why?",                            badge:"Beginner",     color:"#3b82f6", snippet:"arr = [1,2,3]\nfor i in range(len(arr)+1):\n  print(arr[i])", fix:"range(len(arr)) not len(arr)+1",     url:"https://leetcode.com/problems/maximum-subarray/" },
+    { id:"d4-mutate",  title:"List Mutation Bug",       desc:"The original list is being modified. Prevent it.",                  badge:"Intermediate", color:"#10b981", snippet:"a = [1,2,3]\nb = a\nb.append(4)\nprint(a)",                 fix:"Use b = a.copy() or b = list(a)",    url:"https://leetcode.com/problems/copy-list-with-random-pointer/" },
+    { id:"d4-float",   title:"Float Precision Error",   desc:"Why is 0.1 + 0.2 not equal to 0.3?",                               badge:"Intermediate", color:"#f97316", snippet:"print(0.1 + 0.2 == 0.3)",                                   fix:"Use round() or decimal module",      url:"https://docs.python.org/3/library/decimal.html" },
+    { id:"d5-closure", title:"Closure in Loop Bug",     desc:"All buttons alert the same number. Why?",                          badge:"Advanced",     color:"#8b5cf6", snippet:"for i in range(3):\n  btn.onclick = lambda: print(i)",       fix:"Use default arg: lambda i=i: print(i)", url:"https://leetcode.com/problems/find-the-difference/" },
+    { id:"d5-mutable", title:"Mutable Default Arg",     desc:"Each call adds to the same list. This is a Python footgun.",       badge:"Advanced",     color:"#ec4899", snippet:"def add(x, lst=[]):\n  lst.append(x)\n  return lst",        fix:"Use lst=None and set inside",        url:"https://docs.python.org/3/faq/programming.html" },
+    { id:"d5-bigO",    title:"O(n²) Trap",              desc:"This nested loop is too slow for large inputs. Optimise it.",       badge:"Advanced",     color:"#f59e0b", snippet:"for i in arr:\n  for j in arr:\n    if i+j==target: ...",    fix:"Use a hash set for O(n) lookup",     url:"https://leetcode.com/problems/two-sum/" },
+  ]
+
+  const markChallengeDone = async (id: string) => {
+    if (completedChallenges.includes(id) || completingChallenge) return
+    setCompletingChallenge(id)
+    try {
+      const res  = await fetch("/api/student/first-year-progress", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "complete-challenge", challengeId: id }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        const updatedDone = [...completedChallenges, id]
+        setCompletedChallenges(updatedDone)
+        setXp(data.newTotal)
+        showXpPop("+20 XP")
+        // Find the replacement that will slide in
+        const isProject = PROJECT_POOL.some(c => c.id === id)
+        const pool = isProject ? PROJECT_POOL : DEBUG_POOL
+        const visibleBefore = pool.filter(c => !completedChallenges.includes(c.id)).slice(0, isProject ? 6 : 3)
+        const replacement = pool.find(c => !updatedDone.includes(c.id) && !visibleBefore.some(v => v.id === c.id && v.id !== id))
+        if (replacement) {
+          setNewChallenge(replacement.id)
+          setTimeout(() => setNewChallenge(null), 2000)
+        }
+      }
+    } finally { setCompletingChallenge(null) }
   }
 
   const doDailyChallenge = async () => {
@@ -734,134 +1306,321 @@ export function FirstYearFullHub({ student }: { student: any }) {
           {/* Hero banner */}
           <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-violet-500/5 to-transparent p-5">
             <p className="text-lg font-black text-foreground">Coding Challenges</p>
-            <p className="text-xs text-muted-foreground mt-1">Real-world problems · Story series · Streak rewards · Skill badges</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {completedChallenges.length} challenge{completedChallenges.length !== 1 ? "s" : ""} completed · +{completedChallenges.length * 20} XP
+            </p>
           </div>
 
-          {/* Real-world project challenges */}
-          <div className="space-y-3">
-            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-              <Zap className="h-3.5 w-3.5 text-violet-400" />Build Real Things — Project Challenges
-            </p>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                { title:"Build a Calculator",      desc:"Build a calculator that handles +, -, ×, ÷ operations with keyboard input.",         badge:"Beginner",     color:"#3b82f6", url:"https://leetcode.com/problems/basic-calculator/" },
-                { title:"Attendance Tracker",      desc:"Create a college attendance tracker that flags < 75% attendance.",                    badge:"Beginner",     color:"#10b981", url:"https://leetcode.com/problems/design-parking-system/" },
-                { title:"Simple Chatbot",          desc:"Build a rule-based chatbot that replies to greetings, questions and goodbyes.",       badge:"Intermediate", color:"#8b5cf6", url:"https://leetcode.com/problems/design-hashmap/" },
-                { title:"Weather Fetcher",         desc:"Use a free weather API to display temperature and conditions for any city.",          badge:"Intermediate", color:"#f59e0b", url:"https://open-meteo.com/en/docs" },
-                { title:"Personal Portfolio Page", desc:"Build a clean portfolio page with your name, skills, and a project section.",        badge:"Beginner",     color:"#ec4899", url:"https://www.frontendmentor.io/challenges/personal-portfolio-webpage-449TFEOrBO" },
-                { title:"Basic To-Do App",         desc:"Create a to-do app with add, complete, and delete functionality.",                   badge:"Beginner",     color:"#f97316", url:"https://leetcode.com/problems/design-hashmap/" },
-              ].map(c => {
-                const bColor = c.badge === "Beginner" ? "#10b981" : "#f59e0b"
-                return (
-                  <div key={c.title} className="rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-3 hover:border-primary/30 transition-all group">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{c.title}</p>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0" style={{ background:`${bColor}20`, color:bColor }}>{c.badge}</span>
+          {(() => {
+            // Flat pools — filter out completed, slice to visible window
+            const visibleProjects = PROJECT_POOL.filter(c => !completedChallenges.includes(c.id)).slice(0, 6)
+            const visibleDebug    = DEBUG_POOL.filter(c => !completedChallenges.includes(c.id)).slice(0, 3)
+
+            return (
+              <>
+                {/* Project challenges */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                      <Zap className="h-3.5 w-3.5 text-violet-400" />Project Challenges
+                    </p>
+                    <span className="text-[10px] text-muted-foreground">
+                      {PROJECT_POOL.length - PROJECT_POOL.filter(c => !completedChallenges.includes(c.id)).length} / {PROJECT_POOL.length} done
+                    </span>
+                  </div>
+                  {visibleProjects.length === 0 ? (
+                    <div className="text-center py-10 rounded-xl border border-dashed border-emerald-500/30">
+                      <CheckCircle2 className="h-8 w-8 mx-auto text-emerald-400 mb-2" />
+                      <p className="text-sm font-semibold text-emerald-400">All project challenges complete!</p>
                     </div>
-                    <p className="text-xs text-muted-foreground flex-1">{c.desc}</p>
-                    <a href={c.url} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold text-white transition-all"
-                      style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}>
-                      <ExternalLink className="h-3.5 w-3.5" /> Try Challenge
-                    </a>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Debugging challenges */}
-          <div className="space-y-3">
-            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-              <Code2 className="h-3.5 w-3.5 text-red-400" />Debug & Fix — Sharpen Your Eye
-            </p>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                { title:"Fix the Loop Bug",       desc:'This code should print 1–10 but prints 0–9. Find and fix the off-by-one error.', snippet:"for i in range(0,10):\n  print(i)", fix:"range(1,11)", color:"#ef4444" },
-                { title:"Output Prediction",      desc:'What does this print? Think before you run. "if 0: print(A) else: print(B)"',     snippet:'if 0:\n  print("A")\nelse:\n  print("B")', fix:'"B" — 0 is falsy', color:"#f59e0b" },
-                { title:"Null Pointer Trap",       desc:"This code crashes. Identify why and write the fix.",                              snippet:"arr = None\nprint(arr[0])", fix:"Check arr is not None first", color:"#8b5cf6" },
-              ].map(c => (
-                <div key={c.title} className="rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-3 hover:border-red-500/30 transition-all">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:`${c.color}20`, color:c.color }}>Debug</span>
-                    <p className="text-sm font-bold text-foreground">{c.title}</p>
-                  </div>
-                  <p className="text-xs text-muted-foreground">{c.desc}</p>
-                  <div className="rounded-lg bg-black/20 border border-border p-2 font-mono text-xs text-emerald-400 whitespace-pre">{c.snippet}</div>
-                  <details className="text-xs">
-                    <summary className="cursor-pointer text-primary font-semibold hover:underline">Reveal Answer</summary>
-                    <p className="mt-1 text-muted-foreground">{c.fix}</p>
-                  </details>
+                  ) : (
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {visibleProjects.map(c => {
+                        const bColor  = c.badge === "Beginner" ? "#10b981" : c.badge === "Intermediate" ? "#f59e0b" : "#ef4444"
+                        const loading = completingChallenge === c.id
+                        const isNew   = newChallenge === c.id
+                        return (
+                          <div key={c.id} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${isNew ? "border-primary/60 bg-primary/5" : "border-border bg-card/40 hover:border-primary/30"}`}>
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="text-sm font-bold text-foreground">{c.title}</p>
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                {isNew && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/20 text-primary animate-pulse">New!</span>}
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:`${bColor}20`, color:bColor }}>{c.badge}</span>
+                              </div>
+                            </div>
+                            <p className="text-xs text-muted-foreground flex-1">{c.desc}</p>
+                            <div className="flex gap-2">
+                              <a href={c.url} target="_blank" rel="noopener noreferrer"
+                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+                                style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}>
+                                <ExternalLink className="h-3 w-3" /> Try
+                              </a>
+                              <button onClick={() => markChallengeDone(c.id)} disabled={!!loading}
+                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all disabled:opacity-50">
+                                {loading ? <RefreshCw className="h-3 w-3 animate-spin" /> : <><CheckCircle2 className="h-3 w-3" /> Done</>}
+                              </button>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
+
+                {/* Debug challenges */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                      <Brain className="h-3.5 w-3.5 text-red-400" />Debug Challenges
+                    </p>
+                    <span className="text-[10px] text-muted-foreground">
+                      {DEBUG_POOL.length - DEBUG_POOL.filter(c => !completedChallenges.includes(c.id)).length} / {DEBUG_POOL.length} done
+                    </span>
+                  </div>
+                  {visibleDebug.length === 0 ? (
+                    <div className="text-center py-10 rounded-xl border border-dashed border-emerald-500/30">
+                      <CheckCircle2 className="h-8 w-8 mx-auto text-emerald-400 mb-2" />
+                      <p className="text-sm font-semibold text-emerald-400">All debug challenges complete!</p>
+                    </div>
+                  ) : (
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {visibleDebug.map(c => {
+                        const loading = completingChallenge === c.id
+                        const isNew   = newChallenge === c.id
+                        const bColor  = c.badge === "Beginner" ? "#10b981" : c.badge === "Intermediate" ? "#f59e0b" : "#ef4444"
+                        return (
+                          <div key={c.id} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${isNew ? "border-primary/60 bg-primary/5" : "border-border bg-card/40 hover:border-primary/30"}`}>
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="text-sm font-bold text-foreground">{c.title}</p>
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:`${bColor}20`, color:bColor }}>{c.badge}</span>
+                                {isNew && <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-primary/20 text-primary animate-pulse">New!</span>}
+                              </div>
+                            </div>
+                            <p className="text-xs text-muted-foreground flex-1">{c.desc}</p>
+                            {/* Code snippet */}
+                            <div className="rounded-lg bg-black/20 border border-border p-2.5 font-mono text-xs text-emerald-400 whitespace-pre leading-relaxed">{c.snippet}</div>
+                            {/* Answer — collapsed */}
+                            <details className="text-xs">
+                              <summary className="cursor-pointer text-primary font-semibold hover:underline select-none">💡 Reveal Answer</summary>
+                              <p className="mt-1.5 text-muted-foreground pl-1 border-l-2 border-primary/30">{c.fix}</p>
+                            </details>
+                            {/* Actions — same layout as project cards */}
+                            <div className="flex gap-2 pt-1 border-t border-border/50">
+                              <a href={c.url} target="_blank" rel="noopener noreferrer"
+                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+                                style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}>
+                                <ExternalLink className="h-3 w-3" /> Try
+                              </a>
+                              <button onClick={() => markChallengeDone(c.id)} disabled={!!loading}
+                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all disabled:opacity-50">
+                                {loading ? <RefreshCw className="h-3 w-3 animate-spin" /> : <><CheckCircle2 className="h-3 w-3" /> Done</>}
+                              </button>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </>
+            )
+          })()}
 
           {/* Skill badge challenges */}
           <div className="space-y-3">
             <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
               <Star className="h-3.5 w-3.5 text-amber-400" />Skill Badge Challenges — Earn Recognition
             </p>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { badge:"Array Pro",       desc:"Complete 5 array problems on LeetCode Easy",     color:"#3b82f6", earned: completedMilestones.length >= 2, url:"https://leetcode.com/tag/array/" },
-                { badge:"Loop Master",     desc:"Solve 3 loop-based problems without hints",       color:"#10b981", earned: completedMilestones.length >= 3, url:"https://leetcode.com/problemset/?difficulty=EASY" },
-                { badge:"String Wizard",   desc:"Complete 5 string manipulation problems",         color:"#8b5cf6", earned: completedMilestones.length >= 4, url:"https://leetcode.com/tag/string/" },
-                { badge:"Git Committer",   desc:"Make 10 real commits on a GitHub project",       color:"#f59e0b", earned: completedMilestones.includes("git-basics"), url:"https://skills.github.com/" },
-              ].map(b => (
-                <div key={b.badge} className={`rounded-xl border p-4 flex flex-col gap-2 transition-all ${b.earned ? "border-emerald-500/30 bg-emerald-500/5" : "border-border bg-card/30 opacity-80"}`}>
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background:`${b.color}20`, color:b.color }}>
-                      <Trophy className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-foreground">{b.badge}</p>
-                      {b.earned && <span className="text-[9px] text-emerald-400 font-bold">EARNED</span>}
-                    </div>
+            <p className="text-[11px] text-muted-foreground">Badges are awarded automatically when your linked platform stats meet the requirement. Completing a track unlocks the next one.</p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {(() => {
+                // ── Full track pool (ordered — later tracks unlock when earlier ones finish) ──
+                const ALL_TRACKS = [
+                  // ── Initial 4 tracks ──────────────────────────────────────
+                  { track:"arrays",    label:"Arrays",         color:"#3b82f6", url:"https://leetcode.com/tag/array/",
+                    badges:[
+                      { id:"badge-array-1", title:"Array Starter",   desc:"Solve 3 Easy problems",    xp:50,  required:3  },
+                      { id:"badge-array-2", title:"Array Pro",        desc:"Solve 15 Easy problems",   xp:80,  required:15 },
+                      { id:"badge-array-3", title:"Array Master",     desc:"Solve 30 Easy problems",   xp:150, required:30 },
+                    ]},
+                  { track:"algo",      label:"Algorithms",     color:"#10b981", url:"https://leetcode.com/problemset/?difficulty=EASY",
+                    badges:[
+                      { id:"badge-algo-1",  title:"Loop Learner",    desc:"Solve 3 Easy problems",    xp:40,  required:3  },
+                      { id:"badge-algo-2",  title:"Loop Master",     desc:"Solve 10 total problems",   xp:70,  required:10 },
+                      { id:"badge-algo-3",  title:"Algorithm Ace",   desc:"Solve 25 total problems",   xp:130, required:25 },
+                    ]},
+                  { track:"strings",   label:"Strings",        color:"#8b5cf6", url:"https://leetcode.com/tag/string/",
+                    badges:[
+                      { id:"badge-str-1",   title:"String Starter",  desc:"Solve 3 Easy problems",    xp:50,  required:3  },
+                      { id:"badge-str-2",   title:"String Wizard",   desc:"Solve 15 problems",         xp:80,  required:15 },
+                      { id:"badge-str-3",   title:"String Legend",   desc:"Solve 30 problems",         xp:140, required:30 },
+                    ]},
+                  { track:"git",       label:"Git",            color:"#f59e0b", url:"https://skills.github.com/",
+                    badges:[
+                      { id:"badge-git-1",   title:"Git Starter",          desc:"Create 1 GitHub repo",  xp:40,  required:1  },
+                      { id:"badge-git-2",   title:"Git Committer",        desc:"Make 10 commits",        xp:70,  required:10 },
+                      { id:"badge-git-3",   title:"Open Source Hero",     desc:"Make 50 commits",        xp:120, required:50 },
+                    ]},
+                  // ── Unlocked after completing initial tracks ───────────────
+                  { track:"trees",     label:"Trees",          color:"#06b6d4", url:"https://leetcode.com/tag/tree/",
+                    badges:[
+                      { id:"badge-tree-1",  title:"Tree Sprout",     desc:"Solve 5 tree problems",     xp:60,  required:5  },
+                      { id:"badge-tree-2",  title:"Tree Climber",    desc:"Solve 15 tree problems",     xp:90,  required:15 },
+                      { id:"badge-tree-3",  title:"Tree Expert",     desc:"Solve 30 tree problems",     xp:160, required:30 },
+                    ]},
+                  { track:"dp",        label:"Dynamic Prog.",  color:"#ec4899", url:"https://leetcode.com/tag/dynamic-programming/",
+                    badges:[
+                      { id:"badge-dp-1",    title:"DP Initiate",     desc:"Solve 3 DP problems",        xp:60,  required:3  },
+                      { id:"badge-dp-2",    title:"DP Practitioner", desc:"Solve 10 DP problems",       xp:100, required:10 },
+                      { id:"badge-dp-3",    title:"DP Master",       desc:"Solve 20 DP problems",       xp:180, required:20 },
+                    ]},
+                  { track:"graphs",    label:"Graphs",         color:"#f97316", url:"https://leetcode.com/tag/graph/",
+                    badges:[
+                      { id:"badge-graph-1", title:"Graph Walker",    desc:"Solve 3 graph problems",     xp:60,  required:3  },
+                      { id:"badge-graph-2", title:"Graph Traverser", desc:"Solve 10 graph problems",    xp:100, required:10 },
+                      { id:"badge-graph-3", title:"Graph Master",    desc:"Solve 20 graph problems",    xp:180, required:20 },
+                    ]},
+                  { track:"sql",       label:"SQL",            color:"#14b8a6", url:"https://sqlzoo.net/wiki/SQL_Tutorial",
+                    badges:[
+                      { id:"badge-sql-1",   title:"SQL Beginner",    desc:"Solve 5 SQL problems",       xp:50,  required:5  },
+                      { id:"badge-sql-2",   title:"SQL Writer",      desc:"Solve 15 SQL problems",      xp:80,  required:15 },
+                      { id:"badge-sql-3",   title:"SQL Expert",      desc:"Solve 30 SQL problems",      xp:150, required:30 },
+                    ]},
+                  // ── Expert tracks (unlocked after advanced tracks complete) ──
+                  { track:"binary",    label:"Binary Search",  color:"#a855f7", url:"https://leetcode.com/tag/binary-search/",
+                    badges:[
+                      { id:"badge-bin-1",   title:"Binary Initiate", desc:"Solve 5 BS problems",        xp:70,  required:5  },
+                      { id:"badge-bin-2",   title:"Binary Searcher", desc:"Solve 15 BS problems",       xp:110, required:15 },
+                      { id:"badge-bin-3",   title:"Binary Expert",   desc:"Solve 30 BS problems",       xp:180, required:30 },
+                    ]},
+                  { track:"sorting",   label:"Sorting",        color:"#f43f5e", url:"https://leetcode.com/tag/sorting/",
+                    badges:[
+                      { id:"badge-sort-1",  title:"Sort Learner",    desc:"Solve 5 sorting problems",   xp:70,  required:5  },
+                      { id:"badge-sort-2",  title:"Sort Pro",        desc:"Solve 15 sorting problems",  xp:110, required:15 },
+                      { id:"badge-sort-3",  title:"Sort Master",     desc:"Solve 25 sorting problems",  xp:180, required:25 },
+                    ]},
+                  { track:"recursion", label:"Recursion",      color:"#84cc16", url:"https://leetcode.com/tag/recursion/",
+                    badges:[
+                      { id:"badge-rec-1",   title:"Recursion Starter",desc:"Solve 3 recursion problems", xp:70, required:3  },
+                      { id:"badge-rec-2",   title:"Recursion Pro",   desc:"Solve 10 recursion problems", xp:110, required:10 },
+                      { id:"badge-rec-3",   title:"Recursion Master", desc:"Solve 20 recursion problems",xp:180, required:20 },
+                    ]},
+                  { track:"hashing",   label:"Hashing",        color:"#fb923c", url:"https://leetcode.com/tag/hash-table/",
+                    badges:[
+                      { id:"badge-hash-1",  title:"Hash Beginner",   desc:"Solve 5 hash problems",      xp:70,  required:5  },
+                      { id:"badge-hash-2",  title:"Hash Builder",    desc:"Solve 15 hash problems",     xp:110, required:15 },
+                      { id:"badge-hash-3",  title:"Hash Master",     desc:"Solve 25 hash problems",     xp:180, required:25 },
+                    ]},
+                ]
+
+                // Always show exactly 4 tracks: the first 4 that aren't fully earned,
+                // with already-completed ones replaced by the next available track.
+                // Show up to 4 non-completed tracks — never show completed ones
+                const displayTracks = ALL_TRACKS.filter(t =>
+                  !t.badges.every(b => completedBadges.includes(b.id))
+                ).slice(0, 4)
+
+                if (displayTracks.length === 0) return (
+                  <div className="col-span-4 text-center py-10 rounded-xl border border-dashed border-emerald-500/30">
+                    <Trophy className="h-8 w-8 mx-auto text-emerald-400 mb-2" />
+                    <p className="text-sm font-semibold text-emerald-400">All 36 badges earned — you've mastered every track!</p>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">{b.desc}</p>
-                  {!b.earned && (
-                    <a href={b.url} target="_blank" rel="noopener noreferrer"
-                      className="text-[10px] text-primary hover:underline flex items-center gap-1 font-semibold">
-                      <ExternalLink className="h-3 w-3" /> Start earning
-                    </a>
-                  )}
-                </div>
-              ))}
+                )
+
+                return displayTracks.map(t => {
+                  const earnedInTrack = t.badges.filter(b => completedBadges.includes(b.id))
+                  const currentIdx    = earnedInTrack.length
+                  const allDone       = currentIdx === t.badges.length
+                  const activeBadge   = t.badges[allDone ? t.badges.length - 1 : currentIdx]
+                  const prog          = badgeProgress[activeBadge.id]
+                  const cur           = prog?.current ?? 0
+                  const req           = prog?.required ?? activeBadge.required
+                  const pct           = allDone ? 100 : Math.min(100, Math.round((cur / req) * 100))
+                  // Is this track newly unlocked (not in the initial 4)?
+                  const isNewUnlock   = !["arrays","algo","strings","git"].includes(t.track) && earnedInTrack.length === 0
+
+                  return (
+                    <div key={t.track} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${
+                      allDone      ? "border-emerald-500/30 bg-emerald-500/5"
+                      : isNewUnlock ? "border-primary/40 bg-primary/5"
+                      :               "border-border bg-card/40"
+                    }`}>
+                      {/* Track label + count */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-[10px] font-bold uppercase tracking-wide" style={{ color: t.color }}>{t.label}</p>
+                          {isNewUnlock && (
+                            <span className="text-[8px] font-black px-1.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">NEW</span>
+                          )}
+                        </div>
+                        <p className="text-[10px] text-muted-foreground">{earnedInTrack.length} / {t.badges.length}</p>
+                      </div>
+                      {/* Step dots */}
+                      <div className="flex items-center gap-1">
+                        {t.badges.map((b, i) => {
+                          const done   = completedBadges.includes(b.id)
+                          const isCurr = !allDone && i === currentIdx
+                          return (
+                            <div key={b.id} className="flex items-center gap-1 flex-1">
+                              <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[9px] font-black transition-all ${done ? "text-white" : isCurr ? "border-2 text-foreground" : "border opacity-30 text-muted-foreground"}`}
+                                style={{ background: done ? t.color : isCurr ? `${t.color}20` : "transparent", borderColor: isCurr ? t.color : "var(--border)" }}>
+                                {done ? "✓" : i + 1}
+                              </div>
+                              {i < t.badges.length - 1 && (
+                                <div className="h-px flex-1 transition-all" style={{ background: done ? t.color : "var(--border)" }} />
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                      {/* Active badge info */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                          style={{ background:`${t.color}20`, color: allDone ? "#10b981" : t.color }}>
+                          {allDone ? <CheckCircle2 className="h-4 w-4" /> : <Trophy className="h-3.5 w-3.5" />}
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-foreground">{activeBadge.title}</p>
+                          <p className="text-[9px] font-semibold" style={{ color: allDone ? "#10b981" : "#f59e0b" }}>
+                            {allDone ? "✓ Track Complete" : `+${activeBadge.xp} XP`}
+                          </p>
+                        </div>
+                      </div>
+                      {/* Live progress bar */}
+                      {!allDone && (
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between text-[9px] text-muted-foreground">
+                            <span>{activeBadge.desc}</span>
+                            <span className="font-semibold tabular-nums" style={{ color: t.color }}>{cur} / {req}</span>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                            <div className="h-full rounded-full transition-all duration-700"
+                              style={{ width:`${pct}%`, background: t.color }} />
+                          </div>
+                          {pct === 100 && (
+                            <p className="text-[9px] text-emerald-400 font-semibold">✓ Requirement met — badge will be awarded on next load</p>
+                          )}
+                        </div>
+                      )}
+                      {/* Practice link */}
+                      {!allDone ? (
+                        <a href={t.url} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 text-[10px] text-primary font-semibold py-1.5 rounded-lg border border-primary/20 hover:bg-primary/5 transition-all border-t border-t-border/50 pt-2 mt-auto">
+                          <ExternalLink className="h-3 w-3" /> Practice on {t.label === "Git" ? "GitHub" : t.label === "SQL" ? "SQLZoo" : "LeetCode"}
+                        </a>
+                      ) : (
+                        <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-semibold border-t border-emerald-500/20 pt-2">
+                          <CheckCircle2 className="h-3 w-3" /> All badges earned!
+                        </div>
+                      )}
+                    </div>
+                  )
+                })
+              })()}
             </div>
           </div>
 
-          {/* Practice platforms */}
-          <div className="space-y-3">
-            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-              <Target className="h-3.5 w-3.5 text-primary" />Daily Practice Platforms
-            </p>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                { title:"LeetCode Easy",         difficulty:"Beginner",     color:"#f59e0b", url:"https://leetcode.com/problemset/?difficulty=EASY" },
-                { title:"HackerRank Algorithms", difficulty:"Beginner",     color:"#10b981", url:"https://www.hackerrank.com/domains/algorithms" },
-                { title:"GFG School Level",      difficulty:"Beginner",     color:"#3b82f6", url:"https://practice.geeksforgeeks.org/explore?difficulty%5B%5D=School" },
-                { title:"LeetCode Daily",        difficulty:"Intermediate", color:"#8b5cf6", url:"https://leetcode.com/problemset/" },
-                { title:"100 Days of Code",      difficulty:"Challenge",    color:"#ec4899", url:"https://www.100daysofcode.com/" },
-                { title:"CodeChef Div4",         difficulty:"Intermediate", color:"#f97316", url:"https://www.codechef.com/contests" },
-              ].map(c => {
-                const diffColor = c.difficulty === "Beginner" ? "#10b981" : c.difficulty === "Intermediate" ? "#f59e0b" : "#ec4899"
-                return (
-                  <div key={c.title} className="rounded-xl border border-border bg-card/40 p-4 flex items-center justify-between gap-3 hover:border-primary/30 transition-all">
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">{c.title}</p>
-                      <span className="text-[10px] font-bold" style={{ color:diffColor }}>{c.difficulty}</span>
-                    </div>
-                    <a href={c.url} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white shrink-0"
-                      style={{ background:`linear-gradient(135deg,#7c3aed,#6366f1)` }}>
-                      <ExternalLink className="h-3 w-3" /> Open
-                    </a>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
         </div>
       )}
 
@@ -994,44 +1753,9 @@ export function FirstYearFullHub({ student }: { student: any }) {
         </div>
       )}
 
-      {/* Community + Mentorship */}
+      {/* Community — Discussion Board */}
       {activeTab === "community" && (
-        <div className="space-y-5">
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 flex items-start gap-3">
-            <MessageCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-semibold text-foreground">Join the 1st Year Group Chat</p>
-              <p className="text-xs text-muted-foreground mt-1">Ask questions, share victories, find study buddies. Moderated and encouraging.</p>
-              <a href="https://discord.com/invite/DvYWXNr4yR" target="_blank" rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
-                Join Discord Community <ExternalLink className="h-3 w-3" />
-              </a>
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Heart className="h-4 w-4 text-rose-400" />Senior Stories — How They Made It
-            </p>
-            <div className="space-y-3">
-              {MENTORSHIP_STORIES.map(s => (
-                <div key={s.name} className="rounded-xl border border-border bg-card/50 p-4">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-black">{s.avatar}</div>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">{s.name}</p>
-                      <p className="text-[10px] text-muted-foreground">{s.year}</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed mb-3">{s.story}</p>
-                  <div className="flex items-start gap-2 p-2.5 rounded-lg bg-amber-500/5 border border-amber-500/15">
-                    <Star className="h-3.5 w-3.5 text-amber-400 shrink-0 mt-0.5" />
-                    <p className="text-xs text-amber-300 font-medium">{s.tip}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <CommunityDiscussions student={student} />
       )}
 
       {/* Leaderboard */}

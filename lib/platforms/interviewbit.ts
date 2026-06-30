@@ -1,4 +1,4 @@
-/**
+﻿/**
  * InterviewBit scraper — v3 (definitive)
  *
  * Deep investigation (June 2026) confirmed:
@@ -61,11 +61,9 @@ export async function fetchInterviewBitStats(
     u = u.replace(/\/+$/, '').replace(/^@/, '').trim()
 
     if (!u || !/^[a-zA-Z0-9_.-]+$/.test(u)) {
-      console.log('[InterviewBit] Invalid username:', username)
       return null
     }
 
-    console.log(`[InterviewBit] Verifying profile for: ${u}`)
 
     const profileUrl = `https://www.interviewbit.com/profile/${u}/`
 
@@ -87,14 +85,12 @@ export async function fetchInterviewBitStats(
 
     if (!res) return null
 
-    console.log(`[InterviewBit] HTTP ${res.status} for ${u}`)
 
     // Hard 404 = profile definitely doesn't exist
     if (res.status === 404) return null
     if (!res.ok) return null
 
     const html = await res.text()
-    console.log(`[InterviewBit] Page length: ${html.length}`)
 
     // Too short = CDN error / maintenance page
     if (html.length < 5000) return null
@@ -115,19 +111,14 @@ export async function fetchInterviewBitStats(
     // Secondary check: the page HTML contains the username somewhere
     const usernameInHtml = html.includes(u)
 
-    console.log(
-      `[InterviewBit] RSC match: ${usernameInRsc}, HTML match: ${usernameInHtml}`
-    )
 
     if (!usernameInRsc && !usernameInHtml) {
       // Profile doesn't exist or username typo
-      console.log(`[InterviewBit] Profile not found for ${u}`)
       return null
     }
 
     // ── 4. Return confirmed-but-limited result ────────────────────────────
     // All stat endpoints require an authenticated session — no public data available
-    console.log(`[InterviewBit] Profile verified for ${u} — stats not publicly accessible`)
 
     return {
       username:       u,

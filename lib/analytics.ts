@@ -1,4 +1,4 @@
-// Analytics tracking system
+﻿// Analytics tracking system
 import { getDatabase, isDatabaseAvailable } from '@/lib/database'
 import { ObjectId } from 'mongodb'
 
@@ -49,7 +49,6 @@ export class Analytics {
         this.storeInMemory(analyticsEvent)
       }
 
-      console.log('📊 Analytics event tracked:', event.type, event.page || event.action)
     } catch (error) {
       console.error('Analytics tracking error:', error)
     }

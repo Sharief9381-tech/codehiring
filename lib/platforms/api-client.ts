@@ -1,4 +1,4 @@
-// Dynamic API clients for various coding platforms
+﻿// Dynamic API clients for various coding platforms
 
 export interface PlatformStats {
   totalProblems?: number
@@ -222,7 +222,6 @@ export class HackerRankAPI {
     try {
       // HackerRank doesn't have a public API, so we'll return basic structure
       // The actual implementation is in lib/platforms/hackerrank.ts
-      console.log('HackerRankAPI: Using fallback implementation')
       
       return {
         badges: 0,
@@ -244,7 +243,6 @@ export class HackerEarthAPI {
     try {
       // HackerEarth doesn't have a reliable public API, so we'll return basic structure
       // The actual implementation is in lib/platforms/hackerearth.ts
-      console.log('HackerEarthAPI: Using fallback implementation')
       
       return {
         problemsSolved: 0,

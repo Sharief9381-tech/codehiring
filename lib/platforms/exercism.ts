@@ -1,4 +1,4 @@
-export interface ExercismStats {
+﻿export interface ExercismStats {
   username: string
   completedExercises: number
   languages: string[]
@@ -15,7 +15,6 @@ export async function fetchExercismStats(username: string): Promise<ExercismStat
 
     if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
 
-    console.log(`Fetching Exercism stats for: ${u}`)
 
     const profileUrl = `https://exercism.org/profiles/${u}`
 

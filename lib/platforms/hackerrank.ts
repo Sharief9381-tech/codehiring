@@ -1,4 +1,4 @@
-export interface HackerRankStats {
+﻿export interface HackerRankStats {
   username: string
   name: string
   country: string
@@ -32,7 +32,6 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
 
     if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
 
-    console.log(`[HackerRank] Fetching stats for: ${u}`)
 
     // ── Step 1: Fetch profile via public REST API ─────────────────────────
     // Confirmed working: returns model with id, username, name, level, rank, avatar, etc.
@@ -48,15 +47,12 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
 
     if (!profileRes) return null
 
-    console.log(`[HackerRank] Profile API status: ${profileRes.status}`)
 
     if (profileRes.status === 404) {
-      console.log(`[HackerRank] User not found: ${u}`)
       return null
     }
 
     if (!profileRes.ok) {
-      console.log(`[HackerRank] HTTP ${profileRes.status} for ${u}`)
       return null
     }
 
@@ -64,11 +60,9 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
     const m = profileData?.model
 
     if (!m || m.deleted) {
-      console.log(`[HackerRank] No model or deleted account for ${u}`)
       return null
     }
 
-    console.log(`[HackerRank] Profile found: ${m.name || m.username}, level: ${m.level}, rank: ${m.rank}`)
 
     // ── Step 2: Fetch badges ──────────────────────────────────────────────
     // Confirmed working: returns models array with badge_name, stars, total_points, solved, etc.
@@ -91,7 +85,6 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
         badge_type: b.badge_type    ?? b.badge_category ?? '',
         solved:     Number(b.solved ?? 0),
       }))
-      console.log(`[HackerRank] Badges fetched: ${badges.length}`)
     }
 
     // ── Step 3: Fetch recent contest submissions for score ────────────────
@@ -101,7 +94,6 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
       totalScore = badges.reduce((sum, b) => sum + b.points, 0)
     }
 
-    console.log(`[HackerRank] Final - badges:${badges.length} score:${totalScore} rank:${m.rank}`)
 
     return {
       username:     u,

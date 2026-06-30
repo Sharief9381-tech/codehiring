@@ -1,4 +1,4 @@
-export interface KattisStats {
+﻿export interface KattisStats {
   username: string
   problemsSolved: number
   score: number
@@ -16,7 +16,6 @@ export async function fetchKattisStats(username: string): Promise<KattisStats | 
 
     if (!u || !/^[a-zA-Z0-9_.-]+$/.test(u)) return null
 
-    console.log(`Fetching Kattis stats for: ${u}`)
 
     const profileUrl = `https://open.kattis.com/users/${u}`
 

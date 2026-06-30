@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { isDatabaseAvailable } from "@/lib/database"
 import { findUserByEmail, generateToken, updateUser } from "@/lib/auth"
-import { findUserByEmail as fallbackFindUserByEmail, updateUser as fallbackUpdateUser, generateId, generateToken as fallbackGenerateToken } from "@/lib/auth-fallback"
+import { findUserByEmail as fallbackFindUserByEmail, updateUser as fallbackUpdateUser, generateId } from "@/lib/auth-fallback"
 
 export async function POST(req: Request) {
   try {
@@ -28,11 +28,10 @@ export async function POST(req: Request) {
           }
         }
       }
-    } catch (dbError) {
-      console.log("Database unavailable, falling back to in-memory storage", dbError)
+    } catch {
+      // DB unavailable, will fall through to fallback
     }
 
-    // For development/testing: if user not found in DB, try fallback
     if (!user) {
       user = await fallbackFindUserByEmail(email)
       if (user) {
@@ -44,7 +43,6 @@ export async function POST(req: Request) {
           })
         }
       } else {
-        // Create temporary user entry in fallback storage just for the reset token
         const tempUserId = await generateId()
         await fallbackUpdateUser(tempUserId, {
           _id: tempUserId,
@@ -57,13 +55,8 @@ export async function POST(req: Request) {
           createdAt: new Date(),
           updatedAt: new Date(),
         })
-        console.log(`Created temporary user entry in fallback storage for: ${email}`)
       }
     }
-
-    // Always log for development/testing
-    console.log(`[FORGOT PASSWORD] Reset requested for: ${email}`)
-    console.log(`Reset link: ${resetLink}`)
 
     // Send email if configured
     const RESEND_API_KEY = process.env.RESEND_API_KEY

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/feedback  — authenticated user submits feedback (type 1 or type 2)
  * GET  /api/feedback  — returns approved general feedback for landing page testimonials
  */
@@ -151,9 +151,5 @@ async function sendFeedbackEmail(data: {
     })
   } else {
     // Fallback: log to console (visible in server logs / Vercel logs)
-    console.log(`\n========== NEW FEEDBACK ==========`)
-    console.log(`TO: ${TO_EMAIL}`)
-    console.log(textBody)
-    console.log(`==================================\n`)
   }
 }

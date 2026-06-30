@@ -1,4 +1,4 @@
-export interface CodeChefStats {
+﻿export interface CodeChefStats {
   username: string
   currentRating: number
   highestRating: number
@@ -19,17 +19,14 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
     const match = cleanUsername.match(urlPattern)
     if (match) cleanUsername = match[1]
 
-    console.log(`Fetching CodeChef stats for: ${cleanUsername}`)
 
     if (!/^[a-zA-Z0-9_]+$/.test(cleanUsername)) {
-      console.log(`Invalid CodeChef username format: ${cleanUsername}`)
       return null
     }
 
     // ── 1. Community API (most reliable, returns structured JSON) ──────────
     try {
       const apiUrl = `https://codechef-api.vercel.app/${cleanUsername}`
-      console.log(`Trying CodeChef community API: ${apiUrl}`)
       const res = await fetch(apiUrl, {
         headers: { Accept: 'application/json', 'User-Agent': 'CodeTrack/1.0' },
         signal: AbortSignal.timeout(10000),
@@ -37,7 +34,6 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
 
       if (res.ok) {
         const data = await res.json()
-        console.log('CodeChef community API response:', JSON.stringify(data).slice(0, 300))
 
         if (data && !data.error && (data.currentRating !== undefined || data.rating !== undefined)) {
           const currentRating = data.currentRating ?? data.rating ?? 0
@@ -68,7 +64,6 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
         }
       }
     } catch (e: any) {
-      console.log(`CodeChef community API failed: ${e.message}`)
     }
 
     // ── 2. Web scraping fallback ───────────────────────────────────────────
@@ -150,10 +145,8 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
         }
       }
     } catch (e: any) {
-      console.log(`CodeChef web scraping failed: ${e.message}`)
     }
 
-    console.log(`All CodeChef data sources failed for "${cleanUsername}"`)
     return null
   } catch (error) {
     console.error('Error fetching CodeChef stats:', error)

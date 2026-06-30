@@ -24,12 +24,22 @@ export interface FeaturedCompany {
   name: string
 }
 
+export interface SeniorStory {
+  name: string       // e.g. "Priya S."
+  year: string       // e.g. "Now at Google (SWE)"
+  story: string
+  tip: string
+  avatar: string     // initials e.g. "PS"
+}
+
 export interface SiteConfigDocument {
   key: string        // always "landing"
   hero: HeroConfig
   testimonials: Testimonial[]
   featuredCompanies: FeaturedCompany[]
   announcementBar: string   // empty string = hidden
+  communityDiscordUrl: string
+  seniorStories: SeniorStory[]
   updatedAt: Date
 }
 
@@ -59,6 +69,30 @@ const DEFAULT_CONFIG: Omit<SiteConfigDocument, "updatedAt"> = {
     { name: "PhonePe" },
   ],
   announcementBar: "",
+  communityDiscordUrl: "https://discord.com/invite/DvYWXNr4yR",
+  seniorStories: [
+    {
+      name: "Priya S.",
+      year: "Now at Google (SWE)",
+      story: "I started in 1st year not knowing what a variable was. CS50 on YouTube changed everything. By 3rd year I had 3 internships. Start early, stay consistent.",
+      tip: "Do CS50. Seriously. Just do it.",
+      avatar: "PS",
+    },
+    {
+      name: "Rahul M.",
+      year: "Now at Swiggy (SDE-2)",
+      story: "Failed my first coding interview badly in 2nd year. Instead of quitting, I started solving 1 LeetCode Easy per day. 200 days later I was getting calls from product companies.",
+      tip: "1 problem per day beats 10 in one day.",
+      avatar: "RM",
+    },
+    {
+      name: "Anjali K.",
+      year: "Placed at Infosys, now upskilling",
+      story: "I focused on Python and web dev in first year instead of competitive programming. Built 2 projects that I showed in every interview. Projects > grades for placements.",
+      tip: "Build something. Anything. Then build something better.",
+      avatar: "AK",
+    },
+  ],
 }
 
 export const SiteConfigModel = {
@@ -72,6 +106,8 @@ export const SiteConfigModel = {
       testimonials: doc.testimonials ?? DEFAULT_CONFIG.testimonials,
       featuredCompanies: doc.featuredCompanies ?? DEFAULT_CONFIG.featuredCompanies,
       announcementBar: doc.announcementBar ?? "",
+      communityDiscordUrl: doc.communityDiscordUrl ?? DEFAULT_CONFIG.communityDiscordUrl,
+      seniorStories: doc.seniorStories ?? DEFAULT_CONFIG.seniorStories,
       updatedAt: doc.updatedAt ?? new Date(),
     }
   },

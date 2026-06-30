@@ -50,8 +50,6 @@ export async function POST() {
           `,
         }),
       }).catch(() => {})
-    } else {
-      console.log(`[EMAIL VERIFY] To: ${user.email} | URL: ${verifyUrl}`)
     }
 
     return NextResponse.json({ success: true })

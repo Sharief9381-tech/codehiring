@@ -1,10 +1,9 @@
-/**
- * Email utility
- * Primary:  Brevo API (HTTP — works on Vercel)
- * Fallback: Gmail SMTP (works locally)
+﻿/**
+ * Email utility — Gmail SMTP only via nodemailer
+ * Setup:
+ *   GMAIL_USER=yourname@gmail.com
+ *   GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx  (from myaccount.google.com/apppasswords)
  */
-
-const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
 
 export async function sendEmail({
   to,
@@ -15,67 +14,38 @@ export async function sendEmail({
   subject: string
   html: string
 }): Promise<{ success: boolean; error?: string }> {
-
-  // ── Brevo HTTP API (works on Vercel) ──────────────────────────────────────
-  const brevoKey = process.env.BREVO_API_KEY
-  if (brevoKey) {
-    try {
-      const res = await fetch(BREVO_API_URL, {
-        method: "POST",
-        headers: {
-          "api-key": brevoKey,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          sender: { name: "CodeHiring", email: "shariefsk95@gmail.com" },
-          to: [{ email: to }],
-          subject,
-          htmlContent: html,
-        }),
-      })
-      if (!res.ok) {
-        const err = await res.text()
-        console.error("[EMAIL] Brevo error:", err)
-      } else {
-        console.log(`[EMAIL] Sent via Brevo to ${to}`)
-        return { success: true }
-      }
-    } catch (e) {
-      console.error("[EMAIL] Brevo exception:", e)
-    }
-  }
-
-  // ── Gmail SMTP fallback (works locally) ───────────────────────────────────
   const gmailUser = process.env.GMAIL_USER || process.env.EMAIL_USER
   const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS
-  if (gmailUser && gmailPass) {
-    try {
-      const nodemailer = await import("nodemailer")
-      const transporter = nodemailer.default.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        auth: {
-          user: gmailUser,
-          pass: gmailPass.replace(/\s/g, ""),
-        },
-      })
-      await transporter.sendMail({
-        from: `"CodeHiring" <${gmailUser}>`,
-        to,
-        subject,
-        html,
-      })
-      console.log(`[EMAIL] Sent via Gmail to ${to}`)
-      return { success: true }
-    } catch (e: any) {
-      console.error("[EMAIL] Gmail error:", e?.message || e)
-    }
+
+  if (!gmailUser || !gmailPass) {
+    console.error("[EMAIL] GMAIL_USER or GMAIL_APP_PASSWORD not configured")
+    return { success: false, error: "Email not configured" }
   }
 
-  console.error("[EMAIL] No provider available")
-  return { success: false, error: "No email provider configured" }
+  try {
+    const nodemailer = await import("nodemailer")
+    const transporter = nodemailer.default.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // TLS
+      auth: {
+        user: gmailUser,
+        pass: gmailPass.replace(/\s/g, ""), // remove spaces from app password
+      },
+    })
+
+    await transporter.sendMail({
+      from: `"CodeHiring" <${gmailUser}>`,
+      to,
+      subject,
+      html,
+    })
+
+    return { success: true }
+  } catch (e: any) {
+    console.error("[EMAIL] Gmail SMTP error:", e?.message || e)
+    return { success: false, error: e?.message || "Email send failed" }
+  }
 }
 
 export function otpEmailHtml(otp: string, name?: string): string {
@@ -87,7 +57,7 @@ export function otpEmailHtml(otp: string, name?: string): string {
   <table width="100%" cellpadding="0" cellspacing="0" style="max-width:500px;margin:40px auto;background:#1a1a1f;border:1px solid #2a2a35;border-radius:16px;overflow:hidden">
     <tr>
       <td style="background:linear-gradient(135deg,#7c3aed,#4f46e5);padding:32px;text-align:center">
-        <h1 style="margin:0;font-size:22px;font-weight:800;color:#fff;">CodeHiring</h1>
+        <h1 style="margin:0;font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px">CodeHiring</h1>
         <p style="margin:6px 0 0;font-size:13px;color:rgba(255,255,255,0.75)">Email Verification</p>
       </td>
     </tr>
@@ -98,13 +68,13 @@ export function otpEmailHtml(otp: string, name?: string): string {
         <div style="background:#111118;border:1px solid #2a2a35;border-radius:12px;padding:24px;text-align:center;margin-bottom:24px">
           <span style="font-size:48px;font-weight:900;letter-spacing:16px;color:#818cf8;font-family:monospace">${otp}</span>
         </div>
-        <p style="margin:0 0 8px;font-size:13px;color:#6b7280;text-align:center">Expires in <strong style="color:#f8f8f8">5 minutes</strong>.</p>
-        <p style="margin:0;font-size:13px;color:#6b7280;text-align:center">If you didn't request this, ignore this email.</p>
+        <p style="margin:0 0 8px;font-size:13px;color:#6b7280;text-align:center">This code expires in <strong style="color:#f8f8f8">5 minutes</strong>.</p>
+        <p style="margin:0;font-size:13px;color:#6b7280;text-align:center">If you didn't request this, you can safely ignore it.</p>
       </td>
     </tr>
     <tr>
       <td style="padding:16px 32px 24px;border-top:1px solid #2a2a35;text-align:center">
-        <p style="margin:0;font-size:11px;color:#4b5563">© 2026 CodeHiring</p>
+        <p style="margin:0;font-size:11px;color:#4b5563">© 2026 CodeHiring · Where Coding Skills Meet Opportunities</p>
       </td>
     </tr>
   </table>

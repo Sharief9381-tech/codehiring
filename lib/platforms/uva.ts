@@ -1,4 +1,4 @@
-export interface UVaStats {
+﻿export interface UVaStats {
   username: string
   problemsSolved: number
   submissions: number
@@ -19,8 +19,6 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
       cleanUsername = match[1]
     }
     
-    console.log(`Fetching real-time UVa stats for: ${cleanUsername}`)
-    console.log(`Fetching real-time UVa stats for: ${cleanUsername}`)
     
     const profileUrl = `https://uhunt.onlinejudge.org/id/${cleanUsername}`
     
@@ -32,7 +30,6 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
 
     for (const apiUrl of thirdPartyApis) {
       try {
-        console.log(`Trying UVa third-party API: ${apiUrl}`)
         const response = await fetch(apiUrl, {
           headers: {
             'Accept': 'application/json',
@@ -43,7 +40,6 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
 
         if (response.ok) {
           const data = await response.json()
-          console.log(`UVa third-party API response:`, data)
           
           if (data && !data.error && data.success !== false) {
             return {
@@ -57,7 +53,6 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
           }
         }
       } catch (apiError) {
-        console.log(`UVa third-party API ${apiUrl} failed:`, apiError)
         continue
       }
     }
@@ -73,7 +68,6 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
       })
       
       if (!response.ok) {
-        console.log(`UVa profile not found for ${cleanUsername}`)
         return null
       }
       
@@ -81,11 +75,9 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
       
       // Check if profile exists
       if (html.includes('User not found') || html.includes('404') || html.includes('does not exist')) {
-        console.log(`UVa profile not found for: ${cleanUsername}`)
         return null
       }
       
-      console.log(`UVa profile exists for: ${cleanUsername}`)
       
       // Extract stats from HTML
       let problemsSolved = 0
@@ -121,7 +113,6 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
         country = countryMatch[0].replace(/["\[\]]/g, '').trim()
       }
       
-      console.log(`UVa real-time stats: problems=${problemsSolved}, submissions=${submissions}, rank=${rank}, country=${country}`)
       
       const stats: UVaStats = {
         username: cleanUsername,
@@ -132,16 +123,13 @@ export async function fetchUVaStats(username: string): Promise<UVaStats | null> 
         profileUrl
       }
       
-      console.log(`UVa stats for ${cleanUsername}:`, stats)
       return stats
       
     } catch (error) {
-      console.log('UVa fetch failed:', error)
     }
 
     // Method 3: Basic profile validation (fallback)
     if (cleanUsername && cleanUsername.length > 0 && /^[a-zA-Z0-9_-]+$/.test(cleanUsername)) {
-      console.log(`UVa: returning basic profile for ${cleanUsername}`)
       
       return {
         username: cleanUsername,

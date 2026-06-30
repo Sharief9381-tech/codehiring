@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/student/enhancv
  *
  * Free resume parsing pipeline:
@@ -193,10 +193,8 @@ export async function POST(req: Request) {
     // Step 1: Try APILayer free parser
     if (process.env.APILAYER_RESUME_KEY) {
       try {
-        console.log("Parsing resume with APILayer...")
         parsedResume = await parseWithAPILayer(fileBuffer, fileName)
         parseSource  = "apilayer"
-        console.log("APILayer parse success")
       } catch (e) {
         console.error("APILayer failed:", e)
       }

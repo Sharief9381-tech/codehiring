@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useCallback, useEffect } from "react"
 import { motion } from "framer-motion"
@@ -70,14 +70,12 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       })
 
       if (!shouldSync) {
-        console.log('Stats are fresh, skipping auto-sync')
         return
       }
 
       setIsAutoSyncing(true)
       
       try {
-        console.log('Auto-syncing platform stats on page load...')
         
         const syncResponse = await fetch('/api/platforms/sync', {
           method: 'POST',
@@ -89,7 +87,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         
         if (syncResponse.ok) {
           const syncData = await syncResponse.json()
-          console.log('Auto-sync completed successfully:', syncData)
           
           // Fetch fresh user data after auto-sync
           const userResponse = await fetch('/api/auth/user', {
@@ -107,7 +104,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
               const freshPlatforms = userData.user.linkedPlatforms || {}
               // Only update if the fresh data has platforms (don't wipe existing state)
               if (Object.keys(freshPlatforms).length > 0) {
-                console.log('Updated user data after auto-sync:', userData.user)
                 setStudent(userData.user)
                 // Refresh activity feed
                 fetch('/api/student/activity').then(r => r.ok ? r.json() : { activity: [] }).then(d => setRecentActivity(d.activity || []))
@@ -115,7 +111,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
             }
           }
         } else {
-          console.log('Auto-sync failed, using cached data')
         }
       } catch (error) {
         console.error('Error during auto-sync:', error)
@@ -139,7 +134,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       await new Promise(resolve => setTimeout(resolve, 1000))
       
       // First, trigger platform sync to fetch stats for newly added platforms
-      console.log('Triggering platform sync after platform addition...')
       const syncResponse = await fetch('/api/platforms/sync', {
         method: 'POST',
         headers: {
@@ -150,14 +144,12 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       
       if (syncResponse.ok) {
         const syncData = await syncResponse.json()
-        console.log('Platform sync completed successfully:', syncData)
         toast.success('Platform connected successfully!')
       } else {
         toast.success('Platform connected! Stats will be available shortly.')
       }
       
       // Then fetch fresh user data
-      console.log('Fetching fresh user data...')
       const response = await fetch('/api/auth/user', {
         method: 'GET',
         headers: {
@@ -170,7 +162,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       if (response.ok) {
         const userData = await response.json()
         if (userData.user) {
-          console.log('Updated user data after platform addition:', userData.user)
           setStudent(userData.user)
         }
       } else {
@@ -223,7 +214,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           if (userResponse.ok) {
             const userData = await userResponse.json()
             if (userData.user) {
-              console.log('Updated user data after unlink:', userData.user)
               setStudent(userData.user)
             }
           }
@@ -247,7 +237,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
   const hasLinkedPlatforms = Object.keys(linkedPlatforms).length > 0
 
   // Debug: Log the linkedPlatforms structure
-  console.log("LinkedPlatforms structure:", linkedPlatforms)
 
   // Calculate aggregated stats from linked platforms
   const calculateStats = () => {
@@ -257,33 +246,20 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
     let contestsFromHighestRatedPlatform = 0
     let highestRatedPlatform: string | null = null
 
-    console.log('=== DEBUGGING RATING CALCULATION ===')
-    console.log('linkedPlatforms:', linkedPlatforms)
 
     // First pass: Find the platform with highest rating
     Object.entries(linkedPlatforms).forEach(([platform, data]) => {
-      console.log(`\n--- Platform: ${platform} ---`)
-      console.log('Raw data:', data)
       
       // Skip null or undefined data
       if (!data) {
-        console.log('Skipping - no data')
         return
       }
       
       // Handle both object and string data structures
       const stats = (typeof data === 'object' && 'stats' in data) ? data.stats : null
-      console.log('Extracted stats:', stats)
       
       if (stats) {
         // Find highest rating - check ALL possible rating/score fields
-        console.log('Checking ratings/scores:')
-        console.log('  stats.rating:', stats.rating, typeof stats.rating)
-        console.log('  stats.currentRating:', stats.currentRating, typeof stats.currentRating)
-        console.log('  stats.highestRating:', stats.highestRating, typeof stats.highestRating)
-        console.log('  stats.maxRating:', stats.maxRating, typeof stats.maxRating)
-        console.log('  stats.totalScore:', stats.totalScore, typeof stats.totalScore)
-        console.log('  stats.contestRating:', stats.contestRating, typeof stats.contestRating)
 
         const ratingsAndScores = [
           stats.rating,           // Codeforces, HackerEarth
@@ -295,7 +271,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           stats.codingScore,      // GeeksforGeeks coding score
         ]
 
-        console.log('All ratings/scores array:', ratingsAndScores)
 
         // Find the highest rating from this platform
         const validRatings = ratingsAndScores.filter(rating => {
@@ -305,18 +280,15 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
 
         if (validRatings.length > 0) {
           const maxRatingFromThisPlatform = Math.max(...validRatings)
-          console.log(`Platform ${platform} max rating: ${maxRatingFromThisPlatform}, current highest: ${highestRating}`)
           
           if (maxRatingFromThisPlatform > highestRating) {
             highestRating = maxRatingFromThisPlatform
             highestRatedPlatform = platform
-            console.log(`NEW HIGHEST: ${highestRating} from platform: ${platform}`)
           }
         }
       }
     })
 
-    console.log(`Final highest rating: ${highestRating} from platform: ${highestRatedPlatform}`)
 
     // Second pass: Calculate other stats and get contests from highest rated platform
     Object.entries(linkedPlatforms).forEach(([platform, data]) => {
@@ -338,21 +310,16 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
 
         // Get contests ONLY from the platform with highest rating
         if (platform === highestRatedPlatform) {
-          console.log(`Getting contests from highest rated platform: ${platform}`)
           
           // Check different contest field names for different platforms
           if (stats.contests?.length) {
             contestsFromHighestRatedPlatform = stats.contests.length
-            console.log(`Found ${contestsFromHighestRatedPlatform} contests in stats.contests`)
           } else if (stats.contestsParticipated) {
             contestsFromHighestRatedPlatform = stats.contestsParticipated
-            console.log(`Found ${contestsFromHighestRatedPlatform} contests in stats.contestsParticipated`)
           } else if (stats.attendedContestsCount) {
             // LeetCode uses attendedContestsCount
             contestsFromHighestRatedPlatform = stats.attendedContestsCount
-            console.log(`Found ${contestsFromHighestRatedPlatform} contests in stats.attendedContestsCount`)
           } else {
-            console.log('No contest data found for highest rated platform')
           }
         }
       }
@@ -365,9 +332,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
       highestRating 
     }
     
-    console.log('\n=== FINAL RESULT ===')
-    console.log(result)
-    console.log('========================\n')
     
     return result
   }
@@ -759,7 +723,6 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
                     
                     if (response.ok) {
                       const syncData = await response.json()
-                      console.log('Manual sync response:', syncData)
                       
                       if (syncData.summary) {
                         toast.success(`Stats synced! ${syncData.summary.successful}/${syncData.summary.total} platforms updated`)

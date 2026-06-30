@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HackerEarth scraper
  *
  * HackerEarth migrated to a pure client-side React app (Next.js App Router) in 2024.
@@ -57,7 +57,6 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
     u = u.replace(/\/+$/, '').trim()
     if (!u || !/^[a-zA-Z0-9_.-]+$/.test(u)) return null
 
-    console.log(`[HackerEarth] Fetching profile for: ${u}`)
 
     // ── 2. Fetch profile HTML ────────────────────────────────────────────
     const profileUrl = `https://www.hackerearth.com/@${u}/`
@@ -72,11 +71,10 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
     }).catch(e => { console.error('[HackerEarth] HTML fetch error:', e.message); return null })
 
     if (!htmlRes) return null
-    if (htmlRes.status === 404) { console.log('[HackerEarth] 404 for', u); return null }
-    if (!htmlRes.ok) { console.log('[HackerEarth] HTTP', htmlRes.status, 'for', u); return null }
+    if (htmlRes.status === 404) { return null }
+    if (!htmlRes.ok) { return null }
 
     const html = await htmlRes.text()
-    console.log(`[HackerEarth] Page length: ${html.length}`)
 
     // ── 3. Check for "not found" signals ────────────────────────────────
     const lower = html.toLowerCase()
@@ -86,7 +84,6 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
       lower.includes('does not exist') ||
       html.length < 5000
     ) {
-      console.log('[HackerEarth] Profile not found for', u)
       return null
     }
 
@@ -96,7 +93,6 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
     const ogDesc     = extractString(html, /<meta\s+property="og:description"\s+content="([^"]+)"/i)
     const metaName   = extractString(html, /<title[^>]*>([^<|]+)/i)
 
-    console.log(`[HackerEarth] OG title: "${ogTitle}", desc: "${ogDesc}"`)
 
     // ── 5. Parse inline JSON fragments ──────────────────────────────────
     // HackerEarth embeds some user data in script tags as serialised props
@@ -128,11 +124,9 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
       if (ratingInDesc) rating = parseInt(ratingInDesc[1], 10)
     }
 
-    console.log(`[HackerEarth] Parsed — name:${name} rating:${rating} problems:${problemsSolved} verified:${profileVerified}`)
 
     // If we can't confirm the profile exists at all, bail
     if (!profileVerified && !ogTitle) {
-      console.log('[HackerEarth] Cannot confirm profile existence for', u)
       return null
     }
 

@@ -1,4 +1,4 @@
-export interface KaggleStats {
+﻿export interface KaggleStats {
   username: string
   tier: string
   competitions: number
@@ -16,7 +16,6 @@ export async function fetchKaggleStats(username: string): Promise<KaggleStats | 
 
     if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
 
-    console.log(`Fetching Kaggle stats for: ${u}`)
 
     const profileUrl = `https://www.kaggle.com/${u}`
 

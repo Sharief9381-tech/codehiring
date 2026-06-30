@@ -1,4 +1,4 @@
-export interface TopCoderStats {
+﻿export interface TopCoderStats {
   username: string
   rating: number
   maxRating: number
@@ -20,7 +20,6 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
       cleanUsername = match[1]
     }
     
-    console.log(`Fetching real-time TopCoder stats for: ${cleanUsername}`)
     
     const profileUrl = `https://www.topcoder.com/members/${cleanUsername}`
     
@@ -33,7 +32,6 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
 
     for (const apiUrl of thirdPartyApis) {
       try {
-        console.log(`Trying TopCoder third-party API: ${apiUrl}`)
         const response = await fetch(apiUrl, {
           headers: {
             'Accept': 'application/json',
@@ -44,7 +42,6 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
 
         if (response.ok) {
           const data = await response.json()
-          console.log(`TopCoder third-party API response:`, data)
           
           if (data && !data.error && data.success !== false) {
             return {
@@ -59,7 +56,6 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
           }
         }
       } catch (apiError) {
-        console.log(`TopCoder third-party API ${apiUrl} failed:`, apiError)
         continue
       }
     }
@@ -75,7 +71,6 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
       })
       
       if (!response.ok) {
-        console.log(`TopCoder profile not found for ${cleanUsername}`)
         return null
       }
       
@@ -83,11 +78,9 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
       
       // Check if profile exists
       if (html.includes('Member not found') || html.includes('404') || html.includes('User not found')) {
-        console.log(`TopCoder profile not found for: ${cleanUsername}`)
         return null
       }
       
-      console.log(`TopCoder profile exists for: ${cleanUsername}`)
       
       // Extract stats from HTML
       let rating = 0
@@ -126,7 +119,6 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
       // Ensure maxRating is at least equal to current rating
       if (maxRating < rating) maxRating = rating
       
-      console.log(`TopCoder real-time stats: rating=${rating}, max=${maxRating}, competitions=${competitions}, wins=${wins}`)
       
       const stats: TopCoderStats = {
         username: cleanUsername,
@@ -138,16 +130,13 @@ export async function fetchTopCoderStats(username: string): Promise<TopCoderStat
         profileUrl
       }
       
-      console.log(`TopCoder stats for ${cleanUsername}:`, stats)
       return stats
       
     } catch (error) {
-      console.log('TopCoder fetch failed:', error)
     }
 
     // Method 3: Basic profile validation (fallback)
     if (cleanUsername && cleanUsername.length > 0 && /^[a-zA-Z0-9_-]+$/.test(cleanUsername)) {
-      console.log(`TopCoder: returning basic profile for ${cleanUsername}`)
       
       return {
         username: cleanUsername,

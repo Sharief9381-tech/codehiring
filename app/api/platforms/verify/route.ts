@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+﻿import { NextResponse } from "next/server"
 import { fetchLeetCodeStats } from '@/lib/platforms/leetcode'
 import { fetchGitHubStats } from '@/lib/platforms/github'
 import { fetchCodeChefStats } from '@/lib/platforms/codechef'
@@ -19,7 +19,6 @@ import { fetchUVaStats } from '@/lib/platforms/uva'
 
 export async function POST(request: Request) {
   try {
-    console.log("=== PLATFORM VERIFICATION API CALLED ===")
     
     const body = await request.json()
     const { platform, username } = body
@@ -31,7 +30,6 @@ export async function POST(request: Request) {
       )
     }
 
-    console.log(`Verifying ${platform} profile for username: ${username}`)
 
     // Define platform fetchers
     const platformFetchers: Record<string, Function> = {
@@ -67,7 +65,6 @@ export async function POST(request: Request) {
       const stats = await fetchFunction(username)
       
       if (stats) {
-        console.log(`✅ Profile verification successful for ${platform}/${username}`)
         return NextResponse.json({
           success: true,
           platform,
@@ -81,7 +78,6 @@ export async function POST(request: Request) {
           }
         })
       } else {
-        console.log(`❌ Profile verification failed for ${platform}/${username}`)
         return NextResponse.json({
           success: false,
           platform,

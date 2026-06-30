@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 import { serializeDocument } from "@/lib/serialize"
 import { FirstYearFullHub } from "@/components/student/first-year-full-hub"
+import { CareerHub } from "@/components/student/career-hub"
 
 export const dynamic = "force-dynamic"
 
@@ -27,11 +28,18 @@ export default async function LearnPage() {
 
   const gy = (doc as any).graduationYear
   const year = detectYear(gy)
-
-  // Only 1st-year students should see this hub
-  // Years 2-4 (and unknown) get redirected to dashboard
-  if (year !== 1) redirect("/student/dashboard")
-
   const { password, ...safe } = doc as any
-  return <FirstYearFullHub student={serializeDocument(safe)} />
+  const student = serializeDocument(safe)
+
+  // Year 1: rich XP/gamification hub
+  if (year === 1) {
+    return <FirstYearFullHub student={student} />
+  }
+
+  // Years 2–4 (and unknown/0): content-rich career hub with year-appropriate sections
+  return (
+    <div className="flex-1 p-4 md:p-6 max-w-screen-xl mx-auto w-full">
+      <CareerHub graduationYear={gy ? Number(gy) : undefined} student={student} />
+    </div>
+  )
 }

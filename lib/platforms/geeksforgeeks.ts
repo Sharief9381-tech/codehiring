@@ -1,4 +1,4 @@
-export interface GeeksforGeeksStats {
+﻿export interface GeeksforGeeksStats {
   username: string
   codingScore: number
   problemsSolved: number
@@ -25,7 +25,6 @@ export async function fetchGeeksforGeeksStats(username: string): Promise<Geeksfo
     u = u.replace(/\/+$/, '').trim()
     if (!u) return null
 
-    console.log(`[GFG] Fetching stats for: ${u}`)
 
     // GFG profile page embeds data as escaped JSON in a <script> tag.
     // The URL /user/{username} redirects to /profile/{username} which contains the data.
@@ -41,21 +40,17 @@ export async function fetchGeeksforGeeksStats(username: string): Promise<Geeksfo
 
     if (!res) return null
 
-    console.log(`[GFG] Response status: ${res.status}, url: ${res.url}`)
 
     // 404 = user doesn't exist
     if (res.status === 404) {
-      console.log(`[GFG] User not found: ${u}`)
       return null
     }
 
     if (!res.ok) {
-      console.log(`[GFG] HTTP ${res.status} for ${u}`)
       return null
     }
 
     const html = await res.text()
-    console.log(`[GFG] Page size: ${html.length}`)
 
     // GFG embeds profile data as escaped JSON inside a React server component script.
     // Pattern: \"score\":0,\"monthly_score\":0,\"total_problems_solved\":0,...
@@ -81,7 +76,6 @@ export async function fetchGeeksforGeeksStats(username: string): Promise<Geeksfo
     const podCurrent  = Number(podCurrentMatch?.[1]  ?? podCurrentMatch2?.[1]  ?? 0)
     const streak      = Number(streakMatch?.[1]  ?? streakMatch2?.[1]  ?? 0)
 
-    console.log(`[GFG] Parsed - score:${score} problems:${problems} rank:${rank} streak:${streak} pod:${podCurrent}`)
 
     // If page loaded but no data found, user might exist but have no activity
     // Check for "not found" signals
@@ -92,7 +86,6 @@ export async function fetchGeeksforGeeksStats(username: string): Promise<Geeksfo
       lower.includes('this user does not exist') ||
       html.length < 5000
     ) {
-      console.log(`[GFG] Profile not found for ${u}`)
       return null
     }
 
