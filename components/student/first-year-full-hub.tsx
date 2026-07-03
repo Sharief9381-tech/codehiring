@@ -8,6 +8,7 @@ import {
   ChevronRight, ExternalLink, Heart, BookMarked,
 } from "lucide-react"
 import { FirstYearHub } from "@/components/student/first-year-hub"
+import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 
@@ -698,15 +699,27 @@ export function FirstYearFullHub({ student }: { student: any }) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const hash = window.location.hash.replace("#", "")
-      const validTabs = ["progress","learning","practice","challenges","resources","soft","quizzes","community","leaderboard","library","resume"]
-      if (hash && validTabs.includes(hash)) {
-        setActiveTab(hash)
-        // Standalone mode: hide banner + tabs, show only content
-        if (hash === "learning" || hash === "resume") setStandaloneMode(true)
+      const applyHash = () => {
+        const hash = window.location.hash.replace("#", "")
+        const validTabs = ["progress","learning","practice","challenges","resources","soft","quizzes","community","leaderboard","library","resume"]
+        if (hash && validTabs.includes(hash)) {
+          setActiveTab(hash)
+          if (hash === "learning" || hash === "resume") setStandaloneMode(true)
+        }
       }
+      applyHash()
+      window.addEventListener("hashchange", applyHash)
+      return () => window.removeEventListener("hashchange", applyHash)
     }
   }, [])
+
+  // Push tab to history so browser Back/Forward works between tabs
+  const switchTab = (tab: string) => {
+    setActiveTab(tab)
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", `#${tab}`)
+    }
+  }
   const [quizTopic, setQuizTopic] = useState<string | null>(null)
   const [completedSoftSkills, setCompletedSoftSkills] = useState<string[]>([])
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([])
@@ -721,47 +734,22 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [xpPop, setXpPop] = useState<string | null>(null)
   const [monthlySolved, setMonthlySolved] = useState(0)
 
-  // Daily problem — rotates by day of year
-  const DAILY_PROBLEMS = [
-    { title: "Sum of Two Numbers",          desc: "Write a program that takes two numbers as input and prints their sum.", input: "5, 3", output: "8", explain: "Simply add the two numbers.", url: "https://leetcode.com/problems/two-sum/" },
-    { title: "Reverse a String",            desc: "Write a function to reverse a given string without using built-in reverse.", input: '"hello"', output: '"olleh"', explain: "Use a loop from end to start.", url: "https://leetcode.com/problems/reverse-string/" },
-    { title: "Find Maximum in Array",       desc: "Given an array of integers, find and return the largest element.", input: "[3, 7, 1, 9, 4]", output: "9", explain: "Iterate and track the max.", url: "https://leetcode.com/problems/find-maximum-in-array/" },
-    { title: "Count Vowels",                desc: "Count the number of vowels (a, e, i, o, u) in a given string.", input: '"education"', output: "5", explain: "Check each character against vowels.", url: "https://leetcode.com/problems/count-vowel-substrings-of-a-string/" },
-    { title: "Check Palindrome",            desc: "Determine if a given string reads the same forwards and backwards.", input: '"racecar"', output: "true", explain: "Compare string with its reverse.", url: "https://leetcode.com/problems/valid-palindrome/" },
-    { title: "FizzBuzz",                    desc: "Print numbers 1 to N. For multiples of 3 print Fizz, for 5 print Buzz, for both print FizzBuzz.", input: "15", output: "1 2 Fizz 4 Buzz ... FizzBuzz", explain: "Use modulo % operator.", url: "https://leetcode.com/problems/fizz-buzz/" },
-    { title: "Sum of Digits",               desc: "Given a number, compute the sum of its digits.", input: "1234", output: "10", explain: "Extract each digit using % and / operators.", url: "https://leetcode.com/problems/add-digits/" },
-    { title: "Check Even or Odd",           desc: "Write a function that returns 'Even' if a number is even, 'Odd' otherwise.", input: "7", output: '"Odd"', explain: "A number is even if n % 2 === 0.", url: "https://leetcode.com/problems/number-of-even-and-odd-bits/" },
-    { title: "Find Second Largest",         desc: "Find the second largest number in an array of integers.", input: "[4, 1, 7, 3, 9]", output: "7", explain: "Sort or use two variables to track top two.", url: "https://leetcode.com/problems/second-largest-digit-in-a-string/" },
-    { title: "Count Occurrences",           desc: "Count how many times a given character appears in a string.", input: '"banana", "a"', output: "3", explain: "Loop through string and count matches.", url: "https://leetcode.com/problems/count-occurrences-in-text/" },
-    { title: "Factorial of a Number",       desc: "Calculate the factorial of a given non-negative integer N.", input: "5", output: "120", explain: "Multiply N * (N-1) * ... * 1. Base case: 0! = 1.", url: "https://leetcode.com/problems/n-th-tribonacci-number/" },
-    { title: "Print Fibonacci Sequence",    desc: "Print the first N numbers of the Fibonacci sequence.", input: "7", output: "0 1 1 2 3 5 8", explain: "Each number = sum of previous two.", url: "https://leetcode.com/problems/fibonacci-number/" },
-    { title: "Check Prime Number",          desc: "Write a program to check if a given number is prime.", input: "17", output: "true", explain: "Check divisibility from 2 to sqrt(n).", url: "https://leetcode.com/problems/count-primes/" },
-    { title: "Remove Duplicates from Array",desc: "Given an array, return a new array with all duplicate values removed.", input: "[1,2,2,3,3,4]", output: "[1,2,3,4]", explain: "Use a Set or check if element already seen.", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/" },
-    { title: "Swap Two Variables",          desc: "Swap two variables without using a third temporary variable.", input: "a=5, b=10", output: "a=10, b=5", explain: "Use arithmetic: a=a+b; b=a-b; a=a-b.", url: "https://leetcode.com/problems/swap-nodes-in-pairs/" },
-    { title: "Linear Search",              desc: "Implement linear search: find the index of a target in an array.", input: "[4,2,8,1], target=8", output: "2", explain: "Iterate and check each element.", url: "https://leetcode.com/problems/search-insert-position/" },
-    { title: "Reverse an Array",           desc: "Reverse the elements of an array in place.", input: "[1,2,3,4,5]", output: "[5,4,3,2,1]", explain: "Use two pointers from both ends.", url: "https://leetcode.com/problems/reverse-string/" },
-    { title: "Sum of Array Elements",      desc: "Calculate the sum of all elements in an integer array.", input: "[1,2,3,4,5]", output: "15", explain: "Iterate with a running total variable.", url: "https://leetcode.com/problems/running-sum-of-1d-array/" },
-    { title: "Count Words in a String",    desc: "Count the number of words in a given sentence.", input: '"Hello World Today"', output: "3", explain: "Split the string by spaces.", url: "https://leetcode.com/problems/number-of-words-in-a-sentence/" },
-    { title: "Find GCD of Two Numbers",    desc: "Find the Greatest Common Divisor (GCD) of two integers.", input: "12, 8", output: "4", explain: "Use Euclidean algorithm: gcd(a,b) = gcd(b, a%b).", url: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/" },
-    { title: "Matrix Diagonal Sum",        desc: "Find the sum of both diagonals of an N×N matrix.", input: "[[1,2,3],[4,5,6],[7,8,9]]", output: "25", explain: "Add matrix[i][i] and matrix[i][n-1-i].", url: "https://leetcode.com/problems/matrix-diagonal-sum/" },
-    { title: "Check Armstrong Number",     desc: "Check if a number is an Armstrong number (sum of digits^n = number).", input: "153", output: "true", explain: "153 = 1³ + 5³ + 3³ = 153.", url: "https://leetcode.com/problems/sum-of-digits-in-base-k/" },
-    { title: "Binary to Decimal",          desc: "Convert a binary number (string) to its decimal equivalent.", input: '"1010"', output: "10", explain: "Multiply each bit by 2^position from right.", url: "https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/" },
-    { title: "Find Missing Number",        desc: "Given array 0 to N with one missing, find the missing number.", input: "[0,1,3,4]", output: "2", explain: "Sum 0..N = N*(N+1)/2. Subtract array sum.", url: "https://leetcode.com/problems/missing-number/" },
-    { title: "Bubble Sort",                desc: "Implement bubble sort to sort an array of integers in ascending order.", input: "[64,34,25,12,22]", output: "[12,22,25,34,64]", explain: "Repeatedly swap adjacent elements if in wrong order.", url: "https://leetcode.com/problems/sort-an-array/" },
-    { title: "Count Negative Numbers",     desc: "Count all negative numbers in a 2D grid.", input: "[[4,3,2],[1,-1,-2],[-3,-4,-5]]", output: "5", explain: "Iterate all elements, count where val < 0.", url: "https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/" },
-    { title: "Power of Two",               desc: "Determine if a given integer is a power of two.", input: "16", output: "true", explain: "A power of 2 has only one bit set: n & (n-1) === 0.", url: "https://leetcode.com/problems/power-of-two/" },
-    { title: "Reverse Words in a String",  desc: "Reverse the order of words in a sentence.", input: '"the sky is blue"', output: '"blue is sky the"', explain: "Split by space, reverse array, join.", url: "https://leetcode.com/problems/reverse-words-in-a-string/" },
-    { title: "Find Duplicate Number",      desc: "Find the one duplicate number in an array containing n+1 integers in range [1,n].", input: "[1,3,4,2,2]", output: "2", explain: "Use a Set: first number seen twice is the answer.", url: "https://leetcode.com/problems/find-the-duplicate-number/" },
-    { title: "Celsius to Fahrenheit",      desc: "Convert a temperature from Celsius to Fahrenheit.", input: "100", output: "212", explain: "Formula: F = C × 9/5 + 32.", url: "https://leetcode.com/problems/convert-the-temperature/" },
-  ]
-
-  // Compute once on mount so the problem never changes mid-session / between tab switches
-  const [todayProblem] = useState(() => {
-    const now = new Date()
-    const startOfYear = new Date(now.getFullYear(), 0, 0)
-    const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / 86400000)
-    return DAILY_PROBLEMS[dayOfYear % DAILY_PROBLEMS.length]
+  // Daily problem — fetched from API (AI-generated, Basic → Advanced, infinite)
+  const [todayProblem, setTodayProblem] = useState<{
+    title: string; desc: string; input: string; output: string
+    explain: string; difficulty?: string; color?: string; topic?: string; hint?: string
+  }>({
+    title: "Loading today's challenge...",
+    desc: "", input: "", output: "", explain: "",
   })
+  const [dailyProblemLoading, setDailyProblemLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/student/daily-problem")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.problem) setTodayProblem(d.problem) })
+      .finally(() => setDailyProblemLoading(false))
+  }, [])
 
   const ROADMAP_STEPS = [
     { id: "py-basics",    title: "Learn Programming Basics",  color: "#3b82f6", xp: 50  },
@@ -842,71 +830,168 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [completingChallenge, setCompletingChallenge] = useState<string | null>(null)
   const [newChallenge, setNewChallenge] = useState<string | null>(null)
 
-  // Flat project pool (beginner → advanced, 16 total)
-  const PROJECT_POOL = [
-    { id:"p1-calc",      title:"Build a Calculator",       desc:"Handles +, -, ×, ÷ with keyboard input.",                    badge:"Beginner",     color:"#3b82f6", url:"https://leetcode.com/problems/basic-calculator/" },
-    { id:"p1-attend",    title:"Attendance Tracker",       desc:"Flags students below 75% attendance.",                       badge:"Beginner",     color:"#10b981", url:"https://leetcode.com/problems/design-parking-system/" },
-    { id:"p1-portfolio", title:"Personal Portfolio Page",  desc:"Your name, skills, and a project section.",                  badge:"Beginner",     color:"#ec4899", url:"https://www.frontendmentor.io/challenges/personal-portfolio-webpage-449TFEOrBO" },
-    { id:"p1-todo",      title:"Basic To-Do App",          desc:"Add, complete, and delete tasks.",                           badge:"Beginner",     color:"#f97316", url:"https://leetcode.com/problems/design-hashmap/" },
-    { id:"p1-weather",   title:"Weather Fetcher",          desc:"Use an API to display temperature for any city.",            badge:"Beginner",     color:"#f59e0b", url:"https://open-meteo.com/en/docs" },
-    { id:"p1-chatbot",   title:"Simple Rule-based Chatbot",desc:"Replies to greetings, questions, and goodbyes.",             badge:"Beginner",     color:"#8b5cf6", url:"https://leetcode.com/problems/design-hashmap/" },
-    { id:"p2-quiz",      title:"Quiz App",                 desc:"Multi-question quiz with score tracking and timer.",         badge:"Intermediate", color:"#3b82f6", url:"https://www.frontendmentor.io/challenges/quiz-app-suIoV2SOt" },
-    { id:"p2-expense",   title:"Expense Tracker",          desc:"Track income/expenses with category breakdown charts.",      badge:"Intermediate", color:"#10b981", url:"https://www.frontendmentor.io/challenges/personal-finance-app-JfjtZgyMt1" },
-    { id:"p2-markdown",  title:"Markdown Previewer",       desc:"Real-time markdown editor with live HTML preview.",          badge:"Intermediate", color:"#8b5cf6", url:"https://www.frontendmentor.io/challenges/markdown-previewer-QJD0MBNft" },
-    { id:"p2-github",    title:"GitHub Profile Viewer",    desc:"Search any GitHub user and display their repos and stats.",  badge:"Intermediate", color:"#f59e0b", url:"https://www.frontendmentor.io/challenges/github-user-search-app-Q09YOgaH6" },
-    { id:"p2-pomodoro",  title:"Pomodoro Timer",           desc:"25/5 work-break cycle with settings and sound.",             badge:"Intermediate", color:"#ef4444", url:"https://www.frontendmentor.io/challenges/pomodoro-app-KBFnycJ6G" },
-    { id:"p2-blog",      title:"Blog with CMS",            desc:"Simple blog with CRUD posts stored in localStorage.",       badge:"Intermediate", color:"#f97316", url:"https://www.frontendmentor.io/challenges/blogr-landing-page-1HHp6YjAzq" },
-    { id:"p3-chat",      title:"Real-time Chat App",       desc:"WebSocket-based chat with rooms and online presence.",       badge:"Advanced",     color:"#8b5cf6", url:"https://socket.io/get-started/chat" },
-    { id:"p3-ecommerce", title:"E-Commerce Store",         desc:"Product listings, cart, checkout, and order history.",       badge:"Advanced",     color:"#3b82f6", url:"https://www.frontendmentor.io/challenges/ecommerce-product-page-UPsZ9MFp_" },
-    { id:"p3-dashboard", title:"Analytics Dashboard",      desc:"Charts, KPI cards, and date-filtered data from an API.",     badge:"Advanced",     color:"#10b981", url:"https://www.frontendmentor.io/challenges/entertainment-web-app-J-UhgAW1X" },
-    { id:"p3-auth",      title:"Auth System",              desc:"JWT login/signup with protected routes and refresh tokens.", badge:"Advanced",     color:"#f59e0b", url:"https://www.freecodecamp.org/news/how-to-implement-jwt-authentication/" },
+  // Debug challenges — AI-fetched
+  interface DebugChallenge {
+    id: string; type: string; title: string; desc: string
+    fullCode: string; snippet: string; badge: string; color: string; xp: number
+    explanation?: string
+  }
+
+  const SUPPORTED_LANGS = [
+    "Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#",
+    "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "Dart", "Scala",
   ]
 
-  // Flat debug pool (easy → hard, 15 total for sustained replacement)
-  const DEBUG_POOL = [
-    { id:"d1-loop",    title:"Fix the Loop Bug",       desc:"Should print 1–10 but prints 0–9. Find the off-by-one error.",      badge:"Beginner",     color:"#ef4444", snippet:"for i in range(0,10):\n  print(i)",                          fix:"range(1,11)",                         url:"https://leetcode.com/problems/find-the-difference/" },
-    { id:"d1-predict", title:"Output Prediction",      desc:"What does this print? Think before you run.",                        badge:"Beginner",     color:"#f59e0b", snippet:'if 0:\n  print("A")\nelse:\n  print("B")',                   fix:'"B" — 0 is falsy',                    url:"https://leetcode.com/problems/find-the-difference/" },
-    { id:"d1-null",    title:"Null Pointer Trap",       desc:"This code crashes. Identify why and write the fix.",                badge:"Beginner",     color:"#8b5cf6", snippet:"arr = None\nprint(arr[0])",                                  fix:"Check arr is not None first",         url:"https://leetcode.com/problems/find-the-difference/" },
-    { id:"d2-recur",   title:"Infinite Recursion",     desc:"This function never stops. Add the missing base case.",              badge:"Intermediate", color:"#ef4444", snippet:"def factorial(n):\n  return n * factorial(n-1)",              fix:"if n == 0: return 1",                 url:"https://leetcode.com/problems/climbing-stairs/" },
-    { id:"d2-type",    title:"Type Error Crash",        desc:"Find why this code throws a TypeError at runtime.",                  badge:"Intermediate", color:"#f59e0b", snippet:'print("Age: " + 25)',                                       fix:"str(25) — can't concat str + int",    url:"https://leetcode.com/problems/find-the-difference/" },
-    { id:"d2-scope",   title:"Variable Scope Bug",      desc:"The function always prints 0. Explain and fix it.",                 badge:"Intermediate", color:"#8b5cf6", snippet:"x = 10\ndef show():\n  x = 0\n  print(x)\nshow()",           fix:"Use global x or pass x as param",     url:"https://leetcode.com/problems/find-the-difference/" },
-    { id:"d3-async",   title:"Race Condition",          desc:"Two async calls run in wrong order. Fix the sequencing.",           badge:"Advanced",     color:"#ef4444", snippet:"fetch(A).then(() => fetch(B))\nfetch(C)",                    fix:"Use Promise.all or await chain",      url:"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" },
-    { id:"d3-mem",     title:"Memory Leak",             desc:"Event listeners are added but never removed. Fix it.",               badge:"Advanced",     color:"#f59e0b", snippet:"btn.addEventListener('click', handler)",                     fix:"removeEventListener on cleanup",      url:"https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener" },
-    { id:"d3-sql",     title:"SQL Injection",           desc:"This query is vulnerable. Rewrite it safely.",                      badge:"Advanced",     color:"#8b5cf6", snippet:'f"SELECT * WHERE id={input}"',                              fix:"Use parameterized queries",           url:"https://owasp.org/www-community/attacks/SQL_Injection" },
-    { id:"d4-index",   title:"Off-by-One Index",        desc:"This crashes on the last element. Why?",                            badge:"Beginner",     color:"#3b82f6", snippet:"arr = [1,2,3]\nfor i in range(len(arr)+1):\n  print(arr[i])", fix:"range(len(arr)) not len(arr)+1",     url:"https://leetcode.com/problems/maximum-subarray/" },
-    { id:"d4-mutate",  title:"List Mutation Bug",       desc:"The original list is being modified. Prevent it.",                  badge:"Intermediate", color:"#10b981", snippet:"a = [1,2,3]\nb = a\nb.append(4)\nprint(a)",                 fix:"Use b = a.copy() or b = list(a)",    url:"https://leetcode.com/problems/copy-list-with-random-pointer/" },
-    { id:"d4-float",   title:"Float Precision Error",   desc:"Why is 0.1 + 0.2 not equal to 0.3?",                               badge:"Intermediate", color:"#f97316", snippet:"print(0.1 + 0.2 == 0.3)",                                   fix:"Use round() or decimal module",      url:"https://docs.python.org/3/library/decimal.html" },
-    { id:"d5-closure", title:"Closure in Loop Bug",     desc:"All buttons alert the same number. Why?",                          badge:"Advanced",     color:"#8b5cf6", snippet:"for i in range(3):\n  btn.onclick = lambda: print(i)",       fix:"Use default arg: lambda i=i: print(i)", url:"https://leetcode.com/problems/find-the-difference/" },
-    { id:"d5-mutable", title:"Mutable Default Arg",     desc:"Each call adds to the same list. This is a Python footgun.",       badge:"Advanced",     color:"#ec4899", snippet:"def add(x, lst=[]):\n  lst.append(x)\n  return lst",        fix:"Use lst=None and set inside",        url:"https://docs.python.org/3/faq/programming.html" },
-    { id:"d5-bigO",    title:"O(n²) Trap",              desc:"This nested loop is too slow for large inputs. Optimise it.",       badge:"Advanced",     color:"#f59e0b", snippet:"for i in arr:\n  for j in arr:\n    if i+j==target: ...",    fix:"Use a hash set for O(n) lookup",     url:"https://leetcode.com/problems/two-sum/" },
-  ]
+  const [debugChallenges, setDebugChallenges]   = useState<DebugChallenge[]>([])
+  const [debugLoading, setDebugLoading]         = useState(false)
+  const [debugTopic, setDebugTopic]             = useState("")
+  const [debugLang, setDebugLang]               = useState("Python")
+  const [debugLangSearch, setDebugLangSearch]   = useState("")
+  const [debugLangOpen, setDebugLangOpen]       = useState(false)
+  const [debugAnswers, setDebugAnswers]         = useState<Record<string, string>>({})
+  const [debugSubmitting, setDebugSubmitting]   = useState<string | null>(null)
+  const [debugResults, setDebugResults]         = useState<Record<string, { correct: boolean; explanation?: string; correctAnswer?: string }>>({})
+  const [newDebugId, setNewDebugId]             = useState<string | null>(null)
+  const [revealedAnswers, setRevealedAnswers]   = useState<Record<string, { answer: string; explanation: string }>>({})
+  const [revealing, setRevealing]               = useState<string | null>(null)
 
-  const markChallengeDone = async (id: string) => {
-    if (completedChallenges.includes(id) || completingChallenge) return
-    setCompletingChallenge(id)
+  const fetchDebugChallenges = async (lang?: string) => {
+    setDebugLoading(true)
+    setDebugChallenges([])
+    setDebugAnswers({})
+    setDebugResults({})
+    setRevealedAnswers({})
     try {
-      const res  = await fetch("/api/student/first-year-progress", {
+      const useLang = lang ?? debugLang
+      const res  = await fetch(`/api/student/debug-challenges?lang=${encodeURIComponent(useLang)}`)
+      const data = await res.json()
+      setDebugChallenges(data.challenges ?? [])
+      setDebugTopic(data.topic ?? "")
+    } finally {
+      setDebugLoading(false)
+    }
+  }
+
+  const submitDebugAnswer = async (challenge: DebugChallenge) => {
+    const answer = debugAnswers[challenge.id]?.trim()
+    if (!answer) return
+    setDebugSubmitting(challenge.id)
+    try {
+      const res  = await fetch(`/api/student/debug-challenges/${challenge.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer }),
+      })
+      const data = await res.json()
+      if (data.correct) {
+        setDebugResults(p => ({ ...p, [challenge.id]: { correct: true, explanation: data.explanation } }))
+        setXp(data.newTotal ?? xp)
+        showXpPop(`+${data.xpGained ?? 20} XP`)
+        // After 1.5s — mark done and trigger replacement
+        setTimeout(async () => {
+          setCompletedChallenges(p => [...p, challenge.id])
+          setDebugChallenges(p => p.filter(c => c.id !== challenge.id))
+          // Fetch new challenge to replace
+          try {
+            const r2   = await fetch(`/api/student/debug-challenges?lang=${encodeURIComponent(debugLang)}`)
+            const d2   = await r2.json()
+            const fresh = (d2.challenges ?? []).find((c: DebugChallenge) =>
+              c.id !== challenge.id && !debugChallenges.some(x => x.id === c.id)
+            )
+            if (fresh) {
+              setDebugChallenges(p => [...p.filter(c => c.id !== challenge.id), fresh])
+              setNewDebugId(fresh.id)
+              setTimeout(() => setNewDebugId(null), 2500)
+            } else {
+              setDebugChallenges(d2.challenges ?? [])
+            }
+          } catch {}
+        }, 1500)
+      } else {
+        setDebugResults(p => ({ ...p, [challenge.id]: { correct: false, explanation: data.explanation, correctAnswer: data.correctAnswer } as any }))
+      }
+    } finally {
+      setDebugSubmitting(null)
+    }
+  }
+
+  // Project challenges — AI-fetched, Basic → Intermediate → Advanced, infinite
+  interface ProjectChallenge {
+    id: string; title: string; desc: string; badge: string
+    color: string; xp: number; techHint?: string; features?: string[]
+  }
+  const [projectChallenges, setProjectChallenges]   = useState<ProjectChallenge[]>([])
+  const [projectLoading, setProjectLoading]         = useState(false)
+  const [projectTier, setProjectTier]               = useState("")
+  const [newProjectId, setNewProjectId]             = useState<string | null>(null)
+
+  const fetchProjectChallenges = async () => {
+    setProjectLoading(true)
+    try {
+      const res  = await fetch("/api/student/project-challenges")
+      const data = await res.json()
+      // Filter out any already-completed ones
+      const active = (data.challenges ?? []).filter(
+        (c: ProjectChallenge) => !completedChallenges.includes(c.id)
+      )
+      setProjectChallenges(active)
+      setProjectTier(data.tier ?? "")
+    } finally {
+      setProjectLoading(false)
+    }
+  }
+
+  const markProjectDone = async (id: string) => {
+    if (completedChallenges.includes(id)) return
+    // Optimistically remove the completed card immediately
+    setProjectChallenges(prev => prev.filter(c => c.id !== id))
+    try {
+      await fetch("/api/student/first-year-progress", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "complete-challenge", challengeId: id }),
       })
-      const data = await res.json()
-      if (data.success) {
-        const updatedDone = [...completedChallenges, id]
-        setCompletedChallenges(updatedDone)
-        setXp(data.newTotal)
-        showXpPop("+20 XP")
-        // Find the replacement that will slide in
-        const isProject = PROJECT_POOL.some(c => c.id === id)
-        const pool = isProject ? PROJECT_POOL : DEBUG_POOL
-        const visibleBefore = pool.filter(c => !completedChallenges.includes(c.id)).slice(0, isProject ? 6 : 3)
-        const replacement = pool.find(c => !updatedDone.includes(c.id) && !visibleBefore.some(v => v.id === c.id && v.id !== id))
-        if (replacement) {
-          setNewChallenge(replacement.id)
-          setTimeout(() => setNewChallenge(null), 2000)
-        }
+      setCompletedChallenges(prev => [...prev, id])
+      showXpPop("+20 XP")
+      // Fetch fresh challenges — server now knows this one is done
+      const r2   = await fetch("/api/student/project-challenges")
+      const d2   = await r2.json()
+      const fresh = (d2.challenges ?? []).filter(
+        (c: ProjectChallenge) => !completedChallenges.includes(c.id) && c.id !== id
+      )
+      setProjectChallenges(fresh)
+      setProjectTier(d2.tier ?? projectTier)
+      if (fresh.length > 0) {
+        const newest = fresh[fresh.length - 1]
+        setNewProjectId(newest.id)
+        setTimeout(() => setNewProjectId(null), 2500)
       }
-    } finally { setCompletingChallenge(null) }
+    } catch {
+      // Restore on failure
+      fetchProjectChallenges()
+    }
   }
+
+  // Remove old static pools — kept empty for reference only
+  const DEBUG_POOL: any[] = []
+
+  // Re-fetch project challenges when user comes back to the page (after editor)
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible" && activeTab === "challenges") {
+        fetchProjectChallenges()
+      }
+    }
+    document.addEventListener("visibilitychange", onVisible)
+    return () => document.removeEventListener("visibilitychange", onVisible)
+  }, [activeTab])
+
+  // Load debug + project challenges when challenges tab is first opened
+  useEffect(() => {
+    if (activeTab === "challenges") {
+      if (debugChallenges.length === 0 && !debugLoading) fetchDebugChallenges()
+      if (projectChallenges.length === 0 && !projectLoading) fetchProjectChallenges()
+    }
+  }, [activeTab])
 
   const doDailyChallenge = async () => {
     const res = await fetch("/api/student/first-year-progress", {
@@ -963,7 +1048,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
               {t.icon}{t.label}
             </a>
           ) : (
-            <button key={t.id} onClick={() => setActiveTab(t.id)}
+            <button key={t.id} onClick={() => switchTab(t.id)}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
               style={activeTab === t.id
                 ? { background: "rgba(124,58,237,0.20)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.35)" }
@@ -1019,40 +1104,65 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     <p className="font-bold text-foreground">Today's Challenge</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/20">Easy</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full font-bold border"
+                      style={{
+                        background: `${todayProblem.color ?? "#10b981"}20`,
+                        color: todayProblem.color ?? "#10b981",
+                        borderColor: `${todayProblem.color ?? "#10b981"}40`,
+                      }}>
+                      {todayProblem.difficulty ?? "Basic"}
+                    </span>
+                    {todayProblem.topic && (
+                      <span className="text-[10px] text-muted-foreground hidden sm:block">{todayProblem.topic}</span>
+                    )}
                     <span className="text-xs text-muted-foreground">{new Date().toLocaleDateString("en-US", { weekday: "long" })}</span>
                   </div>
                 </div>
-                <div>
-                  <p className="text-base font-black text-foreground">{todayProblem.title}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{todayProblem.desc}</p>
-                </div>
-                <div className="rounded-lg border border-border bg-black/20 p-3 text-xs font-mono space-y-1">
-                  <p className="font-semibold text-muted-foreground text-[10px] mb-2">Example</p>
-                  <p><span className="text-blue-400">Input:</span> <span className="text-foreground">{todayProblem.input}</span></p>
-                  <p><span className="text-emerald-400">Output:</span> <span className="text-foreground">{todayProblem.output}</span></p>
-                  <p className="text-muted-foreground pt-1 text-[10px]">{todayProblem.explain}</p>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs text-muted-foreground">Earn <span className="text-primary font-bold">10 points</span> · self-report when solved</p>
-                  {dailyDone ? (
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-sm font-semibold">
-                      <CheckCircle2 className="h-4 w-4" /> Done today! +10 XP
+
+                {dailyProblemLoading ? (
+                  <div className="flex items-center gap-2 py-4 text-muted-foreground text-sm">
+                    <RefreshCw className="h-4 w-4 animate-spin" /> Loading today's problem...
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <p className="text-base font-black text-foreground">{todayProblem.title}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{todayProblem.desc}</p>
                     </div>
-                  ) : (
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <a href={todayProblem.url} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm border border-border text-foreground hover:border-primary/40 transition-all">
-                        <ArrowRight className="h-4 w-4" /> Try Problem
-                      </a>
-                      <button onClick={doDailyChallenge}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all"
-                        style={{ background: "linear-gradient(135deg,#3b82f6,#2563eb)" }}>
-                        <CheckCircle2 className="h-4 w-4" /> Mark as Solved
-                      </button>
+                    <div className="rounded-lg border border-border bg-black/20 p-3 text-xs font-mono space-y-1">
+                      <p className="font-semibold text-muted-foreground text-[10px] mb-2">Example</p>
+                      <p><span className="text-blue-400">Input:</span> <span className="text-foreground">{todayProblem.input}</span></p>
+                      <p><span className="text-emerald-400">Output:</span> <span className="text-foreground">{todayProblem.output}</span></p>
+                      {todayProblem.explain && <p className="text-muted-foreground pt-1 text-[10px]">{todayProblem.explain}</p>}
                     </div>
-                  )}
-                </div>
+                    {todayProblem.hint && (
+                      <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-[11px] text-amber-400">
+                        💡 Hint: {todayProblem.hint}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-xs text-muted-foreground">Earn <span className="text-primary font-bold">10 points</span> · write & submit your code to get evaluated</p>
+                      {dailyDone ? (
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-sm font-semibold">
+                          <CheckCircle2 className="h-4 w-4" /> Done today! +10 XP
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <a
+                            href={`/student/daily-challenge?title=${encodeURIComponent(todayProblem.title)}&desc=${encodeURIComponent(todayProblem.desc)}&input=${encodeURIComponent(todayProblem.input)}&output=${encodeURIComponent(todayProblem.output)}&explain=${encodeURIComponent(todayProblem.explain)}`}
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all"
+                            style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+                            <Code2 className="h-4 w-4" /> Try in Editor
+                          </a>
+                          <button onClick={doDailyChallenge}
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm border border-border text-foreground hover:border-primary/40 transition-all">
+                            <CheckCircle2 className="h-4 w-4" /> Mark as Solved
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Your Progress */}
@@ -1123,7 +1233,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     </a>
                   </div>
                 ))}
-                <button onClick={() => setActiveTab("resources")}
+                <button onClick={() => switchTab("resources")}
                   className="w-full py-2 rounded-lg border border-border text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all">
                   View All Resources
                 </button>
@@ -1171,7 +1281,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     </div>
                   ))}
                 </div>
-                <button onClick={() => setActiveTab("leaderboard")}
+                <button onClick={() => switchTab("leaderboard")}
                   className="w-full py-2 rounded-lg border border-border text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all">
                   View All Badges
                 </button>
@@ -1185,7 +1295,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   { label: "Learning Roadmap",    tab: "progress",   icon: <Target className="h-3.5 w-3.5" /> },
                   { label: "Community",           tab: "community",  icon: <Users className="h-3.5 w-3.5" /> },
                 ].map(a => (
-                  <button key={a.label} onClick={() => setActiveTab(a.tab)}
+                  <button key={a.label} onClick={() => switchTab(a.tab)}
                     className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all text-left">
                     {a.icon}{a.label}
                   </button>
@@ -1312,33 +1422,45 @@ export function FirstYearFullHub({ student }: { student: any }) {
           </div>
 
           {(() => {
-            // Flat pools — filter out completed, slice to visible window
-            const visibleProjects = PROJECT_POOL.filter(c => !completedChallenges.includes(c.id)).slice(0, 6)
-            const visibleDebug    = DEBUG_POOL.filter(c => !completedChallenges.includes(c.id)).slice(0, 3)
-
             return (
               <>
-                {/* Project challenges */}
+                {/* Project challenges — AI-generated, Basic → Advanced */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
                       <Zap className="h-3.5 w-3.5 text-violet-400" />Project Challenges
+                      {projectTier && (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-bold border"
+                          style={{
+                            background: projectTier === "Beginner" ? "#10b98120" : projectTier === "Intermediate" ? "#f59e0b20" : "#ef444420",
+                            color:      projectTier === "Beginner" ? "#10b981"   : projectTier === "Intermediate" ? "#f59e0b"   : "#ef4444",
+                            borderColor:projectTier === "Beginner" ? "#10b98130" : projectTier === "Intermediate" ? "#f59e0b30" : "#ef444430",
+                          }}>
+                          {projectTier}
+                        </span>
+                      )}
                     </p>
-                    <span className="text-[10px] text-muted-foreground">
-                      {PROJECT_POOL.length - PROJECT_POOL.filter(c => !completedChallenges.includes(c.id)).length} / {PROJECT_POOL.length} done
-                    </span>
+                    <button onClick={fetchProjectChallenges} disabled={projectLoading}
+                      className="text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors">
+                      <RefreshCw className={`h-3 w-3 ${projectLoading ? "animate-spin" : ""}`} /> Refresh
+                    </button>
                   </div>
-                  {visibleProjects.length === 0 ? (
-                    <div className="text-center py-10 rounded-xl border border-dashed border-emerald-500/30">
-                      <CheckCircle2 className="h-8 w-8 mx-auto text-emerald-400 mb-2" />
-                      <p className="text-sm font-semibold text-emerald-400">All project challenges complete!</p>
+
+                  {projectLoading ? (
+                    <div className="flex items-center justify-center gap-2 py-10 text-muted-foreground text-sm">
+                      <RefreshCw className="h-4 w-4 animate-spin" /> Generating project challenges...
+                    </div>
+                  ) : projectChallenges.length === 0 ? (
+                    <div className="text-center py-10 rounded-xl border border-dashed border-border">
+                      <Zap className="h-8 w-8 mx-auto text-muted-foreground/30 mb-2" />
+                      <p className="text-sm text-muted-foreground">No challenges loaded.</p>
+                      <button onClick={fetchProjectChallenges} className="mt-2 text-xs text-primary hover:underline">Load challenges</button>
                     </div>
                   ) : (
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                      {visibleProjects.map(c => {
-                        const bColor  = c.badge === "Beginner" ? "#10b981" : c.badge === "Intermediate" ? "#f59e0b" : "#ef4444"
-                        const loading = completingChallenge === c.id
-                        const isNew   = newChallenge === c.id
+                      {projectChallenges.filter(c => !completedChallenges.includes(c.id)).slice(0, 6).map(c => {
+                        const isNew  = newProjectId === c.id
+                        const bColor = c.badge === "Beginner" ? "#10b981" : c.badge === "Intermediate" ? "#f59e0b" : "#ef4444"
                         return (
                           <div key={c.id} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${isNew ? "border-primary/60 bg-primary/5" : "border-border bg-card/40 hover:border-primary/30"}`}>
                             <div className="flex items-start justify-between gap-2">
@@ -1349,17 +1471,25 @@ export function FirstYearFullHub({ student }: { student: any }) {
                               </div>
                             </div>
                             <p className="text-xs text-muted-foreground flex-1">{c.desc}</p>
-                            <div className="flex gap-2">
-                              <a href={c.url} target="_blank" rel="noopener noreferrer"
-                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-                                style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}>
-                                <ExternalLink className="h-3 w-3" /> Try
-                              </a>
-                              <button onClick={() => markChallengeDone(c.id)} disabled={!!loading}
-                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all disabled:opacity-50">
-                                {loading ? <RefreshCw className="h-3 w-3 animate-spin" /> : <><CheckCircle2 className="h-3 w-3" /> Done</>}
-                              </button>
-                            </div>
+                            {/* Features */}
+                            {c.features && c.features.length > 0 && (
+                              <div className="flex flex-wrap gap-1">
+                                {c.features.slice(0,3).map((f, i) => (
+                                  <span key={i} className="text-[9px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground">{f}</span>
+                                ))}
+                              </div>
+                            )}
+                            {c.techHint && (
+                              <p className="text-[10px] text-muted-foreground/60 italic">Stack: {c.techHint}</p>
+                            )}
+                            {/* Try in Editor — no "Done" button */}
+                            <a
+                              href={`/student/daily-challenge?title=${encodeURIComponent(c.title)}&desc=${encodeURIComponent(c.desc)}&input=&output=&explain=${encodeURIComponent((c.features ?? []).join(", "))}&problemStatement=${encodeURIComponent((c as any).problemStatement ?? "")}&explanation=${encodeURIComponent((c as any).explanation ?? "")}&type=project&challengeId=${encodeURIComponent(c.id)}&badge=${encodeURIComponent(c.badge)}`}
+                              className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold text-white transition-all"
+                              style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}
+                            >
+                              <ExternalLink className="h-3 w-3" /> Try in Editor
+                            </a>
                           </div>
                         )
                       })}
@@ -1367,56 +1497,180 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   )}
                 </div>
 
-                {/* Debug challenges */}
+                {/* Debug challenges — AI-generated, infinite */}
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-                      <Brain className="h-3.5 w-3.5 text-red-400" />Debug Challenges
+                  {/* Language selector */}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <p className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <Brain className="h-3.5 w-3.5 text-red-400" /> Debug Challenges
                     </p>
-                    <span className="text-[10px] text-muted-foreground">
-                      {DEBUG_POOL.length - DEBUG_POOL.filter(c => !completedChallenges.includes(c.id)).length} / {DEBUG_POOL.length} done
-                    </span>
+                    <div className="relative ml-auto">
+                      <button
+                        onClick={() => setDebugLangOpen(v => !v)}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-card text-xs font-semibold text-foreground hover:border-primary/40 transition-all min-w-[120px]"
+                      >
+                        <span className="flex-1 text-left">{debugLang}</span>
+                        <ChevronRight className={`h-3 w-3 text-muted-foreground transition-transform ${debugLangOpen ? "rotate-90" : ""}`} />
+                      </button>
+                      {debugLangOpen && (
+                        <div className="absolute right-0 top-full mt-1 z-50 w-52 rounded-xl border border-border bg-card shadow-xl overflow-hidden">
+                          <div className="p-2 border-b border-border">
+                            <input
+                              autoFocus
+                              value={debugLangSearch}
+                              onChange={e => setDebugLangSearch(e.target.value)}
+                              placeholder="Search language..."
+                              className="w-full rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
+                            />
+                          </div>
+                          <div className="max-h-48 overflow-y-auto py-1">
+                            {SUPPORTED_LANGS
+                              .filter(l => l.toLowerCase().includes(debugLangSearch.toLowerCase()))
+                              .map(lang => (
+                                <button
+                                  key={lang}
+                                  onClick={() => {
+                                    setDebugLang(lang)
+                                    setDebugLangOpen(false)
+                                    setDebugLangSearch("")
+                                    fetchDebugChallenges(lang)
+                                  }}
+                                  className={`w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary/10 ${debugLang === lang ? "text-primary font-semibold bg-primary/5" : "text-foreground"}`}
+                                >
+                                  {lang}
+                                  {debugLang === lang && <span className="ml-1 text-primary">✓</span>}
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {debugTopic && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 font-bold">{debugTopic}</span>
+                    )}
+                    <button onClick={() => fetchDebugChallenges()} disabled={debugLoading}
+                      className="text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors">
+                      <RefreshCw className={`h-3 w-3 ${debugLoading ? "animate-spin" : ""}`} /> Refresh
+                    </button>
                   </div>
-                  {visibleDebug.length === 0 ? (
-                    <div className="text-center py-10 rounded-xl border border-dashed border-emerald-500/30">
-                      <CheckCircle2 className="h-8 w-8 mx-auto text-emerald-400 mb-2" />
-                      <p className="text-sm font-semibold text-emerald-400">All debug challenges complete!</p>
+
+                  {debugLoading ? (
+                    <div className="flex items-center justify-center gap-2 py-10 text-muted-foreground text-sm">
+                      <RefreshCw className="h-4 w-4 animate-spin" /> Generating challenges with AI...
+                    </div>
+                  ) : debugChallenges.length === 0 ? (
+                    <div className="text-center py-10 rounded-xl border border-dashed border-border">
+                      <Brain className="h-8 w-8 mx-auto text-muted-foreground/30 mb-2" />
+                      <p className="text-sm text-muted-foreground">No challenges loaded.</p>
+                      <button onClick={() => fetchDebugChallenges()} className="mt-2 text-xs text-primary hover:underline">Load challenges</button>
                     </div>
                   ) : (
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                      {visibleDebug.map(c => {
-                        const loading = completingChallenge === c.id
-                        const isNew   = newChallenge === c.id
-                        const bColor  = c.badge === "Beginner" ? "#10b981" : c.badge === "Intermediate" ? "#f59e0b" : "#ef4444"
+                      {debugChallenges.map(c => {
+                        const isNew    = newDebugId === c.id
+                        const result   = debugResults[c.id]
+                        const bColor   = c.badge === "Beginner" ? "#10b981" : c.badge === "Intermediate" ? "#f59e0b" : "#ef4444"
                         return (
-                          <div key={c.id} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${isNew ? "border-primary/60 bg-primary/5" : "border-border bg-card/40 hover:border-primary/30"}`}>
+                          <div key={c.id} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${
+                            isNew             ? "border-primary/60 bg-primary/5"
+                            : result?.correct ? "border-emerald-500/30 bg-emerald-500/5"
+                            :                   "border-border bg-card/40 hover:border-primary/30"
+                          }`}>
+                            {/* Header */}
                             <div className="flex items-start justify-between gap-2">
                               <p className="text-sm font-bold text-foreground">{c.title}</p>
                               <div className="flex items-center gap-1.5 shrink-0">
+                                {isNew && <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-primary/20 text-primary">New!</span>}
                                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:`${bColor}20`, color:bColor }}>{c.badge}</span>
-                                {isNew && <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-primary/20 text-primary animate-pulse">New!</span>}
                               </div>
                             </div>
-                            <p className="text-xs text-muted-foreground flex-1">{c.desc}</p>
-                            {/* Code snippet */}
-                            <div className="rounded-lg bg-black/20 border border-border p-2.5 font-mono text-xs text-emerald-400 whitespace-pre leading-relaxed">{c.snippet}</div>
-                            {/* Answer — collapsed */}
-                            <details className="text-xs">
-                              <summary className="cursor-pointer text-primary font-semibold hover:underline select-none">💡 Reveal Answer</summary>
-                              <p className="mt-1.5 text-muted-foreground pl-1 border-l-2 border-primary/30">{c.fix}</p>
-                            </details>
-                            {/* Actions — same layout as project cards */}
-                            <div className="flex gap-2 pt-1 border-t border-border/50">
-                              <a href={c.url} target="_blank" rel="noopener noreferrer"
-                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-                                style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}>
-                                <ExternalLink className="h-3 w-3" /> Try
-                              </a>
-                              <button onClick={() => markChallengeDone(c.id)} disabled={!!loading}
-                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all disabled:opacity-50">
-                                {loading ? <RefreshCw className="h-3 w-3 animate-spin" /> : <><CheckCircle2 className="h-3 w-3" /> Done</>}
-                              </button>
-                            </div>
+                            {/* Question */}
+                            <p className="text-xs text-muted-foreground">{c.desc || "Find and fix the bug in this code."}</p>
+                            {/* Full code block */}
+                            <div className="rounded-lg bg-black/30 border border-border p-3 font-mono text-xs text-emerald-400 whitespace-pre overflow-x-auto leading-relaxed max-h-52 overflow-y-auto">{c.fullCode || c.snippet}</div>
+                            {/* Answer input + result */}
+                            {result?.correct ? (
+                              <div className="rounded-lg p-3 text-xs space-y-1 bg-emerald-500/10 border border-emerald-500/20">
+                                <p className="font-bold text-emerald-400">✓ Correct! +{c.xp} XP earned</p>
+                                {result.explanation && <p className="text-muted-foreground">{result.explanation}</p>}
+                                <p className="text-[10px] text-emerald-400/70">Replacing with next challenge...</p>
+                              </div>
+                            ) : (
+                              <div className="space-y-2">
+                                <input
+                                  value={debugAnswers[c.id] ?? ""}
+                                  onChange={e => setDebugAnswers(p => ({ ...p, [c.id]: e.target.value }))}
+                                  onKeyDown={e => e.key === "Enter" && submitDebugAnswer(c)}
+                                  placeholder="Type your answer and press Enter..."
+                                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
+                                />
+                                {/* Wrong answer feedback */}
+                                {result && !result.correct && (
+                                  <div className="rounded-lg p-2.5 bg-red-500/10 border border-red-500/20 space-y-1">
+                                    <p className="text-xs text-red-400 font-semibold">✗ Not quite — try again</p>
+                                    {result.correctAnswer && (
+                                      <p className="text-[10px] text-muted-foreground">
+                                        Answer: <span className="text-amber-400 font-medium">{result.correctAnswer}</span>
+                                      </p>
+                                    )}
+                                    {result.explanation && (
+                                      <p className="text-[10px] text-muted-foreground">{result.explanation}</p>
+                                    )}
+                                    <button
+                                      onClick={() => {
+                                        setDebugResults(p => { const n = {...p}; delete n[c.id]; return n })
+                                        setDebugAnswers(p => ({ ...p, [c.id]: "" }))
+                                      }}
+                                      className="text-[10px] text-primary hover:underline"
+                                    >
+                                      Try again
+                                    </button>
+                                  </div>
+                                )}
+                                {/* Revealed answer panel */}
+                                {revealedAnswers[c.id] && (
+                                  <div className="rounded-lg p-2.5 bg-amber-500/10 border border-amber-500/20 space-y-1">
+                                    <p className="text-[10px] font-bold text-amber-400">💡 Answer Revealed</p>
+                                    <p className="text-xs text-foreground font-medium">{revealedAnswers[c.id].answer}</p>
+                                    {revealedAnswers[c.id].explanation && (
+                                      <p className="text-[10px] text-muted-foreground">{revealedAnswers[c.id].explanation}</p>
+                                    )}
+                                  </div>
+                                )}
+                                <div className="flex items-center gap-2">
+                                  {!revealedAnswers[c.id] && (
+                                    <button
+                                      disabled={revealing === c.id}
+                                      onClick={async () => {
+                                        setRevealing(c.id)
+                                        try {
+                                          const res = await fetch(`/api/student/debug-challenges/${c.id}?action=reveal`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) })
+                                          const data = await res.json()
+                                          if (data.answer) {
+                                            setRevealedAnswers(p => ({ ...p, [c.id]: { answer: data.answer, explanation: data.explanation ?? "" } }))
+                                          }
+                                        } finally {
+                                          setRevealing(null)
+                                        }
+                                      }}
+                                      className="flex items-center gap-1 text-[10px] text-amber-400/80 hover:text-amber-400 transition-colors font-medium"
+                                    >
+                                      {revealing === c.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : "💡"} Reveal
+                                    </button>
+                                  )}
+                                  <button
+                                    onClick={() => submitDebugAnswer(c)}
+                                    disabled={debugSubmitting === c.id || !debugAnswers[c.id]?.trim()}
+                                    className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white disabled:opacity-40 transition-all"
+                                    style={{ background: `linear-gradient(135deg,${c.color},${c.color}cc)` }}
+                                  >
+                                    {debugSubmitting === c.id
+                                      ? <RefreshCw className="h-3 w-3 animate-spin" />
+                                      : <><Zap className="h-3 w-3" /> Submit</>}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )
                       })}
@@ -1432,90 +1686,35 @@ export function FirstYearFullHub({ student }: { student: any }) {
             <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
               <Star className="h-3.5 w-3.5 text-amber-400" />Skill Badge Challenges — Earn Recognition
             </p>
-            <p className="text-[11px] text-muted-foreground">Badges are awarded automatically when your linked platform stats meet the requirement. Completing a track unlocks the next one.</p>
+            <p className="text-[11px] text-muted-foreground">Solve the LeetCode problems in each topic track. Click the circle next to each problem after solving it on LeetCode to mark it done and earn XP.</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {(() => {
-                // ── Full track pool (ordered — later tracks unlock when earlier ones finish) ──
-                const ALL_TRACKS = [
-                  // ── Initial 4 tracks ──────────────────────────────────────
-                  { track:"arrays",    label:"Arrays",         color:"#3b82f6", url:"https://leetcode.com/tag/array/",
-                    badges:[
-                      { id:"badge-array-1", title:"Array Starter",   desc:"Solve 3 Easy problems",    xp:50,  required:3  },
-                      { id:"badge-array-2", title:"Array Pro",        desc:"Solve 15 Easy problems",   xp:80,  required:15 },
-                      { id:"badge-array-3", title:"Array Master",     desc:"Solve 30 Easy problems",   xp:150, required:30 },
-                    ]},
-                  { track:"algo",      label:"Algorithms",     color:"#10b981", url:"https://leetcode.com/problemset/?difficulty=EASY",
-                    badges:[
-                      { id:"badge-algo-1",  title:"Loop Learner",    desc:"Solve 3 Easy problems",    xp:40,  required:3  },
-                      { id:"badge-algo-2",  title:"Loop Master",     desc:"Solve 10 total problems",   xp:70,  required:10 },
-                      { id:"badge-algo-3",  title:"Algorithm Ace",   desc:"Solve 25 total problems",   xp:130, required:25 },
-                    ]},
-                  { track:"strings",   label:"Strings",        color:"#8b5cf6", url:"https://leetcode.com/tag/string/",
-                    badges:[
-                      { id:"badge-str-1",   title:"String Starter",  desc:"Solve 3 Easy problems",    xp:50,  required:3  },
-                      { id:"badge-str-2",   title:"String Wizard",   desc:"Solve 15 problems",         xp:80,  required:15 },
-                      { id:"badge-str-3",   title:"String Legend",   desc:"Solve 30 problems",         xp:140, required:30 },
-                    ]},
-                  { track:"git",       label:"Git",            color:"#f59e0b", url:"https://skills.github.com/",
-                    badges:[
-                      { id:"badge-git-1",   title:"Git Starter",          desc:"Create 1 GitHub repo",  xp:40,  required:1  },
-                      { id:"badge-git-2",   title:"Git Committer",        desc:"Make 10 commits",        xp:70,  required:10 },
-                      { id:"badge-git-3",   title:"Open Source Hero",     desc:"Make 50 commits",        xp:120, required:50 },
-                    ]},
-                  // ── Unlocked after completing initial tracks ───────────────
-                  { track:"trees",     label:"Trees",          color:"#06b6d4", url:"https://leetcode.com/tag/tree/",
-                    badges:[
-                      { id:"badge-tree-1",  title:"Tree Sprout",     desc:"Solve 5 tree problems",     xp:60,  required:5  },
-                      { id:"badge-tree-2",  title:"Tree Climber",    desc:"Solve 15 tree problems",     xp:90,  required:15 },
-                      { id:"badge-tree-3",  title:"Tree Expert",     desc:"Solve 30 tree problems",     xp:160, required:30 },
-                    ]},
-                  { track:"dp",        label:"Dynamic Prog.",  color:"#ec4899", url:"https://leetcode.com/tag/dynamic-programming/",
-                    badges:[
-                      { id:"badge-dp-1",    title:"DP Initiate",     desc:"Solve 3 DP problems",        xp:60,  required:3  },
-                      { id:"badge-dp-2",    title:"DP Practitioner", desc:"Solve 10 DP problems",       xp:100, required:10 },
-                      { id:"badge-dp-3",    title:"DP Master",       desc:"Solve 20 DP problems",       xp:180, required:20 },
-                    ]},
-                  { track:"graphs",    label:"Graphs",         color:"#f97316", url:"https://leetcode.com/tag/graph/",
-                    badges:[
-                      { id:"badge-graph-1", title:"Graph Walker",    desc:"Solve 3 graph problems",     xp:60,  required:3  },
-                      { id:"badge-graph-2", title:"Graph Traverser", desc:"Solve 10 graph problems",    xp:100, required:10 },
-                      { id:"badge-graph-3", title:"Graph Master",    desc:"Solve 20 graph problems",    xp:180, required:20 },
-                    ]},
-                  { track:"sql",       label:"SQL",            color:"#14b8a6", url:"https://sqlzoo.net/wiki/SQL_Tutorial",
-                    badges:[
-                      { id:"badge-sql-1",   title:"SQL Beginner",    desc:"Solve 5 SQL problems",       xp:50,  required:5  },
-                      { id:"badge-sql-2",   title:"SQL Writer",      desc:"Solve 15 SQL problems",      xp:80,  required:15 },
-                      { id:"badge-sql-3",   title:"SQL Expert",      desc:"Solve 30 SQL problems",      xp:150, required:30 },
-                    ]},
-                  // ── Expert tracks (unlocked after advanced tracks complete) ──
-                  { track:"binary",    label:"Binary Search",  color:"#a855f7", url:"https://leetcode.com/tag/binary-search/",
-                    badges:[
-                      { id:"badge-bin-1",   title:"Binary Initiate", desc:"Solve 5 BS problems",        xp:70,  required:5  },
-                      { id:"badge-bin-2",   title:"Binary Searcher", desc:"Solve 15 BS problems",       xp:110, required:15 },
-                      { id:"badge-bin-3",   title:"Binary Expert",   desc:"Solve 30 BS problems",       xp:180, required:30 },
-                    ]},
-                  { track:"sorting",   label:"Sorting",        color:"#f43f5e", url:"https://leetcode.com/tag/sorting/",
-                    badges:[
-                      { id:"badge-sort-1",  title:"Sort Learner",    desc:"Solve 5 sorting problems",   xp:70,  required:5  },
-                      { id:"badge-sort-2",  title:"Sort Pro",        desc:"Solve 15 sorting problems",  xp:110, required:15 },
-                      { id:"badge-sort-3",  title:"Sort Master",     desc:"Solve 25 sorting problems",  xp:180, required:25 },
-                    ]},
-                  { track:"recursion", label:"Recursion",      color:"#84cc16", url:"https://leetcode.com/tag/recursion/",
-                    badges:[
-                      { id:"badge-rec-1",   title:"Recursion Starter",desc:"Solve 3 recursion problems", xp:70, required:3  },
-                      { id:"badge-rec-2",   title:"Recursion Pro",   desc:"Solve 10 recursion problems", xp:110, required:10 },
-                      { id:"badge-rec-3",   title:"Recursion Master", desc:"Solve 20 recursion problems",xp:180, required:20 },
-                    ]},
-                  { track:"hashing",   label:"Hashing",        color:"#fb923c", url:"https://leetcode.com/tag/hash-table/",
-                    badges:[
-                      { id:"badge-hash-1",  title:"Hash Beginner",   desc:"Solve 5 hash problems",      xp:70,  required:5  },
-                      { id:"badge-hash-2",  title:"Hash Builder",    desc:"Solve 15 hash problems",     xp:110, required:15 },
-                      { id:"badge-hash-3",  title:"Hash Master",     desc:"Solve 25 hash problems",     xp:180, required:25 },
-                    ]},
+                // ── Build ALL_TRACKS from TOPIC_QUESTIONS (51 topics × 7 LeetCode problems) ──
+                // Each topic becomes 1 track with 7 "badges" = 7 LeetCode problems to solve.
+                // Completing all 7 problems in a topic earns the full track badge.
+                const TRACK_COLORS = [
+                  "#3b82f6","#10b981","#8b5cf6","#f59e0b","#06b6d4","#ec4899","#f97316",
+                  "#14b8a6","#a855f7","#f43f5e","#84cc16","#fb923c","#ef4444","#6366f1",
+                  "#0ea5e9","#d946ef","#22c55e","#eab308","#64748b","#78716c",
                 ]
 
-                // Always show exactly 4 tracks: the first 4 that aren't fully earned,
-                // with already-completed ones replaced by the next available track.
+                const ALL_TRACKS = TOPIC_QUESTIONS.map((topic, idx) => ({
+                  track: topic.track,
+                  label: topic.label,
+                  color: TRACK_COLORS[idx % TRACK_COLORS.length],
+                  url: `https://leetcode.com/tag/${topic.track.replace(/-/g, "-")}/`,
+                  isInitial: idx < 4,
+                  badges: topic.questions.map((q, qi) => ({
+                    id: q.id,
+                    title: q.title,
+                    desc: `${q.difficulty} · Solve on LeetCode`,
+                    xp: q.xp,
+                    required: 1,  // each badge = solve this 1 problem
+                    url: q.url,
+                    difficulty: q.difficulty,
+                  })),
+                }))
+
                 // Show up to 4 non-completed tracks — never show completed ones
                 const displayTracks = ALL_TRACKS.filter(t =>
                   !t.badges.every(b => completedBadges.includes(b.id))
@@ -1524,7 +1723,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 if (displayTracks.length === 0) return (
                   <div className="col-span-4 text-center py-10 rounded-xl border border-dashed border-emerald-500/30">
                     <Trophy className="h-8 w-8 mx-auto text-emerald-400 mb-2" />
-                    <p className="text-sm font-semibold text-emerald-400">All 36 badges earned — you've mastered every track!</p>
+                    <p className="text-sm font-semibold text-emerald-400">All {TOPIC_QUESTIONS.length} topics mastered — incredible work!</p>
                   </div>
                 )
 
@@ -1538,7 +1737,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   const req           = prog?.required ?? activeBadge.required
                   const pct           = allDone ? 100 : Math.min(100, Math.round((cur / req) * 100))
                   // Is this track newly unlocked (not in the initial 4)?
-                  const isNewUnlock   = !["arrays","algo","strings","git"].includes(t.track) && earnedInTrack.length === 0
+                  const isNewUnlock   = !t.isInitial && earnedInTrack.length === 0
 
                   return (
                     <div key={t.track} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${
@@ -1556,62 +1755,65 @@ export function FirstYearFullHub({ student }: { student: any }) {
                         </div>
                         <p className="text-[10px] text-muted-foreground">{earnedInTrack.length} / {t.badges.length}</p>
                       </div>
-                      {/* Step dots */}
-                      <div className="flex items-center gap-1">
+                      {/* Progress bar */}
+                      <div className="space-y-1">
+                        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                          <div className="h-full rounded-full transition-all duration-700"
+                            style={{ width: `${Math.round((earnedInTrack.length / t.badges.length) * 100)}%`, background: t.color }} />
+                        </div>
+                        <p className="text-[9px] text-muted-foreground">{earnedInTrack.length} of {t.badges.length} problems solved</p>
+                      </div>
+                      {/* Problem list — show actual problem names */}
+                      <div className="flex-1 space-y-1">
                         {t.badges.map((b, i) => {
-                          const done   = completedBadges.includes(b.id)
-                          const isCurr = !allDone && i === currentIdx
+                          const done = completedBadges.includes(b.id)
                           return (
-                            <div key={b.id} className="flex items-center gap-1 flex-1">
-                              <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[9px] font-black transition-all ${done ? "text-white" : isCurr ? "border-2 text-foreground" : "border opacity-30 text-muted-foreground"}`}
-                                style={{ background: done ? t.color : isCurr ? `${t.color}20` : "transparent", borderColor: isCurr ? t.color : "var(--border)" }}>
-                                {done ? "✓" : i + 1}
-                              </div>
-                              {i < t.badges.length - 1 && (
-                                <div className="h-px flex-1 transition-all" style={{ background: done ? t.color : "var(--border)" }} />
-                              )}
+                            <div key={b.id} className={`flex items-center gap-2 py-0.5 transition-all`}>
+                              <button
+                                disabled={done}
+                                onClick={async () => {
+                                  if (done) return
+                                  const res = await fetch("/api/student/first-year-progress", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ action: "award-badge", badgeId: b.id }),
+                                  })
+                                  const data = await res.json()
+                                  if (data.success) {
+                                    setCompletedBadges(p => [...p, b.id])
+                                    setXp(data.newTotal)
+                                    showXpPop(`+${data.xpGained} XP`)
+                                  }
+                                }}
+                                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[8px] font-black transition-all ${
+                                  done
+                                    ? "bg-emerald-500 text-white cursor-default"
+                                    : "border border-border text-muted-foreground hover:border-primary hover:text-primary"
+                                }`}
+                                title={done ? "Solved!" : "Mark as solved"}
+                              >
+                                {done ? "✓" : ""}
+                              </button>
+                              <a href={(b as any).url ?? t.url} target="_blank" rel="noopener noreferrer"
+                                className={`flex-1 text-[10px] font-medium truncate transition-colors ${done ? "text-muted-foreground/40 line-through" : "text-foreground hover:text-primary"}`}>
+                                {b.title}
+                              </a>
+                              <span className="ml-auto text-[8px] font-semibold shrink-0" style={{ color: done ? "#10b981" : t.color }}>
+                                {done ? "✓" : `+${b.xp}XP`}
+                              </span>
                             </div>
                           )
                         })}
                       </div>
-                      {/* Active badge info */}
-                      <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
-                          style={{ background:`${t.color}20`, color: allDone ? "#10b981" : t.color }}>
-                          {allDone ? <CheckCircle2 className="h-4 w-4" /> : <Trophy className="h-3.5 w-3.5" />}
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-foreground">{activeBadge.title}</p>
-                          <p className="text-[9px] font-semibold" style={{ color: allDone ? "#10b981" : "#f59e0b" }}>
-                            {allDone ? "✓ Track Complete" : `+${activeBadge.xp} XP`}
-                          </p>
-                        </div>
-                      </div>
-                      {/* Live progress bar */}
-                      {!allDone && (
-                        <div className="space-y-1.5">
-                          <div className="flex justify-between text-[9px] text-muted-foreground">
-                            <span>{activeBadge.desc}</span>
-                            <span className="font-semibold tabular-nums" style={{ color: t.color }}>{cur} / {req}</span>
-                          </div>
-                          <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
-                            <div className="h-full rounded-full transition-all duration-700"
-                              style={{ width:`${pct}%`, background: t.color }} />
-                          </div>
-                          {pct === 100 && (
-                            <p className="text-[9px] text-emerald-400 font-semibold">✓ Requirement met — badge will be awarded on next load</p>
-                          )}
-                        </div>
-                      )}
                       {/* Practice link */}
                       {!allDone ? (
                         <a href={t.url} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-1.5 text-[10px] text-primary font-semibold py-1.5 rounded-lg border border-primary/20 hover:bg-primary/5 transition-all border-t border-t-border/50 pt-2 mt-auto">
-                          <ExternalLink className="h-3 w-3" /> Practice on {t.label === "Git" ? "GitHub" : t.label === "SQL" ? "SQLZoo" : "LeetCode"}
+                          className="flex items-center justify-center gap-1.5 text-[10px] text-primary font-semibold py-1.5 rounded-lg border border-primary/20 hover:bg-primary/5 transition-all mt-auto">
+                          <ExternalLink className="h-3 w-3" /> Practice on LeetCode
                         </a>
                       ) : (
                         <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-semibold border-t border-emerald-500/20 pt-2">
-                          <CheckCircle2 className="h-3 w-3" /> All badges earned!
+                          <CheckCircle2 className="h-3 w-3" /> All {t.badges.length} problems solved!
                         </div>
                       )}
                     </div>

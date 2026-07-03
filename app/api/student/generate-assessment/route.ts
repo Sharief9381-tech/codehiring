@@ -1,12 +1,62 @@
 ﻿/**
  * POST /api/student/generate-assessment
  * Body: { company: string, section: string, count: number }
- * Generates real assessment questions via Groq for a specific company pattern.
+ * Generates real assessment questions via OpenAI (GPT-4o-mini) with Groq fallback.
  */
 import { NextResponse } from "next/server"
 import { getPYQContext } from "@/lib/question-bank"
 
-const GROQ_API = "https://api.groq.com/openai/v1/chat/completions"
+const GROQ_API    = "https://api.groq.com/openai/v1/chat/completions"
+const OPENAI_API  = "https://api.openai.com/v1/chat/completions"
+
+async function callAI(prompt: string, maxTokens = 6000): Promise<string> {
+  // Try OpenAI first
+  if (process.env.OPENAI_API_KEY) {
+    try {
+      const res = await fetch(OPENAI_API, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.7,
+          max_tokens: maxTokens,
+        }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        const content = data.choices?.[0]?.message?.content?.trim() ?? ""
+        if (content) return content
+      }
+    } catch {}
+  }
+
+  // Fallback to Groq
+  if (process.env.GROQ_API_KEY) {
+    const res = await fetch(GROQ_API, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+        max_tokens: maxTokens,
+      }),
+    })
+    if (res.ok) {
+      const data = await res.json()
+      return data.choices?.[0]?.message?.content?.trim() ?? ""
+    }
+  }
+
+  throw new Error("No AI provider available")
+}
 
 const COMPANY_PATTERNS: Record<string, any> = {
   tcs: {
@@ -107,7 +157,7 @@ export async function POST(req: Request) {
     const sectionData = pattern.sections[section]
     if (!sectionData) return NextResponse.json({ error: "Unknown section" }, { status: 400 })
 
-    if (!process.env.GROQ_API_KEY) {
+    if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
     }
 
@@ -137,7 +187,7 @@ export async function POST(req: Request) {
     } catch (scrapeErr) {
     }
 
-    // ── Step 2: Groq generation with PYQ context ──────────────────────────────
+    // ── Step 2: AI generation (OpenAI primary, Groq fallback) ────────────────
     const isCoding = section === "coding"
     const topicsList = sectionData.topics.join(", ")
     const pyqContext = getPYQContext(company, section, 5)
@@ -201,37 +251,15 @@ Return ONLY valid JSON array (no markdown, no explanation):
   }
 ]`
 
-    const res = await fetch(GROQ_API, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
-        max_tokens: 6000,
-      }),
-    })
-
-    if (!res.ok) {
-      const errText = await res.text()
-      console.error("Groq API error:", res.status, errText)
-      return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
-    }
-
-    const data = await res.json()
-    const raw = data.choices?.[0]?.message?.content?.trim() ?? ""
-    const json = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
-
     try {
+      const raw = await callAI(prompt, 6000)
+      const json = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
       const parsed = JSON.parse(json)
       const questions = Array.isArray(parsed) ? parsed : parsed.questions ?? parsed
       if (!Array.isArray(questions) || questions.length === 0) throw new Error("No questions array")
       return NextResponse.json({ questions, company: pattern.name, section: sectionData.name })
-    } catch (parseErr) {
-      console.error("JSON parse error:", parseErr, "raw:", raw.slice(0, 300))
+    } catch (aiErr) {
+      console.error("AI generation error:", aiErr)
       return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
     }
   } catch (err) {
