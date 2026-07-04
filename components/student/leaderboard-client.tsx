@@ -200,24 +200,29 @@ export function LeaderboardClient() {
   const [selectedCollege, setSelectedCollege] = useState<string>("")
 
   useEffect(() => {
+    const safeJson = (url: string) =>
+      fetch(url)
+        .then(r => (r.ok ? r.json() : null))
+        .catch(() => null)
+
     Promise.all([
-      fetch("/api/student/leaderboard").then(r => r.json()),
-      fetch("/api/student/ranking").then(r => r.json()),
-      fetch("/api/auth/user").then(r => r.json()),
+      safeJson("/api/student/leaderboard"),
+      safeJson("/api/student/ranking"),
+      safeJson("/api/auth/user"),
     ]).then(([leaderboard, ranking, user]) => {
-      setData(leaderboard)
-      setMyRank(ranking)
+      if (leaderboard) setData(leaderboard)
+      if (ranking)     setMyRank(ranking)
       const u = user?.user
-      setMyEmail(u?.email ?? null)
-      const grad = !!u?.isGraduate || (u?.graduationYear && u.graduationYear <= new Date().getFullYear())
-      setIsGraduate(!!grad)
-      const colleges = Object.keys(leaderboard.college ?? {})
-      const myCollege = ranking?.myCollege
-      // Show only the user's own college in the college tab
-      if (!grad && myCollege && leaderboard.college?.[myCollege]) {
-        setSelectedCollege(myCollege)
+      if (u) {
+        setMyEmail(u?.email ?? null)
+        const grad = !!u?.isGraduate || (u?.graduationYear && u.graduationYear <= new Date().getFullYear())
+        setIsGraduate(!!grad)
+        const myCollege = ranking?.myCollege
+        if (!grad && myCollege && leaderboard?.college?.[myCollege]) {
+          setSelectedCollege(myCollege)
+        }
       }
-    }).catch(console.error).finally(() => setLoading(false))
+    }).finally(() => setLoading(false))
   }, [])
 
   const topSolver = data?.global[0]

@@ -9,6 +9,10 @@ const ALLOWED_FIELDS = [
   "graduationYear",   // allowed only if not already set (enforced client-side)
   "skills", "linkedinUrl", "githubUrl", "portfolioUrl", "twitterUrl",
   "isOpenToWork", "resumeUrl",
+  // Extended profile fields
+  "headline", "university", "cgpa", "interPercentage", "sscPercentage",
+  "skillCategories", "projects", "certifications", "internships",
+  "extraAchievements", "languages", "profilePicture",
 ]
 
 export async function PATCH(request: Request) {

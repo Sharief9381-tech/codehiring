@@ -27,234 +27,195 @@
   }
 }
 
-export async function fetchGitHubStats(username: string): Promise<GitHubStats | null> {
+// ── helpers ────────────────────────────────────────────────────────────────────
+
+function authHeaders(): Record<string, string> {
+  const token = process.env.GITHUB_TOKEN
+  return {
+    Accept: "application/vnd.github.v3+json",
+    "User-Agent": "CodeHiring/1.0",
+    ...(token && token !== "your-github-token"
+      ? { Authorization: `Bearer ${token}` }
+      : {}),
+  }
+}
+
+function cleanUsername(raw: string): string {
+  const m = raw.trim().match(/(?:https?:\/\/)?(?:www\.)?github\.com\/([^\/\?\s#]+)/i)
+  return m ? m[1] : raw.trim()
+}
+
+/** Parse the public GitHub contribution SVG to get total + per-day data */
+async function scrapeContributionCalendar(username: string): Promise<{
+  totalContributions: number
+  weeks: { contributionDays: { date: string; contributionCount: number }[] }[]
+}> {
   try {
-    // Clean the username - handle both username and full URL
-    let cleanUsername = username.trim()
-    
-    // Extract username from GitHub URL if provided
-    const urlPattern = /(?:https?:\/\/)?(?:www\.)?github\.com\/([^\/\?\s]+)/i
-    const match = cleanUsername.match(urlPattern)
-    if (match) {
-      cleanUsername = match[1]
-    }
-    
-    
-    // Fetch basic user info with better error handling
-    const userResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
+    const url = `https://github.com/users/${username}/contributions`
+    const res = await fetch(url, {
       headers: {
-        Accept: "application/vnd.github.v3+json",
-        "User-Agent": "CodeTrack/1.0",
-        ...(process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token' && {
-          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-        }),
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        Accept: "text/html,application/xhtml+xml",
+        "Accept-Language": "en-US,en;q=0.9",
+        Referer: `https://github.com/${username}`,
       },
+      signal: AbortSignal.timeout(12000),
     })
 
-    if (!userResponse.ok) {
-      if (userResponse.status === 404) {
-        return null
-      } else if (userResponse.status === 403 || userResponse.status === 429) {
-        // Rate limited — try with a different User-Agent
-        const retryResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
-          headers: {
-            Accept: "application/vnd.github.v3+json",
-            "User-Agent": `Mozilla/5.0 (compatible; stats-bot/1.0; +https://github.com/${cleanUsername})`,
-          },
-        })
-        if (retryResponse.ok) {
-          const userData = await retryResponse.json()
-          return {
-            username: cleanUsername,
-            name: userData.name || cleanUsername,
-            bio: userData.bio || "",
-            avatarUrl: userData.avatar_url || "",
-            publicRepos: userData.public_repos || 0,
-            followers: userData.followers || 0,
-            following: userData.following || 0,
-            totalContributions: 0,
-            repositories: [],
-            languages: {},
-            contributionCalendar: { totalContributions: 0, weeks: [] },
-          }
-        }
-        console.error("GitHub rate limit hit and retry failed")
-        return null
-      } else if (userResponse.status === 401) {
-        const fallbackResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
-          headers: {
-            Accept: "application/vnd.github.v3+json",
-            "User-Agent": "Mozilla/5.0 (compatible; CodeTrack/1.0)",
-          },
-        })
-        
-        if (!fallbackResponse.ok) {
-          console.error("GitHub fallback API error:", fallbackResponse.status, fallbackResponse.statusText)
-          return null
-        }
-        
-        const userData = await fallbackResponse.json()
-        
-        return {
-          username: cleanUsername,
-          name: userData.name || cleanUsername,
-          bio: userData.bio || "",
-          avatarUrl: userData.avatar_url,
-          publicRepos: userData.public_repos,
-          followers: userData.followers,
-          following: userData.following,
-          totalContributions: 0,
-          repositories: [],
-          languages: {},
-          contributionCalendar: { totalContributions: 0, weeks: [] },
-        }
-      } else {
-        console.error("GitHub user API error:", userResponse.status, userResponse.statusText)
-        return null
-      }
+    if (!res.ok) return { totalContributions: 0, weeks: [] }
+
+    const html = await res.text()
+
+    // Extract total contribution count from the heading
+    // e.g. "1,234 contributions in the last year"
+    const totalMatch = html.match(/(\d[\d,]*)\s+contributions?\s+in\s+(?:the\s+)?(?:last\s+year|past\s+year|\d{4})/i)
+    const total = totalMatch ? parseInt(totalMatch[1].replace(/,/g, ""), 10) : 0
+
+    // Parse <td> or <rect> elements with data-date and data-level/data-count
+    // GitHub uses: data-date="2024-01-01" data-count="3" data-level="1"
+    const dayRegex = /data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-count="(\d+)"/g
+    const days: { date: string; contributionCount: number }[] = []
+    let m: RegExpExecArray | null
+    while ((m = dayRegex.exec(html)) !== null) {
+      days.push({ date: m[1], contributionCount: parseInt(m[2], 10) })
     }
 
-    const userData = await userResponse.json()
+    // Group into weeks of 7
+    const weeks: { contributionDays: { date: string; contributionCount: number }[] }[] = []
+    for (let i = 0; i < days.length; i += 7) {
+      weeks.push({ contributionDays: days.slice(i, i + 7) })
+    }
 
-    // Fetch repositories with rate limit protection
-    let reposData = []
+    // If we found day data, sum it up for a more accurate total
+    const sumFromDays = days.reduce((s, d) => s + d.contributionCount, 0)
+
+    return {
+      totalContributions: sumFromDays > 0 ? sumFromDays : total,
+      weeks,
+    }
+  } catch {
+    return { totalContributions: 0, weeks: [] }
+  }
+}
+
+/** Use GraphQL if token available — more accurate */
+async function fetchContributionsViaGraphQL(username: string): Promise<{
+  totalContributions: number
+  weeks: { contributionDays: { date: string; contributionCount: number }[] }[]
+} | null> {
+  const token = process.env.GITHUB_TOKEN
+  if (!token || token === "your-github-token") return null
+
+  try {
+    const res = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "User-Agent": "CodeHiring/1.0", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        query: `query($username:String!){user(login:$username){contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{date contributionCount}}}}}}`,
+        variables: { username },
+      }),
+      signal: AbortSignal.timeout(10000),
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    return data?.data?.user?.contributionsCollection?.contributionCalendar ?? null
+  } catch {
+    return null
+  }
+}
+
+// ── Main export ────────────────────────────────────────────────────────────────
+
+export async function fetchGitHubStats(username: string): Promise<GitHubStats | null> {
+  try {
+    const u = cleanUsername(username)
+    if (!u) return null
+
+    // 1. Fetch basic user info
+    const userRes = await fetch(`https://api.github.com/users/${u}`, {
+      headers: authHeaders(),
+      signal: AbortSignal.timeout(10000),
+    })
+
+    if (userRes.status === 404) {
+      console.error(`GitHub: user "${u}" not found`)
+      return null
+    }
+    if (userRes.status === 403 || userRes.status === 429) {
+      console.warn(`GitHub: rate limited for "${u}"`)
+      // Still try to return partial data via HTML scraping
+    }
+    if (!userRes.ok) {
+      console.error(`GitHub API error: ${userRes.status} for user "${u}"`)
+      return null
+    }
+
+    const userData = await userRes.json()
+
+    // 2. Fetch repos
+    let reposData: any[] = []
     try {
-      const reposResponse = await fetch(
-        `https://api.github.com/users/${cleanUsername}/repos?sort=updated&per_page=10`,
-        {
-          headers: {
-            Accept: "application/vnd.github.v3+json",
-            "User-Agent": "CodeTrack/1.0",
-            ...(process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token' && {
-              Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-            }),
-          },
-        }
+      const reposRes = await fetch(
+        `https://api.github.com/users/${u}/repos?sort=updated&per_page=20`,
+        { headers: authHeaders(), signal: AbortSignal.timeout(10000) }
       )
+      if (reposRes.ok) reposData = await reposRes.json()
+    } catch { /* skip */ }
 
-      if (reposResponse.ok) {
-        reposData = await reposResponse.json()
-      } else {
-      }
-    } catch (error) {
-    }
-
-    // Calculate language statistics
+    // 3. Language breakdown
     const languages: Record<string, number> = {}
     for (const repo of reposData) {
-      if (repo.language) {
-        languages[repo.language] = (languages[repo.language] || 0) + 1
-      }
+      if (repo.language) languages[repo.language] = (languages[repo.language] || 0) + 1
     }
 
-    // Fetch contribution data using GraphQL (if token available)
-    let contributionCalendar = {
-      totalContributions: 0,
-      weeks: [] as { contributionDays: { date: string; contributionCount: number }[] }[],
+    // 4. Contribution calendar — try GraphQL first, then HTML scrape
+    let calendar = await fetchContributionsViaGraphQL(u)
+    if (!calendar || calendar.totalContributions === 0) {
+      calendar = await scrapeContributionCalendar(u)
     }
 
-    if (process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token') {
+    // 5. Fallback: public events API (last ~90 days)
+    if (calendar.totalContributions === 0) {
       try {
-        const graphqlResponse = await fetch("https://api.github.com/graphql", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "User-Agent": "CodeTrack/1.0",
-            Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-          },
-          body: JSON.stringify({
-            query: `
-              query($username: String!) {
-                user(login: $username) {
-                  contributionsCollection {
-                    contributionCalendar {
-                      totalContributions
-                      weeks {
-                        contributionDays {
-                          date
-                          contributionCount
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            `,
-            variables: { username: cleanUsername },
-          }),
-        })
-
-        if (graphqlResponse.ok) {
-          const graphqlData = await graphqlResponse.json()
-          if (graphqlData.data?.user?.contributionsCollection?.contributionCalendar) {
-            contributionCalendar = graphqlData.data.user.contributionsCollection.contributionCalendar
-          }
-        }
-      } catch (error) {
-      }
-    }
-
-    // Fallback: use public events API to estimate contributions when no token
-    if (contributionCalendar.totalContributions === 0) {
-      try {
-        const eventsRes = await fetch(
-          `https://api.github.com/users/${cleanUsername}/events/public?per_page=100`,
-          {
-            headers: {
-              Accept: "application/vnd.github.v3+json",
-              "User-Agent": "CodeTrack/1.0",
-              ...(process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'your-github-token'
-                ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
-                : {}),
-            },
-          }
+        const evRes = await fetch(
+          `https://api.github.com/users/${u}/events/public?per_page=100`,
+          { headers: authHeaders(), signal: AbortSignal.timeout(8000) }
         )
-        if (eventsRes.ok) {
-          const events: any[] = await eventsRes.json()
-          // Count push events (commits) + PR events + issue events as contributions
-          const contributionTypes = ['PushEvent', 'PullRequestEvent', 'IssuesEvent', 'CreateEvent', 'CommitCommentEvent']
-          const count = events.filter((e: any) => contributionTypes.includes(e.type)).length
-          // PushEvent can have multiple commits — sum them up
-          const pushCount = events
-            .filter((e: any) => e.type === 'PushEvent')
-            .reduce((sum: number, e: any) => sum + (e.payload?.commits?.length || 1), 0)
-          const nonPushCount = events.filter((e: any) => e.type !== 'PushEvent' && contributionTypes.includes(e.type)).length
-          contributionCalendar.totalContributions = pushCount + nonPushCount
+        if (evRes.ok) {
+          const events: any[] = await evRes.json()
+          const pushTotal = events
+            .filter((e: any) => e.type === "PushEvent")
+            .reduce((s: number, e: any) => s + (e.payload?.commits?.length ?? 1), 0)
+          const otherTotal = events.filter((e: any) =>
+            ["PullRequestEvent","IssuesEvent","CreateEvent","CommitCommentEvent"].includes(e.type)
+          ).length
+          calendar.totalContributions = pushTotal + otherTotal
         }
-      } catch (_) {
-        // events API failed, leave at 0
-      }
+      } catch { /* skip */ }
     }
 
     return {
-      username: cleanUsername,
-      name: userData.name || cleanUsername,
+      username: u,
+      name: userData.name || u,
       bio: userData.bio || "",
-      avatarUrl: userData.avatar_url,
-      publicRepos: userData.public_repos,
-      followers: userData.followers,
-      following: userData.following,
-      totalContributions: contributionCalendar.totalContributions,
-      repositories: reposData.map((repo: {
-        name: string
-        description: string
-        language: string
-        stargazers_count: number
-        forks_count: number
-        html_url: string
-      }) => ({
+      avatarUrl: userData.avatar_url || "",
+      publicRepos: userData.public_repos || 0,
+      followers: userData.followers || 0,
+      following: userData.following || 0,
+      totalContributions: calendar.totalContributions,
+      repositories: reposData.slice(0, 10).map((repo: any) => ({
         name: repo.name,
         description: repo.description || "",
         language: repo.language || "Unknown",
-        stars: repo.stargazers_count,
-        forks: repo.forks_count,
+        stars: repo.stargazers_count || 0,
+        forks: repo.forks_count || 0,
         url: repo.html_url,
       })),
       languages,
-      contributionCalendar,
+      contributionCalendar: calendar,
     }
-  } catch (error) {
-    console.error("Error fetching GitHub stats:", error)
+  } catch (err) {
+    console.error("fetchGitHubStats error:", err)
     return null
   }
 }
