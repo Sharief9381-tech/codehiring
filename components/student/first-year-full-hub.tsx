@@ -1079,10 +1079,10 @@ export function FirstYearFullHub({ student }: { student: any }) {
           {/* 4 stat cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {[
-              { label: "Current Streak",   value: streak,                     sub: streak === 0 ? "Start today" : `${streak} days strong`,       color: "#10b981" },
-              { label: "Problems Solved",  value: completedMilestones.filter(id => id.startsWith("lc")).length, sub: `+${monthlySolved} this month`, color: "#3b82f6" },
-              { label: "Badges Earned",    value: Math.floor(xp / 100),       sub: `${Math.max(0, 6 - Math.floor(xp / 100))} to go`,             color: "#f59e0b" },
-              { label: "Total Points",     value: xp,                         sub: "Points earned",                                               color: "#8b5cf6" },
+              { label: "Current Streak",  value: streak,                  sub: streak === 0 ? "Start today" : `${streak} days strong`,                           color: "#10b981" },
+              { label: "Challenges Done", value: completedChallenges.length, sub: completedChallenges.length === 0 ? "Start solving" : `+${monthlySolved} daily this month`, color: "#3b82f6" },
+              { label: "Badges Earned",   value: completedBadges.length,  sub: completedBadges.length === 0 ? "Start earning badges" : `across ${TOPIC_QUESTIONS.length} topics`, color: "#f59e0b" },
+              { label: "Total Points",    value: xp,                      sub: "XP earned",                                                                       color: "#8b5cf6" },
             ].map(s => (
               <div key={s.label} className="rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-1">
                 <p className="text-xs text-muted-foreground">{s.label}</p>

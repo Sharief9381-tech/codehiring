@@ -1183,6 +1183,24 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
   )
 }
 
+// ── Learning Paths placeholder (full paths are in /student/learn) ─────────────
+function LearningPathsPlaceholder() {
+  return (
+    <div className="text-center py-16 space-y-4">
+      <p className="text-lg font-bold text-foreground">Learning Paths</p>
+      <p className="text-sm text-muted-foreground max-w-md mx-auto">
+        Your full learning roadmap is available on the <strong>Learn</strong> page.
+        It includes step-by-step paths for Python, DSA, Web Dev, Git, and CS fundamentals.
+      </p>
+      <a href="/student/learn#learning"
+        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white"
+        style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+        Go to Learning Paths →
+      </a>
+    </div>
+  )
+}
+
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function PrepHubPage() {
   const [activePath, setActivePath] = useState<Path | null>(null)
@@ -1449,7 +1467,7 @@ export default function PrepHubPage() {
               <div className="w-px h-4 bg-border" />
               <h2 className="text-lg font-bold text-foreground">Learning Paths</h2>
             </div>
-            <LearningPathsContent />
+            <LearningPathsPlaceholder />
           </div>
         </div>
       )}
@@ -1490,19 +1508,16 @@ export default function PrepHubPage() {
             <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments · company patterns · real results</p>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
-            {[
-              { label:"Learning Paths", color:"#93c5fd", bg:"rgba(96,165,250,0.22)",  border:"rgba(96,165,250,0.55)",  icon:<BookOpen className="h-5 w-5" />,     onClick:() => setShowLearningPaths(true) },
-              { label:"Aptitude",       color:"#fcd34d", bg:"rgba(245,158,11,0.22)",  border:"rgba(245,158,11,0.55)",  icon:<Brain className="h-5 w-5" />,        onClick:() => { setActivePath("aptitude"); setSubView("home") } },
-              { label:"Coding / DSA",   color:"#ffffff", bg:"rgba(255,255,255,0.18)", border:"rgba(255,255,255,0.45)", icon:<Code2 className="h-5 w-5" />,        onClick:() => { setActivePath("coding"); setSubView("home") } },
-              { label:"Communication",  color:"#6ee7b7", bg:"rgba(52,211,153,0.22)",  border:"rgba(52,211,153,0.55)",  icon:<MessageCircle className="h-5 w-5" />,onClick:() => { setActivePath("communication"); setSubView("home") } },
-              { label:"Smart Resume",   color:"#f9a8d4", bg:"rgba(236,72,153,0.22)",  border:"rgba(236,72,153,0.55)",  icon:<Sparkles className="h-5 w-5" />,    onClick:() => setShowSmartResume(true) },
-            ].map(p => (
-              <button key={p.label} onClick={p.onClick}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
-                style={{ background:p.bg, color:p.color, border:`1.5px solid ${p.border}` }}>
-                {p.icon}{p.label}
-              </button>
-            ))}
+            <button onClick={() => setShowLearningPaths(true)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
+              style={{ background:"rgba(96,165,250,0.22)", color:"#93c5fd", border:"1.5px solid rgba(96,165,250,0.55)" }}>
+              <BookOpen className="h-5 w-5" /> Learning Paths
+            </button>
+            <button onClick={() => setShowSmartResume(true)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
+              style={{ background:"rgba(236,72,153,0.22)", color:"#f9a8d4", border:"1.5px solid rgba(236,72,153,0.55)" }}>
+              <Sparkles className="h-5 w-5" /> Smart Resume
+            </button>
             <button onClick={() => setShowHistory(true)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
               style={{ background:"rgba(245,158,11,0.22)", color:"#fcd34d", border:"1.5px solid rgba(245,158,11,0.55)" }}>
@@ -1532,30 +1547,30 @@ export default function PrepHubPage() {
         <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2 px-1">
           <Zap className="h-3.5 w-3.5 text-primary" />Practice Tracks — click to start
         </p>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { path:"aptitude" as Path,      label:"Aptitude",      sub:"Quant · Logical · Data Interp.",  desc:"Master the foundation of every placement test.", color:"#f59e0b", glow:"rgba(245,158,11,0.25)", grad:"linear-gradient(135deg,rgba(245,158,11,0.25),rgba(245,158,11,0.08))", icon:<Brain className="h-7 w-7" />,        topics:["Percentages","Profit & Loss","Time & Work","Probability","Series"] },
-            { path:"coding" as Path,        label:"Coding / DSA",  sub:"Arrays · Trees · DP · Graphs",    desc:"Build algorithmic thinking with AI-generated problems.", color:"#818cf8", glow:"rgba(129,140,248,0.25)", grad:"linear-gradient(135deg,rgba(129,140,248,0.25),rgba(99,102,241,0.08))", icon:<Code2 className="h-7 w-7" />,        topics:["Arrays","Strings","Linked Lists","Trees","Dynamic Prog."] },
-            { path:"communication" as Path, label:"Communication", sub:"Grammar · Vocab · Reading",       desc:"Polish verbal and written skills companies test.", color:"#34d399", glow:"rgba(52,211,153,0.25)", grad:"linear-gradient(135deg,rgba(52,211,153,0.25),rgba(16,185,129,0.08))", icon:<MessageCircle className="h-7 w-7" />, topics:["Grammar","Vocabulary","Para Jumbles","Comprehension","Email Writing"] },
+            { path:"aptitude" as Path,      label:"Aptitude",      sub:"Quant · Logical · Data Interp.",  desc:"Master the foundation of every placement test.", color:"#f59e0b", glow:"rgba(245,158,11,0.20)", grad:"linear-gradient(135deg,rgba(245,158,11,0.18),rgba(245,158,11,0.06))", icon:<Brain className="h-6 w-6" />,        topics:["Percentages","Profit & Loss","Time & Work","Probability","Series"] },
+            { path:"coding" as Path,        label:"Coding / DSA",  sub:"Arrays · Trees · DP · Graphs",    desc:"Build algorithmic thinking with AI-generated problems.", color:"#818cf8", glow:"rgba(129,140,248,0.20)", grad:"linear-gradient(135deg,rgba(129,140,248,0.18),rgba(99,102,241,0.06))", icon:<Code2 className="h-6 w-6" />,        topics:["Arrays","Strings","Linked Lists","Trees","Dynamic Prog."] },
+            { path:"communication" as Path, label:"Communication", sub:"Grammar · Vocab · Reading",       desc:"Polish verbal and written skills companies test.", color:"#34d399", glow:"rgba(52,211,153,0.20)", grad:"linear-gradient(135deg,rgba(52,211,153,0.18),rgba(16,185,129,0.06))", icon:<MessageCircle className="h-6 w-6" />, topics:["Grammar","Vocabulary","Para Jumbles","Comprehension","Email Writing"] },
           ].map(track => (
             <button key={track.path} onClick={() => { setActivePath(track.path); setSubView("home") }}
-              className="group relative overflow-hidden rounded-2xl text-left transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
-              style={{ background:track.grad, border:`1px solid ${track.color}40`, boxShadow:`0 4px 24px ${track.glow}` }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 20px 40px ${track.glow},0 0 40px ${track.glow}` }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 4px 24px ${track.glow}` }}>
-              <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full opacity-20 blur-2xl pointer-events-none group-hover:opacity-40 transition-opacity" style={{ background:`radial-gradient(${track.color},transparent)` }} />
-              <div className="relative z-10 p-5 space-y-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl" style={{ background:`${track.color}25`, border:`1px solid ${track.color}50`, color:track.color }}>{track.icon}</div>
-                  <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" style={{ color:track.color }} />
+              className="group relative overflow-hidden rounded-2xl text-left transition-all duration-300 hover:scale-[1.02]"
+              style={{ background:track.grad, border:`1px solid ${track.color}35`, boxShadow:`0 2px 16px ${track.glow}` }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 8px 32px ${track.glow}` }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 2px 16px ${track.glow}` }}>
+              <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full opacity-15 blur-2xl pointer-events-none" style={{ background:`radial-gradient(${track.color},transparent)` }} />
+              <div className="relative z-10 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background:`${track.color}20`, border:`1px solid ${track.color}40`, color:track.color }}>{track.icon}</div>
+                  <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color:track.color }} />
                 </div>
                 <div>
-                  <p className="font-black text-lg text-foreground">{track.label}</p>
-                  <p className="text-xs font-semibold mt-0.5" style={{ color:track.color }}>{track.sub}</p>
-                  <p className="text-xs mt-2 leading-relaxed text-muted-foreground">{track.desc}</p>
+                  <p className="font-black text-base text-foreground">{track.label}</p>
+                  <p className="text-[11px] font-semibold mt-0.5" style={{ color:track.color }}>{track.sub}</p>
+                  <p className="text-xs mt-1.5 leading-relaxed text-muted-foreground">{track.desc}</p>
                 </div>
-                <div className="flex flex-wrap gap-1.5 pt-1 border-t" style={{ borderColor:`${track.color}20` }}>
-                  {track.topics.map(t => <span key={t} className="text-[10px] px-2 py-0.5 rounded-full font-medium" style={{ background:`${track.color}15`, color:track.color, border:`1px solid ${track.color}30` }}>{t}</span>)}
+                <div className="flex flex-wrap gap-1 pt-2 border-t" style={{ borderColor:`${track.color}15` }}>
+                  {track.topics.map(t => <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full font-medium" style={{ background:`${track.color}12`, color:track.color, border:`1px solid ${track.color}25` }}>{t}</span>)}
                 </div>
               </div>
             </button>
@@ -1563,34 +1578,6 @@ export default function PrepHubPage() {
         </div>
       </div>
 
-      {/* Free Platforms */}
-      <div className="space-y-3">
-        <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2 px-1">
-          <Star className="h-3.5 w-3.5 text-amber-400" />Free Mock Tests &amp; Practice Platforms
-        </p>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { name:"LeetCode Mock",        desc:"OA simulation — company-tagged, timed",                    badge:"Coding",    col:"#f59e0b", url:"https://leetcode.com/interview/" },
-            { name:"HackerRank Tests",     desc:"Free certs — Problem Solving, SQL, Python, Java",          badge:"Cert",      col:"#10b981", url:"https://www.hackerrank.com/skills-verification" },
-            { name:"Pramp Mock Interview", desc:"Live peer-to-peer & AI mock interviews — free",            badge:"Interview", col:"#3b82f6", url:"https://www.pramp.com/#/" },
-            { name:"IndiaBix Aptitude",    desc:"TCS, Infosys, Wipro aptitude tests + solutions",           badge:"Aptitude",  col:"#8b5cf6", url:"https://www.indiabix.com/aptitude/questions-and-answers/" },
-            { name:"PrepInsta TCS NQT",    desc:"Full TCS NQT mocks with previous year questions",          badge:"TCS",       col:"#06b6d4", url:"https://prepinsta.com/tcs-nqt/" },
-            { name:"PrepInsta Infosys",    desc:"InfyTQ mocks, previous papers, coding round prep",         badge:"Infosys",   col:"#6366f1", url:"https://prepinsta.com/infosys/" },
-            { name:"Neetcode Practice",    desc:"150 curated LeetCode problems + video explanations",       badge:"DSA",       col:"#ef4444", url:"https://neetcode.io/practice" },
-            { name:"InterviewBit Mock",    desc:"Company-wise mock interviews and coding challenges",        badge:"Full Stack",col:"#14b8a6", url:"https://www.interviewbit.com/mock-interview/" },
-          ].map(p => (
-            <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer"
-              className="group rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-2 hover:border-primary/30 hover:shadow-md transition-all">
-              <div className="flex items-start justify-between gap-2">
-                <p className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">{p.name}</p>
-                <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ background:`${p.col}15`, color:p.col, border:`1px solid ${p.col}30` }}>{p.badge}</span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
-              <p className="text-[10px] font-bold flex items-center gap-1" style={{ color:p.col }}>Open <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" /></p>
-            </a>
-          ))}
-        </div>
-      </div>
       {/* Company Prep Tracks — hidden for 1st year */}
       {!isFirstYear && <div>
         <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
