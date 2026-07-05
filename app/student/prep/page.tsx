@@ -1210,7 +1210,7 @@ export default function PrepHubPage() {
   const [showHistory, setShowHistory] = useState(false)
   const [showLearningPaths, setShowLearningPaths] = useState(false)
   const [showSmartResume, setShowSmartResume] = useState(false)
-  const [studentYear, setStudentYear] = useState<number>(0)
+  const [studentYear, setStudentYear] = useState<number | null>(null)
 
   // Detect student year
   useEffect(() => {
@@ -1235,7 +1235,9 @@ export default function PrepHubPage() {
     return () => { document.body.style.overflow = "" }
   }, [showHistory, showLearningPaths, showSmartResume])
 
+  // null = loading, 1 = first year (no company grids), 2-4 = show company grids
   const isFirstYear = studentYear === 1
+  const yearLoaded  = studentYear !== null
 
   // ── COMPANY ASSESSMENT ──
   if (activePath === "company" && activeCompany) {
@@ -1578,8 +1580,8 @@ export default function PrepHubPage() {
         </div>
       </div>
 
-      {/* Company Prep Tracks — hidden for 1st year */}
-      {!isFirstYear && <div>
+      {/* Company Prep Tracks — hidden for 1st year, hidden until year loads */}
+      {yearLoaded && !isFirstYear && <div>
         <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
           <Flag className="h-3.5 w-3.5" />Company Prep Tracks
           <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">⭐ AI-Generated Questions</span>
