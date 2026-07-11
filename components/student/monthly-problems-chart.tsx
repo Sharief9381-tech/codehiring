@@ -130,12 +130,12 @@ export function MonthlyProblemsChart() {
 
               <XAxis
                 dataKey="month"
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
                 axisLine={false}
                 tickLine={false}
                 allowDecimals={false}
@@ -153,7 +153,7 @@ export function MonthlyProblemsChart() {
                   x={data[curMonthIdx].month}
                   stroke="hsl(var(--border))"
                   strokeDasharray="4 2"
-                  label={{ value: "now", position: "top", fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                  label={{ value: "now", position: "top", fill: "#94a3b8", fontSize: 10 }}
                 />
               )}
 

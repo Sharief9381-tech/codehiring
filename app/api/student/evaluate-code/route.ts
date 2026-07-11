@@ -1,7 +1,6 @@
 /**
  * POST /api/student/evaluate-code
- * Evaluates student-written code for a daily challenge using OpenAI.
- * Body: { code, language, problem: { title, desc, input, output, explain } }
+ * Evaluates student code using Mistral (primary) → Groq → OpenAI fallback chain.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -13,10 +12,7 @@ export async function POST(req: Request) {
 
     const { code, language = "Python", problem } = await req.json()
     if (!code?.trim()) return NextResponse.json({ error: "No code provided" }, { status: 400 })
-    if (!problem)       return NextResponse.json({ error: "No problem provided" }, { status: 400 })
-
-    const key = process.env.OPENAI_API_KEY
-    if (!key) return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 })
+    if (!problem)      return NextResponse.json({ error: "No problem provided" }, { status: 400 })
 
     const prompt = `You are a coding evaluator for beginner CS students. Evaluate the following ${language} code submitted for this problem.
 
@@ -36,32 +32,60 @@ Evaluate the code and respond ONLY with a valid JSON object (no markdown, no exp
   "correct": true or false,
   "score": number from 0-100,
   "verdict": "Accepted" | "Wrong Answer" | "Partial" | "Syntax Error" | "Logic Error",
-  "feedback": "2-4 sentences of clear, encouraging feedback for a beginner. Mention what they did right and what to fix.",
+  "feedback": "2-4 sentences of clear, encouraging feedback. Mention what they did right and what to fix.",
   "hint": "One specific hint if incorrect, empty string if correct",
   "timeComplexity": "e.g. O(n) or unknown",
   "improvements": ["up to 2 short improvement suggestions, empty array if perfect"]
 }`
 
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.3,
-        max_tokens: 600,
-      }),
-    })
-
-    if (!res.ok) {
-      const err = await res.text()
-      return NextResponse.json({ error: `OpenAI error: ${res.status}`, detail: err }, { status: 500 })
+    const call = async (apiKey: string, url: string, model: string) => {
+      const r = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.3,
+          max_tokens: 600,
+        }),
+      })
+      if (!r.ok) throw new Error(`${r.status}`)
+      return r.json()
     }
 
-    const data    = await res.json()
+    const mistralKey = process.env.MISTRAL_API_KEY
+    const groqKey    = process.env.GROQ_API_KEY
+    const openaiKey  = process.env.OPENAI_API_KEY
+
+    let data: any = null
+
+    // 1. Mistral (primary)
+    if (mistralKey) {
+      try {
+        data = await call(mistralKey, "https://api.mistral.ai/v1/chat/completions", "mistral-small-latest")
+      } catch { /* fall through */ }
+    }
+
+    // 2. Groq fallback
+    if (!data && groqKey) {
+      try {
+        data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile")
+      } catch { /* fall through */ }
+    }
+
+    // 3. OpenAI last resort
+    if (!data && openaiKey) {
+      try {
+        data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini")
+      } catch (e: any) {
+        return NextResponse.json({ error: `All AI providers failed` }, { status: 500 })
+      }
+    }
+
+    if (!data) {
+      return NextResponse.json({ error: "No AI provider available. Add MISTRAL_API_KEY or GROQ_API_KEY to .env" }, { status: 500 })
+    }
+
     const raw     = data.choices?.[0]?.message?.content?.trim() ?? ""
     const cleaned = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
     const result  = JSON.parse(cleaned)

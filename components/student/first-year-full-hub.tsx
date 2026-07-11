@@ -1009,7 +1009,6 @@ export function FirstYearFullHub({ student }: { student: any }) {
 
   const TABS = [
     { id: "progress",    label: "My Progress",  icon: <TrendingUp className="h-4 w-4" /> },
-    { id: "practice",    label: "Practice",     icon: <Target className="h-4 w-4" /> },
     { id: "challenges",  label: "Challenges",   icon: <Code2 className="h-4 w-4" /> },
     { id: "soft",        label: "Soft Skills",  icon: <MessageCircle className="h-4 w-4" /> },
     { id: "community",   label: "Community",    icon: <Users className="h-4 w-4" /> },
@@ -1028,10 +1027,22 @@ export function FirstYearFullHub({ student }: { student: any }) {
             <h1 className="text-xl font-bold text-foreground">1st Year Learning Hub</h1>
             <p className="text-xs text-muted-foreground mt-0.5">Build your foundation · No pressure · Just growth</p>
           </div>
-          <div className="ml-auto flex items-center gap-2 px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/10 shrink-0">
-            <span className="text-xs text-blue-400 font-semibold">Year 1</span>
-            <span className="text-xs text-muted-foreground">·</span>
-            <span className="text-xs text-muted-foreground">Grad {student.graduationYear}</span>
+          <div className="ml-auto flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => switchTab("learning")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-blue-400/30 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20 transition-all shrink-0">
+              <BookOpen className="h-3.5 w-3.5" /> Learning Paths
+            </button>
+            <a
+              href="/student/prep#smart-resume"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-pink-400/30 bg-pink-500/10 text-pink-300 hover:bg-pink-500/20 transition-all shrink-0">
+              <Sparkles className="h-3.5 w-3.5" /> Smart Resume
+            </a>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/10 shrink-0">
+              <span className="text-xs text-blue-400 font-semibold">Year 1</span>
+              <span className="text-xs text-muted-foreground">·</span>
+              <span className="text-xs text-muted-foreground">Grad {student.graduationYear}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1039,23 +1050,54 @@ export function FirstYearFullHub({ student }: { student: any }) {
 
       {/* Tabs — hidden in standalone mode */}
       {!standaloneMode && (
-      <div className="flex gap-2 flex-wrap">
-        {TABS.map(t => (
-          t.id === "practice" ? (
-            <a key={t.id} href="/student/prep"
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
-              style={{ background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
-              {t.icon}{t.label}
-            </a>
-          ) : (
-            <button key={t.id} onClick={() => switchTab(t.id)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
-              style={activeTab === t.id
-                ? { background: "rgba(124,58,237,0.20)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.35)" }
-                : { background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
-              {t.icon}{t.label}
-            </button>
-          )
+      <div className="flex gap-2 flex-wrap items-center">
+        {/* My Progress — first */}
+        <button onClick={() => switchTab("progress")}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+          style={activeTab === "progress"
+            ? { background: "rgba(124,58,237,0.20)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.35)" }
+            : { background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
+          <TrendingUp className="h-4 w-4" /> My Progress
+        </button>
+
+        {/* Practice — second, hover dropdown */}
+        <div className="relative group">
+          <button
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+            style={{ background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
+            <Target className="h-4 w-4" /> Practice
+            <svg viewBox="0 0 24 24" className="h-3 w-3 ml-0.5 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div className="absolute left-0 top-full mt-1.5 z-50 w-56 rounded-xl border border-border bg-card shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 pointer-events-none group-hover:pointer-events-auto">
+            {[
+              { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", color: "#f59e0b", href: "/student/prep?track=aptitude" },
+              { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
+              { label: "Communication", sub: "Grammar · Vocab · Reading",       color: "#10b981", href: "/student/prep?track=communication" },
+            ].map(opt => (
+              <a key={opt.label} href={opt.href}
+                className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors border-b border-border/50 last:border-0">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
+                  style={{ background: `${opt.color}20`, color: opt.color }}>
+                  {opt.label[0]}
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-foreground">{opt.label}</p>
+                  <p className="text-[10px] text-muted-foreground">{opt.sub}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Challenges, Soft Skills, Community */}
+        {TABS.filter(t => t.id !== "progress").map(t => (
+          <button key={t.id} onClick={() => switchTab(t.id)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+            style={activeTab === t.id
+              ? { background: "rgba(124,58,237,0.20)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.35)" }
+              : { background: "transparent", color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
+            {t.icon}{t.label}
+          </button>
         ))}
       </div>
       )}
@@ -1077,20 +1119,34 @@ export function FirstYearFullHub({ student }: { student: any }) {
           </div>
 
           {/* 4 stat cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {[
-              { label: "Current Streak",  value: streak,                  sub: streak === 0 ? "Start today" : `${streak} days strong`,                           color: "#10b981" },
-              { label: "Challenges Done", value: completedChallenges.length, sub: completedChallenges.length === 0 ? "Start solving" : `+${monthlySolved} daily this month`, color: "#3b82f6" },
-              { label: "Badges Earned",   value: completedBadges.length,  sub: completedBadges.length === 0 ? "Start earning badges" : `across ${TOPIC_QUESTIONS.length} topics`, color: "#f59e0b" },
-              { label: "Total Points",    value: xp,                      sub: "XP earned",                                                                       color: "#8b5cf6" },
-            ].map(s => (
-              <div key={s.label} className="rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-1">
-                <p className="text-xs text-muted-foreground">{s.label}</p>
-                <p className="text-3xl font-black tabular-nums" style={{ color: s.color }}>{s.value}</p>
-                <p className="text-[10px] text-muted-foreground">{s.sub}</p>
+          {(() => {
+            const PLATFORM_BADGES = [
+              { id:"code-spark",       earned: xp > 0 },
+              { id:"first-blood",      earned: completedChallenges.length >= 1 },
+              { id:"daily-grinder",    earned: streak >= 7 },
+              { id:"decathlon",        earned: completedChallenges.length >= 10 },
+              { id:"badge-hunter",     earned: completedBadges.length >= 7 },
+              { id:"two-week-warrior", earned: streak >= 14 },
+              { id:"xp-legend",        earned: xp >= 500 },
+            ]
+            const earnedCount = PLATFORM_BADGES.filter(b => b.earned).length
+            return (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                {[
+                  { label: "Current Streak",  value: streak,                       sub: streak === 0 ? "Start today" : `${streak} days strong`,                          color: "#10b981" },
+                  { label: "Challenges Done", value: completedChallenges.length,   sub: completedChallenges.length === 0 ? "Start solving" : `+${monthlySolved} daily`, color: "#3b82f6" },
+                  { label: "Badges Earned",   value: `${earnedCount} / 7`,         sub: earnedCount === 7 ? "All badges unlocked!" : `${7 - earnedCount} more to go`,   color: "#f59e0b" },
+                  { label: "Total Points",    value: xp,                           sub: "XP earned",                                                                      color: "#8b5cf6" },
+                ].map(s => (
+                  <div key={s.label} className="rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-1">
+                    <p className="text-xs text-muted-foreground">{s.label}</p>
+                    <p className="text-3xl font-black tabular-nums" style={{ color: s.color }}>{s.value}</p>
+                    <p className="text-[10px] text-muted-foreground">{s.sub}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )
+          })()}
 
           {/* Main 2-col layout */}
           <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
@@ -1165,49 +1221,6 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 )}
               </div>
 
-              {/* Your Progress */}
-              <div className="rounded-xl border border-border bg-card/50 p-5 space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/40 border-2 border-primary" />
-                  <div>
-                    <p className="font-bold text-foreground text-sm">Your Progress</p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {level.name} · Week {Math.ceil((completedMilestones.length + 1) / 2)} : Fundamentals
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
-                    <span>Challenge Progress</span>
-                    <span className="font-semibold text-foreground">{completedMilestones.length} / {ROADMAP_STEPS.length}</span>
-                  </div>
-                  <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-                    <div className="h-full rounded-full transition-all duration-700"
-                      style={{ width: `${Math.round((completedMilestones.length / ROADMAP_STEPS.length) * 100)}%`, background: "linear-gradient(90deg,#7c3aed,#10b981)" }} />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-foreground mb-2">This Week's Topics</p>
-                  {ROADMAP_STEPS.filter(s => !completedMilestones.includes(s.id)).slice(0, 3).map(step => (
-                    <div key={step.id} className="flex items-center justify-between gap-3 py-1.5">
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full shrink-0" style={{ background: step.color }} />
-                        <p className="text-xs text-muted-foreground">{step.title}</p>
-                      </div>
-                      <button onClick={() => completeMilestone(step.id)} disabled={completing === step.id}
-                        className="text-[10px] px-2 py-0.5 rounded-lg border border-border text-muted-foreground hover:border-primary/40 hover:text-primary transition-all">
-                        {completing === step.id ? "..." : "Mark Done"}
-                      </button>
-                    </div>
-                  ))}
-                  {ROADMAP_STEPS.filter(s => !completedMilestones.includes(s.id)).length === 0 && (
-                    <p className="text-xs text-emerald-400 font-semibold flex items-center gap-1.5">
-                      <CheckCircle2 className="h-4 w-4" /> All milestones complete!
-                    </p>
-                  )}
-                </div>
-              </div>
-
               {/* Recommended Resources */}
               <div className="rounded-xl border border-border bg-card/50 p-5 space-y-3">
                 <div className="flex items-center gap-2">
@@ -1263,28 +1276,34 @@ export function FirstYearFullHub({ student }: { student: any }) {
               <div className="rounded-xl border border-border bg-card/50 p-5 space-y-3">
                 <div className="flex items-center gap-2">
                   <Trophy className="h-4 w-4 text-amber-400" />
-                  <p className="font-bold text-foreground text-sm">Recent Badges</p>
+                  <p className="font-bold text-foreground text-sm">Platform Badges</p>
+                  <span className="ml-auto text-[10px] text-muted-foreground">
+                    {[xp>0, completedChallenges.length>=1, streak>=7, completedChallenges.length>=10, completedBadges.length>=7, streak>=14, xp>=500].filter(Boolean).length} / 7
+                  </span>
                 </div>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="space-y-2">
                   {[
-                    { label: "First",     color: "#ef4444", earned: xp > 0,    icon: <Star className="h-5 w-5" /> },
-                    { label: "Week",      color: "#f59e0b", earned: streak >= 7, icon: <Flame className="h-5 w-5" /> },
-                    { label: "Fortnight", color: "#10b981", earned: streak >= 14, icon: <Trophy className="h-5 w-5" /> },
-                    { label: "Legend",    color: "#8b5cf6", earned: xp >= 500,  icon: <Zap className="h-5 w-5" /> },
+                    { label: "Code Spark",      color: "#ef4444", earned: xp > 0,                            icon: <Zap className="h-3.5 w-3.5" />,    how: "Earn your first XP by solving any challenge" },
+                    { label: "First Blood",     color: "#f97316", earned: completedChallenges.length >= 1,   icon: <Star className="h-3.5 w-3.5" />,   how: "Complete your first project or debug challenge" },
+                    { label: "Daily Grinder",   color: "#f59e0b", earned: streak >= 7,                       icon: <Flame className="h-3.5 w-3.5" />,  how: "Solve the daily coding problem 7 days in a row" },
+                    { label: "Decathlon",       color: "#10b981", earned: completedChallenges.length >= 10,  icon: <Target className="h-3.5 w-3.5" />, how: "Complete 10 challenges — projects + debug combined" },
+                    { label: "Badge Hunter",    color: "#06b6d4", earned: completedBadges.length >= 7,       icon: <Award className="h-3.5 w-3.5" />,  how: "Mark 7 LeetCode problems done in Skill Badge Challenges tab" },
+                    { label: "Two-Week Warrior",color: "#8b5cf6", earned: streak >= 14,                      icon: <Trophy className="h-3.5 w-3.5" />, how: "Keep your daily problem streak alive for 14 days straight" },
+                    { label: "XP Legend",       color: "#ec4899", earned: xp >= 500,                         icon: <Sparkles className="h-3.5 w-3.5" />, how: "Stack 500 XP — every challenge, badge and daily adds up" },
                   ].map(b => (
-                    <div key={b.label} className="flex flex-col items-center gap-1">
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all ${b.earned ? "" : "opacity-25 grayscale"}`}
-                        style={{ background: `${b.color}20`, border: `1px solid ${b.color}40`, color: b.color }}>
+                    <div key={b.label} className={`flex items-center gap-3 p-2 rounded-lg transition-all ${b.earned ? "bg-white/5" : "opacity-60"}`}>
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                        style={{ background: `${b.color}20`, border: `1px solid ${b.color}${b.earned ? "50" : "25"}`, color: b.color }}>
                         {b.icon}
                       </div>
-                      <p className="text-[9px] text-muted-foreground">{b.label}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-xs font-semibold ${b.earned ? "text-foreground" : "text-muted-foreground"}`}>{b.label}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{b.earned ? "✓ Earned" : b.how}</p>
+                      </div>
+                      {b.earned && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400" />}
                     </div>
                   ))}
                 </div>
-                <button onClick={() => switchTab("leaderboard")}
-                  className="w-full py-2 rounded-lg border border-border text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all">
-                  View All Badges
-                </button>
               </div>
 
               {/* Quick Actions */}
@@ -1381,30 +1400,6 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   })}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Practice */}
-      {activeTab === "practice" && (
-        <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">AI-powered practice tests — Aptitude, Coding/DSA, and Communication. Full quiz engine with instant explanations.</p>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              { label: "Aptitude",      desc: "Percentages, Profit & Loss, Time & Work, Probability, Data Interpretation and more.", color: "#f59e0b", href: "/student/prep" },
-              { label: "Coding / DSA",  desc: "Arrays, Strings, Linked Lists, Trees, Graphs, Dynamic Programming — topic by topic.", color: "#6366f1", href: "/student/prep" },
-              { label: "Communication", desc: "Grammar, Vocabulary, Reading Comprehension, Para Jumbles, Email Writing.", color: "#10b981", href: "/student/prep" },
-            ].map(track => (
-              <a key={track.label} href={track.href}
-                className="group rounded-2xl border p-5 flex flex-col gap-3 transition-all hover:scale-[1.02] hover:shadow-xl"
-                style={{ borderColor: `${track.color}30`, background: `${track.color}08` }}>
-                <p className="font-bold text-base text-foreground">{track.label}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed flex-1">{track.desc}</p>
-                <div className="flex items-center gap-1 text-sm font-semibold" style={{ color: track.color }}>
-                  Start <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </a>
             ))}
           </div>
         </div>

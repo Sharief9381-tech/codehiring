@@ -1228,11 +1228,38 @@ export default function PrepHubPage() {
       .catch(() => {})
   }, [])
 
+  // Open Smart Resume overlay if navigated here with #smart-resume hash
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#smart-resume") {
+      setShowSmartResume(true)
+      window.history.replaceState(null, "", window.location.pathname)
+    }
+    // Auto-open track if ?track= param is present
+    const urlParams = new URLSearchParams(window.location.search)
+    const track = urlParams.get("track")
+    if (track === "aptitude" || track === "coding" || track === "communication") {
+      setActivePath(track as Path)
+      setSubView("home")
+      window.history.replaceState(null, "", window.location.pathname)
+    }
+  }, [])
+
   // Lock body scroll when any overlay is open
   useEffect(() => {
     const anyOpen = showHistory || showLearningPaths || showSmartResume
-    document.body.style.overflow = anyOpen ? "hidden" : ""
-    return () => { document.body.style.overflow = "" }
+    if (anyOpen) {
+      // Compensate for scrollbar width to prevent layout shift
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      document.body.style.overflow = "hidden"
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+    } else {
+      document.body.style.overflow = ""
+      document.body.style.paddingRight = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+      document.body.style.paddingRight = ""
+    }
   }, [showHistory, showLearningPaths, showSmartResume])
 
   // null = loading, 1 = first year (no company grids), 2-4 = show company grids
@@ -1545,41 +1572,6 @@ export default function PrepHubPage() {
       </div>
 
       {/* 3D Practice Track Cards */}
-      <div className="space-y-3">
-        <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2 px-1">
-          <Zap className="h-3.5 w-3.5 text-primary" />Practice Tracks — click to start
-        </p>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            { path:"aptitude" as Path,      label:"Aptitude",      sub:"Quant · Logical · Data Interp.",  desc:"Master the foundation of every placement test.", color:"#f59e0b", glow:"rgba(245,158,11,0.20)", grad:"linear-gradient(135deg,rgba(245,158,11,0.18),rgba(245,158,11,0.06))", icon:<Brain className="h-6 w-6" />,        topics:["Percentages","Profit & Loss","Time & Work","Probability","Series"] },
-            { path:"coding" as Path,        label:"Coding / DSA",  sub:"Arrays · Trees · DP · Graphs",    desc:"Build algorithmic thinking with AI-generated problems.", color:"#818cf8", glow:"rgba(129,140,248,0.20)", grad:"linear-gradient(135deg,rgba(129,140,248,0.18),rgba(99,102,241,0.06))", icon:<Code2 className="h-6 w-6" />,        topics:["Arrays","Strings","Linked Lists","Trees","Dynamic Prog."] },
-            { path:"communication" as Path, label:"Communication", sub:"Grammar · Vocab · Reading",       desc:"Polish verbal and written skills companies test.", color:"#34d399", glow:"rgba(52,211,153,0.20)", grad:"linear-gradient(135deg,rgba(52,211,153,0.18),rgba(16,185,129,0.06))", icon:<MessageCircle className="h-6 w-6" />, topics:["Grammar","Vocabulary","Para Jumbles","Comprehension","Email Writing"] },
-          ].map(track => (
-            <button key={track.path} onClick={() => { setActivePath(track.path); setSubView("home") }}
-              className="group relative overflow-hidden rounded-2xl text-left transition-all duration-300 hover:scale-[1.02]"
-              style={{ background:track.grad, border:`1px solid ${track.color}35`, boxShadow:`0 2px 16px ${track.glow}` }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 8px 32px ${track.glow}` }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow=`0 2px 16px ${track.glow}` }}>
-              <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full opacity-15 blur-2xl pointer-events-none" style={{ background:`radial-gradient(${track.color},transparent)` }} />
-              <div className="relative z-10 p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background:`${track.color}20`, border:`1px solid ${track.color}40`, color:track.color }}>{track.icon}</div>
-                  <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color:track.color }} />
-                </div>
-                <div>
-                  <p className="font-black text-base text-foreground">{track.label}</p>
-                  <p className="text-[11px] font-semibold mt-0.5" style={{ color:track.color }}>{track.sub}</p>
-                  <p className="text-xs mt-1.5 leading-relaxed text-muted-foreground">{track.desc}</p>
-                </div>
-                <div className="flex flex-wrap gap-1 pt-2 border-t" style={{ borderColor:`${track.color}15` }}>
-                  {track.topics.map(t => <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full font-medium" style={{ background:`${track.color}12`, color:track.color, border:`1px solid ${track.color}25` }}>{t}</span>)}
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Company Prep Tracks — hidden for 1st year, hidden until year loads */}
       {yearLoaded && !isFirstYear && <div>
         <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
