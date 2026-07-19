@@ -1040,7 +1040,7 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
 
   const filtered = ALL_COMPANIES.filter(c => {
     const cat = categoryFilter === "All" || (c as any).category === categoryFilter
-    const comp = companyFilter === "All" || c.name === companyFilter
+    const comp = companyFilter === "All" || c.name.toLowerCase().includes(companyFilter.toLowerCase())
     const role = roleFilter === "All" || ((c as any).roles ?? []).includes(roleFilter)
     const srch = !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.desc.toLowerCase().includes(search.toLowerCase()) || (c as any).category?.toLowerCase().includes(search.toLowerCase())
     return cat && comp && role && srch
@@ -1072,14 +1072,20 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
           <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
         </div>
 
-        {/* Company */}
+        {/* Company — search input */}
         <div className="relative">
-          <select value={companyFilter} onChange={e => setCompanyFilter(e.target.value)}
-            className="appearance-none pl-4 pr-8 py-2 rounded-full border border-border bg-card text-sm font-medium text-foreground cursor-pointer focus:outline-none focus:border-primary/50 transition-all">
-            <option value="All">Select Company</option>
-            {ALL_COMPANIES.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-          </select>
-          <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+          <input
+            value={companyFilter === "All" ? "" : companyFilter}
+            onChange={e => setCompanyFilter(e.target.value || "All")}
+            placeholder="Search company..."
+            className="pl-9 pr-8 py-2 rounded-full border border-border bg-card text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all w-48"
+          />
+          <svg viewBox="0 0 24 24" className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          {companyFilter !== "All" && (
+            <button onClick={() => setCompanyFilter("All")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs">✕</button>
+          )}
         </div>
 
         {/* Role */}
@@ -1210,7 +1216,13 @@ export default function PrepHubPage() {
   const [showHistory, setShowHistory] = useState(false)
   const [showLearningPaths, setShowLearningPaths] = useState(false)
   const [showSmartResume, setShowSmartResume] = useState(false)
+  const [showPracticeMenu, setShowPracticeMenu] = useState(false)
   const [studentYear, setStudentYear] = useState<number | null>(null)
+  // Role filter states for company grid
+  const [roleSearch, setRoleSearch]       = useState("")
+  const [roleCategory, setRoleCategory]   = useState("All")
+  const [roleCompany, setRoleCompany]     = useState("")
+  const [roleName, setRoleName]           = useState("")
 
   // Detect student year
   useEffect(() => {
@@ -1270,7 +1282,7 @@ export default function PrepHubPage() {
   if (activePath === "company" && activeCompany) {
     return (
       <div className="flex-1 p-4 md:p-8 max-w-screen-xl mx-auto w-full">
-        <CompanyAssessment company={activeCompany} onBack={() => { setActiveCompany(null) }} />
+        <CompanyAssessment company={activeCompany} onBack={() => { setActiveCompany(null); setActivePath(null) }} />
       </div>
     )
   }
@@ -1537,6 +1549,51 @@ export default function PrepHubPage() {
             <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments · company patterns · real results</p>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
+            {/* Practice dropdown — click to open, fixed position to avoid clipping */}
+            <div className="relative">
+              <button
+                onClick={e => {
+                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+                  setShowPracticeMenu(v => !v)
+                  ;(window as any).__practiceMenuY = rect.bottom + 8
+                  ;(window as any).__practiceMenuR = window.innerWidth - rect.right
+                }}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
+                style={{ background:"rgba(129,140,248,0.22)", color:"#a5b4fc", border:"1.5px solid rgba(129,140,248,0.55)" }}>
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                Practice
+                <svg viewBox="0 0 24 24" className={`h-3 w-3 transition-transform ${showPracticeMenu ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              {showPracticeMenu && (
+                <>
+                  <div className="fixed inset-0 z-[60]" onClick={() => setShowPracticeMenu(false)} />
+                  <div className="fixed z-[61] w-60 rounded-xl border border-border bg-card shadow-2xl overflow-hidden"
+                    style={{
+                      top: (window as any).__practiceMenuY ?? 80,
+                      right: (window as any).__practiceMenuR ?? 20,
+                    }}>
+                    {[
+                      { label:"Aptitude",      sub:"Quant · Logical · Data Interp.", color:"#f59e0b", href:"/student/prep?track=aptitude" },
+                      { label:"Coding / DSA",  sub:"Arrays · Trees · DP · Graphs",   color:"#6366f1", href:"/student/prep?track=coding" },
+                      { label:"Communication", sub:"Grammar · Vocab · Reading",       color:"#10b981", href:"/student/prep?track=communication" },
+                    ].map(opt => (
+                      <a key={opt.label} href={opt.href}
+                        onClick={() => setShowPracticeMenu(false)}
+                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-primary/5 transition-colors border-b border-border/50 last:border-0 cursor-pointer">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black"
+                          style={{ background:`${opt.color}20`, color:opt.color }}>
+                          {opt.label[0]}
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-foreground">{opt.label}</p>
+                          <p className="text-[10px] text-muted-foreground">{opt.sub}</p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
             <button onClick={() => setShowLearningPaths(true)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
               style={{ background:"rgba(96,165,250,0.22)", color:"#93c5fd", border:"1.5px solid rgba(96,165,250,0.55)" }}>
@@ -1571,59 +1628,103 @@ export default function PrepHubPage() {
         </div>
       </div>
 
-      {/* 3D Practice Track Cards */}
-      {/* Company Prep Tracks — hidden for 1st year, hidden until year loads */}
-      {yearLoaded && !isFirstYear && <div>
-        <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
-          <Flag className="h-3.5 w-3.5" />Company Prep Tracks
-          <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">⭐ AI-Generated Questions</span>
-        </p>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {ALL_COMPANIES.filter(c => ["tcs","infosys","wipro","amazon","microsoft","google","cognizant","capgemini","deloitte"].includes(c.id)).map(c => (
-            <div key={c.id}
-              className="rounded-2xl border p-5 hover:shadow-lg transition-all cursor-pointer group"
-              style={{ background: `${c.color}08`, borderColor: `${c.color}30` }}
-              onClick={() => { setActivePath("company"); setActiveCompany(c) }}>
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl font-bold text-sm text-white shrink-0"
-                    style={{ background: c.color }}>
-                    {c.abbr}
-                  </div>
+      {/* Company Prep Tracks — Choose From The Top Roles */}
+      {yearLoaded && !isFirstYear && (
+        <div className="space-y-4">
+          {/* constants computed inline from component-level state */}
+          {(() => {
+            const CATEGORIES = ["All", "IT Services", "Product", "Consulting", "BFSI", "Core Engg", "Telecom", "Analytics", "Pharma", "FMCG", "EV/Auto", "Defence"]
+            const CATEGORY_MAP: Record<string, string[]> = {
+              "IT Services":  ["tcs","infosys","wipro","cognizant","capgemini","hcl","tech-mahindra","accenture","ibm","ltimindtree"],
+              "Product":      ["google","microsoft","amazon","meta","apple","adobe","oracle","sap","salesforce"],
+              "Consulting":   ["deloitte","pwc","ey","kpmg","mckinsey","bcg","bain"],
+              "BFSI":         ["jpmorgan","goldman","morgan-stanley","barclays","hsbc","citi","axis","hdfc","icici"],
+              "Core Engg":    ["l&t","siemens","bosch","honeywell","ge","tata-motors","mahindra"],
+              "Telecom":      ["airtel","jio","nokia","ericsson","qualcomm"],
+              "Analytics":    ["mu-sigma","fractal","tiger-analytics","latentview"],
+              "Pharma":       ["dr-reddys","cipla","sun-pharma","astrazeneca"],
+              "FMCG":         ["hul","pepsico","nestle","itc"],
+              "EV/Auto":      ["tesla","ola-electric","ather","tvs"],
+              "Defence":      ["drdo","isro","hal","bhel"],
+            }
+            const allCompanies = ALL_COMPANIES
+            const visibleIds = roleCategory === "All" ? allCompanies.map(c => c.id) : (CATEGORY_MAP[roleCategory] ?? [])
+            const filtered = allCompanies.filter(c => {
+              if (!visibleIds.includes(c.id)) return false
+              if (roleCompany && c.id !== roleCompany) return false
+              if (roleSearch && !c.name.toLowerCase().includes(roleSearch.toLowerCase())) return false
+              return true
+            })
+            return (
+              <>
+                <div className="flex items-center justify-between gap-3">
                   <div>
-                    <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                      <p className="font-semibold text-base text-foreground">{c.name}</p>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
-                        c.difficulty === "Easy" ? "bg-emerald-500/15 text-emerald-400" :
-                        c.difficulty === "Hard" || c.difficulty === "Very Hard" ? "bg-red-500/15 text-red-400" :
-                        "bg-blue-500/15 text-blue-400"
-                      }`}>{c.difficulty}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{c.desc}</p>
-                    <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Timer className="h-3 w-3" />{c.duration} min
-                      </span>
-                      <span className="text-xs text-muted-foreground">{c.questions} questions</span>
-                    </div>
+                    <p className="text-base font-bold text-foreground">Choose From The Top Roles</p>
+                    <p className="text-xs text-muted-foreground">AI generates real previous-year pattern questions for each company</p>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20 shrink-0">{allCompanies.length} companies</span>
+                </div>
+                <div className="flex flex-wrap gap-2 items-center">
+                  <select value={roleCategory} onChange={e => setRoleCategory(e.target.value)}
+                    className="text-xs px-2.5 py-1.5 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:border-primary/50">
+                    <option value="All">Category: All</option>
+                    {CATEGORIES.slice(1).map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                  <div className="relative">
+                    <input
+                      value={roleSearch}
+                      onChange={e => { setRoleSearch(e.target.value); setRoleCompany("") }}
+                      placeholder="Search company..."
+                      className="text-xs pl-8 pr-3 py-1.5 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 w-44 transition-all"
+                    />
+                    <svg viewBox="0 0 24 24" className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    {roleSearch && (
+                      <button onClick={() => setRoleSearch("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs">✕</button>
+                    )}
                   </div>
                 </div>
-                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white shrink-0"
-                  style={{ background: `linear-gradient(135deg,${c.color},${c.color}cc)` }}>
-                  <Zap className="h-3 w-3" />Enter
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-1 mt-3">
-                {c.sections.map(s => (
-                  <span key={s} className="text-[10px] px-2 py-0.5 rounded-full border border-border bg-card/40 text-muted-foreground font-medium">
-                    {SECTION_LABELS[s]}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+                <div className="flex gap-1.5 flex-wrap">
+                  {CATEGORIES.map(cat => (
+                    <button key={cat} onClick={() => setRoleCategory(cat)}
+                      className={`text-[11px] px-3 py-1 rounded-full font-semibold border transition-all ${
+                        roleCategory === cat ? "bg-primary/20 text-primary border-primary/40" : "bg-transparent text-muted-foreground border-border hover:border-primary/30"
+                      }`}>
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {filtered.map(c => (
+                    <div key={c.id}
+                      className="rounded-2xl border border-border bg-card/40 flex flex-col items-center gap-3 p-5 hover:border-primary/30 hover:shadow-lg transition-all cursor-pointer"
+                      onClick={() => { setActivePath("company"); setActiveCompany(c) }}>
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl font-black text-xl text-white" style={{ background: c.color }}>
+                        {c.abbr}
+                      </div>
+                      <div className="text-center">
+                        <p className="font-bold text-sm text-foreground">{c.desc || c.name}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{c.name}</p>
+                      </div>
+                      <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${c.difficulty === "Easy" ? "bg-emerald-500/15 text-emerald-400" : c.difficulty === "Hard" || c.difficulty === "Very Hard" ? "bg-red-500/15 text-red-400" : "bg-blue-500/15 text-blue-400"}`}>{c.difficulty}</span>
+                        <span className="text-[10px] text-muted-foreground">{c.duration} min</span>
+                        <span className="text-[10px] text-muted-foreground">{c.questions} Qs</span>
+                      </div>
+                      <button className="w-full mt-auto py-2 rounded-xl text-xs font-bold border border-border text-foreground hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all">
+                        Start Test
+                      </button>
+                    </div>
+                  ))}
+                  {filtered.length === 0 && <div className="col-span-4 text-center py-12 text-muted-foreground text-sm">No companies found.</div>}
+                </div>
+              </>
+            )
+          })()}
         </div>
-      </div>}
+      )}
     </div>
   )
 }
+

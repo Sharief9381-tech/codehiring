@@ -1319,6 +1319,22 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     {a.icon}{a.label}
                   </button>
                 ))}
+                {/* Reset progress — for testing */}
+                <button
+                  onClick={async () => {
+                    if (!confirm("Reset ALL your progress? This cannot be undone.")) return
+                    const r = await fetch("/api/student/reset-progress", { method: "POST" })
+                    const d = await r.json()
+                    if (d.success) {
+                      alert("Progress reset! Refreshing...")
+                      window.location.reload()
+                    } else {
+                      alert("Reset failed: " + d.error)
+                    }
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-red-500/20 text-xs font-medium text-red-400/70 hover:text-red-400 hover:border-red-500/40 hover:bg-red-500/5 transition-all text-left">
+                  <RefreshCw className="h-3.5 w-3.5" /> Reset Progress (Dev)
+                </button>
               </div>
 
               {/* Did you know */}

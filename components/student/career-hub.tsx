@@ -692,6 +692,33 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
               {s.title}
             </button>
           ))}
+          {/* Practice dropdown */}
+          <div className="relative group ml-1">
+            <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+              Practice
+              <svg viewBox="0 0 24 24" className="h-3 w-3 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div className="absolute left-0 top-full mt-1.5 z-50 w-56 rounded-xl border border-white/10 bg-background shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 pointer-events-none group-hover:pointer-events-auto">
+              {[
+                { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", color: "#f59e0b", href: "/student/prep?track=aptitude" },
+                { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
+                { label: "Communication", sub: "Grammar · Vocab · Reading",       color: "#10b981", href: "/student/prep?track=communication" },
+              ].map(opt => (
+                <a key={opt.label} href={opt.href}
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors border-b border-border/50 last:border-0">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
+                    style={{ background: `${opt.color}20`, color: opt.color }}>
+                    {opt.label[0]}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">{opt.label}</p>
+                    <p className="text-[10px] text-muted-foreground">{opt.sub}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 

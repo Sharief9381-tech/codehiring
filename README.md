@@ -1,111 +1,6 @@
-# CodeHiring
+# CodeHiring — Campus Placement & Career Platform
 
-> The complete campus placement platform — verified coding stats, AI-powered hiring simulations, smart resume analysis, and personalised career roadmaps for students, colleges, and recruiters.
-
----
-
-## What is CodeHiring?
-
-CodeHiring bridges the gap between student coding ability and recruiter expectations by pulling **verified, real-time data** from LeetCode, Codeforces, GitHub, CodeChef, HackerRank, GeeksforGeeks and 8+ other platforms — making hiring decisions data-driven instead of resume-guesswork.
-
----
-
-## Core Features
-
-### For Students
-
-| Feature | Description |
-|---|---|
-| **Coding Dashboard** | Live stats synced from 8+ platforms — problems solved, contest ratings, GitHub contributions |
-| **CodeHiring Score** | Normalised 0–1000 score across all platforms — single signal for recruiters |
-| **Leaderboard** | Global and college-wise ranks updated in real time |
-| **Career Hub** | Year-personalised roadmap (1st–4th year) with courses, skills, internships, jobs |
-| **Prep Track** | 189-company assessment library — AI generates real-pattern questions per company |
-| **Company Assessments** | Proctored simulation — TCS NQT, Infosys InfyTQ, Amazon OA, Google, etc. |
-| **AI Hiring Report** | Full recruitment-quality report after every assessment — readiness score, selection probability per round, HR verdict, 30-day prep plan |
-| **Assessment History** | All past attempts stored with rank, percentile, and improvement trend |
-| **Leaderboard (post-assessment)** | Rank vs all students who took the same company test |
-| **Smart Resume** | ResumeWorded-style deep analysis — ATS score, bullet grading, job match %, section grades A–F |
-| **Resume Studio** | 4 templates (Technical, Minimal, Creative, Executive) built from live platform data |
-| **AI Career Chat** | Full context AI assistant — knows your platforms, problems, rating, resume, placements |
-| **Blog** | AI auto-generates a fresh placement/career article daily via Groq |
-
-### For Colleges
-
-| Feature | Description |
-|---|---|
-| **Placement Analytics** | Batch-wide coding activity, top performers, skill gap reports |
-| **Student Monitoring** | Real-time platform stats per student |
-| **Hiring Drives** | Post on-campus drives — students apply, track status |
-| **Announcements** | Broadcast announcements to all enrolled students |
-
-### For Recruiters
-
-| Feature | Description |
-|---|---|
-| **Job Posting** | Post on-campus and off-campus jobs |
-| **AI Matching** | Students ranked by CodeHiring Score, skill overlap, and recency |
-| **Verified Profiles** | No self-reported data — all stats pulled directly from platform APIs |
-
----
-
-## Prep Track — 189 Companies
-
-Categories: IT Services · Product/FAANG · Indian Startups · Consulting · BFSI · Core Engineering · Telecom · FMCG · Pharma · EV/Auto · Defence
-
-**How it works:**
-1. Student selects a company (e.g. TCS, Amazon, Google)
-2. Proctored environment activates — fullscreen enforced, camera on, copy/paste disabled
-3. Groq AI generates company-pattern questions by first scraping IndiaBix/PrepInsta for real previous-year papers
-4. After submission → AI Hiring Report generated:
-   - Readiness Score (0–100)
-   - Selection probability per round
-   - Section-wise analysis
-   - HR verdict (Strongly Recommended → Not Recommended)
-   - 30-day personalised prep plan
-   - Integrity analysis (violation log)
-
----
-
-## First-Year Student Hub
-
-When a 1st-year student logs in (auto-detected from graduation year), they get a dedicated gamified learning hub:
-
-### Progress & Gamification
-- **XP System** — earn XP by completing milestones, challenges, daily problems, and skill badges
-- **Levels** — Seedling → Explorer → Builder → Coder → Developer
-- **Streak Tracker** — daily streak counter with rewards
-- **Roadmap Milestones** — 8 progressive milestones shown as interactive cards (Start + Done buttons); completed ones are replaced by the next pending milestone automatically
-
-### Challenges Tab
-- **Project Challenges** — pool of 16 real-world projects (Beginner → Intermediate → Advanced); completing one replaces it with the next unseen project instantly (+20 XP each)
-- **Debug Challenges** — pool of 15 code debugging problems (Easy → Hard); same replacement behaviour — done card disappears, next one slides in with a "New!" highlight
-- **Skill Badge Tracks** — 12 tracks × 3 levels = 36 badges total, awarded automatically from real platform stats:
-  - Initial 4: Arrays, Algorithms, Strings, Git
-  - Tier 2 (unlock after completing initial): Trees, Dynamic Programming, Graphs, SQL
-  - Tier 3 (expert): Binary Search, Sorting, Recursion, Hashing
-  - Completed tracks are replaced by the next available track — always 4 active tracks shown
-  - Progress bars show live `current / required` from synced platform stats
-
-### Other Tabs
-- **Practice** → links to the full Prep Track (Aptitude, Coding/DSA, Communication)
-- **Soft Skills** — 4 bite-sized modules with video + mark-done
-- **Self-Check Quizzes** — Python, DSA, Git topic quizzes with explanations
-- **Community (Discussions)** — LeetCode-style discussion board: post, reply, upvote, tag filter (Question / Tip / Resource / Achievement / Help / General), sort by Latest / Top / Unanswered, paginated
-- **Leaderboard** — top 1st-year students ranked by XP
-
----
-
-## Learn Pages (All Years)
-
-`/student/learn` is fully dynamic — content adapts to the student's academic year:
-
-| Year | Content |
-|---|---|
-| 1st Year | Full gamified hub (see above) |
-| 2nd Year | Trending skills (60+ cards), internship listings (14 companies), Smart Resume |
-| 3rd Year | Placement tools, company-wise DSA, mock interviews, aptitude prep |
-| 4th Year | AI-powered prep, skill gap finder, Smart Resume |
+An AI-powered platform connecting students, colleges, and recruiters for campus placements, career development, and skill building.
 
 ---
 
@@ -114,81 +9,159 @@ When a 1st-year student logs in (auto-detected from graduation year), they get a
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 16 (App Router, Turbopack) |
-| Language | TypeScript |
-| Styling | Tailwind CSS + shadcn/ui |
 | Database | MongoDB Atlas |
-| AI | Groq (`llama-3.3-70b-versatile`) |
-| Analytics | Vercel Analytics |
-| Email | Gmail SMTP via Nodemailer (GMAIL_USER + GMAIL_APP_PASSWORD) |
-| Resume Parsing | APILayer Resume Parser (optional, free tier) |
+| Auth | Custom JWT + session cookies |
+| AI (Primary) | Groq — llama-3.3-70b-versatile |
+| AI (Code Eval) | Mistral API |
+| AI (Fallback) | OpenAI GPT-4o-mini |
+| Email | Gmail SMTP (App Password) |
+| Styling | Tailwind CSS + custom dark theme |
+
+---
+
+## User Roles
+
+| Role | Portal |
+|---|---|
+| Student | `/student/*` |
+| College | `/college/*` |
+| Recruiter | `/recruiter/*` |
+| Admin | `/admin/*` |
 
 ---
 
 ## Environment Variables
 
 ```env
-# Required
+# Database
 MONGODB_URI=mongodb+srv://...
-NEXTAUTH_SECRET=your_secret
+
+# Auth
+NEXTAUTH_SECRET=...
 NEXTAUTH_URL=http://localhost:3000
-GROQ_API_KEY=gsk_...
+
+# AI Providers
+GROQ_API_KEY=gsk_...          # Primary AI (free)
+MISTRAL_API_KEY=...            # Code evaluation
+OPENAI_API_KEY=sk-...          # Fallback
 
 # Email (Gmail SMTP)
-GMAIL_USER=yourname@gmail.com
-GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
-
-# Optional — enhances resume analysis
-APILAYER_RESUME_KEY=...
-
-# Optional — Resend email (alternative to Gmail)
-RESEND_API_KEY=...
+GMAIL_USER=your@gmail.com
+GMAIL_APP_PASSWORD=...         # Google App Password
 ```
 
 ---
 
-## Getting Started
+## Student Portal Structure
 
-```bash
-# 1. Clone
-git clone https://github.com/Sharief9381-tech/codehiring
-cd codehiring
-
-# 2. Install
-npm install
-
-# 3. Configure
-cp .env.example .env
-# Edit .env with your MongoDB URI and Groq API key
-
-# 4. Run
-npm run dev
+```
+/student/
+├── dashboard        — Stats, activity heatmap, platform sync
+├── learn            — Year-based learning hub (see below)
+├── prep             — AI assessments: Aptitude / Coding / Communication
+├── platforms        — Link LeetCode, GitHub, CodeChef, GFG etc.
+├── analytics        — Charts, skill radar, monthly stats
+├── leaderboard      — College + global rankings by XP
+├── drives           — Campus placement drives (on/off campus)
+├── jobs             — Off-campus job listings
+├── profile          — Edit profile, graduation year, skills
+├── resume           — Smart Resume builder (AI-enhanced)
+├── ai               — AI insights (skill gaps, recommendations)
+└── daily-challenge  — Code editor with AI evaluation
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+---
+
+## Learn Page — Year-Based Architecture
+
+```
+Year 1 → FirstYearFullHub (/components/student/first-year-full-hub.tsx)
+  Tabs:
+  ├── My Progress      — XP, streak, 7 platform badges
+  ├── Practice ▾       — Dropdown: Aptitude / Coding / Communication
+  ├── Challenges
+  │   ├── Project Challenges   (AI-generated, Basic→Advanced, infinite)
+  │   ├── Debug Challenges     (AI-generated, language-selectable, infinite)
+  │   └── Skill Badge Challenges (51 topics × 7 LeetCode problems)
+  ├── Soft Skills      — Bite-sized communication & mindset modules
+  └── Community        — LeetCode-style discussion board
+
+Years 2-4 → CareerHub (/components/student/career-hub.tsx)
+  Year 2: Practice nav dropdown only
+  Year 3: Placement Tools | DSA & Interview | Smart Resume
+  Year 4: AI-Powered Prep | Smart Resume
+  All years: Hiring Drives tab (on/off campus)
+```
 
 ---
 
-## Admin Access
+## Prep Track Page (`/student/prep`)
 
-Log in at `/login` with:
-- Email: `sharief9381@gmail.com`
-- Password: `12341234`
+```
+Hero banner with buttons:
+  Practice ▾ | Learning Paths | Smart Resume | History
 
-Access admin panel at `/admin`
+Practice dropdown opens:
+  → Aptitude      (Quant, Logical, Data Interpretation)
+  → Coding / DSA  (Arrays, Trees, DP, Graphs)
+  → Communication (Grammar, Vocab, Reading Comprehension)
 
-Admin features: user management, blog management (AI auto-generates daily posts), analytics, feedback, drives, site config (Discord URL, senior stories).
+Each track:
+  → AI generates topic-wise questions (Groq)
+  → Mock test with timer
+  → Instant explanation on wrong answers
+  → Score saved to history
+
+Company Prep (Year 2+):
+  → "Choose From Top Roles" grid
+  → 189+ companies with filters (category, search)
+  → Click → AI-generated OA simulation (company-pattern questions)
+  → Back button returns to grid (not duplicate page)
+```
 
 ---
 
-## Automatic Blog
+## Challenges System (Year 1)
 
-A Vercel cron job (`vercel.json`) calls `/api/cron/generate-blog` daily at 6 AM UTC. Groq AI picks a topic from 25 placement/career topics and writes a full article. On localhost, the blog page self-triggers generation on first daily load.
+### Project Challenges
+- AI-generated via Groq (falls back to static pool)
+- Progression: Beginner → Intermediate → Advanced (6 per tier)
+- Real-world projects: QR Generator, GitHub Dashboard, Netflix Clone etc.
+- "Try in Editor" → `/student/daily-challenge`
+- GPT/Mistral evaluates code → marks done → auto-replaced with next
+
+### Debug Challenges
+- AI-generated, language-selectable (15 languages)
+- Always "find and fix the bug" type — full code shown
+- Answer input → server checks with fuzzy matching
+- Wrong → show explanation + hint + retry
+- Correct → XP awarded → replaced with next challenge
+- Progression: Basic → Intermediate → Advanced (3 per topic, infinite)
+
+### Skill Badge Challenges
+- 51 DSA/CS topics × 7 LeetCode problems each
+- Student marks problems done after solving on LeetCode
+- Progress tracked in DB, XP awarded per problem
+
+### Daily Challenge
+- AI generates 1 new problem per day (Groq)
+- Cached in MongoDB by date (same problem for all users)
+- Difficulty: Basic (days 1-90) → Intermediate (91-210) → Advanced (211+)
+- "Try in Editor" → write code → Mistral evaluates → awards XP if score ≥ 70
 
 ---
 
-## Platforms Supported
+## Platform Badges (7 Total)
 
-LeetCode · GitHub · Codeforces · CodeChef · HackerRank · GeeksforGeeks · AtCoder · HackerEarth · SPOJ · Kattis · TopCoder · InterviewBit · Kaggle · Exercism · and more
+| Badge | Condition |
+|---|---|
+| Code Spark | Earn any XP |
+| First Blood | Complete 1 challenge |
+| Daily Grinder | 7-day daily problem streak |
+| Decathlon | Complete 10 challenges |
+| Badge Hunter | Mark 7 LeetCode problems done |
+| Two-Week Warrior | 14-day streak |
+| XP Legend | Earn 500+ XP |
 
 ---
 
@@ -196,21 +169,82 @@ LeetCode · GitHub · Codeforces · CodeChef · HackerRank · GeeksforGeeks · A
 
 | Collection | Purpose |
 |---|---|
-| `users` | All user profiles (students, colleges, recruiters, admin) |
-| `sessions` | Auth sessions |
-| `first_year_progress` | XP, streak, completed milestones, badges, challenges per 1st-year student |
-| `discussions` | Community discussion posts and replies |
-| `drives` | Hiring drives |
-| `assessments` | Assessment definitions |
-| `assessment_attempts` | Student assessment submissions |
-| `jobs` | Job postings |
-| `notifications` | User notifications |
-| `blogs` | Auto-generated blog posts |
-| `site_config` | Admin-editable site content (hero, testimonials, Discord URL, senior stories) |
-| `feedback` | User feedback submissions |
+| `users` | All user accounts + linked platform stats |
+| `first_year_progress` | XP, streak, badges, completed challenges |
+| `debug_challenges` | Cached AI debug challenges per user |
+| `project_challenges` | Cached AI project challenges per user |
+| `daily_problems` | Today's AI problem (cached by date) |
+| `discussions` | Community posts + replies + upvotes |
+| `drives` | Campus placement drives |
+| `jobs` | Job listings (on/off campus) |
+| `assessment_history` | Practice test scores |
 
 ---
 
-## License
+## API Routes
 
-MIT — built with ❤️ for Indian CS/IT students
+```
+/api/auth/*
+  login, signup, logout, OTP, verify-email, Google OAuth, forgot-password
+
+/api/student/*
+  progress, first-year-progress, evaluate-code, debug-challenges,
+  project-challenges, daily-problem, badge-try, discussions,
+  analytics, leaderboard, assessment, generate-assessment
+
+/api/college/*
+  dashboard, students, announcements, drives, analytics
+
+/api/recruiter/*  (via drives/jobs pages)
+  job postings, candidate search, shortlists
+
+/api/admin/*
+  blog, careers, site-config, user-details, dashboard
+
+/api/platforms/*
+  sync platform stats (LeetCode, GitHub, CodeChef, GFG etc.)
+
+/api/public/*
+  landing, blog
+```
+
+---
+
+## AI Provider Chain
+
+```
+Feature               Primary         Fallback
+─────────────────────────────────────────────
+Debug challenges      Groq            OpenAI
+Project challenges    Groq            Static pool
+Daily problem         Groq            Static pool
+Code evaluation       Mistral         Groq → OpenAI
+Assessment generation Groq            OpenAI
+```
+
+---
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Fill in MONGODB_URI, GROQ_API_KEY, MISTRAL_API_KEY, GMAIL_* etc.
+
+# Run development server
+npm run dev
+# → http://localhost:3000
+```
+
+---
+
+## College Code
+
+Every student must enter a **college code** at signup (except recruiters). This enables:
+- College-specific leaderboards
+- Campus drive filtering
+- College analytics dashboard
+- Placement statistics by institution
