@@ -763,39 +763,46 @@ export function FirstYearFullHub({ student }: { student: any }) {
   ]
 
   useEffect(() => {
-    fetch("/api/student/first-year-progress")
-      .then(r => r.ok ? r.json() : { progress: null })
-      .then(d => {
-        if (d.progress) {
-          setXp(d.progress.totalXP ?? 0)
-          setStreak(d.progress.streak ?? 0)
-          setCompletedMilestones(d.progress.completed ?? [])
-          setMonthlySolved(d.progress.monthlyChallengesSolved ?? 0)
-        }
-        if (d.completedBadges) setCompletedBadges(d.completedBadges)
-        if (d.badgeProgress)   setBadgeProgress(d.badgeProgress)
-        if (d.completedChallenges) setCompletedChallenges(d.completedChallenges)
-        // Toast for any badges auto-awarded this session
-        if (d.newlyAwarded?.length) {
-          d.newlyAwarded.forEach((id: string, i: number) => {
-            const titles: Record<string, string> = {
-              "badge-array-1":"Array Starter","badge-array-2":"Array Pro","badge-array-3":"Array Master",
-              "badge-algo-1":"Loop Learner","badge-algo-2":"Loop Master","badge-algo-3":"Algorithm Ace",
-              "badge-str-1":"String Starter","badge-str-2":"String Wizard","badge-str-3":"String Legend",
-              "badge-git-1":"Git Starter","badge-git-2":"Git Committer","badge-git-3":"Open Source Hero",
-              "badge-tree-1":"Tree Sprout","badge-tree-2":"Tree Climber","badge-tree-3":"Tree Expert",
-              "badge-dp-1":"DP Initiate","badge-dp-2":"DP Practitioner","badge-dp-3":"DP Master",
-              "badge-graph-1":"Graph Walker","badge-graph-2":"Graph Traverser","badge-graph-3":"Graph Master",
-              "badge-sql-1":"SQL Beginner","badge-sql-2":"SQL Writer","badge-sql-3":"SQL Expert",
-              "badge-bin-1":"Binary Initiate","badge-bin-2":"Binary Searcher","badge-bin-3":"Binary Expert",
-              "badge-sort-1":"Sort Learner","badge-sort-2":"Sort Pro","badge-sort-3":"Sort Master",
-              "badge-rec-1":"Recursion Starter","badge-rec-2":"Recursion Pro","badge-rec-3":"Recursion Master",
-              "badge-hash-1":"Hash Beginner","badge-hash-2":"Hash Builder","badge-hash-3":"Hash Master",
+    const loadProgress = () => {
+      fetch("/api/student/first-year-progress")
+        .then(r => r.ok ? r.json() : { progress: null })
+        .then(d => {
+          if (d.progress) {
+            setXp(d.progress.totalXP ?? 0)
+            setStreak(d.progress.streak ?? 0)
+            setCompletedMilestones(d.progress.completed ?? [])
+            setMonthlySolved(d.progress.monthlyChallengesSolved ?? 0)
+            // Check if daily challenge was done today
+            const today = new Date(); today.setHours(0,0,0,0)
+            const lastAct = d.progress.lastActivity ? new Date(d.progress.lastActivity) : null
+            if (lastAct) {
+              const lastDay = new Date(lastAct); lastDay.setHours(0,0,0,0)
+              if (lastDay.getTime() === today.getTime() && (d.progress.monthlyChallengesSolved ?? 0) > 0) {
+                setDailyDone(true)
+              }
             }
-            setTimeout(() => showXpPop(`🏆 ${titles[id] ?? id} badge earned!`), i * 2800)
-          })
-        }
-      })
+          }
+          if (d.completedBadges) setCompletedBadges(d.completedBadges)
+          if (d.badgeProgress)   setBadgeProgress(d.badgeProgress)
+          if (d.completedChallenges) setCompletedChallenges(d.completedChallenges)
+          if (d.newlyAwarded?.length) {
+            d.newlyAwarded.forEach((id: string, i: number) => {
+              const titles: Record<string, string> = {
+                "badge-array-1":"Array Starter","badge-array-2":"Array Pro","badge-array-3":"Array Master",
+                "badge-algo-1":"Loop Learner","badge-algo-2":"Loop Master","badge-algo-3":"Algorithm Ace",
+                "badge-str-1":"String Starter","badge-str-2":"String Wizard","badge-str-3":"String Legend",
+                "badge-git-1":"Git Starter","badge-git-2":"Git Committer","badge-git-3":"Open Source Hero",
+              }
+              setTimeout(() => showXpPop(`🏆 ${titles[id] ?? id} badge earned!`), i * 2800)
+            })
+          }
+        })
+    }
+    loadProgress()
+    // Re-fetch when user returns from editor page (e.g. after solving daily challenge)
+    const onVisible = () => { if (document.visibilityState === "visible") loadProgress() }
+    document.addEventListener("visibilitychange", onVisible)
+    return () => document.removeEventListener("visibilitychange", onVisible)
   }, [])
 
   const level = xp < 100 ? { name: "Seedling", icon: <Zap className="h-4 w-4 text-emerald-400" />, next: 100, color: "#10b981" }
@@ -1203,18 +1210,12 @@ export function FirstYearFullHub({ student }: { student: any }) {
                           <CheckCircle2 className="h-4 w-4" /> Done today! +10 XP
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <a
-                            href={`/student/daily-challenge?title=${encodeURIComponent(todayProblem.title)}&desc=${encodeURIComponent(todayProblem.desc)}&input=${encodeURIComponent(todayProblem.input)}&output=${encodeURIComponent(todayProblem.output)}&explain=${encodeURIComponent(todayProblem.explain)}`}
-                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all"
-                            style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-                            <Code2 className="h-4 w-4" /> Try in Editor
-                          </a>
-                          <button onClick={doDailyChallenge}
-                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm border border-border text-foreground hover:border-primary/40 transition-all">
-                            <CheckCircle2 className="h-4 w-4" /> Mark as Solved
-                          </button>
-                        </div>
+                        <a
+                          href={`/student/daily-challenge?title=${encodeURIComponent(todayProblem.title)}&desc=${encodeURIComponent(todayProblem.desc)}&input=${encodeURIComponent(todayProblem.input)}&output=${encodeURIComponent(todayProblem.output)}&explain=${encodeURIComponent(todayProblem.explain)}`}
+                          className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all"
+                          style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+                          <Code2 className="h-4 w-4" /> Try in Editor
+                        </a>
                       )}
                     </div>
                   </>
