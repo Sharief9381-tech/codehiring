@@ -4,7 +4,7 @@ import { useState, useRef, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import {
   ArrowLeft, Zap, CheckCircle2, RefreshCw, Play,
-  Code2, ChevronRight, Lightbulb, AlertCircle, Trophy,
+  Code2, ChevronRight, Lightbulb, AlertCircle, Trophy, Eye, EyeOff,
 } from "lucide-react"
 
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
@@ -68,12 +68,18 @@ function EditorContent() {
     ? problem.explain.split(",").map((f: string) => f.trim()).filter(Boolean)
     : []
 
-  const [lang, setLang]             = useState("Python")
-  const [code, setCode]             = useState(STARTERS["Python"])
-  const [evaluating, setEvaluating] = useState(false)
-  const [result, setResult]         = useState<EvalResult | null>(null)
-  const [error, setError]           = useState("")
-  const [completed, setCompleted]   = useState(false)
+  const [lang, setLang]               = useState("Python")
+  const [code, setCode]               = useState(STARTERS["Python"])
+  const [evaluating, setEvaluating]   = useState(false)
+  const [running, setRunning]         = useState(false)
+  const [result, setResult]           = useState<EvalResult | null>(null)
+  const [runResults, setRunResults]   = useState<any[] | null>(null)
+  const [runSummary, setRunSummary]   = useState("")
+  const [allPassed, setAllPassed]     = useState(false)
+  const [publicPassed, setPublicPassed] = useState(false)
+  const [runMode, setRunMode]         = useState<"run"|"submit"|null>(null)
+  const [error, setError]             = useState("")
+  const [completed, setCompleted]     = useState(false)
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key !== "Tab") return
@@ -90,7 +96,53 @@ function EditorContent() {
     setLang(l)
     setCode(STARTERS[l] ?? "// Write your solution here\n")
     setResult(null)
+    setRunResults(null)
     setError("")
+  }
+
+  const runTests = async (mode: "run" | "submit") => {
+    if (!code.trim()) return
+    setRunning(true)
+    setRunResults(null)
+    setResult(null)
+    setError("")
+    try {
+      const evalProblem = isProject
+        ? { title: problem.title, desc: `Build: ${problem.desc}. Features: ${features.join(", ")}.`, input: "N/A", output: "Working project", explain: "" }
+        : { title: problem.title, desc: problem.desc, input: problem.input, output: problem.output, explain: problem.explain }
+
+      const res = await fetch("/api/student/run-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, language: lang, problem: evalProblem, mode }),
+      })
+      const data = await res.json()
+      if (data.results) {
+        setRunResults(data.results)
+        setRunSummary(data.summary)
+        setAllPassed(data.allPassed)
+        setPublicPassed(data.publicPassed)
+        setRunMode(mode)
+        // If submit mode and all passed → award XP
+        if (mode === "submit" && data.allPassed) {
+          setCompleted(true)
+          const action = isProject && challengeId
+            ? { action: "complete-challenge", challengeId }
+            : { action: "daily-challenge" }
+          await fetch("/api/student/first-year-progress", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(action),
+          })
+        }
+      } else {
+        setError(data.error ?? "Failed to run tests")
+      }
+    } catch {
+      setError("Network error. Please try again.")
+    } finally {
+      setRunning(false)
+    }
   }
 
   const evaluate = async () => {
@@ -178,7 +230,21 @@ function EditorContent() {
             className="text-xs px-2 py-1.5 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:border-primary/50">
             {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
           </select>
-          <button onClick={evaluate} disabled={evaluating || !code.trim() || completed}
+          <button onClick={() => runTests("run")} disabled={running || evaluating || !code.trim()}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold border border-border text-foreground hover:border-primary/40 disabled:opacity-40 transition-all">
+            {running && runMode === "run" ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+            {running && runMode === "run" ? "Running..." : "Run"}
+          </button>
+          <button onClick={() => runTests("submit")} disabled={running || evaluating || !code.trim() || completed || !publicPassed}
+            title={!publicPassed ? "Run public test first" : "Run all hidden tests"}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white disabled:opacity-40 transition-all"
+            style={{ background: completed ? "linear-gradient(135deg,#10b981,#059669)" : "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+            {running && runMode === "submit"
+              ? <><RefreshCw className="h-4 w-4 animate-spin" /> Testing...</>
+              : completed
+                ? <><CheckCircle2 className="h-4 w-4" /> Completed</>
+                : <><Zap className="h-4 w-4" /> Submit</>}
+          </button>
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white disabled:opacity-40 transition-all"
             style={{ background: completed
               ? "linear-gradient(135deg,#10b981,#059669)"
@@ -236,6 +302,45 @@ function EditorContent() {
               {problem.explain && <p className="text-muted-foreground text-[10px] pt-1 border-t border-border/50">{problem.explain}</p>}
             </div>
           ) : null}
+
+          {/* Test Results from Run */}
+          {runResults && (
+            <div className="rounded-xl border border-border bg-black/20 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-bold text-foreground">Test Cases</p>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${allPassed ? "bg-emerald-500/20 text-emerald-400" : "bg-amber-500/20 text-amber-400"}`}>
+                  {runSummary}
+                </span>
+              </div>
+              <div className="space-y-2">
+                {runResults.map((r: any, i: number) => (
+                  <div key={i} className={`rounded-lg p-2.5 border text-xs space-y-1 ${r.passed ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5"}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-semibold text-muted-foreground">
+                        {r.isPublic ? "Test 1 (Public)" : `Test ${i + 1} (Hidden)`}
+                      </span>
+                      <span className={`font-bold ${r.passed ? "text-emerald-400" : "text-red-400"}`}>
+                        {r.passed ? "✓ Passed" : "✗ Failed"}
+                      </span>
+                    </div>
+                    {r.isPublic && (
+                      <>
+                        <p className="text-muted-foreground"><span className="text-blue-400">Input:</span> {r.input}</p>
+                        <p className="text-muted-foreground"><span className="text-emerald-400">Expected:</span> {r.expectedOutput}</p>
+                        {!r.passed && <p className="text-muted-foreground"><span className="text-red-400">Got:</span> {r.actualOutput}</p>}
+                      </>
+                    )}
+                    {!r.isPublic && !r.passed && (
+                      <p className="text-muted-foreground text-[10px]">Hidden test failed — check edge cases</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {allPassed && (
+                <p className="text-[11px] text-emerald-400 font-semibold">All test cases passed! Click Submit to earn XP.</p>
+              )}
+            </div>
+          )}
 
           <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-2">
             <p className="text-[10px] font-bold text-amber-400 flex items-center gap-1.5"><Lightbulb className="h-3.5 w-3.5" /> Tips</p>

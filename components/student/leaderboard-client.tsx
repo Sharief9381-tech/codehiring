@@ -80,19 +80,19 @@ function LeaderboardRow({ entry, isMe }: { entry: LeaderboardEntry; isMe?: boole
         </div>
       </div>
       <div className="hidden sm:flex items-center gap-6 text-sm">
-        <div className="text-center">
+        <div className="w-16 text-center">
           <div className={`font-bold ${isMe ? "text-primary" : "text-emerald-400"}`}>{entry.problems}</div>
           <div className="text-xs text-muted-foreground">Problems</div>
         </div>
-        <div className="text-center">
+        <div className="w-16 text-center">
           <div className="font-bold text-blue-400">{entry.rating || "—"}</div>
           <div className="text-xs text-muted-foreground">Rating</div>
         </div>
-        <div className="text-center">
+        <div className="w-16 text-center">
           <div className="font-bold text-purple-400">{entry.contests}</div>
           <div className="text-xs text-muted-foreground">Contests</div>
         </div>
-        <div className="text-center">
+        <div className="w-16 text-center">
           <div className="font-bold text-orange-400">{entry.platforms.length}</div>
           <div className="text-xs text-muted-foreground">Platforms</div>
         </div>
