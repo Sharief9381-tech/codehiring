@@ -44,6 +44,9 @@ function EditorContent() {
   const problem = {
     title:            params.get("title")            ?? (isProject ? "Project Challenge" : "Today's Challenge"),
     desc:             params.get("desc")             ?? "",
+    inputFormat:      params.get("inputFormat")      || "",
+    outputFormat:     params.get("outputFormat")     || "",
+    constraints:      params.get("constraints")      ? params.get("constraints")!.split("|||").filter(Boolean) : [],
     input:            params.get("input")            ?? "",
     output:           params.get("output")           ?? "",
     explain:          params.get("explain")          ?? "",
@@ -51,6 +54,13 @@ function EditorContent() {
     explanation:      params.get("explanation")      ?? "",
     badge:            params.get("badge")            ?? "",
   }
+
+  // Derive missing fields from existing data for backward compat
+  const inputFormat  = problem.inputFormat  || (problem.input  ? `A single line containing: ${problem.input}` : "")
+  const outputFormat = problem.outputFormat || (problem.output ? `Print: ${problem.output}` : "")
+  const constraints  = problem.constraints.length > 0
+    ? problem.constraints
+    : ["Input size is reasonable for a coding challenge", "Time limit: 2 seconds", "Memory limit: 256 MB"]
 
   const features = isProject && problem.explain
     ? problem.explain.split(",").map((f: string) => f.trim()).filter(Boolean)
@@ -220,14 +230,46 @@ function EditorContent() {
                 </div>
               )}
             </div>
-          ) : (problem.input || problem.output) ? (
-            <div className="rounded-xl border border-border bg-black/20 p-4 space-y-2 font-mono text-xs">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Example</p>
-              {problem.input  && <div><span className="text-blue-400 font-semibold">Input: </span><span className="text-foreground">{problem.input}</span></div>}
-              {problem.output && <div><span className="text-emerald-400 font-semibold">Output: </span><span className="text-foreground">{problem.output}</span></div>}
-              {problem.explain && <p className="text-muted-foreground text-[10px] pt-1 border-t border-border/50">{problem.explain}</p>}
+          ) : (
+            <div className="space-y-3">
+              {/* Input Format */}
+              {inputFormat && (
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Input Format</p>
+                  <p className="text-xs text-foreground/90 leading-relaxed">{inputFormat}</p>
+                </div>
+              )}
+              {/* Output Format */}
+              {outputFormat && (
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Output Format</p>
+                  <p className="text-xs text-foreground/90 leading-relaxed">{outputFormat}</p>
+                </div>
+              )}
+              {/* Constraints */}
+              {constraints.length > 0 && (
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Constraints</p>
+                  <ul className="space-y-0.5">
+                    {constraints.map((c: string, i: number) => (
+                      <li key={i} className="text-xs text-foreground/80 flex items-center gap-1.5">
+                        <span className="text-primary text-[10px] shrink-0">•</span>{c}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {/* Example */}
+              {(problem.input || problem.output) && (
+                <div className="rounded-xl border border-border bg-black/20 p-4 space-y-2 font-mono text-xs">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider font-sans">Example</p>
+                  {problem.input  && <div><span className="text-blue-400 font-semibold">Input: </span><span className="text-foreground">{problem.input}</span></div>}
+                  {problem.output && <div><span className="text-emerald-400 font-semibold">Output: </span><span className="text-foreground">{problem.output}</span></div>}
+                  {problem.explain && <p className="text-muted-foreground text-[10px] pt-1 border-t border-border/50 font-sans">{problem.explain}</p>}
+                </div>
+              )}
             </div>
-          ) : null}
+          )}
 
           {/* Test Results */}
           {runResults && (

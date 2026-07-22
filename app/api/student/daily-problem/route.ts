@@ -64,24 +64,20 @@ async function generateWithOpenAI(topic: string, difficulty: string, dayOfYear: 
   const key = process.env.OPENAI_API_KEY
   if (!key) throw new Error("No OPENAI_API_KEY")
 
-  const prompt = `Generate a coding problem for a CS student's daily challenge.
+  const prompt = `Generate a complete coding problem for a CS student's daily challenge.
 
 Topic: ${topic}
 Difficulty: ${difficulty}
-Day number: ${dayOfYear} (use this as a seed for uniqueness)
-
-Requirements:
-- Problem should be a clear, standalone coding challenge appropriate for ${difficulty} level
-- For Basic: simple programs, no data structures needed
-- For Intermediate: needs arrays, strings, or basic algorithms
-- For Advanced: requires advanced data structures or algorithms
-- Must be solvable in any common programming language
+Day seed: ${dayOfYear}
 
 Return ONLY a valid JSON object, no markdown:
 {
   "title": "Short problem title (5-8 words)",
-  "desc": "Clear problem description (2-4 sentences). State exactly what input is given and what output is expected.",
-  "input": "Example input value(s)",
+  "desc": "Clear 2-3 sentence problem description explaining what to do",
+  "inputFormat": "Describe the input format (e.g. 'A single string s on one line')",
+  "outputFormat": "Describe the output format (e.g. 'Print true or false')",
+  "constraints": ["1 <= len(s) <= 1000", "s contains only lowercase letters", "Time limit: 1 second"],
+  "input": "Example input value",
   "output": "Expected output for the example",
   "explain": "One sentence explaining how to arrive at the output",
   "difficulty": "${difficulty}",
@@ -147,7 +143,8 @@ export async function GET() {
 
     // Check cache — same problem for all users today
     const cached = await db.collection("daily_problems").findOne({ dateKey: todayKey })
-    if (cached?.problem) {
+    // Only use cache if it has the new fields (inputFormat etc.)
+    if (cached?.problem && cached.problem.inputFormat) {
       return NextResponse.json({ problem: cached.problem, fromCache: true })
     }
 

@@ -1211,7 +1211,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                         </div>
                       ) : (
                         <a
-                          href={`/student/daily-challenge?title=${encodeURIComponent(todayProblem.title)}&desc=${encodeURIComponent(todayProblem.desc)}&input=${encodeURIComponent(todayProblem.input)}&output=${encodeURIComponent(todayProblem.output)}&explain=${encodeURIComponent(todayProblem.explain)}`}
+                          href={`/student/daily-challenge?title=${encodeURIComponent(todayProblem.title)}&desc=${encodeURIComponent(todayProblem.desc)}&input=${encodeURIComponent(todayProblem.input)}&output=${encodeURIComponent(todayProblem.output)}&explain=${encodeURIComponent(todayProblem.explain)}&inputFormat=${encodeURIComponent((todayProblem as any).inputFormat ?? "")}&outputFormat=${encodeURIComponent((todayProblem as any).outputFormat ?? "")}&constraints=${encodeURIComponent(((todayProblem as any).constraints ?? []).join("|||"))}&difficulty=${encodeURIComponent(todayProblem.difficulty ?? "")}`}
                           className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all"
                           style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
                           <Code2 className="h-4 w-4" /> Try in Editor
