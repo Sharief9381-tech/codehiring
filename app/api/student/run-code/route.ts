@@ -1,145 +1,30 @@
 /**
  * POST /api/student/run-code
- * Runs student code against test cases (1 public + 5 hidden).
- * Uses AI to generate test cases from the problem, then evaluates each.
+ * Generates test cases AND evaluates code in a single AI call.
+ * mode: "run" = public test only, "submit" = all 6 tests
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 
-interface TestCase {
-  input: string
-  expectedOutput: string
-  isPublic: boolean
-}
-
-interface TestResult {
-  input: string
-  expectedOutput: string
-  actualOutput: string
-  passed: boolean
-  isPublic: boolean
-  error?: string
-}
-
-async function generateTestCases(problem: any, lang: string): Promise<TestCase[]> {
-  const groqKey = process.env.GROQ_API_KEY
-  const openaiKey = process.env.OPENAI_API_KEY
-
-  const prompt = `Generate exactly 6 test cases for this coding problem in ${lang}.
-
-Problem: ${problem.title}
-Description: ${problem.desc}
-Public example: Input="${problem.input}" Output="${problem.output}"
-
-Rules:
-- Test case 1 (public): Use exactly the given example: input="${problem.input}", output="${problem.output}"
-- Test cases 2-6 (hidden): Generate 5 varied cases including edge cases (empty, single char, numbers, special cases)
-- Keep inputs and outputs SHORT and precise
-- Output must be exact expected output string (no extra spaces/newlines unless required)
-
-Return ONLY valid JSON array, no markdown:
-[
-  {"input": "racecar", "expectedOutput": "true", "isPublic": true},
-  {"input": "hello", "expectedOutput": "false", "isPublic": false},
-  {"input": "a", "expectedOutput": "true", "isPublic": false},
-  {"input": "ab", "expectedOutput": "false", "isPublic": false},
-  {"input": "", "expectedOutput": "true", "isPublic": false},
-  {"input": "abcba", "expectedOutput": "true", "isPublic": false}
-]`
-
-  const call = async (key: string, url: string, model: string) => {
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.3,
-        max_tokens: 800,
-      }),
-    })
-    if (!r.ok) throw new Error(`${r.status}`)
-    return r.json()
+async function aiCall(key: string, url: string, model: string, prompt: string): Promise<any> {
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.1,
+      max_tokens: 800,
+    }),
+  })
+  if (!r.ok) {
+    const errText = await r.text()
+    throw new Error(`HTTP ${r.status}: ${errText.slice(0, 200)}`)
   }
-
-  let data: any = null
-  if (groqKey) {
-    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile") }
-    catch { /* fallback */ }
-  }
-  if (!data && openaiKey) {
-    data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini")
-  }
-
-  if (!data) throw new Error("No AI provider")
+  const data = await r.json()
   const raw = data.choices?.[0]?.message?.content?.trim() ?? ""
-  const clean = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
-  return JSON.parse(clean)
-}
-
-async function evaluateAgainstTestCases(
-  code: string, lang: string, problem: any, testCases: TestCase[]
-): Promise<TestResult[]> {
-  const groqKey = process.env.GROQ_API_KEY
-  const openaiKey = process.env.OPENAI_API_KEY
-
-  const prompt = `You are evaluating ${lang} code against test cases.
-
-Problem: ${problem.title}
-Code:
-\`\`\`${lang.toLowerCase()}
-${code}
-\`\`\`
-
-Test cases to evaluate (simulate running the code mentally):
-${testCases.map((t, i) => `${i + 1}. Input: "${t.input}" → Expected: "${t.expectedOutput}"`).join("\n")}
-
-For each test case, determine what the code would actually output when given that input.
-Consider edge cases carefully.
-
-Return ONLY valid JSON array with exactly ${testCases.length} results:
-[
-  {"actualOutput": "true", "passed": true},
-  {"actualOutput": "false", "passed": true},
-  ...
-]`
-
-  const call = async (key: string, url: string, model: string) => {
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.1,
-        max_tokens: 600,
-      }),
-    })
-    if (!r.ok) throw new Error(`${r.status}`)
-    return r.json()
-  }
-
-  let data: any = null
-  if (groqKey) {
-    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile") }
-    catch { /* fallback */ }
-  }
-  if (!data && openaiKey) {
-    data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini")
-  }
-
-  if (!data) throw new Error("No AI provider")
-  const raw = data.choices?.[0]?.message?.content?.trim() ?? ""
-  const clean = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
-  const results = JSON.parse(clean)
-
-  return testCases.map((tc, i) => ({
-    input: tc.input,
-    expectedOutput: tc.expectedOutput,
-    actualOutput: results[i]?.actualOutput ?? "error",
-    passed: results[i]?.passed ?? false,
-    isPublic: tc.isPublic,
-  }))
+  if (!raw) throw new Error("Empty response from AI")
+  return raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
 }
 
 export async function POST(req: Request) {
@@ -149,23 +34,97 @@ export async function POST(req: Request) {
 
     const { code, language = "Python", problem, mode = "run" } = await req.json()
     if (!code?.trim()) return NextResponse.json({ error: "No code provided" }, { status: 400 })
-    if (!problem) return NextResponse.json({ error: "No problem provided" }, { status: 400 })
+    if (!problem)      return NextResponse.json({ error: "No problem provided" }, { status: 400 })
 
-    // Generate all 6 test cases
-    const allTestCases = await generateTestCases(problem, language)
+    const count = mode === "run" ? 1 : 6
 
-    // "run" mode = only public test case, "submit" mode = all 6
-    const testCases = mode === "run"
-      ? allTestCases.filter(t => t.isPublic)
-      : allTestCases
+    const prompt = `You are evaluating ${language} code for a coding problem.
 
-    // Evaluate code against selected test cases
-    const results = await evaluateAgainstTestCases(code, language, problem, testCases)
+PROBLEM: ${problem.title}
+Description: ${problem.desc}
+Public example: Input="${problem.input}" → Output="${problem.output}"
 
-    const passed = results.filter(r => r.passed).length
-    const total = results.length
+STUDENT CODE:
+\`\`\`${language.toLowerCase()}
+${code}
+\`\`\`
+
+Task: Generate ${count} test case(s) and evaluate the code against each.
+${mode === "run"
+  ? "Test case 1: Use exactly the public example (input=\"" + problem.input + "\", expected=\"" + problem.output + "\")."
+  : `Test case 1: Use the public example (input="${problem.input}", expected="${problem.output}").
+Test cases 2-6: Generate 5 varied hidden cases (edge cases: empty, single char, special values, etc.).`}
+
+For each test case:
+1. Determine what the code would actually output for that input (simulate execution mentally)
+2. Compare actual vs expected
+
+Return ONLY valid JSON array with exactly ${count} objects:
+[
+  {
+    "input": "racecar",
+    "expectedOutput": "true",
+    "actualOutput": "true",
+    "passed": true,
+    "isPublic": true
+  }
+]
+
+Rules:
+- isPublic = true only for test case 1
+- passed = (actualOutput === expectedOutput) after trimming whitespace
+- Keep inputs and outputs SHORT strings`
+
+    const groqKey    = process.env.GROQ_API_KEY
+    const openaiKey  = process.env.OPENAI_API_KEY
+    const mistralKey = process.env.MISTRAL_API_KEY
+
+    let raw: string | null = null
+
+    // OpenAI first (most reliable for code evaluation)
+    if (openaiKey) {
+      try {
+        raw = await aiCall(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini", prompt)
+      } catch (e) {
+        console.error("OpenAI failed:", e)
+      }
+    }
+    // Groq fallback
+    if (!raw && groqKey) {
+      try {
+        raw = await aiCall(groqKey, "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile", prompt)
+      } catch (e) {
+        console.error("Groq failed:", e)
+      }
+    }
+    // Mistral last resort
+    if (!raw && mistralKey) {
+      try {
+        raw = await aiCall(mistralKey, "https://api.mistral.ai/v1/chat/completions", "mistral-small-latest", prompt)
+      } catch (e) {
+        console.error("Mistral failed:", e)
+      }
+    }
+
+    if (!raw) {
+      return NextResponse.json({ error: "All AI providers failed. Check API keys and try again." }, { status: 500 })
+    }
+
+    let results: any[]
+    try {
+      results = JSON.parse(raw)
+    } catch {
+      console.error("Failed to parse AI response:", raw.slice(0, 300))
+      return NextResponse.json({ error: "AI returned invalid format. Please try again." }, { status: 500 })
+    }
+
+    // Ensure isPublic is set correctly
+    results.forEach((r, i) => { r.isPublic = i === 0 })
+
+    const passed    = results.filter(r => r.passed).length
+    const total     = results.length
     const allPassed = passed === total
-    const publicPassed = results.find(r => r.isPublic)?.passed ?? false
+    const publicPassed = results[0]?.passed ?? false
 
     return NextResponse.json({
       success: true,
@@ -175,9 +134,7 @@ export async function POST(req: Request) {
       allPassed,
       publicPassed,
       mode,
-      summary: allPassed
-        ? `${total}/${total} passed ✓`
-        : `${passed}/${total} passed`,
+      summary: allPassed ? `${total}/${total} passed ✓` : `${passed}/${total} passed`,
     })
   } catch (err) {
     console.error("run-code error:", err)
