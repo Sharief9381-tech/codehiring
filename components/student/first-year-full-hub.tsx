@@ -1178,7 +1178,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     {todayProblem.topic && (
                       <span className="text-[10px] text-muted-foreground hidden sm:block">{todayProblem.topic}</span>
                     )}
-                    <span className="text-xs text-muted-foreground">{new Date().toLocaleDateString("en-US", { weekday: "long" })}</span>
+                    <span className="text-xs text-muted-foreground" suppressHydrationWarning>{new Date().toLocaleDateString("en-US", { weekday: "long" })}</span>
                   </div>
                 </div>
 
