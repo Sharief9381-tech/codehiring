@@ -2,7 +2,7 @@
 
 import { useState, useRef, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
-import { ArrowLeft, RefreshCw, Play, CheckCircle2, ChevronDown, Trophy, RotateCcw, Sun, Maximize2 } from "lucide-react"
+import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Maximize2 } from "lucide-react"
 
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
@@ -60,7 +60,9 @@ function EditorContent() {
   const [submitting, setSubmitting]     = useState(false)
   const [runResults, setRunResults]     = useState<any[]|null>(null)
   const [publicPassed, setPublicPassed] = useState(false)
-  const [allPassed, setAllPassed]       = useState(false)
+  const [allPassed, setAllPassed]       = useState(false)  // used to gate submit button colour
+  const [runtimeMs, setRuntimeMs]       = useState<number|null>(null)
+  const [timeLimit, setTimeLimit]       = useState<number>(5000)
   const [error, setError]               = useState("")
   const [completed, setCompleted]       = useState(false)
   const [leftTab, setLeftTab]           = useState<"desc"|"subs">("desc")
@@ -68,14 +70,171 @@ function EditorContent() {
   const [selectedCase, setSelectedCase] = useState(0)
   const [customInput, setCustomInput]   = useState("")
 
+  // ── Smart editor keyboard handler ──────────────────────────────────────────
+  // Python  : auto-indent after lines ending with ":"
+  // Brace langs (Java/C++/C/C#/Go/Kotlin/Swift/JS/TS):
+  //   • Enter inside { } → add indented line + closing brace on next line
+  //   • Tab              → insert 4 spaces at cursor
+  //   • Shift+Tab        → remove up to 4 leading spaces
+  //   • { typed         → auto-close to {}  with cursor inside
+  //   • ( typed         → auto-close to ()
+  //   • [ typed         → auto-close to []
+  //   • " or ' typed    → auto-close quotes
+  //   • Backspace on empty bracket pair → delete both chars
+
+  const BRACE_LANGS = new Set(["JavaScript","TypeScript","Java","C++","C","C#","Go","Kotlin","Swift"])
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key !== "Tab") return
-    e.preventDefault()
-    const ta = textareaRef.current; if (!ta) return
-    const s = ta.selectionStart
-    const newCode = code.substring(0, s) + "    " + code.substring(ta.selectionEnd)
-    setCode(newCode)
-    requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = s + 4 })
+    const ta = textareaRef.current
+    if (!ta) return
+
+    const { selectionStart: ss, selectionEnd: se } = ta
+    const before = code.slice(0, ss)
+    const after  = code.slice(se)
+    const currentLine = before.slice(before.lastIndexOf("\n") + 1)
+
+    // ── ENTER ────────────────────────────────────────────────────────────────
+    if (e.key === "Enter") {
+      // Python: carry indentation + extra indent after ":"
+      if (lang === "Python") {
+        e.preventDefault()
+        const indent = currentLine.match(/^(\s*)/)?.[1] ?? ""
+        const extraIndent = currentLine.trimEnd().endsWith(":") ? "    " : ""
+        const insertion = "\n" + indent + extraIndent
+        const next = before + insertion + after
+        setCode(next)
+        requestAnimationFrame(() => {
+          ta.selectionStart = ta.selectionEnd = ss + insertion.length
+        })
+        return
+      }
+
+      // Brace languages: if cursor is between { and } → add indented line + closing brace
+      if (BRACE_LANGS.has(lang)) {
+        const charBefore = before.slice(-1)
+        const charAfter  = after.slice(0, 1)
+        if (charBefore === "{" && charAfter === "}") {
+          e.preventDefault()
+          const indent = currentLine.match(/^(\s*)/)?.[1] ?? ""
+          const inner  = "\n" + indent + "    "
+          const closing = "\n" + indent
+          const next = before + inner + closing + "}" + after.slice(1)
+          setCode(next)
+          requestAnimationFrame(() => {
+            ta.selectionStart = ta.selectionEnd = ss + inner.length
+          })
+          return
+        }
+        // Normal enter: carry current indentation
+        e.preventDefault()
+        const indent = currentLine.match(/^(\s*)/)?.[1] ?? ""
+        const insertion = "\n" + indent
+        const next = before + insertion + after
+        setCode(next)
+        requestAnimationFrame(() => {
+          ta.selectionStart = ta.selectionEnd = ss + insertion.length
+        })
+        return
+      }
+      return
+    }
+
+    // ── TAB / SHIFT+TAB ──────────────────────────────────────────────────────
+    if (e.key === "Tab") {
+      e.preventDefault()
+      if (e.shiftKey) {
+        // Remove up to 4 leading spaces from current line
+        const lineStart = before.lastIndexOf("\n") + 1
+        const lineContent = code.slice(lineStart)
+        const spaces = lineContent.match(/^( {1,4})/)?.[1] ?? ""
+        if (spaces) {
+          const next = code.slice(0, lineStart) + code.slice(lineStart + spaces.length)
+          setCode(next)
+          requestAnimationFrame(() => {
+            ta.selectionStart = ta.selectionEnd = Math.max(lineStart, ss - spaces.length)
+          })
+        }
+      } else {
+        const insertion = "    "
+        const next = before + insertion + after
+        setCode(next)
+        requestAnimationFrame(() => {
+          ta.selectionStart = ta.selectionEnd = ss + 4
+        })
+      }
+      return
+    }
+
+    // ── Auto-close pairs (brace languages only) ──────────────────────────────
+    if (BRACE_LANGS.has(lang)) {
+      const PAIRS: Record<string, string> = { "{": "}", "(": ")", "[": "]", '"': '"', "'": "'" }
+
+      // Backspace: delete matching close char if next char matches
+      if (e.key === "Backspace" && ss === se) {
+        const prev = before.slice(-1)
+        const next = after.slice(0, 1)
+        if (prev && PAIRS[prev] === next) {
+          e.preventDefault()
+          setCode(before.slice(0, -1) + after.slice(1))
+          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss - 1 })
+          return
+        }
+      }
+
+      // Skip over closing char if already typed
+      if (["}", ")", "]", '"', "'"].includes(e.key) && after.slice(0, 1) === e.key) {
+        e.preventDefault()
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
+        return
+      }
+
+      // Insert open + close
+      if (PAIRS[e.key]) {
+        // Don't auto-close quotes if prev char is alphanumeric (likely a word)
+        const isQuote = e.key === '"' || e.key === "'"
+        if (isQuote && /\w/.test(before.slice(-1))) return
+
+        e.preventDefault()
+        const close  = PAIRS[e.key]
+        const next   = before + e.key + close + after
+        setCode(next)
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
+        return
+      }
+    }
+
+    // Python: auto-close () [] "" '' too
+    if (lang === "Python") {
+      const PY_PAIRS: Record<string, string> = { "(": ")", "[": "]", '"': '"', "'": "'" }
+
+      if (e.key === "Backspace" && ss === se) {
+        const prev = before.slice(-1)
+        const next = after.slice(0, 1)
+        if (prev && PY_PAIRS[prev] === next) {
+          e.preventDefault()
+          setCode(before.slice(0, -1) + after.slice(1))
+          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss - 1 })
+          return
+        }
+      }
+
+      if ([")", "]", '"', "'"].includes(e.key) && after.slice(0, 1) === e.key) {
+        e.preventDefault()
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
+        return
+      }
+
+      if (PY_PAIRS[e.key]) {
+        const isQuote = e.key === '"' || e.key === "'"
+        if (isQuote && /\w/.test(before.slice(-1))) return
+        e.preventDefault()
+        const close = PY_PAIRS[e.key]
+        const next  = before + e.key + close + after
+        setCode(next)
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
+        return
+      }
+    }
   }
 
   const changeLang = (l: string) => { setLang(l); setCode(STARTERS[l] ?? ""); setRunResults(null); setError("") }
@@ -95,13 +254,18 @@ function EditorContent() {
       if (data.results) {
         setRunResults(data.results)
         setPublicPassed(data.publicPassed ?? false)
-        setAllPassed(data.allPassed ?? false)
+        setAllPassed(data.allPassed ?? false)  // used to gate submit button colour
+        if (data.runtimeMs) { setRuntimeMs(data.runtimeMs); setTimeLimit(data.timeLimit ?? 5000) }
         if (mode === "submit" && data.allPassed) {
           setCompleted(true)
           const action = isProject && challengeId ? { action:"complete-challenge", challengeId } : { action:"daily-challenge" }
           await fetch("/api/student/first-year-progress", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(action) })
         }
-      } else { setError(data.error ?? "Failed to run tests") }
+      } else {
+        const msg = data.error ?? "Failed to run tests"
+        const setup = data.setup ? `\n${data.setup}` : ""
+        setError(msg + setup)
+      }
     } catch { setError("Network error. Please try again.") }
     finally { setRunning(false); setSubmitting(false) }
   }
@@ -379,10 +543,15 @@ function EditorContent() {
                       <div className="flex items-center gap-2 font-bold" style={{ color:"#3fb950" }}>
                         <Trophy className="h-4 w-4" /> All tests passed! XP awarded.
                       </div>
+                      {runtimeMs !== null && (
+                        <div className="flex items-center gap-4 text-xs" style={{ color:"#8b949e" }}>
+                          <span>⏱ Runtime: <span style={{ color:"#58a6ff" }}>{runtimeMs}ms</span></span>
+                          <span>⏰ Time limit: <span style={{ color:"#8b949e" }}>{timeLimit}ms ({lang})</span></span>
+                        </div>
+                      )}
                       <a href="/student/learn#challenges" className="text-xs transition-colors" style={{ color:"#58a6ff" }}>← Back to Challenges</a>
                     </div>
-                  )}
-                  {!runResults && !running && !submitting && !error && (
+                  )}                  {!runResults && !running && !submitting && !error && (
                     <p className="text-xs" style={{ color:"#3b4048" }}>Click Run to test against the public example.</p>
                   )}
                 </div>
