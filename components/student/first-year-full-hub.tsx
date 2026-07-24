@@ -5,10 +5,110 @@ import {
   BookOpen, Code2, Trophy, Star, Zap, CheckCircle2,
   Flame, Target, TrendingUp, ArrowRight, Sparkles,
   RefreshCw, Users, MessageCircle, Award, Brain,
-  ChevronRight, ExternalLink, Heart, BookMarked,
+  ChevronRight, ExternalLink, Heart, BookMarked, Play,
 } from "lucide-react"
 import { FirstYearHub } from "@/components/student/first-year-hub"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
+
+// ── TopicCodingProblems — TapAcademy style topic list with problems ────────────
+function TopicCodingProblems({ completedChallenges }: { completedChallenges: string[] }) {
+  const [openTopic, setOpenTopic] = useState<string | null>(null)
+
+  return (
+    <div className="space-y-2">
+      <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2 mb-3">
+        <Code2 className="h-3.5 w-3.5 text-violet-400" /> Coding Problems by Topic
+      </p>
+      <div className="rounded-xl border border-border overflow-hidden">
+        {TOPIC_QUESTIONS.map((topic, idx) => {
+          const solved    = topic.questions.filter(q => completedChallenges.includes(q.id)).length
+          const total     = topic.questions.length
+          const isOpen    = openTopic === topic.track
+          const allDone   = solved === total
+
+          return (
+            <div key={topic.track} className="border-b border-border last:border-0">
+              {/* Topic row */}
+              <button
+                onClick={() => setOpenTopic(isOpen ? null : topic.track)}
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors text-left">
+                {/* Number circle */}
+                <div className="h-7 w-7 shrink-0 rounded-full flex items-center justify-center text-[11px] font-black border"
+                  style={{
+                    background: allDone ? "#10b98120" : solved > 0 ? `${topic.color}15` : "rgba(255,255,255,0.06)",
+                    borderColor: allDone ? "#10b98140" : solved > 0 ? `${topic.color}40` : "rgba(255,255,255,0.12)",
+                    color: allDone ? "#10b981" : solved > 0 ? topic.color : "#71717a",
+                  }}>
+                  {allDone ? "✓" : idx + 1}
+                </div>
+                {/* Topic name */}
+                <span className="flex-1 text-sm font-semibold text-foreground">{topic.label}</span>
+                {/* Progress */}
+                {solved > 0 && (
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                    style={{ background: `${topic.color}15`, color: topic.color }}>
+                    {solved}/{total}
+                  </span>
+                )}
+                {/* Practice More button */}
+                <span className="text-[10px] font-semibold px-2.5 py-1 rounded-lg border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors ml-1">
+                  {isOpen ? "Hide" : "+ Practice More"}
+                </span>
+              </button>
+
+              {/* Problems list under topic */}
+              {isOpen && (
+                <div className="border-t border-border bg-black/20">
+                  {/* Header row */}
+                  <div className="flex items-center gap-3 px-4 py-2 border-b border-border/50">
+                    <span className="text-[11px] font-semibold text-muted-foreground flex-1">Question</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground w-20 text-center">Type</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground w-24 text-center">Difficulty</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground w-16 text-center">XP</span>
+                  </div>
+                  {topic.questions.map(q => {
+                    const isDone = completedChallenges.includes(q.id)
+                    const diffColor = q.difficulty === "Easy" ? "#10b981" : q.difficulty === "Medium" ? "#f59e0b" : "#ef4444"
+                    return (
+                      <div key={q.id}
+                        className="flex items-center gap-3 px-4 py-2.5 border-b border-border/30 last:border-0 hover:bg-white/5 transition-colors">
+                        {/* Done indicator */}
+                        <div className="h-5 w-5 shrink-0 rounded-full flex items-center justify-center"
+                          style={{ background: isDone ? "#10b98120" : "transparent", border: `1.5px solid ${isDone ? "#10b981" : "rgba(255,255,255,0.15)"}` }}>
+                          {isDone && <span className="text-[9px] text-green-400">✓</span>}
+                        </div>
+                        {/* Problem title */}
+                        <a href={q.url} target="_blank" rel="noopener noreferrer"
+                          className="flex-1 text-sm font-medium text-foreground hover:text-primary transition-colors truncate">
+                          {q.title}
+                        </a>
+                        {/* Type badge */}
+                        <span className="w-20 text-center">
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">
+                            ● Code
+                          </span>
+                        </span>
+                        {/* Difficulty */}
+                        <span className="w-24 text-center">
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                            style={{ background: `${diffColor}15`, color: diffColor, border: `1px solid ${diffColor}30` }}>
+                            {q.difficulty}
+                          </span>
+                        </span>
+                        {/* XP */}
+                        <span className="w-16 text-center text-[11px] font-semibold text-amber-400">+{q.xp} XP</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 
@@ -1436,78 +1536,8 @@ export function FirstYearFullHub({ student }: { student: any }) {
           {(() => {
             return (
               <>
-                {/* Project challenges — AI-generated, Basic → Advanced */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-                      <Zap className="h-3.5 w-3.5 text-violet-400" />Project Challenges
-                      {projectTier && (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-bold border"
-                          style={{
-                            background: projectTier === "Beginner" ? "#10b98120" : projectTier === "Intermediate" ? "#f59e0b20" : "#ef444420",
-                            color:      projectTier === "Beginner" ? "#10b981"   : projectTier === "Intermediate" ? "#f59e0b"   : "#ef4444",
-                            borderColor:projectTier === "Beginner" ? "#10b98130" : projectTier === "Intermediate" ? "#f59e0b30" : "#ef444430",
-                          }}>
-                          {projectTier}
-                        </span>
-                      )}
-                    </p>
-                    <button onClick={fetchProjectChallenges} disabled={projectLoading}
-                      className="text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors">
-                      <RefreshCw className={`h-3 w-3 ${projectLoading ? "animate-spin" : ""}`} /> Refresh
-                    </button>
-                  </div>
-
-                  {projectLoading ? (
-                    <div className="flex items-center justify-center gap-2 py-10 text-muted-foreground text-sm">
-                      <RefreshCw className="h-4 w-4 animate-spin" /> Generating project challenges...
-                    </div>
-                  ) : projectChallenges.length === 0 ? (
-                    <div className="text-center py-10 rounded-xl border border-dashed border-border">
-                      <Zap className="h-8 w-8 mx-auto text-muted-foreground/30 mb-2" />
-                      <p className="text-sm text-muted-foreground">No challenges loaded.</p>
-                      <button onClick={fetchProjectChallenges} className="mt-2 text-xs text-primary hover:underline">Load challenges</button>
-                    </div>
-                  ) : (
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                      {projectChallenges.filter(c => !completedChallenges.includes(c.id)).slice(0, 6).map(c => {
-                        const isNew  = newProjectId === c.id
-                        const bColor = c.badge === "Beginner" ? "#10b981" : c.badge === "Intermediate" ? "#f59e0b" : "#ef4444"
-                        return (
-                          <div key={c.id} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${isNew ? "border-primary/60 bg-primary/5" : "border-border bg-card/40 hover:border-primary/30"}`}>
-                            <div className="flex items-start justify-between gap-2">
-                              <p className="text-sm font-bold text-foreground">{c.title}</p>
-                              <div className="flex items-center gap-1.5 shrink-0">
-                                {isNew && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/20 text-primary animate-pulse">New!</span>}
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:`${bColor}20`, color:bColor }}>{c.badge}</span>
-                              </div>
-                            </div>
-                            <p className="text-xs text-muted-foreground flex-1">{c.desc}</p>
-                            {/* Features */}
-                            {c.features && c.features.length > 0 && (
-                              <div className="flex flex-wrap gap-1">
-                                {c.features.slice(0,3).map((f, i) => (
-                                  <span key={i} className="text-[9px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground">{f}</span>
-                                ))}
-                              </div>
-                            )}
-                            {c.techHint && (
-                              <p className="text-[10px] text-muted-foreground/60 italic">Stack: {c.techHint}</p>
-                            )}
-                            {/* Try in Editor — no "Done" button */}
-                            <a
-                              href={`/student/daily-challenge?title=${encodeURIComponent(c.title)}&desc=${encodeURIComponent(c.desc)}&input=&output=&explain=${encodeURIComponent((c.features ?? []).join(", "))}&problemStatement=${encodeURIComponent((c as any).problemStatement ?? "")}&explanation=${encodeURIComponent((c as any).explanation ?? "")}&type=project&challengeId=${encodeURIComponent(c.id)}&badge=${encodeURIComponent(c.badge)}`}
-                              className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold text-white transition-all"
-                              style={{ background:`linear-gradient(135deg,${c.color},${c.color}cc)` }}
-                            >
-                              <ExternalLink className="h-3 w-3" /> Try in Editor
-                            </a>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
+                {/* Topic-based coding problems — TapAcademy style */}
+                <TopicCodingProblems completedChallenges={completedChallenges} />
 
                 {/* Debug challenges — AI-generated, infinite */}
                 <div className="space-y-3">
@@ -1692,148 +1722,6 @@ export function FirstYearFullHub({ student }: { student: any }) {
               </>
             )
           })()}
-
-          {/* Skill badge challenges */}
-          <div className="space-y-3">
-            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-              <Star className="h-3.5 w-3.5 text-amber-400" />Skill Badge Challenges — Earn Recognition
-            </p>
-            <p className="text-[11px] text-muted-foreground">Solve the LeetCode problems in each topic track. Click the circle next to each problem after solving it on LeetCode to mark it done and earn XP.</p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {(() => {
-                // ── Build ALL_TRACKS from TOPIC_QUESTIONS (51 topics × 7 LeetCode problems) ──
-                // Each topic becomes 1 track with 7 "badges" = 7 LeetCode problems to solve.
-                // Completing all 7 problems in a topic earns the full track badge.
-                const TRACK_COLORS = [
-                  "#3b82f6","#10b981","#8b5cf6","#f59e0b","#06b6d4","#ec4899","#f97316",
-                  "#14b8a6","#a855f7","#f43f5e","#84cc16","#fb923c","#ef4444","#6366f1",
-                  "#0ea5e9","#d946ef","#22c55e","#eab308","#64748b","#78716c",
-                ]
-
-                const ALL_TRACKS = TOPIC_QUESTIONS.map((topic, idx) => ({
-                  track: topic.track,
-                  label: topic.label,
-                  color: TRACK_COLORS[idx % TRACK_COLORS.length],
-                  url: `https://leetcode.com/tag/${topic.track.replace(/-/g, "-")}/`,
-                  isInitial: idx < 4,
-                  badges: topic.questions.map((q, qi) => ({
-                    id: q.id,
-                    title: q.title,
-                    desc: `${q.difficulty} · Solve on LeetCode`,
-                    xp: q.xp,
-                    required: 1,  // each badge = solve this 1 problem
-                    url: q.url,
-                    difficulty: q.difficulty,
-                  })),
-                }))
-
-                // Show up to 4 non-completed tracks — never show completed ones
-                const displayTracks = ALL_TRACKS.filter(t =>
-                  !t.badges.every(b => completedBadges.includes(b.id))
-                ).slice(0, 4)
-
-                if (displayTracks.length === 0) return (
-                  <div className="col-span-4 text-center py-10 rounded-xl border border-dashed border-emerald-500/30">
-                    <Trophy className="h-8 w-8 mx-auto text-emerald-400 mb-2" />
-                    <p className="text-sm font-semibold text-emerald-400">All {TOPIC_QUESTIONS.length} topics mastered — incredible work!</p>
-                  </div>
-                )
-
-                return displayTracks.map(t => {
-                  const earnedInTrack = t.badges.filter(b => completedBadges.includes(b.id))
-                  const currentIdx    = earnedInTrack.length
-                  const allDone       = currentIdx === t.badges.length
-                  const activeBadge   = t.badges[allDone ? t.badges.length - 1 : currentIdx]
-                  const prog          = badgeProgress[activeBadge.id]
-                  const cur           = prog?.current ?? 0
-                  const req           = prog?.required ?? activeBadge.required
-                  const pct           = allDone ? 100 : Math.min(100, Math.round((cur / req) * 100))
-                  // Is this track newly unlocked (not in the initial 4)?
-                  const isNewUnlock   = !t.isInitial && earnedInTrack.length === 0
-
-                  return (
-                    <div key={t.track} className={`rounded-xl border p-4 flex flex-col gap-3 transition-all ${
-                      allDone      ? "border-emerald-500/30 bg-emerald-500/5"
-                      : isNewUnlock ? "border-primary/40 bg-primary/5"
-                      :               "border-border bg-card/40"
-                    }`}>
-                      {/* Track label + count */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <p className="text-[10px] font-bold uppercase tracking-wide" style={{ color: t.color }}>{t.label}</p>
-                          {isNewUnlock && (
-                            <span className="text-[8px] font-black px-1.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">NEW</span>
-                          )}
-                        </div>
-                        <p className="text-[10px] text-muted-foreground">{earnedInTrack.length} / {t.badges.length}</p>
-                      </div>
-                      {/* Progress bar */}
-                      <div className="space-y-1">
-                        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
-                          <div className="h-full rounded-full transition-all duration-700"
-                            style={{ width: `${Math.round((earnedInTrack.length / t.badges.length) * 100)}%`, background: t.color }} />
-                        </div>
-                        <p className="text-[9px] text-muted-foreground">{earnedInTrack.length} of {t.badges.length} problems solved</p>
-                      </div>
-                      {/* Problem list — show actual problem names */}
-                      <div className="flex-1 space-y-1">
-                        {t.badges.map((b, i) => {
-                          const done = completedBadges.includes(b.id)
-                          return (
-                            <div key={b.id} className={`flex items-center gap-2 py-0.5 transition-all`}>
-                              <button
-                                disabled={done}
-                                onClick={async () => {
-                                  if (done) return
-                                  const res = await fetch("/api/student/first-year-progress", {
-                                    method: "POST",
-                                    headers: { "Content-Type": "application/json" },
-                                    body: JSON.stringify({ action: "award-badge", badgeId: b.id }),
-                                  })
-                                  const data = await res.json()
-                                  if (data.success) {
-                                    setCompletedBadges(p => [...p, b.id])
-                                    setXp(data.newTotal)
-                                    showXpPop(`+${data.xpGained} XP`)
-                                  }
-                                }}
-                                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[8px] font-black transition-all ${
-                                  done
-                                    ? "bg-emerald-500 text-white cursor-default"
-                                    : "border border-border text-muted-foreground hover:border-primary hover:text-primary"
-                                }`}
-                                title={done ? "Solved!" : "Mark as solved"}
-                              >
-                                {done ? "✓" : ""}
-                              </button>
-                              <a href={(b as any).url ?? t.url} target="_blank" rel="noopener noreferrer"
-                                className={`flex-1 text-[10px] font-medium truncate transition-colors ${done ? "text-muted-foreground/40 line-through" : "text-foreground hover:text-primary"}`}>
-                                {b.title}
-                              </a>
-                              <span className="ml-auto text-[8px] font-semibold shrink-0" style={{ color: done ? "#10b981" : t.color }}>
-                                {done ? "✓" : `+${b.xp}XP`}
-                              </span>
-                            </div>
-                          )
-                        })}
-                      </div>
-                      {/* Practice link */}
-                      {!allDone ? (
-                        <a href={t.url} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-1.5 text-[10px] text-primary font-semibold py-1.5 rounded-lg border border-primary/20 hover:bg-primary/5 transition-all mt-auto">
-                          <ExternalLink className="h-3 w-3" /> Practice on LeetCode
-                        </a>
-                      ) : (
-                        <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-semibold border-t border-emerald-500/20 pt-2">
-                          <CheckCircle2 className="h-3 w-3" /> All {t.badges.length} problems solved!
-                        </div>
-                      )}
-                    </div>
-                  )
-                })
-              })()}
-            </div>
-          </div>
 
         </div>
       )}
