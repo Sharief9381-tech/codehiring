@@ -88,27 +88,37 @@ async function executeCode(
 
 // ── Build test cases (no AI) ───────────────────────────────────────────────────
 function buildTestCases(
-  problem: { input: string; output: string },
+  problem: { input: string; output: string; input2?: string; output2?: string },
   count: number
 ): Array<{ input: string; expected: string; isPublic: boolean }> {
-  const pub = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
-  if (count <= 1) return [pub]
+  const pub  = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
+  const pub2 = problem.input2
+    ? { input: problem.input2, expected: problem.output2 ?? "", isPublic: true }
+    : null
 
-  const cases: Array<{ input: string; expected: string; isPublic: boolean }> = [pub]
+  if (count <= 1) return [pub]
+  if (count === 2) return pub2 ? [pub, pub2] : [pub, { input: (problem.input ?? "").split("").reverse().join("") || "0", expected: "", isPublic: true }]
+
+  const cases: Array<{ input: string; expected: string; isPublic: boolean }> = pub2 ? [pub, pub2] : [pub]
   const raw = (problem.input ?? "").trim()
   const num = Number(raw)
 
+  const variants: string[] = []
   if (!isNaN(num) && raw !== "") {
-    for (const inp of [String(num + 1), "0", "1", String(Math.abs(num) * 2), "10"]) {
-      if (cases.length >= count) break
-      cases.push({ input: inp, expected: "", isPublic: false })
-    }
+    variants.push(
+      `${num + 1}\n${Array.from({length: num + 1}, (_, i) => i + 1).join(" ")}`,
+      `${num}\n${Array.from({length: num}, () => Math.floor(Math.random() * 100) + 1).join(" ")}`,
+      `1\n7`,
+      `3\n3 2 1`,
+      `4\n1 2 3 4`,
+    )
   } else {
     const s = raw.replace(/^["']|["']$/g, "")
-    for (const inp of [s.split("").reverse().join(""), s.slice(0,1)||"a", "abc", "test", ""]) {
-      if (cases.length >= count) break
-      cases.push({ input: inp, expected: "", isPublic: false })
-    }
+    variants.push(s.split("").reverse().join(""), s.slice(0,1)||"a", "abc", "test", "")
+  }
+
+  for (let i = 0; cases.length < count; i++) {
+    cases.push({ input: variants[i % variants.length] ?? "", expected: "", isPublic: false })
   }
 
   return cases.slice(0, count)
@@ -133,7 +143,7 @@ export async function POST(req: Request) {
       }, { status: 503 })
     }
 
-    const count     = mode === "run" ? 1 : 6
+    const count     = mode === "run" ? 2 : 6   // 2 public on run, 6 total on submit
     const testCases = buildTestCases(problem, count)
     const timeout   = LANG_TIMEOUT[language] ?? 5000
 

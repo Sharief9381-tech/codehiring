@@ -1,8 +1,17 @@
 "use client"
 
-import { useState, useRef, Suspense } from "react"
+import { useState, useRef, Suspense, useCallback, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Maximize2 } from "lucide-react"
+import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
+
+// Build a flat problemId → {title, difficulty} map at module level (instant lookup)
+const PROBLEM_LOOKUP: Record<string, { title: string; difficulty: string }> = {}
+for (const topic of TOPIC_QUESTIONS) {
+  for (const q of topic.questions) {
+    PROBLEM_LOOKUP[q.id] = { title: q.title, difficulty: q.difficulty }
+  }
+}
 
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
@@ -37,17 +46,45 @@ function EditorContent() {
 
   const isProject   = params.get("type") === "project"
   const challengeId = params.get("challengeId") ?? ""
+  const problemId   = params.get("problemId") ?? ""
+
+  // Quick lookup of problem title from TOPIC_QUESTIONS (client-side, no API needed)
+  // This gives the correct title immediately before sessionStorage loads
+  const FLAT_PROBLEMS: Record<string, { title: string; difficulty: string }> = {}
+  if (typeof window !== "undefined") {
+    // We reference the same IDs used in topic-questions.ts
+    // Rather than importing (circular), we build a simple lookup inline
+  }
+
+  // Load from sessionStorage after mount, or fetch from API if not cached
+  const [storedProblem, setStoredProblem] = useState<any>(null)
+  useEffect(() => {
+    if (!problemId) return
+    // Try sessionStorage first
+    try {
+      const stored = sessionStorage.getItem(`problem_${problemId}`)
+      if (stored) { setStoredProblem(JSON.parse(stored)); return }
+    } catch {}
+    // Not in sessionStorage — fetch from API
+    fetch("/api/student/problem-detail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ problemId }),
+    }).then(r => r.json()).then(data => {
+      if (data.problem) setStoredProblem(data.problem)
+    }).catch(() => {})
+  }, [problemId])
 
   const problem = {
-    title:       params.get("title")       ?? "Today's Challenge",
-    desc:        params.get("desc")        ?? "",
-    inputFormat: params.get("inputFormat") || "",
-    outputFormat:params.get("outputFormat")|| "",
-    constraints: params.get("constraints") ? params.get("constraints")!.split("|||").filter(Boolean) : [],
-    input:       params.get("input")       ?? "",
-    output:      params.get("output")      ?? "",
-    explain:     params.get("explain")     ?? "",
-    badge:       params.get("badge")       ?? "Easy",
+    title:       storedProblem?.title        ?? params.get("title")        ?? "Today's Challenge",
+    desc:        storedProblem?.desc         ?? params.get("desc")         ?? "",
+    inputFormat: (storedProblem?.inputFormat ?? params.get("inputFormat")) || "",
+    outputFormat:(storedProblem?.outputFormat?? params.get("outputFormat"))|| "",
+    constraints: storedProblem?.constraints  ?? (params.get("constraints") ? params.get("constraints")!.split("|||").filter(Boolean) : []),
+    input:       storedProblem?.input        ?? params.get("input")        ?? "",
+    output:      storedProblem?.output       ?? params.get("output")       ?? "",
+    explain:     storedProblem?.explain      ?? params.get("explain")      ?? "",
+    badge:       storedProblem?.badge        ?? params.get("badge")        ?? "Easy",
   }
 
   const inputFormat  = problem.inputFormat  || (problem.input  ? `A single line: ${problem.input}` : "")
@@ -69,6 +106,27 @@ function EditorContent() {
   const [bottomTab, setBottomTab]       = useState<"sample"|"custom"|"results">("sample")
   const [selectedCase, setSelectedCase] = useState(0)
   const [customInput, setCustomInput]   = useState("")
+  const [leftWidth, setLeftWidth]       = useState(380)
+  const dragging = useRef(false)
+
+  const onDividerMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    dragging.current = true
+    const startX = e.clientX
+    const startW = leftWidth
+    const onMove = (ev: MouseEvent) => {
+      if (!dragging.current) return
+      const newW = Math.max(240, Math.min(600, startW + ev.clientX - startX))
+      setLeftWidth(newW)
+    }
+    const onUp = () => {
+      dragging.current = false
+      window.removeEventListener("mousemove", onMove)
+      window.removeEventListener("mouseup", onUp)
+    }
+    window.addEventListener("mousemove", onMove)
+    window.addEventListener("mouseup", onUp)
+  }, [leftWidth])
 
   // ── Smart editor keyboard handler ──────────────────────────────────────────
   // Python  : auto-indent after lines ending with ":"
@@ -256,6 +314,7 @@ function EditorContent() {
         setPublicPassed(data.publicPassed ?? false)
         setAllPassed(data.allPassed ?? false)  // used to gate submit button colour
         if (data.runtimeMs) { setRuntimeMs(data.runtimeMs); setTimeLimit(data.timeLimit ?? 5000) }
+        if (mode === "run") { setBottomTab("sample"); setSelectedCase(0) }
         if (mode === "submit" && data.allPassed) {
           setCompleted(true)
           const action = isProject && challengeId ? { action:"complete-challenge", challengeId } : { action:"daily-challenge" }
@@ -270,31 +329,46 @@ function EditorContent() {
     finally { setRunning(false); setSubmitting(false) }
   }
 
+  // Show loading briefly while sessionStorage hydrates
+  if (problemId && !storedProblem && !params.get("title") && !params.get("desc")) {
+    return (
+      <div className="h-screen flex items-center justify-center gap-2" style={{ background:"#0d1117", color:"#8b949e" }}>
+        <RefreshCw className="h-5 w-5 animate-spin" /> Loading problem...
+      </div>
+    )
+  }
+
   const diffColor = problem.badge === "Beginner" || problem.badge?.toLowerCase() === "easy"   ? "#3fb950"
     : problem.badge === "Intermediate" || problem.badge?.toLowerCase() === "medium" ? "#d29922"
     : "#f85149"
 
+  // 2 public cases — Case 2 only populates after Run
   const sampleCases = [
-    { label: "Case 1", input: problem.input, output: problem.output },
-    { label: "Case 2", input: "", output: "" },
+    { label: "Case 1", input: problem.input,              output: problem.output },
+    { label: "Case 2", input: runResults?.[1]?.input ?? "", output: runResults?.[1]?.expectedOutput ?? "" },
   ]
 
   const lines = code.split("\n")
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden select-none" style={{ background:"#0d1117", fontFamily:"'Segoe UI',Inter,sans-serif" }}>
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background:"#0d1117", fontFamily:"'Segoe UI',Inter,sans-serif" }}>
 
       {/* ── Top bar ─────────────────────────────────────────────── */}
       <div className="flex items-center px-4 h-11 border-b shrink-0" style={{ background:"#161b22", borderColor:"#30363d" }}>
-        <a href="/student/learn#challenges" className="flex items-center gap-1.5 text-sm mr-4 transition-colors" style={{ color:"#8b949e" }}
+        <a href="#" onClick={e => { e.preventDefault(); window.history.back() }} className="flex items-center gap-1.5 text-sm mr-4 transition-colors" style={{ color:"#8b949e" }}
           onMouseEnter={e=>(e.currentTarget.style.color="#e6edf3")} onMouseLeave={e=>(e.currentTarget.style.color="#8b949e")}>
           <ArrowLeft className="h-4 w-4" />
         </a>
-        <span className="font-bold text-sm mr-2" style={{ color:"#e6edf3" }}>{problem.title}</span>
-        <span className="text-xs font-semibold px-2 py-0.5 rounded-full border" style={{ color:diffColor, borderColor:diffColor+"44", background:diffColor+"15" }}>
-          {problem.badge || "Easy"}
+        <span className="font-bold text-sm mr-2" style={{ color:"#e6edf3" }}>
+          {storedProblem?.title ?? PROBLEM_LOOKUP[problemId]?.title ?? problem.title}
         </span>
-        {!isProject && <span className="text-xs font-semibold px-2 py-0.5 rounded-full border ml-2" style={{ color:"#a371f7", borderColor:"#a371f744", background:"#a371f715" }}>Daily</span>}
+        <span className="text-xs font-semibold px-2 py-0.5 rounded-full border" style={{ color:diffColor, borderColor:diffColor+"44", background:diffColor+"15" }}>
+          {storedProblem?.badge ?? PROBLEM_LOOKUP[problemId]?.difficulty ?? (problem.badge || "Easy")}
+        </span>
+        {/* Only show Daily badge for actual daily challenges, not topic problems */}
+        {!isProject && !problemId && (
+          <span className="text-xs font-semibold px-2 py-0.5 rounded-full border ml-2" style={{ color:"#a371f7", borderColor:"#a371f744", background:"#a371f715" }}>Daily</span>
+        )}
         <div className="ml-auto flex items-center gap-3" style={{ color:"#8b949e" }}>
           <span className="text-sm cursor-pointer hover:text-white transition-colors">⚙</span>
           <span className="text-sm cursor-pointer hover:text-white transition-colors">🔖</span>
@@ -302,10 +376,10 @@ function EditorContent() {
       </div>
 
       {/* ── Body ────────────────────────────────────────────────── */}
-      <div className="flex flex-1 min-h-0 overflow-hidden">
+      <div className="flex flex-1 min-h-0 overflow-hidden relative">
 
         {/* LEFT — Problem description */}
-        <div className="w-[380px] shrink-0 flex flex-col overflow-hidden border-r" style={{ background:"#0d1117", borderColor:"#30363d" }}>
+        <div className="shrink-0 flex flex-col overflow-hidden border-r" style={{ width:`${leftWidth}px`, background:"#0d1117", borderColor:"#30363d" }}>
           {/* Tabs */}
           <div className="flex items-center border-b px-3 shrink-0" style={{ background:"#161b22", borderColor:"#30363d" }}>
             {[{id:"desc",label:"Description",icon:"📄"},{id:"subs",label:"Submissions",icon:"🕒"}].map(t => (
@@ -318,39 +392,49 @@ function EditorContent() {
           </div>
 
           {leftTab === "desc" ? (
-            <div className="flex-1 overflow-y-auto p-5 space-y-4" style={{ color:"#c9d1d9" }}>
+            <div className="flex-1 overflow-y-auto p-5 space-y-5" style={{ color:"#c9d1d9" }}>
+              {/* Title + difficulty */}
               <div>
-                <h1 className="text-xl font-black mb-3" style={{ color:"#e6edf3" }}>{problem.title}</h1>
-                <p className="text-sm leading-relaxed" style={{ color:"#8b949e" }}>{problem.desc}</p>
+                <h1 className="text-xl font-black mb-2" style={{ color:"#e6edf3" }}>
+                  {storedProblem?.title ?? PROBLEM_LOOKUP[problemId]?.title ?? problem.title}
+                </h1>
+                <p className="text-sm leading-relaxed" style={{ color:"#c9d1d9", lineHeight:"1.7" }}>{problem.desc}</p>
               </div>
 
+              {/* Input/Output format */}
               {inputFormat && (
                 <div>
                   <p className="text-sm font-bold mb-1.5" style={{ color:"#e6edf3" }}>Input Format</p>
-                  <div className="rounded-md px-4 py-3 text-sm border" style={{ background:"#161b22", borderColor:"#30363d", color:"#c9d1d9" }}>{inputFormat}</div>
+                  <div className="rounded-lg px-4 py-3 text-sm border" style={{ background:"#161b22", borderColor:"#30363d", color:"#c9d1d9", lineHeight:"1.6" }}>{inputFormat}</div>
                 </div>
               )}
-
               {outputFormat && (
                 <div>
                   <p className="text-sm font-bold mb-1.5" style={{ color:"#e6edf3" }}>Output Format</p>
-                  <div className="rounded-md px-4 py-3 text-sm border" style={{ background:"#161b22", borderColor:"#30363d", color:"#c9d1d9" }}>{outputFormat}</div>
+                  <div className="rounded-lg px-4 py-3 text-sm border" style={{ background:"#161b22", borderColor:"#30363d", color:"#c9d1d9", lineHeight:"1.6" }}>{outputFormat}</div>
                 </div>
               )}
 
+              {/* Examples — LeetCode style */}
               {problem.input && (
-                <div>
-                  <p className="text-sm font-bold mb-2" style={{ color:"#e6edf3" }}>Sample Case 1</p>
-                  <div className="rounded-md border p-4" style={{ background:"#161b22", borderColor:"#30363d" }}>
-                    <div className="flex gap-10 text-sm">
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-bold mb-2" style={{ color:"#e6edf3" }}>Example 1:</p>
+                    <div className="rounded-lg border p-4 space-y-2 text-sm" style={{ background:"#161b22", borderColor:"#30363d" }}>
                       <div>
-                        <p className="text-xs mb-1" style={{ color:"#8b949e" }}>Input:</p>
-                        <p className="font-mono font-bold" style={{ color:"#79c0ff" }}>{problem.input}</p>
+                        <span className="font-bold" style={{ color:"#e6edf3" }}>Input: </span>
+                        <code className="font-mono" style={{ color:"#79c0ff" }}>{problem.input}</code>
                       </div>
                       {problem.output && (
                         <div>
-                          <p className="text-xs mb-1" style={{ color:"#8b949e" }}>Output:</p>
-                          <p className="font-mono font-bold" style={{ color:"#3fb950" }}>{problem.output}</p>
+                          <span className="font-bold" style={{ color:"#e6edf3" }}>Output: </span>
+                          <code className="font-mono" style={{ color:"#3fb950" }}>{problem.output}</code>
+                        </div>
+                      )}
+                      {problem.explain && (
+                        <div>
+                          <span className="font-bold" style={{ color:"#e6edf3" }}>Explanation: </span>
+                          <span style={{ color:"#8b949e" }}>{problem.explain}</span>
                         </div>
                       )}
                     </div>
@@ -358,14 +442,15 @@ function EditorContent() {
                 </div>
               )}
 
+              {/* Constraints */}
               {constraints.length > 0 && (
                 <div>
-                  <p className="text-sm font-bold mb-2" style={{ color:"#e6edf3" }}>Constraints</p>
-                  <ul className="space-y-1.5">
+                  <p className="text-sm font-bold mb-2" style={{ color:"#e6edf3" }}>Constraints:</p>
+                  <ul className="space-y-1">
                     {constraints.map((c:string,i:number) => (
-                      <li key={i} className="flex items-center gap-2 text-xs">
+                      <li key={i} className="flex items-center gap-2 text-sm">
                         <span style={{ color:"#58a6ff" }}>·</span>
-                        <code className="px-1.5 py-0.5 rounded text-xs" style={{ color:"#79c0ff", background:"#0c1929" }}>{c}</code>
+                        <code className="font-mono text-sm" style={{ color:"#c9d1d9" }}>{c}</code>
                       </li>
                     ))}
                   </ul>
@@ -381,6 +466,14 @@ function EditorContent() {
 
         {/* RIGHT — Editor + Bottom */}
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          {/* Drag handle */}
+          <div
+            onMouseDown={onDividerMouseDown}
+            className="absolute z-10 cursor-col-resize"
+            style={{ left:`${leftWidth - 3}px`, top:"44px", bottom:0, width:"6px", background:"transparent" }}
+            onMouseEnter={e=>(e.currentTarget.style.background="#388bfd44")}
+            onMouseLeave={e=>(e.currentTarget.style.background="transparent")}
+          />
 
           {/* Editor header */}
           <div className="flex items-center justify-between px-4 py-2 border-b shrink-0" style={{ background:"#161b22", borderColor:"#30363d" }}>
@@ -406,9 +499,9 @@ function EditorContent() {
           </div>
 
           {/* Code editor */}
-          <div className="flex-1 min-h-0 overflow-hidden flex" style={{ background:"#0d1117" }}>
+          <div className="flex-1 min-h-0 overflow-auto flex" style={{ background:"#0d1117" }}>
             {/* Line numbers */}
-            <div className="w-10 shrink-0 pt-4 text-right pr-3 overflow-hidden" style={{ color:"#3b4048", fontSize:"12px", fontFamily:"'Fira Code','Consolas',monospace", lineHeight:"1.5rem" }}>
+            <div className="w-10 shrink-0 pt-4 text-right pr-3 sticky left-0" style={{ color:"#3b4048", fontSize:"12px", fontFamily:"'Fira Code','Consolas',monospace", lineHeight:"1.5rem", background:"#0d1117" }}>
               {lines.map((_,i) => <div key={i}>{i+1}</div>)}
             </div>
             {/* Textarea */}
@@ -419,11 +512,11 @@ function EditorContent() {
               onKeyDown={handleKeyDown}
               spellCheck={false}
               disabled={completed}
-              className="flex-1 focus:outline-none resize-none pt-4 pr-4 pb-4 pl-2 disabled:opacity-60"
+              className="flex-1 focus:outline-none resize-none pt-4 pr-4 pb-4 pl-2 disabled:opacity-60 min-w-0"
               style={{
                 background:"#0d1117", color:"#e6edf3",
                 fontFamily:"'Fira Code','Consolas',monospace", fontSize:"13px", lineHeight:"1.5rem",
-                tabSize:4,
+                tabSize:4, minHeight:"100%",
               }}
             />
           </div>
@@ -463,37 +556,44 @@ function EditorContent() {
 
             {/* Bottom content */}
             <div className="flex-1 overflow-y-auto p-3">
-              {/* Sample Cases */}
+              {/* Sample Cases — LeetCode Testcase style */}
               {bottomTab === "sample" && (
                 <div className="space-y-3">
                   <div className="flex gap-2">
                     {sampleCases.map((c,i) => (
                       <button key={i} onClick={() => setSelectedCase(i)}
-                        className="px-3 py-1 rounded-md text-xs font-semibold border transition-all"
-                        style={{ background: selectedCase===i ? "#388bfd" : "#21262d", borderColor: selectedCase===i ? "#388bfd" : "#30363d", color: selectedCase===i ? "#fff" : "#8b949e" }}>
-                        {c.label}
+                        className="px-3 py-1 rounded text-xs font-semibold transition-all"
+                        style={{
+                          background: selectedCase===i ? "#388bfd20" : "transparent",
+                          color: selectedCase===i ? "#388bfd" : "#8b949e",
+                          border: `1px solid ${selectedCase===i ? "#388bfd44" : "transparent"}`,
+                        }}>
+                        Case {i+1}
                       </button>
                     ))}
                   </div>
-                  <div className="grid gap-3">
+                  <div className="space-y-3">
                     <div>
-                      <p className="text-xs mb-1.5 flex items-center gap-1.5" style={{ color:"#8b949e" }}>
-                        <span className="inline-block w-0.5 h-3 rounded-full" style={{ background:"#388bfd" }} />
-                        Input
-                      </p>
-                      <div className="rounded-md px-3 py-2 font-mono text-sm border" style={{ background:"#161b22", borderColor:"#30363d", color:"#79c0ff", minHeight:"32px" }}>
+                      <p className="text-xs font-semibold mb-1.5" style={{ color:"#8b949e" }}>Input</p>
+                      <div className="rounded-lg px-3 py-2.5 font-mono text-sm" style={{ background:"#161b22", color:"#c9d1d9", minHeight:"36px", border:"1px solid #30363d" }}>
                         {sampleCases[selectedCase]?.input || <span style={{ color:"#3b4048" }}>—</span>}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs mb-1.5 flex items-center gap-1.5" style={{ color:"#8b949e" }}>
-                        <span className="inline-block w-0.5 h-3 rounded-full" style={{ background:"#3fb950" }} />
-                        Expected Output
-                      </p>
-                      <div className="rounded-md px-3 py-2 font-mono text-sm border" style={{ background:"#161b22", borderColor:"#30363d", color:"#3fb950", minHeight:"32px" }}>
+                      <p className="text-xs font-semibold mb-1.5" style={{ color:"#8b949e" }}>Expected Output</p>
+                      <div className="rounded-lg px-3 py-2.5 font-mono text-sm" style={{ background:"#161b22", color:"#c9d1d9", minHeight:"36px", border:"1px solid #30363d" }}>
                         {sampleCases[selectedCase]?.output || <span style={{ color:"#3b4048" }}>—</span>}
                       </div>
                     </div>
+                    {/* Actual output after run */}
+                    {runResults && runResults[selectedCase] && (
+                      <div>
+                        <p className="text-xs font-semibold mb-1.5" style={{ color:"#8b949e" }}>Output</p>
+                        <div className="rounded-lg px-3 py-2.5 font-mono text-sm" style={{ background:"#161b22", color: runResults[selectedCase].passed ? "#3fb950" : "#f85149", minHeight:"36px", border:`1px solid ${runResults[selectedCase].passed ? "#2ea04333" : "#f8514933"}` }}>
+                          {runResults[selectedCase].actualOutput || <span style={{ color:"#3b4048" }}>—</span>}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -523,19 +623,27 @@ function EditorContent() {
                     <div key={i} className="rounded-md border p-3 text-xs space-y-1"
                       style={{ background: r.passed?"#0d2818":"#2d0b0b", borderColor: r.passed?"#2ea04333":"#f8514933" }}>
                       <div className="flex items-center justify-between">
-                        <span style={{ color:"#8b949e" }}>{r.isPublic ? "Testcase 1 (public)" : `Testcase ${i+1} (hidden)`}</span>
-                        <span className="font-bold" style={{ color: r.passed?"#3fb950":"#f85149" }}>
-                          {r.passed ? "✓ Correct" : "✗ Wrong Answer"}
+                        <div className="flex items-center gap-2">
+                          <span style={{ color:"#8b949e" }}>{r.isPublic ? "Testcase 1 (public)" : `Testcase ${i+1} (hidden)`}</span>
+                          {r.runtimeMs > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ background:"#0c1929", color:"#58a6ff" }}>{r.runtimeMs}ms</span>}
+                        </div>
+                        <span className="font-bold" style={{ color: r.tle ? "#d29922" : r.passed?"#3fb950":"#f85149" }}>
+                          {r.tle ? "⏱ TLE" : r.passed ? "✓ Accepted" : "✗ Wrong Answer"}
                         </span>
                       </div>
                       {r.isPublic && (
                         <div className="font-mono space-y-0.5 mt-1">
                           <p><span style={{ color:"#8b949e" }}>Input: </span><span style={{ color:"#79c0ff" }}>{r.input}</span></p>
                           <p><span style={{ color:"#8b949e" }}>Expected: </span><span style={{ color:"#3fb950" }}>{r.expectedOutput}</span></p>
-                          {!r.passed && <p><span style={{ color:"#8b949e" }}>Your Output: </span><span style={{ color:"#f85149" }}>{r.actualOutput}</span></p>}
+                          <p><span style={{ color:"#8b949e" }}>Output: </span><span style={{ color: r.passed?"#3fb950":"#f85149" }}>{r.actualOutput}</span></p>
                         </div>
                       )}
-                      {!r.isPublic && !r.passed && <p style={{ color:"#8b949e" }}>Check edge cases (empty input, boundary values)</p>}
+                      {!r.isPublic && !r.passed && !r.tle && (
+                        <p className="text-[10px]" style={{ color:"#8b949e" }}>Hidden test failed — check edge cases (empty input, large values, boundaries)</p>
+                      )}
+                      {r.error && !r.tle && (
+                        <p className="font-mono text-[10px] mt-1" style={{ color:"#f85149" }}>{r.error.slice(0, 150)}</p>
+                      )}
                     </div>
                   ))}
                   {completed && (
@@ -549,7 +657,7 @@ function EditorContent() {
                           <span>⏰ Time limit: <span style={{ color:"#8b949e" }}>{timeLimit}ms ({lang})</span></span>
                         </div>
                       )}
-                      <a href="/student/learn#challenges" className="text-xs transition-colors" style={{ color:"#58a6ff" }}>← Back to Challenges</a>
+                      <a href="#" onClick={e => { e.preventDefault(); window.history.back() }} className="text-xs transition-colors" style={{ color:"#58a6ff" }}>← Back</a>
                     </div>
                   )}                  {!runResults && !running && !submitting && !error && (
                     <p className="text-xs" style={{ color:"#3b4048" }}>Click Run to test against the public example.</p>

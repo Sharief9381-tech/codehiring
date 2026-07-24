@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import {
@@ -7,110 +7,235 @@ import {
   RefreshCw, Users, MessageCircle, Award, Brain,
   ChevronRight, ExternalLink, Heart, BookMarked, Play,
 } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { FirstYearHub } from "@/components/student/first-year-hub"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
-// ── TopicCodingProblems — TapAcademy style topic list with problems ────────────
-function TopicCodingProblems({ completedChallenges }: { completedChallenges: string[] }) {
-  const [openTopic, setOpenTopic] = useState<string | null>(null)
+// TopicGrid - search + 3 rows by default, expandable
+function TopicGrid({ topics, completedChallenges, topicIcons, onSelect }: {
+  topics: typeof TOPIC_QUESTIONS
+  completedChallenges: string[]
+  topicIcons: Record<string, string>
+  onSelect: (track: string) => void
+}) {
+  const [search, setSearch] = useState("")
+  const [showAll, setShowAll] = useState(false)
+
+  const filtered = topics.filter(t => t.label.toLowerCase().includes(search.toLowerCase()))
+  const COLS = 5
+  const visible = search ? filtered : (showAll ? filtered : filtered.slice(0, COLS * 3))
 
   return (
-    <div className="space-y-2">
-      <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2 mb-3">
-        <Code2 className="h-3.5 w-3.5 text-violet-400" /> Coding Problems by Topic
-      </p>
-      <div className="rounded-xl border border-border overflow-hidden">
-        {TOPIC_QUESTIONS.map((topic, idx) => {
-          const solved    = topic.questions.filter(q => completedChallenges.includes(q.id)).length
-          const total     = topic.questions.length
-          const isOpen    = openTopic === topic.track
-          const allDone   = solved === total
-
+    <div className="space-y-3">
+      <div className="relative">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search topics..."
+          className="w-full rounded-xl border border-border bg-background pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all" />
+        {search && (
+          <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs">x</button>
+        )}
+      </div>
+      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+        {visible.map(topic => {
+          const solved  = topic.questions.filter(q => completedChallenges.includes(q.id)).length
+          const total   = topic.questions.length
+          const allDone = solved === total
+          const icon    = topicIcons[topic.track] ?? "{ }"
           return (
-            <div key={topic.track} className="border-b border-border last:border-0">
-              {/* Topic row */}
-              <button
-                onClick={() => setOpenTopic(isOpen ? null : topic.track)}
-                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors text-left">
-                {/* Number circle */}
-                <div className="h-7 w-7 shrink-0 rounded-full flex items-center justify-center text-[11px] font-black border"
-                  style={{
-                    background: allDone ? "#10b98120" : solved > 0 ? `${topic.color}15` : "rgba(255,255,255,0.06)",
-                    borderColor: allDone ? "#10b98140" : solved > 0 ? `${topic.color}40` : "rgba(255,255,255,0.12)",
-                    color: allDone ? "#10b981" : solved > 0 ? topic.color : "#71717a",
-                  }}>
-                  {allDone ? "✓" : idx + 1}
-                </div>
-                {/* Topic name */}
-                <span className="flex-1 text-sm font-semibold text-foreground">{topic.label}</span>
-                {/* Progress */}
-                {solved > 0 && (
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                    style={{ background: `${topic.color}15`, color: topic.color }}>
-                    {solved}/{total}
-                  </span>
-                )}
-                {/* Practice More button */}
-                <span className="text-[10px] font-semibold px-2.5 py-1 rounded-lg border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors ml-1">
-                  {isOpen ? "Hide" : "+ Practice More"}
+            <button key={topic.track} onClick={() => onSelect(topic.track)}
+              className="relative group flex flex-col items-center justify-center gap-2 rounded-2xl border p-4 min-h-[110px] transition-all hover:scale-[1.03] hover:shadow-lg cursor-pointer"
+              style={{ background: allDone ? `${topic.color}12` : "rgba(255,255,255,0.03)", borderColor: allDone ? `${topic.color}40` : "rgba(255,255,255,0.08)" }}>
+              {solved > 0 && (
+                <span className="absolute top-2 right-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                  style={{ background: `${topic.color}20`, color: topic.color }}>
+                  {allDone ? "Done" : `${solved}/${total}`}
                 </span>
-              </button>
-
-              {/* Problems list under topic */}
-              {isOpen && (
-                <div className="border-t border-border bg-black/20">
-                  {/* Header row */}
-                  <div className="flex items-center gap-3 px-4 py-2 border-b border-border/50">
-                    <span className="text-[11px] font-semibold text-muted-foreground flex-1">Question</span>
-                    <span className="text-[11px] font-semibold text-muted-foreground w-20 text-center">Type</span>
-                    <span className="text-[11px] font-semibold text-muted-foreground w-24 text-center">Difficulty</span>
-                    <span className="text-[11px] font-semibold text-muted-foreground w-16 text-center">XP</span>
-                  </div>
-                  {topic.questions.map(q => {
-                    const isDone = completedChallenges.includes(q.id)
-                    const diffColor = q.difficulty === "Easy" ? "#10b981" : q.difficulty === "Medium" ? "#f59e0b" : "#ef4444"
-                    return (
-                      <div key={q.id}
-                        className="flex items-center gap-3 px-4 py-2.5 border-b border-border/30 last:border-0 hover:bg-white/5 transition-colors">
-                        {/* Done indicator */}
-                        <div className="h-5 w-5 shrink-0 rounded-full flex items-center justify-center"
-                          style={{ background: isDone ? "#10b98120" : "transparent", border: `1.5px solid ${isDone ? "#10b981" : "rgba(255,255,255,0.15)"}` }}>
-                          {isDone && <span className="text-[9px] text-green-400">✓</span>}
-                        </div>
-                        {/* Problem title */}
-                        <a href={q.url} target="_blank" rel="noopener noreferrer"
-                          className="flex-1 text-sm font-medium text-foreground hover:text-primary transition-colors truncate">
-                          {q.title}
-                        </a>
-                        {/* Type badge */}
-                        <span className="w-20 text-center">
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">
-                            ● Code
-                          </span>
-                        </span>
-                        {/* Difficulty */}
-                        <span className="w-24 text-center">
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                            style={{ background: `${diffColor}15`, color: diffColor, border: `1px solid ${diffColor}30` }}>
-                            {q.difficulty}
-                          </span>
-                        </span>
-                        {/* XP */}
-                        <span className="w-16 text-center text-[11px] font-semibold text-amber-400">+{q.xp} XP</span>
-                      </div>
-                    )
-                  })}
-                </div>
               )}
-            </div>
+              <span className="text-sm font-black leading-none" style={{ color: topic.color }}>{icon}</span>
+              <div className="w-8 h-0.5 rounded-full" style={{ background: topic.color }} />
+              <span className="text-[11px] font-semibold text-center text-muted-foreground group-hover:text-foreground transition-colors leading-tight">{topic.label}</span>
+            </button>
           )
         })}
+        {visible.length === 0 && (
+          <div className="col-span-5 text-center py-10 text-sm text-muted-foreground">No topics match "{search}"</div>
+        )}
       </div>
+      {!search && filtered.length > COLS * 3 && (
+        <button onClick={() => setShowAll(v => !v)}
+          className="w-full py-2 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all">
+          {showAll ? "Show less" : `Show all ${filtered.length} topics`}
+        </button>
+      )}
     </div>
   )
 }
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// TopicCodingProblems - Grid cards with icon + topic name, click to show problems
+function TopicCodingProblems({ completedChallenges }: { completedChallenges: string[] }) {
+  const [selectedTopic, setSelectedTopic]   = useState<string | null>(null)
+  const [extraProblems, setExtraProblems]   = useState<Record<string, any[]>>({})
+  const [loadingMore, setLoadingMore]       = useState(false)
+  const [openingProblem, setOpeningProblem] = useState<string | null>(null)
+  const router = useRouter()
+
+  const TOPIC_ICONS: Record<string, string> = {
+    "arrays":"[ ]","strings":"\" \"","matrix":"M","hashing":"#","linked-list":"LL",
+    "stack":"ST","queue":"QU","deque":"DQ","heap":"HP","tree":"TR","binary-tree":"BT",
+    "bst":"BST","trie":"T","graph":"GR","greedy":"GD","dp":"DP","recursion":"RC",
+    "backtrack":"BK","searching":"SR","sorting":"SO","binary-search":"BS",
+    "two-pointers":"TP","sliding-win":"SW","prefix-sum":"PS",
+  }
+
+  const openInEditor = async (q: { id: string; title: string; difficulty: string }, topicLabel: string) => {
+    setOpeningProblem(q.id)
+    try {
+      const res  = await fetch("/api/student/problem-detail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: q.title, topic: topicLabel, difficulty: q.difficulty }),
+      })
+      const data = await res.json()
+      const p    = data.problem
+      if (p) {
+        // Store in sessionStorage — so the editor page can read it
+        const key = `problem_${q.id}`
+        sessionStorage.setItem(key, JSON.stringify({
+          title:        p.title        ?? q.title,
+          desc:         p.desc         ?? "",
+          inputFormat:  p.inputFormat  ?? "",
+          outputFormat: p.outputFormat ?? "",
+          constraints:  p.constraints  ?? [],
+          input:        p.input        ?? "",
+          output:       p.output       ?? "",
+          input2:       p.input2       ?? "",
+          output2:      p.output2      ?? "",
+          explain:      p.explain      ?? "",
+          badge:        q.difficulty,
+        }))
+      }
+    } catch {}
+// Navigate to clean URL: /student/problems/two-sum
+    const slug = q.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .trim()
+    router.push(`/student/problems/${slug}`)
+    setOpeningProblem(null)
+  }
+
+  const fetchMoreProblems = async (topicLabel: string, topicTrack: string) => {
+    setLoadingMore(true)
+    try {
+      const res  = await fetch("/api/student/generate-assessment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ company: "general", section: "coding", topic: topicLabel, count: 7, difficulty: "mixed" }),
+      })
+      const data = await res.json()
+      const qs   = (data.questions ?? []).map((q: any, i: number) => ({
+        id: `extra-${topicTrack}-${i}-${Date.now()}`,
+        title: q.title ?? `Problem ${i + 1}`,
+        url: `https://leetcode.com/search/?q=${encodeURIComponent(q.title ?? topicLabel)}`,
+        difficulty: q.difficulty ?? "Medium",
+        xp: q.difficulty === "Easy" ? 20 : q.difficulty === "Hard" ? 40 : 30,
+        isExtra: true,
+      }))
+      setExtraProblems(p => ({ ...p, [topicTrack]: qs.length ? qs : [{ id: `lc-${topicTrack}`, title: `More ${topicLabel} on LeetCode`, url: `https://leetcode.com/tag/${topicTrack}/`, difficulty: "Mixed", xp: 0, isExtra: true }] }))
+    } catch {
+      setExtraProblems(p => ({ ...p, [topicTrack]: [{ id: `lc-${topicTrack}`, title: `More ${topicLabel} on LeetCode`, url: `https://leetcode.com/tag/${topicTrack}/`, difficulty: "Mixed", xp: 0, isExtra: true }] }))
+    } finally { setLoadingMore(false) }
+  }
+
+  const selected = TOPIC_QUESTIONS.find(t => t.track === selectedTopic)
+
+  if (selected) {
+    const extra    = extraProblems[selected.track] ?? []
+    const allProbs = [...selected.questions, ...extra]
+    const allSolved = selected.questions.every(q => completedChallenges.includes(q.id))
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <button onClick={() => setSelectedTopic(null)}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <ChevronRight className="h-3.5 w-3.5 rotate-180" /> Back
+          </button>
+          <div className="h-4 w-px bg-border" />
+          <p className="text-sm font-bold" style={{ color: selected.color }}>{selected.label}</p>
+          <span className="text-xs text-muted-foreground ml-auto">
+            {selected.questions.filter(q => completedChallenges.includes(q.id)).length}/{selected.questions.length} solved
+          </span>
+        </div>
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="flex items-center gap-3 px-4 py-2 bg-black/20 border-b border-border">
+            <span className="text-[11px] font-semibold text-muted-foreground flex-1">Problem</span>
+            <span className="text-[11px] font-semibold text-muted-foreground w-20 text-center">Type</span>
+            <span className="text-[11px] font-semibold text-muted-foreground w-20 text-center">Level</span>
+            <span className="text-[11px] font-semibold text-muted-foreground w-20 text-right">Action</span>
+          </div>
+          {allProbs.map((q, idx) => {
+            const isDone    = completedChallenges.includes(q.id)
+            const isOpening = openingProblem === q.id
+            const diffColor = q.difficulty === "Easy" ? "#10b981" : q.difficulty === "Medium" ? "#f59e0b" : q.difficulty === "Mixed" ? "#8b5cf6" : "#ef4444"
+            return (
+              <div key={q.id}
+                onClick={() => !isOpening && openInEditor(q, selected.label)}
+                className="flex items-center gap-3 px-4 py-3 border-b border-border/40 last:border-0 transition-colors cursor-pointer"
+                style={{ background: isOpening ? "rgba(255,255,255,0.05)" : undefined }}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}>
+                <div className="h-6 w-6 shrink-0 rounded-full flex items-center justify-center text-[10px] font-black border"
+                  style={{ background: isDone ? "#10b98120" : (q as any).isExtra ? `${selected.color}10` : "rgba(255,255,255,0.05)", borderColor: isDone ? "#10b98140" : (q as any).isExtra ? `${selected.color}30` : "rgba(255,255,255,0.12)", color: isDone ? "#10b981" : (q as any).isExtra ? selected.color : "#71717a" }}>
+                  {isOpening ? <RefreshCw className="h-2.5 w-2.5 animate-spin" /> : isDone ? "âœ“" : idx + 1}
+                </div>
+                <span className="flex-1 text-sm font-medium text-foreground truncate">{q.title}</span>
+                <span className="w-20 text-center shrink-0">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">Code</span>
+                </span>
+                <span className="w-20 text-center shrink-0">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: `${diffColor}15`, color: diffColor, border: `1px solid ${diffColor}30` }}>{q.difficulty}</span>
+                </span>
+                <span className="w-20 text-right shrink-0">
+                  <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold text-white"
+                    style={{ background: isDone ? "#10b98133" : `linear-gradient(135deg,${selected.color},${selected.color}cc)` }}>
+                    {isOpening ? "..." : isDone ? "Retry" : "Solve"}
+                  </span>
+                </span>
+              </div>
+            )
+          })}
+        </div>
+        {allSolved && extra.length === 0 && (
+          <div className="rounded-xl border border-dashed p-5 text-center space-y-3"
+            style={{ borderColor: `${selected.color}40`, background: `${selected.color}08` }}>
+            <p className="text-sm font-bold" style={{ color: selected.color }}>All {selected.questions.length} problems solved!</p>
+            <p className="text-xs text-muted-foreground">Want more {selected.label} problems?</p>
+            <button onClick={() => fetchMoreProblems(selected.label, selected.track)} disabled={loadingMore}
+              className="flex items-center gap-2 mx-auto px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all disabled:opacity-50"
+              style={{ background: `linear-gradient(135deg,${selected.color},${selected.color}cc)` }}>
+              {loadingMore ? <><RefreshCw className="h-3.5 w-3.5 animate-spin" /> Loading...</> : <><Zap className="h-3.5 w-3.5" /> Practice More</>}
+            </button>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+        <Code2 className="h-3.5 w-3.5 text-violet-400" /> Coding Topics
+      </p>
+      <TopicGrid topics={TOPIC_QUESTIONS} completedChallenges={completedChallenges} topicIcons={TOPIC_ICONS} onSelect={setSelectedTopic} />
+    </div>
+  )
+}
+
+// â”€â”€ DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const SOFT_SKILLS = [
   {
@@ -122,7 +247,7 @@ const SOFT_SKILLS = [
   },
   {
     id: "teamwork", title: "Working in a Dev Team",
-    desc: "Git collaboration, code reviews, pair programming — what it's really like.",
+    desc: "Git collaboration, code reviews, pair programming â€” what it's really like.",
     duration: "8 min", badge: "Team Player",
     steps: ["Git for teams: branches and PRs", "How code reviews work", "Pair programming basics", "Slack/Discord etiquette for devs"],
     videoUrl: "https://www.youtube.com/watch?v=MnUd31TvBoU",
@@ -136,7 +261,7 @@ const SOFT_SKILLS = [
   },
   {
     id: "resume-basics", title: "Start Your Achievement Journal",
-    desc: "Document what you build — not for jobs yet, just for self-awareness and growth.",
+    desc: "Document what you build â€” not for jobs yet, just for self-awareness and growth.",
     duration: "5 min", badge: "Self-Aware",
     steps: ["Why document your journey?", "What counts as an achievement?", "Simple template: What I built today", "GitHub as your portfolio"],
     videoUrl: "https://www.youtube.com/watch?v=s-TZCBdJv5A",
@@ -151,7 +276,7 @@ interface SeniorStory {
   avatar: string
 }
 
-// ── Tag config ────────────────────────────────────────────────────────────────
+// â”€â”€ Tag config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TAG_COLORS: Record<string, string> = {
   Question:    "bg-blue-500/15 text-blue-400 border-blue-500/20",
   Tip:         "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
@@ -163,7 +288,7 @@ const TAG_COLORS: Record<string, string> = {
 
 const ALL_TAGS = ["All", "Question", "Tip", "Resource", "Achievement", "Help", "General"] as const
 
-// ── Types ──────────────────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface DiscussionPost {
   _id: string
   authorId: string
@@ -195,7 +320,7 @@ interface DiscussionDetail extends DiscussionPost {
   replies: DiscussionReply[]
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime()
   const mins  = Math.floor(diff / 60000)
@@ -208,7 +333,7 @@ function timeAgo(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" })
 }
 
-// ── Thread view ────────────────────────────────────────────────────────────────
+// â”€â”€ Thread view â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ThreadView({
   post,
   currentUserId,
@@ -295,7 +420,7 @@ function ThreadView({
               <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${TAG_COLORS[localPost.tag] ?? TAG_COLORS.General}`}>
                 {localPost.tag}
               </span>
-              {localPost.pinned && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-500/15 text-amber-400 border-amber-500/20">📌 Pinned</span>}
+              {localPost.pinned && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-500/15 text-amber-400 border-amber-500/20">ðŸ“Œ Pinned</span>}
               <span className="text-[10px] text-muted-foreground ml-auto">{timeAgo(localPost.createdAt)}</span>
             </div>
             <h2 className="text-base font-bold text-foreground mt-1">{localPost.title}</h2>
@@ -395,7 +520,7 @@ function ThreadView({
   )
 }
 
-// ── Community Discussions ──────────────────────────────────────────────────────
+// â”€â”€ Community Discussions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CommunityDiscussions({ student }: { student: any }) {
   const [posts, setPosts]           = useState<DiscussionPost[]>([])
   const [loading, setLoading]       = useState(true)
@@ -487,7 +612,7 @@ function CommunityDiscussions({ student }: { student: any }) {
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
             <MessageCircle className="h-5 w-5 text-primary" /> Discussions
           </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Ask questions, share tips, celebrate wins — {total} posts</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Ask questions, share tips, celebrate wins â€” {total} posts</p>
         </div>
         <button
           onClick={() => setShowForm(v => !v)}
@@ -504,7 +629,7 @@ function CommunityDiscussions({ student }: { student: any }) {
           <input
             value={newTitle}
             onChange={e => setNewTitle(e.target.value)}
-            placeholder="Title — what's this about?"
+            placeholder="Title â€” what's this about?"
             className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
           />
           <textarea
@@ -586,7 +711,7 @@ function CommunityDiscussions({ student }: { student: any }) {
                 </div>
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    {post.pinned && <span className="text-[10px] text-amber-400">📌</span>}
+                    {post.pinned && <span className="text-[10px] text-amber-400">ðŸ“Œ</span>}
                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${TAG_COLORS[post.tag] ?? TAG_COLORS.General}`}>
                       {post.tag}
                     </span>
@@ -622,12 +747,12 @@ function CommunityDiscussions({ student }: { student: any }) {
         <div className="flex items-center justify-center gap-2 pt-2">
           <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
             className="px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground disabled:opacity-40 transition-all">
-            ← Prev
+            â† Prev
           </button>
           <span className="text-xs text-muted-foreground">Page {page} of {totalPages}</span>
           <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
             className="px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground disabled:opacity-40 transition-all">
-            Next →
+            Next â†’
           </button>
         </div>
       )}
@@ -645,22 +770,22 @@ const RECOMMENDED_BOOKS = [
 
 const RECOMMENDED_BLOGS = [
   { name: "GeeksforGeeks", desc: "Theory + code examples for every CS topic. Your go-to reference.", url: "https://www.geeksforgeeks.org/", tag: "Reference" },
-  { name: "Dev.to", desc: "Developer community — read stories, tutorials, and career advice.", url: "https://dev.to/", tag: "Community" },
-  { name: "FreeCodeCamp Blog", desc: "Long-form tutorials on web dev, Python, data science — all free.", url: "https://www.freecodecamp.org/news/", tag: "Tutorials" },
+  { name: "Dev.to", desc: "Developer community â€” read stories, tutorials, and career advice.", url: "https://dev.to/", tag: "Community" },
+  { name: "FreeCodeCamp Blog", desc: "Long-form tutorials on web dev, Python, data science â€” all free.", url: "https://www.freecodecamp.org/news/", tag: "Tutorials" },
   { name: "Roadmap.sh", desc: "Visual learning roadmaps for every tech role. Know what to learn next.", url: "https://roadmap.sh/", tag: "Roadmaps" },
-  { name: "CS50 Discourse", desc: "CS50's community forum — ask questions, get help from thousands of learners.", url: "https://cs50.stackexchange.com/", tag: "Community" },
-  { name: "The Missing Semester (MIT)", desc: "Tools every developer needs — shell, git, editors. Free MIT course.", url: "https://missing.csail.mit.edu/", tag: "Free" },
+  { name: "CS50 Discourse", desc: "CS50's community forum â€” ask questions, get help from thousands of learners.", url: "https://cs50.stackexchange.com/", tag: "Community" },
+  { name: "The Missing Semester (MIT)", desc: "Tools every developer needs â€” shell, git, editors. Free MIT course.", url: "https://missing.csail.mit.edu/", tag: "Free" },
 ]
 
 const TOPIC_QUIZZES: Record<string, { q: string; opts: string[]; ans: number; explain: string }[]> = {
   python: [
     { q: "What is the output of: print(type(3.14))?", opts: ["<class 'int'>", "<class 'float'>", "<class 'str'>", "<class 'double'>"], ans: 1, explain: "3.14 is a float literal in Python." },
     { q: "Which is used to define a function in Python?", opts: ["function", "def", "func", "define"], ans: 1, explain: "'def' keyword is used to define functions in Python." },
-    { q: "What does len([1,2,3]) return?", opts: ["2", "3", "4", "Error"], ans: 1, explain: "len() returns the number of items — the list has 3 items." },
+    { q: "What does len([1,2,3]) return?", opts: ["2", "3", "4", "Error"], ans: 1, explain: "len() returns the number of items â€” the list has 3 items." },
     { q: "Which loop runs a set number of times?", opts: ["while", "for", "do-while", "repeat"], ans: 1, explain: "'for' loop is typically used for a known number of iterations." },
   ],
   dsa: [
-    { q: "What is the time complexity of binary search?", opts: ["O(n)", "O(log n)", "O(n²)", "O(1)"], ans: 1, explain: "Binary search halves the search space each step — O(log n)." },
+    { q: "What is the time complexity of binary search?", opts: ["O(n)", "O(log n)", "O(nÂ²)", "O(1)"], ans: 1, explain: "Binary search halves the search space each step â€” O(log n)." },
     { q: "Which data structure uses LIFO?", opts: ["Queue", "Stack", "Array", "Linked List"], ans: 1, explain: "Stack follows Last In First Out (LIFO) principle." },
     { q: "Which is NOT a linear data structure?", opts: ["Array", "Tree", "Queue", "Linked List"], ans: 1, explain: "Trees are hierarchical (non-linear). Others are linear." },
     { q: "What does Big O notation measure?", opts: ["Memory only", "Time only", "Worst-case performance", "Best-case performance"], ans: 2, explain: "Big O describes the worst-case time/space complexity." },
@@ -673,7 +798,7 @@ const TOPIC_QUIZZES: Record<string, { q: string; opts: string[]; ans: number; ex
   ],
 }
 
-// ── Quiz Component ────────────────────────────────────────────────────────────
+// â”€â”€ Quiz Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function TopicQuiz({ topic, onComplete }: { topic: string; onComplete: () => void }) {
   const qs = TOPIC_QUIZZES[topic] ?? []
   const [cur, setCur] = useState(0)
@@ -743,7 +868,7 @@ function TopicQuiz({ topic, onComplete }: { topic: string; onComplete: () => voi
   )
 }
 
-// ── Leaderboard ───────────────────────────────────────────────────────────────
+// â”€â”€ Leaderboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function FirstYearLeaderboard() {
   const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -760,7 +885,7 @@ function FirstYearLeaderboard() {
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground flex items-center gap-2">
         <Users className="h-4 w-4 text-primary" />
-        Only 1st-year students — friendly competition, no pressure
+        Only 1st-year students â€” friendly competition, no pressure
       </p>
       {loading ? (
         <div className="flex justify-center py-8"><RefreshCw className="h-5 w-5 animate-spin text-muted-foreground" /></div>
@@ -792,7 +917,7 @@ function FirstYearLeaderboard() {
   )
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// â”€â”€ Main component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function FirstYearFullHub({ student }: { student: any }) {
   const [activeTab, setActiveTab] = useState("progress")
   const [standaloneMode, setStandaloneMode] = useState(false)
@@ -834,7 +959,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [xpPop, setXpPop] = useState<string | null>(null)
   const [monthlySolved, setMonthlySolved] = useState(0)
 
-  // Daily problem — fetched from API (AI-generated, Basic → Advanced, infinite)
+  // Daily problem â€” fetched from API (AI-generated, Basic â†’ Advanced, infinite)
   const [todayProblem, setTodayProblem] = useState<{
     title: string; desc: string; input: string; output: string
     explain: string; difficulty?: string; color?: string; topic?: string; hint?: string
@@ -893,7 +1018,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 "badge-str-1":"String Starter","badge-str-2":"String Wizard","badge-str-3":"String Legend",
                 "badge-git-1":"Git Starter","badge-git-2":"Git Committer","badge-git-3":"Open Source Hero",
               }
-              setTimeout(() => showXpPop(`🏆 ${titles[id] ?? id} badge earned!`), i * 2800)
+              setTimeout(() => showXpPop(`ðŸ† ${titles[id] ?? id} badge earned!`), i * 2800)
             })
           }
         })
@@ -937,7 +1062,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [completingChallenge, setCompletingChallenge] = useState<string | null>(null)
   const [newChallenge, setNewChallenge] = useState<string | null>(null)
 
-  // Debug challenges — AI-fetched
+  // Debug challenges â€” AI-fetched
   interface DebugChallenge {
     id: string; type: string; title: string; desc: string
     fullCode: string; snippet: string; badge: string; color: string; xp: number
@@ -994,7 +1119,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
         setDebugResults(p => ({ ...p, [challenge.id]: { correct: true, explanation: data.explanation } }))
         setXp(data.newTotal ?? xp)
         showXpPop(`+${data.xpGained ?? 20} XP`)
-        // After 1.5s — mark done and trigger replacement
+        // After 1.5s â€” mark done and trigger replacement
         setTimeout(async () => {
           setCompletedChallenges(p => [...p, challenge.id])
           setDebugChallenges(p => p.filter(c => c.id !== challenge.id))
@@ -1022,7 +1147,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
     }
   }
 
-  // Project challenges — AI-fetched, Basic → Intermediate → Advanced, infinite
+  // Project challenges â€” AI-fetched, Basic â†’ Intermediate â†’ Advanced, infinite
   interface ProjectChallenge {
     id: string; title: string; desc: string; badge: string
     color: string; xp: number; techHint?: string; features?: string[]
@@ -1059,7 +1184,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
       })
       setCompletedChallenges(prev => [...prev, id])
       showXpPop("+20 XP")
-      // Fetch fresh challenges — server now knows this one is done
+      // Fetch fresh challenges â€” server now knows this one is done
       const r2   = await fetch("/api/student/project-challenges")
       const d2   = await r2.json()
       const fresh = (d2.challenges ?? []).filter(
@@ -1078,7 +1203,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
     }
   }
 
-  // Remove old static pools — kept empty for reference only
+  // Remove old static pools â€” kept empty for reference only
   const DEBUG_POOL: any[] = []
 
   // Re-fetch project challenges when user comes back to the page (after editor)
@@ -1123,7 +1248,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
 
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-xl mx-auto w-full space-y-5">
-      {/* Header — hidden in standalone mode */}
+      {/* Header â€” hidden in standalone mode */}
       {!standaloneMode && (
       <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-600/15 via-cyan-600/5 to-transparent p-6">
         <div className="flex items-center gap-3 flex-wrap">
@@ -1155,10 +1280,10 @@ export function FirstYearFullHub({ student }: { student: any }) {
       </div>
       )}
 
-      {/* Tabs — hidden in standalone mode */}
+      {/* Tabs â€” hidden in standalone mode */}
       {!standaloneMode && (
       <div className="flex gap-2 flex-wrap items-center">
-        {/* My Progress — first */}
+        {/* My Progress â€” first */}
         <button onClick={() => switchTab("progress")}
           className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
           style={activeTab === "progress"
@@ -1167,7 +1292,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
           <TrendingUp className="h-4 w-4" /> My Progress
         </button>
 
-        {/* Practice — second, hover dropdown */}
+        {/* Practice â€” second, hover dropdown */}
         <div className="relative group">
           <button
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
@@ -1216,7 +1341,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
         </div>
       )}
 
-      {/* My Progress tab — dashboard layout */}
+      {/* My Progress tab â€” dashboard layout */}
       {activeTab === "progress" && (
         <div className="space-y-5">
           {/* Welcome */}
@@ -1300,7 +1425,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     </div>
                     {todayProblem.hint && (
                       <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-[11px] text-amber-400">
-                        💡 Hint: {todayProblem.hint}
+                        ðŸ’¡ Hint: {todayProblem.hint}
                       </div>
                     )}
                     <div className="flex items-center justify-between gap-3">
@@ -1329,8 +1454,8 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   <p className="font-bold text-foreground text-sm">Recommended Resources</p>
                 </div>
                 {[
-                  { title: "CS50's Introduction to Computer Science", desc: "Harvard's legendary intro course — perfect for beginners", tag: "Video", duration: "Ongoing", url: "https://cs50.harvard.edu/x/" },
-                  { title: "freeCodeCamp Python Tutorial", desc: "Comprehensive Python course — 4+ hours of content", tag: "Video", duration: "4 hours", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/" },
+                  { title: "CS50's Introduction to Computer Science", desc: "Harvard's legendary intro course â€” perfect for beginners", tag: "Video", duration: "Ongoing", url: "https://cs50.harvard.edu/x/" },
+                  { title: "freeCodeCamp Python Tutorial", desc: "Comprehensive Python course â€” 4+ hours of content", tag: "Video", duration: "4 hours", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/" },
                   { title: "Git & GitHub Basics", desc: "A beginner-friendly introduction to version control and GitHub", tag: "Guide", duration: "15 min read", url: "https://skills.github.com/" },
                 ].map(r => (
                   <div key={r.title} className="flex items-start justify-between gap-3 p-3 rounded-lg border border-border/50 hover:border-border transition-all">
@@ -1364,7 +1489,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 </div>
                 <p className="text-5xl font-black tabular-nums text-amber-400">{streak}</p>
                 <p className="text-xs text-muted-foreground">days</p>
-                <p className="text-xs font-semibold text-foreground">{streak === 0 ? "Solve today's problem to start!" : streak === 1 ? "Great start! Come back tomorrow." : `${streak} day streak — keep it up!`}</p>
+                <p className="text-xs font-semibold text-foreground">{streak === 0 ? "Solve today's problem to start!" : streak === 1 ? "Great start! Come back tomorrow." : `${streak} day streak â€” keep it up!`}</p>
                 <div className="rounded-lg bg-amber-500/5 border border-amber-500/15 p-2 mt-2">
                   <p className="text-[10px] text-amber-400">
                     {dailyDone ? "Today's problem solved!" : "Solve today's problem to extend your streak"}
@@ -1387,10 +1512,10 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     { label: "Code Spark",      color: "#ef4444", earned: xp > 0,                            icon: <Zap className="h-3.5 w-3.5" />,    how: "Earn your first XP by solving any challenge" },
                     { label: "First Blood",     color: "#f97316", earned: completedChallenges.length >= 1,   icon: <Star className="h-3.5 w-3.5" />,   how: "Complete your first project or debug challenge" },
                     { label: "Daily Grinder",   color: "#f59e0b", earned: streak >= 7,                       icon: <Flame className="h-3.5 w-3.5" />,  how: "Solve the daily coding problem 7 days in a row" },
-                    { label: "Decathlon",       color: "#10b981", earned: completedChallenges.length >= 10,  icon: <Target className="h-3.5 w-3.5" />, how: "Complete 10 challenges — projects + debug combined" },
+                    { label: "Decathlon",       color: "#10b981", earned: completedChallenges.length >= 10,  icon: <Target className="h-3.5 w-3.5" />, how: "Complete 10 challenges â€” projects + debug combined" },
                     { label: "Badge Hunter",    color: "#06b6d4", earned: completedBadges.length >= 7,       icon: <Award className="h-3.5 w-3.5" />,  how: "Mark 7 LeetCode problems done in Skill Badge Challenges tab" },
                     { label: "Two-Week Warrior",color: "#8b5cf6", earned: streak >= 14,                      icon: <Trophy className="h-3.5 w-3.5" />, how: "Keep your daily problem streak alive for 14 days straight" },
-                    { label: "XP Legend",       color: "#ec4899", earned: xp >= 500,                         icon: <Sparkles className="h-3.5 w-3.5" />, how: "Stack 500 XP — every challenge, badge and daily adds up" },
+                    { label: "XP Legend",       color: "#ec4899", earned: xp >= 500,                         icon: <Sparkles className="h-3.5 w-3.5" />, how: "Stack 500 XP â€” every challenge, badge and daily adds up" },
                   ].map(b => (
                     <div key={b.label} className={`flex items-center gap-3 p-2 rounded-lg transition-all ${b.earned ? "bg-white/5" : "opacity-60"}`}>
                       <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
@@ -1399,7 +1524,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className={`text-xs font-semibold ${b.earned ? "text-foreground" : "text-muted-foreground"}`}>{b.label}</p>
-                        <p className="text-[10px] text-muted-foreground truncate">{b.earned ? "✓ Earned" : b.how}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{b.earned ? "âœ“ Earned" : b.how}</p>
                       </div>
                       {b.earned && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400" />}
                     </div>
@@ -1420,7 +1545,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     {a.icon}{a.label}
                   </button>
                 ))}
-                {/* Reset progress — for testing */}
+                {/* Reset progress â€” for testing */}
                 <button
                   onClick={async () => {
                     if (!confirm("Reset ALL your progress? This cannot be undone.")) return
@@ -1455,13 +1580,13 @@ export function FirstYearFullHub({ student }: { student: any }) {
           <p className="text-sm text-muted-foreground">Step-by-step learning paths with YouTube videos, courses, and cheatsheets for each topic.</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { label: "Programming Basics — C", desc: "Variables, loops, functions, pointers, memory management", tags: ["C", "Beginner"], links: [
+              { label: "Programming Basics â€” C", desc: "Variables, loops, functions, pointers, memory management", tags: ["C", "Beginner"], links: [
                 { text: "GFG C Course", url: "https://www.geeksforgeeks.org/c-programming-language/", type: "course" },
                 { text: "CS50x Harvard", url: "https://cs50.harvard.edu/x/2024/", type: "course" },
                 { text: "Jenny's C Lectures", url: "https://www.youtube.com/playlist?list=PLdo5W4Nhv31a8UcMN9-35ghv8qyFWD9_S", type: "youtube" },
                 { text: "C Cheatsheet", url: "https://www.geeksforgeeks.org/c-cheatsheet/", type: "notes" },
               ]},
-              { label: "Programming Basics — Python", desc: "Syntax, OOP, data types, file handling, libraries", tags: ["Python", "Beginner"], links: [
+              { label: "Programming Basics â€” Python", desc: "Syntax, OOP, data types, file handling, libraries", tags: ["Python", "Beginner"], links: [
                 { text: "Python.org Tutorial", url: "https://docs.python.org/3/tutorial/", type: "course" },
                 { text: "freeCodeCamp Python", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/", type: "course" },
                 { text: "Python Full Course", url: "https://www.youtube.com/watch?v=t8pPdKYpowI", type: "youtube" },
@@ -1473,19 +1598,19 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 { text: "Striver DSA Sheet", url: "https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", type: "youtube" },
                 { text: "DSA Cheatsheet GFG", url: "https://www.geeksforgeeks.org/top-algorithms-and-data-structures-for-competitive-programming/", type: "notes" },
               ]},
-              { label: "Web Dev Basics", desc: "HTML, CSS, JavaScript — build your first webpage", tags: ["HTML", "CSS", "JS"], links: [
+              { label: "Web Dev Basics", desc: "HTML, CSS, JavaScript â€” build your first webpage", tags: ["HTML", "CSS", "JS"], links: [
                 { text: "freeCodeCamp Web", url: "https://www.freecodecamp.org/learn/responsive-web-design/", type: "course" },
                 { text: "The Odin Project", url: "https://www.theodinproject.com/", type: "course" },
                 { text: "Traversy HTML/CSS", url: "https://www.youtube.com/watch?v=UB1O30fR-EE", type: "youtube" },
                 { text: "HTML Cheatsheet", url: "https://htmlcheatsheet.com/", type: "notes" },
               ]},
-              { label: "Git & GitHub", desc: "Version control, branching, pull requests — essential skill", tags: ["Git", "GitHub"], links: [
+              { label: "Git & GitHub", desc: "Version control, branching, pull requests â€” essential skill", tags: ["Git", "GitHub"], links: [
                 { text: "Git Handbook", url: "https://guides.github.com/introduction/git-handbook/", type: "course" },
                 { text: "Git Crash Course", url: "https://www.youtube.com/watch?v=RGOj5yH7evk", type: "youtube" },
                 { text: "Kunal Kushwaha Git", url: "https://www.youtube.com/watch?v=apGV9Kg7ics", type: "youtube" },
                 { text: "Git Cheatsheet", url: "https://training.github.com/downloads/github-git-cheat-sheet.pdf", type: "notes" },
               ]},
-              { label: "CS50 — Intro to CS", desc: "Harvard's legendary free CS course — highly recommended", tags: ["CS Fundamentals"], links: [
+              { label: "CS50 â€” Intro to CS", desc: "Harvard's legendary free CS course â€” highly recommended", tags: ["CS Fundamentals"], links: [
                 { text: "CS50x (Free)", url: "https://cs50.harvard.edu/x/2024/", type: "course" },
                 { text: "CS50 Lecture 0", url: "https://www.youtube.com/watch?v=3LPJfIKxwWc", type: "youtube" },
                 { text: "CS50 Playlist", url: "https://www.youtube.com/playlist?list=PLhQjrBD2T381WAHyx1pq-sBfykqMBI7V4", type: "youtube" },
@@ -1529,17 +1654,17 @@ export function FirstYearFullHub({ student }: { student: any }) {
           <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-violet-500/5 to-transparent p-5">
             <p className="text-lg font-black text-foreground">Coding Challenges</p>
             <p className="text-xs text-muted-foreground mt-1">
-              {completedChallenges.length} challenge{completedChallenges.length !== 1 ? "s" : ""} completed · +{completedChallenges.length * 20} XP
+              {completedChallenges.length} challenge{completedChallenges.length !== 1 ? "s" : ""} completed{completedChallenges.length > 0 ? ` - +${completedChallenges.length * 20} XP` : ""}
             </p>
           </div>
 
           {(() => {
             return (
               <>
-                {/* Topic-based coding problems — TapAcademy style */}
+                {/* Topic-based coding problems */}
                 <TopicCodingProblems completedChallenges={completedChallenges} />
 
-                {/* Debug challenges — AI-generated, infinite */}
+                {/* Debug challenges â€” AI-generated, infinite */}
                 <div className="space-y-3">
                   {/* Language selector */}
                   <div className="flex items-center gap-3 flex-wrap">
@@ -1580,7 +1705,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                   className={`w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary/10 ${debugLang === lang ? "text-primary font-semibold bg-primary/5" : "text-foreground"}`}
                                 >
                                   {lang}
-                                  {debugLang === lang && <span className="ml-1 text-primary">✓</span>}
+                                  {debugLang === lang && <span className="ml-1 text-primary">âœ“</span>}
                                 </button>
                               ))}
                           </div>
@@ -1633,7 +1758,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                             {/* Answer input + result */}
                             {result?.correct ? (
                               <div className="rounded-lg p-3 text-xs space-y-1 bg-emerald-500/10 border border-emerald-500/20">
-                                <p className="font-bold text-emerald-400">✓ Correct! +{c.xp} XP earned</p>
+                                <p className="font-bold text-emerald-400">âœ“ Correct! +{c.xp} XP earned</p>
                                 {result.explanation && <p className="text-muted-foreground">{result.explanation}</p>}
                                 <p className="text-[10px] text-emerald-400/70">Replacing with next challenge...</p>
                               </div>
@@ -1649,7 +1774,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                 {/* Wrong answer feedback */}
                                 {result && !result.correct && (
                                   <div className="rounded-lg p-2.5 bg-red-500/10 border border-red-500/20 space-y-1">
-                                    <p className="text-xs text-red-400 font-semibold">✗ Not quite — try again</p>
+                                    <p className="text-xs text-red-400 font-semibold">âœ— Not quite â€” try again</p>
                                     {result.correctAnswer && (
                                       <p className="text-[10px] text-muted-foreground">
                                         Answer: <span className="text-amber-400 font-medium">{result.correctAnswer}</span>
@@ -1672,7 +1797,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                 {/* Revealed answer panel */}
                                 {revealedAnswers[c.id] && (
                                   <div className="rounded-lg p-2.5 bg-amber-500/10 border border-amber-500/20 space-y-1">
-                                    <p className="text-[10px] font-bold text-amber-400">💡 Answer Revealed</p>
+                                    <p className="text-[10px] font-bold text-amber-400">ðŸ’¡ Answer Revealed</p>
                                     <p className="text-xs text-foreground font-medium">{revealedAnswers[c.id].answer}</p>
                                     {revealedAnswers[c.id].explanation && (
                                       <p className="text-[10px] text-muted-foreground">{revealedAnswers[c.id].explanation}</p>
@@ -1697,7 +1822,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                       }}
                                       className="flex items-center gap-1 text-[10px] text-amber-400/80 hover:text-amber-400 transition-colors font-medium"
                                     >
-                                      {revealing === c.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : "💡"} Reveal
+                                      {revealing === c.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : "ðŸ’¡"} Reveal
                                     </button>
                                   )}
                                   <button
@@ -1729,17 +1854,17 @@ export function FirstYearFullHub({ student }: { student: any }) {
       {/* Resources */}
       {activeTab === "resources" && (
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Curated courses, cheatsheets, and references — everything you need to build a solid foundation.</p>
+          <p className="text-sm text-muted-foreground">Curated courses, cheatsheets, and references â€” everything you need to build a solid foundation.</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { title: "CS50x Harvard",     type: "Course", color: "#ef4444", desc: "The world's best intro CS course. Free, beginner-friendly.",             url: "https://cs50.harvard.edu/x/" },
               { title: "freeCodeCamp",      type: "Course", color: "#10b981", desc: "Full web dev + Python curriculum, completely free.",                      url: "https://www.freecodecamp.org/" },
               { title: "The Odin Project",  type: "Course", color: "#f97316", desc: "Project-based full-stack web dev path. Build real things.",               url: "https://www.theodinproject.com/" },
               { title: "Kaggle Learn",      type: "ML",     color: "#06b6d4", desc: "Hands-on Python, ML, and data science micro-courses.",                    url: "https://www.kaggle.com/learn" },
-              { title: "GFG DSA",           type: "DSA",    color: "#8b5cf6", desc: "Comprehensive DSA — theory, problems, and solutions.",                    url: "https://www.geeksforgeeks.org/data-structures/" },
+              { title: "GFG DSA",           type: "DSA",    color: "#8b5cf6", desc: "Comprehensive DSA â€” theory, problems, and solutions.",                    url: "https://www.geeksforgeeks.org/data-structures/" },
               { title: "Python Cheatsheet", type: "Notes",  color: "#f59e0b", desc: "Quick reference for Python syntax and common patterns.",                  url: "https://www.pythoncheatsheet.org/" },
               { title: "Git Cheatsheet",    type: "Notes",  color: "#3b82f6", desc: "All essential git commands in one place. Bookmark this.",                 url: "https://education.github.com/git-cheat-sheet-education.pdf" },
-              { title: "DBMS Notes GFG",    type: "Notes",  color: "#14b8a6", desc: "Database fundamentals — ER models, normalization, SQL.",                  url: "https://www.geeksforgeeks.org/dbms/" },
+              { title: "DBMS Notes GFG",    type: "Notes",  color: "#14b8a6", desc: "Database fundamentals â€” ER models, normalization, SQL.",                  url: "https://www.geeksforgeeks.org/dbms/" },
             ].map(r => (
               <div key={r.title} className="rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-2.5 hover:border-primary/30 transition-all">
                 <div className="flex items-center justify-between gap-2">
@@ -1811,7 +1936,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
       {/* Self-check quizzes */}
       {activeTab === "quizzes" && !quizTopic && (
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Short 4-question quizzes to check your understanding. Encouraging feedback — no pressure.</p>
+          <p className="text-sm text-muted-foreground">Short 4-question quizzes to check your understanding. Encouraging feedback â€” no pressure.</p>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { id: "python", label: "Python Basics", icon: "PY", color: "#3b82f6", desc: "Variables, types, loops, functions" },
@@ -1855,7 +1980,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
         </div>
       )}
 
-      {/* Community — Discussion Board */}
+      {/* Community â€” Discussion Board */}
       {activeTab === "community" && (
         <CommunityDiscussions student={student} />
       )}
@@ -1907,3 +2032,6 @@ export function FirstYearFullHub({ student }: { student: any }) {
     </div>
   )
 }
+
+
+
