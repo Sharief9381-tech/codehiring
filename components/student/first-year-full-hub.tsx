@@ -153,21 +153,52 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
 
   const selected = TOPIC_QUESTIONS.find(t => t.track === selectedTopic)
 
+  const [diffFilter, setDiffFilter] = useState<"All"|"Easy"|"Medium"|"Hard">("All")
+
   if (selected) {
+    const DIFF_ORDER: Record<string, number> = { Easy: 0, Medium: 1, Hard: 2 }
     const extra    = extraProblems[selected.track] ?? []
-    const allProbs = [...selected.questions, ...extra]
-    const allSolved = selected.questions.every(q => completedChallenges.includes(q.id))
+    // Sort: Easy → Medium → Hard
+    const sortedBase = [...selected.questions].sort((a, b) =>
+      (DIFF_ORDER[a.difficulty] ?? 1) - (DIFF_ORDER[b.difficulty] ?? 1)
+    )
+    const allProbs  = [...sortedBase, ...extra]
+    const filtered  = diffFilter === "All" ? allProbs : allProbs.filter(q => q.difficulty === diffFilter)
+    const allSolved = sortedBase.every(q => completedChallenges.includes(q.id))
     return (
       <div className="space-y-3">
-        <div className="flex items-center gap-3">
-          <button onClick={() => setSelectedTopic(null)}
+        {/* Header: back + topic name + solved count */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <button onClick={() => { setSelectedTopic(null); setDiffFilter("All") }}
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <ChevronRight className="h-3.5 w-3.5 rotate-180" /> Back
           </button>
           <div className="h-4 w-px bg-border" />
           <p className="text-sm font-bold" style={{ color: selected.color }}>{selected.label}</p>
           <span className="text-xs text-muted-foreground ml-auto">
-            {selected.questions.filter(q => completedChallenges.includes(q.id)).length}/{selected.questions.length} solved
+            {sortedBase.filter(q => completedChallenges.includes(q.id)).length}/{sortedBase.length} solved
+          </span>
+        </div>
+
+        {/* Difficulty filter */}
+        <div className="flex items-center gap-2">
+          {(["All", "Easy", "Medium", "Hard"] as const).map(d => {
+            const col = d === "Easy" ? "#10b981" : d === "Medium" ? "#f59e0b" : d === "Hard" ? "#ef4444" : "#8b949e"
+            const active = diffFilter === d
+            return (
+              <button key={d} onClick={() => setDiffFilter(d)}
+                className="px-3 py-1 rounded-full text-[11px] font-semibold transition-all"
+                style={{
+                  background: active ? `${col}20` : "transparent",
+                  color: active ? col : "#8b949e",
+                  border: `1px solid ${active ? `${col}40` : "rgba(255,255,255,0.08)"}`,
+                }}>
+                {d}
+              </button>
+            )
+          })}
+          <span className="text-[10px] text-muted-foreground ml-auto">
+            {filtered.length} problem{filtered.length !== 1 ? "s" : ""}
           </span>
         </div>
         <div className="rounded-xl border border-border overflow-hidden">
@@ -177,7 +208,7 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
             <span className="text-[11px] font-semibold text-muted-foreground w-20 text-center">Level</span>
             <span className="text-[11px] font-semibold text-muted-foreground w-20 text-right">Action</span>
           </div>
-          {allProbs.map((q, idx) => {
+          {filtered.map((q, idx) => {
             const isDone    = completedChallenges.includes(q.id)
             const isOpening = openingProblem === q.id
             const diffColor = q.difficulty === "Easy" ? "#10b981" : q.difficulty === "Medium" ? "#f59e0b" : q.difficulty === "Mixed" ? "#8b5cf6" : "#ef4444"
