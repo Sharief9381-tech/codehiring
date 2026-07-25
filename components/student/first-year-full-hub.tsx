@@ -131,24 +131,38 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
   const fetchMoreProblems = async (topicLabel: string, topicTrack: string) => {
     setLoadingMore(true)
     try {
-      const res  = await fetch("/api/student/generate-assessment", {
+      // Generate a new module: 4 Easy + 4 Medium + 2 Hard = 10 problems
+      // No repeats — pass existing problem titles to avoid
+      const existing = [
+        ...(TOPIC_QUESTIONS.find(t => t.track === topicTrack)?.questions ?? []).map(q => q.title),
+        ...(extraProblems[topicTrack] ?? []).map((q: any) => q.title),
+      ]
+      const res = await fetch("/api/student/generate-assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ company: "general", section: "coding", topic: topicLabel, count: 7, difficulty: "mixed" }),
+        body: JSON.stringify({
+          company: "general", section: "coding", topic: topicLabel,
+          count: 10, difficulty: "mixed",
+          excludeTitles: existing,  // avoid repeats
+        }),
       })
       const data = await res.json()
-      const qs   = (data.questions ?? []).map((q: any, i: number) => ({
-        id: `extra-${topicTrack}-${i}-${Date.now()}`,
-        title: q.title ?? `Problem ${i + 1}`,
-        url: `https://leetcode.com/search/?q=${encodeURIComponent(q.title ?? topicLabel)}`,
+      // Distribute: sort Easy first, then Medium, then Hard
+      const DIFF_ORDER: Record<string, number> = { Easy: 0, Medium: 1, Hard: 2 }
+      const rawQs = (data.questions ?? []).map((q: any, i: number) => ({
+        id:         `extra-${topicTrack}-${i}-${Date.now()}`,
+        title:      q.title ?? `Problem ${i + 1}`,
+        url:        `https://leetcode.com/search/?q=${encodeURIComponent(q.title ?? topicLabel)}`,
         difficulty: q.difficulty ?? "Medium",
-        xp: q.difficulty === "Easy" ? 20 : q.difficulty === "Hard" ? 40 : 30,
-        isExtra: true,
+        xp:         q.difficulty === "Easy" ? 20 : q.difficulty === "Hard" ? 40 : 30,
+        isExtra:    true,
+      })).sort((a: any, b: any) => (DIFF_ORDER[a.difficulty] ?? 1) - (DIFF_ORDER[b.difficulty] ?? 1))
+      setExtraProblems(p => ({
+        ...p,
+        [topicTrack]: [...(p[topicTrack] ?? []), ...rawQs],
       }))
-      setExtraProblems(p => ({ ...p, [topicTrack]: qs.length ? qs : [{ id: `lc-${topicTrack}`, title: `More ${topicLabel} on LeetCode`, url: `https://leetcode.com/tag/${topicTrack}/`, difficulty: "Mixed", xp: 0, isExtra: true }] }))
-    } catch {
-      setExtraProblems(p => ({ ...p, [topicTrack]: [{ id: `lc-${topicTrack}`, title: `More ${topicLabel} on LeetCode`, url: `https://leetcode.com/tag/${topicTrack}/`, difficulty: "Mixed", xp: 0, isExtra: true }] }))
-    } finally { setLoadingMore(false) }
+    } catch {}
+    finally { setLoadingMore(false) }
   }
 
   const selected = TOPIC_QUESTIONS.find(t => t.track === selectedTopic)
