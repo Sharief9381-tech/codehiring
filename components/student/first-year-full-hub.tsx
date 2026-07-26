@@ -171,17 +171,41 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
 
   if (selected) {
     const DIFF_ORDER: Record<string, number> = { Easy: 0, Medium: 1, Hard: 2 }
-    const extra    = extraProblems[selected.track] ?? []
-    // Sort: Easy → Medium → Hard
-    const sortedBase = [...selected.questions].sort((a, b) =>
-      (DIFF_ORDER[a.difficulty] ?? 1) - (DIFF_ORDER[b.difficulty] ?? 1)
-    )
+    const extra     = extraProblems[selected.track] ?? []
+    const sortedBase = [...selected.questions].sort((a, b) => (DIFF_ORDER[a.difficulty]??1)-(DIFF_ORDER[b.difficulty]??1))
     const allProbs  = [...sortedBase, ...extra]
     const filtered  = diffFilter === "All" ? allProbs : allProbs.filter(q => q.difficulty === diffFilter)
     const allSolved = sortedBase.every(q => completedChallenges.includes(q.id))
+    const modules   = (selected as any).modules as Array<{moduleId:string;moduleNum:number;difficulty:"Easy"|"Medium"|"Hard";label:string;questions:any[]}> ?? []
+
+    const renderProblemRow = (q: any, idx: number) => {
+      const isDone    = completedChallenges.includes(q.id)
+      const isOpening = openingProblem === q.id
+      const diffColor = q.difficulty === "Easy" ? "#10b981" : q.difficulty === "Medium" ? "#f59e0b" : "#ef4444"
+      return (
+        <div key={q.id}
+          onClick={() => !isOpening && openInEditor(q, selected.label)}
+          className="flex items-center gap-3 px-4 py-2.5 border-b last:border-0 cursor-pointer transition-colors"
+          style={{ borderColor:"rgba(255,255,255,0.05)" }}
+          onMouseEnter={e=>(e.currentTarget.style.background="rgba(255,255,255,0.04)")}
+          onMouseLeave={e=>(e.currentTarget.style.background="transparent")}>
+          <div className="h-5 w-5 shrink-0 rounded-full flex items-center justify-center text-[9px] font-black border"
+            style={{ background:isDone?"#10b98120":"rgba(255,255,255,0.04)", borderColor:isDone?"#10b98140":"rgba(255,255,255,0.1)", color:isDone?"#10b981":"#71717a" }}>
+            {isOpening ? <RefreshCw className="h-2 w-2 animate-spin" /> : isDone ? "v" : idx+1}
+          </div>
+          <span className="flex-1 text-sm text-foreground truncate">{q.title}</span>
+          <span className="text-[10px] font-semibold shrink-0" style={{ color:diffColor }}>{q.difficulty}</span>
+          <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold text-white ml-2 shrink-0"
+            style={{ background:isDone?"#10b98133":`linear-gradient(135deg,${selected.color},${selected.color}cc)` }}>
+            {isOpening?"...":isDone?"Retry":"Solve"}
+          </span>
+        </div>
+      )
+    }
+
     return (
       <div className="space-y-3">
-        {/* Header: back + topic name + solved count */}
+        {/* Header */}
         <div className="flex items-center gap-3 flex-wrap">
           <button onClick={() => { setSelectedTopic(null); setDiffFilter("All") }}
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
@@ -189,6 +213,11 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
           </button>
           <div className="h-4 w-px bg-border" />
           <p className="text-sm font-bold" style={{ color: selected.color }}>{selected.label}</p>
+          {modules.length > 0 && (
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:`${selected.color}15`, color:selected.color }}>
+              6 modules
+            </span>
+          )}
           <span className="text-xs text-muted-foreground ml-auto">
             {sortedBase.filter(q => completedChallenges.includes(q.id)).length}/{sortedBase.length} solved
           </span>
@@ -196,64 +225,49 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
 
         {/* Difficulty filter */}
         <div className="flex items-center gap-2">
-          {(["All", "Easy", "Medium", "Hard"] as const).map(d => {
-            const col = d === "Easy" ? "#10b981" : d === "Medium" ? "#f59e0b" : d === "Hard" ? "#ef4444" : "#8b949e"
+          {(["All","Easy","Medium","Hard"] as const).map(d => {
+            const col    = d==="Easy"?"#10b981":d==="Medium"?"#f59e0b":d==="Hard"?"#ef4444":"#8b949e"
             const active = diffFilter === d
             return (
               <button key={d} onClick={() => setDiffFilter(d)}
                 className="px-3 py-1 rounded-full text-[11px] font-semibold transition-all"
-                style={{
-                  background: active ? `${col}20` : "transparent",
-                  color: active ? col : "#8b949e",
-                  border: `1px solid ${active ? `${col}40` : "rgba(255,255,255,0.08)"}`,
-                }}>
+                style={{ background:active?`${col}20`:"transparent", color:active?col:"#8b949e", border:`1px solid ${active?`${col}40`:"rgba(255,255,255,0.08)"}` }}>
                 {d}
               </button>
             )
           })}
-          <span className="text-[10px] text-muted-foreground ml-auto">
-            {filtered.length} problem{filtered.length !== 1 ? "s" : ""}
-          </span>
+          <span className="text-[10px] text-muted-foreground ml-auto">{filtered.length} problems</span>
         </div>
-        <div className="rounded-xl border border-border overflow-hidden">
-          <div className="flex items-center gap-3 px-4 py-2 bg-black/20 border-b border-border">
-            <span className="text-[11px] font-semibold text-muted-foreground flex-1">Problem</span>
-            <span className="text-[11px] font-semibold text-muted-foreground w-20 text-center">Type</span>
-            <span className="text-[11px] font-semibold text-muted-foreground w-20 text-center">Level</span>
-            <span className="text-[11px] font-semibold text-muted-foreground w-20 text-right">Action</span>
-          </div>
-          {filtered.map((q, idx) => {
-            const isDone    = completedChallenges.includes(q.id)
-            const isOpening = openingProblem === q.id
-            const diffColor = q.difficulty === "Easy" ? "#10b981" : q.difficulty === "Medium" ? "#f59e0b" : q.difficulty === "Mixed" ? "#8b5cf6" : "#ef4444"
-            return (
-              <div key={q.id}
-                onClick={() => !isOpening && openInEditor(q, selected.label)}
-                className="flex items-center gap-3 px-4 py-3 border-b border-border/40 last:border-0 transition-colors cursor-pointer"
-                style={{ background: isOpening ? "rgba(255,255,255,0.05)" : undefined }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}>
-                <div className="h-6 w-6 shrink-0 rounded-full flex items-center justify-center text-[10px] font-black border"
-                  style={{ background: isDone ? "#10b98120" : (q as any).isExtra ? `${selected.color}10` : "rgba(255,255,255,0.05)", borderColor: isDone ? "#10b98140" : (q as any).isExtra ? `${selected.color}30` : "rgba(255,255,255,0.12)", color: isDone ? "#10b981" : (q as any).isExtra ? selected.color : "#71717a" }}>
-                  {isOpening ? <RefreshCw className="h-2.5 w-2.5 animate-spin" /> : isDone ? "âœ“" : idx + 1}
+
+        {/* Module view (All filter + has modules) */}
+        {modules.length > 0 && diffFilter === "All" ? (
+          <div className="space-y-3">
+            {modules.map(mod => {
+              const modSolved = mod.questions.filter((q:any) => completedChallenges.includes(q.id)).length
+              const modDone   = modSolved === mod.questions.length
+              const diffCol   = mod.difficulty === "Easy" ? "#10b981" : mod.difficulty === "Medium" ? "#f59e0b" : "#ef4444"
+              return (
+                <div key={mod.moduleId} className="rounded-xl border overflow-hidden"
+                  style={{ borderColor:modDone?`${diffCol}40`:"rgba(255,255,255,0.08)" }}>
+                  <div className="flex items-center gap-3 px-4 py-2 border-b"
+                    style={{ background:modDone?`${diffCol}08`:"rgba(0,0,0,0.2)", borderColor:"rgba(255,255,255,0.06)" }}>
+                    <span className="text-[11px] font-bold" style={{ color:diffCol }}>{mod.label}</span>
+                    <span className="text-[10px] text-muted-foreground">{modSolved}/{mod.questions.length}</span>
+                    {modDone && <span className="text-[10px] font-bold text-emerald-400 ml-auto">Module Complete</span>}
+                  </div>
+                  {mod.questions.map((q:any, idx:number) => renderProblemRow(q, idx))}
                 </div>
-                <span className="flex-1 text-sm font-medium text-foreground truncate">{q.title}</span>
-                <span className="w-20 text-center shrink-0">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">Code</span>
-                </span>
-                <span className="w-20 text-center shrink-0">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: `${diffColor}15`, color: diffColor, border: `1px solid ${diffColor}30` }}>{q.difficulty}</span>
-                </span>
-                <span className="w-20 text-right shrink-0">
-                  <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold text-white"
-                    style={{ background: isDone ? "#10b98133" : `linear-gradient(135deg,${selected.color},${selected.color}cc)` }}>
-                    {isOpening ? "..." : isDone ? "Retry" : "Solve"}
-                  </span>
-                </span>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
+        ) : (
+          /* Flat filtered list */
+          <div className="rounded-xl border border-border overflow-hidden">
+            {filtered.map((q, idx) => renderProblemRow(q, idx))}
+          </div>
+        )}
+
+        {/* Practice More */}
         {allSolved && extra.length === 0 && (
           <div className="rounded-xl border border-dashed p-5 text-center space-y-3"
             style={{ borderColor: `${selected.color}40`, background: `${selected.color}08` }}>

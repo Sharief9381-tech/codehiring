@@ -1,485 +1,290 @@
 /**
- * Topic Questions — 7 most-asked LeetCode problems per topic
- * Used by the Skill Badge Challenges system
+ * Topic Questions — 6 modules per topic (2 Easy, 2 Medium, 2 Hard)
+ * Each module has 5 problems. Total: 30 problems per topic.
  */
 
 export interface TopicQuestion {
-  id: string          // unique badge id
-  title: string       // problem name
-  url: string         // LeetCode URL
+  id: string
+  title: string
+  url: string
   difficulty: "Easy" | "Medium" | "Hard"
   xp: number
+}
+
+export interface TopicModule {
+  moduleId: string
+  moduleNum: number
+  difficulty: "Easy" | "Medium" | "Hard"
+  label: string
+  questions: TopicQuestion[]
 }
 
 export interface TopicData {
   track: string
   label: string
   color: string
-  questions: TopicQuestion[]
+  modules: TopicModule[]
+  questions: TopicQuestion[]  // flat list of all questions (backward compat)
+}
+
+function buildTopic(
+  track: string, label: string, color: string,
+  m1: [string,string][], m2: [string,string][],
+  m3: [string,string][], m4: [string,string][],
+  m5: [string,string][], m6: [string,string][]
+): TopicData {
+  const mk = (prefix: string, num: number, diff: "Easy"|"Medium"|"Hard", pairs: [string,string][]): TopicModule => ({
+    moduleId: `${track}-m${num}`,
+    moduleNum: num,
+    difficulty: diff,
+    label: `${diff} Module ${num <= 2 ? num : num <= 4 ? num - 2 : num - 4}`,
+    questions: pairs.map(([title, slug], i) => ({
+      id: `${prefix}-m${num}-q${i+1}`,
+      title,
+      url: `https://leetcode.com/problems/${slug}/`,
+      difficulty: diff,
+      xp: diff === "Easy" ? 20 : diff === "Medium" ? 30 : 40,
+    })),
+  })
+  const modules = [
+    mk(track,1,"Easy",m1), mk(track,2,"Easy",m2),
+    mk(track,3,"Medium",m3), mk(track,4,"Medium",m4),
+    mk(track,5,"Hard",m5), mk(track,6,"Hard",m6),
+  ]
+  return { track, label, color, modules, questions: modules.flatMap(m => m.questions) }
 }
 
 export const TOPIC_QUESTIONS: TopicData[] = [
-  { track:"arrays", label:"Arrays", color:"#10b981", questions:[
-    { id:"arr-q1", title:"Two Sum",                         url:"https://leetcode.com/problems/two-sum/",                              difficulty:"Easy",   xp:20 },
-    { id:"arr-q2", title:"Best Time to Buy and Sell Stock", url:"https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",      difficulty:"Easy",   xp:20 },
-    { id:"arr-q3", title:"Contains Duplicate",              url:"https://leetcode.com/problems/contains-duplicate/",                   difficulty:"Easy",   xp:20 },
-    { id:"arr-q4", title:"Product of Array Except Self",    url:"https://leetcode.com/problems/product-of-array-except-self/",         difficulty:"Medium", xp:30 },
-    { id:"arr-q5", title:"Maximum Subarray",                url:"https://leetcode.com/problems/maximum-subarray/",                     difficulty:"Medium", xp:30 },
-    { id:"arr-q6", title:"Maximum Product Subarray",        url:"https://leetcode.com/problems/maximum-product-subarray/",             difficulty:"Medium", xp:30 },
-    { id:"arr-q7", title:"Merge Intervals",                 url:"https://leetcode.com/problems/merge-intervals/",                      difficulty:"Medium", xp:30 },
-  ]},
-  { track:"strings", label:"Strings", color:"#10b981", questions:[
-    { id:"str-q1", title:"Valid Anagram",                   url:"https://leetcode.com/problems/valid-anagram/",                        difficulty:"Easy",   xp:20 },
-    { id:"str-q2", title:"Valid Palindrome",                url:"https://leetcode.com/problems/valid-palindrome/",                     difficulty:"Easy",   xp:20 },
-    { id:"str-q3", title:"Longest Substring Without Repeating Characters", url:"https://leetcode.com/problems/longest-substring-without-repeating-characters/", difficulty:"Medium", xp:30 },
-    { id:"str-q4", title:"Group Anagrams",                  url:"https://leetcode.com/problems/group-anagrams/",                       difficulty:"Medium", xp:30 },
-    { id:"str-q5", title:"Longest Palindromic Substring",   url:"https://leetcode.com/problems/longest-palindromic-substring/",        difficulty:"Medium", xp:30 },
-    { id:"str-q6", title:"Encode and Decode Strings",       url:"https://leetcode.com/problems/encode-and-decode-strings/",            difficulty:"Medium", xp:30 },
-    { id:"str-q7", title:"Minimum Window Substring",        url:"https://leetcode.com/problems/minimum-window-substring/",             difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"matrix", label:"Matrix", color:"#10b981", questions:[
-    { id:"mat-q1", title:"Set Matrix Zeroes",               url:"https://leetcode.com/problems/set-matrix-zeroes/",                    difficulty:"Medium", xp:30 },
-    { id:"mat-q2", title:"Spiral Matrix",                   url:"https://leetcode.com/problems/spiral-matrix/",                        difficulty:"Medium", xp:30 },
-    { id:"mat-q3", title:"Rotate Image",                    url:"https://leetcode.com/problems/rotate-image/",                         difficulty:"Medium", xp:30 },
-    { id:"mat-q4", title:"Word Search",                     url:"https://leetcode.com/problems/word-search/",                          difficulty:"Medium", xp:30 },
-    { id:"mat-q5", title:"Number of Islands",               url:"https://leetcode.com/problems/number-of-islands/",                    difficulty:"Medium", xp:30 },
-    { id:"mat-q6", title:"Search a 2D Matrix",              url:"https://leetcode.com/problems/search-a-2d-matrix/",                   difficulty:"Medium", xp:30 },
-    { id:"mat-q7", title:"Game of Life",                    url:"https://leetcode.com/problems/game-of-life/",                         difficulty:"Medium", xp:30 },
-  ]},
-  { track:"hashing", label:"Hashing", color:"#3b82f6", questions:[
-    { id:"hsh-q1", title:"Two Sum",                         url:"https://leetcode.com/problems/two-sum/",                              difficulty:"Easy",   xp:20 },
-    { id:"hsh-q2", title:"Ransom Note",                     url:"https://leetcode.com/problems/ransom-note/",                          difficulty:"Easy",   xp:20 },
-    { id:"hsh-q3", title:"Isomorphic Strings",              url:"https://leetcode.com/problems/isomorphic-strings/",                   difficulty:"Easy",   xp:20 },
-    { id:"hsh-q4", title:"Group Anagrams",                  url:"https://leetcode.com/problems/group-anagrams/",                       difficulty:"Medium", xp:30 },
-    { id:"hsh-q5", title:"Top K Frequent Elements",         url:"https://leetcode.com/problems/top-k-frequent-elements/",              difficulty:"Medium", xp:30 },
-    { id:"hsh-q6", title:"Subarray Sum Equals K",           url:"https://leetcode.com/problems/subarray-sum-equals-k/",               difficulty:"Medium", xp:30 },
-    { id:"hsh-q7", title:"LRU Cache",                       url:"https://leetcode.com/problems/lru-cache/",                            difficulty:"Medium", xp:30 },
-  ]},
-  { track:"linked-list", label:"Linked List", color:"#3b82f6", questions:[
-    { id:"ll-q1", title:"Reverse Linked List",              url:"https://leetcode.com/problems/reverse-linked-list/",                  difficulty:"Easy",   xp:20 },
-    { id:"ll-q2", title:"Merge Two Sorted Lists",           url:"https://leetcode.com/problems/merge-two-sorted-lists/",              difficulty:"Easy",   xp:20 },
-    { id:"ll-q3", title:"Linked List Cycle",                url:"https://leetcode.com/problems/linked-list-cycle/",                   difficulty:"Easy",   xp:20 },
-    { id:"ll-q4", title:"Remove Nth Node From End",         url:"https://leetcode.com/problems/remove-nth-node-from-end-of-list/",    difficulty:"Medium", xp:30 },
-    { id:"ll-q5", title:"Reorder List",                     url:"https://leetcode.com/problems/reorder-list/",                        difficulty:"Medium", xp:30 },
-    { id:"ll-q6", title:"Find the Duplicate Number",        url:"https://leetcode.com/problems/find-the-duplicate-number/",           difficulty:"Medium", xp:30 },
-    { id:"ll-q7", title:"Merge K Sorted Lists",             url:"https://leetcode.com/problems/merge-k-sorted-lists/",               difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"stack", label:"Stack", color:"#3b82f6", questions:[
-    { id:"stk-q1", title:"Valid Parentheses",               url:"https://leetcode.com/problems/valid-parentheses/",                   difficulty:"Easy",   xp:20 },
-    { id:"stk-q2", title:"Min Stack",                       url:"https://leetcode.com/problems/min-stack/",                           difficulty:"Medium", xp:30 },
-    { id:"stk-q3", title:"Evaluate Reverse Polish Notation",url:"https://leetcode.com/problems/evaluate-reverse-polish-notation/",    difficulty:"Medium", xp:30 },
-    { id:"stk-q4", title:"Generate Parentheses",            url:"https://leetcode.com/problems/generate-parentheses/",               difficulty:"Medium", xp:30 },
-    { id:"stk-q5", title:"Daily Temperatures",              url:"https://leetcode.com/problems/daily-temperatures/",                  difficulty:"Medium", xp:30 },
-    { id:"stk-q6", title:"Car Fleet",                       url:"https://leetcode.com/problems/car-fleet/",                           difficulty:"Medium", xp:30 },
-    { id:"stk-q7", title:"Largest Rectangle in Histogram",  url:"https://leetcode.com/problems/largest-rectangle-in-histogram/",     difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"queue", label:"Queue", color:"#3b82f6", questions:[
-    { id:"que-q1", title:"Implement Queue Using Stacks",    url:"https://leetcode.com/problems/implement-queue-using-stacks/",        difficulty:"Easy",   xp:20 },
-    { id:"que-q2", title:"Number of Recent Calls",          url:"https://leetcode.com/problems/number-of-recent-calls/",              difficulty:"Easy",   xp:20 },
-    { id:"que-q3", title:"Design Circular Queue",           url:"https://leetcode.com/problems/design-circular-queue/",              difficulty:"Medium", xp:30 },
-    { id:"que-q4", title:"Task Scheduler",                  url:"https://leetcode.com/problems/task-scheduler/",                      difficulty:"Medium", xp:30 },
-    { id:"que-q5", title:"Rotting Oranges",                 url:"https://leetcode.com/problems/rotting-oranges/",                     difficulty:"Medium", xp:30 },
-    { id:"que-q6", title:"Walls and Gates",                 url:"https://leetcode.com/problems/walls-and-gates/",                     difficulty:"Medium", xp:30 },
-    { id:"que-q7", title:"Sliding Window Maximum",          url:"https://leetcode.com/problems/sliding-window-maximum/",              difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"deque", label:"Deque", color:"#f59e0b", questions:[
-    { id:"deq-q1", title:"Design Circular Deque",           url:"https://leetcode.com/problems/design-circular-deque/",              difficulty:"Medium", xp:30 },
-    { id:"deq-q2", title:"Sliding Window Maximum",          url:"https://leetcode.com/problems/sliding-window-maximum/",              difficulty:"Hard",   xp:40 },
-    { id:"deq-q3", title:"Jump Game VI",                    url:"https://leetcode.com/problems/jump-game-vi/",                        difficulty:"Medium", xp:30 },
-    { id:"deq-q4", title:"Maximum of Subarrays of Size K",  url:"https://leetcode.com/problems/sliding-window-maximum/",              difficulty:"Hard",   xp:40 },
-    { id:"deq-q5", title:"Shortest Subarray with Sum K",    url:"https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/", difficulty:"Hard", xp:40 },
-    { id:"deq-q6", title:"First Unique Character",          url:"https://leetcode.com/problems/first-unique-character-in-a-string/", difficulty:"Easy",   xp:20 },
-    { id:"deq-q7", title:"Constrained Subsequence Sum",     url:"https://leetcode.com/problems/constrained-subsequence-sum/",         difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"heap", label:"Heap (Priority Queue)", color:"#f59e0b", questions:[
-    { id:"hp-q1", title:"Kth Largest Element in Array",     url:"https://leetcode.com/problems/kth-largest-element-in-an-array/",    difficulty:"Medium", xp:30 },
-    { id:"hp-q2", title:"Top K Frequent Elements",          url:"https://leetcode.com/problems/top-k-frequent-elements/",             difficulty:"Medium", xp:30 },
-    { id:"hp-q3", title:"Find Median from Data Stream",     url:"https://leetcode.com/problems/find-median-from-data-stream/",        difficulty:"Hard",   xp:40 },
-    { id:"hp-q4", title:"Task Scheduler",                   url:"https://leetcode.com/problems/task-scheduler/",                      difficulty:"Medium", xp:30 },
-    { id:"hp-q5", title:"K Closest Points to Origin",       url:"https://leetcode.com/problems/k-closest-points-to-origin/",         difficulty:"Medium", xp:30 },
-    { id:"hp-q6", title:"Merge K Sorted Lists",             url:"https://leetcode.com/problems/merge-k-sorted-lists/",               difficulty:"Hard",   xp:40 },
-    { id:"hp-q7", title:"Design Twitter",                   url:"https://leetcode.com/problems/design-twitter/",                      difficulty:"Medium", xp:30 },
-  ]},
-  { track:"tree", label:"Tree", color:"#f59e0b", questions:[
-    { id:"tr-q1", title:"Invert Binary Tree",               url:"https://leetcode.com/problems/invert-binary-tree/",                  difficulty:"Easy",   xp:20 },
-    { id:"tr-q2", title:"Maximum Depth of Binary Tree",     url:"https://leetcode.com/problems/maximum-depth-of-binary-tree/",        difficulty:"Easy",   xp:20 },
-    { id:"tr-q3", title:"Diameter of Binary Tree",          url:"https://leetcode.com/problems/diameter-of-binary-tree/",             difficulty:"Easy",   xp:20 },
-    { id:"tr-q4", title:"Balanced Binary Tree",             url:"https://leetcode.com/problems/balanced-binary-tree/",               difficulty:"Easy",   xp:20 },
-    { id:"tr-q5", title:"Same Tree",                        url:"https://leetcode.com/problems/same-tree/",                           difficulty:"Easy",   xp:20 },
-    { id:"tr-q6", title:"Subtree of Another Tree",          url:"https://leetcode.com/problems/subtree-of-another-tree/",             difficulty:"Easy",   xp:20 },
-    { id:"tr-q7", title:"Path Sum",                         url:"https://leetcode.com/problems/path-sum/",                            difficulty:"Easy",   xp:20 },
-  ]},
-  { track:"binary-tree", label:"Binary Tree", color:"#f59e0b", questions:[
-    { id:"bt-q1", title:"Binary Tree Level Order Traversal", url:"https://leetcode.com/problems/binary-tree-level-order-traversal/",  difficulty:"Medium", xp:30 },
-    { id:"bt-q2", title:"Binary Tree Right Side View",       url:"https://leetcode.com/problems/binary-tree-right-side-view/",        difficulty:"Medium", xp:30 },
-    { id:"bt-q3", title:"Count Good Nodes in Binary Tree",   url:"https://leetcode.com/problems/count-good-nodes-in-binary-tree/",    difficulty:"Medium", xp:30 },
-    { id:"bt-q4", title:"Binary Tree Maximum Path Sum",      url:"https://leetcode.com/problems/binary-tree-maximum-path-sum/",       difficulty:"Hard",   xp:40 },
-    { id:"bt-q5", title:"Construct Binary Tree from Preorder and Inorder", url:"https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/", difficulty:"Medium", xp:30 },
-    { id:"bt-q6", title:"Serialize and Deserialize Binary Tree", url:"https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", difficulty:"Hard", xp:40 },
-    { id:"bt-q7", title:"Lowest Common Ancestor of Binary Tree", url:"https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/", difficulty:"Medium", xp:30 },
-  ]},
-  { track:"bst", label:"Binary Search Tree (BST)", color:"#f59e0b", questions:[
-    { id:"bst-q1", title:"Validate Binary Search Tree",     url:"https://leetcode.com/problems/validate-binary-search-tree/",         difficulty:"Medium", xp:30 },
-    { id:"bst-q2", title:"Kth Smallest Element in BST",    url:"https://leetcode.com/problems/kth-smallest-element-in-a-bst/",       difficulty:"Medium", xp:30 },
-    { id:"bst-q3", title:"LCA of BST",                     url:"https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/", difficulty:"Medium", xp:30 },
-    { id:"bst-q4", title:"Insert into BST",                url:"https://leetcode.com/problems/insert-into-a-binary-search-tree/",    difficulty:"Medium", xp:30 },
-    { id:"bst-q5", title:"Delete Node in BST",             url:"https://leetcode.com/problems/delete-node-in-a-bst/",               difficulty:"Medium", xp:30 },
-    { id:"bst-q6", title:"BST Iterator",                   url:"https://leetcode.com/problems/binary-search-tree-iterator/",         difficulty:"Medium", xp:30 },
-    { id:"bst-q7", title:"Recover Binary Search Tree",     url:"https://leetcode.com/problems/recover-binary-search-tree/",          difficulty:"Medium", xp:30 },
-  ]},
-  { track:"trie", label:"Trie", color:"#ef4444", questions:[
-    { id:"trie-q1", title:"Implement Trie (Prefix Tree)",   url:"https://leetcode.com/problems/implement-trie-prefix-tree/",          difficulty:"Medium", xp:30 },
-    { id:"trie-q2", title:"Design Add and Search Words",    url:"https://leetcode.com/problems/design-add-and-search-words-data-structure/", difficulty:"Medium", xp:30 },
-    { id:"trie-q3", title:"Word Search II",                 url:"https://leetcode.com/problems/word-search-ii/",                      difficulty:"Hard",   xp:40 },
-    { id:"trie-q4", title:"Replace Words",                  url:"https://leetcode.com/problems/replace-words/",                       difficulty:"Medium", xp:30 },
-    { id:"trie-q5", title:"Maximum XOR of Two Numbers",     url:"https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/", difficulty:"Medium", xp:30 },
-    { id:"trie-q6", title:"Search Suggestions System",      url:"https://leetcode.com/problems/search-suggestions-system/",           difficulty:"Medium", xp:30 },
-    { id:"trie-q7", title:"Word Break II",                  url:"https://leetcode.com/problems/word-break-ii/",                       difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"graph", label:"Graph", color:"#f59e0b", questions:[
-    { id:"gr-q1", title:"Number of Islands",                url:"https://leetcode.com/problems/number-of-islands/",                   difficulty:"Medium", xp:30 },
-    { id:"gr-q2", title:"Clone Graph",                      url:"https://leetcode.com/problems/clone-graph/",                         difficulty:"Medium", xp:30 },
-    { id:"gr-q3", title:"Max Area of Island",               url:"https://leetcode.com/problems/max-area-of-island/",                  difficulty:"Medium", xp:30 },
-    { id:"gr-q4", title:"Pacific Atlantic Water Flow",      url:"https://leetcode.com/problems/pacific-atlantic-water-flow/",         difficulty:"Medium", xp:30 },
-    { id:"gr-q5", title:"Surrounded Regions",               url:"https://leetcode.com/problems/surrounded-regions/",                  difficulty:"Medium", xp:30 },
-    { id:"gr-q6", title:"Rotting Oranges",                  url:"https://leetcode.com/problems/rotting-oranges/",                     difficulty:"Medium", xp:30 },
-    { id:"gr-q7", title:"Course Schedule",                  url:"https://leetcode.com/problems/course-schedule/",                     difficulty:"Medium", xp:30 },
-  ]},
-  { track:"greedy", label:"Greedy Algorithms", color:"#f59e0b", questions:[
-    { id:"grd-q1", title:"Jump Game",                       url:"https://leetcode.com/problems/jump-game/",                           difficulty:"Medium", xp:30 },
-    { id:"grd-q2", title:"Jump Game II",                    url:"https://leetcode.com/problems/jump-game-ii/",                        difficulty:"Medium", xp:30 },
-    { id:"grd-q3", title:"Gas Station",                     url:"https://leetcode.com/problems/gas-station/",                         difficulty:"Medium", xp:30 },
-    { id:"grd-q4", title:"Hand of Straights",               url:"https://leetcode.com/problems/hand-of-straights/",                   difficulty:"Medium", xp:30 },
-    { id:"grd-q5", title:"Merge Triplets to Form Target",   url:"https://leetcode.com/problems/merge-triplets-to-form-target-triplet/", difficulty:"Medium", xp:30 },
-    { id:"grd-q6", title:"Partition Labels",                url:"https://leetcode.com/problems/partition-labels/",                    difficulty:"Medium", xp:30 },
-    { id:"grd-q7", title:"Valid Parenthesis String",        url:"https://leetcode.com/problems/valid-parenthesis-string/",            difficulty:"Medium", xp:30 },
-  ]},
-  { track:"dp", label:"Dynamic Programming (DP)", color:"#ef4444", questions:[
-    { id:"dp-q1", title:"Climbing Stairs",                  url:"https://leetcode.com/problems/climbing-stairs/",                     difficulty:"Easy",   xp:20 },
-    { id:"dp-q2", title:"House Robber",                     url:"https://leetcode.com/problems/house-robber/",                        difficulty:"Medium", xp:30 },
-    { id:"dp-q3", title:"Longest Common Subsequence",       url:"https://leetcode.com/problems/longest-common-subsequence/",          difficulty:"Medium", xp:30 },
-    { id:"dp-q4", title:"Word Break",                       url:"https://leetcode.com/problems/word-break/",                          difficulty:"Medium", xp:30 },
-    { id:"dp-q5", title:"Coin Change",                      url:"https://leetcode.com/problems/coin-change/",                         difficulty:"Medium", xp:30 },
-    { id:"dp-q6", title:"0/1 Knapsack (Partition Equal Subset Sum)", url:"https://leetcode.com/problems/partition-equal-subset-sum/", difficulty:"Medium", xp:30 },
-    { id:"dp-q7", title:"Longest Increasing Subsequence",   url:"https://leetcode.com/problems/longest-increasing-subsequence/",      difficulty:"Medium", xp:30 },
-  ]},
-  { track:"recursion", label:"Recursion", color:"#f59e0b", questions:[
-    { id:"rec-q1", title:"Fibonacci Number",                url:"https://leetcode.com/problems/fibonacci-number/",                    difficulty:"Easy",   xp:20 },
-    { id:"rec-q2", title:"Power of Two",                    url:"https://leetcode.com/problems/power-of-two/",                        difficulty:"Easy",   xp:20 },
-    { id:"rec-q3", title:"Reverse String",                  url:"https://leetcode.com/problems/reverse-string/",                      difficulty:"Easy",   xp:20 },
-    { id:"rec-q4", title:"Merge Two Sorted Lists",          url:"https://leetcode.com/problems/merge-two-sorted-lists/",              difficulty:"Easy",   xp:20 },
-    { id:"rec-q5", title:"Flatten Nested List Iterator",    url:"https://leetcode.com/problems/flatten-nested-list-iterator/",        difficulty:"Medium", xp:30 },
-    { id:"rec-q6", title:"Letter Combinations of Phone Number", url:"https://leetcode.com/problems/letter-combinations-of-a-phone-number/", difficulty:"Medium", xp:30 },
-    { id:"rec-q7", title:"Pow(x, n)",                       url:"https://leetcode.com/problems/powx-n/",                              difficulty:"Medium", xp:30 },
-  ]},
-  { track:"backtrack", label:"Backtracking", color:"#ef4444", questions:[
-    { id:"bkt-q1", title:"Subsets",                         url:"https://leetcode.com/problems/subsets/",                             difficulty:"Medium", xp:30 },
-    { id:"bkt-q2", title:"Combination Sum",                 url:"https://leetcode.com/problems/combination-sum/",                     difficulty:"Medium", xp:30 },
-    { id:"bkt-q3", title:"Permutations",                    url:"https://leetcode.com/problems/permutations/",                        difficulty:"Medium", xp:30 },
-    { id:"bkt-q4", title:"Subsets II",                      url:"https://leetcode.com/problems/subsets-ii/",                          difficulty:"Medium", xp:30 },
-    { id:"bkt-q5", title:"Word Search",                     url:"https://leetcode.com/problems/word-search/",                         difficulty:"Medium", xp:30 },
-    { id:"bkt-q6", title:"Palindrome Partitioning",         url:"https://leetcode.com/problems/palindrome-partitioning/",             difficulty:"Medium", xp:30 },
-    { id:"bkt-q7", title:"N-Queens",                        url:"https://leetcode.com/problems/n-queens/",                            difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"searching", label:"Searching", color:"#3b82f6", questions:[
-    { id:"sch-q1", title:"Search Insert Position",          url:"https://leetcode.com/problems/search-insert-position/",              difficulty:"Easy",   xp:20 },
-    { id:"sch-q2", title:"Binary Search",                   url:"https://leetcode.com/problems/binary-search/",                       difficulty:"Easy",   xp:20 },
-    { id:"sch-q3", title:"First Bad Version",               url:"https://leetcode.com/problems/first-bad-version/",                   difficulty:"Easy",   xp:20 },
-    { id:"sch-q4", title:"Search a 2D Matrix",              url:"https://leetcode.com/problems/search-a-2d-matrix/",                  difficulty:"Medium", xp:30 },
-    { id:"sch-q5", title:"Find Minimum in Rotated Sorted Array", url:"https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/", difficulty:"Medium", xp:30 },
-    { id:"sch-q6", title:"Search in Rotated Sorted Array",  url:"https://leetcode.com/problems/search-in-rotated-sorted-array/",      difficulty:"Medium", xp:30 },
-    { id:"sch-q7", title:"Koko Eating Bananas",             url:"https://leetcode.com/problems/koko-eating-bananas/",                 difficulty:"Medium", xp:30 },
-  ]},
-  { track:"sorting", label:"Sorting", color:"#f59e0b", questions:[
-    { id:"srt-q1", title:"Sort Colors",                     url:"https://leetcode.com/problems/sort-colors/",                         difficulty:"Medium", xp:30 },
-    { id:"srt-q2", title:"Sort an Array",                   url:"https://leetcode.com/problems/sort-an-array/",                       difficulty:"Medium", xp:30 },
-    { id:"srt-q3", title:"Merge Sorted Array",              url:"https://leetcode.com/problems/merge-sorted-array/",                  difficulty:"Easy",   xp:20 },
-    { id:"srt-q4", title:"Largest Number",                  url:"https://leetcode.com/problems/largest-number/",                      difficulty:"Medium", xp:30 },
-    { id:"srt-q5", title:"K Closest Points to Origin",      url:"https://leetcode.com/problems/k-closest-points-to-origin/",         difficulty:"Medium", xp:30 },
-    { id:"srt-q6", title:"Meeting Rooms",                   url:"https://leetcode.com/problems/meeting-rooms/",                       difficulty:"Easy",   xp:20 },
-    { id:"srt-q7", title:"Merge Intervals",                 url:"https://leetcode.com/problems/merge-intervals/",                     difficulty:"Medium", xp:30 },
-  ]},
-  { track:"binary-search", label:"Binary Search", color:"#f59e0b", questions:[
-    { id:"bin-q1", title:"Binary Search",                   url:"https://leetcode.com/problems/binary-search/",                       difficulty:"Easy",   xp:20 },
-    { id:"bin-q2", title:"Find Minimum in Rotated Sorted Array", url:"https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/", difficulty:"Medium", xp:30 },
-    { id:"bin-q3", title:"Search in Rotated Sorted Array",  url:"https://leetcode.com/problems/search-in-rotated-sorted-array/",      difficulty:"Medium", xp:30 },
-    { id:"bin-q4", title:"Koko Eating Bananas",             url:"https://leetcode.com/problems/koko-eating-bananas/",                 difficulty:"Medium", xp:30 },
-    { id:"bin-q5", title:"Time Based Key-Value Store",      url:"https://leetcode.com/problems/time-based-key-value-store/",          difficulty:"Medium", xp:30 },
-    { id:"bin-q6", title:"Median of Two Sorted Arrays",     url:"https://leetcode.com/problems/median-of-two-sorted-arrays/",        difficulty:"Hard",   xp:40 },
-    { id:"bin-q7", title:"Split Array Largest Sum",         url:"https://leetcode.com/problems/split-array-largest-sum/",             difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"two-pointers", label:"Two Pointers", color:"#f59e0b", questions:[
-    { id:"tp-q1", title:"Valid Palindrome",                  url:"https://leetcode.com/problems/valid-palindrome/",                    difficulty:"Easy",   xp:20 },
-    { id:"tp-q2", title:"Two Sum II (Input Array Is Sorted)",url:"https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",   difficulty:"Medium", xp:30 },
-    { id:"tp-q3", title:"3Sum",                              url:"https://leetcode.com/problems/3sum/",                               difficulty:"Medium", xp:30 },
-    { id:"tp-q4", title:"Container With Most Water",         url:"https://leetcode.com/problems/container-with-most-water/",          difficulty:"Medium", xp:30 },
-    { id:"tp-q5", title:"Trapping Rain Water",               url:"https://leetcode.com/problems/trapping-rain-water/",                difficulty:"Hard",   xp:40 },
-    { id:"tp-q6", title:"Remove Duplicates from Sorted Array", url:"https://leetcode.com/problems/remove-duplicates-from-sorted-array/", difficulty:"Easy", xp:20 },
-    { id:"tp-q7", title:"Move Zeroes",                       url:"https://leetcode.com/problems/move-zeroes/",                        difficulty:"Easy",   xp:20 },
-  ]},
-  { track:"sliding-win", label:"Sliding Window", color:"#f59e0b", questions:[
-    { id:"sw-q1", title:"Best Time to Buy and Sell Stock",  url:"https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",     difficulty:"Easy",   xp:20 },
-    { id:"sw-q2", title:"Longest Substring Without Repeating Characters", url:"https://leetcode.com/problems/longest-substring-without-repeating-characters/", difficulty:"Medium", xp:30 },
-    { id:"sw-q3", title:"Longest Repeating Character Replacement", url:"https://leetcode.com/problems/longest-repeating-character-replacement/", difficulty:"Medium", xp:30 },
-    { id:"sw-q4", title:"Permutation in String",            url:"https://leetcode.com/problems/permutation-in-string/",               difficulty:"Medium", xp:30 },
-    { id:"sw-q5", title:"Minimum Window Substring",         url:"https://leetcode.com/problems/minimum-window-substring/",            difficulty:"Hard",   xp:40 },
-    { id:"sw-q6", title:"Sliding Window Maximum",           url:"https://leetcode.com/problems/sliding-window-maximum/",              difficulty:"Hard",   xp:40 },
-    { id:"sw-q7", title:"Find All Anagrams in a String",    url:"https://leetcode.com/problems/find-all-anagrams-in-a-string/",       difficulty:"Medium", xp:30 },
-  ]},
-  { track:"prefix-sum", label:"Prefix Sum", color:"#f59e0b", questions:[
-    { id:"ps-q1", title:"Running Sum of 1d Array",          url:"https://leetcode.com/problems/running-sum-of-1d-array/",             difficulty:"Easy",   xp:20 },
-    { id:"ps-q2", title:"Find Pivot Index",                 url:"https://leetcode.com/problems/find-pivot-index/",                    difficulty:"Easy",   xp:20 },
-    { id:"ps-q3", title:"Subarray Sum Equals K",            url:"https://leetcode.com/problems/subarray-sum-equals-k/",              difficulty:"Medium", xp:30 },
-    { id:"ps-q4", title:"Range Sum Query - Immutable",      url:"https://leetcode.com/problems/range-sum-query-immutable/",           difficulty:"Easy",   xp:20 },
-    { id:"ps-q5", title:"Product of Array Except Self",     url:"https://leetcode.com/problems/product-of-array-except-self/",        difficulty:"Medium", xp:30 },
-    { id:"ps-q6", title:"Maximum Size Subarray Sum Equals k", url:"https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/", difficulty:"Medium", xp:30 },
-    { id:"ps-q7", title:"Count of Range Sum",               url:"https://leetcode.com/problems/count-of-range-sum/",                  difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"bit-manip", label:"Bit Manipulation", color:"#ef4444", questions:[
-    { id:"bm-q1", title:"Single Number",                    url:"https://leetcode.com/problems/single-number/",                       difficulty:"Easy",   xp:20 },
-    { id:"bm-q2", title:"Number of 1 Bits",                 url:"https://leetcode.com/problems/number-of-1-bits/",                    difficulty:"Easy",   xp:20 },
-    { id:"bm-q3", title:"Counting Bits",                    url:"https://leetcode.com/problems/counting-bits/",                       difficulty:"Easy",   xp:20 },
-    { id:"bm-q4", title:"Reverse Bits",                     url:"https://leetcode.com/problems/reverse-bits/",                        difficulty:"Easy",   xp:20 },
-    { id:"bm-q5", title:"Missing Number",                   url:"https://leetcode.com/problems/missing-number/",                      difficulty:"Easy",   xp:20 },
-    { id:"bm-q6", title:"Sum of Two Integers",              url:"https://leetcode.com/problems/sum-of-two-integers/",                 difficulty:"Medium", xp:30 },
-    { id:"bm-q7", title:"Reverse Integer",                  url:"https://leetcode.com/problems/reverse-integer/",                     difficulty:"Medium", xp:30 },
-  ]},
-  { track:"math", label:"Mathematics", color:"#f59e0b", questions:[
-    { id:"mth-q1", title:"Palindrome Number",               url:"https://leetcode.com/problems/palindrome-number/",                   difficulty:"Easy",   xp:20 },
-    { id:"mth-q2", title:"Happy Number",                    url:"https://leetcode.com/problems/happy-number/",                        difficulty:"Easy",   xp:20 },
-    { id:"mth-q3", title:"Plus One",                        url:"https://leetcode.com/problems/plus-one/",                            difficulty:"Easy",   xp:20 },
-    { id:"mth-q4", title:"Sqrt(x)",                         url:"https://leetcode.com/problems/sqrtx/",                               difficulty:"Easy",   xp:20 },
-    { id:"mth-q5", title:"Pow(x, n)",                       url:"https://leetcode.com/problems/powx-n/",                              difficulty:"Medium", xp:30 },
-    { id:"mth-q6", title:"Factorial Trailing Zeroes",       url:"https://leetcode.com/problems/factorial-trailing-zeroes/",           difficulty:"Medium", xp:30 },
-    { id:"mth-q7", title:"Integer to Roman",                url:"https://leetcode.com/problems/integer-to-roman/",                    difficulty:"Medium", xp:30 },
-  ]},
-  { track:"number-theory", label:"Number Theory", color:"#ef4444", questions:[
-    { id:"nt-q1", title:"Count Primes",                     url:"https://leetcode.com/problems/count-primes/",                        difficulty:"Medium", xp:30 },
-    { id:"nt-q2", title:"Ugly Number",                      url:"https://leetcode.com/problems/ugly-number/",                         difficulty:"Easy",   xp:20 },
-    { id:"nt-q3", title:"Ugly Number II",                   url:"https://leetcode.com/problems/ugly-number-ii/",                      difficulty:"Medium", xp:30 },
-    { id:"nt-q4", title:"GCD of Strings",                   url:"https://leetcode.com/problems/greatest-common-divisor-of-strings/",  difficulty:"Easy",   xp:20 },
-    { id:"nt-q5", title:"Nth Digit",                        url:"https://leetcode.com/problems/nth-digit/",                           difficulty:"Medium", xp:30 },
-    { id:"nt-q6", title:"Super Pow",                        url:"https://leetcode.com/problems/super-pow/",                           difficulty:"Medium", xp:30 },
-    { id:"nt-q7", title:"Minimum Operations to Make Array Divisible", url:"https://leetcode.com/problems/integer-replacement/",       difficulty:"Medium", xp:30 },
-  ]},
-  { track:"geometry", label:"Geometry", color:"#ef4444", questions:[
-    { id:"geo-q1", title:"Valid Square",                    url:"https://leetcode.com/problems/valid-square/",                        difficulty:"Medium", xp:30 },
-    { id:"geo-q2", title:"Max Points on a Line",            url:"https://leetcode.com/problems/max-points-on-a-line/",               difficulty:"Hard",   xp:40 },
-    { id:"geo-q3", title:"Minimum Area Rectangle",          url:"https://leetcode.com/problems/minimum-area-rectangle/",             difficulty:"Medium", xp:30 },
-    { id:"geo-q4", title:"K Closest Points to Origin",      url:"https://leetcode.com/problems/k-closest-points-to-origin/",         difficulty:"Medium", xp:30 },
-    { id:"geo-q5", title:"Erect the Fence",                 url:"https://leetcode.com/problems/erect-the-fence/",                    difficulty:"Hard",   xp:40 },
-    { id:"geo-q6", title:"Rectangle Overlap",               url:"https://leetcode.com/problems/rectangle-overlap/",                  difficulty:"Easy",   xp:20 },
-    { id:"geo-q7", title:"Check If Two Rectangles Overlap", url:"https://leetcode.com/problems/rectangle-overlap/",                  difficulty:"Easy",   xp:20 },
-  ]},
-  { track:"divide-conquer", label:"Divide and Conquer", color:"#ef4444", questions:[
-    { id:"dc-q1", title:"Merge Sort (Sort an Array)",       url:"https://leetcode.com/problems/sort-an-array/",                       difficulty:"Medium", xp:30 },
-    { id:"dc-q2", title:"Kth Largest Element in Array",     url:"https://leetcode.com/problems/kth-largest-element-in-an-array/",    difficulty:"Medium", xp:30 },
-    { id:"dc-q3", title:"Median of Two Sorted Arrays",      url:"https://leetcode.com/problems/median-of-two-sorted-arrays/",        difficulty:"Hard",   xp:40 },
-    { id:"dc-q4", title:"Count of Smaller Numbers After Self", url:"https://leetcode.com/problems/count-of-smaller-numbers-after-self/", difficulty:"Hard", xp:40 },
-    { id:"dc-q5", title:"Maximum Subarray",                 url:"https://leetcode.com/problems/maximum-subarray/",                    difficulty:"Medium", xp:30 },
-    { id:"dc-q6", title:"Search a 2D Matrix II",            url:"https://leetcode.com/problems/search-a-2d-matrix-ii/",              difficulty:"Medium", xp:30 },
-    { id:"dc-q7", title:"Beautiful Array",                  url:"https://leetcode.com/problems/beautiful-array/",                    difficulty:"Medium", xp:30 },
-  ]},
-  { track:"union-find", label:"Union Find (DSU)", color:"#ef4444", questions:[
-    { id:"uf-q1", title:"Number of Provinces",              url:"https://leetcode.com/problems/number-of-provinces/",                 difficulty:"Medium", xp:30 },
-    { id:"uf-q2", title:"Redundant Connection",             url:"https://leetcode.com/problems/redundant-connection/",               difficulty:"Medium", xp:30 },
-    { id:"uf-q3", title:"Accounts Merge",                   url:"https://leetcode.com/problems/accounts-merge/",                      difficulty:"Medium", xp:30 },
-    { id:"uf-q4", title:"Graph Valid Tree",                 url:"https://leetcode.com/problems/graph-valid-tree/",                    difficulty:"Medium", xp:30 },
-    { id:"uf-q5", title:"Number of Connected Components",   url:"https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/", difficulty:"Medium", xp:30 },
-    { id:"uf-q6", title:"Making a Large Island",            url:"https://leetcode.com/problems/making-a-large-island/",               difficulty:"Hard",   xp:40 },
-    { id:"uf-q7", title:"Satisfiability of Equality Equations", url:"https://leetcode.com/problems/satisfiability-of-equality-equations/", difficulty:"Medium", xp:30 },
-  ]},
-  { track:"segment-tree", label:"Segment Tree", color:"#ef4444", questions:[
-    { id:"seg-q1", title:"Range Sum Query - Mutable",       url:"https://leetcode.com/problems/range-sum-query-mutable/",             difficulty:"Medium", xp:30 },
-    { id:"seg-q2", title:"Count of Range Sum",              url:"https://leetcode.com/problems/count-of-range-sum/",                  difficulty:"Hard",   xp:40 },
-    { id:"seg-q3", title:"The Skyline Problem",             url:"https://leetcode.com/problems/the-skyline-problem/",                 difficulty:"Hard",   xp:40 },
-    { id:"seg-q4", title:"My Calendar I",                   url:"https://leetcode.com/problems/my-calendar-i/",                       difficulty:"Medium", xp:30 },
-    { id:"seg-q5", title:"My Calendar III",                 url:"https://leetcode.com/problems/my-calendar-iii/",                     difficulty:"Hard",   xp:40 },
-    { id:"seg-q6", title:"Falling Squares",                 url:"https://leetcode.com/problems/falling-squares/",                     difficulty:"Hard",   xp:40 },
-    { id:"seg-q7", title:"Rectangle Area II",               url:"https://leetcode.com/problems/rectangle-area-ii/",                   difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"fenwick", label:"Fenwick Tree (BIT)", color:"#ef4444", questions:[
-    { id:"fen-q1", title:"Range Sum Query - Mutable",       url:"https://leetcode.com/problems/range-sum-query-mutable/",             difficulty:"Medium", xp:30 },
-    { id:"fen-q2", title:"Count of Smaller Numbers After Self", url:"https://leetcode.com/problems/count-of-smaller-numbers-after-self/", difficulty:"Hard", xp:40 },
-    { id:"fen-q3", title:"Reverse Pairs",                   url:"https://leetcode.com/problems/reverse-pairs/",                       difficulty:"Hard",   xp:40 },
-    { id:"fen-q4", title:"Count of Range Sum",              url:"https://leetcode.com/problems/count-of-range-sum/",                  difficulty:"Hard",   xp:40 },
-    { id:"fen-q5", title:"Create Sorted Array through Instructions", url:"https://leetcode.com/problems/create-sorted-array-through-instructions/", difficulty:"Hard", xp:40 },
-    { id:"fen-q6", title:"Number of Longest Increasing Subsequence", url:"https://leetcode.com/problems/number-of-longest-increasing-subsequence/", difficulty:"Medium", xp:30 },
-    { id:"fen-q7", title:"The Number of Weak Characters in the Game", url:"https://leetcode.com/problems/the-number-of-weak-characters-in-the-game/", difficulty:"Medium", xp:30 },
-  ]},
-  { track:"mono-stack", label:"Monotonic Stack", color:"#ef4444", questions:[
-    { id:"ms-q1", title:"Daily Temperatures",               url:"https://leetcode.com/problems/daily-temperatures/",                  difficulty:"Medium", xp:30 },
-    { id:"ms-q2", title:"Next Greater Element I",           url:"https://leetcode.com/problems/next-greater-element-i/",              difficulty:"Easy",   xp:20 },
-    { id:"ms-q3", title:"Next Greater Element II",          url:"https://leetcode.com/problems/next-greater-element-ii/",             difficulty:"Medium", xp:30 },
-    { id:"ms-q4", title:"Largest Rectangle in Histogram",   url:"https://leetcode.com/problems/largest-rectangle-in-histogram/",     difficulty:"Hard",   xp:40 },
-    { id:"ms-q5", title:"Trapping Rain Water",              url:"https://leetcode.com/problems/trapping-rain-water/",                 difficulty:"Hard",   xp:40 },
-    { id:"ms-q6", title:"Remove K Digits",                  url:"https://leetcode.com/problems/remove-k-digits/",                     difficulty:"Medium", xp:30 },
-    { id:"ms-q7", title:"Sum of Subarray Minimums",         url:"https://leetcode.com/problems/sum-of-subarray-minimums/",            difficulty:"Medium", xp:30 },
-  ]},
-  { track:"mono-queue", label:"Monotonic Queue", color:"#ef4444", questions:[
-    { id:"mq-q1", title:"Sliding Window Maximum",           url:"https://leetcode.com/problems/sliding-window-maximum/",              difficulty:"Hard",   xp:40 },
-    { id:"mq-q2", title:"Jump Game VI",                     url:"https://leetcode.com/problems/jump-game-vi/",                        difficulty:"Medium", xp:30 },
-    { id:"mq-q3", title:"Constrained Subsequence Sum",      url:"https://leetcode.com/problems/constrained-subsequence-sum/",         difficulty:"Hard",   xp:40 },
-    { id:"mq-q4", title:"Shortest Subarray with Sum K",     url:"https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/", difficulty:"Hard", xp:40 },
-    { id:"mq-q5", title:"Max Value of Equation",            url:"https://leetcode.com/problems/max-value-of-equation/",               difficulty:"Hard",   xp:40 },
-    { id:"mq-q6", title:"Sliding Window Median",            url:"https://leetcode.com/problems/sliding-window-median/",               difficulty:"Hard",   xp:40 },
-    { id:"mq-q7", title:"Minimum Number of Increments on Subarrays", url:"https://leetcode.com/problems/minimum-number-of-increments-on-subarrays/", difficulty:"Hard", xp:40 },
-  ]},
-  { track:"topo-sort", label:"Topological Sort", color:"#8b5cf6", questions:[
-    { id:"ts-q1", title:"Course Schedule",                  url:"https://leetcode.com/problems/course-schedule/",                     difficulty:"Medium", xp:30 },
-    { id:"ts-q2", title:"Course Schedule II",               url:"https://leetcode.com/problems/course-schedule-ii/",                  difficulty:"Medium", xp:30 },
-    { id:"ts-q3", title:"Alien Dictionary",                 url:"https://leetcode.com/problems/alien-dictionary/",                    difficulty:"Hard",   xp:40 },
-    { id:"ts-q4", title:"Sequence Reconstruction",          url:"https://leetcode.com/problems/sequence-reconstruction/",             difficulty:"Medium", xp:30 },
-    { id:"ts-q5", title:"Find All Possible Recipes",        url:"https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/", difficulty:"Medium", xp:30 },
-    { id:"ts-q6", title:"Minimum Height Trees",             url:"https://leetcode.com/problems/minimum-height-trees/",               difficulty:"Medium", xp:30 },
-    { id:"ts-q7", title:"Sort Items by Groups",             url:"https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/", difficulty:"Hard", xp:40 },
-  ]},
-  { track:"bfs", label:"Breadth-First Search (BFS)", color:"#8b5cf6", questions:[
-    { id:"bfs-q1", title:"Binary Tree Level Order Traversal", url:"https://leetcode.com/problems/binary-tree-level-order-traversal/",difficulty:"Medium", xp:30 },
-    { id:"bfs-q2", title:"Rotting Oranges",                  url:"https://leetcode.com/problems/rotting-oranges/",                    difficulty:"Medium", xp:30 },
-    { id:"bfs-q3", title:"Walls and Gates",                  url:"https://leetcode.com/problems/walls-and-gates/",                    difficulty:"Medium", xp:30 },
-    { id:"bfs-q4", title:"Word Ladder",                      url:"https://leetcode.com/problems/word-ladder/",                        difficulty:"Hard",   xp:40 },
-    { id:"bfs-q5", title:"Open the Lock",                    url:"https://leetcode.com/problems/open-the-lock/",                      difficulty:"Medium", xp:30 },
-    { id:"bfs-q6", title:"Jump Game III",                    url:"https://leetcode.com/problems/jump-game-iii/",                      difficulty:"Medium", xp:30 },
-    { id:"bfs-q7", title:"Shortest Path in Binary Matrix",   url:"https://leetcode.com/problems/shortest-path-in-binary-matrix/",    difficulty:"Medium", xp:30 },
-  ]},
-  { track:"dfs", label:"Depth-First Search (DFS)", color:"#8b5cf6", questions:[
-    { id:"dfs-q1", title:"Number of Islands",               url:"https://leetcode.com/problems/number-of-islands/",                   difficulty:"Medium", xp:30 },
-    { id:"dfs-q2", title:"Clone Graph",                     url:"https://leetcode.com/problems/clone-graph/",                         difficulty:"Medium", xp:30 },
-    { id:"dfs-q3", title:"Pacific Atlantic Water Flow",     url:"https://leetcode.com/problems/pacific-atlantic-water-flow/",         difficulty:"Medium", xp:30 },
-    { id:"dfs-q4", title:"Surrounded Regions",              url:"https://leetcode.com/problems/surrounded-regions/",                  difficulty:"Medium", xp:30 },
-    { id:"dfs-q5", title:"Course Schedule",                 url:"https://leetcode.com/problems/course-schedule/",                     difficulty:"Medium", xp:30 },
-    { id:"dfs-q6", title:"Island Perimeter",                url:"https://leetcode.com/problems/island-perimeter/",                    difficulty:"Easy",   xp:20 },
-    { id:"dfs-q7", title:"Keys and Rooms",                  url:"https://leetcode.com/problems/keys-and-rooms/",                      difficulty:"Medium", xp:30 },
-  ]},
-  { track:"shortest-path", label:"Shortest Path Algorithms", color:"#8b5cf6", questions:[
-    { id:"sp-q1", title:"Network Delay Time",               url:"https://leetcode.com/problems/network-delay-time/",                  difficulty:"Medium", xp:30 },
-    { id:"sp-q2", title:"Cheapest Flights Within K Stops",  url:"https://leetcode.com/problems/cheapest-flights-within-k-stops/",    difficulty:"Medium", xp:30 },
-    { id:"sp-q3", title:"Path With Minimum Effort",         url:"https://leetcode.com/problems/path-with-minimum-effort/",           difficulty:"Medium", xp:30 },
-    { id:"sp-q4", title:"Find the City With Fewest Reachable Neighbours", url:"https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/", difficulty:"Medium", xp:30 },
-    { id:"sp-q5", title:"Swim in Rising Water",             url:"https://leetcode.com/problems/swim-in-rising-water/",               difficulty:"Hard",   xp:40 },
-    { id:"sp-q6", title:"Minimum Cost to Connect All Points", url:"https://leetcode.com/problems/min-cost-to-connect-all-points/",   difficulty:"Medium", xp:30 },
-    { id:"sp-q7", title:"Word Ladder",                      url:"https://leetcode.com/problems/word-ladder/",                        difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"mst", label:"Minimum Spanning Tree (MST)", color:"#8b5cf6", questions:[
-    { id:"mst-q1", title:"Min Cost to Connect All Points",  url:"https://leetcode.com/problems/min-cost-to-connect-all-points/",     difficulty:"Medium", xp:30 },
-    { id:"mst-q2", title:"Connecting Cities With Minimum Cost", url:"https://leetcode.com/problems/connecting-cities-with-minimum-cost/", difficulty:"Medium", xp:30 },
-    { id:"mst-q3", title:"Redundant Connection",            url:"https://leetcode.com/problems/redundant-connection/",               difficulty:"Medium", xp:30 },
-    { id:"mst-q4", title:"Optimize Water Distribution",     url:"https://leetcode.com/problems/optimize-water-distribution-in-a-village/", difficulty:"Hard", xp:40 },
-    { id:"mst-q5", title:"Find Critical and Pseudo-Critical Edges", url:"https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/", difficulty:"Hard", xp:40 },
-    { id:"mst-q6", title:"Remove Max Number of Edges",      url:"https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/", difficulty:"Hard", xp:40 },
-    { id:"mst-q7", title:"Checking Existence of Edge Length Limited Paths", url:"https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/", difficulty:"Hard", xp:40 },
-  ]},
-  { track:"lca", label:"Lowest Common Ancestor (LCA)", color:"#8b5cf6", questions:[
-    { id:"lca-q1", title:"LCA of Binary Tree",              url:"https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/", difficulty:"Medium", xp:30 },
-    { id:"lca-q2", title:"LCA of BST",                      url:"https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/", difficulty:"Medium", xp:30 },
-    { id:"lca-q3", title:"LCA of Deepest Leaves",           url:"https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/", difficulty:"Medium", xp:30 },
-    { id:"lca-q4", title:"Kth Ancestor of Tree Node",       url:"https://leetcode.com/problems/kth-ancestor-of-a-tree-node/",        difficulty:"Hard",   xp:40 },
-    { id:"lca-q5", title:"Distance Between Nodes in BST",   url:"https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/",difficulty:"Medium", xp:30 },
-    { id:"lca-q6", title:"Step-By-Step Directions From Binary Tree Node", url:"https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/", difficulty:"Medium", xp:30 },
-    { id:"lca-q7", title:"Maximum Difference Between Node and Ancestor", url:"https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/", difficulty:"Medium", xp:30 },
-  ]},
-  { track:"string-algo", label:"String Algorithms", color:"#ef4444", questions:[
-    { id:"sa-q1", title:"Implement strStr()",               url:"https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/", difficulty:"Easy", xp:20 },
-    { id:"sa-q2", title:"Repeated Substring Pattern",       url:"https://leetcode.com/problems/repeated-substring-pattern/",          difficulty:"Easy",   xp:20 },
-    { id:"sa-q3", title:"Shortest Palindrome (KMP)",        url:"https://leetcode.com/problems/shortest-palindrome/",                 difficulty:"Hard",   xp:40 },
-    { id:"sa-q4", title:"Longest Duplicate Substring",      url:"https://leetcode.com/problems/longest-duplicate-substring/",         difficulty:"Hard",   xp:40 },
-    { id:"sa-q5", title:"Minimum Window Substring",         url:"https://leetcode.com/problems/minimum-window-substring/",            difficulty:"Hard",   xp:40 },
-    { id:"sa-q6", title:"Find All Anagrams in String",      url:"https://leetcode.com/problems/find-all-anagrams-in-a-string/",       difficulty:"Medium", xp:30 },
-    { id:"sa-q7", title:"Rabin-Karp Rolling Hash",          url:"https://leetcode.com/problems/longest-duplicate-substring/",         difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"comp-geo", label:"Computational Geometry", color:"#8b5cf6", questions:[
-    { id:"cg-q1", title:"Max Points on a Line",             url:"https://leetcode.com/problems/max-points-on-a-line/",               difficulty:"Hard",   xp:40 },
-    { id:"cg-q2", title:"Erect the Fence",                  url:"https://leetcode.com/problems/erect-the-fence/",                    difficulty:"Hard",   xp:40 },
-    { id:"cg-q3", title:"Minimum Area Rectangle",           url:"https://leetcode.com/problems/minimum-area-rectangle/",             difficulty:"Medium", xp:30 },
-    { id:"cg-q4", title:"Valid Boomerang",                  url:"https://leetcode.com/problems/valid-boomerang/",                    difficulty:"Easy",   xp:20 },
-    { id:"cg-q5", title:"Largest Triangle Area",            url:"https://leetcode.com/problems/largest-triangle-area/",             difficulty:"Easy",   xp:20 },
-    { id:"cg-q6", title:"Rectangle Area",                   url:"https://leetcode.com/problems/rectangle-area/",                    difficulty:"Medium", xp:30 },
-    { id:"cg-q7", title:"Minimum Area Rectangle II",        url:"https://leetcode.com/problems/minimum-area-rectangle-ii/",         difficulty:"Medium", xp:30 },
-  ]},
-  { track:"game-theory", label:"Game Theory", color:"#8b5cf6", questions:[
-    { id:"gt-q1", title:"Nim Game",                         url:"https://leetcode.com/problems/nim-game/",                           difficulty:"Easy",   xp:20 },
-    { id:"gt-q2", title:"Flip Game II",                     url:"https://leetcode.com/problems/flip-game-ii/",                       difficulty:"Medium", xp:30 },
-    { id:"gt-q3", title:"Predict the Winner",               url:"https://leetcode.com/problems/predict-the-winner/",                 difficulty:"Medium", xp:30 },
-    { id:"gt-q4", title:"Stone Game",                       url:"https://leetcode.com/problems/stone-game/",                         difficulty:"Medium", xp:30 },
-    { id:"gt-q5", title:"Stone Game II",                    url:"https://leetcode.com/problems/stone-game-ii/",                      difficulty:"Medium", xp:30 },
-    { id:"gt-q6", title:"Cat and Mouse",                    url:"https://leetcode.com/problems/cat-and-mouse/",                      difficulty:"Hard",   xp:40 },
-    { id:"gt-q7", title:"Zuma Game",                        url:"https://leetcode.com/problems/zuma-game/",                          difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"probability", label:"Probability", color:"#8b5cf6", questions:[
-    { id:"prob-q1", title:"Random Pick with Weight",        url:"https://leetcode.com/problems/random-pick-with-weight/",             difficulty:"Medium", xp:30 },
-    { id:"prob-q2", title:"Random Pick Index",              url:"https://leetcode.com/problems/random-pick-index/",                   difficulty:"Medium", xp:30 },
-    { id:"prob-q3", title:"Shuffle an Array",               url:"https://leetcode.com/problems/shuffle-an-array/",                   difficulty:"Medium", xp:30 },
-    { id:"prob-q4", title:"Implement Rand10 Using Rand7",   url:"https://leetcode.com/problems/implement-rand10-using-rand7/",       difficulty:"Medium", xp:30 },
-    { id:"prob-q5", title:"Generate Random Point in Circle",url:"https://leetcode.com/problems/generate-random-point-in-a-circle/",  difficulty:"Medium", xp:30 },
-    { id:"prob-q6", title:"Random Point in Non-overlapping Rectangles", url:"https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/", difficulty:"Medium", xp:30 },
-    { id:"prob-q7", title:"Maximum Profit in Job Scheduling",url:"https://leetcode.com/problems/maximum-profit-in-job-scheduling/",  difficulty:"Hard",   xp:40 },
-  ]},
-  { track:"sql", label:"SQL", color:"#06b6d4", questions:[
-    { id:"sql-q1", title:"Combine Two Tables",              url:"https://leetcode.com/problems/combine-two-tables/",                  difficulty:"Easy",   xp:20 },
-    { id:"sql-q2", title:"Second Highest Salary",           url:"https://leetcode.com/problems/second-highest-salary/",              difficulty:"Medium", xp:30 },
-    { id:"sql-q3", title:"Employees Earning More Than Managers", url:"https://leetcode.com/problems/employees-earning-more-than-their-managers/", difficulty:"Easy", xp:20 },
-    { id:"sql-q4", title:"Duplicate Emails",                url:"https://leetcode.com/problems/duplicate-emails/",                   difficulty:"Easy",   xp:20 },
-    { id:"sql-q5", title:"Rank Scores",                     url:"https://leetcode.com/problems/rank-scores/",                        difficulty:"Medium", xp:30 },
-    { id:"sql-q6", title:"Department Top Three Salaries",   url:"https://leetcode.com/problems/department-top-three-salaries/",      difficulty:"Hard",   xp:40 },
-    { id:"sql-q7", title:"Consecutive Numbers",             url:"https://leetcode.com/problems/consecutive-numbers/",                difficulty:"Medium", xp:30 },
-  ]},
-  { track:"oop", label:"Object-Oriented Programming (OOP)", color:"#f59e0b", questions:[
-    { id:"oop-q1", title:"Design Parking System",           url:"https://leetcode.com/problems/design-parking-system/",              difficulty:"Easy",   xp:20 },
-    { id:"oop-q2", title:"Design HashMap",                  url:"https://leetcode.com/problems/design-hashmap/",                     difficulty:"Easy",   xp:20 },
-    { id:"oop-q3", title:"LRU Cache",                       url:"https://leetcode.com/problems/lru-cache/",                           difficulty:"Medium", xp:30 },
-    { id:"oop-q4", title:"Design Twitter",                  url:"https://leetcode.com/problems/design-twitter/",                      difficulty:"Medium", xp:30 },
-    { id:"oop-q5", title:"Design Hit Counter",              url:"https://leetcode.com/problems/design-hit-counter/",                  difficulty:"Medium", xp:30 },
-    { id:"oop-q6", title:"Implement Stack Using Queues",    url:"https://leetcode.com/problems/implement-stack-using-queues/",        difficulty:"Easy",   xp:20 },
-    { id:"oop-q7", title:"Design Snake Game",               url:"https://leetcode.com/problems/design-snake-game/",                   difficulty:"Medium", xp:30 },
-  ]},
-  { track:"complexity", label:"Time & Space Complexity", color:"#f59e0b", questions:[
-    { id:"cmp-q1", title:"Two Sum (O(n) hash solution)",    url:"https://leetcode.com/problems/two-sum/",                             difficulty:"Easy",   xp:20 },
-    { id:"cmp-q2", title:"Contains Duplicate (O(n) set)",  url:"https://leetcode.com/problems/contains-duplicate/",                  difficulty:"Easy",   xp:20 },
-    { id:"cmp-q3", title:"Binary Search (O(log n))",        url:"https://leetcode.com/problems/binary-search/",                       difficulty:"Easy",   xp:20 },
-    { id:"cmp-q4", title:"Merge Sort (O(n log n))",         url:"https://leetcode.com/problems/sort-an-array/",                       difficulty:"Medium", xp:30 },
-    { id:"cmp-q5", title:"Longest Common Subsequence (O(mn) DP)", url:"https://leetcode.com/problems/longest-common-subsequence/",   difficulty:"Medium", xp:30 },
-    { id:"cmp-q6", title:"LRU Cache (O(1) operations)",     url:"https://leetcode.com/problems/lru-cache/",                           difficulty:"Medium", xp:30 },
-    { id:"cmp-q7", title:"Median of Two Sorted Arrays (O(log(min(m,n))))", url:"https://leetcode.com/problems/median-of-two-sorted-arrays/", difficulty:"Hard", xp:40 },
-  ]},
-  { track:"design-patterns", label:"Design Patterns", color:"#8b5cf6", questions:[
-    { id:"dp2-q1", title:"Implement Singleton (LRU Cache)", url:"https://leetcode.com/problems/lru-cache/",                           difficulty:"Medium", xp:30 },
-    { id:"dp2-q2", title:"Observer Pattern (Design Twitter)",url:"https://leetcode.com/problems/design-twitter/",                    difficulty:"Medium", xp:30 },
-    { id:"dp2-q3", title:"Iterator Pattern (Flatten 2D Vector)", url:"https://leetcode.com/problems/flatten-2d-vector/",             difficulty:"Medium", xp:30 },
-    { id:"dp2-q4", title:"Factory Pattern (Design HashMap)",url:"https://leetcode.com/problems/design-hashmap/",                     difficulty:"Easy",   xp:20 },
-    { id:"dp2-q5", title:"Strategy Pattern (Sort Colors)",  url:"https://leetcode.com/problems/sort-colors/",                        difficulty:"Medium", xp:30 },
-    { id:"dp2-q6", title:"Decorator Pattern (Logger Rate Limiter)", url:"https://leetcode.com/problems/logger-rate-limiter/",        difficulty:"Easy",   xp:20 },
-    { id:"dp2-q7", title:"Command Pattern (Design Phone Directory)", url:"https://leetcode.com/problems/design-phone-directory/",    difficulty:"Medium", xp:30 },
-  ]},
-  { track:"dbms", label:"Database Management Systems (DBMS)", color:"#8b5cf6", questions:[
-    { id:"db-q1", title:"Rising Temperature",               url:"https://leetcode.com/problems/rising-temperature/",                  difficulty:"Easy",   xp:20 },
-    { id:"db-q2", title:"Customer Who Visited but Made No Transactions", url:"https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/", difficulty:"Easy", xp:20 },
-    { id:"db-q3", title:"Trips and Users",                  url:"https://leetcode.com/problems/trips-and-users/",                     difficulty:"Hard",   xp:40 },
-    { id:"db-q4", title:"Department Highest Salary",        url:"https://leetcode.com/problems/department-highest-salary/",           difficulty:"Medium", xp:30 },
-    { id:"db-q5", title:"Median Employee Salary",           url:"https://leetcode.com/problems/median-employee-salary/",              difficulty:"Hard",   xp:40 },
-    { id:"db-q6", title:"Get Highest Answer Rate Question", url:"https://leetcode.com/problems/get-highest-answer-rate-question/",    difficulty:"Medium", xp:30 },
-    { id:"db-q7", title:"Friend Requests II: Who Has Most Friends", url:"https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends/", difficulty:"Medium", xp:30 },
-  ]},
-  { track:"system-design", label:"System Design", color:"#8b5cf6", questions:[
-    { id:"sd-q1", title:"LRU Cache",                        url:"https://leetcode.com/problems/lru-cache/",                           difficulty:"Medium", xp:30 },
-    { id:"sd-q2", title:"LFU Cache",                        url:"https://leetcode.com/problems/lfu-cache/",                           difficulty:"Hard",   xp:40 },
-    { id:"sd-q3", title:"Design Twitter",                   url:"https://leetcode.com/problems/design-twitter/",                      difficulty:"Medium", xp:30 },
-    { id:"sd-q4", title:"Design File System",               url:"https://leetcode.com/problems/design-file-system/",                  difficulty:"Medium", xp:30 },
-    { id:"sd-q5", title:"Design In-Memory File System",     url:"https://leetcode.com/problems/design-in-memory-file-system/",        difficulty:"Hard",   xp:40 },
-    { id:"sd-q6", title:"Design Search Autocomplete",       url:"https://leetcode.com/problems/design-search-autocomplete-system/",   difficulty:"Hard",   xp:40 },
-    { id:"sd-q7", title:"Snapshot Array",                   url:"https://leetcode.com/problems/snapshot-array/",                      difficulty:"Medium", xp:30 },
-  ]},
-  { track:"git", label:"Git", color:"#f59e0b", questions:[
-    { id:"git-q1", title:"Link GitHub profile",             url:"https://github.com/",                                                difficulty:"Easy",   xp:20 },
-    { id:"git-q2", title:"Create a public repository",      url:"https://github.com/new",                                             difficulty:"Easy",   xp:20 },
-    { id:"git-q3", title:"Make first commit",               url:"https://docs.github.com/en/get-started/quickstart/create-a-repo",   difficulty:"Easy",   xp:20 },
-    { id:"git-q4", title:"10 total commits",                url:"https://skills.github.com/",                                         difficulty:"Easy",   xp:20 },
-    { id:"git-q5", title:"Create a Pull Request",           url:"https://docs.github.com/en/pull-requests",                          difficulty:"Medium", xp:30 },
-    { id:"git-q6", title:"50 total commits",                url:"https://skills.github.com/",                                         difficulty:"Medium", xp:30 },
-    { id:"git-q7", title:"100 total commits",               url:"https://skills.github.com/",                                         difficulty:"Hard",   xp:40 },
-  ]},
-]
 
-export function getTopicByTrack(track: string): TopicData | undefined {
-  return TOPIC_QUESTIONS.find(t => t.track === track)
-}
+// ── ARRAYS ────────────────────────────────────────────────────────────────────
+buildTopic("arrays","Arrays","#10b981",
+  [["Two Sum","two-sum"],["Contains Duplicate","contains-duplicate"],["Missing Number","missing-number"],["Single Number","single-number"],["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"]],
+  [["Move Zeroes","move-zeroes"],["Find All Numbers Disappeared","find-all-numbers-disappeared-in-an-array"],["Shuffle Array","shuffle-the-array"],["Squares of Sorted Array","squares-of-a-sorted-array"],["Running Sum of 1D Array","running-sum-of-1d-array"]],
+  [["Product of Array Except Self","product-of-array-except-self"],["Maximum Subarray","maximum-subarray"],["3Sum","3sum"],["Container With Most Water","container-with-most-water"],["Find Minimum in Rotated Sorted Array","find-minimum-in-rotated-sorted-array"]],
+  [["Search in Rotated Sorted Array","search-in-rotated-sorted-array"],["Subarray Sum Equals K","subarray-sum-equals-k"],["Maximum Product Subarray","maximum-product-subarray"],["Spiral Matrix","spiral-matrix"],["Merge Intervals","merge-intervals"]],
+  [["Trapping Rain Water","trapping-rain-water"],["First Missing Positive","first-missing-positive"],["Median of Two Sorted Arrays","median-of-two-sorted-arrays"],["Minimum Size Subarray Sum","minimum-size-subarray-sum"],["Sliding Window Maximum","sliding-window-maximum"]],
+  [["Largest Rectangle in Histogram","largest-rectangle-in-histogram"],["Maximum Sum Circular Subarray","maximum-sum-circular-subarray"],["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Jump Game II","jump-game-ii"],["Minimum Window Substring","minimum-window-substring"]]
+),
+
+// ── STRINGS ───────────────────────────────────────────────────────────────────
+buildTopic("strings","Strings","#10b981",
+  [["Valid Anagram","valid-anagram"],["Valid Palindrome","valid-palindrome"],["Reverse String","reverse-string"],["First Unique Character","first-unique-character-in-a-string"],["Is Subsequence","is-subsequence"]],
+  [["Ransom Note","ransom-note"],["Longest Common Prefix","longest-common-prefix"],["String to Integer","string-to-integer-atoi"],["Count and Say","count-and-say"],["Detect Capital","detect-capital"]],
+  [["Longest Substring Without Repeating Characters","longest-substring-without-repeating-characters"],["Group Anagrams","group-anagrams"],["Longest Palindromic Substring","longest-palindromic-substring"],["Palindromic Substrings","palindromic-substrings"],["Encode and Decode Strings","encode-and-decode-strings"]],
+  [["Find All Anagrams in a String","find-all-anagrams-in-a-string"],["Permutation in String","permutation-in-string"],["Repeated DNA Sequences","repeated-dna-sequences"],["Decode String","decode-string"],["Reorganize String","reorganize-string"]],
+  [["Minimum Window Substring","minimum-window-substring"],["Regular Expression Matching","regular-expression-matching"],["Wildcard Matching","wildcard-matching"],["Edit Distance","edit-distance"],["Word Break II","word-break-ii"]],
+  [["Concatenated Words","concatenated-words"],["Palindrome Pairs","palindrome-pairs"],["Substring with Concatenation of All Words","substring-with-concatenation-of-all-words"],["Largest Number","largest-number"],["Short Encoding of Words","short-encoding-of-words"]]
+),
+
+// ── MATRIX ───────────────────────────────────────────────────────────────────
+buildTopic("matrix","Matrix","#10b981",
+  [["Flood Fill","flood-fill"],["Count Negative Numbers in Sorted Matrix","count-negative-numbers-in-a-sorted-matrix"],["Richest Customer Wealth","richest-customer-wealth"],["Matrix Diagonal Sum","matrix-diagonal-sum"],["Lucky Numbers in Matrix","lucky-numbers-in-a-matrix"]],
+  [["Transpose Matrix","transpose-matrix"],["Reshape Matrix","reshape-the-matrix"],["Toeplitz Matrix","toeplitz-matrix"],["Flipping an Image","flipping-an-image"],["Image Smoother","image-smoother"]],
+  [["Set Matrix Zeroes","set-matrix-zeroes"],["Spiral Matrix","spiral-matrix"],["Rotate Image","rotate-image"],["Number of Islands","number-of-islands"],["Search a 2D Matrix","search-a-2d-matrix"]],
+  [["Word Search","word-search"],["Game of Life","game-of-life"],["Pacific Atlantic Water Flow","pacific-atlantic-water-flow"],["Search a 2D Matrix II","search-a-2d-matrix-ii"],["Minimum Path Sum","minimum-path-sum"]],
+  [["Maximal Square","maximal-square"],["Surrounded Regions","surrounded-regions"],["Range Sum Query 2D","range-sum-query-2d-immutable"],["Dungeon Game","dungeon-game"],["Unique Paths II","unique-paths-ii"]],
+  [["Maximal Rectangle","maximal-rectangle"],["Longest Increasing Path in a Matrix","longest-increasing-path-in-a-matrix"],["Count Servers That Communicate","count-servers-that-communicate"],["Strange Printer II","strange-printer-ii"],["Number of Ways to Stay in the Same Place","number-of-ways-to-stay-in-the-same-place-after-some-steps"]]
+),
+
+// ── HASHING ──────────────────────────────────────────────────────────────────
+buildTopic("hashing","Hashing","#3b82f6",
+  [["Two Sum","two-sum"],["Ransom Note","ransom-note"],["Isomorphic Strings","isomorphic-strings"],["Word Pattern","word-pattern"],["Happy Number","happy-number"]],
+  [["Contains Duplicate","contains-duplicate"],["Contains Duplicate II","contains-duplicate-ii"],["Intersection of Two Arrays","intersection-of-two-arrays"],["Find Common Characters","find-common-characters"],["Unique Number of Occurrences","unique-number-of-occurrences"]],
+  [["Group Anagrams","group-anagrams"],["Top K Frequent Elements","top-k-frequent-elements"],["Subarray Sum Equals K","subarray-sum-equals-k"],["4Sum II","4sum-ii"],["Continuous Subarray Sum","continuous-subarray-sum"]],
+  [["LRU Cache","lru-cache"],["Insert Delete GetRandom O(1)","insert-delete-getrandom-o1"],["Longest Consecutive Sequence","longest-consecutive-sequence"],["Minimum Window Substring","minimum-window-substring"],["Find All Duplicates","find-all-duplicates-in-an-array"]],
+  [["Subarrays with K Different Integers","subarrays-with-k-different-integers"],["Max Points on a Line","max-points-on-a-line"],["All O One Data Structure","all-oone-data-structure"],["Random Pick with Blacklist","random-pick-with-blacklist"],["Count Pairs With XOR in a Range","count-pairs-with-xor-in-a-range"]],
+  [["Palindrome Pairs","palindrome-pairs"],["Substring with Concatenation of All Words","substring-with-concatenation-of-all-words"],["Minimum Size Subarray Sum","minimum-size-subarray-sum"],["Design In-Memory File System","design-in-memory-file-system"],["Distinct Echo Substrings","distinct-echo-substrings"]]
+),
+
+// ── LINKED LIST ───────────────────────────────────────────────────────────────
+buildTopic("linked-list","Linked List","#3b82f6",
+  [["Reverse Linked List","reverse-linked-list"],["Merge Two Sorted Lists","merge-two-sorted-lists"],["Linked List Cycle","linked-list-cycle"],["Middle of Linked List","middle-of-the-linked-list"],["Palindrome Linked List","palindrome-linked-list"]],
+  [["Remove Duplicates from Sorted List","remove-duplicates-from-sorted-list"],["Intersection of Two Linked Lists","intersection-of-two-linked-lists"],["Delete Node in Linked List","delete-node-in-a-linked-list"],["Convert Binary to Decimal","convert-binary-number-in-a-linked-list-to-integer"],["Remove Linked List Elements","remove-linked-list-elements"]],
+  [["Remove Nth Node From End","remove-nth-node-from-end-of-list"],["Reorder List","reorder-list"],["Add Two Numbers","add-two-numbers"],["Odd Even Linked List","odd-even-linked-list"],["Rotate List","rotate-list"]],
+  [["Linked List Cycle II","linked-list-cycle-ii"],["Swap Nodes in Pairs","swap-nodes-in-pairs"],["Partition List","partition-list"],["Sort List","sort-list"],["Copy List with Random Pointer","copy-list-with-random-pointer"]],
+  [["Merge K Sorted Lists","merge-k-sorted-lists"],["Reverse Nodes in k-Group","reverse-nodes-in-k-group"],["Find the Duplicate Number","find-the-duplicate-number"],["LRU Cache","lru-cache"],["Flatten a Multilevel Doubly Linked List","flatten-a-multilevel-doubly-linked-list"]],
+  [["Design Linked List","design-linked-list"],["Insert into a Cyclic Sorted List","insert-into-a-sorted-circular-linked-list"],["Reverse Linked List II","reverse-linked-list-ii"],["Remove Zero Sum Sublists","remove-zero-sum-consecutive-nodes-from-linked-list"],["Linked List Random Node","linked-list-random-node"]]
+),
+
+// ── STACK ─────────────────────────────────────────────────────────────────────
+buildTopic("stack","Stack","#3b82f6",
+  [["Valid Parentheses","valid-parentheses"],["Remove Outermost Parentheses","remove-outermost-parentheses"],["Backspace String Compare","backspace-string-compare"],["Make the String Great","make-the-string-great"],["Remove All Adjacent Duplicates","remove-all-adjacent-duplicates-in-string"]],
+  [["Implement Queue Using Stacks","implement-queue-using-stacks"],["Baseball Game","baseball-game"],["Next Greater Element I","next-greater-element-i"],["Build an Array With Stack Operations","build-an-array-with-stack-operations"],["Crawler Log Folder","crawler-log-folder"]],
+  [["Min Stack","min-stack"],["Evaluate Reverse Polish Notation","evaluate-reverse-polish-notation"],["Generate Parentheses","generate-parentheses"],["Daily Temperatures","daily-temperatures"],["Car Fleet","car-fleet"]],
+  [["Decode String","decode-string"],["Asteroid Collision","asteroid-collision"],["Remove K Digits","remove-k-digits"],["Next Greater Element II","next-greater-element-ii"],["Online Stock Span","online-stock-span"]],
+  [["Largest Rectangle in Histogram","largest-rectangle-in-histogram"],["Maximal Rectangle","maximal-rectangle"],["Basic Calculator","basic-calculator"],["Trapping Rain Water","trapping-rain-water"],["Sum of Subarray Minimums","sum-of-subarray-minimums"]],
+  [["Basic Calculator II","basic-calculator-ii"],["Maximum Frequency Stack","maximum-frequency-stack"],["Number of Visible People in a Queue","number-of-visible-people-in-a-queue"],["Minimum Cost Tree From Leaf Values","minimum-cost-tree-from-leaf-values"],["Score of Parentheses","score-of-parentheses"]]
+),
+
+// ── QUEUE ─────────────────────────────────────────────────────────────────────
+buildTopic("queue","Queue","#3b82f6",
+  [["Number of Recent Calls","number-of-recent-calls"],["Implement Stack Using Queues","implement-stack-using-queues"],["First Unique Character","first-unique-character-in-a-string"],["Design Circular Queue","design-circular-queue"],["Moving Average from Data Stream","moving-average-from-data-stream"]],
+  [["Time Needed to Buy Tickets","time-needed-to-buy-tickets"],["Reveal Cards in Increasing Order","reveal-cards-in-increasing-order"],["Number of Students Unable to Eat Lunch","number-of-students-unable-to-eat-lunch"],["Average of Levels in Binary Tree","average-of-levels-in-binary-tree"],["Maximum Width of Binary Tree","maximum-width-of-binary-tree"]],
+  [["Task Scheduler","task-scheduler"],["Rotting Oranges","rotting-oranges"],["Walls and Gates","walls-and-gates"],["Snakes and Ladders","snakes-and-ladders"],["Jump Game IV","jump-game-iv"]],
+  [["Open the Lock","open-the-lock"],["Shortest Path in Binary Matrix","shortest-path-in-binary-matrix"],["Word Ladder","word-ladder"],["Perfect Squares","perfect-squares"],["Minimum Steps in Infinite Grid","jump-game-vi"]],
+  [["Sliding Window Maximum","sliding-window-maximum"],["Jump Game VI","jump-game-vi"],["Shortest Subarray with Sum at Least K","shortest-subarray-with-sum-at-least-k"],["Constrained Subsequence Sum","constrained-subsequence-sum"],["Minimum Number of Flips to Convert Binary Matrix","minimum-number-of-flips-to-convert-binary-matrix-to-zero-matrix"]],
+  [["Word Ladder II","word-ladder-ii"],["Cut Off Trees for Golf Event","cut-off-trees-for-golf-event"],["Bus Routes","bus-routes"],["Minimum Jumps to Reach Home","minimum-jumps-to-reach-home"],["Shortest Path Visiting All Nodes","shortest-path-visiting-all-nodes"]]
+),
+
+// ── DEQUE ─────────────────────────────────────────────────────────────────────
+buildTopic("deque","Deque","#f59e0b",
+  [["Design Circular Deque","design-circular-deque"],["First Unique Character","first-unique-character-in-a-string"],["Moving Average from Data Stream","moving-average-from-data-stream"],["Design Front Middle Back Queue","design-front-middle-back-queue"],["K Radius Subarray Averages","k-radius-subarray-averages"]],
+  [["Maximum Value at a Given Index in a Bounded Array","maximum-value-at-a-given-index-in-a-bounded-array"],["Find the Most Competitive Subsequence","find-the-most-competitive-subsequence"],["Longest Subarray of 1s After Deleting One Element","longest-subarray-of-1s-after-deleting-one-element"],["Maximum of All Subarrays of Size K","sliding-window-maximum"],["Stock Price Fluctuation","stock-price-fluctuation"]],
+  [["Jump Game VI","jump-game-vi"],["Shortest Subarray with Sum at Least K","shortest-subarray-with-sum-at-least-k"],["Maximum Sum of Two Non-Overlapping Subarrays","maximum-sum-of-two-non-overlapping-subarrays"],["Longest Continuous Subarray with Absolute Diff","longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit"],["Sum of Subarray Ranges","sum-of-subarray-ranges"]],
+  [["Constrained Subsequence Sum","constrained-subsequence-sum"],["Minimum Number of Coins for Fruits","minimum-number-of-coins-for-fruits"],["Maximal Score After Applying K Operations","maximal-score-after-applying-k-operations"],["Max Chunks To Make Sorted II","max-chunks-to-make-sorted-ii"],["Sum of Total Strength of Wizards","sum-of-total-strength-of-wizards"]],
+  [["Sliding Window Maximum","sliding-window-maximum"],["Max Sum of Rectangle No Larger Than K","max-sum-of-rectangle-no-larger-than-k"],["Minimum Cost to Make Array Equal","minimum-cost-to-make-array-equal"],["Minimum Number of Operations to Satisfy Conditions","minimum-number-of-operations-to-satisfy-conditions"],["Find the Minimum and Maximum Number of Nodes","find-the-minimum-and-maximum-number-of-nodes-between-critical-points"]],
+  [["Shortest Subarray with Sum at Least K","shortest-subarray-with-sum-at-least-k"],["Maximum Number of Books You Can Take","maximum-number-of-books-you-can-take"],["Count Subarrays Where Max Element Appears at Least K Times","count-subarrays-where-max-element-appears-at-least-k-times"],["Minimum Adjacent Swaps for K Consecutive Ones","minimum-adjacent-swaps-for-k-consecutive-ones"],["Minimum Operations to Reduce X to Zero","minimum-operations-to-reduce-x-to-zero"]]
+),
+
+// ── HEAP ──────────────────────────────────────────────────────────────────────
+buildTopic("heap","Heap (Priority Queue)","#f59e0b",
+  [["Kth Largest Element in a Stream","kth-largest-element-in-a-stream"],["Last Stone Weight","last-stone-weight"],["Relative Ranks","relative-ranks"],["Maximum Product of Two Elements","maximum-product-of-two-elements-in-an-array"],["Minimum Cost to Connect Sticks","minimum-cost-to-connect-sticks"]],
+  [["Sort Array by Increasing Frequency","sort-array-by-increasing-frequency"],["Find Subsequence of Length K With the Largest Sum","find-subsequence-of-length-k-with-the-largest-sum"],["Remove Stones to Minimize the Total","remove-stones-to-minimize-the-total"],["Smallest Number in Infinite Set","smallest-number-in-infinite-set"],["Minimum Operations to Halve Array Sum","minimum-operations-to-halve-array-sum"]],
+  [["Kth Largest Element in Array","kth-largest-element-in-an-array"],["Top K Frequent Elements","top-k-frequent-elements"],["K Closest Points to Origin","k-closest-points-to-origin"],["Task Scheduler","task-scheduler"],["Reorganize String","reorganize-string"]],
+  [["Merge K Sorted Lists","merge-k-sorted-lists"],["Find Median from Data Stream","find-median-from-data-stream"],["Meeting Rooms II","meeting-rooms-ii"],["Design Twitter","design-twitter"],["IPO","ipo"]],
+  [["Trapping Rain Water II","trapping-rain-water-ii"],["The Skyline Problem","the-skyline-problem"],["Maximum Performance of a Team","maximum-performance-of-a-team"],["Minimum Cost to Hire K Workers","minimum-cost-to-hire-k-workers"],["Swim in Rising Water","swim-in-rising-water"]],
+  [["Minimum Number of Refueling Stops","minimum-number-of-refueling-stops"],["Single-Threaded CPU","single-threaded-cpu"],["Parallel Courses II","parallel-courses-ii"],["Maximum Subsequence Score","maximum-subsequence-score"],["Minimum Space Wasted With K Resizing Operations","minimum-space-wasted-with-k-resizing-operations"]]
+),
+
+// ── TREE ──────────────────────────────────────────────────────────────────────
+buildTopic("tree","Tree","#f59e0b",
+  [["Invert Binary Tree","invert-binary-tree"],["Maximum Depth of Binary Tree","maximum-depth-of-binary-tree"],["Diameter of Binary Tree","diameter-of-binary-tree"],["Balanced Binary Tree","balanced-binary-tree"],["Same Tree","same-tree"]],
+  [["Subtree of Another Tree","subtree-of-another-tree"],["Path Sum","path-sum"],["Symmetric Tree","symmetric-tree"],["Merge Two Binary Trees","merge-two-binary-trees"],["Search in a Binary Search Tree","search-in-a-binary-search-tree"]],
+  [["Binary Tree Level Order Traversal","binary-tree-level-order-traversal"],["Binary Tree Right Side View","binary-tree-right-side-view"],["Count Good Nodes in Binary Tree","count-good-nodes-in-binary-tree"],["Lowest Common Ancestor of BST","lowest-common-ancestor-of-a-binary-search-tree"],["Kth Smallest Element in BST","kth-smallest-element-in-a-bst"]],
+  [["Validate Binary Search Tree","validate-binary-search-tree"],["Construct Binary Tree from Preorder and Inorder","construct-binary-tree-from-preorder-and-inorder-traversal"],["Lowest Common Ancestor of Binary Tree","lowest-common-ancestor-of-a-binary-tree"],["Path Sum II","path-sum-ii"],["Flatten Binary Tree to Linked List","flatten-binary-tree-to-linked-list"]],
+  [["Binary Tree Maximum Path Sum","binary-tree-maximum-path-sum"],["Serialize and Deserialize Binary Tree","serialize-and-deserialize-binary-tree"],["Binary Tree Cameras","binary-tree-cameras"],["Sum Root to Leaf Numbers","sum-root-to-leaf-numbers"],["Recover Binary Search Tree","recover-binary-search-tree"]],
+  [["Binary Tree Postorder Traversal","binary-tree-postorder-traversal"],["Distribute Coins in Binary Tree","distribute-coins-in-binary-tree"],["Delete Nodes and Return Forest","delete-nodes-and-return-forest"],["Maximum Sum BST in Binary Tree","maximum-sum-bst-in-binary-tree"],["Number of Good Leaf Nodes Pairs","number-of-good-leaf-nodes-pairs"]]
+),
+
+// ── BINARY TREE ───────────────────────────────────────────────────────────────
+buildTopic("binary-tree","Binary Tree","#f59e0b",
+  [["Binary Tree Inorder Traversal","binary-tree-inorder-traversal"],["Binary Tree Preorder Traversal","binary-tree-preorder-traversal"],["Binary Tree Postorder Traversal","binary-tree-postorder-traversal"],["N-ary Tree Preorder Traversal","n-ary-tree-preorder-traversal"],["Find Mode in Binary Search Tree","find-mode-in-binary-search-tree"]],
+  [["Range Sum of BST","range-sum-of-bst"],["Increasing Order Search Tree","increasing-order-search-tree"],["Average of Levels in Binary Tree","average-of-levels-in-binary-tree"],["Minimum Depth of Binary Tree","minimum-depth-of-binary-tree"],["Sum of Left Leaves","sum-of-left-leaves"]],
+  [["Binary Tree Level Order Traversal","binary-tree-level-order-traversal"],["Binary Tree Zigzag Level Order Traversal","binary-tree-zigzag-level-order-traversal"],["Populating Next Right Pointers","populating-next-right-pointers-in-each-node"],["Binary Tree Level Order Traversal II","binary-tree-level-order-traversal-ii"],["Find Largest Value in Each Tree Row","find-largest-value-in-each-tree-row"]],
+  [["Construct Binary Tree from Inorder and Postorder","construct-binary-tree-from-inorder-and-postorder-traversal"],["Path Sum III","path-sum-iii"],["Boundary of Binary Tree","boundary-of-binary-tree"],["Binary Tree Vertical Order Traversal","binary-tree-vertical-order-traversal"],["All Nodes Distance K in Binary Tree","all-nodes-distance-k-in-binary-tree"]],
+  [["Binary Tree Maximum Path Sum","binary-tree-maximum-path-sum"],["Serialize and Deserialize Binary Tree","serialize-and-deserialize-binary-tree"],["Binary Tree Cameras","binary-tree-cameras"],["House Robber III","house-robber-iii"],["Vertical Order Traversal of Binary Tree","vertical-order-traversal-of-a-binary-tree"]],
+  [["Maximum Width of Binary Tree","maximum-width-of-binary-tree"],["Count Complete Tree Nodes","count-complete-tree-nodes"],["Find Duplicate Subtrees","find-duplicate-subtrees"],["Largest BST Subtree","largest-bst-subtree"],["Flip Binary Tree to Match Preorder Traversal","flip-binary-tree-to-match-preorder-traversal"]]
+),
+
+// ── BST ───────────────────────────────────────────────────────────────────────
+buildTopic("bst","Binary Search Tree (BST)","#f59e0b",
+  [["Search in a Binary Search Tree","search-in-a-binary-search-tree"],["Find Mode in BST","find-mode-in-binary-search-tree"],["Range Sum of BST","range-sum-of-bst"],["Minimum Absolute Difference in BST","minimum-absolute-difference-in-bst"],["Increasing Order Search Tree","increasing-order-search-tree"]],
+  [["Two Sum IV - BST","two-sum-iv-input-is-a-bst"],["Minimum Distance Between BST Nodes","minimum-distance-between-bst-nodes"],["Trim a BST","trim-a-binary-search-tree"],["Convert Sorted Array to BST","convert-sorted-array-to-binary-search-tree"],["Univalued Binary Tree","univalued-binary-tree"]],
+  [["Validate Binary Search Tree","validate-binary-search-tree"],["Kth Smallest Element in BST","kth-smallest-element-in-a-bst"],["LCA of BST","lowest-common-ancestor-of-a-binary-search-tree"],["Insert into a BST","insert-into-a-binary-search-tree"],["Delete Node in BST","delete-node-in-a-bst"]],
+  [["BST Iterator","binary-search-tree-iterator"],["Inorder Successor in BST","inorder-successor-in-bst"],["Recover Binary Search Tree","recover-binary-search-tree"],["Balance a Binary Search Tree","balance-a-binary-search-tree"],["Serialize and Deserialize BST","serialize-and-deserialize-bst"]],
+  [["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Closest Binary Search Tree Value II","closest-binary-search-tree-value-ii"],["Maximum Sum BST in Binary Tree","maximum-sum-bst-in-binary-tree"],["All Elements in Two Binary Search Trees","all-elements-in-two-binary-search-trees"],["Construct BST from Preorder Traversal","construct-binary-search-tree-from-preorder-traversal"]],
+  [["Count Nodes Equal to Average of Subtree","count-nodes-equal-to-average-of-subtree"],["Kth Largest Element in a BST","kth-largest-element-in-a-bst"],["Two Sum BST","two-sum-bsts"],["Minimum Swaps to Make Sequences Increasing","minimum-swaps-to-make-sequences-increasing"],["Number of Ways to Reorder Array to Get Same BST","number-of-ways-to-reorder-array-to-get-same-bst"]]
+),
+// ── TRIE ──────────────────────────────────────────────────────────────────────
+buildTopic("trie","Trie","#ef4444",
+  [["Implement Trie (Prefix Tree)","implement-trie-prefix-tree"],["Search Suggestions System","search-suggestions-system"],["Replace Words","replace-words"],["Longest Word in Dictionary","longest-word-in-dictionary"],["Implement Magic Dictionary","implement-magic-dictionary"]],
+  [["Design Add and Search Words Data Structure","design-add-and-search-words-data-structure"],["Map Sum Pairs","map-sum-pairs"],["Add and Search Word","design-add-and-search-words-data-structure"],["Count Words Obtained After Adding a Letter","count-words-obtained-after-adding-a-letter"],["Longest Common Prefix","longest-common-prefix"]],
+  [["Design Search Autocomplete System","design-search-autocomplete-system"],["Stream of Characters","stream-of-characters"],["Index Pairs of a String","index-pairs-of-a-string"],["Maximum XOR of Two Numbers in Array","maximum-xor-of-two-numbers-in-an-array"],["Camelcase Matching","camelcase-matching"]],
+  [["Word Break II","word-break-ii"],["Concatenated Words","concatenated-words"],["Palindrome Pairs","palindrome-pairs"],["Short Encoding of Words","short-encoding-of-words"],["Number of Distinct Substrings in a String","number-of-distinct-substrings-in-a-string"]],
+  [["Word Search II","word-search-ii"],["Maximum XOR With an Element From Array","maximum-xor-with-an-element-from-array"],["Count Pairs With XOR in a Range","count-pairs-with-xor-in-a-range"],["Design File System","design-file-system"],["Prefix and Suffix Search","prefix-and-suffix-search"]],
+  [["Sum of Prefix Scores of Strings","sum-of-prefix-scores-of-strings"],["Minimum Cost to Replace Characters","minimum-cost-to-replace-characters-in-string-1-with-string-2"],["Longest Word With All Prefixes","longest-word-with-all-prefixes"],["Number of Valid Words for Each Puzzle","number-of-valid-words-for-each-puzzle"],["Maximum Score After Splitting a String","maximum-score-after-splitting-a-string"]]
+),
+// ── GRAPH ─────────────────────────────────────────────────────────────────────
+buildTopic("graph","Graph","#f59e0b",
+  [["Find Center of Star Graph","find-center-of-star-graph"],["Find the Town Judge","find-the-town-judge"],["Number of Provinces","number-of-provinces"],["Find if Path Exists in Graph","find-if-path-exists-in-graph"],["Minimum Number of Vertices to Reach All Nodes","minimum-number-of-vertices-to-reach-all-nodes"]],
+  [["Clone Graph","clone-graph"],["Number of Islands","number-of-islands"],["Max Area of Island","max-area-of-island"],["Flood Fill","flood-fill"],["Connected Components in Undirected Graph","number-of-connected-components-in-an-undirected-graph"]],
+  [["Course Schedule","course-schedule"],["Pacific Atlantic Water Flow","pacific-atlantic-water-flow"],["Surrounded Regions","surrounded-regions"],["Rotting Oranges","rotting-oranges"],["01 Matrix","01-matrix"]],
+  [["Course Schedule II","course-schedule-ii"],["Network Delay Time","network-delay-time"],["Cheapest Flights Within K Stops","cheapest-flights-within-k-stops"],["Minimum Effort Path","path-with-minimum-effort"],["Keys and Rooms","keys-and-rooms"]],
+  [["Critical Connections in a Network","critical-connections-in-a-network"],["Minimum Cost to Connect All Points","min-cost-to-connect-all-points"],["Shortest Path in a Grid with Obstacles","shortest-path-in-a-grid-with-obstacles-elimination"],["Find the Safest Path in a Grid","find-the-safest-path-in-a-grid"],["Largest Component Size by Common Factor","largest-component-size-by-common-factor"]],
+  [["Alien Dictionary","alien-dictionary"],["Word Ladder II","word-ladder-ii"],["Reconstruct Itinerary","reconstruct-itinerary"],["Minimum Number of Days to Disconnect Island","minimum-number-of-days-to-disconnect-island"],["Count Subtrees With Max Distance Between Cities","count-subtrees-with-max-distance-between-cities"]]
+),
+
+// ── GREEDY ────────────────────────────────────────────────────────────────────
+buildTopic("greedy","Greedy Algorithms","#f59e0b",
+  [["Lemonade Change","lemonade-change"],["Assign Cookies","assign-cookies"],["Can Place Flowers","can-place-flowers"],["Buy Two Chocolates","buy-two-chocolates"],["Minimum Operations to Make the Array Increasing","minimum-operations-to-make-the-array-increasing"]],
+  [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Walking Robot Simulation","walking-robot-simulation"],["Maximum Units on a Truck","maximum-units-on-a-truck"],["Minimum Number of Moves to Seat Everyone","minimum-number-of-moves-to-seat-everyone"],["Divide a String Into Groups of Size k","divide-a-string-into-groups-of-size-k"]],
+  [["Jump Game","jump-game"],["Gas Station","gas-station"],["Hand of Straights","hand-of-straights"],["Partition Labels","partition-labels"],["Valid Parenthesis String","valid-parenthesis-string"]],
+  [["Jump Game II","jump-game-ii"],["Merge Triplets to Form Target Triplet","merge-triplets-to-form-target-triplet"],["Minimum Add to Make Parentheses Valid","minimum-add-to-make-parentheses-valid"],["Task Scheduler","task-scheduler"],["Reorganize String","reorganize-string"]],
+  [["IPO","ipo"],["Minimum Number of Arrows to Burst Balloons","minimum-number-of-arrows-to-burst-balloons"],["Non-overlapping Intervals","non-overlapping-intervals"],["Largest Number","largest-number"],["Candy","candy"]],
+  [["Minimum Cost to Hire K Workers","minimum-cost-to-hire-k-workers"],["Split Array Into Consecutive Subsequences","split-array-into-consecutive-subsequences"],["Maximize Score After N Operations","maximize-score-after-n-operations"],["Maximum Profit in Job Scheduling","maximum-profit-in-job-scheduling"],["Minimum Number of Taps to Open to Water a Garden","minimum-number-of-taps-to-open-to-water-a-garden"]]
+),
+// ── DYNAMIC PROGRAMMING ───────────────────────────────────────────────────────
+buildTopic("dp","Dynamic Programming (DP)","#ef4444",
+  [["Climbing Stairs","climbing-stairs"],["Fibonacci Number","fibonacci-number"],["N-th Tribonacci Number","n-th-tribonacci-number"],["Min Cost Climbing Stairs","min-cost-climbing-stairs"],["Pascal's Triangle","pascals-triangle"]],
+  [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Maximum Subarray","maximum-subarray"],["Range Sum Query - Immutable","range-sum-query-immutable"],["Counting Bits","counting-bits"],["Is Subsequence","is-subsequence"]],
+  [["House Robber","house-robber"],["Longest Common Subsequence","longest-common-subsequence"],["Word Break","word-break"],["Coin Change","coin-change"],["Unique Paths","unique-paths"]],
+  [["Combination Sum IV","combination-sum-iv"],["Partition Equal Subset Sum","partition-equal-subset-sum"],["Longest Increasing Subsequence","longest-increasing-subsequence"],["Target Sum","target-sum"],["Decode Ways","decode-ways"]],
+  [["Burst Balloons","burst-balloons"],["Regular Expression Matching","regular-expression-matching"],["Edit Distance","edit-distance"],["Distinct Subsequences","distinct-subsequences"],["Cherry Pickup","cherry-pickup"]],
+  [["Minimum Cost to Cut a Stick","minimum-cost-to-cut-a-stick"],["Strange Printer","strange-printer"],["Zuma Game","zuma-game"],["Minimum Window Substring","minimum-window-substring"],["Count Different Palindromic Subsequences","count-different-palindromic-subsequences"]]
+),
+// ── RECURSION ─────────────────────────────────────────────────────────────────
+buildTopic("recursion","Recursion","#f59e0b",
+  [["Fibonacci Number","fibonacci-number"],["Power of Two","power-of-two"],["Reverse String","reverse-string"],["Merge Two Sorted Lists","merge-two-sorted-lists"],["Sum of Digits of a Number","sum-of-digits-of-a-number"]],
+  [["Factorial Trailing Zeroes","factorial-trailing-zeroes"],["Pow(x, n)","powx-n"],["Count Good Numbers","count-good-numbers"],["Number of Digit One","number-of-digit-one"],["Count Digit One","number-of-digit-one"]],
+  [["Flatten Nested List Iterator","flatten-nested-list-iterator"],["Letter Combinations of Phone Number","letter-combinations-of-a-phone-number"],["Generate Parentheses","generate-parentheses"],["Permutations","permutations"],["Combination Sum","combination-sum"]],
+  [["Subsets","subsets"],["Word Search","word-search"],["N-Queens","n-queens"],["Palindrome Partitioning","palindrome-partitioning"],["Restore IP Addresses","restore-ip-addresses"]],
+  [["Regular Expression Matching","regular-expression-matching"],["Wildcard Matching","wildcard-matching"],["Different Ways to Add Parentheses","different-ways-to-add-parentheses"],["Predict the Winner","predict-the-winner"],["Zuma Game","zuma-game"]],
+  [["Remove Boxes","remove-boxes"],["Strange Printer","strange-printer"],["Guess Number Higher or Lower II","guess-number-higher-or-lower-ii"],["Burst Balloons","burst-balloons"],["Count Vowels Permutation","count-vowels-permutation"]]
+),
+
+// ── BACKTRACKING ──────────────────────────────────────────────────────────────
+buildTopic("backtrack","Backtracking","#ef4444",
+  [["Letter Combinations of Phone Number","letter-combinations-of-a-phone-number"],["Binary Watch","binary-watch"],["Find K-Length Substrings With No Repeated Characters","find-k-length-substrings-with-no-repeated-characters"],["Maximum Length of a Concatenated String","maximum-length-of-a-concatenated-string-with-unique-characters"],["Generate Parentheses","generate-parentheses"]],
+  [["Permutations","permutations"],["Subsets","subsets"],["Combination Sum","combination-sum"],["Combinations","combinations"],["Path Sum II","path-sum-ii"]],
+  [["Subsets II","subsets-ii"],["Combination Sum II","combination-sum-ii"],["Permutations II","permutations-ii"],["Word Search","word-search"],["Restore IP Addresses","restore-ip-addresses"]],
+  [["Palindrome Partitioning","palindrome-partitioning"],["Partition to K Equal Sum Subsets","partition-to-k-equal-sum-subsets"],["Beautiful Arrangement","beautiful-arrangement"],["Factor Combinations","factor-combinations"],["Remove Invalid Parentheses","remove-invalid-parentheses"]],
+  [["N-Queens","n-queens"],["Sudoku Solver","sudoku-solver"],["Word Ladder II","word-ladder-ii"],["Expression Add Operators","expression-add-operators"],["Generalized Abbreviation","generalized-abbreviation"]],
+  [["N-Queens II","n-queens-ii"],["24 Game","24-game"],["Find Minimum Time to Finish All Jobs","find-minimum-time-to-finish-all-jobs"],["Verbal Arithmetic Puzzle","verbal-arithmetic-puzzle"],["Maximum Students Taking Exam","maximum-students-taking-exam"]]
+),
+// ── SEARCHING ─────────────────────────────────────────────────────────────────
+buildTopic("searching","Searching","#3b82f6",
+  [["Binary Search","binary-search"],["Search Insert Position","search-insert-position"],["First Bad Version","first-bad-version"],["Count Negative Numbers in Sorted Matrix","count-negative-numbers-in-a-sorted-matrix"],["Valid Perfect Square","valid-perfect-square"]],
+  [["Guess Number Higher or Lower","guess-number-higher-or-lower"],["Sqrt(x)","sqrtx"],["Peak Index in a Mountain Array","peak-index-in-a-mountain-array"],["Two Sum Less Than K","two-sum-less-than-k"],["Check if N and Its Double Exist","check-if-n-and-its-double-exist"]],
+  [["Search a 2D Matrix","search-a-2d-matrix"],["Find Minimum in Rotated Sorted Array","find-minimum-in-rotated-sorted-array"],["Search in Rotated Sorted Array","search-in-rotated-sorted-array"],["Koko Eating Bananas","koko-eating-bananas"],["Time Based Key-Value Store","time-based-key-value-store"]],
+  [["Find Minimum in Rotated Sorted Array II","find-minimum-in-rotated-sorted-array-ii"],["Search in Rotated Sorted Array II","search-in-rotated-sorted-array-ii"],["Find Peak Element","find-peak-element"],["Capacity To Ship Packages","capacity-to-ship-packages-within-d-days"],["Minimum Time to Complete Trips","minimum-time-to-complete-trips"]],
+  [["Median of Two Sorted Arrays","median-of-two-sorted-arrays"],["Split Array Largest Sum","split-array-largest-sum"],["Count of Range Sum","count-of-range-sum"],["Russian Doll Envelopes","russian-doll-envelopes"],["Max Sum of Rectangle No Larger Than K","max-sum-of-rectangle-no-larger-than-k"]],
+  [["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Smallest Rectangle Enclosing Black Pixels","smallest-rectangle-enclosing-black-pixels"],["Find K-th Smallest Pair Distance","find-k-th-smallest-pair-distance"],["Minimize Max Distance to Gas Station","minimize-max-distance-to-gas-station"],["Swim in Rising Water","swim-in-rising-water"]]
+),
+// ── SORTING ───────────────────────────────────────────────────────────────────
+buildTopic("sorting","Sorting","#f59e0b",
+  [["Sort Array By Parity","sort-array-by-parity"],["Sort Array by Parity II","sort-array-by-parity-ii"],["Squares of a Sorted Array","squares-of-a-sorted-array"],["Merge Sorted Array","merge-sorted-array"],["Sort Colors","sort-colors"]],
+  [["Sort Array","sort-an-array"],["Relative Sort Array","relative-sort-array"],["Height Checker","height-checker"],["Find the Distance Value Between Two Arrays","find-the-distance-value-between-two-arrays"],["Sort the People","sort-the-people"]],
+  [["Largest Number","largest-number"],["Meeting Rooms","meeting-rooms"],["Meeting Rooms II","meeting-rooms-ii"],["K Closest Points to Origin","k-closest-points-to-origin"],["Merge Intervals","merge-intervals"]],
+  [["Non-overlapping Intervals","non-overlapping-intervals"],["Insert Interval","insert-interval"],["Sort List","sort-list"],["Wiggle Sort","wiggle-sort"],["Find K Pairs with Smallest Sums","find-k-pairs-with-smallest-sums"]],
+  [["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Reverse Pairs","reverse-pairs"],["Russian Doll Envelopes","russian-doll-envelopes"],["Maximum Gap","maximum-gap"],["Sort Transformed Array","sort-transformed-array"]],
+  [["Maximum Number of Tasks You Can Assign","maximum-number-of-tasks-you-can-assign"],["Count Good Triplets in an Array","count-good-triplets-in-an-array"],["Number of Pairs of Interchangeable Rectangles","number-of-pairs-of-interchangeable-rectangles"],["Find Median from Data Stream","find-median-from-data-stream"],["Minimum Operations to Make Array Equal II","minimum-operations-to-make-array-equal-ii"]]
+),
+
+// ── BINARY SEARCH ─────────────────────────────────────────────────────────────
+buildTopic("binary-search","Binary Search","#f59e0b",
+  [["Binary Search","binary-search"],["Search Insert Position","search-insert-position"],["Sqrt(x)","sqrtx"],["Guess Number Higher or Lower","guess-number-higher-or-lower"],["Valid Perfect Square","valid-perfect-square"]],
+  [["First Bad Version","first-bad-version"],["Peak Index in a Mountain Array","peak-index-in-a-mountain-array"],["Two Sum II - Input Array Is Sorted","two-sum-ii-input-array-is-sorted"],["Find Smallest Letter Greater Than Target","find-smallest-letter-greater-than-target"],["Count Negative Numbers in Sorted Matrix","count-negative-numbers-in-a-sorted-matrix"]],
+  [["Find Minimum in Rotated Sorted Array","find-minimum-in-rotated-sorted-array"],["Search in Rotated Sorted Array","search-in-rotated-sorted-array"],["Koko Eating Bananas","koko-eating-bananas"],["Time Based Key-Value Store","time-based-key-value-store"],["Find Peak Element","find-peak-element"]],
+  [["Search a 2D Matrix","search-a-2d-matrix"],["Search a 2D Matrix II","search-a-2d-matrix-ii"],["H-Index II","h-index-ii"],["Find First and Last Position of Element","find-first-and-last-position-of-element-in-sorted-array"],["Capacity to Ship Packages","capacity-to-ship-packages-within-d-days"]],
+  [["Median of Two Sorted Arrays","median-of-two-sorted-arrays"],["Split Array Largest Sum","split-array-largest-sum"],["Find K-th Smallest Pair Distance","find-k-th-smallest-pair-distance"],["Minimize Max Distance to Gas Station","minimize-max-distance-to-gas-station"],["Swim in Rising Water","swim-in-rising-water"]],
+  [["Minimum Number of Days to Make m Bouquets","minimum-number-of-days-to-make-m-bouquets"],["Magnetic Force Between Two Balls","magnetic-force-between-two-balls"],["Maximum Number of Tasks You Can Assign","maximum-number-of-tasks-you-can-assign"],["Kth Smallest Number in Multiplication Table","kth-smallest-number-in-multiplication-table"],["Find Minimum Time to Finish All Jobs","find-minimum-time-to-finish-all-jobs"]]
+),
+// ── TWO POINTERS ──────────────────────────────────────────────────────────────
+buildTopic("two-pointers","Two Pointers","#f59e0b",
+  [["Valid Palindrome","valid-palindrome"],["Merge Sorted Array","merge-sorted-array"],["Remove Duplicates from Sorted Array","remove-duplicates-from-sorted-array"],["Move Zeroes","move-zeroes"],["Reverse String","reverse-string"]],
+  [["Squares of a Sorted Array","squares-of-a-sorted-array"],["Reverse Vowels of a String","reverse-vowels-of-a-string"],["Is Subsequence","is-subsequence"],["Backspace String Compare","backspace-string-compare"],["Intersection of Two Arrays II","intersection-of-two-arrays-ii"]],
+  [["Two Sum II - Input Array Is Sorted","two-sum-ii-input-array-is-sorted"],["3Sum","3sum"],["3Sum Closest","3sum-closest"],["Container With Most Water","container-with-most-water"],["Remove Duplicates from Sorted Array II","remove-duplicates-from-sorted-array-ii"]],
+  [["4Sum","4sum"],["Sort Colors","sort-colors"],["Subarray Product Less Than K","subarray-product-less-than-k"],["Number of Subsequences That Satisfy the Given Sum","number-of-subsequences-that-satisfy-the-given-sum-condition"],["Boats to Save People","boats-to-save-people"]],
+  [["Trapping Rain Water","trapping-rain-water"],["Minimum Window Substring","minimum-window-substring"],["Longest Mountain in Array","longest-mountain-in-array"],["Subarrays with K Different Integers","subarrays-with-k-different-integers"],["Max Consecutive Ones III","max-consecutive-ones-iii"]],
+  [["Minimum Operations to Reduce X to Zero","minimum-operations-to-reduce-x-to-zero"],["Count Pairs Whose Sum is Less than Target","count-pairs-whose-sum-is-less-than-target"],["Find K-Diff Pairs in an Array","find-k-diff-pairs-in-an-array"],["Make Sum Divisible by P","make-sum-divisible-by-p"],["Minimum Size Subarray in Infinite Array","minimum-size-subarray-in-infinite-array"]]
+),
+// ── SLIDING WINDOW ────────────────────────────────────────────────────────────
+buildTopic("sliding-win","Sliding Window","#f59e0b",
+  [["Maximum Average Subarray I","maximum-average-subarray-i"],["Maximum Number of Vowels in a Substring","maximum-number-of-vowels-in-a-substring-of-given-length"],["Find the K-Beauty of a Number","find-the-k-beauty-of-a-number"],["Defuse the Bomb","defuse-the-bomb"],["Diet Plan Performance","diet-plan-performance"]],
+  [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Contains Duplicate II","contains-duplicate-ii"],["Find Pivot Index","find-pivot-index"],["Number of Sub-arrays of Size K and Average Greater than Threshold","number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold"],["Minimum Difference Between Highest and Lowest of K Scores","minimum-difference-between-highest-and-lowest-of-k-scores"]],
+  [["Longest Substring Without Repeating Characters","longest-substring-without-repeating-characters"],["Longest Repeating Character Replacement","longest-repeating-character-replacement"],["Permutation in String","permutation-in-string"],["Find All Anagrams in a String","find-all-anagrams-in-a-string"],["Max Consecutive Ones III","max-consecutive-ones-iii"]],
+  [["Minimum Size Subarray Sum","minimum-size-subarray-sum"],["Fruit Into Baskets","fruit-into-baskets"],["Binary Subarrays With Sum","binary-subarrays-with-sum"],["Count Number of Nice Subarrays","count-number-of-nice-subarrays"],["Replace the Substring for Balanced String","replace-the-substring-for-balanced-string"]],
+  [["Minimum Window Substring","minimum-window-substring"],["Sliding Window Maximum","sliding-window-maximum"],["Substrings of Size Three with Distinct Characters","substrings-of-size-three-with-distinct-characters"],["Subarrays with K Different Integers","subarrays-with-k-different-integers"],["Minimum Operations to Reduce X to Zero","minimum-operations-to-reduce-x-to-zero"]],
+  [["Longest Continuous Subarray With Absolute Diff","longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit"],["Frequency of the Most Frequent Element","frequency-of-the-most-frequent-element"],["Maximum Erasure Value","maximum-erasure-value"],["K Radius Subarray Averages","k-radius-subarray-averages"],["Number of Equal Count Substrings","number-of-equal-count-substrings"]]
+),
+// ── PREFIX SUM ────────────────────────────────────────────────────────────────
+buildTopic("prefix-sum","Prefix Sum","#f59e0b",
+  [["Running Sum of 1d Array","running-sum-of-1d-array"],["Find Pivot Index","find-pivot-index"],["Kids With the Greatest Number of Candies","kids-with-the-greatest-number-of-candies"],["Sum of All Odd Length Subarrays","sum-of-all-odd-length-subarrays"],["Left and Right Sum Differences","left-and-right-sum-differences"]],
+  [["Range Sum Query - Immutable","range-sum-query-immutable"],["Count Vowels in a String","count-vowels-in-string"],["Minimum Value to Get Positive Step by Step Sum","minimum-value-to-get-positive-step-by-step-sum"],["Find the Highest Altitude","find-the-highest-altitude"],["Maximum Population Year","maximum-population-year"]],
+  [["Subarray Sum Equals K","subarray-sum-equals-k"],["Product of Array Except Self","product-of-array-except-self"],["Continuous Subarray Sum","continuous-subarray-sum"],["Subarray Sums Divisible by K","subarray-sums-divisible-by-k"],["Find Longest Subarray by Sum","find-longest-subarray-by-sum"]],
+  [["Range Sum Query 2D","range-sum-query-2d-immutable"],["Maximum Sum of Two Non-Overlapping Subarrays","maximum-sum-of-two-non-overlapping-subarrays"],["Count of Interesting Subarrays","count-of-interesting-subarrays"],["Sum of Absolute Differences in a Sorted Array","sum-of-absolute-differences-in-a-sorted-array"],["XOR Queries of a Subarray","xor-queries-of-a-subarray"]],
+  [["Maximum Sum Circular Subarray","maximum-sum-circular-subarray"],["Count Subarrays With More Ones Than Zeros","count-subarrays-with-more-ones-than-zeros"],["Minimum Average Difference","minimum-average-difference"],["Ways to Split Array Into Three Subarrays","ways-to-split-array-into-three-subarrays"],["Count Subarrays Where Max Element Appears at Least K Times","count-subarrays-where-max-element-appears-at-least-k-times"]],
+  [["Sum of All Subset XOR Totals","sum-of-all-subset-xor-totals"],["Minimum Cost to Separate Sentence Into Rows","minimum-cost-to-separate-sentence-into-rows"],["Corporate Flight Bookings","corporate-flight-bookings"],["Count of Range Sum","count-of-range-sum"],["Minimum Number of Operations to Make Array Continuous","minimum-number-of-operations-to-make-array-continuous"]]
+),
+
+]
