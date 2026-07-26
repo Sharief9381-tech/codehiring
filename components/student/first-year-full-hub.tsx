@@ -53,6 +53,11 @@ function TopicGrid({ topics, completedChallenges, topicIcons, onSelect }: {
                   {allDone ? "Done" : `${solved}/${total}`}
                 </span>
               )}
+              {/* 6 modules badge */}
+              <span className="absolute top-2 left-2 text-[8px] font-bold px-1.5 py-0.5 rounded-full"
+                style={{ background:"rgba(255,255,255,0.06)", color:"#8b949e" }}>
+                6 mod
+              </span>
               <span className="text-sm font-black leading-none" style={{ color: topic.color }}>{icon}</span>
               <div className="w-8 h-0.5 rounded-full" style={{ background: topic.color }} />
               <span className="text-[11px] font-semibold text-center text-muted-foreground group-hover:text-foreground transition-colors leading-tight">{topic.label}</span>
