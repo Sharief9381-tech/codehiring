@@ -262,7 +262,7 @@ export default function ProblemEditor({ problemId }: Props) {
   }
 
   const changeLang = (l: string) => { setLang(l); setCode(STARTERS[l] ?? ""); setRunResults(null); setError("") }
-  const evalProblem = { title: problem.title, desc: problem.desc, input: problem.input, output: problem.output, explain: problem.explain, input2: storedProblem?.input2, output2: storedProblem?.output2 }
+  const evalProblem = { title: problem.title, desc: problem.desc, input: problem.input, output: problem.output, explain: problem.explain, input2: storedProblem?.input2, output2: storedProblem?.output2, input3: storedProblem?.input3, output3: storedProblem?.output3, input4: storedProblem?.input4, output4: storedProblem?.output4 }
 
   const runTests = async (mode: "run" | "submit") => {
     if (!code.trim()) return

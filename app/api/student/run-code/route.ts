@@ -14,6 +14,7 @@
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
+import { getDatabase } from "@/lib/database"
 
 // ── Language-aware time limits (ms) ──────────────────────────────────────────
 const LANG_TIMEOUT: Record<string, number> = {
@@ -29,18 +30,112 @@ const LANG_TIMEOUT: Record<string, number> = {
   Swift:      5000,
 }
 
-// Normalize language name to what our executor expects
 const LANG_KEY: Record<string, string> = {
-  Python:     "python",
-  JavaScript: "javascript",
-  TypeScript: "typescript",
-  Java:       "java",
-  "C++":      "c++",
-  C:          "c",
-  "C#":       "c#",
-  Go:         "go",
-  Kotlin:     "kotlin",
-  Swift:      "swift",
+  Python:"python",JavaScript:"javascript",TypeScript:"typescript",
+  Java:"java","C++":"c++",C:"c","C#":"c#",Go:"go",Kotlin:"kotlin",Swift:"swift",
+}
+
+// ── Execute code ──────────────────────────────────────────────────────────────
+async function executeCode(code: string, language: string, stdin: string, timeoutMs: number) {
+  const executorUrl    = process.env.EXECUTOR_URL
+  const executorSecret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
+  if (!executorUrl) throw new Error("EXECUTOR_URL not set")
+  const langKey = LANG_KEY[language] ?? language.toLowerCase()
+  const res = await fetch(`${executorUrl}/execute`, {
+    method: "POST",
+    headers: { "Content-Type":"application/json", "Authorization":`Bearer ${executorSecret}` },
+    body: JSON.stringify({ code, language: langKey, stdin, timeoutMs }),
+    signal: AbortSignal.timeout(timeoutMs + 10000),
+  })
+  if (!res.ok) throw new Error(`Executor error ${res.status}`)
+  const data = await res.json()
+  return { output: data.output ?? "", error: data.error ?? "", runtimeMs: data.runtimeMs ?? 0, tle: data.tle ?? false }
+}
+
+// ── Generate test cases with AI (input + expected output) ──────────────────────
+async function generateTestCasesWithAI(problem: any, count: number): Promise<Array<{input:string;expected:string;isPublic:boolean}>> {
+  const groqKey   = process.env.GROQ_API_KEY
+  const openaiKey = process.env.OPENAI_API_KEY
+
+  const prompt = `Generate exactly ${count} test cases for this coding problem.
+
+Problem: ${problem.title}
+Description: ${problem.desc}
+Input format: ${problem.inputFormat || "Standard stdin input"}
+Output format: ${problem.outputFormat || "Standard stdout output"}
+Example: Input="${problem.input}" → Output="${problem.output}"
+
+Rules:
+- Test 1: Use the exact public example (input="${problem.input}", expected="${problem.output}")
+${problem.input2 ? `- Test 2: Use the second example (input="${problem.input2}", expected="${problem.output2}")` : ""}
+- Remaining tests: edge cases with correct expected outputs
+- ALL expected outputs must be CORRECT (verify them yourself)
+- Input/output format must match exactly
+
+Return ONLY a JSON array:
+[{"input":"...","expected":"...","isPublic":true},{"input":"...","expected":"...","isPublic":false}]`
+
+  const call = async (key: string, url: string, model: string) => {
+    const r = await fetch(url, {
+      method:"POST", headers:{"Content-Type":"application/json","Authorization":`Bearer ${key}`},
+      body: JSON.stringify({ model, messages:[{role:"user",content:prompt}], temperature:0.1, max_tokens:600 }),
+    })
+    if (!r.ok) throw new Error(`${r.status}`)
+    const d = await r.json()
+    const raw = (d.choices?.[0]?.message?.content ?? "").trim().replace(/^```(?:json)?\n?/i,"").replace(/\n?```$/i,"").trim()
+    return JSON.parse(raw)
+  }
+
+  let result = null
+  if (groqKey)   { try { result = await call(groqKey,   "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile") } catch {} }
+  if (!result && openaiKey) { try { result = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch {} }
+
+  if (!result || !Array.isArray(result)) throw new Error("AI failed to generate test cases")
+  return result.map((tc: any, i: number) => ({
+    input:    tc.input    ?? problem.input ?? "",
+    expected: tc.expected ?? "",
+    isPublic: i < 2,
+  }))
+}
+
+// ── Build test cases — cached in DB per problem ────────────────────────────────
+async function buildTestCasesWithCache(
+  problem: any, count: number
+): Promise<Array<{input:string;expected:string;isPublic:boolean}>> {
+  const problemKey = problem.title?.toLowerCase().replace(/\s+/g,"-") ?? "unknown"
+
+  // Try DB cache first
+  try {
+    const db     = await getDatabase()
+    const cached = await db.collection("problem_test_cases").findOne({ problemKey })
+    if (cached?.testCases?.length >= count) {
+      const tcs = cached.testCases.slice(0, count)
+      return tcs.map((tc: any, i: number) => ({ ...tc, isPublic: i < 2 }))
+    }
+  } catch {}
+
+  // Generate with AI
+  let testCases: Array<{input:string;expected:string;isPublic:boolean}>
+  try {
+    testCases = await generateTestCasesWithAI(problem, Math.max(count, 6))
+  } catch {
+    // Fallback: use known public examples only
+    const pub  = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
+    const pub2 = problem.input2 ? { input: problem.input2, expected: problem.output2 ?? "", isPublic: true } : pub
+    testCases  = [pub, pub2, pub, pub, pub, pub].slice(0, count)
+  }
+
+  // Cache in DB
+  try {
+    const db = await getDatabase()
+    await db.collection("problem_test_cases").updateOne(
+      { problemKey },
+      { $set: { problemKey, testCases, generatedAt: new Date() } },
+      { upsert: true }
+    )
+  } catch {}
+
+  return testCases.slice(0, count).map((tc, i) => ({ ...tc, isPublic: i < 2 }))
 }
 
 // ── Call our own execution engine ─────────────────────────────────────────────
@@ -87,32 +182,23 @@ async function executeCode(
 }
 
 // ── Build test cases ───────────────────────────────────────────────────────────
-// Public cases: use problem's own examples (known input + expected output)
-// Hidden cases: slight variations of the public input — same format, different values
-// Hidden cases have no expected output — they pass if code runs without error
+// All test cases have known expected outputs (stored from AI generation)
+// Public = first 2, Hidden = remaining
 function buildTestCases(
-  problem: { input: string; output: string; input2?: string; output2?: string },
+  problem: { input: string; output: string; input2?: string; output2?: string; input3?: string; output3?: string; input4?: string; output4?: string },
   count: number
 ): Array<{ input: string; expected: string; isPublic: boolean }> {
-  const pub  = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
-  const pub2 = problem.input2
-    ? { input: problem.input2, expected: problem.output2 ?? "", isPublic: true }
-    : null
+  const cases: Array<{ input: string; expected: string; isPublic: boolean }> = []
 
-  if (count <= 1) return [pub]
-  if (count === 2) return pub2 ? [pub, pub2] : [pub, pub]  // if no pub2, just repeat pub1
+  // Add all available test cases (up to 4 with known expected)
+  if (problem.input)  cases.push({ input: problem.input,  expected: problem.output  ?? "", isPublic: true  })
+  if (problem.input2) cases.push({ input: problem.input2, expected: problem.output2 ?? "", isPublic: true  })
+  if (problem.input3) cases.push({ input: problem.input3, expected: problem.output3 ?? "", isPublic: false })
+  if (problem.input4) cases.push({ input: problem.input4, expected: problem.output4 ?? "", isPublic: false })
 
-  // For submit mode (6 tests): 2 public + 4 hidden
-  // Hidden tests use same input as public (they run, pass if no crash)
-  const cases: Array<{ input: string; expected: string; isPublic: boolean }> = pub2
-    ? [pub, pub2]
-    : [pub, pub]
-
-  // Fill remaining hidden slots with the same public input
-  // (We can't generate valid inputs without knowing the problem's input format)
-  // Hidden pass = code runs without error on the public input again
+  // Fill remaining with repeats of public test (if not enough stored)
   while (cases.length < count) {
-    cases.push({ input: pub.input, expected: pub.expected, isPublic: false })
+    cases.push({ input: problem.input ?? "", expected: problem.output ?? "", isPublic: false })
   }
 
   return cases.slice(0, count)
@@ -137,8 +223,13 @@ export async function POST(req: Request) {
       }, { status: 503 })
     }
 
-    const count     = mode === "run" ? 2 : 6   // 2 public on run, 6 total on submit
-    const testCases = buildTestCases(problem, count)
+    const count     = mode === "run" ? 2 : 6
+    const testCases = mode === "run"
+      ? [
+          { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true },
+          problem.input2 ? { input: problem.input2, expected: problem.output2 ?? "", isPublic: true } : { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true },
+        ]
+      : await buildTestCasesWithCache(problem, 6)
     const timeout   = LANG_TIMEOUT[language] ?? 5000
 
     // Run sequentially — our executor handles one at a time per container
@@ -162,7 +253,7 @@ export async function POST(req: Request) {
         ? false
         : hasExpected
           ? normalize(actual) === normalize(expected)
-          : !isErr  // hidden with same input as public — pass if same output (we check against actual run)
+          : !isErr  // fallback: pass if no error (old cases without stored expected)
 
       results.push({
         input:          tc.input,

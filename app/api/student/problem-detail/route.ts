@@ -30,14 +30,18 @@ Return ONLY a valid JSON object, no markdown:
 {
   "title": "${title}",
   "desc": "2-3 sentence clear problem description explaining what to do",
-  "inputFormat": "Describe exactly what the input looks like (e.g. 'First line: integer n. Second line: n space-separated integers')",
+  "inputFormat": "Describe exactly what the input looks like",
   "outputFormat": "Describe exactly what to print/return",
-  "constraints": ["1 <= n <= 10^5", "0 <= arr[i] <= 10^9", "Time limit: 2s", "Memory: 256 MB"],
-  "input": "A concrete example input",
-  "output": "Expected output for the example",
-  "input2": "A second, different example input",
-  "output2": "Expected output for the second example",
-  "explain": "One sentence explaining why this output is correct for the example"
+  "constraints": ["1 <= n <= 10^5", "Time limit: 2s", "Memory: 256 MB"],
+  "input": "First example input (exact, ready to pipe to stdin)",
+  "output": "Correct output for the first example",
+  "input2": "Second example input (different values, same format)",
+  "output2": "Correct output for the second example",
+  "input3": "Third edge-case input (boundary value or special case)",
+  "output3": "Correct output for the third example",
+  "input4": "Fourth input (larger or more complex case)",
+  "output4": "Correct output for the fourth example",
+  "explain": "One sentence explaining why the first output is correct"
 }`
 
   const call = async (key: string, url: string, model: string) => {
@@ -87,14 +91,14 @@ export async function POST(req: Request) {
 
     if (!title) return NextResponse.json({ error: "title or problemId required" }, { status: 400 })
 
-    // Cache in DB — only use cache if it has input2 field (new format with 2 examples)
+    // Cache in DB — only use cache if it has input3 field (latest format with 4 test cases)
     const db       = await getDatabase()
     const cacheKey = `${title.toLowerCase().replace(/\s+/g, "-")}`
     const cached   = await db.collection("problem_details").findOne({ cacheKey })
-    if (cached?.problem && cached.problem.input2 && cached.problem.input2 !== "") {
+    if (cached?.problem && cached.problem.input3 && cached.problem.input3 !== "") {
       return NextResponse.json({ problem: cached.problem, fromCache: true })
     }
-    // Stale cache (no input2) — delete and regenerate
+    // Stale cache — delete and regenerate
     if (cached) {
       await db.collection("problem_details").deleteOne({ cacheKey })
     }
