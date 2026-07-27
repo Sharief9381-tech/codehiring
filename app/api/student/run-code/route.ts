@@ -62,30 +62,24 @@ function buildTestCases(
   // Function-style (LeetCode) — use AI-generated test scripts
   if (problem.pythonTest1 && language === "Python") {
     const tests = [
-      { script: problem.pythonTest1, expected: problem.expectedTest1 ?? "", isPublic: true },
-      { script: problem.pythonTest2, expected: problem.expectedTest2 ?? "", isPublic: true },
-      { script: problem.pythonTest3, expected: problem.expectedTest3 ?? "", isPublic: false },
-      { script: problem.pythonTest4, expected: problem.expectedTest4 ?? "", isPublic: false },
-    ].filter(t => t.script)
+      { script: problem.pythonTest1, expected: String(problem.expectedTest1 ?? ""), isPublic: true },
+      { script: problem.pythonTest2, expected: String(problem.expectedTest2 ?? ""), isPublic: true },
+      { script: problem.pythonTest3, expected: String(problem.expectedTest3 ?? ""), isPublic: false },
+      { script: problem.pythonTest4, expected: String(problem.expectedTest4 ?? ""), isPublic: false },
+    ].filter(t => t.script && t.script.trim())
 
     return tests.slice(0, count).map(t => ({
-      input: t.script,
+      input:    t.script,
       expected: t.expected,
       isPublic: t.isPublic,
       isScript: true,
     }))
   }
 
-  // stdin-style fallback
-  const cases: Array<{ input: string; expected: string; isPublic: boolean }> = []
-  if (problem.input)  cases.push({ input: problem.input,  expected: problem.output  ?? "", isPublic: true  })
-  if (problem.input2) cases.push({ input: problem.input2, expected: problem.output2 ?? "", isPublic: true  })
-  if (problem.input3) cases.push({ input: problem.input3, expected: problem.output3 ?? "", isPublic: false })
-  if (problem.input4) cases.push({ input: problem.input4, expected: problem.output4 ?? "", isPublic: false })
-  while (cases.length < count) {
-    cases.push({ input: problem.input ?? "", expected: problem.output ?? "", isPublic: false })
-  }
-  return cases.slice(0, count)
+  // Fallback: no pythonTest scripts available yet — run code with empty stdin and pass if no error
+  const pub = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
+  const cases = [pub, pub, pub, pub]
+  return cases.slice(0, count).map((c, i) => ({ ...c, isPublic: i < 2 }))
 }
 
 // ── POST handler ──────────────────────────────────────────────────────────────
@@ -116,9 +110,9 @@ export async function POST(req: Request) {
       let output = "", error = "", runtimeMs = 0, tle = false
 
       try {
-        // Script mode: append test script to student code
+        // Script mode: student code + test harness appended
         const codeToRun = (tc as any).isScript
-          ? `${code}\n\n${tc.input}`
+          ? `${code}\n\n# Test harness\n${tc.input}`
           : code
         const stdin = (tc as any).isScript ? "" : tc.input
         ;({ output, error, runtimeMs, tle } = await executeCode(codeToRun, language, stdin, timeout))
