@@ -267,11 +267,18 @@ export default function ProblemEditor({ problemId }: Props) {
   const runTests = async (mode: "run" | "submit") => {
     if (!code.trim()) return
     mode === "run" ? setRunning(true) : setSubmitting(true)
-    setRunResults(null); setError(""); setBottomTab("results")
+    setRunResults(null); setError("")
+    // Switch to results tab on submit, sample cases on run
+    setBottomTab(mode === "submit" ? "results" : "sample")
     try {
+      // If custom tab is active and has input, use it for run
+      const customRun = mode === "run" && bottomTab === "custom" && customInput.trim()
+      const problemPayload = customRun
+        ? { ...evalProblem, input: customInput.trim(), output: "" }
+        : evalProblem
       const res  = await fetch("/api/student/run-code", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, language: lang, problem: evalProblem, mode }),
+        body: JSON.stringify({ code, language: lang, problem: problemPayload, mode }),
       })
       const data = await res.json()
       if (data.results) {
@@ -280,6 +287,7 @@ export default function ProblemEditor({ problemId }: Props) {
         setAllPassed(data.allPassed ?? false)
         if (data.runtimeMs) { setRuntimeMs(data.runtimeMs); setTimeLimit(data.timeLimit ?? 5000) }
         if (mode === "run") { setBottomTab("sample"); setSelectedCase(0) }
+        if (mode === "submit") { setBottomTab("results") }
         if (mode === "submit" && data.allPassed) {
           setCompleted(true)
           await fetch("/api/student/first-year-progress", {
@@ -296,14 +304,8 @@ export default function ProblemEditor({ problemId }: Props) {
     finally { setRunning(false); setSubmitting(false) }
   }
 
-  // Show loading while sessionStorage hydrates
-  if (problemId && !storedProblem) {
-    return (
-      <div className="h-screen flex items-center justify-center gap-2" style={{ background: "#0d1117", color: "#8b949e" }}>
-        <RefreshCw className="h-5 w-5 animate-spin" /> Loading problem...
-      </div>
-    )
-  }
+  // Show loading skeleton while problem data loads (don't block the editor)
+  const isLoading = problemId && !storedProblem
 
   const diffColor = problem.badge?.toLowerCase() === "easy"   || problem.badge === "Beginner"    ? "#3fb950"
     : problem.badge?.toLowerCase() === "medium" || problem.badge === "Intermediate" ? "#d29922"
@@ -526,8 +528,7 @@ export default function ProblemEditor({ problemId }: Props) {
                   {running ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
                   Run
                 </button>
-                <button onClick={() => runTests("submit")} disabled={submitting || running || !code.trim() || completed || !publicPassed}
-                  title={!publicPassed ? "Run test first" : ""}
+                <button onClick={() => runTests("submit")} disabled={submitting || running || !code.trim() || completed}
                   className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-bold transition-all disabled:opacity-40"
                   style={{
                     background: completed ? "#238636" : "#fd8c73",
