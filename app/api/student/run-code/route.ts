@@ -138,49 +138,6 @@ async function buildTestCasesWithCache(
   return testCases.slice(0, count).map((tc, i) => ({ ...tc, isPublic: i < 2 }))
 }
 
-// ── Call our own execution engine ─────────────────────────────────────────────
-async function executeCode(
-  code: string,
-  language: string,
-  stdin: string,
-  timeoutMs: number
-): Promise<{ output: string; error: string; runtimeMs: number; tle: boolean }> {
-  const executorUrl    = process.env.EXECUTOR_URL
-  const executorSecret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
-
-  if (!executorUrl) {
-    throw new Error(
-      "EXECUTOR_URL not set in .env.\n" +
-      "Deploy code-executor/ to a Linux VPS and set EXECUTOR_URL=http://your-vps:4000"
-    )
-  }
-
-  const langKey = LANG_KEY[language] ?? language.toLowerCase()
-
-  const res = await fetch(`${executorUrl}/execute`, {
-    method:  "POST",
-    headers: {
-      "Content-Type":  "application/json",
-      "Authorization": `Bearer ${executorSecret}`,
-    },
-    body: JSON.stringify({ code, language: langKey, stdin, timeoutMs }),
-    signal: AbortSignal.timeout(timeoutMs + 10000), // total HTTP timeout
-  })
-
-  if (!res.ok) {
-    const txt = await res.text()
-    throw new Error(`Executor error ${res.status}: ${txt.slice(0, 200)}`)
-  }
-
-  const data = await res.json()
-  return {
-    output:    data.output ?? "",
-    error:     data.error  ?? "",
-    runtimeMs: data.runtimeMs ?? 0,
-    tle:       data.tle ?? false,
-  }
-}
-
 // ── Build test cases ───────────────────────────────────────────────────────────
 // All test cases have known expected outputs (stored from AI generation)
 // Public = first 2, Hidden = remaining
