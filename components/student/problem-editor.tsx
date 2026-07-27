@@ -15,16 +15,16 @@ for (const topic of TOPIC_QUESTIONS) {
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
 const STARTERS: Record<string, string> = {
-  Python:     "n = int(input())\n# Write your solution here\n",
-  JavaScript: "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\n// Write your solution here\n",
-  TypeScript: "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\n// Write your solution here\n",
-  Java:       "import java.util.Scanner;\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Write your solution here\n    }\n}\n",
-  "C++":      "#include <iostream>\nusing namespace std;\nint main() {\n    // Write your solution here\n    return 0;\n}\n",
-  C:          "#include <stdio.h>\nint main() {\n    // Write your solution here\n    return 0;\n}\n",
-  "C#":       "using System;\nclass Solution {\n    static void Main() {\n        // Write your solution here\n    }\n}\n",
-  Go:         'package main\nimport "fmt"\nfunc main() {\n    // Write your solution here\n    fmt.Println()\n}\n',
-  Kotlin:     "fun main() {\n    // Write your solution here\n}\n",
-  Swift:      "// Write your solution here\n",
+  Python:     "from typing import List, Optional\n\nclass Solution:\n    def solve(self, nums: List[int]) -> int:\n        # Write your solution here\n        pass\n",
+  JavaScript: "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar solve = function(nums) {\n    // Write your solution here\n};\n",
+  TypeScript: "function solve(nums: number[]): number {\n    // Write your solution here\n};\n",
+  Java:       "class Solution {\n    public int solve(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n}\n",
+  "C++":      "class Solution {\npublic:\n    int solve(vector<int>& nums) {\n        // Write your solution here\n        return 0;\n    }\n};\n",
+  C:          "#include <stdio.h>\nint solve(int* nums, int n) {\n    // Write your solution here\n    return 0;\n}\n",
+  "C#":       "public class Solution {\n    public int Solve(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n}\n",
+  Go:         "func solve(nums []int) int {\n    // Write your solution here\n    return 0\n}\n",
+  Kotlin:     "class Solution {\n    fun solve(nums: IntArray): Int {\n        // Write your solution here\n        return 0\n    }\n}\n",
+  Swift:      "class Solution {\n    func solve(_ nums: [Int]) -> Int {\n        // Write your solution here\n        return 0\n    }\n}\n",
 }
 
 interface Props { problemId: string }
@@ -76,8 +76,15 @@ export default function ProblemEditor({ problemId }: Props) {
     ? problem.constraints
     : ["Input is within reasonable bounds", "Time limit: 2s", "Memory: 256 MB"]
 
-  const [lang, setLang]                 = useState("Python")
-  const [code, setCode]                 = useState(STARTERS["Python"])
+  const [lang, setLang]   = useState("Python")
+  // Use problem-specific starter if available (function signature from AI)
+  const getStarter = (l: string) => {
+    if (l === "Python" && storedProblem?.pythonStarter) {
+      return `from typing import List, Optional\n\nclass Solution:\n    ${storedProblem.pythonStarter.replace(/\\n/g, "\n    ")}\n`
+    }
+    return STARTERS[l] ?? ""
+  }
+  const [code, setCode]   = useState(() => getStarter("Python"))
   const [running, setRunning]           = useState(false)
   const [submitting, setSubmitting]     = useState(false)
   const [runResults, setRunResults]     = useState<any[] | null>(null)
@@ -261,7 +268,12 @@ export default function ProblemEditor({ problemId }: Props) {
     }
   }
 
-  const changeLang = (l: string) => { setLang(l); setCode(STARTERS[l] ?? ""); setRunResults(null); setError("") }
+  const changeLang = (l: string) => {
+    setLang(l)
+    setCode(getStarter(l))
+    setRunResults(null)
+    setError("")
+  }
   const evalProblem = { title: problem.title, desc: problem.desc, input: problem.input, output: problem.output, explain: problem.explain, input2: storedProblem?.input2, output2: storedProblem?.output2, input3: storedProblem?.input3, output3: storedProblem?.output3, input4: storedProblem?.input4, output4: storedProblem?.output4 }
 
   const runTests = async (mode: "run" | "submit") => {

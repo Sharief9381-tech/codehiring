@@ -26,22 +26,28 @@ async function generateProblem(title: string, topic: string, difficulty: string)
 Topic: ${topic}
 Difficulty: ${difficulty}
 
+IMPORTANT: Use LeetCode-style function-based interface (not stdin/stdout).
+
 Return ONLY a valid JSON object, no markdown:
 {
   "title": "${title}",
-  "desc": "2-3 sentence clear problem description explaining what to do",
-  "inputFormat": "Describe exactly what the input looks like",
-  "outputFormat": "Describe exactly what to print/return",
-  "constraints": ["1 <= n <= 10^5", "Time limit: 2s", "Memory: 256 MB"],
-  "input": "First example input (exact, ready to pipe to stdin)",
-  "output": "Correct output for the first example",
-  "input2": "Second example input (different values, same format)",
-  "output2": "Correct output for the second example",
-  "input3": "Third edge-case input (boundary value or special case)",
-  "output3": "Correct output for the third example",
-  "input4": "Fourth input (larger or more complex case)",
-  "output4": "Correct output for the fourth example",
-  "explain": "One sentence explaining why the first output is correct"
+  "desc": "2-3 sentence clear problem description",
+  "inputFormat": "Describe the function parameters",
+  "outputFormat": "Describe the return value",
+  "constraints": ["1 <= n <= 10^5", "Time limit: 2s"],
+  "input": "Human-readable example input (e.g. 'nums = [2,7,11,15], target = 9')",
+  "output": "Human-readable example output (e.g. '[0, 1]')",
+  "explain": "One sentence explanation",
+  "functionName": "twoSum",
+  "pythonStarter": "def twoSum(self, nums: List[int], target: int) -> List[int]:\\n    pass",
+  "pythonTest1": "sol = Solution()\\nresult = sol.twoSum([2,7,11,15], 9)\\nprint(result)",
+  "expectedTest1": "[0, 1]",
+  "pythonTest2": "sol = Solution()\\nresult = sol.twoSum([3,2,4], 6)\\nprint(result)",
+  "expectedTest2": "[1, 2]",
+  "pythonTest3": "sol = Solution()\\nresult = sol.twoSum([3,3], 6)\\nprint(result)",
+  "expectedTest3": "[0, 1]",
+  "pythonTest4": "sol = Solution()\\nresult = sol.twoSum([1,2,3,4], 7)\\nprint(result)",
+  "expectedTest4": "[2, 3]"
 }`
 
   const call = async (key: string, url: string, model: string) => {

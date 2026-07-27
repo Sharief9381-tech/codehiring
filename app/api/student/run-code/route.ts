@@ -52,25 +52,39 @@ async function executeCode(code: string, language: string, stdin: string, timeou
 }
 
 // ── Build test cases ───────────────────────────────────────────────────────────
-// All test cases have known expected outputs (stored from AI generation)
-// Public = first 2, Hidden = remaining
+// Function-style: AI provides complete test scripts (pythonTest1..4) + expected outputs
+// stdin-style: uses input/input2/input3/input4 + output/output2/output3/output4
 function buildTestCases(
-  problem: { input: string; output: string; input2?: string; output2?: string; input3?: string; output3?: string; input4?: string; output4?: string },
-  count: number
-): Array<{ input: string; expected: string; isPublic: boolean }> {
-  const cases: Array<{ input: string; expected: string; isPublic: boolean }> = []
+  problem: any,
+  count: number,
+  language: string
+): Array<{ input: string; expected: string; isPublic: boolean; isScript?: boolean }> {
+  // Function-style (LeetCode) — use AI-generated test scripts
+  if (problem.pythonTest1 && language === "Python") {
+    const tests = [
+      { script: problem.pythonTest1, expected: problem.expectedTest1 ?? "", isPublic: true },
+      { script: problem.pythonTest2, expected: problem.expectedTest2 ?? "", isPublic: true },
+      { script: problem.pythonTest3, expected: problem.expectedTest3 ?? "", isPublic: false },
+      { script: problem.pythonTest4, expected: problem.expectedTest4 ?? "", isPublic: false },
+    ].filter(t => t.script)
 
-  // Add all available test cases (up to 4 with known expected)
+    return tests.slice(0, count).map(t => ({
+      input: t.script,
+      expected: t.expected,
+      isPublic: t.isPublic,
+      isScript: true,
+    }))
+  }
+
+  // stdin-style fallback
+  const cases: Array<{ input: string; expected: string; isPublic: boolean }> = []
   if (problem.input)  cases.push({ input: problem.input,  expected: problem.output  ?? "", isPublic: true  })
   if (problem.input2) cases.push({ input: problem.input2, expected: problem.output2 ?? "", isPublic: true  })
   if (problem.input3) cases.push({ input: problem.input3, expected: problem.output3 ?? "", isPublic: false })
   if (problem.input4) cases.push({ input: problem.input4, expected: problem.output4 ?? "", isPublic: false })
-
-  // Fill remaining with repeats of public test (if not enough stored)
   while (cases.length < count) {
     cases.push({ input: problem.input ?? "", expected: problem.output ?? "", isPublic: false })
   }
-
   return cases.slice(0, count)
 }
 
@@ -93,18 +107,21 @@ export async function POST(req: Request) {
       }, { status: 503 })
     }
 
-    const count     = mode === "run" ? 2 : 6
-    // Build test cases from stored examples (no DB/AI needed here)
-    const testCases = buildTestCases(problem, count)
+    const count     = mode === "run" ? 2 : 4
+    const testCases = buildTestCases(problem, count, language)
     const timeout   = LANG_TIMEOUT[language] ?? 5000
 
-    // Run sequentially — our executor handles one at a time per container
     const results = []
     for (const tc of testCases) {
       let output = "", error = "", runtimeMs = 0, tle = false
 
       try {
-        ;({ output, error, runtimeMs, tle } = await executeCode(code, language, tc.input, timeout))
+        // Script mode: append test script to student code
+        const codeToRun = (tc as any).isScript
+          ? `${code}\n\n${tc.input}`
+          : code
+        const stdin = (tc as any).isScript ? "" : tc.input
+        ;({ output, error, runtimeMs, tle } = await executeCode(codeToRun, language, stdin, timeout))
       } catch (e: any) {
         error = e.message ?? "Execution error"
       }
