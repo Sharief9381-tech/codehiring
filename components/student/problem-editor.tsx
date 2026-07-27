@@ -40,8 +40,8 @@ export default function ProblemEditor({ problemId }: Props) {
       const stored = sessionStorage.getItem(`problem_${problemId}`)
       if (stored) {
         const parsed = JSON.parse(stored)
-        // If stored data has input2 field, use it; otherwise re-fetch
-        if (parsed.input2 !== undefined) { setStoredProblem(parsed); return }
+        // Only use cache if it has pythonTest1 (new function-style format)
+        if (parsed.pythonTest1) { setStoredProblem(parsed); return }
       }
     } catch {}
     // Not in sessionStorage or outdated — fetch from API

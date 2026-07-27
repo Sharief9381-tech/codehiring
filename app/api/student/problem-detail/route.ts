@@ -97,14 +97,14 @@ export async function POST(req: Request) {
 
     if (!title) return NextResponse.json({ error: "title or problemId required" }, { status: 400 })
 
-    // Cache in DB — only use cache if it has input3 field (latest format with 4 test cases)
+    // Cache in DB — only use cache if it has pythonTest1 (latest function-style format)
     const db       = await getDatabase()
     const cacheKey = `${title.toLowerCase().replace(/\s+/g, "-")}`
     const cached   = await db.collection("problem_details").findOne({ cacheKey })
-    if (cached?.problem && cached.problem.input3 && cached.problem.input3 !== "") {
+    if (cached?.problem && cached.problem.pythonTest1) {
       return NextResponse.json({ problem: cached.problem, fromCache: true })
     }
-    // Stale cache — delete and regenerate
+    // Stale cache — delete and regenerate with new function-style format
     if (cached) {
       await db.collection("problem_details").deleteOne({ cacheKey })
     }
