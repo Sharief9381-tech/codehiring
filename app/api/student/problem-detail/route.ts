@@ -1,13 +1,13 @@
 /**
  * POST /api/student/problem-detail
- * Given a problem title + topic, returns a full problem statement
- * with input format, output format, constraints, example I/O.
- * Used by the topic coding grid to open problems in our own editor.
+ * Returns static problem data from PROBLEM_BANK.
+ * No AI generation — all problems are hardcoded with proper
+ * descriptions, examples, constraints, and test cases.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
-import { getDatabase } from "@/lib/database"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
+import { getProblem, PROBLEM_BANK } from "@/lib/problem-bank"
 
 // Build a flat map of problemId → { title, topic, difficulty }
 const PROBLEM_MAP: Record<string, { title: string; topic: string; difficulty: string }> = {}
@@ -17,110 +17,84 @@ for (const topic of TOPIC_QUESTIONS) {
   }
 }
 
-async function generateProblem(title: string, topic: string, difficulty: string): Promise<any> {
-  const groqKey   = process.env.GROQ_API_KEY
-  const openaiKey = process.env.OPENAI_API_KEY
-
-  const prompt = `Generate a complete coding problem for: "${title}"
-
-Topic: ${topic}
-Difficulty: ${difficulty}
-
-IMPORTANT: Use LeetCode-style function-based interface (not stdin/stdout).
-
-Return ONLY a valid JSON object, no markdown:
-{
-  "title": "${title}",
-  "desc": "2-3 sentence clear problem description",
-  "inputFormat": "Describe the function parameters",
-  "outputFormat": "Describe the return value",
-  "constraints": ["1 <= n <= 10^5", "Time limit: 2s"],
-  "input": "Human-readable example input (e.g. 'nums = [2,7,11,15], target = 9')",
-  "output": "Human-readable example output (e.g. '[0, 1]')",
-  "explain": "One sentence explanation",
-  "functionName": "twoSum",
-  "pythonStarter": "def twoSum(self, nums: List[int], target: int) -> List[int]:\\n    pass",
-  "pythonTest1": "sol = Solution()\\nresult = sol.twoSum([2,7,11,15], 9)\\nprint(result)",
-  "expectedTest1": "[0, 1]",
-  "pythonTest2": "sol = Solution()\\nresult = sol.twoSum([3,2,4], 6)\\nprint(result)",
-  "expectedTest2": "[1, 2]",
-  "pythonTest3": "sol = Solution()\\nresult = sol.twoSum([3,3], 6)\\nprint(result)",
-  "expectedTest3": "[0, 1]",
-  "pythonTest4": "sol = Solution()\\nresult = sol.twoSum([1,2,3,4], 7)\\nprint(result)",
-  "expectedTest4": "[2, 3]"
-}`
-
-  const call = async (key: string, url: string, model: string) => {
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.3,
-        max_tokens: 800,
-      }),
-    })
-    if (!r.ok) throw new Error(`${r.status}`)
-    const d = await r.json()
-    const raw = d.choices?.[0]?.message?.content?.trim() ?? ""
-    return raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
-  }
-
-  let raw = ""
-  if (groqKey)   { try { raw = await call(groqKey,   "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile") } catch {} }
-  if (!raw && openaiKey) { try { raw = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch {} }
-  if (!raw) throw new Error("AI unavailable")
-
-  return JSON.parse(raw)
-}
-
 export async function POST(req: Request) {
   try {
     const user = await getCurrentUser()
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
     const body = await req.json()
-
-    // Support both: { title, topic, difficulty } and { problemId }
-    let title      = body.title
-    let topic      = body.topic      ?? "DSA"
+    let title      = body.title as string | undefined
     let difficulty = body.difficulty ?? "Medium"
 
     if (!title && body.problemId) {
       const meta = PROBLEM_MAP[body.problemId]
       if (!meta) return NextResponse.json({ error: "Unknown problemId" }, { status: 404 })
       title      = meta.title
-      topic      = meta.topic
       difficulty = meta.difficulty
     }
 
     if (!title) return NextResponse.json({ error: "title or problemId required" }, { status: 400 })
 
-    // Cache in DB — only use cache if it has pythonTest1 (latest function-style format)
-    const db       = await getDatabase()
-    const cacheKey = `${title.toLowerCase().replace(/\s+/g, "-")}`
-    const cached   = await db.collection("problem_details").findOne({ cacheKey })
-    if (cached?.problem && cached.problem.pythonTest1) {
-      return NextResponse.json({ problem: cached.problem, fromCache: true })
+    // Look up in static bank
+    const sp = getProblem(title)
+    if (sp) {
+      // Normalise into the shape the editor expects
+      const problem = {
+        title:         sp.title,
+        difficulty:    sp.difficulty,
+        badge:         sp.difficulty,
+        desc:          sp.desc,
+        inputFormat:   sp.functionSignature ? `Function signature:\n${sp.functionSignature}` : "",
+        outputFormat:  "",
+        constraints:   sp.constraints,
+        input:         sp.examples[0]?.input  ?? "",
+        output:        sp.examples[0]?.output ?? "",
+        explain:       sp.examples[0]?.explanation ?? "",
+        input2:        sp.examples[1]?.input  ?? "",
+        output2:       sp.examples[1]?.output ?? "",
+        explain2:      sp.examples[1]?.explanation ?? "",
+        // Test cases for run-code (script-based, no AI needed)
+        pythonTest1:   sp.testCases[0]?.script   ?? "",
+        expectedTest1: sp.testCases[0]?.expected ?? "",
+        pythonTest2:   sp.testCases[1]?.script   ?? "",
+        expectedTest2: sp.testCases[1]?.expected ?? "",
+        pythonTest3:   sp.testCases[2]?.script   ?? "",
+        expectedTest3: sp.testCases[2]?.expected ?? "",
+        pythonTest4:   sp.testCases[3]?.script   ?? "",
+        expectedTest4: sp.testCases[3]?.expected ?? "",
+        // Starter code per language
+        starters:      sp.starters,
+        examples:      sp.examples,
+        static:        true,
+      }
+      return NextResponse.json({ problem, fromCache: false, static: true })
     }
-    // Stale cache — delete and regenerate with new function-style format
-    if (cached) {
-      await db.collection("problem_details").deleteOne({ cacheKey })
-    }
 
-    const problem = await generateProblem(title, topic ?? "DSA", difficulty)
-
-    // Cache it
-    await db.collection("problem_details").updateOne(
-      { cacheKey },
-      { $set: { cacheKey, problem, generatedAt: new Date() } },
-      { upsert: true }
-    )
-
-    return NextResponse.json({ problem, fromCache: false })
+    // Fallback — problem not in bank yet, return minimal stub
+    return NextResponse.json({
+      problem: {
+        title,
+        difficulty,
+        badge:       difficulty,
+        desc:        `Solve the ${title} problem.`,
+        inputFormat: "",
+        outputFormat:"",
+        constraints: ["See LeetCode for full constraints."],
+        input:  "", output:  "", explain: "",
+        input2: "", output2: "",
+        pythonTest1: "", expectedTest1: "",
+        pythonTest2: "", expectedTest2: "",
+        pythonTest3: "", expectedTest3: "",
+        pythonTest4: "", expectedTest4: "",
+        starters: {},
+        examples: [],
+        static: false,
+      },
+      fromCache: false,
+      static: false,
+    })
   } catch (err) {
     console.error("problem-detail error:", err)
-    return NextResponse.json({ error: "Failed to generate problem" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to load problem" }, { status: 500 })
   }
 }

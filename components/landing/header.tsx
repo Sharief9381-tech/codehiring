@@ -44,8 +44,8 @@ export function Header() {
 
         {/* Logo + tagline */}
         <Link href="/" className="flex items-center gap-3 group shrink-0">
-          <Image src="/codehiring-logo.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto block dark:hidden" />
-          <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto hidden dark:block" />
+          <Image src="/codehiring-logo.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto block dark:hidden" priority />
+          <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto hidden dark:block" priority />
           <div className="hidden sm:flex flex-col">
             <span className="text-[9px] text-zinc-600 font-medium leading-none tracking-wide">
               Skills First Recruitment

@@ -14,8 +14,8 @@ export function PublicNav({ crumb, backHref = "/", backLabel = "Back", maxWidth 
     <div className="border-b border-border/60 bg-background/80 backdrop-blur-md sticky top-0 z-10">
       <div className={`mx-auto ${maxWidth} px-6 py-4 flex items-center gap-3`}>
         <Link href="/" className="flex items-center shrink-0">
-          <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto block dark:hidden" />
-          <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto hidden dark:block" />
+          <Image src="/codehiring-logo.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto block dark:hidden" priority />
+          <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={120} height={30} className="h-7 w-auto hidden dark:block" priority />
         </Link>
         {crumb && (
           <>

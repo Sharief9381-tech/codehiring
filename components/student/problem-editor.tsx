@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useRef, useCallback, useEffect } from "react"
-import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Maximize2 } from "lucide-react"
+import { useState, useRef, useCallback, useEffect, useMemo } from "react"
+import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Moon, Maximize2, Minimize2, BookOpen, Clock } from "lucide-react"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
-// Build a flat problemId → {title, difficulty} map at module level
+// ── Problem lookup from topic questions ──────────────────────────────────────
 const PROBLEM_LOOKUP: Record<string, { title: string; difficulty: string }> = {}
 for (const topic of TOPIC_QUESTIONS) {
   for (const q of topic.questions) {
@@ -12,177 +12,254 @@ for (const topic of TOPIC_QUESTIONS) {
   }
 }
 
+// ── Languages ────────────────────────────────────────────────────────────────
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
-const STARTERS: Record<string, string> = {
+const DEFAULT_STARTERS: Record<string, string> = {
   Python:     "from typing import List, Optional\n\nclass Solution:\n    def solve(self, nums: List[int]) -> int:\n        # Write your solution here\n        pass\n",
-  JavaScript: "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar solve = function(nums) {\n    // Write your solution here\n};\n",
-  TypeScript: "function solve(nums: number[]): number {\n    // Write your solution here\n};\n",
-  Java:       "class Solution {\n    public int solve(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n}\n",
-  "C++":      "class Solution {\npublic:\n    int solve(vector<int>& nums) {\n        // Write your solution here\n        return 0;\n    }\n};\n",
-  C:          "#include <stdio.h>\nint solve(int* nums, int n) {\n    // Write your solution here\n    return 0;\n}\n",
-  "C#":       "public class Solution {\n    public int Solve(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n}\n",
-  Go:         "func solve(nums []int) int {\n    // Write your solution here\n    return 0\n}\n",
-  Kotlin:     "class Solution {\n    fun solve(nums: IntArray): Int {\n        // Write your solution here\n        return 0\n    }\n}\n",
-  Swift:      "class Solution {\n    func solve(_ nums: [Int]) -> Int {\n        // Write your solution here\n        return 0\n    }\n}\n",
+  JavaScript: "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar solve = function(nums) {\n    \n};\n",
+  TypeScript: "function solve(nums: number[]): number {\n    \n};\n",
+  Java:       "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}\n",
+  "C++":      "class Solution {\npublic:\n    int solve(vector<int>& nums) {\n        \n    }\n};\n",
+  C:          "#include <stdio.h>\nint solve(int* nums, int n) {\n    return 0;\n}\n",
+  "C#":       "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}\n",
+  Go:         "func solve(nums []int) int {\n    return 0\n}\n",
+  Kotlin:     "class Solution {\n    fun solve(nums: IntArray): Int {\n        return 0\n    }\n}\n",
+  Swift:      "class Solution {\n    func solve(_ nums: [Int]) -> Int {\n        return 0\n    }\n}\n",
+}
+
+// ── Syntax Highlighting ──────────────────────────────────────────────────────
+const PY_KEYWORDS  = /\b(def|class|return|if|elif|else|for|while|in|not|and|or|import|from|as|pass|break|continue|lambda|try|except|finally|with|yield|True|False|None|self|print|len|range|int|str|list|dict|set|tuple|bool|float)\b/g
+const JS_KEYWORDS  = /\b(var|let|const|function|return|if|else|for|while|do|switch|case|break|continue|class|new|this|typeof|instanceof|import|export|default|null|undefined|true|false|async|await|try|catch|finally|of|in|from)\b/g
+const JAVA_KEYWORDS = /\b(public|private|protected|static|void|class|interface|extends|implements|return|if|else|for|while|do|new|this|super|import|package|null|true|false|int|long|double|float|boolean|char|String|List|ArrayList|Map|HashMap|throw|throws|try|catch|finally)\b/g
+const CPP_KEYWORDS  = /\b(int|long|double|float|bool|char|void|class|struct|public|private|protected|return|if|else|for|while|do|new|delete|nullptr|true|false|const|auto|vector|string|map|set|pair|include|using|namespace|std|template|typename)\b/g
+
+type ThemeKey = "dark" | "light" | "monokai" | "solarized"
+
+interface SyntaxTheme {
+  bg: string; panel: string; border: string; text: string; muted: string
+  lineNum: string; keyword: string; string: string; number: string
+  comment: string; function: string; type: string; operator: string
+  selBg: string; activeLine: string; scrollbar: string
+}
+
+const THEMES: Record<ThemeKey, SyntaxTheme> = {
+  dark: {
+    bg: "#0d1117", panel: "#161b22", border: "#30363d",
+    text: "#e6edf3", muted: "#8b949e", lineNum: "#3b4048",
+    keyword: "#ff7b72", string: "#a5d6ff", number: "#79c0ff",
+    comment: "#8b949e", function: "#d2a8ff", type: "#ffa657",
+    operator: "#ff7b72", selBg: "#264f78", activeLine: "#1c2128",
+    scrollbar: "#30363d",
+  },
+  light: {
+    bg: "#ffffff", panel: "#f6f8fa", border: "#d0d7de",
+    text: "#24292f", muted: "#656d76", lineNum: "#9da5ae",
+    keyword: "#cf222e", string: "#0a3069", number: "#0550ae",
+    comment: "#6e7781", function: "#8250df", type: "#953800",
+    operator: "#cf222e", selBg: "#b4d5fe", activeLine: "#f6f8fa",
+    scrollbar: "#d0d7de",
+  },
+  monokai: {
+    bg: "#272822", panel: "#1e1f1c", border: "#3e3d32",
+    text: "#f8f8f2", muted: "#75715e", lineNum: "#4a4a40",
+    keyword: "#f92672", string: "#e6db74", number: "#ae81ff",
+    comment: "#75715e", function: "#a6e22e", type: "#66d9e8",
+    operator: "#f92672", selBg: "#49483e", activeLine: "#3e3d32",
+    scrollbar: "#3e3d32",
+  },
+  solarized: {
+    bg: "#002b36", panel: "#073642", border: "#586e75",
+    text: "#839496", muted: "#657b83", lineNum: "#586e75",
+    keyword: "#859900", string: "#2aa198", number: "#d33682",
+    comment: "#657b83", function: "#268bd2", type: "#b58900",
+    operator: "#cb4b16", selBg: "#073642", activeLine: "#073642",
+    scrollbar: "#586e75",
+  },
+}
+
+function highlight(code: string, lang: string, theme: SyntaxTheme): string {
+  const esc = (s: string) => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+  let src = esc(code)
+
+  const kw   = `color:${theme.keyword};font-weight:600`
+  const str  = `color:${theme.string}`
+  const num  = `color:${theme.number}`
+  const cmt  = `color:${theme.comment};font-style:italic`
+  const fn_  = `color:${theme.function}`
+  const tp   = `color:${theme.type}`
+  const op   = `color:${theme.operator}`
+
+  // Comments first (highest priority)
+  src = src.replace(/(#[^\n]*)/g,   `<span style="${cmt}">$1</span>`)
+  src = src.replace(/(\/\/[^\n]*)/g, `<span style="${cmt}">$1</span>`)
+
+  // Strings
+  src = src.replace(/(&quot;(?:[^&]|&(?!quot;))*&quot;|&#39;(?:[^&]|&(?!#39;))*&#39;)/g, `<span style="${str}">$1</span>`)
+
+  // Numbers
+  src = src.replace(/\b(\d+\.?\d*)\b/g, `<span style="${num}">$1</span>`)
+
+  // Language-specific keywords
+  if (lang === "Python") {
+    src = src.replace(PY_KEYWORDS, `<span style="${kw}">$1</span>`)
+    src = src.replace(/\b(def\s+)(\w+)/g, `<span style="${kw}">$1</span><span style="${fn_}">$2</span>`)
+    src = src.replace(/\b(class\s+)(\w+)/g, `<span style="${kw}">$1</span><span style="${tp}">$2</span>`)
+  } else if (lang === "JavaScript" || lang === "TypeScript") {
+    src = src.replace(JS_KEYWORDS, `<span style="${kw}">$1</span>`)
+    src = src.replace(/\b(function\s+)(\w+)/g, `<span style="${kw}">$1</span><span style="${fn_}">$2</span>`)
+  } else if (lang === "Java") {
+    src = src.replace(JAVA_KEYWORDS, `<span style="${kw}">$1</span>`)
+  } else if (lang === "C++" || lang === "C") {
+    src = src.replace(CPP_KEYWORDS, `<span style="${kw}">$1</span>`)
+  }
+
+  return src
 }
 
 interface Props { problemId: string }
 
 export default function ProblemEditor({ problemId }: Props) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef  = useRef<HTMLTextAreaElement>(null)
+  const highlightRef = useRef<HTMLDivElement>(null)
+  const editorRef    = useRef<HTMLDivElement>(null)
 
-  // Load problem from sessionStorage, or fetch from API if not cached
-  const [storedProblem, setStoredProblem] = useState<any>(null)
+  // ── Problem data ────────────────────────────────────────────────────────────
+  const [problem, setProblemState] = useState<any>(null)
+  const problemRef = useRef<any>(null)
+  const setProblem = (p: any) => { problemRef.current = p; setProblemState(p) }
+
   useEffect(() => {
     if (!problemId) return
+    const key = `problem_v2_${problemId}`
     try {
-      const stored = sessionStorage.getItem(`problem_${problemId}`)
-      if (stored) {
-        const parsed = JSON.parse(stored)
-        // Only use cache if it has pythonTest1 (new function-style format)
-        if (parsed.pythonTest1) { setStoredProblem(parsed); return }
-      }
+      const cached = sessionStorage.getItem(key)
+      if (cached) { const p = JSON.parse(cached); if (p?.static) { setProblem(p); return } }
     } catch {}
-    // Not in sessionStorage or outdated — fetch from API
     fetch("/api/student/problem-detail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ problemId }),
     }).then(r => r.json()).then(data => {
       if (data.problem) {
-        setStoredProblem(data.problem)
-        // Update sessionStorage with new data including input2
-        try { sessionStorage.setItem(`problem_${problemId}`, JSON.stringify(data.problem)) } catch {}
+        setProblem(data.problem)
+        try { sessionStorage.setItem(key, JSON.stringify(data.problem)) } catch {}
+        // Set language-specific starter
+        const lang = langRef.current
+        const starter = data.problem.starters?.[lang]
+        if (starter) setCode(starter)
       }
     }).catch(() => {})
   }, [problemId])
 
-  const problem = {
-    title:       storedProblem?.title        ?? PROBLEM_LOOKUP[problemId]?.title  ?? "Problem",
-    desc:        storedProblem?.desc         ?? "",
-    inputFormat: storedProblem?.inputFormat  ?? "",
-    outputFormat:storedProblem?.outputFormat ?? "",
-    constraints: storedProblem?.constraints  ?? [],
-    input:       storedProblem?.input        ?? "",
-    output:      storedProblem?.output       ?? "",
-    explain:     storedProblem?.explain      ?? "",
-    badge:       storedProblem?.badge        ?? PROBLEM_LOOKUP[problemId]?.difficulty ?? "Easy",
+  // ── Theme & layout ──────────────────────────────────────────────────────────
+  const [themeKey, setThemeKey]       = useState<ThemeKey>("dark")
+  const [fullscreen, setFullscreen]   = useState(false)
+  const theme = THEMES[themeKey]
+
+  // ── Editor state ────────────────────────────────────────────────────────────
+  const [lang, setLang]         = useState("Python")
+  const langRef = useRef("Python")
+  const [code, setCode]         = useState(() => DEFAULT_STARTERS["Python"])
+  const [running, setRunning]   = useState(false)
+  const [submitting, setSub]    = useState(false)
+  const [runResults, setRes]    = useState<any[] | null>(null)
+  const [allPassed, setAllPassed] = useState(false)
+  const [runtimeMs, setRuntime] = useState<number | null>(null)
+  const [timeLimit, setTL]      = useState(5000)
+  const [error, setError]       = useState("")
+  const [completed, setDone]    = useState(false)
+  const [leftTab, setLeftTab]   = useState<"desc"|"editorial">("desc")
+  const [bottomTab, setBot]     = useState<"sample"|"custom"|"results">("sample")
+  const [selCase, setSelCase]   = useState(0)
+  const [customIn, setCustomIn] = useState("")
+  const [leftW, setLeftW]       = useState(420)
+  const [bottomH, setBottomH]   = useState(240)
+  const [activeLineY, setActiveLineY] = useState(0)
+  const dragH = useRef(false); const dragV = useRef(false)
+
+  // ── Derived ─────────────────────────────────────────────────────────────────
+  const title      = problem?.title      ?? PROBLEM_LOOKUP[problemId]?.title    ?? "Loading…"
+  const difficulty = problem?.difficulty ?? PROBLEM_LOOKUP[problemId]?.difficulty ?? "Easy"
+  const desc       = problem?.desc       ?? ""
+  const examples   = problem?.examples   ?? []
+  const constraints = problem?.constraints ?? []
+  const isLoading  = !problem
+
+  const diffColor = difficulty === "Easy" ? "#3fb950" : difficulty === "Medium" ? "#d29922" : "#f85149"
+
+  // ── Horizontal drag ─────────────────────────────────────────────────────────
+  const onHDrag = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); dragH.current = true
+    const startX = e.clientX; const startW = leftW
+    const move = (ev: MouseEvent) => {
+      if (!dragH.current) return
+      setLeftW(Math.max(280, Math.min(700, startW + ev.clientX - startX)))
+    }
+    const up = () => { dragH.current = false; window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up) }
+    window.addEventListener("mousemove", move); window.addEventListener("mouseup", up)
+  }, [leftW])
+
+  // ── Vertical drag ───────────────────────────────────────────────────────────
+  const onVDrag = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); dragV.current = true
+    const startY = e.clientY; const startH = bottomH
+    const move = (ev: MouseEvent) => {
+      if (!dragV.current) return
+      setBottomH(Math.max(80, Math.min(600, startH + startY - ev.clientY)))
+    }
+    const up = () => { dragV.current = false; window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up) }
+    window.addEventListener("mousemove", move); window.addEventListener("mouseup", up)
+  }, [bottomH])
+
+  // ── Change language ─────────────────────────────────────────────────────────
+  const changeLang = (l: string) => {
+    setLang(l); langRef.current = l
+    const starter = problem?.starters?.[l] ?? DEFAULT_STARTERS[l] ?? ""
+    setCode(starter); setRes(null); setError("")
   }
 
-  const inputFormat  = problem.inputFormat  || (problem.input  ? `A single line: ${problem.input}` : "")
-  const outputFormat = problem.outputFormat || (problem.output ? `Print: ${problem.output}` : "")
-  const constraints  = problem.constraints.length
-    ? problem.constraints
-    : ["Input is within reasonable bounds", "Time limit: 2s", "Memory: 256 MB"]
-
-  const [lang, setLang]   = useState("Python")
-  // Use problem-specific starter if available (function signature from AI)
-  const getStarter = (l: string) => {
-    if (l === "Python" && storedProblem?.pythonStarter) {
-      return `from typing import List, Optional\n\nclass Solution:\n    ${storedProblem.pythonStarter.replace(/\\n/g, "\n    ")}\n`
+  // ── Sync highlight scroll with textarea ────────────────────────────────────
+  const syncScroll = () => {
+    if (textareaRef.current && highlightRef.current) {
+      highlightRef.current.scrollTop  = textareaRef.current.scrollTop
+      highlightRef.current.scrollLeft = textareaRef.current.scrollLeft
     }
-    return STARTERS[l] ?? ""
   }
-  const [code, setCode]   = useState(() => getStarter("Python"))
-  const [running, setRunning]           = useState(false)
-  const [submitting, setSubmitting]     = useState(false)
-  const [runResults, setRunResults]     = useState<any[] | null>(null)
-  const [publicPassed, setPublicPassed] = useState(false)
-  const [allPassed, setAllPassed]       = useState(false)
-  const [runtimeMs, setRuntimeMs]       = useState<number | null>(null)
-  const [timeLimit, setTimeLimit]       = useState<number>(5000)
-  const [error, setError]               = useState("")
-  const [completed, setCompleted]       = useState(false)
-  const [leftTab, setLeftTab]           = useState<"desc" | "subs">("desc")
-  const [bottomTab, setBottomTab]       = useState<"sample" | "custom" | "results">("sample")
-  const [selectedCase, setSelectedCase] = useState(0)
-  const [customInput, setCustomInput]   = useState("")
-  const [leftWidth, setLeftWidth]       = useState(380)
-  const [bottomHeight, setBottomHeight] = useState(208)  // default ~h-52
-  const dragging = useRef(false)
-  const bottomDragging = useRef(false)
 
-  const onDividerMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault()
-    dragging.current = true
-    const startX = e.clientX
-    const startW = leftWidth
-    const onMove = (ev: MouseEvent) => {
-      if (!dragging.current) return
-      const newW = Math.max(240, Math.min(600, startW + ev.clientX - startX))
-      setLeftWidth(newW)
-    }
-    const onUp = () => {
-      dragging.current = false
-      window.removeEventListener("mousemove", onMove)
-      window.removeEventListener("mouseup", onUp)
-    }
-    window.addEventListener("mousemove", onMove)
-    window.addEventListener("mouseup", onUp)
-  }, [leftWidth])
+  const highlighted = useMemo(() => highlight(code, lang, theme), [code, lang, theme])
 
-  const onBottomDividerMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault()
-    bottomDragging.current = true
-    const startY = e.clientY
-    const startH = bottomHeight
-    const onMove = (ev: MouseEvent) => {
-      if (!bottomDragging.current) return
-      const delta = startY - ev.clientY  // drag up = bigger panel
-      const newH  = Math.max(80, Math.min(500, startH + delta))
-      setBottomHeight(newH)
-    }
-    const onUp = () => {
-      bottomDragging.current = false
-      window.removeEventListener("mousemove", onMove)
-      window.removeEventListener("mouseup", onUp)
-    }
-    window.addEventListener("mousemove", onMove)
-    window.addEventListener("mouseup", onUp)
-  }, [bottomHeight])
-
-  // ── Smart editor keyboard handler ──────────────────────────────────────────
+  // ── Smart keyboard handler ──────────────────────────────────────────────────
   const BRACE_LANGS = new Set(["JavaScript","TypeScript","Java","C++","C","C#","Go","Kotlin","Swift"])
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const ta = textareaRef.current
-    if (!ta) return
+  const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const ta = textareaRef.current; if (!ta) return
     const { selectionStart: ss, selectionEnd: se } = ta
-    const before = code.slice(0, ss)
-    const after  = code.slice(se)
-    const currentLine = before.slice(before.lastIndexOf("\n") + 1)
+    const before = code.slice(0, ss); const after = code.slice(se)
+    const curLine = before.slice(before.lastIndexOf("\n") + 1)
 
     if (e.key === "Enter") {
+      e.preventDefault()
       if (lang === "Python") {
-        e.preventDefault()
-        const indent = currentLine.match(/^(\s*)/)?.[1] ?? ""
-        const extraIndent = currentLine.trimEnd().endsWith(":") ? "    " : ""
-        const insertion = "\n" + indent + extraIndent
-        const next = before + insertion + after
-        setCode(next)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + insertion.length })
+        const ind  = curLine.match(/^(\s*)/)?.[1] ?? ""
+        const extra = curLine.trimEnd().endsWith(":") ? "    " : ""
+        const ins = "\n" + ind + extra
+        const nxt = before + ins + after; setCode(nxt)
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + ins.length })
         return
       }
       if (BRACE_LANGS.has(lang)) {
-        const charBefore = before.slice(-1)
-        const charAfter  = after.slice(0, 1)
-        if (charBefore === "{" && charAfter === "}") {
-          e.preventDefault()
-          const indent  = currentLine.match(/^(\s*)/)?.[1] ?? ""
-          const inner   = "\n" + indent + "    "
-          const closing = "\n" + indent
-          const next = before + inner + closing + "}" + after.slice(1)
-          setCode(next)
+        const cb = before.slice(-1); const ca = after.slice(0,1)
+        if (cb === "{" && ca === "}") {
+          const ind = curLine.match(/^(\s*)/)?.[1] ?? ""
+          const inner = "\n" + ind + "    "; const close = "\n" + ind
+          const nxt = before + inner + close + "}" + after.slice(1); setCode(nxt)
           requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + inner.length })
           return
         }
-        e.preventDefault()
-        const indent    = currentLine.match(/^(\s*)/)?.[1] ?? ""
-        const insertion = "\n" + indent
-        const next = before + insertion + after
-        setCode(next)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + insertion.length })
+        const ind = curLine.match(/^(\s*)/)?.[1] ?? ""
+        const ins = "\n" + ind; const nxt = before + ins + after; setCode(nxt)
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + ins.length })
         return
       }
       return
@@ -191,511 +268,480 @@ export default function ProblemEditor({ problemId }: Props) {
     if (e.key === "Tab") {
       e.preventDefault()
       if (e.shiftKey) {
-        const lineStart   = before.lastIndexOf("\n") + 1
-        const lineContent = code.slice(lineStart)
-        const spaces      = lineContent.match(/^( {1,4})/)?.[1] ?? ""
-        if (spaces) {
-          const next = code.slice(0, lineStart) + code.slice(lineStart + spaces.length)
-          setCode(next)
-          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = Math.max(lineStart, ss - spaces.length) })
+        const ls = before.lastIndexOf("\n") + 1
+        const sp = code.slice(ls).match(/^( {1,4})/)?.[1] ?? ""
+        if (sp) {
+          setCode(code.slice(0, ls) + code.slice(ls + sp.length))
+          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = Math.max(ls, ss - sp.length) })
         }
       } else {
-        const next = before + "    " + after
-        setCode(next)
+        setCode(before + "    " + after)
         requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 4 })
       }
       return
     }
 
-    // Auto-close pairs (brace languages)
-    if (BRACE_LANGS.has(lang)) {
-      const PAIRS: Record<string, string> = { "{": "}", "(": ")", "[": "]", '"': '"', "'": "'" }
-      if (e.key === "Backspace" && ss === se) {
-        const prev = before.slice(-1)
-        const next = after.slice(0, 1)
-        if (prev && PAIRS[prev] === next) {
-          e.preventDefault()
-          setCode(before.slice(0, -1) + after.slice(1))
-          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss - 1 })
-          return
-        }
-      }
-      if (["}", ")", "]", '"', "'"].includes(e.key) && after.slice(0, 1) === e.key) {
+    // Auto-close pairs
+    const PAIRS: Record<string,string> = lang === "Python"
+      ? { "(":")", "[":"]", '"':'"', "'":"'" }
+      : { "{":"}", "(":")", "[":"]", '"':'"', "'":"'" }
+    if (e.key === "Backspace" && ss === se) {
+      const prev = before.slice(-1); const nxt = after.slice(0,1)
+      if (prev && PAIRS[prev] === nxt) {
         e.preventDefault()
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
-        return
-      }
-      if (PAIRS[e.key]) {
-        const isQuote = e.key === '"' || e.key === "'"
-        if (isQuote && /\w/.test(before.slice(-1))) return
-        e.preventDefault()
-        const close = PAIRS[e.key]
-        const next  = before + e.key + close + after
-        setCode(next)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
+        setCode(before.slice(0,-1) + after.slice(1))
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss - 1 })
         return
       }
     }
-
-    // Python auto-close pairs
-    if (lang === "Python") {
-      const PY_PAIRS: Record<string, string> = { "(": ")", "[": "]", '"': '"', "'": "'" }
-      if (e.key === "Backspace" && ss === se) {
-        const prev = before.slice(-1)
-        const next = after.slice(0, 1)
-        if (prev && PY_PAIRS[prev] === next) {
-          e.preventDefault()
-          setCode(before.slice(0, -1) + after.slice(1))
-          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss - 1 })
-          return
-        }
-      }
-      if ([")", "]", '"', "'"].includes(e.key) && after.slice(0, 1) === e.key) {
-        e.preventDefault()
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
-        return
-      }
-      if (PY_PAIRS[e.key]) {
-        const isQuote = e.key === '"' || e.key === "'"
-        if (isQuote && /\w/.test(before.slice(-1))) return
-        e.preventDefault()
-        const close = PY_PAIRS[e.key]
-        const next  = before + e.key + close + after
-        setCode(next)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
-        return
-      }
+    if (Object.values(PAIRS).includes(e.key) && after.slice(0,1) === e.key && e.key !== "{") {
+      e.preventDefault()
+      requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
+      return
+    }
+    if (PAIRS[e.key]) {
+      const isQ = e.key === '"' || e.key === "'"
+      if (isQ && /\w/.test(before.slice(-1))) return
+      e.preventDefault()
+      const nxt = before + e.key + PAIRS[e.key] + after; setCode(nxt)
+      requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
     }
   }
 
-  const changeLang = (l: string) => {
-    setLang(l)
-    setCode(getStarter(l))
-    setRunResults(null)
-    setError("")
-  }
-  const evalProblem = { title: problem.title, desc: problem.desc, input: problem.input, output: problem.output, explain: problem.explain, input2: storedProblem?.input2, output2: storedProblem?.output2, input3: storedProblem?.input3, output3: storedProblem?.output3, input4: storedProblem?.input4, output4: storedProblem?.output4 }
-
+  // ── Run tests ───────────────────────────────────────────────────────────────
   const runTests = async (mode: "run" | "submit") => {
     if (!code.trim()) return
-    mode === "run" ? setRunning(true) : setSubmitting(true)
-    setRunResults(null); setError("")
-    // Switch to results tab on submit, sample cases on run
-    setBottomTab(mode === "submit" ? "results" : "sample")
+    if (!problemRef.current) { setError("Problem still loading…"); setBot("results"); return }
+    mode === "run" ? setRunning(true) : setSub(true)
+    setRes(null); setError("")
+    setBot(mode === "submit" ? "results" : "sample")
     try {
-      // If custom tab is active and has input, use it for run
-      const customRun = mode === "run" && bottomTab === "custom" && customInput.trim()
-      const problemPayload = customRun
-        ? { ...evalProblem, input: customInput.trim(), output: "" }
-        : evalProblem
-      const res  = await fetch("/api/student/run-code", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, language: lang, problem: problemPayload, mode }),
+      const sp = problemRef.current
+      const payload = {
+        title: sp.title, desc: sp.desc,
+        input: sp.input, output: sp.output,
+        input2: sp.input2, output2: sp.output2,
+        input3: sp.input3, output3: sp.output3,
+        input4: sp.input4, output4: sp.output4,
+        pythonTest1: sp.pythonTest1, expectedTest1: sp.expectedTest1,
+        pythonTest2: sp.pythonTest2, expectedTest2: sp.expectedTest2,
+        pythonTest3: sp.pythonTest3, expectedTest3: sp.expectedTest3,
+        pythonTest4: sp.pythonTest4, expectedTest4: sp.expectedTest4,
+      }
+      const customRun = mode === "run" && bottomTab === "custom" && customIn.trim()
+      const res = await fetch("/api/student/run-code", {
+        method: "POST", headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ code, language: lang, problem: customRun ? { ...payload, input: customIn, output: "" } : payload, mode }),
       })
       const data = await res.json()
       if (data.results) {
-        setRunResults(data.results)
-        setPublicPassed(data.publicPassed ?? false)
-        setAllPassed(data.allPassed ?? false)
-        if (data.runtimeMs) { setRuntimeMs(data.runtimeMs); setTimeLimit(data.timeLimit ?? 5000) }
-        if (mode === "run") { setBottomTab("sample"); setSelectedCase(0) }
-        if (mode === "submit") { setBottomTab("results") }
+        setRes(data.results); setAllPassed(data.allPassed ?? false)
+        if (data.runtimeMs) { setRuntime(data.runtimeMs); setTL(data.timeLimit ?? 5000) }
+        if (mode === "run") { setBot("sample"); setSelCase(0) }
+        if (mode === "submit") setBot("results")
         if (mode === "submit" && data.allPassed) {
-          setCompleted(true)
-          await fetch("/api/student/first-year-progress", {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "daily-challenge" }),
-          })
+          setDone(true)
+          fetch("/api/student/first-year-progress", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"problem-solved" }) }).catch(()=>{})
         }
       } else {
-        const msg   = data.error ?? "Failed to run tests"
-        const setup = data.setup ? `\n${data.setup}` : ""
-        setError(msg + setup)
+        setError(data.error ?? "Failed"); setBot("results")
       }
-    } catch { setError("Network error. Please try again.") }
-    finally { setRunning(false); setSubmitting(false) }
+    } catch (e: any) { setError("Network error: " + (e?.message ?? "")); setBot("results") }
+    finally { setRunning(false); setSub(false) }
   }
 
-  // Show loading skeleton while problem data loads (don't block the editor)
-  const isLoading = problemId && !storedProblem
-
-  const diffColor = problem.badge?.toLowerCase() === "easy"   || problem.badge === "Beginner"    ? "#3fb950"
-    : problem.badge?.toLowerCase() === "medium" || problem.badge === "Intermediate" ? "#d29922"
-    : "#f85149"
-
   const sampleCases = [
-    { label: "Case 1", input: problem.input,  output: problem.output },
-    { label: "Case 2", input: (storedProblem?.input2 ?? runResults?.[1]?.input ?? ""), output: (storedProblem?.output2 ?? runResults?.[1]?.expectedOutput ?? "") },
+    { input: problem?.input ?? "", output: problem?.output ?? "" },
+    { input: problem?.input2 ?? "", output: problem?.output2 ?? "" },
   ]
 
   const lines = code.split("\n")
+  const T = theme
+
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ background: "#0d1117", fontFamily: "'Segoe UI',Inter,sans-serif" }}>
+    <div className={`h-screen flex flex-col overflow-hidden select-none ${fullscreen ? "fixed inset-0 z-50" : ""}`}
+      style={{ background: T.bg, fontFamily: "'Segoe UI',Inter,sans-serif", color: T.text }}>
 
-      {/* ── Top bar ─────────────────────────────────────────────── */}
-      <div className="flex items-center px-4 h-11 border-b shrink-0" style={{ background: "#161b22", borderColor: "#30363d" }}>
-        <a href="#" onClick={e => { e.preventDefault(); window.history.back() }}
-          className="flex items-center gap-1.5 text-sm mr-4 transition-colors" style={{ color: "#8b949e" }}
-          onMouseEnter={e => (e.currentTarget.style.color = "#e6edf3")}
-          onMouseLeave={e => (e.currentTarget.style.color = "#8b949e")}>
-          <ArrowLeft className="h-4 w-4" />
-        </a>
-        <span className="font-bold text-sm mr-2" style={{ color: "#e6edf3" }}>
-          {problem.title}
-        </span>
-        <span className="text-xs font-semibold px-2 py-0.5 rounded-full border"
+      {/* ── Top bar ─────────────────────────────────────────────────────── */}
+      <div className="flex items-center px-3 h-11 border-b shrink-0 gap-2"
+        style={{ background: T.panel, borderColor: T.border }}>
+        {/* Back */}
+        <button onClick={() => window.history.back()}
+          className="flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors hover:opacity-80"
+          style={{ color: T.muted }}>
+          <ArrowLeft className="h-3.5 w-3.5" />
+        </button>
+        <div className="w-px h-4" style={{ background: T.border }} />
+        {/* Title + badge */}
+        <span className="font-bold text-sm truncate max-w-xs" style={{ color: T.text }}>{title}</span>
+        <span className="text-xs font-semibold px-2 py-0.5 rounded-full border shrink-0"
           style={{ color: diffColor, borderColor: diffColor + "44", background: diffColor + "15" }}>
-          {problem.badge}
+          {difficulty}
         </span>
-        <div className="ml-auto flex items-center gap-3" style={{ color: "#8b949e" }}>
-          <span className="text-sm cursor-pointer hover:text-white transition-colors">⚙</span>
-          <span className="text-sm cursor-pointer hover:text-white transition-colors">🔖</span>
+        <div className="flex-1" />
+        {/* Theme selector */}
+        <div className="flex items-center gap-1 rounded-md border px-2 py-1"
+          style={{ borderColor: T.border, background: T.bg }}>
+          {(["dark","light","monokai","solarized"] as ThemeKey[]).map(k => (
+            <button key={k} onClick={() => setThemeKey(k)}
+              title={k.charAt(0).toUpperCase() + k.slice(1)}
+              className="w-4 h-4 rounded-full border-2 transition-transform hover:scale-110"
+              style={{
+                background: k === "dark" ? "#0d1117" : k === "light" ? "#ffffff" : k === "monokai" ? "#272822" : "#002b36",
+                borderColor: themeKey === k ? diffColor : "transparent",
+              }} />
+          ))}
         </div>
+        {/* Fullscreen */}
+        <button onClick={() => setFullscreen(f => !f)}
+          className="p-1.5 rounded transition-colors" style={{ color: T.muted }}
+          onMouseEnter={e => (e.currentTarget.style.color = T.text)}
+          onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>
+          {fullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+        </button>
       </div>
 
-      {/* ── Body ────────────────────────────────────────────────── */}
+      {/* ── Body ────────────────────────────────────────────────────────── */}
       <div className="flex flex-1 min-h-0 overflow-hidden relative">
 
-        {/* LEFT — Problem description */}
+        {/* ── LEFT PANEL ─────────────────────────────────────────────────── */}
         <div className="shrink-0 flex flex-col overflow-hidden border-r"
-          style={{ width: `${leftWidth}px`, background: "#0d1117", borderColor: "#30363d" }}>
-          {/* Tabs */}
-          <div className="flex items-center border-b px-3 shrink-0"
-            style={{ background: "#161b22", borderColor: "#30363d" }}>
-            {[{ id: "desc", label: "Description", icon: "📄" }, { id: "subs", label: "Submissions", icon: "🕒" }].map(t => (
-              <button key={t.id} onClick={() => setLeftTab(t.id as any)}
+          style={{ width: `${leftW}px`, background: T.bg, borderColor: T.border }}>
+
+          {/* Left tabs */}
+          <div className="flex items-center border-b shrink-0 px-2" style={{ background: T.panel, borderColor: T.border }}>
+            {([["desc","📄","Description"],["editorial","💡","Editorial"]] as [string,string,string][]).map(([id,icon,label]) => (
+              <button key={id} onClick={() => setLeftTab(id as any)}
                 className="flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium border-b-2 transition-colors"
-                style={{ borderColor: leftTab === t.id ? "#58a6ff" : "transparent", color: leftTab === t.id ? "#58a6ff" : "#8b949e" }}>
-                {t.icon} {t.label}
+                style={{ borderColor: leftTab === id ? diffColor : "transparent", color: leftTab === id ? diffColor : T.muted }}>
+                {icon} {label}
               </button>
             ))}
           </div>
 
-          {leftTab === "desc" ? (
-            <div className="flex-1 overflow-y-auto p-5 space-y-5" style={{ color: "#c9d1d9" }}>
-              <div>
-                <h1 className="text-xl font-black mb-2" style={{ color: "#e6edf3" }}>{problem.title}</h1>
-                <p className="text-sm leading-relaxed" style={{ color: "#c9d1d9", lineHeight: "1.7" }}>{problem.desc}</p>
-              </div>
-
-              {inputFormat && (
-                <div>
-                  <p className="text-sm font-bold mb-1.5" style={{ color: "#e6edf3" }}>Input Format</p>
-                  <div className="rounded-lg px-4 py-3 text-sm border"
-                    style={{ background: "#161b22", borderColor: "#30363d", color: "#c9d1d9", lineHeight: "1.6" }}>
-                    {inputFormat}
+          <div className="flex-1 overflow-y-auto" style={{ scrollbarColor: `${T.scrollbar} transparent` }}>
+            {leftTab === "desc" ? (
+              <div className="p-5 space-y-5 text-sm" style={{ color: T.text }}>
+                {isLoading ? (
+                  <div className="flex items-center gap-2 text-xs" style={{ color: T.muted }}>
+                    <RefreshCw className="h-3 w-3 animate-spin" /> Loading problem...
                   </div>
-                </div>
-              )}
-              {outputFormat && (
-                <div>
-                  <p className="text-sm font-bold mb-1.5" style={{ color: "#e6edf3" }}>Output Format</p>
-                  <div className="rounded-lg px-4 py-3 text-sm border"
-                    style={{ background: "#161b22", borderColor: "#30363d", color: "#c9d1d9", lineHeight: "1.6" }}>
-                    {outputFormat}
-                  </div>
-                </div>
-              )}
-
-              {problem.input && (
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm font-bold mb-2" style={{ color: "#e6edf3" }}>Example 1:</p>
-                    <div className="rounded-lg border p-4 space-y-2 text-sm"
-                      style={{ background: "#161b22", borderColor: "#30363d" }}>
-                      <div>
-                        <span className="font-bold" style={{ color: "#e6edf3" }}>Input: </span>
-                        <code className="font-mono" style={{ color: "#79c0ff" }}>{problem.input}</code>
-                      </div>
-                      {problem.output && (
-                        <div>
-                          <span className="font-bold" style={{ color: "#e6edf3" }}>Output: </span>
-                          <code className="font-mono" style={{ color: "#3fb950" }}>{problem.output}</code>
-                        </div>
-                      )}
-                      {problem.explain && (
-                        <div>
-                          <span className="font-bold" style={{ color: "#e6edf3" }}>Explanation: </span>
-                          <span style={{ color: "#8b949e" }}>{problem.explain}</span>
-                        </div>
-                      )}
+                ) : (
+                  <>
+                    <div>
+                      <h1 className="text-lg font-black mb-3" style={{ color: T.text }}>{title}</h1>
+                      <p className="leading-relaxed" style={{ color: T.text, lineHeight: "1.75" }}
+                        dangerouslySetInnerHTML={{ __html: desc.replace(/`([^`]+)`/g, `<code style="background:${T.panel};color:${T.keyword};padding:1px 5px;border-radius:4px;font-family:monospace">$1</code>`) }} />
                     </div>
-                  </div>
-                </div>
-              )}
 
-              {constraints.length > 0 && (
-                <div>
-                  <p className="text-sm font-bold mb-2" style={{ color: "#e6edf3" }}>Constraints:</p>
-                  <ul className="space-y-1">
-                    {constraints.map((c: string, i: number) => (
-                      <li key={i} className="flex items-center gap-2 text-sm">
-                        <span style={{ color: "#58a6ff" }}>·</span>
-                        <code className="font-mono text-sm" style={{ color: "#c9d1d9" }}>{c}</code>
-                      </li>
+                    {/* Examples */}
+                    {examples.map((ex: any, i: number) => (
+                      <div key={i}>
+                        <p className="font-bold mb-2" style={{ color: T.text }}>Example {i + 1}:</p>
+                        <div className="rounded-lg border p-4 space-y-2 font-mono text-xs"
+                          style={{ background: T.panel, borderColor: T.border }}>
+                          <div><span className="font-bold" style={{ color: T.text }}>Input: </span>
+                            <span style={{ color: T.string }}>{ex.input}</span></div>
+                          <div><span className="font-bold" style={{ color: T.text }}>Output: </span>
+                            <span style={{ color: T.function }}>{ex.output}</span></div>
+                          {ex.explanation && (
+                            <div className="mt-1 pt-2 border-t text-[11px]" style={{ borderColor: T.border, color: T.muted }}>
+                              <span className="font-bold" style={{ color: T.text }}>Explanation: </span>{ex.explanation}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex-1 p-5">
-              <p className="text-sm" style={{ color: "#8b949e" }}>No submissions yet.</p>
-            </div>
-          )}
+
+                    {/* Constraints */}
+                    {constraints.length > 0 && (
+                      <div>
+                        <p className="font-bold mb-2" style={{ color: T.text }}>Constraints:</p>
+                        <ul className="space-y-1.5">
+                          {constraints.map((c: string, i: number) => (
+                            <li key={i} className="flex items-start gap-2 text-xs">
+                              <span className="mt-0.5 shrink-0" style={{ color: T.keyword }}>·</span>
+                              <code style={{ color: T.text, fontFamily: "monospace" }}
+                                dangerouslySetInnerHTML={{ __html: c.replace(/\^(\d+)/g, "<sup>$1</sup>") }} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Function signature */}
+                    {problem?.inputFormat && (
+                      <div className="rounded-lg border p-3" style={{ background: T.panel, borderColor: T.border }}>
+                        <p className="text-xs font-bold mb-1" style={{ color: T.muted }}>Function Signature</p>
+                        <code className="text-xs" style={{ color: T.function, fontFamily: "monospace" }}>
+                          {problem.inputFormat.replace("Function signature:\n", "")}
+                        </code>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ) : (
+              <div className="p-5 text-sm" style={{ color: T.muted }}>
+                <p className="font-bold mb-3" style={{ color: T.text }}>Hints</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2"><span style={{ color: T.keyword }}>1.</span> Think about the time complexity you need.</li>
+                  <li className="flex items-start gap-2"><span style={{ color: T.keyword }}>2.</span> Can you use a hash map to store seen values?</li>
+                  <li className="flex items-start gap-2"><span style={{ color: T.keyword }}>3.</span> Consider edge cases: empty array, single element, duplicates.</li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* RIGHT — Editor + Bottom */}
+        {/* ── Horizontal drag handle ─────────────────────────────────────── */}
+        <div onMouseDown={onHDrag} className="absolute z-20 cursor-col-resize"
+          style={{ left: `${leftW - 2}px`, top: 0, bottom: 0, width: "5px", background: "transparent" }}
+          onMouseEnter={e => (e.currentTarget.style.background = diffColor + "44")}
+          onMouseLeave={e => (e.currentTarget.style.background = "transparent")} />
+
+        {/* ── RIGHT — Editor + Console ──────────────────────────────────── */}
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-          {/* Drag handle */}
-          <div
-            onMouseDown={onDividerMouseDown}
-            className="absolute z-10 cursor-col-resize"
-            style={{ left: `${leftWidth - 3}px`, top: "44px", bottom: 0, width: "6px", background: "transparent" }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#388bfd44")}
-            onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-          />
-
           {/* Editor header */}
-          <div className="flex items-center justify-between px-4 py-2 border-b shrink-0"
-            style={{ background: "#161b22", borderColor: "#30363d" }}>
+          <div className="flex items-center justify-between px-3 py-2 border-b shrink-0"
+            style={{ background: T.panel, borderColor: T.border }}>
             <div className="flex items-center gap-2">
-              <span className="text-xs" style={{ color: "#8b949e" }}>&lt;/&gt;</span>
-              <span className="text-xs font-medium" style={{ color: "#c9d1d9" }}>Code</span>
+              <span className="text-xs font-mono" style={{ color: T.muted }}>&lt;/&gt;</span>
+              <span className="text-xs font-semibold" style={{ color: T.text }}>Solution</span>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="relative flex items-center">
+            <div className="flex items-center gap-2">
+              {/* Language selector */}
+              <div className="relative">
                 <select value={lang} onChange={e => changeLang(e.target.value)}
-                  className="appearance-none text-xs pl-3 pr-7 py-1.5 rounded-md border cursor-pointer focus:outline-none focus:ring-1"
-                  style={{ background: "#21262d", borderColor: "#30363d", color: "#c9d1d9", outlineColor: "#58a6ff" }}>
+                  className="appearance-none text-xs pl-3 pr-6 py-1 rounded border cursor-pointer focus:outline-none"
+                  style={{ background: T.bg, borderColor: T.border, color: T.text }}>
                   {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
                 </select>
-                <ChevronDown className="h-3 w-3 absolute right-2 pointer-events-none" style={{ color: "#8b949e" }} />
+                <ChevronDown className="h-3 w-3 absolute right-1.5 top-1 pointer-events-none" style={{ color: T.muted }} />
               </div>
-              <Sun className="h-3.5 w-3.5 cursor-pointer transition-colors" style={{ color: "#8b949e" }} />
-              <Maximize2 className="h-3.5 w-3.5 cursor-pointer transition-colors" style={{ color: "#8b949e" }} />
-              <RotateCcw onClick={() => { setCode(STARTERS[lang] ?? ""); setRunResults(null) }}
-                className="h-3.5 w-3.5 cursor-pointer transition-colors" style={{ color: "#8b949e" }} />
+              {/* Reset */}
+              <button onClick={() => { setCode(problem?.starters?.[lang] ?? DEFAULT_STARTERS[lang] ?? ""); setRes(null) }}
+                title="Reset code" className="p-1 rounded transition-colors" style={{ color: T.muted }}
+                onMouseEnter={e => (e.currentTarget.style.color = T.text)}
+                onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>
+                <RotateCcw className="h-3.5 w-3.5" />
+              </button>
             </div>
           </div>
 
-          {/* Code editor */}
-          <div className="flex-1 min-h-0 overflow-auto flex" style={{ background: "#0d1117" }}>
+          {/* ── Code editor (syntax highlighted textarea overlay) ─────────── */}
+          <div ref={editorRef} className="flex-1 min-h-0 overflow-hidden flex" style={{ background: T.bg }}>
             {/* Line numbers */}
-            <div className="w-10 shrink-0 pt-4 text-right pr-3 sticky left-0"
-              style={{ color: "#3b4048", fontSize: "12px", fontFamily: "'Fira Code','Consolas',monospace", lineHeight: "1.5rem", background: "#0d1117" }}>
+            <div className="shrink-0 pt-4 pb-4 text-right pr-3 select-none overflow-hidden"
+              style={{ width: "44px", color: T.lineNum, fontSize: "12px", fontFamily: "'Fira Code',monospace", lineHeight: "1.5rem", background: T.bg, borderRight: `1px solid ${T.border}22` }}>
               {lines.map((_, i) => <div key={i}>{i + 1}</div>)}
             </div>
-            {/* Textarea */}
-            <textarea
-              ref={textareaRef}
-              value={code}
-              onChange={e => { setCode(e.target.value); setRunResults(null) }}
-              onKeyDown={handleKeyDown}
-              spellCheck={false}
-              disabled={completed}
-              className="flex-1 focus:outline-none resize-none pt-4 pr-4 pb-4 pl-2 disabled:opacity-60 min-w-0"
-              style={{
-                background: "#0d1117", color: "#e6edf3",
-                fontFamily: "'Fira Code','Consolas',monospace", fontSize: "13px", lineHeight: "1.5rem",
-                tabSize: 4, minHeight: "100%",
-              }}
-            />
+            {/* Editor area — highlighted layer + transparent textarea */}
+            <div className="flex-1 relative overflow-auto"
+              style={{ scrollbarColor: `${T.scrollbar} transparent` }}>
+              {/* Syntax highlight layer */}
+              <div ref={highlightRef}
+                aria-hidden="true"
+                className="absolute inset-0 pt-4 pr-4 pb-4 pl-3 overflow-hidden pointer-events-none"
+                style={{
+                  fontFamily: "'Fira Code','Consolas',monospace", fontSize: "13px", lineHeight: "1.5rem",
+                  whiteSpace: "pre", color: T.text, tabSize: 4,
+                }}
+                dangerouslySetInnerHTML={{ __html: highlighted + "\n" }} />
+              {/* Transparent textarea on top */}
+              <textarea
+                ref={textareaRef}
+                value={code}
+                onChange={e => { setCode(e.target.value); setRes(null); syncScroll() }}
+                onScroll={syncScroll}
+                onKeyDown={handleKey}
+                onSelect={syncScroll}
+                spellCheck={false}
+                disabled={completed}
+                className="absolute inset-0 resize-none focus:outline-none pt-4 pr-4 pb-4 pl-3 disabled:opacity-60"
+                style={{
+                  background: "transparent", color: "transparent", caretColor: T.text,
+                  fontFamily: "'Fira Code','Consolas',monospace", fontSize: "13px", lineHeight: "1.5rem",
+                  tabSize: 4, whiteSpace: "pre", overflowWrap: "normal",
+                  width: "100%", height: "100%",
+                }} />
+            </div>
           </div>
 
-          {/* Bottom panel — Console */}
-          <div className="border-t shrink-0 flex flex-col" style={{ background: "#0d1117", borderColor: "#30363d", height: `${bottomHeight}px` }}>
+          {/* ── Console panel ─────────────────────────────────────────────── */}
+          <div className="border-t shrink-0 flex flex-col" style={{ background: T.bg, borderColor: T.border, height: `${bottomH}px` }}>
             {/* Vertical drag handle */}
-            <div
-              onMouseDown={onBottomDividerMouseDown}
-              className="w-full cursor-row-resize shrink-0 flex items-center justify-center group"
-              style={{ height: "8px", background: "rgba(255,255,255,0.03)" }}
-              onMouseEnter={e => (e.currentTarget.style.background = "#388bfd22")}
-              onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
-            >
-              <div className="w-12 h-1 rounded-full transition-colors" style={{ background: "rgba(255,255,255,0.2)" }} />
+            <div onMouseDown={onVDrag} className="w-full cursor-row-resize shrink-0 flex items-center justify-center"
+              style={{ height: "6px" }}
+              onMouseEnter={e => (e.currentTarget.style.background = diffColor + "33")}
+              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}>
+              <div className="w-10 h-0.5 rounded-full" style={{ background: T.border }} />
             </div>
-            {/* Bottom tabs row + Run/Submit */}
-            <div className="flex items-center justify-between px-3 border-b shrink-0"
-              style={{ background: "#161b22", borderColor: "#30363d", height: "42px" }}>
-              <div className="flex items-center gap-0.5">
-                {[
-                  { id: "sample",  icon: "✓", label: "Sample Cases", col: "#3fb950" },
-                  { id: "custom",  icon: "⊞", label: "Custom Cases", col: "#8b949e" },
-                  { id: "results", icon: "▶", label: "Test Results",  col: "#58a6ff" },
-                ].map(t => (
-                  <button key={t.id} onClick={() => setBottomTab(t.id as any)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all"
-                    style={{ color: bottomTab === t.id ? "#e6edf3" : "#8b949e", background: bottomTab === t.id ? "#21262d" : "transparent" }}>
-                    <span style={{ color: t.col }}>{t.icon}</span>{t.label}
+
+            {/* Console tab bar + Run/Submit */}
+            <div className="flex items-center justify-between px-3 border-b shrink-0" style={{ background: T.panel, borderColor: T.border, height: "40px" }}>
+              <div className="flex gap-0.5">
+                {([["sample","✓","Cases"],["custom","⊞","Custom"],["results","▶","Results"]] as [string,string,string][]).map(([id,icon,label]) => (
+                  <button key={id} onClick={() => setBot(id as any)}
+                    className="flex items-center gap-1 px-3 py-1 rounded text-xs font-medium transition-all"
+                    style={{ color: bottomTab === id ? T.text : T.muted, background: bottomTab === id ? T.bg : "transparent" }}>
+                    <span style={{ color: id==="sample" ? "#3fb950" : id==="custom" ? T.muted : "#58a6ff" }}>{icon}</span>{label}
                   </button>
                 ))}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex gap-2">
                 <button onClick={() => runTests("run")} disabled={running || submitting || !code.trim()}
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-bold transition-all disabled:opacity-40"
+                  className="flex items-center gap-1.5 px-4 py-1 rounded text-xs font-bold disabled:opacity-40 transition-all"
                   style={{ background: "#238636", color: "#fff", border: "1px solid #2ea043" }}>
-                  {running ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
-                  Run
+                  {running ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3" />} Run
                 </button>
                 <button onClick={() => runTests("submit")} disabled={submitting || running || !code.trim() || completed}
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-bold transition-all disabled:opacity-40"
-                  style={{
-                    background: completed ? "#238636" : "#fd8c73",
-                    color: completed ? "#fff" : "#000",
-                    border: `1px solid ${completed ? "#2ea043" : "#e06c75"}`,
-                  }}>
-                  {submitting ? <><RefreshCw className="h-3.5 w-3.5 animate-spin" /> Testing...</> : completed ? "Accepted ✓" : "Submit"}
+                  className="flex items-center gap-1.5 px-4 py-1 rounded text-xs font-bold disabled:opacity-40 transition-all"
+                  style={{ background: completed ? "#238636" : "#fd8c73", color: completed ? "#fff" : "#000", border: `1px solid ${completed ? "#2ea043" : "#e06c75"}` }}>
+                  {submitting ? <><RefreshCw className="h-3 w-3 animate-spin" /> Testing…</> : completed ? "✓ Accepted" : "Submit"}
                 </button>
               </div>
             </div>
 
-            {/* Bottom content */}
-            <div className="flex-1 overflow-y-auto p-3">
+            {/* Console content */}
+            <div className="flex-1 overflow-y-auto p-3 text-xs" style={{ scrollbarColor: `${T.scrollbar} transparent` }}>
 
-              {/* Sample Cases */}
+              {/* Sample Cases tab */}
               {bottomTab === "sample" && (
                 <div className="space-y-3">
                   <div className="flex gap-2">
                     {sampleCases.map((c, i) => {
-                      const res    = runResults?.[i]
-                      const passed = res?.passed === true
-                      const failed = res && !res.passed
+                      const r = runResults?.[i]
+                      const pass = r?.passed === true; const fail = r && !r.passed
                       return (
-                        <button key={i} onClick={() => setSelectedCase(i)}
-                          className="px-3 py-1 rounded text-xs font-semibold transition-all flex items-center gap-1"
+                        <button key={i} onClick={() => setSelCase(i)}
+                          className="px-3 py-1 rounded font-semibold flex items-center gap-1 transition-all"
                           style={{
-                            background: selectedCase === i ? (passed ? "#10b98120" : failed ? "#f8514920" : "#388bfd20") : "transparent",
-                            color:      selectedCase === i ? (passed ? "#3fb950"   : failed ? "#f85149"   : "#388bfd")   : (passed ? "#3fb950" : failed ? "#f85149" : "#8b949e"),
-                            border: `1px solid ${selectedCase === i ? (passed ? "#3fb95044" : failed ? "#f8514944" : "#388bfd44") : "transparent"}`,
+                            background: selCase === i ? (pass?"#10b98120":fail?"#f8514920":"#388bfd20") : "transparent",
+                            color: selCase === i ? (pass?"#3fb950":fail?"#f85149":"#58a6ff") : (pass?"#3fb950":fail?"#f85149":T.muted),
+                            border: `1px solid ${selCase===i?(pass?"#3fb95044":fail?"#f8514944":"#388bfd44"):"transparent"}`,
                           }}>
-                          {passed && <span>✓</span>}
-                          {failed && <span>✗</span>}
-                          Case {i + 1}
+                          {pass && "✓"}{fail && "✗"} Case {i + 1}
                         </button>
                       )
                     })}
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div>
-                      <p className="text-xs font-semibold mb-1.5" style={{ color: "#8b949e" }}>Input</p>
-                      <div className="rounded-lg px-3 py-2.5 font-mono text-sm"
-                        style={{ background: "#161b22", color: "#c9d1d9", minHeight: "36px", border: "1px solid #30363d" }}>
-                        {sampleCases[selectedCase]?.input || <span style={{ color: "#3b4048" }}>—</span>}
+                      <p className="font-semibold mb-1" style={{ color: T.muted }}>Input</p>
+                      <div className="rounded px-3 py-2 font-mono" style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.string }}>
+                        {sampleCases[selCase]?.input || <span style={{ color: T.lineNum }}>—</span>}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold mb-1.5" style={{ color: "#8b949e" }}>Expected Output</p>
-                      <div className="rounded-lg px-3 py-2.5 font-mono text-sm"
-                        style={{ background: "#161b22", color: "#c9d1d9", minHeight: "36px", border: "1px solid #30363d" }}>
-                        {sampleCases[selectedCase]?.output || <span style={{ color: "#3b4048" }}>—</span>}
+                      <p className="font-semibold mb-1" style={{ color: T.muted }}>Expected Output</p>
+                      <div className="rounded px-3 py-2 font-mono" style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.function }}>
+                        {sampleCases[selCase]?.output || <span style={{ color: T.lineNum }}>—</span>}
                       </div>
                     </div>
-                    {runResults && runResults[selectedCase] && (
+                    {runResults?.[selCase] && (
                       <div>
-                        <p className="text-xs font-semibold mb-1.5" style={{ color: "#8b949e" }}>Output</p>
-                        <div className="rounded-lg px-3 py-2.5 font-mono text-sm"
-                          style={{
-                            background: "#161b22",
-                            color: runResults[selectedCase].passed ? "#3fb950" : "#f85149",
-                            minHeight: "36px",
-                            border: `1px solid ${runResults[selectedCase].passed ? "#2ea04333" : "#f8514933"}`,
-                          }}>
-                          {runResults[selectedCase].actualOutput || <span style={{ color: "#3b4048" }}>—</span>}
+                        <p className="font-semibold mb-1" style={{ color: T.muted }}>Your Output</p>
+                        <div className="rounded px-3 py-2 font-mono"
+                          style={{ background: T.panel, border: `1px solid ${runResults[selCase].passed?"#2ea04344":"#f8514944"}`, color: runResults[selCase].passed?"#3fb950":"#f85149" }}>
+                          {runResults[selCase].actualOutput || <span style={{ color: T.lineNum }}>—</span>}
                         </div>
+                        {runResults[selCase].error && (
+                          <div className="mt-1 rounded px-3 py-2 font-mono text-[11px]"
+                            style={{ background: "#2d0b0b", border: "1px solid #f8514933", color: "#f85149" }}>
+                            {runResults[selCase].error.slice(0, 300)}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
                 </div>
               )}
 
-              {/* Custom Cases */}
+              {/* Custom tab */}
               {bottomTab === "custom" && (
-                <div>
-                  <p className="text-xs mb-2" style={{ color: "#8b949e" }}>Enter custom input</p>
-                  <textarea value={customInput} onChange={e => setCustomInput(e.target.value)}
-                    placeholder="Your custom test input..."
-                    className="w-full rounded-md border px-3 py-2 text-sm font-mono focus:outline-none resize-none h-24"
-                    style={{ background: "#161b22", borderColor: "#30363d", color: "#c9d1d9", outlineColor: "#58a6ff" }} />
+                <div className="space-y-2">
+                  <p style={{ color: T.muted }}>Custom input (function args, one per line):</p>
+                  <textarea value={customIn} onChange={e => setCustomIn(e.target.value)}
+                    placeholder="e.g. [1,2,3,4]&#10;9"
+                    className="w-full rounded border px-3 py-2 font-mono focus:outline-none resize-none h-20"
+                    style={{ background: T.panel, borderColor: T.border, color: T.text }} />
+                  <button onClick={() => runTests("run")} disabled={running || !customIn.trim()}
+                    className="px-4 py-1.5 rounded font-bold text-xs disabled:opacity-40"
+                    style={{ background: "#238636", color: "#fff" }}>
+                    {running ? "Running…" : "Run Custom"}
+                  </button>
                 </div>
               )}
 
-              {/* Test Results */}
+              {/* Results tab */}
               {bottomTab === "results" && (
                 <div className="space-y-2">
                   {(running || submitting) && (
-                    <div className="flex items-center gap-2 text-sm" style={{ color: "#8b949e" }}>
-                      <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                      {running ? "Running public test..." : "Running all test cases..."}
+                    <div className="flex items-center gap-2" style={{ color: T.muted }}>
+                      <RefreshCw className="h-3 w-3 animate-spin" />
+                      {running ? "Running sample cases…" : "Running all test cases…"}
                     </div>
                   )}
                   {error && (
-                    <div className="rounded-md border px-3 py-2 text-sm"
-                      style={{ background: "#2d0b0b", borderColor: "#f8514933", color: "#f85149" }}>
+                    <div className="rounded px-3 py-2 font-mono" style={{ background: "#2d0b0b", border: "1px solid #f8514933", color: "#f85149" }}>
                       {error}
                     </div>
                   )}
-                  {runResults && runResults.map((r: any, i: number) => (
-                    <div key={i} className="rounded-md border p-3 text-xs space-y-1"
-                      style={{ background: r.passed ? "#0d2818" : "#2d0b0b", borderColor: r.passed ? "#2ea04333" : "#f8514933" }}>
+                  {runResults?.map((r: any, i: number) => (
+                    <div key={i} className="rounded border p-3 space-y-1"
+                      style={{ background: r.passed?"#0d2818":"#2d0b0b", borderColor: r.passed?"#2ea04333":"#f8514933" }}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span style={{ color: "#8b949e" }}>{r.isPublic ? "Testcase 1 (public)" : `Testcase ${i + 1} (hidden)`}</span>
+                          <span style={{ color: T.muted }}>
+                            {r.isPublic ? `Testcase ${i+1} (public)` : `Testcase ${i+1} (hidden)`}
+                          </span>
                           {r.runtimeMs > 0 && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded"
-                              style={{ background: "#0c1929", color: "#58a6ff" }}>
-                              {r.runtimeMs}ms
-                            </span>
+                            <span className="px-1.5 py-0.5 rounded text-[10px]"
+                              style={{ background: T.panel, color: "#58a6ff" }}>{r.runtimeMs}ms</span>
                           )}
                         </div>
-                        <span className="font-bold" style={{ color: r.tle ? "#d29922" : r.passed ? "#3fb950" : "#f85149" }}>
+                        <span className="font-bold"
+                          style={{ color: r.tle?"#d29922":r.passed?"#3fb950":"#f85149" }}>
                           {r.tle ? "⏱ TLE" : r.passed ? "✓ Accepted" : "✗ Wrong Answer"}
                         </span>
                       </div>
                       {r.isPublic && (
-                        <div className="font-mono space-y-0.5 mt-1">
-                          <p><span style={{ color: "#8b949e" }}>Input: </span><span style={{ color: "#79c0ff" }}>{r.input}</span></p>
-                          <p><span style={{ color: "#8b949e" }}>Expected: </span><span style={{ color: "#3fb950" }}>{r.expectedOutput}</span></p>
-                          <p><span style={{ color: "#8b949e" }}>Output: </span><span style={{ color: r.passed ? "#3fb950" : "#f85149" }}>{r.actualOutput}</span></p>
+                        <div className="font-mono space-y-0.5 mt-1 text-[11px]">
+                          <p><span style={{ color: T.muted }}>Input: </span><span style={{ color: T.string }}>{r.input?.length > 200 ? r.input.slice(0,200)+"…" : r.input}</span></p>
+                          <p><span style={{ color: T.muted }}>Expected: </span><span style={{ color: "#3fb950" }}>{r.expectedOutput}</span></p>
+                          <p><span style={{ color: T.muted }}>Output: </span><span style={{ color: r.passed?"#3fb950":"#f85149" }}>{r.actualOutput}</span></p>
                         </div>
                       )}
-                      {!r.isPublic && !r.passed && !r.tle && (
-                        <p className="text-[10px]" style={{ color: "#8b949e" }}>
-                          Hidden test failed — check edge cases (empty input, large values, boundaries)
-                        </p>
+                      {!r.isPublic && !r.passed && (
+                        <p className="text-[10px] mt-1" style={{ color: T.muted }}>Hidden test failed — check edge cases</p>
                       )}
-                      {r.error && !r.tle && (
-                        <p className="font-mono text-[10px] mt-1" style={{ color: "#f85149" }}>{r.error.slice(0, 150)}</p>
+                      {r.error && (
+                        <p className="font-mono text-[10px] mt-1" style={{ color: "#f85149" }}>{r.error.slice(0,200)}</p>
                       )}
                     </div>
                   ))}
                   {completed && (
-                    <div className="rounded-md border p-3 space-y-2"
+                    <div className="rounded border p-3 space-y-1"
                       style={{ background: "#0d2818", borderColor: "#2ea04333" }}>
                       <div className="flex items-center gap-2 font-bold" style={{ color: "#3fb950" }}>
-                        <Trophy className="h-4 w-4" /> All tests passed! XP awarded.
+                        <Trophy className="h-4 w-4" /> All tests passed! 🎉
                       </div>
                       {runtimeMs !== null && (
-                        <div className="flex items-center gap-4 text-xs" style={{ color: "#8b949e" }}>
-                          <span>⏱ Runtime: <span style={{ color: "#58a6ff" }}>{runtimeMs}ms</span></span>
-                          <span>⏰ Time limit: <span style={{ color: "#8b949e" }}>{timeLimit}ms ({lang})</span></span>
-                        </div>
+                        <p style={{ color: T.muted }}>Runtime: <span style={{ color: "#58a6ff" }}>{runtimeMs}ms</span> / Limit: {timeLimit}ms</p>
                       )}
-                      <a href="#" onClick={e => { e.preventDefault(); window.history.back() }}
-                        className="text-xs transition-colors" style={{ color: "#58a6ff" }}>← Back</a>
                     </div>
                   )}
                   {!runResults && !running && !submitting && !error && (
-                    <p className="text-xs" style={{ color: "#3b4048" }}>Click Run to test against the public example.</p>
+                    <p style={{ color: T.lineNum }}>Click Run to test your solution.</p>
                   )}
                 </div>
               )}
 
             </div>
           </div>
-
         </div>
       </div>
     </div>

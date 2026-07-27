@@ -124,8 +124,8 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto block dark:hidden transition-opacity group-hover:opacity-80" />
-            <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto hidden dark:block transition-opacity group-hover:opacity-80" />
+            <Image src="/codehiring-logo.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto block dark:hidden transition-opacity group-hover:opacity-80" priority />
+            <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={130} height={32} className="h-7 w-auto hidden dark:block transition-opacity group-hover:opacity-80" priority />
             {/* Show year badge for 1st year students */}
             {isFirstYear ? (
               <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full hidden sm:block bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
