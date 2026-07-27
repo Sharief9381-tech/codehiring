@@ -14,7 +14,6 @@
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
-import { getDatabase } from "@/lib/database"
 
 // ── Language-aware time limits (ms) ──────────────────────────────────────────
 const LANG_TIMEOUT: Record<string, number> = {
@@ -50,92 +49,6 @@ async function executeCode(code: string, language: string, stdin: string, timeou
   if (!res.ok) throw new Error(`Executor error ${res.status}`)
   const data = await res.json()
   return { output: data.output ?? "", error: data.error ?? "", runtimeMs: data.runtimeMs ?? 0, tle: data.tle ?? false }
-}
-
-// ── Generate test cases with AI (input + expected output) ──────────────────────
-async function generateTestCasesWithAI(problem: any, count: number): Promise<Array<{input:string;expected:string;isPublic:boolean}>> {
-  const groqKey   = process.env.GROQ_API_KEY
-  const openaiKey = process.env.OPENAI_API_KEY
-
-  const prompt = `Generate exactly ${count} test cases for this coding problem.
-
-Problem: ${problem.title}
-Description: ${problem.desc}
-Input format: ${problem.inputFormat || "Standard stdin input"}
-Output format: ${problem.outputFormat || "Standard stdout output"}
-Example: Input="${problem.input}" → Output="${problem.output}"
-
-Rules:
-- Test 1: Use the exact public example (input="${problem.input}", expected="${problem.output}")
-${problem.input2 ? `- Test 2: Use the second example (input="${problem.input2}", expected="${problem.output2}")` : ""}
-- Remaining tests: edge cases with correct expected outputs
-- ALL expected outputs must be CORRECT (verify them yourself)
-- Input/output format must match exactly
-
-Return ONLY a JSON array:
-[{"input":"...","expected":"...","isPublic":true},{"input":"...","expected":"...","isPublic":false}]`
-
-  const call = async (key: string, url: string, model: string) => {
-    const r = await fetch(url, {
-      method:"POST", headers:{"Content-Type":"application/json","Authorization":`Bearer ${key}`},
-      body: JSON.stringify({ model, messages:[{role:"user",content:prompt}], temperature:0.1, max_tokens:600 }),
-    })
-    if (!r.ok) throw new Error(`${r.status}`)
-    const d = await r.json()
-    const raw = (d.choices?.[0]?.message?.content ?? "").trim().replace(/^```(?:json)?\n?/i,"").replace(/\n?```$/i,"").trim()
-    return JSON.parse(raw)
-  }
-
-  let result = null
-  if (groqKey)   { try { result = await call(groqKey,   "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile") } catch {} }
-  if (!result && openaiKey) { try { result = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch {} }
-
-  if (!result || !Array.isArray(result)) throw new Error("AI failed to generate test cases")
-  return result.map((tc: any, i: number) => ({
-    input:    tc.input    ?? problem.input ?? "",
-    expected: tc.expected ?? "",
-    isPublic: i < 2,
-  }))
-}
-
-// ── Build test cases — cached in DB per problem ────────────────────────────────
-async function buildTestCasesWithCache(
-  problem: any, count: number
-): Promise<Array<{input:string;expected:string;isPublic:boolean}>> {
-  const problemKey = problem.title?.toLowerCase().replace(/\s+/g,"-") ?? "unknown"
-
-  // Try DB cache first
-  try {
-    const db     = await getDatabase()
-    const cached = await db.collection("problem_test_cases").findOne({ problemKey })
-    if (cached?.testCases?.length >= count) {
-      const tcs = cached.testCases.slice(0, count)
-      return tcs.map((tc: any, i: number) => ({ ...tc, isPublic: i < 2 }))
-    }
-  } catch {}
-
-  // Generate with AI
-  let testCases: Array<{input:string;expected:string;isPublic:boolean}>
-  try {
-    testCases = await generateTestCasesWithAI(problem, Math.max(count, 6))
-  } catch {
-    // Fallback: use known public examples only
-    const pub  = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
-    const pub2 = problem.input2 ? { input: problem.input2, expected: problem.output2 ?? "", isPublic: true } : pub
-    testCases  = [pub, pub2, pub, pub, pub, pub].slice(0, count)
-  }
-
-  // Cache in DB
-  try {
-    const db = await getDatabase()
-    await db.collection("problem_test_cases").updateOne(
-      { problemKey },
-      { $set: { problemKey, testCases, generatedAt: new Date() } },
-      { upsert: true }
-    )
-  } catch {}
-
-  return testCases.slice(0, count).map((tc, i) => ({ ...tc, isPublic: i < 2 }))
 }
 
 // ── Build test cases ───────────────────────────────────────────────────────────
@@ -181,12 +94,8 @@ export async function POST(req: Request) {
     }
 
     const count     = mode === "run" ? 2 : 6
-    const testCases = mode === "run"
-      ? [
-          { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true },
-          problem.input2 ? { input: problem.input2, expected: problem.output2 ?? "", isPublic: true } : { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true },
-        ]
-      : await buildTestCasesWithCache(problem, 6)
+    // Build test cases from stored examples (no DB/AI needed here)
+    const testCases = buildTestCases(problem, count)
     const timeout   = LANG_TIMEOUT[language] ?? 5000
 
     // Run sequentially — our executor handles one at a time per container
