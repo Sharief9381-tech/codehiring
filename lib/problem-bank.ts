@@ -1584,6 +1584,111 @@ export const PROBLEM_BANK: Record<string, StaticProblem> = {
     { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\nsol=Solution()\nprint(sol.isPalindrome(mk([1,2,3,2,1])))`, expected: "True", isPublic: false },
   ],
 },
+// ── Add Two Numbers ───────────────────────────────────────────────────────────
+"Add Two Numbers": {
+  title: "Add Two Numbers", difficulty: "Medium",
+  desc: "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each node contains a single digit. Add the two numbers and return the sum as a linked list.",
+  examples: [{ input: "l1 = [2,4,3], l2 = [5,6,4]", output: "[7,0,8]", explanation: "342 + 465 = 807." }, { input: "l1 = [0], l2 = [0]", output: "[0]" }, { input: "l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]", output: "[8,9,9,9,0,0,0,1]" }],
+  constraints: ["The number of nodes in each linked list is in the range [1, 100].", "0 ≤ Node.val ≤ 9", "It is guaranteed that the list represents a number that does not have leading zeros."],
+  functionSignature: "def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:",
+  starters: { Python: `from typing import Optional\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:\n        pass\n`, JavaScript: `var addTwoNumbers = function(l1, l2) {\n    \n};\n`, TypeScript: `function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {\n    \n};\n`, Java: `class Solution {\n    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.addTwoNumbers(mk([2,4,3]),mk([5,6,4]))))`, expected: "[7, 0, 8]", isPublic: true },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.addTwoNumbers(mk([0]),mk([0]))))`, expected: "[0]", isPublic: true },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.addTwoNumbers(mk([9,9,9,9,9,9,9]),mk([9,9,9,9]))))`, expected: "[8, 9, 9, 9, 0, 0, 0, 1]", isPublic: false },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.addTwoNumbers(mk([5]),mk([5]))))`, expected: "[0, 1]", isPublic: false },
+  ],
+},
+// ── Sort List ─────────────────────────────────────────────────────────────────
+"Sort List": {
+  title: "Sort List", difficulty: "Medium",
+  desc: "Given the `head` of a linked list, return the list after sorting it in ascending order. You must sort in O(n log n) time and O(1) memory (iterative).",
+  examples: [{ input: "head = [4,2,1,3]", output: "[1,2,3,4]" }, { input: "head = [-1,5,3,4,0]", output: "[-1,0,3,4,5]" }, { input: "head = []", output: "[]" }],
+  constraints: ["The number of nodes in the list is in the range [0, 5×10⁴].", "-10⁵ ≤ Node.val ≤ 10⁵"],
+  functionSignature: "def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:",
+  starters: { Python: `from typing import Optional\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        pass\n`, JavaScript: `var sortList = function(head) {\n    \n};\n`, TypeScript: `function sortList(head: ListNode | null): ListNode | null {\n    \n};\n`, Java: `class Solution {\n    public ListNode sortList(ListNode head) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    ListNode* sortList(ListNode* head) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.sortList(mk([4,2,1,3]))))`, expected: "[1, 2, 3, 4]", isPublic: true },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.sortList(mk([-1,5,3,4,0]))))`, expected: "[-1, 0, 3, 4, 5]", isPublic: true },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.sortList(None)))`, expected: "[]", isPublic: false },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\ndef toList(h):\n    r=[]\n    while h: r.append(h.val); h=h.next\n    return r\nsol=Solution()\nprint(toList(sol.sortList(mk([1]))))`, expected: "[1]", isPublic: false },
+  ],
+},
+// ── Binary Tree Right Side View ───────────────────────────────────────────────
+"Binary Tree Right Side View": {
+  title: "Binary Tree Right Side View", difficulty: "Medium",
+  desc: "Given the `root` of a binary tree, imagine yourself standing on the right side of it. Return the values of the nodes you can see ordered from top to bottom.",
+  examples: [{ input: "root = [1,2,3,null,5,null,4]", output: "[1,3,4]" }, { input: "root = [1,null,3]", output: "[1,3]" }, { input: "root = []", output: "[]" }],
+  constraints: ["The number of nodes in the tree is in the range [0, 100].", "-100 ≤ Node.val ≤ 100"],
+  functionSignature: "def rightSideView(self, root: Optional[TreeNode]) -> List[int]:",
+  starters: { Python: `from typing import Optional, List\nfrom collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:\n        pass\n`, JavaScript: `var rightSideView = function(root) {\n    \n};\n`, TypeScript: `function rightSideView(root: TreeNode | null): number[] {\n    \n};\n`, Java: `class Solution {\n    public List<Integer> rightSideView(TreeNode root) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    vector<int> rightSideView(TreeNode* root) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\ndef mk(a,i=0):\n    if i>=len(a) or a[i] is None: return None\n    n=TreeNode(a[i]); n.left=mk(a,2*i+1); n.right=mk(a,2*i+2); return n\nsol=Solution()\nprint(sol.rightSideView(mk([1,2,3,None,5,None,4])))`, expected: "[1, 3, 4]", isPublic: true },
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\nsol=Solution()\nprint(sol.rightSideView(None))`, expected: "[]", isPublic: true },
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\ndef mk(a,i=0):\n    if i>=len(a) or a[i] is None: return None\n    n=TreeNode(a[i]); n.left=mk(a,2*i+1); n.right=mk(a,2*i+2); return n\nsol=Solution()\nprint(sol.rightSideView(mk([1])))`, expected: "[1]", isPublic: false },
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\ndef mk(a,i=0):\n    if i>=len(a) or a[i] is None: return None\n    n=TreeNode(a[i]); n.left=mk(a,2*i+1); n.right=mk(a,2*i+2); return n\nsol=Solution()\nprint(sol.rightSideView(mk([1,2,3,4])))`, expected: "[1, 3, 4]", isPublic: false },
+  ],
+},
+// ── Is Subsequence ────────────────────────────────────────────────────────────
+"Is Subsequence": {
+  title: "Is Subsequence", difficulty: "Easy",
+  desc: 'Given two strings `s` and `t`, return `true` if `s` is a subsequence of `t`, or `false` otherwise. A subsequence is a string formed by deleting some (or none) characters from `t` without disturbing the remaining characters\' relative order.',
+  examples: [{ input: 's = "ace", t = "abcde"', output: "true" }, { input: 's = "aec", t = "abcde"', output: "false" }],
+  constraints: ["0 ≤ s.length ≤ 100", "0 ≤ t.length ≤ 10⁴", "s and t consist only of lowercase English letters."],
+  functionSignature: "def isSubsequence(self, s: str, t: str) -> bool:",
+  starters: { Python: `class Solution:\n    def isSubsequence(self, s: str, t: str) -> bool:\n        pass\n`, JavaScript: `var isSubsequence = function(s, t) {\n    \n};\n`, TypeScript: `function isSubsequence(s: string, t: string): boolean {\n    \n};\n`, Java: `class Solution {\n    public boolean isSubsequence(String s, String t) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    bool isSubsequence(string s, string t) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.isSubsequence("ace","abcde"))`, expected: "True", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.isSubsequence("aec","abcde"))`, expected: "False", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.isSubsequence("","abcde"))`, expected: "True", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.isSubsequence("axc","ahbgdc"))`, expected: "False", isPublic: false },
+  ],
+},
+// ── Detect Capital ────────────────────────────────────────────────────────────
+"Detect Capital": {
+  title: "Detect Capital", difficulty: "Easy",
+  desc: 'We define the usage of capitals in a word to be right when one of the following cases holds: all letters are capitals (e.g. "USA"), all letters are not capitals (e.g. "leetcode"), only the first letter is capital (e.g. "Google"). Given a string `word`, return `true` if the usage of capitals is right.',
+  examples: [{ input: 'word = "USA"', output: "true" }, { input: 'word = "FlaG"', output: "false" }],
+  constraints: ["1 ≤ word.length ≤ 100", "word consists of uppercase and lowercase English letters."],
+  functionSignature: "def detectCapitalUse(self, word: str) -> bool:",
+  starters: { Python: `class Solution:\n    def detectCapitalUse(self, word: str) -> bool:\n        pass\n`, JavaScript: `var detectCapitalUse = function(word) {\n    \n};\n`, TypeScript: `function detectCapitalUse(word: string): boolean {\n    \n};\n`, Java: `class Solution {\n    public boolean detectCapitalUse(String word) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    bool detectCapitalUse(string word) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.detectCapitalUse("USA"))`, expected: "True", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.detectCapitalUse("FlaG"))`, expected: "False", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.detectCapitalUse("leetcode"))`, expected: "True", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.detectCapitalUse("Google"))`, expected: "True", isPublic: false },
+  ],
+},
+// ── Longest Common Prefix ─────────────────────────────────────────────────────
+"Longest Common Prefix": {
+  title: "Longest Common Prefix", difficulty: "Easy",
+  desc: 'Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string `""`.',
+  examples: [{ input: 'strs = ["flower","flow","flight"]', output: '"fl"' }, { input: 'strs = ["dog","racecar","car"]', output: '""' }],
+  constraints: ["1 ≤ strs.length ≤ 200", "0 ≤ strs[i].length ≤ 200", "strs[i] consists of only lowercase English letters."],
+  functionSignature: "def longestCommonPrefix(self, strs: List[str]) -> str:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def longestCommonPrefix(self, strs: List[str]) -> str:\n        pass\n`, JavaScript: `var longestCommonPrefix = function(strs) {\n    \n};\n`, TypeScript: `function longestCommonPrefix(strs: string[]): string {\n    \n};\n`, Java: `class Solution {\n    public String longestCommonPrefix(String[] strs) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    string longestCommonPrefix(vector<string>& strs) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.longestCommonPrefix(["flower","flow","flight"]))`, expected: "fl", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.longestCommonPrefix(["dog","racecar","car"]))`, expected: "", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.longestCommonPrefix(["a"]))`, expected: "a", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.longestCommonPrefix(["ab","a"]))`, expected: "a", isPublic: false },
+  ],
+},
+// ── Backspace String Compare ───────────────────────────────────────────────────
+"Backspace String Compare": {
+  title: "Backspace String Compare", difficulty: "Easy",
+  desc: 'Given two strings `s` and `t`, return `true` if they are equal when both are typed into empty text editors. `"#"` means a backspace character. Note that after backspacing an empty text, the text will continue empty.',
+  examples: [{ input: 's = "ab#c", t = "ad#c"', output: "true", explanation: 'Both "s" and "t" become "ac".' }, { input: 's = "ab##", t = "c#d#"', output: "true" }, { input: 's = "a#c", t = "b"', output: "false" }],
+  constraints: ["1 ≤ s.length, t.length ≤ 200", "s and t only contain lowercase letters and '#' characters."],
+  functionSignature: "def backspaceCompare(self, s: str, t: str) -> bool:",
+  starters: { Python: `class Solution:\n    def backspaceCompare(self, s: str, t: str) -> bool:\n        pass\n`, JavaScript: `var backspaceCompare = function(s, t) {\n    \n};\n`, TypeScript: `function backspaceCompare(s: string, t: string): boolean {\n    \n};\n`, Java: `class Solution {\n    public boolean backspaceCompare(String s, String t) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    bool backspaceCompare(string s, string t) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.backspaceCompare("ab#c","ad#c"))`, expected: "True", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.backspaceCompare("ab##","c#d#"))`, expected: "True", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.backspaceCompare("a#c","b"))`, expected: "False", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.backspaceCompare("",""))`, expected: "True", isPublic: false },
+  ],
+},
 } // end PROBLEM_BANK
 
 // ─────────────────────────────────────────────────────────────────────────────
