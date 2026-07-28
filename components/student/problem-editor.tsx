@@ -29,10 +29,20 @@ const DEFAULT_STARTERS: Record<string, string> = {
 }
 
 // ── Syntax Highlighting ──────────────────────────────────────────────────────
-const PY_KEYWORDS  = /\b(def|class|return|if|elif|else|for|while|in|not|and|or|import|from|as|pass|break|continue|lambda|try|except|finally|with|yield|True|False|None|self|print|len|range|int|str|list|dict|set|tuple|bool|float)\b/g
-const JS_KEYWORDS  = /\b(var|let|const|function|return|if|else|for|while|do|switch|case|break|continue|class|new|this|typeof|instanceof|import|export|default|null|undefined|true|false|async|await|try|catch|finally|of|in|from)\b/g
-const JAVA_KEYWORDS = /\b(public|private|protected|static|void|class|interface|extends|implements|return|if|else|for|while|do|new|this|super|import|package|null|true|false|int|long|double|float|boolean|char|String|List|ArrayList|Map|HashMap|throw|throws|try|catch|finally)\b/g
-const CPP_KEYWORDS  = /\b(int|long|double|float|bool|char|void|class|struct|public|private|protected|return|if|else|for|while|do|new|delete|nullptr|true|false|const|auto|vector|string|map|set|pair|include|using|namespace|std|template|typename)\b/g
+
+// Keyword sets per language
+const KEYWORDS: Record<string, string[]> = {
+  Python:     ["def","class","return","if","elif","else","for","while","in","not","and","or","import","from","as","pass","break","continue","lambda","try","except","finally","with","yield","True","False","None","self","print","len","range","int","str","list","dict","set","tuple","bool","float","type","isinstance","super","raise","global","nonlocal","del","assert"],
+  JavaScript: ["var","let","const","function","return","if","else","for","while","do","switch","case","break","continue","class","new","this","typeof","instanceof","import","export","default","null","undefined","true","false","async","await","try","catch","finally","of","in","from","throw","delete","void"],
+  TypeScript: ["var","let","const","function","return","if","else","for","while","do","switch","case","break","continue","class","new","this","typeof","instanceof","import","export","default","null","undefined","true","false","async","await","try","catch","finally","of","in","from","throw","interface","type","enum","implements","extends","public","private","protected","readonly","abstract","declare","keyof","as","satisfies"],
+  Java:       ["public","private","protected","static","final","void","class","interface","enum","extends","implements","return","if","else","for","while","do","new","this","super","import","package","null","true","false","int","long","double","float","boolean","char","byte","short","String","throws","throw","try","catch","finally","instanceof","abstract","synchronized","volatile","transient","native","strictfp","switch","case","break","continue","default"],
+  "C++":      ["int","long","double","float","bool","char","void","class","struct","union","enum","public","private","protected","return","if","else","for","while","do","new","delete","nullptr","true","false","const","constexpr","auto","vector","string","map","set","pair","include","using","namespace","std","template","typename","virtual","override","explicit","inline","static","extern","register","mutable","volatile","typedef","sizeof","this","throw","try","catch"],
+  C:          ["int","long","double","float","char","void","struct","union","enum","return","if","else","for","while","do","switch","case","break","continue","default","const","static","extern","register","typedef","sizeof","include","define","NULL","true","false","unsigned","signed","short","auto","volatile","goto"],
+  "C#":       ["public","private","protected","internal","static","void","class","interface","enum","struct","abstract","override","virtual","return","if","else","for","foreach","while","do","switch","case","break","continue","new","this","base","null","true","false","int","long","double","float","bool","char","string","decimal","byte","short","var","using","namespace","throw","try","catch","finally","async","await","lock","readonly","const","event","delegate","get","set","value","out","ref","in","params"],
+  Go:         ["func","var","const","type","struct","interface","map","chan","return","if","else","for","range","switch","case","break","continue","default","go","defer","select","import","package","nil","true","false","int","int8","int16","int32","int64","uint","float32","float64","bool","string","byte","rune","error","make","new","append","len","cap","close","delete","copy","panic","recover","print","println"],
+  Kotlin:     ["fun","val","var","class","object","interface","enum","data","sealed","abstract","override","open","final","return","if","else","for","while","do","when","break","continue","import","package","null","true","false","is","as","in","!in","this","super","constructor","init","companion","by","lazy","it","let","run","also","apply","with","to","until","step","downTo","throw","try","catch","finally"],
+  Swift:      ["func","var","let","class","struct","enum","protocol","extension","return","if","else","for","while","repeat","switch","case","break","continue","import","nil","true","false","self","super","init","deinit","override","final","static","lazy","weak","unowned","guard","defer","throw","try","catch","throws","rethrows","in","where","as","is","Any","AnyObject","Type","get","set","willSet","didSet","mutating","nonmutating","dynamic","required","convenience","fileprivate","internal","open","public","private"],
+}
 
 type ThemeKey = "dark" | "light" | "monokai" | "solarized"
 
@@ -79,42 +89,143 @@ const THEMES: Record<ThemeKey, SyntaxTheme> = {
 }
 
 function highlight(code: string, lang: string, theme: SyntaxTheme): string {
+  const keywords = new Set(KEYWORDS[lang] ?? [])
+
+  const kw  = (s: string) => `<span style="color:${theme.keyword};font-weight:600">${s}</span>`
+  const str = (s: string) => `<span style="color:${theme.string}">${s}</span>`
+  const num = (s: string) => `<span style="color:${theme.number}">${s}</span>`
+  const cmt = (s: string) => `<span style="color:${theme.comment};font-style:italic">${s}</span>`
+  const fn_ = (s: string) => `<span style="color:${theme.function}">${s}</span>`
+  const tp  = (s: string) => `<span style="color:${theme.type}">${s}</span>`
   const esc = (s: string) => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-  let src = esc(code)
 
-  const kw   = `color:${theme.keyword};font-weight:600`
-  const str  = `color:${theme.string}`
-  const num  = `color:${theme.number}`
-  const cmt  = `color:${theme.comment};font-style:italic`
-  const fn_  = `color:${theme.function}`
-  const tp   = `color:${theme.type}`
-  const op   = `color:${theme.operator}`
+  // Comment prefix per language
+  const lineComment = (lang === "Python") ? "#"
+    : (lang === "Go" || lang === "Swift" || lang === "Kotlin" || lang === "C++" || lang === "C" || lang === "Java" || lang === "JavaScript" || lang === "TypeScript" || lang === "C#") ? "//"
+    : null
 
-  // Comments first (highest priority)
-  src = src.replace(/(#[^\n]*)/g,   `<span style="${cmt}">$1</span>`)
-  src = src.replace(/(\/\/[^\n]*)/g, `<span style="${cmt}">$1</span>`)
+  // Process line by line
+  return code.split("\n").map(line => {
+    let out = ""
+    let i = 0
+    const n = line.length
 
-  // Strings
-  src = src.replace(/(&quot;(?:[^&]|&(?!quot;))*&quot;|&#39;(?:[^&]|&(?!#39;))*&#39;)/g, `<span style="${str}">$1</span>`)
+    while (i < n) {
+      // ── Line comment ──────────────────────────────────────────────────────
+      if (lineComment && line.startsWith(lineComment, i)) {
+        out += cmt(esc(line.slice(i)))
+        i = n
+        continue
+      }
 
-  // Numbers
-  src = src.replace(/\b(\d+\.?\d*)\b/g, `<span style="${num}">$1</span>`)
+      // ── Block comment start /* ────────────────────────────────────────────
+      if ((lang === "Java" || lang === "C++" || lang === "C" || lang === "JavaScript" || lang === "TypeScript" || lang === "C#" || lang === "Go" || lang === "Kotlin" || lang === "Swift") && line[i] === "/" && line[i+1] === "*") {
+        const end = line.indexOf("*/", i + 2)
+        if (end !== -1) {
+          out += cmt(esc(line.slice(i, end + 2))); i = end + 2
+        } else {
+          out += cmt(esc(line.slice(i))); i = n
+        }
+        continue
+      }
 
-  // Language-specific keywords
-  if (lang === "Python") {
-    src = src.replace(PY_KEYWORDS, `<span style="${kw}">$1</span>`)
-    src = src.replace(/\b(def\s+)(\w+)/g, `<span style="${kw}">$1</span><span style="${fn_}">$2</span>`)
-    src = src.replace(/\b(class\s+)(\w+)/g, `<span style="${kw}">$1</span><span style="${tp}">$2</span>`)
-  } else if (lang === "JavaScript" || lang === "TypeScript") {
-    src = src.replace(JS_KEYWORDS, `<span style="${kw}">$1</span>`)
-    src = src.replace(/\b(function\s+)(\w+)/g, `<span style="${kw}">$1</span><span style="${fn_}">$2</span>`)
-  } else if (lang === "Java") {
-    src = src.replace(JAVA_KEYWORDS, `<span style="${kw}">$1</span>`)
-  } else if (lang === "C++" || lang === "C") {
-    src = src.replace(CPP_KEYWORDS, `<span style="${kw}">$1</span>`)
-  }
+      // ── Preprocessor (#include, #define) for C/C++ ────────────────────────
+      if ((lang === "C" || lang === "C++") && line[i] === "#" && i === 0) {
+        // highlight whole line as keyword-ish
+        const spaceIdx = line.indexOf(" ", i)
+        const directive = spaceIdx === -1 ? line.slice(i) : line.slice(i, spaceIdx)
+        out += kw(esc(directive))
+        i += directive.length
+        continue
+      }
 
-  return src
+      // ── String literals ───────────────────────────────────────────────────
+      const ch = line[i]
+      if (ch === '"' || ch === "'" || (ch === "`" && (lang === "JavaScript" || lang === "TypeScript"))) {
+        // Python triple quotes
+        if (lang === "Python" && (line.slice(i, i+3) === '"""' || line.slice(i, i+3) === "'''")) {
+          const q = line.slice(i, i+3)
+          const end = line.indexOf(q, i + 3)
+          if (end !== -1) {
+            out += str(esc(line.slice(i, end + 3))); i = end + 3
+          } else {
+            out += str(esc(line.slice(i))); i = n
+          }
+          continue
+        }
+        // Regular string
+        let j = i + 1
+        while (j < n) {
+          if (line[j] === ch && line[j-1] !== "\\") break
+          j++
+        }
+        out += str(esc(line.slice(i, j + 1)))
+        i = j + 1
+        continue
+      }
+
+      // ── Numbers ───────────────────────────────────────────────────────────
+      if (/\d/.test(ch) && (i === 0 || !/\w/.test(line[i-1]))) {
+        let j = i
+        while (j < n && /[\d.xXbBoOeE_a-fA-F]/.test(line[j])) j++
+        out += num(esc(line.slice(i, j))); i = j
+        continue
+      }
+
+      // ── Identifiers and keywords ──────────────────────────────────────────
+      if (/[a-zA-Z_$]/.test(ch)) {
+        let j = i
+        while (j < n && /[\w$]/.test(line[j])) j++
+        const word = line.slice(i, j)
+        const next = line[j]
+
+        if (keywords.has(word)) {
+          // def/function → next word is function name
+          if ((lang === "Python" && word === "def") || (lang === "Python" && word === "class")) {
+            out += kw(esc(word))
+            i = j
+            // skip whitespace
+            while (i < n && line[i] === " ") { out += " "; i++ }
+            // function/class name
+            let k = i
+            while (k < n && /\w/.test(line[k])) k++
+            if (k > i) {
+              out += (word === "class" ? tp : fn_)(esc(line.slice(i, k)))
+              i = k
+            }
+          } else if ((lang === "JavaScript" || lang === "TypeScript") && word === "function") {
+            out += kw(esc(word))
+            i = j
+            while (i < n && line[i] === " ") { out += " "; i++ }
+            let k = i
+            while (k < n && /\w/.test(line[k])) k++
+            if (k > i) { out += fn_(esc(line.slice(i, k))); i = k }
+          } else {
+            out += kw(esc(word)); i = j
+          }
+        } else if (next === "(") {
+          // Function call
+          out += fn_(esc(word)); i = j
+        } else {
+          out += esc(word); i = j
+        }
+        continue
+      }
+
+      // ── Operators ─────────────────────────────────────────────────────────
+      if (/[+\-*/%=<>!&|^~?:]/.test(ch)) {
+        out += `<span style="color:${theme.operator}">${esc(ch)}</span>`
+        i++
+        continue
+      }
+
+      // ── Default ───────────────────────────────────────────────────────────
+      out += esc(ch)
+      i++
+    }
+
+    return out
+  }).join("\n")
 }
 
 interface Props { problemId: string }
