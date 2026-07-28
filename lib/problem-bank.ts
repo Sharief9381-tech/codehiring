@@ -1359,6 +1359,231 @@ export const PROBLEM_BANK: Record<string, StaticProblem> = {
     { script: `sol=Solution()\nprint(sol.leastInterval(["A","A","A","A","A","A","B","C","D","E","F","G"],2))`, expected: "16", isPublic: false },
   ],
 },
+// ── Number of Provinces ───────────────────────────────────────────────────────
+"Number of Provinces": {
+  title: "Number of Provinces", difficulty: "Medium",
+  desc: "There are `n` cities. Some of them are connected. If city `a` is directly connected to city `b`, and city `b` is directly connected to city `c`, then city `a` is indirectly connected to city `c`. A province is a group of directly or indirectly connected cities. You are given an `n x n` matrix `isConnected` where `isConnected[i][j] = 1` if cities `i` and `j` are directly connected. Return the total number of provinces.",
+  examples: [{ input: "isConnected = [[1,1,0],[1,1,0],[0,0,1]]", output: "2" }, { input: "isConnected = [[1,0,0],[0,1,0],[0,0,1]]", output: "3" }],
+  constraints: ["1 ≤ n ≤ 200", "n == isConnected.length", "n == isConnected[i].length", "isConnected[i][j] is 1 or 0.", "isConnected[i][i] == 1", "isConnected[i][j] == isConnected[j][i]"],
+  functionSignature: "def findCircleNum(self, isConnected: List[List[int]]) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def findCircleNum(self, isConnected: List[List[int]]) -> int:\n        pass\n`, JavaScript: `var findCircleNum = function(isConnected) {\n    \n};\n`, TypeScript: `function findCircleNum(isConnected: number[][]): number {\n    \n};\n`, Java: `class Solution {\n    public int findCircleNum(int[][] isConnected) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int findCircleNum(vector<vector<int>>& isConnected) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.findCircleNum([[1,1,0],[1,1,0],[0,0,1]]))`, expected: "2", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.findCircleNum([[1,0,0],[0,1,0],[0,0,1]]))`, expected: "3", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.findCircleNum([[1,1,1],[1,1,1],[1,1,1]]))`, expected: "1", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.findCircleNum([[1]]))`, expected: "1", isPublic: false },
+  ],
+},
+// ── Max Area of Island ─────────────────────────────────────────────────────────
+"Max Area of Island": {
+  title: "Max Area of Island", difficulty: "Medium",
+  desc: "You are given an `m x n` binary matrix `grid`. An island is a group of `1`s (land) connected 4-directionally. The area of an island is the number of cells with value `1` in the island. Return the maximum area of an island in `grid`. If there is no island, return `0`.",
+  examples: [{ input: "grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]", output: "6" }, { input: "grid = [[0,0,0,0,0,0,0,0]]", output: "0" }],
+  constraints: ["m == grid.length", "n == grid[i].length", "1 ≤ m, n ≤ 50", "grid[i][j] is either 0 or 1."],
+  functionSignature: "def maxAreaOfIsland(self, grid: List[List[int]]) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:\n        pass\n`, JavaScript: `var maxAreaOfIsland = function(grid) {\n    \n};\n`, TypeScript: `function maxAreaOfIsland(grid: number[][]): number {\n    \n};\n`, Java: `class Solution {\n    public int maxAreaOfIsland(int[][] grid) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int maxAreaOfIsland(vector<vector<int>>& grid) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.maxAreaOfIsland([[0,0,1,0],[0,0,1,0],[0,1,1,0],[0,0,0,0]]))`, expected: "4", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.maxAreaOfIsland([[0,0,0,0,0,0,0,0]]))`, expected: "0", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.maxAreaOfIsland([[1]]))`, expected: "1", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.maxAreaOfIsland([[1,1],[1,0]]))`, expected: "3", isPublic: false },
+  ],
+},
+// ── Course Schedule II ─────────────────────────────────────────────────────────
+"Course Schedule II": {
+  title: "Course Schedule II", difficulty: "Medium",
+  desc: "There are `numCourses` courses to take, labeled `0` to `numCourses-1`. You are given `prerequisites` where `prerequisites[i] = [ai, bi]` means you must take `bi` before `ai`. Return the ordering of courses you should take to finish all courses. If it is impossible, return an empty array.",
+  examples: [{ input: "numCourses = 2, prerequisites = [[1,0]]", output: "[0,1]" }, { input: "numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]", output: "[0,2,1,3]" }, { input: "numCourses = 1, prerequisites = []", output: "[0]" }],
+  constraints: ["1 ≤ numCourses ≤ 2000", "0 ≤ prerequisites.length ≤ numCourses × (numCourses - 1)"],
+  functionSignature: "def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:\n        pass\n`, JavaScript: `var findOrder = function(numCourses, prerequisites) {\n    \n};\n`, TypeScript: `function findOrder(numCourses: number, prerequisites: number[][]): number[] {\n    \n};\n`, Java: `class Solution {\n    public int[] findOrder(int numCourses, int[][] prerequisites) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nresult=sol.findOrder(2,[[1,0]])\nprint(result==[0,1] or result==[1,0] and False)`, expected: "True", isPublic: true },
+    { script: `sol=Solution()\nresult=sol.findOrder(2,[[1,0],[0,1]])\nprint(result)`, expected: "[]", isPublic: true },
+    { script: `sol=Solution()\nresult=sol.findOrder(1,[])\nprint(result)`, expected: "[0]", isPublic: false },
+    { script: `sol=Solution()\nresult=sol.findOrder(2,[[1,0]])\nprint(len(result)==2)`, expected: "True", isPublic: false },
+  ],
+},
+// ── Validate Binary Search Tree ───────────────────────────────────────────────
+"Validate Binary Search Tree": {
+  title: "Validate Binary Search Tree", difficulty: "Medium",
+  desc: "Given the `root` of a binary tree, determine if it is a valid binary search tree (BST). A valid BST has: every node's value greater than all values in its left subtree, every node's value less than all values in its right subtree, and both subtrees are also BSTs.",
+  examples: [{ input: "root = [2,1,3]", output: "true" }, { input: "root = [5,1,4,null,null,3,6]", output: "false", explanation: "Root is 5, but right child is 4 which is < 5." }],
+  constraints: ["The number of nodes is in the range [1, 10⁴].", "-2³¹ ≤ Node.val ≤ 2³¹-1"],
+  functionSignature: "def isValidBST(self, root: Optional[TreeNode]) -> bool:",
+  starters: { Python: `from typing import Optional\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def isValidBST(self, root: Optional[TreeNode]) -> bool:\n        pass\n`, JavaScript: `var isValidBST = function(root) {\n    \n};\n`, TypeScript: `function isValidBST(root: TreeNode | null): boolean {\n    \n};\n`, Java: `class Solution {\n    public boolean isValidBST(TreeNode root) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    bool isValidBST(TreeNode* root) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\ndef mk(a,i=0):\n    if i>=len(a) or a[i] is None: return None\n    n=TreeNode(a[i]); n.left=mk(a,2*i+1); n.right=mk(a,2*i+2); return n\nsol=Solution()\nprint(sol.isValidBST(mk([2,1,3])))`, expected: "True", isPublic: true },
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\ndef mk(a,i=0):\n    if i>=len(a) or a[i] is None: return None\n    n=TreeNode(a[i]); n.left=mk(a,2*i+1); n.right=mk(a,2*i+2); return n\nsol=Solution()\nprint(sol.isValidBST(mk([5,1,4,None,None,3,6])))`, expected: "False", isPublic: true },
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\nsol=Solution()\nprint(sol.isValidBST(TreeNode(1)))`, expected: "True", isPublic: false },
+    { script: `class TreeNode:\n    def __init__(self,v=0,l=None,r=None): self.val=v;self.left=l;self.right=r\ndef mk(a,i=0):\n    if i>=len(a) or a[i] is None: return None\n    n=TreeNode(a[i]); n.left=mk(a,2*i+1); n.right=mk(a,2*i+2); return n\nsol=Solution()\nprint(sol.isValidBST(mk([5,4,6,None,None,3,7])))`, expected: "False", isPublic: false },
+  ],
+},
+// ── Kth Largest Element in Array ──────────────────────────────────────────────
+"Kth Largest Element in Array": {
+  title: "Kth Largest Element in Array", difficulty: "Medium",
+  desc: "Given an integer array `nums` and an integer `k`, return the `k`th largest element in the array. Note that it is the `k`th largest element in the sorted order, not the `k`th distinct element.",
+  examples: [{ input: "nums = [3,2,1,5,6,4], k = 2", output: "5" }, { input: "nums = [3,2,3,1,2,4,5,5,6], k = 4", output: "4" }],
+  constraints: ["1 ≤ k ≤ nums.length ≤ 10⁵", "-10⁴ ≤ nums[i] ≤ 10⁴"],
+  functionSignature: "def findKthLargest(self, nums: List[int], k: int) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def findKthLargest(self, nums: List[int], k: int) -> int:\n        pass\n`, JavaScript: `var findKthLargest = function(nums, k) {\n    \n};\n`, TypeScript: `function findKthLargest(nums: number[], k: number): number {\n    \n};\n`, Java: `class Solution {\n    public int findKthLargest(int[] nums, int k) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int findKthLargest(vector<int>& nums, int k) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.findKthLargest([3,2,1,5,6,4],2))`, expected: "5", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.findKthLargest([3,2,3,1,2,4,5,5,6],4))`, expected: "4", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.findKthLargest([1],1))`, expected: "1", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.findKthLargest([7,6,5,4,3,2,1],2))`, expected: "6", isPublic: false },
+  ],
+},
+// ── Longest Palindromic Substring ─────────────────────────────────────────────
+"Longest Palindromic Substring": {
+  title: "Longest Palindromic Substring", difficulty: "Medium",
+  desc: "Given a string `s`, return the longest palindromic substring in `s`.",
+  examples: [{ input: 's = "babad"', output: '"bab"', explanation: '"aba" is also a valid answer.' }, { input: 's = "cbbd"', output: '"bb"' }],
+  constraints: ["1 ≤ s.length ≤ 1000", "s consist of only digits and English letters."],
+  functionSignature: "def longestPalindrome(self, s: str) -> str:",
+  starters: { Python: `class Solution:\n    def longestPalindrome(self, s: str) -> str:\n        pass\n`, JavaScript: `var longestPalindrome = function(s) {\n    \n};\n`, TypeScript: `function longestPalindrome(s: string): string {\n    \n};\n`, Java: `class Solution {\n    public String longestPalindrome(String s) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    string longestPalindrome(string s) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nresult=sol.longestPalindrome("babad")\nprint(result in ["bab","aba"])`, expected: "True", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.longestPalindrome("cbbd"))`, expected: "bb", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.longestPalindrome("a"))`, expected: "a", isPublic: false },
+    { script: `sol=Solution()\nresult=sol.longestPalindrome("racecar")\nprint(result)`, expected: "racecar", isPublic: false },
+  ],
+},
+// ── Longest Repeating Character Replacement ───────────────────────────────────
+"Longest Repeating Character Replacement": {
+  title: "Longest Repeating Character Replacement", difficulty: "Medium",
+  desc: "You are given a string `s` and an integer `k`. You can choose any character of the string and change it to any other uppercase English character, and you can perform this operation at most `k` times. Return the length of the longest substring containing the same letter you can get after performing the above operations.",
+  examples: [{ input: 's = "ABAB", k = 2', output: "4", explanation: 'Replace two "A"s with "B"s or vice versa.' }, { input: 's = "AABABBA", k = 1', output: "4" }],
+  constraints: ["1 ≤ s.length ≤ 10⁵", "s consists of only uppercase English letters.", "0 ≤ k ≤ s.length"],
+  functionSignature: "def characterReplacement(self, s: str, k: int) -> int:",
+  starters: { Python: `class Solution:\n    def characterReplacement(self, s: str, k: int) -> int:\n        pass\n`, JavaScript: `var characterReplacement = function(s, k) {\n    \n};\n`, TypeScript: `function characterReplacement(s: string, k: number): number {\n    \n};\n`, Java: `class Solution {\n    public int characterReplacement(String s, int k) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int characterReplacement(string s, int k) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.characterReplacement("ABAB",2))`, expected: "4", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.characterReplacement("AABABBA",1))`, expected: "4", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.characterReplacement("AAAA",2))`, expected: "4", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.characterReplacement("ABCDE",1))`, expected: "2", isPublic: false },
+  ],
+},
+// ── Find Pivot Index ──────────────────────────────────────────────────────────
+"Find Pivot Index": {
+  title: "Find Pivot Index", difficulty: "Easy",
+  desc: "Given an array of integers `nums`, calculate the pivot index of this array. The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the sum of all the numbers strictly to the index's right. Return the leftmost pivot index, or `-1` if no such index exists.",
+  examples: [{ input: "nums = [1,7,3,6,5,6]", output: "3", explanation: "Left sum = 1+7+3 = 11, right sum = 5+6 = 11." }, { input: "nums = [1,2,3]", output: "-1" }, { input: "nums = [2,1,-1]", output: "0" }],
+  constraints: ["1 ≤ nums.length ≤ 10⁴", "-1000 ≤ nums[i] ≤ 1000"],
+  functionSignature: "def pivotIndex(self, nums: List[int]) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def pivotIndex(self, nums: List[int]) -> int:\n        pass\n`, JavaScript: `var pivotIndex = function(nums) {\n    \n};\n`, TypeScript: `function pivotIndex(nums: number[]): number {\n    \n};\n`, Java: `class Solution {\n    public int pivotIndex(int[] nums) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int pivotIndex(vector<int>& nums) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.pivotIndex([1,7,3,6,5,6]))`, expected: "3", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.pivotIndex([1,2,3]))`, expected: "-1", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.pivotIndex([2,1,-1]))`, expected: "0", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.pivotIndex([-1,-1,-1,-1,-1,0]))`, expected: "2", isPublic: false },
+  ],
+},
+// ── Maximum Average Subarray I ────────────────────────────────────────────────
+"Maximum Average Subarray I": {
+  title: "Maximum Average Subarray I", difficulty: "Easy",
+  desc: "You are given an integer array `nums` consisting of `n` elements, and an integer `k`. Find a contiguous subarray of length `k` that has the maximum average value and return this value. Any answer with a calculation error less than 10⁻⁵ will be accepted.",
+  examples: [{ input: "nums = [1,12,-5,-6,50,3], k = 4", output: "12.75000", explanation: "Maximum average is (12-5-6+50)/4 = 51/4 = 12.75." }, { input: "nums = [5], k = 1", output: "5.00000" }],
+  constraints: ["n == nums.length", "1 ≤ k ≤ n ≤ 10⁵", "-10⁴ ≤ nums[i] ≤ 10⁴"],
+  functionSignature: "def findMaxAverage(self, nums: List[int], k: int) -> float:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def findMaxAverage(self, nums: List[int], k: int) -> float:\n        pass\n`, JavaScript: `var findMaxAverage = function(nums, k) {\n    \n};\n`, TypeScript: `function findMaxAverage(nums: number[], k: number): number {\n    \n};\n`, Java: `class Solution {\n    public double findMaxAverage(int[] nums, int k) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    double findMaxAverage(vector<int>& nums, int k) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(round(sol.findMaxAverage([1,12,-5,-6,50,3],4),5))`, expected: "12.75", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.findMaxAverage([5],1))`, expected: "5.0", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.findMaxAverage([0,4,0,3,2],1))`, expected: "4.0", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.findMaxAverage([3,3],2))`, expected: "3.0", isPublic: false },
+  ],
+},
+// ── Max Consecutive Ones III ──────────────────────────────────────────────────
+"Max Consecutive Ones III": {
+  title: "Max Consecutive Ones III", difficulty: "Medium",
+  desc: "Given a binary array `nums` and an integer `k`, return the maximum number of consecutive `1`s in the array if you can flip at most `k` `0`s.",
+  examples: [{ input: "nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2", output: "6" }, { input: "nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3", output: "10" }],
+  constraints: ["1 ≤ nums.length ≤ 10⁵", "nums[i] is either 0 or 1.", "0 ≤ k ≤ nums.length"],
+  functionSignature: "def longestOnes(self, nums: List[int], k: int) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def longestOnes(self, nums: List[int], k: int) -> int:\n        pass\n`, JavaScript: `var longestOnes = function(nums, k) {\n    \n};\n`, TypeScript: `function longestOnes(nums: number[], k: number): number {\n    \n};\n`, Java: `class Solution {\n    public int longestOnes(int[] nums, int k) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int longestOnes(vector<int>& nums, int k) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.longestOnes([1,1,1,0,0,0,1,1,1,1,0],2))`, expected: "6", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.longestOnes([0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1],3))`, expected: "10", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.longestOnes([1,1,1],0))`, expected: "3", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.longestOnes([0,0,0],2))`, expected: "2", isPublic: false },
+  ],
+},
+// ── Subarray Sums Divisible by K ──────────────────────────────────────────────
+"Subarray Sums Divisible by K": {
+  title: "Subarray Sums Divisible by K", difficulty: "Medium",
+  desc: "Given an integer array `nums` and an integer `k`, return the number of non-empty subarrays that have a sum divisible by `k`.",
+  examples: [{ input: "nums = [4,5,0,-2,-3,1], k = 5", output: "7" }, { input: "nums = [5], k = 9", output: "0" }],
+  constraints: ["1 ≤ nums.length ≤ 3×10⁴", "-10⁴ ≤ nums[i] ≤ 10⁴", "2 ≤ k ≤ 10⁴"],
+  functionSignature: "def subarraysDivByK(self, nums: List[int], k: int) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def subarraysDivByK(self, nums: List[int], k: int) -> int:\n        pass\n`, JavaScript: `var subarraysDivByK = function(nums, k) {\n    \n};\n`, TypeScript: `function subarraysDivByK(nums: number[], k: number): number {\n    \n};\n`, Java: `class Solution {\n    public int subarraysDivByK(int[] nums, int k) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int subarraysDivByK(vector<int>& nums, int k) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.subarraysDivByK([4,5,0,-2,-3,1],5))`, expected: "7", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.subarraysDivByK([5],9))`, expected: "0", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.subarraysDivByK([1,2,3],3))`, expected: "3", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.subarraysDivByK([0],1))`, expected: "1", isPublic: false },
+  ],
+},
+// ── Boats to Save People ──────────────────────────────────────────────────────
+"Boats to Save People": {
+  title: "Boats to Save People", difficulty: "Medium",
+  desc: "You are given an array `people` where `people[i]` is the weight of the `i`th person, and an infinite number of boats where each boat can carry a maximum weight of `limit`. Each boat carries at most two people at the same time. Return the minimum number of boats to carry every given person.",
+  examples: [{ input: "people = [1,2], limit = 3", output: "1", explanation: "1 boat: [1, 2]." }, { input: "people = [3,2,2,1], limit = 3", output: "3" }, { input: "people = [3,5,3,4], limit = 5", output: "4" }],
+  constraints: ["1 ≤ people.length ≤ 5×10⁴", "1 ≤ people[i] ≤ limit ≤ 3×10⁴"],
+  functionSignature: "def numRescueBoats(self, people: List[int], limit: int) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def numRescueBoats(self, people: List[int], limit: int) -> int:\n        pass\n`, JavaScript: `var numRescueBoats = function(people, limit) {\n    \n};\n`, TypeScript: `function numRescueBoats(people: number[], limit: number): number {\n    \n};\n`, Java: `class Solution {\n    public int numRescueBoats(int[] people, int limit) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int numRescueBoats(vector<int>& people, int limit) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.numRescueBoats([1,2],3))`, expected: "1", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.numRescueBoats([3,2,2,1],3))`, expected: "3", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.numRescueBoats([3,5,3,4],5))`, expected: "4", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.numRescueBoats([2,2,2,2,2],6))`, expected: "3", isPublic: false },
+  ],
+},
+// ── 3Sum Closest ──────────────────────────────────────────────────────────────
+"3Sum Closest": {
+  title: "3Sum Closest", difficulty: "Medium",
+  desc: "Given an integer array `nums` of length `n` and an integer `target`, find three integers in `nums` such that the sum is closest to `target`. Return the sum of the three integers.",
+  examples: [{ input: "nums = [-1,2,1,-4], target = 1", output: "2", explanation: "The sum that is closest to 1 is 2 (-1 + 2 + 1 = 2)." }, { input: "nums = [0,0,0], target = 1", output: "0" }],
+  constraints: ["3 ≤ nums.length ≤ 500", "-1000 ≤ nums[i] ≤ 1000", "-10⁴ ≤ target ≤ 10⁴"],
+  functionSignature: "def threeSumClosest(self, nums: List[int], target: int) -> int:",
+  starters: { Python: `from typing import List\n\nclass Solution:\n    def threeSumClosest(self, nums: List[int], target: int) -> int:\n        pass\n`, JavaScript: `var threeSumClosest = function(nums, target) {\n    \n};\n`, TypeScript: `function threeSumClosest(nums: number[], target: number): number {\n    \n};\n`, Java: `class Solution {\n    public int threeSumClosest(int[] nums, int target) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    int threeSumClosest(vector<int>& nums, int target) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.threeSumClosest([-1,2,1,-4],1))`, expected: "2", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.threeSumClosest([0,0,0],1))`, expected: "0", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.threeSumClosest([1,1,1,0],-100))`, expected: "2", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.threeSumClosest([1,2,5,10,11],12))`, expected: "12", isPublic: false },
+  ],
+},
+// ── Ransom Note ───────────────────────────────────────────────────────────────
+"Ransom Note": {
+  title: "Ransom Note", difficulty: "Easy",
+  desc: "Given two strings `ransomNote` and `magazine`, return `true` if `ransomNote` can be constructed by using the letters from `magazine` and `false` otherwise. Each letter in `magazine` can only be used once.",
+  examples: [{ input: 'ransomNote = "a", magazine = "b"', output: "false" }, { input: 'ransomNote = "aa", magazine = "ab"', output: "false" }, { input: 'ransomNote = "aa", magazine = "aab"', output: "true" }],
+  constraints: ["1 ≤ ransomNote.length, magazine.length ≤ 10⁵", "ransomNote and magazine consist of lowercase English letters."],
+  functionSignature: "def canConstruct(self, ransomNote: str, magazine: str) -> bool:",
+  starters: { Python: `class Solution:\n    def canConstruct(self, ransomNote: str, magazine: str) -> bool:\n        pass\n`, JavaScript: `var canConstruct = function(ransomNote, magazine) {\n    \n};\n`, TypeScript: `function canConstruct(ransomNote: string, magazine: string): boolean {\n    \n};\n`, Java: `class Solution {\n    public boolean canConstruct(String ransomNote, String magazine) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    bool canConstruct(string ransomNote, string magazine) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `sol=Solution()\nprint(sol.canConstruct("a","b"))`, expected: "False", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.canConstruct("aa","aab"))`, expected: "True", isPublic: true },
+    { script: `sol=Solution()\nprint(sol.canConstruct("aa","ab"))`, expected: "False", isPublic: false },
+    { script: `sol=Solution()\nprint(sol.canConstruct("bg","efjbdfbdgfjhhaiigfhbaejahgfbbgbjagghbjagbhfe"))`, expected: "True", isPublic: false },
+  ],
+},
+// ── Palindrome Linked List ────────────────────────────────────────────────────
+"Palindrome Linked List": {
+  title: "Palindrome Linked List", difficulty: "Easy",
+  desc: "Given the `head` of a singly linked list, return `true` if it is a palindrome or `false` otherwise.",
+  examples: [{ input: "head = [1,2,2,1]", output: "true" }, { input: "head = [1,2]", output: "false" }],
+  constraints: ["The number of nodes in the list is in the range [1, 10⁵].", "0 ≤ Node.val ≤ 9"],
+  functionSignature: "def isPalindrome(self, head: Optional[ListNode]) -> bool:",
+  starters: { Python: `from typing import Optional\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def isPalindrome(self, head: Optional[ListNode]) -> bool:\n        pass\n`, JavaScript: `var isPalindrome = function(head) {\n    \n};\n`, TypeScript: `function isPalindrome(head: ListNode | null): boolean {\n    \n};\n`, Java: `class Solution {\n    public boolean isPalindrome(ListNode head) {\n        \n    }\n}\n`, "C++": `class Solution {\npublic:\n    bool isPalindrome(ListNode* head) {\n        \n    }\n};\n` },
+  testCases: [
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\nsol=Solution()\nprint(sol.isPalindrome(mk([1,2,2,1])))`, expected: "True", isPublic: true },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\nsol=Solution()\nprint(sol.isPalindrome(mk([1,2])))`, expected: "False", isPublic: true },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\nsol=Solution()\nprint(sol.isPalindrome(ListNode(1)))`, expected: "True", isPublic: false },
+    { script: `class ListNode:\n    def __init__(self,v=0,n=None): self.val=v; self.next=n\ndef mk(l):\n    d=ListNode(); c=d\n    for v in l: c.next=ListNode(v); c=c.next\n    return d.next\nsol=Solution()\nprint(sol.isPalindrome(mk([1,2,3,2,1])))`, expected: "True", isPublic: false },
+  ],
+},
 } // end PROBLEM_BANK
 
 // ─────────────────────────────────────────────────────────────────────────────
