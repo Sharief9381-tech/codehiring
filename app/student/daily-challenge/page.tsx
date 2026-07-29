@@ -99,42 +99,66 @@ function DailyChallengeContent() {
 
   // Old URL format with desc/input params — extract and show with problemId from title
   if (titleParam && params.get("desc")) {
-    // Try to find in bank by title
-    const foundId = TITLE_TO_ID[titleParam.toLowerCase()] ?? ""
+    // Try to find in bank by title (fuzzy match)
+    const normalizedTitle = titleParam.toLowerCase().replace(/[^a-z0-9]/g, "")
+    let foundId = TITLE_TO_ID[titleParam.toLowerCase()] ?? ""
+    if (!foundId) {
+      // Try fuzzy match
+      for (const [key, id] of Object.entries(TITLE_TO_ID)) {
+        if (key.replace(/[^a-z0-9]/g, "") === normalizedTitle) {
+          foundId = id
+          break
+        }
+      }
+    }
     if (foundId) {
       return <ProblemEditor problemId={foundId} />
     }
 
     // Not in topic-questions — create a synthetic problemId from title
-    // and redirect to problem editor with a generated ID
     const syntheticId = `daily-${titleParam
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "-")
       .replace(/-+/g, "-")
       .slice(0, 30)}`
 
-    // Store the old URL params in sessionStorage so the editor can pick them up
+    // Store problem data in sessionStorage so editor can pick it up immediately,
+    // and trigger API generation for test cases
     if (typeof window !== "undefined") {
       try {
+        const input   = params.get("input") ?? ""
+        const output  = params.get("output") ?? ""
+        const explain = params.get("explain") ?? ""
+        const badge   = params.get("badge") ?? params.get("difficulty") ?? "Easy"
+
         const syntheticProblem = {
           title:        titleParam,
           desc:         params.get("desc") ?? "",
           inputFormat:  params.get("inputFormat") ?? "",
           outputFormat: params.get("outputFormat") ?? "",
           constraints:  params.get("constraints")?.split("|||").filter(Boolean) ?? [],
-          input:        params.get("input") ?? "",
-          output:       params.get("output") ?? "",
-          explain:      params.get("explain") ?? "",
-          badge:        params.get("badge") ?? params.get("difficulty") ?? "Easy",
-          examples: [{ input: params.get("input") ?? "", output: params.get("output") ?? "", explanation: params.get("explain") ?? "" }],
+          input,
+          output,
+          explain,
+          badge,
+          difficulty: badge,
+          examples: [
+            { input, output, explanation: explain },
+          ],
           starters: {},
+          // No test cases yet — problem-detail API will generate them on first load
           pythonTest1: "", expectedTest1: "",
           pythonTest2: "", expectedTest2: "",
           pythonTest3: "", expectedTest3: "",
           pythonTest4: "", expectedTest4: "",
-          static: true,
+          static: false,
         }
-        sessionStorage.setItem(`problem_v2_${syntheticId}`, JSON.stringify(syntheticProblem))
+        // Use v2 key so problem-editor fetches fresh from API (AI generates test cases)
+        // Only cache if not already there
+        const cacheKey = `problem_v2_${syntheticId}`
+        if (!sessionStorage.getItem(cacheKey)) {
+          sessionStorage.setItem(cacheKey, JSON.stringify(syntheticProblem))
+        }
       } catch {}
     }
 

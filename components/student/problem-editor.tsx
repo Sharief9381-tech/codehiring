@@ -243,10 +243,28 @@ export default function ProblemEditor({ problemId }: Props) {
   useEffect(() => {
     if (!problemId) return
     const key = `problem_v2_${problemId}`
+
+    // Check sessionStorage first — show immediately even if it's a stub (no testCases yet)
+    let cachedStub: any = null
     try {
       const cached = sessionStorage.getItem(key)
-      if (cached) { const p = JSON.parse(cached); if (p?.static) { setProblem(p); return } }
+      if (cached) {
+        const p = JSON.parse(cached)
+        if (p?.static || p?.pythonTest1) {
+          // Fully cached — use it directly
+          setProblem(p)
+          const lang = langRef.current
+          const starter = p.starters?.[lang] ?? p.starters?.["Python"]
+          if (starter) setCode(starter)
+          return
+        }
+        // Partial stub (daily challenge URL params) — show immediately but still fetch
+        cachedStub = p
+        setProblem(p)
+      }
     } catch {}
+
+    // Fetch from API (generates via AI for stubs, returns static for bank problems)
     fetch("/api/student/problem-detail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -257,7 +275,7 @@ export default function ProblemEditor({ problemId }: Props) {
         try { sessionStorage.setItem(key, JSON.stringify(data.problem)) } catch {}
         // Set language-specific starter
         const lang = langRef.current
-        const starter = data.problem.starters?.[lang]
+        const starter = data.problem.starters?.[lang] ?? data.problem.starters?.["Python"]
         if (starter) setCode(starter)
       }
     }).catch(() => {})

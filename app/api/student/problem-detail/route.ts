@@ -129,9 +129,19 @@ export async function POST(req: Request) {
 
     if (!title && body.problemId) {
       const meta = PROBLEM_MAP[body.problemId]
-      if (!meta) return NextResponse.json({ error: "Unknown problemId" }, { status: 404 })
-      title      = meta.title
-      difficulty = meta.difficulty
+      if (meta) {
+        title      = meta.title
+        difficulty = meta.difficulty
+      } else if (body.problemId.startsWith("daily-")) {
+        // Synthetic daily challenge ID — convert back to title
+        title = body.problemId
+          .replace(/^daily-/, "")
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (c: string) => c.toUpperCase())
+        difficulty = body.difficulty ?? "Medium"
+      } else {
+        return NextResponse.json({ error: "Unknown problemId" }, { status: 404 })
+      }
     }
     if (!title) return NextResponse.json({ error: "title or problemId required" }, { status: 400 })
 
