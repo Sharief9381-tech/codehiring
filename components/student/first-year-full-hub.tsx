@@ -1434,7 +1434,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {[
                   { label: "Current Streak",  value: streak,                       sub: streak === 0 ? "Start today" : `${streak} days strong`,                          color: "#10b981" },
-                  { label: "Challenges Done", value: completedChallenges.length,   sub: completedChallenges.length === 0 ? "Start solving" : `+${monthlySolved} daily`, color: "#3b82f6" },
+                  { label: "Problems Solved", value: completedChallenges.length,   sub: completedChallenges.length === 0 ? "Start solving" : `${completedChallenges.length} solved on platform`, color: "#3b82f6" },
                   { label: "Badges Earned",   value: `${earnedCount} / 7`,         sub: earnedCount === 7 ? "All badges unlocked!" : `${7 - earnedCount} more to go`,   color: "#f59e0b" },
                   { label: "Total Points",    value: xp,                           sub: "XP earned",                                                                      color: "#8b5cf6" },
                 ].map(s => (

@@ -470,7 +470,7 @@ export default function ProblemEditor({ problemId }: Props) {
         if (mode === "submit") setBot("results")
         if (mode === "submit" && data.allPassed) {
           setDone(true)
-          fetch("/api/student/first-year-progress", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"problem-solved" }) }).catch(()=>{})
+          fetch("/api/student/first-year-progress", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"problem-solved", problemId }) }).catch(()=>{})
         }
       } else {
         setError(data.error ?? "Failed"); setBot("results")

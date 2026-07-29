@@ -123,6 +123,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, xpGained: xpGain, newTotal: (progress.totalXP ?? 0) + xpGain })
     }
 
+    // Complete a topic coding problem (from problem-editor)
+    if (action === "problem-solved" && body.problemId) {
+      const alreadyDone = (progress.completedChallenges ?? []).includes(body.problemId)
+      if (alreadyDone) return NextResponse.json({ alreadyDone: true })
+      // Get XP from topic questions or default to 20
+      const xpGain = BADGE_XP_MAP[body.problemId] ?? 20
+      const today = new Date(); today.setHours(0,0,0,0)
+      const lastAct = progress.lastActivity ? new Date(progress.lastActivity) : null
+      const lastActDay = lastAct ? new Date(new Date(lastAct).setHours(0,0,0,0)) : null
+      const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1)
+      let newStreak = progress.streak ?? 0
+      if (!lastActDay || lastActDay.getTime() < yesterday.getTime()) newStreak = 1
+      else if (lastActDay.getTime() === yesterday.getTime()) newStreak += 1
+      // else same day — streak unchanged
+      await db.collection(COLLECTION).updateOne(
+        { userId: uid },
+        {
+          $addToSet: { completedChallenges: body.problemId } as any,
+          $inc: { totalXP: xpGain },
+          $set: { streak: newStreak, lastActivity: new Date(), updatedAt: new Date() },
+        }
+      )
+      return NextResponse.json({ success: true, xpGained: xpGain, newStreak, newTotal: (progress.totalXP ?? 0) + xpGain })
+    }
+
     // Complete a challenge (debug / project)
     if (action === "complete-challenge" && body.challengeId) {
       const alreadyDone = (progress.completedChallenges ?? []).includes(body.challengeId)
