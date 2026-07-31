@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import {
@@ -153,42 +153,14 @@ export function FirstYearHub() {
         </div>
       )}
 
-      {/* Level + XP + Streak strip */}
-      <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-5">
-        <div className="flex items-center gap-4 flex-wrap">
-          {/* Level badge */}
-          <div className="flex items-center gap-3">
-            <div className="text-3xl">{level.icon}</div>
-            <div>
-              <p className="font-bold text-foreground">{level.name}</p>
-              <p className="text-xs text-muted-foreground">{totalXP} / {level.next} XP</p>
-            </div>
-          </div>
-          {/* XP bar */}
-          <div className="flex-1 min-w-32">
-            <div className="h-2.5 rounded-full bg-white/10 overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-700"
-                style={{ width: `${levelPct}%`, background: "linear-gradient(90deg,#7c3aed,#f59e0b)" }} />
-            </div>
-            <p className="text-[10px] text-muted-foreground mt-1">{levelPct}% to {level.next === 9999 ? "Max" : level.name === "Seedling" ? "Explorer" : level.name === "Explorer" ? "Builder" : level.name === "Builder" ? "Coder" : "Developer"}</p>
-          </div>
-          {/* Streak */}
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/20 bg-amber-500/10">
-            <Flame className="h-5 w-5 text-amber-400" />
-            <div>
-              <p className="text-xl font-black text-amber-400 leading-none">{streak}</p>
-              <p className="text-[10px] text-muted-foreground">day streak</p>
-            </div>
-          </div>
-          {/* Completed */}
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10">
-            <Trophy className="h-5 w-5 text-emerald-400" />
-            <div>
-              <p className="text-xl font-black text-emerald-400 leading-none">{completedCount}</p>
-              <p className="text-[10px] text-muted-foreground">milestones</p>
-            </div>
-          </div>
+      {/* Streak strip */}
+      <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 flex items-center gap-4">
+        <Flame className="h-8 w-8 text-amber-400 shrink-0" />
+        <div className="flex-1">
+          <p className="font-bold text-foreground">Current Streak</p>
+          <p className="text-xs text-muted-foreground">{streak} day{streak !== 1 ? "s" : ""} in a row — keep it going!</p>
         </div>
+        <p className="text-3xl font-black text-amber-400">{streak}</p>
       </div>
 
       {/* Daily Challenge */}
@@ -200,7 +172,7 @@ export function FirstYearHub() {
             </div>
             <div>
               <p className="font-bold text-foreground">Daily Challenge</p>
-              <p className="text-xs text-muted-foreground">One easy problem · earn +10 XP · keep your streak alive</p>
+              <p className="text-xs text-muted-foreground">One easy problem · keep your streak alive</p>
             </div>
           </div>
           {dailyDone ? (
@@ -265,7 +237,7 @@ export function FirstYearHub() {
                 )}
                 {done && (
                   <div className="text-xs font-bold text-emerald-400 shrink-0 flex items-center gap-1">
-                    <Star className="h-3 w-3" />+{milestones.find(m => m.id === step.milestone)?.xp ?? 0} XP
+                    <Star className="h-3 w-3" /> Done
                   </div>
                 )}
               </div>
@@ -281,7 +253,7 @@ export function FirstYearHub() {
           <div>
             <p className="font-semibold text-foreground text-sm">This Month's Progress</p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              You solved <strong className="text-blue-400">{progress?.monthlyChallengesSolved}</strong> daily challenges and earned <strong className="text-amber-400">{totalXP} XP</strong> total. Keep going!
+              You solved <strong className="text-blue-400">{progress?.monthlyChallengesSolved}</strong> daily challenges this month. Keep going!
             </p>
           </div>
         </div>

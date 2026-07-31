@@ -1120,7 +1120,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
         setCompletedMilestones(p => [...p, id])
         setXp(data.newTotal)
         setStreak(data.newStreak)
-        showXpPop(`+${data.xpGained} XP`)
+        // xp removed
       }
     } finally { setCompleting(null) }
   }
@@ -1186,7 +1186,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
       if (data.correct) {
         setDebugResults(p => ({ ...p, [challenge.id]: { correct: true, explanation: data.explanation } }))
         setXp(data.newTotal ?? xp)
-        showXpPop(`+${data.xpGained ?? 20} XP`)
+        // xp removed
         // After 1.5s â€” mark done and trigger replacement
         setTimeout(async () => {
           setCompletedChallenges(p => [...p, challenge.id])
@@ -1303,7 +1303,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
     if (data.success) {
       setStreak(data.newStreak); setXp(data.totalXP)
       setMonthlySolved(m => m + 1); setDailyDone(true)
-      showXpPop("+10 XP")
+      // xp removed
     }
   }
 
@@ -1421,13 +1421,12 @@ export function FirstYearFullHub({ student }: { student: any }) {
           {/* 4 stat cards */}
           {(() => {
             const PLATFORM_BADGES = [
-              { id:"code-spark",       earned: xp > 0 },
               { id:"first-blood",      earned: completedChallenges.length >= 1 },
               { id:"daily-grinder",    earned: streak >= 7 },
               { id:"decathlon",        earned: completedChallenges.length >= 10 },
-              { id:"badge-hunter",     earned: completedBadges.length >= 7 },
+              { id:"badge-hunter",     earned: completedBadges.length >= 6 },
               { id:"two-week-warrior", earned: streak >= 14 },
-              { id:"xp-legend",        earned: xp >= 500 },
+              { id:"century-solver",   earned: completedChallenges.length >= 100 },
             ]
             const earnedCount = PLATFORM_BADGES.filter(b => b.earned).length
             return (
@@ -1435,8 +1434,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 {[
                   { label: "Current Streak",  value: streak,                       sub: streak === 0 ? "Start today" : `${streak} days strong`,                          color: "#10b981" },
                   { label: "Problems Solved", value: completedChallenges.length,   sub: completedChallenges.length === 0 ? "Start solving" : `${completedChallenges.length} solved on platform`, color: "#3b82f6" },
-                  { label: "Badges Earned",   value: `${earnedCount} / 7`,         sub: earnedCount === 7 ? "All badges unlocked!" : `${7 - earnedCount} more to go`,   color: "#f59e0b" },
-                  { label: "Total Points",    value: xp,                           sub: "XP earned",                                                                      color: "#8b5cf6" },
+                  { label: "Badges Earned",   value: `${earnedCount} / 6`,         sub: earnedCount === 6 ? "All badges unlocked!" : `${6 - earnedCount} more to go`,   color: "#f59e0b" },
                 ].map(s => (
                   <div key={s.label} className="rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-1">
                     <p className="text-xs text-muted-foreground">{s.label}</p>
@@ -1572,16 +1570,16 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   <Trophy className="h-4 w-4 text-amber-400" />
                   <p className="font-bold text-foreground text-sm">Platform Badges</p>
                   <span className="ml-auto text-[10px] text-muted-foreground">
-                    {[xp>0, completedChallenges.length>=1, streak>=7, completedChallenges.length>=10, completedBadges.length>=7, streak>=14, xp>=500].filter(Boolean).length} / 7
+                  {[completedChallenges.length>=1, streak>=7, completedChallenges.length>=10, completedBadges.length>=6, streak>=14, completedChallenges.length>=100].filter(Boolean).length} / 6
                   </span>
                 </div>
                 <div className="space-y-2">
                   {[
-                    { label: "Code Spark",      color: "#ef4444", earned: xp > 0,                            icon: <Zap className="h-3.5 w-3.5" />,    how: "Earn your first XP by solving any challenge" },
-                    { label: "First Blood",     color: "#f97316", earned: completedChallenges.length >= 1,   icon: <Star className="h-3.5 w-3.5" />,   how: "Complete your first project or debug challenge" },
+                    { label: "First Problem",   color: "#ef4444", earned: completedChallenges.length >= 1,   icon: <Zap className="h-3.5 w-3.5" />,    how: "Solve your first problem on our platform" },
+                    { label: "First Blood",     color: "#f97316", earned: completedChallenges.length >= 5,   icon: <Star className="h-3.5 w-3.5" />,   how: "Complete 5 problems on our platform" },
                     { label: "Daily Grinder",   color: "#f59e0b", earned: streak >= 7,                       icon: <Flame className="h-3.5 w-3.5" />,  how: "Solve the daily coding problem 7 days in a row" },
                     { label: "Decathlon",       color: "#10b981", earned: completedChallenges.length >= 10,  icon: <Target className="h-3.5 w-3.5" />, how: "Complete 10 challenges â€” projects + debug combined" },
-                    { label: "Badge Hunter",    color: "#06b6d4", earned: completedBadges.length >= 7,       icon: <Award className="h-3.5 w-3.5" />,  how: "Mark 7 LeetCode problems done in Skill Badge Challenges tab" },
+                    { label: "Badge Hunter",    color: "#06b6d4", earned: completedBadges.length >= 6,       icon: <Award className="h-3.5 w-3.5" />,  how: "Earn all 6 platform badges" },
                     { label: "Two-Week Warrior",color: "#8b5cf6", earned: streak >= 14,                      icon: <Trophy className="h-3.5 w-3.5" />, how: "Keep your daily problem streak alive for 14 days straight" },
                     { label: "XP Legend",       color: "#ec4899", earned: xp >= 500,                         icon: <Sparkles className="h-3.5 w-3.5" />, how: "Stack 500 XP â€” every challenge, badge and daily adds up" },
                   ].map(b => (
