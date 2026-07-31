@@ -1435,9 +1435,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
               </div>
             ))}
           </div>
-
-          {/* Main 2-col layout */}
-          <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
+          <div className="grid gap-4 lg:grid-cols-[1fr_280px] items-stretch">
             {/* LEFT column */}
             <div className="space-y-4">
               {/* Today's Challenge */}
@@ -1533,10 +1531,38 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   View All Resources
                 </button>
               </div>
+
+              {/* Quick Actions — grid matching stats cards */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                {[
+                  { label: "View All Challenges", tab: "challenges", icon: <Code2 className="h-5 w-5" />, color: "#3b82f6", desc: "Solve coding problems" },
+                  { label: "Learning Roadmap",    tab: "progress",   icon: <Target className="h-5 w-5" />, color: "#10b981", desc: "Track your progress" },
+                  { label: "Community",           tab: "community",  icon: <Users className="h-5 w-5" />, color: "#f59e0b", desc: "Connect with peers" },
+                  { label: "Reset Progress",      tab: "",           icon: <RefreshCw className="h-5 w-5" />, color: "#ef4444", desc: "Dev — clear all data", isReset: true },
+                ].map(a => (
+                  <button key={a.label}
+                    onClick={async () => {
+                      if ((a as any).isReset) {
+                        if (!confirm("Reset ALL your progress? This cannot be undone.")) return
+                        const r = await fetch("/api/student/reset-progress", { method: "POST" })
+                        const d = await r.json()
+                        if (d.success) { alert("Progress reset! Refreshing..."); window.location.reload() }
+                        else alert("Reset failed: " + d.error)
+                      } else {
+                        switchTab(a.tab)
+                      }
+                    }}
+                    className="rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-2 text-left hover:border-primary/40 hover:bg-primary/5 transition-all">
+                    <div style={{ color: a.color }}>{a.icon}</div>
+                    <p className="text-xs font-semibold text-foreground">{a.label}</p>
+                    <p className="text-[10px] text-muted-foreground">{a.desc}</p>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* RIGHT column */}
-            <div className="space-y-4">
+            <div className="flex flex-col gap-4">
               {/* Streak card */}
               <div className="rounded-xl border border-border bg-card/50 p-5 text-center space-y-2">
                 <div className="flex items-center justify-center gap-2 mb-1">
@@ -1588,39 +1614,8 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 </div>
               </div>
 
-              {/* Quick Actions */}
-              <div className="rounded-xl border border-border bg-card/50 p-5 space-y-2">
-                <p className="font-bold text-foreground text-sm mb-3">Quick Actions</p>
-                {[
-                  { label: "View All Challenges", tab: "challenges", icon: <Code2 className="h-3.5 w-3.5" /> },
-                  { label: "Learning Roadmap",    tab: "progress",   icon: <Target className="h-3.5 w-3.5" /> },
-                  { label: "Community",           tab: "community",  icon: <Users className="h-3.5 w-3.5" /> },
-                ].map(a => (
-                  <button key={a.label} onClick={() => switchTab(a.tab)}
-                    className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all text-left">
-                    {a.icon}{a.label}
-                  </button>
-                ))}
-                {/* Reset progress â€” for testing */}
-                <button
-                  onClick={async () => {
-                    if (!confirm("Reset ALL your progress? This cannot be undone.")) return
-                    const r = await fetch("/api/student/reset-progress", { method: "POST" })
-                    const d = await r.json()
-                    if (d.success) {
-                      alert("Progress reset! Refreshing...")
-                      window.location.reload()
-                    } else {
-                      alert("Reset failed: " + d.error)
-                    }
-                  }}
-                  className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-red-500/20 text-xs font-medium text-red-400/70 hover:text-red-400 hover:border-red-500/40 hover:bg-red-500/5 transition-all text-left">
-                  <RefreshCw className="h-3.5 w-3.5" /> Reset Progress (Dev)
-                </button>
-              </div>
-
               {/* Did you know */}
-              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
+              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 flex-1 flex flex-col justify-center">
                 <p className="text-xs font-bold text-foreground mb-1">Did you know?</p>
                 <p className="text-[11px] text-muted-foreground leading-relaxed">
                   Students who maintain a 7-day streak are 3x more likely to build lasting coding habits!
