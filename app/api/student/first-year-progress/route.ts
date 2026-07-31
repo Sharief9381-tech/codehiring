@@ -75,6 +75,7 @@ export async function GET() {
       newlyAwarded: [],
       badgeProgress: {},
       completedChallenges: (progress.completedChallenges ?? []) as string[],
+      maxStreak: progress.maxStreak ?? progress.streak ?? 0,
       pendingBadges: [],
     })
   } catch (err) {
@@ -137,15 +138,23 @@ export async function POST(req: Request) {
       if (!lastActDay || lastActDay.getTime() < yesterday.getTime()) newStreak = 1
       else if (lastActDay.getTime() === yesterday.getTime()) newStreak += 1
       // else same day — streak unchanged
-      await db.collection(COLLECTION).updateOne(
-        { userId: uid },
-        {
-          $addToSet: { completedChallenges: body.problemId } as any,
-          $inc: { totalXP: xpGain },
-          $set: { streak: newStreak, lastActivity: new Date(), updatedAt: new Date() },
-        }
-      )
-      return NextResponse.json({ success: true, xpGained: xpGain, newStreak, newTotal: (progress.totalXP ?? 0) + xpGain })
+    // Update streak and track max streak
+    const today2 = new Date(); today2.setHours(0,0,0,0)
+    const lastAct2 = progress.lastActivity ? new Date(progress.lastActivity) : null
+    const lastActDay2 = lastAct2 ? new Date(new Date(lastAct2).setHours(0,0,0,0)) : null
+    const yesterday2 = new Date(today2); yesterday2.setDate(yesterday2.getDate() - 1)
+    let newStreak2 = progress.streak ?? 0
+    if (!lastActDay2 || lastActDay2.getTime() < yesterday2.getTime()) newStreak2 = 1
+    else if (lastActDay2.getTime() === yesterday2.getTime()) newStreak2 += 1
+    const newMaxStreak = Math.max(progress.maxStreak ?? 0, newStreak2)
+    await db.collection(COLLECTION).updateOne(
+      { userId: uid },
+      {
+        $addToSet: { completedChallenges: body.problemId } as any,
+        $set: { streak: newStreak2, maxStreak: newMaxStreak, lastActivity: new Date(), updatedAt: new Date() },
+      }
+    )
+    return NextResponse.json({ success: true, newStreak: newStreak2, newMaxStreak })
     }
 
     // Complete a challenge (debug / project)
@@ -205,14 +214,15 @@ export async function POST(req: Request) {
       }
       const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1)
       const newStreak = lastActDay?.getTime() === yesterday.getTime() ? (progress.streak ?? 0) + 1 : 1
+      const newMaxStreak = Math.max(progress.maxStreak ?? 0, newStreak)
       await db.collection(COLLECTION).updateOne(
         { userId: uid },
         {
-          $set: { streak: newStreak, lastActivity: new Date(), updatedAt: new Date() },
-          $inc: { monthlyChallengesSolved: 1, totalXP: 10 },
+          $set: { streak: newStreak, maxStreak: newMaxStreak, lastActivity: new Date(), updatedAt: new Date() },
+          $inc: { monthlyChallengesSolved: 1 },
         }
       )
-      return NextResponse.json({ success: true, newStreak, totalXP: (progress.totalXP ?? 0) + 10 })
+      return NextResponse.json({ success: true, newStreak, totalXP: progress.totalXP ?? 0 })
     }
 
     return NextResponse.json({ success: true })

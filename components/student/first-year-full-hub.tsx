@@ -1020,6 +1020,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
   // Progress state
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
+  const [maxStreak, setMaxStreak] = useState(0)
   const [completedMilestones, setCompletedMilestones] = useState<string[]>([])
   const [completedBadges, setCompletedBadges] = useState<string[]>([])
   const [completing, setCompleting] = useState<string | null>(null)
@@ -1063,6 +1064,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
           if (d.progress) {
             setXp(d.progress.totalXP ?? 0)
             setStreak(d.progress.streak ?? 0)
+            setMaxStreak(d.maxStreak ?? d.progress.maxStreak ?? d.progress.streak ?? 0)
             setCompletedMilestones(d.progress.completed ?? [])
             setMonthlySolved(d.progress.monthlyChallengesSolved ?? 0)
             // Check if daily challenge was done today
@@ -1432,9 +1434,10 @@ export function FirstYearFullHub({ student }: { student: any }) {
             return (
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {[
-                  { label: "Current Streak",  value: streak,                       sub: streak === 0 ? "Start today" : `${streak} days strong`,                          color: "#10b981" },
-                  { label: "Problems Solved", value: completedChallenges.length,   sub: completedChallenges.length === 0 ? "Start solving" : `${completedChallenges.length} solved on platform`, color: "#3b82f6" },
-                  { label: "Badges Earned",   value: `${earnedCount} / 6`,         sub: earnedCount === 6 ? "All badges unlocked!" : `${6 - earnedCount} more to go`,   color: "#f59e0b" },
+                  { label: "Problems Solved", value: completedChallenges.length,  sub: completedChallenges.length === 0 ? "Start solving" : `${completedChallenges.length} solved on platform`,  color: "#3b82f6" },
+                  { label: "Current Streak",  value: streak,                      sub: streak === 0 ? "Start today" : `${streak} day${streak !== 1 ? "s" : ""} in a row`,                       color: "#10b981" },
+                  { label: "Max Streak",      value: maxStreak,                   sub: maxStreak === 0 ? "No streak yet" : `Best: ${maxStreak} day${maxStreak !== 1 ? "s" : ""}`,               color: "#f59e0b" },
+                  { label: "Badges Earned",   value: `${earnedCount} / 6`,        sub: earnedCount === 6 ? "All badges unlocked!" : `${6 - earnedCount} more to go`,                           color: "#a371f7" },
                 ].map(s => (
                   <div key={s.label} className="rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-1">
                     <p className="text-xs text-muted-foreground">{s.label}</p>
