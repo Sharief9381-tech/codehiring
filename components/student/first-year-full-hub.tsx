@@ -1613,12 +1613,12 @@ export function FirstYearFullHub({ student }: { student: any }) {
             </div>
           </div>
 
-          {/* Stats row */}
+          {/* ── Stats row ─────────────────────────────────────────── */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {[
               { label: "Problems Solved", value: completedChallenges.length, sub: completedChallenges.length === 0 ? "Start solving" : `${completedChallenges.length} solved on platform`, color: "#3b82f6" },
-              { label: "Current Streak",  value: streak,    sub: streak === 0 ? "Start today" : `${streak} day${streak !== 1 ? "s" : ""} in a row`,        color: "#10b981" },
-              { label: "Max Streak",      value: maxStreak, sub: maxStreak === 0 ? "No streak yet" : `Best: ${maxStreak} day${maxStreak !== 1 ? "s" : ""}`, color: "#f59e0b" },
+              { label: "Current Streak",  value: streak,    sub: streak === 0 ? "Start today" : `${streak} day${streak !== 1 ? "s" : ""} in a row`,         color: "#10b981" },
+              { label: "Max Streak",      value: maxStreak, sub: maxStreak === 0 ? "No streak yet" : `Best: ${maxStreak} day${maxStreak !== 1 ? "s" : ""}`,  color: "#f59e0b" },
               { label: "Badges Earned",   value: `${[completedChallenges.length>=1,streak>=7,completedChallenges.length>=10,completedBadges.length>=6,streak>=14,completedChallenges.length>=100].filter(Boolean).length} / 6`, sub: "platform badges", color: "#a371f7" },
             ].map(s => (
               <div key={s.label} className="rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-1">
