@@ -1276,7 +1276,15 @@ export default function PrepHubPage() {
 
   // null = loading, 1 = first year (no company grids), 2-4 = show company grids
   const isFirstYear = studentYear === 1
+  const isSecondYear = studentYear === 2
   const yearLoaded  = studentYear !== null
+
+  // Redirect 1st and 2nd year students away from Prep Track
+  useEffect(() => {
+    if (yearLoaded && (isFirstYear || isSecondYear)) {
+      window.location.replace("/student/learn")
+    }
+  }, [yearLoaded, isFirstYear, isSecondYear])
 
   // ── COMPANY ASSESSMENT ──
   if (activePath === "company" && activeCompany) {

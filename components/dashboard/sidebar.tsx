@@ -37,6 +37,15 @@ const studentLinks = [
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
 ]
 
+// ── 2nd-year nav (no Prep Track yet) ─────────────────────────────────────────
+const secondYearLinks = [
+  { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
+  { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
+  { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
+  { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
+  { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
+]
+
 // ── 1st-year dedicated nav ────────────────────────────────────────────────────
 const firstYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",   icon: LayoutDashboard },
@@ -99,11 +108,12 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
   const gradYear = (user as any).graduationYear
   const gradYearNum = gradYear ? Number(gradYear) : undefined
   const studentYear = user.role === "student" ? detectStudentYear(gradYearNum) : 0
-  const isFirstYear = studentYear === 1
+  const isFirstYear  = studentYear === 1
+  const isSecondYear = studentYear === 2
 
   const links =
     user.role === "student"
-      ? (isFirstYear ? firstYearLinks : studentLinks)
+      ? (isFirstYear ? firstYearLinks : isSecondYear ? secondYearLinks : studentLinks)
       : user.role === "college"
       ? collegeLinks
       : recruiterLinks

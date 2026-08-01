@@ -9,6 +9,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { FirstYearHub } from "@/components/student/first-year-hub"
+import { SmartResume } from "@/components/student/smart-resume"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
 // TopicGrid - search + 3 rows by default, expandable
@@ -1019,6 +1020,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
 
   // Progress state
   const [xp, setXp] = useState(0)
+  const [showSmartResume, setShowSmartResume] = useState(false)
   const [streak, setStreak] = useState(0)
   const [maxStreak, setMaxStreak] = useState(0)
   const [completedMilestones, setCompletedMilestones] = useState<string[]>([])
@@ -1318,6 +1320,22 @@ export function FirstYearFullHub({ student }: { student: any }) {
 
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-xl mx-auto w-full space-y-5">
+
+      {/* Smart Resume overlay */}
+      {showSmartResume && (
+        <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
+          <div className="pt-14 max-w-4xl mx-auto px-4 py-6 space-y-5">
+            <div className="flex items-center gap-3 sticky top-14 z-10 py-3 border-b border-border" style={{ background: "var(--background)" }}>
+              <button onClick={() => setShowSmartResume(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors">
+                <ArrowRight className="h-4 w-4 rotate-180" /> Back to Learn
+              </button>
+              <div className="w-px h-4 bg-border" />
+              <h2 className="text-lg font-bold text-foreground">Smart Resume</h2>
+            </div>
+            <SmartResume />
+          </div>
+        </div>
+      )}
       {/* Header â€” hidden in standalone mode */}
       {!standaloneMode && (
       <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-600/15 via-cyan-600/5 to-transparent p-6">
@@ -1335,11 +1353,11 @@ export function FirstYearFullHub({ student }: { student: any }) {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-blue-400/30 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20 transition-all shrink-0">
               <BookOpen className="h-3.5 w-3.5" /> Learning Paths
             </button>
-            <a
-              href="/student/prep#smart-resume"
+            <button
+              onClick={() => setShowSmartResume(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-pink-400/30 bg-pink-500/10 text-pink-300 hover:bg-pink-500/20 transition-all shrink-0">
               <Sparkles className="h-3.5 w-3.5" /> Smart Resume
-            </a>
+            </button>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/10 shrink-0">
               <span className="text-xs text-blue-400 font-semibold">Year 1</span>
               <span className="text-xs text-muted-foreground">·</span>
