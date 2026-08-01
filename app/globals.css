@@ -356,3 +356,20 @@ html.light {
 /* Hero radial glows in light mode */
 html.light .text-\[var\(--sci-fg\)\],
 html.light [style*="var(--sci-fg)"] { color: #6366f1 !important; }
+
+/* ── Cursor pointer on all interactive elements ────────────── */
+button,
+a,
+[role="button"],
+[role="link"],
+label[for],
+select,
+summary {
+  cursor: pointer;
+}
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+}
