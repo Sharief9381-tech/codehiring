@@ -1,10 +1,10 @@
 /**
- * GET    /api/student/discussions/[id]              — get post + replies
- * POST   /api/student/discussions/[id]?action=reply — add a reply
- * POST   /api/student/discussions/[id]?action=upvote — toggle upvote on post
- * POST   /api/student/discussions/[id]?action=upvote-reply&replyId= — toggle upvote on reply
- * DELETE /api/student/discussions/[id]              — delete post (author only)
- * DELETE /api/student/discussions/[id]?replyId=     — delete reply (author only)
+ * GET    /api/student/discussions/[id]              - get post + replies
+ * POST   /api/student/discussions/[id]?action=reply - add a reply
+ * POST   /api/student/discussions/[id]?action=upvote - toggle upvote on post
+ * POST   /api/student/discussions/[id]?action=upvote-reply&replyId= - toggle upvote on reply
+ * DELETE /api/student/discussions/[id]              - delete post (author only)
+ * DELETE /api/student/discussions/[id]?replyId=     - delete reply (author only)
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

@@ -1,5 +1,5 @@
 /**
- * GET /api/admin/drives — list all drives pending review
+ * GET /api/admin/drives - list all drives pending review
  * Admin verification dashboard
  */
 import { NextResponse } from "next/server"

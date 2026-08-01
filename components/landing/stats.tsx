@@ -62,7 +62,7 @@ function StatItem({
         <Icon className="h-6 w-6" />
       </div>
       <p className="text-4xl font-bold text-foreground tabular-nums group-hover:text-primary transition-colors">
-        {loaded ? formatNumber(count) : "—"}
+        {loaded ? formatNumber(count) : "-"}
       </p>
       <div>
         <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{label}</p>

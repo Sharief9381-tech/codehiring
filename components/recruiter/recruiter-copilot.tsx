@@ -89,7 +89,7 @@ export function RecruiterCopilot() {
           <Badge className="text-xs bg-primary/10 text-primary">AI-Powered</Badge>
         </div>
         <p className="text-sm text-muted-foreground">
-          Paste a job description → AI finds your best matching candidates instantly
+          Paste a job description -> AI finds your best matching candidates instantly
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -113,11 +113,11 @@ export function RecruiterCopilot() {
             {/* Summary */}
             <div className="rounded-lg bg-secondary/50 p-3 flex flex-wrap gap-3 text-sm">
               <span className="font-medium text-foreground">Role: {result.roleTitle}</span>
-              <span className="text-muted-foreground">·</span>
+              <span className="text-muted-foreground">.</span>
               <span className="text-muted-foreground">{result.totalMatched} candidates matched</span>
               {result.requiredSkills?.length > 0 && (
                 <>
-                  <span className="text-muted-foreground">·</span>
+                  <span className="text-muted-foreground">.</span>
                   <span className="text-muted-foreground">Skills: {result.requiredSkills.join(", ")}</span>
                 </>
               )}
@@ -137,7 +137,7 @@ export function RecruiterCopilot() {
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-foreground truncate">{c.name}</p>
-                      <p className="text-xs text-muted-foreground">{c.college}{c.branch ? ` · ${c.branch}` : ""}</p>
+                      <p className="text-xs text-muted-foreground">{c.college}{c.branch ? ` . ${c.branch}` : ""}</p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <Badge className={`text-xs ${REC_COLOR[c.recommendation] || REC_COLOR["Good Candidate"]}`}>
@@ -159,7 +159,7 @@ export function RecruiterCopilot() {
                       <Code2 className="h-3 w-3" />{c.stats.totalProblems} solved
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
-                      <Star className="h-3 w-3" />{c.stats.highestRating || "—"} rating
+                      <Star className="h-3 w-3" />{c.stats.highestRating || "-"} rating
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <Trophy className="h-3 w-3" />{c.stats.contests} contests

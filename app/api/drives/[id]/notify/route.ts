@@ -1,5 +1,5 @@
 /**
- * POST /api/drives/[id]/notify — Step 4: Notify eligible candidates
+ * POST /api/drives/[id]/notify - Step 4: Notify eligible candidates
  * Finds eligible students and sends them notifications
  */
 import { NextResponse } from "next/server"

@@ -31,7 +31,7 @@ function getClientPromise(): Promise<MongoClient> | null {
     }
     return globalWithMongo._mongoClientPromise
   } else {
-    // Production — single module-level promise
+    // Production - single module-level promise
     if (!clientPromise) {
       client = new MongoClient(uri, {
         serverSelectionTimeoutMS: 30000,

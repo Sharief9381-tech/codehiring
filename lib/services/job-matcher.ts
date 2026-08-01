@@ -1,12 +1,12 @@
 /**
  * Job matching service.
- * Computes a match score (0–100) between a student profile and a job posting.
+ * Computes a match score (0-100) between a student profile and a job posting.
  *
  * Scoring breakdown:
- *   Skills match      — 50 pts  (% of required skills the student has)
- *   Problems solved   — 20 pts  (meets/exceeds minProblems)
- *   Rating            — 20 pts  (meets/exceeds minRating)
- *   Profile complete  — 10 pts  (has platforms linked, isOpenToWork)
+ *   Skills match      - 50 pts  (% of required skills the student has)
+ *   Problems solved   - 20 pts  (meets/exceeds minProblems)
+ *   Rating            - 20 pts  (meets/exceeds minRating)
+ *   Profile complete  - 10 pts  (has platforms linked, isOpenToWork)
  */
 
 import type { JobDocument } from "@/lib/models/job"

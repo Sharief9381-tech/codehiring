@@ -11,7 +11,7 @@ const flows = [
     numColor: "text-primary",
     steps: [
       { step: "01", title: "Connect Profiles", desc: "Link LeetCode, GitHub, CodeChef, Codeforces, and HackerRank accounts in minutes." },
-      { step: "02", title: "Auto-Sync Stats", desc: "Your performance data syncs automatically — no manual entry needed." },
+      { step: "02", title: "Auto-Sync Stats", desc: "Your performance data syncs automatically - no manual entry needed." },
       { step: "03", title: "Get Scored", desc: "Receive a normalized CodeScore visible to colleges and recruiters." },
       { step: "04", title: "Get Hired", desc: "Apply to matched jobs or get discovered by companies hiring your skill set." },
     ],
@@ -25,7 +25,7 @@ const flows = [
     numColor: "text-emerald-500",
     steps: [
       { step: "01", title: "Register College", desc: "Create your college account and generate a unique college code." },
-      { step: "02", title: "Onboard Students", desc: "Students join using the college code — bulk CSV upload also supported." },
+      { step: "02", title: "Onboard Students", desc: "Students join using the college code - bulk CSV upload also supported." },
       { step: "03", title: "Monitor Progress", desc: "Watch real-time coding activity, rankings, and batch-wise analytics." },
       { step: "04", title: "Drive Placements", desc: "Invite recruiters, create drives, and track outcomes end-to-end." },
     ],
@@ -56,7 +56,7 @@ export function HowItWorks() {
             How It Works
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-            Four simple steps for each role — get up and running in under five minutes.
+            Four simple steps for each role - get up and running in under five minutes.
           </p>
         </div>
 

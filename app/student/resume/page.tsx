@@ -19,7 +19,7 @@ export default async function ResumePage({
 
   const { password, ...safe } = doc as any
 
-  // Don't send base64 payload — only metadata
+  // Don't send base64 payload - only metadata
   if (safe.resumeFile?.dataUri) {
     const { dataUri: _omit, ...fileMeta } = safe.resumeFile
     safe.resumeFile = fileMeta

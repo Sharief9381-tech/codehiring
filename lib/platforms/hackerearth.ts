@@ -6,11 +6,11 @@
  * Their GraphQL endpoint returns 403 without a CSRF token + session cookie.
  *
  * Strategy:
- *  1. Fetch the profile page HTML → parse OG meta tags and any inline JSON fragments
+ *  1. Fetch the profile page HTML -> parse OG meta tags and any inline JSON fragments
  *     that contain username, full_name, rating, problems_solved.
  *  2. If the page RSC route returns the username in the flight payload, the profile exists.
  *  3. If neither yields stats, mark _apiLimited = true so the UI shows a
- *     "Connected — stats limited" badge rather than "failed".
+ *     "Connected - stats limited" badge rather than "failed".
  */
 export interface HackerEarthStats {
   username: string
@@ -116,7 +116,7 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
     let profileVerified = html.includes(u) || ogTitle.toLowerCase().includes(u.toLowerCase())
 
     // ── 7. Try OG description for numeric data ───────────────────────────
-    // e.g. "Solved 120 problems · Rating 1820 · Rank 5342"
+    // e.g. "Solved 120 problems . Rating 1820 . Rank 5342"
     if (ogDesc) {
       const solvedInDesc = ogDesc.match(/solved\s+(\d+)\s+problems?/i) || ogDesc.match(/(\d+)\s+problems?\s+solved/i)
       const ratingInDesc = ogDesc.match(/rating[:\s]+(\d+)/i) || ogDesc.match(/(\d{4,5})\s+rating/i)

@@ -128,10 +128,10 @@ export function CollegeLeaderboard() {
             </div>
             <div>
               <p className="text-lg font-bold text-foreground truncate max-w-[120px]">
-                {topSolver?.name ?? "—"}
+                {topSolver?.name ?? "-"}
               </p>
               <p className="text-xs text-muted-foreground">
-                Top Solver · {topSolver?.totalProblems ?? 0} problems
+                Top Solver . {topSolver?.totalProblems ?? 0} problems
               </p>
             </div>
           </CardContent>
@@ -210,7 +210,7 @@ export function CollegeLeaderboard() {
                         <div className="min-w-0">
                           <p className="font-medium text-foreground truncate">{student.name}</p>
                           <p className="text-xs text-muted-foreground truncate">
-                            {student.rollNumber} · {student.department}
+                            {student.rollNumber} . {student.department}
                           </p>
                         </div>
                       </div>
@@ -223,7 +223,7 @@ export function CollegeLeaderboard() {
 
                       {/* Rating */}
                       <div className="col-span-2 text-center">
-                        <p className="font-bold text-amber-500">{student.currentRating || "—"}</p>
+                        <p className="font-bold text-amber-500">{student.currentRating || "-"}</p>
                         <p className="text-xs text-muted-foreground">rating</p>
                       </div>
 

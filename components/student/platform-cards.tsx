@@ -153,7 +153,7 @@ export function PlatformCards({ student }: PlatformCardsProps) {
         </div>
       )}
 
-      {/* Platform cards — LeetCode style */}
+      {/* Platform cards - LeetCode style */}
       <div className="grid gap-4 sm:grid-cols-2">
         {PLATFORMS.map(platform => {
           const username   = getUsername(platform.id)
@@ -318,7 +318,7 @@ export function PlatformCards({ student }: PlatformCardsProps) {
                         return (
                           <div className="grid grid-cols-2 gap-2">
                             <div className="rounded-lg bg-white/5 p-3 text-center">
-                              <p className="text-lg font-black" style={{ color: platform.color }}>{s.currentRating || "—"}</p>
+                              <p className="text-lg font-black" style={{ color: platform.color }}>{s.currentRating || "-"}</p>
                               <p className="text-[10px] text-muted-foreground">Rating</p>
                             </div>
                             <div className="rounded-lg bg-white/5 p-3 text-center">

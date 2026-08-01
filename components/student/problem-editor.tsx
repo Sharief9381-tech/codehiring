@@ -180,7 +180,7 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
         const next = line[j]
 
         if (keywords.has(word)) {
-          // def/function → next word is function name
+          // def/function -> next word is function name
           if ((lang === "Python" && word === "def") || (lang === "Python" && word === "class")) {
             out += kw(esc(word))
             i = j
@@ -244,21 +244,21 @@ export default function ProblemEditor({ problemId }: Props) {
     if (!problemId) return
     const key = `problem_v2_${problemId}`
 
-    // Check sessionStorage first — show immediately even if it's a stub (no testCases yet)
+    // Check sessionStorage first - show immediately even if it's a stub (no testCases yet)
     let cachedStub: any = null
     try {
       const cached = sessionStorage.getItem(key)
       if (cached) {
         const p = JSON.parse(cached)
         if (p?.static || p?.pythonTest1) {
-          // Fully cached — use it directly
+          // Fully cached - use it directly
           setProblem(p)
           const lang = langRef.current
           const starter = p.starters?.[lang] ?? p.starters?.["Python"]
           if (starter) setCode(starter)
           return
         }
-        // Partial stub (daily challenge URL params) — show immediately but still fetch
+        // Partial stub (daily challenge URL params) - show immediately but still fetch
         cachedStub = p
         setProblem(p)
       }
@@ -590,7 +590,7 @@ export default function ProblemEditor({ problemId }: Props) {
                         <ul className="space-y-1.5">
                           {constraints.map((c: string, i: number) => (
                             <li key={i} className="flex items-start gap-2 text-xs">
-                              <span className="mt-0.5 shrink-0" style={{ color: T.keyword }}>·</span>
+                              <span className="mt-0.5 shrink-0" style={{ color: T.keyword }}>.</span>
                               <code style={{ color: T.text, fontFamily: "monospace" }}
                                 dangerouslySetInnerHTML={{ __html: c.replace(/\^(\d+)/g, "<sup>$1</sup>") }} />
                             </li>
@@ -630,7 +630,7 @@ export default function ProblemEditor({ problemId }: Props) {
           onMouseEnter={e => (e.currentTarget.style.background = diffColor + "44")}
           onMouseLeave={e => (e.currentTarget.style.background = "transparent")} />
 
-        {/* ── RIGHT — Editor + Console ──────────────────────────────────── */}
+        {/* ── RIGHT - Editor + Console ──────────────────────────────────── */}
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
           {/* Editor header */}
@@ -667,7 +667,7 @@ export default function ProblemEditor({ problemId }: Props) {
               style={{ width: "44px", color: T.lineNum, fontSize: "12px", fontFamily: "'Fira Code',monospace", lineHeight: "1.5rem", background: T.bg, borderRight: `1px solid ${T.border}22` }}>
               {lines.map((_, i) => <div key={i}>{i + 1}</div>)}
             </div>
-            {/* Editor area — highlighted layer + transparent textarea */}
+            {/* Editor area - highlighted layer + transparent textarea */}
             <div className="flex-1 relative overflow-auto"
               style={{ scrollbarColor: `${T.scrollbar} transparent` }}>
               {/* Syntax highlight layer */}
@@ -761,13 +761,13 @@ export default function ProblemEditor({ problemId }: Props) {
                     <div>
                       <p className="font-semibold mb-1" style={{ color: T.muted }}>Input</p>
                       <div className="rounded px-3 py-2 font-mono" style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.string }}>
-                        {sampleCases[selCase]?.input || <span style={{ color: T.lineNum }}>—</span>}
+                        {sampleCases[selCase]?.input || <span style={{ color: T.lineNum }}>-</span>}
                       </div>
                     </div>
                     <div>
                       <p className="font-semibold mb-1" style={{ color: T.muted }}>Expected Output</p>
                       <div className="rounded px-3 py-2 font-mono" style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.function }}>
-                        {sampleCases[selCase]?.output || <span style={{ color: T.lineNum }}>—</span>}
+                        {sampleCases[selCase]?.output || <span style={{ color: T.lineNum }}>-</span>}
                       </div>
                     </div>
                     {runResults?.[selCase] && (
@@ -775,7 +775,7 @@ export default function ProblemEditor({ problemId }: Props) {
                         <p className="font-semibold mb-1" style={{ color: T.muted }}>Your Output</p>
                         <div className="rounded px-3 py-2 font-mono"
                           style={{ background: T.panel, border: `1px solid ${runResults[selCase].passed?"#2ea04344":"#f8514944"}`, color: runResults[selCase].passed?"#3fb950":"#f85149" }}>
-                          {runResults[selCase].actualOutput || <span style={{ color: T.lineNum }}>—</span>}
+                          {runResults[selCase].actualOutput || <span style={{ color: T.lineNum }}>-</span>}
                         </div>
                         {runResults[selCase].error && (
                           <div className="mt-1 rounded px-3 py-2 font-mono text-[11px]"
@@ -845,7 +845,7 @@ export default function ProblemEditor({ problemId }: Props) {
                         </div>
                       )}
                       {!r.isPublic && !r.passed && (
-                        <p className="text-[10px] mt-1" style={{ color: T.muted }}>Hidden test failed — check edge cases</p>
+                        <p className="text-[10px] mt-1" style={{ color: T.muted }}>Hidden test failed - check edge cases</p>
                       )}
                       {r.error && (
                         <p className="font-mono text-[10px] mt-1" style={{ color: "#f85149" }}>{r.error.slice(0,200)}</p>

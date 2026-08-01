@@ -70,7 +70,7 @@ function buildMap(
   recentActivity?: { platform: string; timestamp: string | Date; type: string }[]
 ): Record<string, DayData> {
 
-  // Build Jan 1 → Dec 31 of current year
+  // Build Jan 1 -> Dec 31 of current year
   const year = new Date().getFullYear()
   const map: Record<string, DayData> = {}
   const cur = new Date(year, 0, 1)
@@ -94,7 +94,7 @@ function buildMap(
           if (map[k]) { map[k].platforms.leetcode = (map[k].platforms.leetcode||0)+Number(cnt); map[k].total += Number(cnt) }
         })
       }
-      // No fallback — if no calendar data, show nothing
+      // No fallback - if no calendar data, show nothing
     }
 
     if (pid === "codeforces") {
@@ -118,7 +118,7 @@ function buildMap(
           })
         })
       }
-      // No calendar without GITHUB_TOKEN — show nothing for github
+      // No calendar without GITHUB_TOKEN - show nothing for github
     }
 
     if (pid === "codechef") {
@@ -132,7 +132,7 @@ function buildMap(
           }
         })
       }
-      // No heatmap data → show nothing
+      // No heatmap data -> show nothing
     }
 
     // AtCoder: acSubmissions[] from kenkoooo API { epoch_second, problem_id }
@@ -194,7 +194,7 @@ export function ActivityHeatmap({
     const wks: (DayData | null)[][] = []
     for (let i = 0; i < padded.length; i += 7) wks.push(padded.slice(i, i + 7))
 
-    // One month label per month — placed at the week column where that month first appears
+    // One month label per month - placed at the week column where that month first appears
     const monthLabels: { label: string; col: number }[] = []
     let lastMonth = -1
     wks.forEach((week, wi) => {
@@ -211,7 +211,7 @@ export function ActivityHeatmap({
     return { weeks: wks, months: monthLabels, totalActive, totalSubmissions }
   }, [linkedPlatforms, lcCalendar, cfSubmissions, recentActivity])
 
-  // cell = 12px, gap = 2px → 14px per column
+  // cell = 12px, gap = 2px -> 14px per column
   const CELL = 14
 
   return (
@@ -220,7 +220,7 @@ export function ActivityHeatmap({
       {/* Outer layout: fixed weekday labels + scrollable (months + grid) together */}
       <div className="flex gap-0.5">
 
-        {/* Weekday labels — fixed, not scrollable */}
+        {/* Weekday labels - fixed, not scrollable */}
         <div className="flex flex-col w-7 shrink-0">
           {/* spacer for month labels row */}
           <div className="h-4 mb-1" />
@@ -230,7 +230,7 @@ export function ActivityHeatmap({
           ))}
         </div>
 
-        {/* Scrollable area — months row + grid cells scroll together */}
+        {/* Scrollable area - months row + grid cells scroll together */}
         <div className="overflow-x-auto pb-1 flex-1">
 
           {/* Month labels row */}
@@ -272,7 +272,7 @@ export function ActivityHeatmap({
         </div>
       </div>
 
-      {/* Platform breakdown — problems solved per platform */}
+      {/* Platform breakdown - problems solved per platform */}
       {(() => {
         const platformTotals: Record<string, number> = {}
         Object.values(weeks).forEach(week =>

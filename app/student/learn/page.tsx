@@ -36,7 +36,7 @@ export default async function LearnPage() {
     return <FirstYearFullHub student={student} />
   }
 
-  // Years 2–4 (and unknown/0): content-rich career hub with year-appropriate sections
+  // Years 2-4 (and unknown/0): content-rich career hub with year-appropriate sections
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-xl mx-auto w-full">
       <CareerHub graduationYear={gy ? Number(gy) : undefined} student={student} />

@@ -1,6 +1,6 @@
 /**
- * POST /api/notifications/read?id=xxx  — mark one notification as read
- * POST /api/notifications/read?all=1   — mark all as read
+ * POST /api/notifications/read?id=xxx  - mark one notification as read
+ * POST /api/notifications/read?all=1   - mark all as read
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

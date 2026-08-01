@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole }) })
     }
 
-    const prompt = `You are the Hiring Simulation Intelligence Engine for CodeHiring — acting as both Senior HR Manager and Technical Evaluator.
+    const prompt = `You are the Hiring Simulation Intelligence Engine for CodeHiring - acting as both Senior HR Manager and Technical Evaluator.
 
 Generate a comprehensive Company Hiring Simulation & Recruitment Report for the following candidate:
 
@@ -73,7 +73,7 @@ CANDIDATE SELF-RATINGS (0-100):
 - Communication: ${candidateRatings?.communication ?? "N/A"}
 
 COMPANY FOCUS AREAS: ${meta.focusAreas.join(", ")}
-INTERVIEW ROUNDS: ${meta.rounds.join(" → ")}
+INTERVIEW ROUNDS: ${meta.rounds.join(" -> ")}
 
 VIOLATION LOG:
 - Tab Switches: ${violations?.tabSwitches ?? 0}
@@ -139,7 +139,7 @@ Generate a FULL RECRUITMENT REPORT in this EXACT JSON format (no markdown, no ex
       { "area": "improvement area", "action": "specific action to take", "impact": "expected impact" }
     ],
     "topicsToRevise": ["topic 1", "topic 2", "topic 3", "topic 4", "topic 5"],
-    "expectedImprovement": "Current: ${overallScore}% → After improvement: XX%"
+    "expectedImprovement": "Current: ${overallScore}% -> After improvement: XX%"
   },
   "preparationPlan": {
     "oneDay": ["task 1", "task 2", "task 3"],
@@ -216,8 +216,8 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
       weaknesses: ["Needs more practice", "Speed improvement required", "Accuracy inconsistency"],
       riskAreas: ["Time management", "Weak topics need reinforcement"],
       behaviorIndicators: "Candidate showed consistent engagement throughout the test.",
-      learningAbility: "Moderate — responds well to structured practice.",
-      problemSolvingAbility: above ? "Good — above company benchmark." : "Developing — below company benchmark.",
+      learningAbility: "Moderate - responds well to structured practice.",
+      problemSolvingAbility: above ? "Good - above company benchmark." : "Developing - below company benchmark.",
       communicationAssessment: "Not evaluated in this simulation.",
       technicalAssessment: `Score of ${overallScore}% against ${meta.benchmark}% benchmark.`,
       overallImpression: above ? "Candidate shows promise and is worth moving forward." : "Candidate needs targeted improvement before the actual exam.",
@@ -229,7 +229,7 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
       whyMaySucceed: ["Completed the test", "Shows potential in attempted questions"],
       top5Improvements: meta.focusAreas.slice(0, 5).map((area: string) => ({ area, action: `Practice 20 questions daily on ${area}`, impact: "+5-8% score improvement" })),
       topicsToRevise: meta.focusAreas,
-      expectedImprovement: `Current: ${overallScore}% → After 2 weeks of practice: ${Math.min(100, overallScore + 15)}%`,
+      expectedImprovement: `Current: ${overallScore}% -> After 2 weeks of practice: ${Math.min(100, overallScore + 15)}%`,
     },
     preparationPlan: {
       oneDay: ["Revise all weak topics", "Solve 10 practice questions per section", "Take one mini-mock"],
@@ -245,7 +245,7 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
       reasoning: "No significant integrity violations detected.",
     },
     companyInsights: {
-      hiringProcess: `${companyName || company} follows a ${meta.rounds.join(" → ")} process.`,
+      hiringProcess: `${companyName || company} follows a ${meta.rounds.join(" -> ")} process.`,
       whatTheyLookFor: `Strong ${meta.focusAreas.join(", ")} skills.`,
       commonMistakes: ["Not practicing enough mocks", "Ignoring verbal section", "Poor time management"],
       insiderTips: ["Practice previous year patterns", "Focus on accuracy over speed", "Attempt all questions"],

@@ -37,9 +37,9 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
   const post = await getPost(slug)
-  if (!post) return { title: "Post Not Found — CodeHiring" }
+  if (!post) return { title: "Post Not Found - CodeHiring" }
   return {
-    title: `${post.title} — CodeHiring Blog`,
+    title: `${post.title} - CodeHiring Blog`,
     description: post.excerpt,
   }
 }
@@ -159,7 +159,7 @@ export default async function BlogPostPage(
                         {p.tag}
                       </span>
                       <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">{p.title}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{p.date} · {p.readTime}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{p.date} . {p.readTime}</p>
                     </div>
                     <ArrowLeft className="h-4 w-4 text-muted-foreground rotate-180 shrink-0 mt-1 group-hover:text-primary transition-colors" />
                   </div>

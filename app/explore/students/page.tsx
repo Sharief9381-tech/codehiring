@@ -108,7 +108,7 @@ export default function ExploreStudentsPage() {
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground truncate">{s.name}</p>
                     <p className="text-xs text-muted-foreground truncate">
-                      {s.collegeCode}{s.branch ? ` · ${s.branch}` : ""}
+                      {s.collegeCode}{s.branch ? ` . ${s.branch}` : ""}
                     </p>
                   </div>
                 </div>
@@ -158,8 +158,8 @@ export default function ExploreStudentsPage() {
                   <div>
                     <DialogTitle className="text-xl">{selected.name}</DialogTitle>
                     <p className="text-sm text-muted-foreground">
-                      {selected.collegeCode}{selected.branch ? ` · ${selected.branch}` : ""}
-                      {selected.graduationYear ? ` · ${selected.graduationYear}` : ""}
+                      {selected.collegeCode}{selected.branch ? ` . ${selected.branch}` : ""}
+                      {selected.graduationYear ? ` . ${selected.graduationYear}` : ""}
                     </p>
                     {selected.isOpenToWork && (
                       <Badge className="mt-1 bg-green-500/10 text-green-600 text-xs">Open to work</Badge>

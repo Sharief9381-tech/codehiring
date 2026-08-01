@@ -48,7 +48,7 @@ export function CollegeStats({ college }: CollegeStatsProps) {
           </h2>
           <p className="text-sm text-muted-foreground">
             {data?.college.code ?? college.collegeCode}
-            {data?.college.location && ` · ${data.college.location}`}
+            {data?.college.location && ` . ${data.college.location}`}
           </p>
         </div>
         <button

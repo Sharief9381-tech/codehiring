@@ -106,7 +106,7 @@ class ClientAnalytics {
         body: JSON.stringify(eventData),
       })
     } catch {
-      // Silently ignore — analytics failure should never surface to users
+      // Silently ignore - analytics failure should never surface to users
     }
   }
 }

@@ -2,7 +2,7 @@
  * GET /api/drives/[id]/applicants
  * Returns the full applicant list for a drive.
  *
- * Flow A (college drive): College views all applicants — no assessment required
+ * Flow A (college drive): College views all applicants - no assessment required
  * Flow B (recruiter drive): Company views shortlisted candidates after AI assessment
  */
 import { NextResponse } from "next/server"

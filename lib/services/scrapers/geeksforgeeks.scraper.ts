@@ -1,7 +1,7 @@
 /**
  * GeeksforGeeks scraper
  *
- * GFG is a Next.js SPA — stats are NOT in __NEXT_DATA__ but are embedded
+ * GFG is a Next.js SPA - stats are NOT in __NEXT_DATA__ but are embedded
  * as an escaped JSON string inside a <script> tag near the bottom of the HTML.
  *
  * The blob contains keys like:

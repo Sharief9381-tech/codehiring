@@ -73,7 +73,7 @@ export function RecommendedCandidates() {
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground truncate">
-                  {c.college}{c.branch ? ` · ${c.branch}` : ""}{c.year ? ` · ${c.year}` : ""}
+                  {c.college}{c.branch ? ` . ${c.branch}` : ""}{c.year ? ` . ${c.year}` : ""}
                 </p>
               </div>
 

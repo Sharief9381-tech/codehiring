@@ -1,6 +1,6 @@
 /**
  * Codeforces scraper
- * Uses the official public REST API — no scraping needed.
+ * Uses the official public REST API - no scraping needed.
  */
 import type { NormalizedPlatformStats } from "../scraper-types"
 import { failResult, fetchJSON } from "../scraper-utils"

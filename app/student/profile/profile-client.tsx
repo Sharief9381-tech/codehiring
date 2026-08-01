@@ -213,7 +213,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
                 )}
               </div>
               <p className="text-sm text-muted-foreground">
-                {[user?.degree, user?.branch, yearLabel].filter(Boolean).join(" · ")}
+                {[user?.degree, user?.branch, yearLabel].filter(Boolean).join(" . ")}
               </p>
               {(user?.collegeName || user?.collegeCode) && (
                 <p className="text-sm font-semibold text-primary mt-0.5">{user.collegeName || user.collegeCode}</p>
@@ -247,11 +247,11 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
           {/* Stats strip */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 pt-4 border-t border-border">
             {[
-              { label: "Global Rank",      val: ranking?.globalRank  ? `#${ranking.globalRank.toLocaleString()}`  : "—", icon: Globe,         color: "text-blue-500",    bg: "bg-blue-500/10",    sub: ranking?.globalRank  ? `of ${ranking.totalGlobal?.toLocaleString() ?? "?"} students` : "not ranked" },
-              { label: "College Rank",     val: ranking?.collegeRank ? `#${ranking.collegeRank.toLocaleString()}` : "—", icon: GraduationCap, color: "text-violet-500",  bg: "bg-violet-500/10",  sub: ranking?.collegeRank ? `of ${(ranking.totalColleges ?? ranking.totalCollege ?? "?").toLocaleString()} students` : "not ranked" },
+              { label: "Global Rank",      val: ranking?.globalRank  ? `#${ranking.globalRank.toLocaleString()}`  : "-", icon: Globe,         color: "text-blue-500",    bg: "bg-blue-500/10",    sub: ranking?.globalRank  ? `of ${ranking.totalGlobal?.toLocaleString() ?? "?"} students` : "not ranked" },
+              { label: "College Rank",     val: ranking?.collegeRank ? `#${ranking.collegeRank.toLocaleString()}` : "-", icon: GraduationCap, color: "text-violet-500",  bg: "bg-violet-500/10",  sub: ranking?.collegeRank ? `of ${(ranking.totalColleges ?? ranking.totalCollege ?? "?").toLocaleString()} students` : "not ranked" },
               { label: "Placement",        val: `${placementProb}%`,                                                     icon: TrendingUp,    color: "text-emerald-500", bg: "bg-emerald-500/10", sub: placementLabel },
-              { label: "CodeHiring Score", val: score > 0 ? score.toString() : "—",                                     icon: Star,          color: "text-amber-500",   bg: "bg-amber-500/10",   sub: score > 0 ? "out of 1000" : "link platforms" },
-              { label: "Platforms",        val: platforms.length > 0 ? `${platforms.length}` : "—",                     icon: Activity,      color: "text-pink-500",    bg: "bg-pink-500/10",    sub: platforms.length > 0 ? "connected" : "none linked" },
+              { label: "CodeHiring Score", val: score > 0 ? score.toString() : "-",                                     icon: Star,          color: "text-amber-500",   bg: "bg-amber-500/10",   sub: score > 0 ? "out of 1000" : "link platforms" },
+              { label: "Platforms",        val: platforms.length > 0 ? `${platforms.length}` : "-",                     icon: Activity,      color: "text-pink-500",    bg: "bg-pink-500/10",    sub: platforms.length > 0 ? "connected" : "none linked" },
             ].map(({ label, val, icon: Icon, color, bg, sub }, i) => (
               <div
                 key={label}
@@ -375,33 +375,33 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
                 const today = new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"})
 
                 const candidates = [
-                  lcS >= 500 && { icon:"👑", title:"LeetCode Guardian",        desc:`LeetCode · ${lcS} problems solved`,            color:"text-yellow-500", bg:"bg-yellow-500/10", earnedAt: today },
-                  lcS >= 200 && { icon:"🗡️", title:"LeetCode Knight",          desc:`LeetCode · ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
-                  lcS >= 100 && { icon:"💯", title:"LeetCode — 100 Solved",    desc:`LeetCode · ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
-                  lcS >= 50  && { icon:"⚡", title:"LeetCode — 50 Solved",     desc:`LeetCode · ${lcS} problems solved`,            color:"text-amber-400",  bg:"bg-amber-400/10",  earnedAt: today },
-                  cfR >= 2100 && { icon:"🏆", title:"Codeforces Master",       desc:`Codeforces · Rating ${cfR}`,                   color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
-                  cfR >= 1900 && { icon:"🏅", title:"CF Candidate Master",     desc:`Codeforces · Rating ${cfR}`,                   color:"text-purple-500", bg:"bg-purple-500/10", earnedAt: today },
-                  cfR >= 1600 && { icon:"🟣", title:"Codeforces Expert",       desc:`Codeforces · Rating ${cfR}`,                   color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
-                  cfR >= 1400 && { icon:"🔵", title:"Codeforces Specialist",   desc:`Codeforces · Rating ${cfR}`,                   color:"text-cyan-500",   bg:"bg-cyan-500/10",   earnedAt: today },
-                  cfR >= 1200 && { icon:"🟢", title:"Codeforces Pupil",        desc:`Codeforces · Rating ${cfR}`,                   color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
-                  ccR >= 2000 && { icon:"🏅", title:"CodeChef 5★",             desc:`CodeChef · Rating ${ccR}`,                     color:"text-red-500",    bg:"bg-red-500/10",    earnedAt: today },
-                  ccR >= 1800 && { icon:"🌟", title:"CodeChef 4★",             desc:`CodeChef · Rating ${ccR}`,                     color:"text-orange-500", bg:"bg-orange-500/10", earnedAt: today },
-                  ccR >= 1600 && { icon:"⭐⭐⭐", title:"CodeChef 3★",          desc:`CodeChef · Rating ${ccR}`,                     color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
-                  ccR >= 1400 && { icon:"⭐⭐", title:"CodeChef 2★",            desc:`CodeChef · Rating ${ccR}`,                     color:"text-amber-400",  bg:"bg-amber-400/10",  earnedAt: today },
-                  ccR >= 1    && { icon:"⭐",   title:"CodeChef 1★",            desc:`CodeChef · Rating ${ccR}`,                     color:"text-gray-400",   bg:"bg-gray-400/10",   earnedAt: today },
-                  ghC >= 500  && { icon:"💚", title:"GitHub Power User",       desc:`GitHub · ${ghC} contributions`,                color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
-                  ghC >= 200  && { icon:"🦑", title:"GitHub Active",           desc:`GitHub · ${ghC} contributions`,                color:"text-emerald-600",bg:"bg-emerald-600/10",earnedAt: today },
-                  ghC >= 50   && { icon:"🐙", title:"GitHub Contributor",      desc:`GitHub · ${ghC} contributions`,                color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
-                  hrB >= 10   && { icon:"🥇", title:"HackerRank — 10 Badges", desc:`HackerRank · ${hrB} badges earned`,            color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
-                  hrB >= 5    && { icon:"🥈", title:"HackerRank — 5 Badges",  desc:`HackerRank · ${hrB} badges earned`,            color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
-                  hrB >= 1    && { icon:"🥉", title:"HackerRank — First Badge",desc:`HackerRank · ${hrB} badges earned`,            color:"text-green-400",  bg:"bg-green-400/10",  earnedAt: today },
-                  gfgS >= 200 && { icon:"🏆", title:"GFG — 200 Problems",     desc:`GeeksforGeeks · ${gfgS} problems`,             color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
-                  gfgS >= 100 && { icon:"🌲", title:"GFG — 100 Problems",     desc:`GeeksforGeeks · ${gfgS} problems`,             color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
-                  gfgS >= 50  && { icon:"🌿", title:"GFG — 50 Problems",      desc:`GeeksforGeeks · ${gfgS} problems`,             color:"text-green-600",  bg:"bg-green-600/10",  earnedAt: today },
-                  acS >= 200  && { icon:"🏅", title:"AtCoder — 200 Problems", desc:`AtCoder · ${acS} problems solved`,             color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
-                  acS >= 50   && { icon:"🎯", title:"AtCoder — 50 Problems",  desc:`AtCoder · ${acS} problems solved`,             color:"text-violet-400", bg:"bg-violet-400/10", earnedAt: today },
-                  streak >= 30 && { icon:"🔥", title:"LeetCode — 30 Day Streak",desc:"LeetCode · 30 consecutive days",             color:"text-orange-500", bg:"bg-orange-500/10", earnedAt: today },
-                  streak >= 7  && { icon:"🔥", title:"LeetCode — 7 Day Streak", desc:"LeetCode · 7 consecutive days",              color:"text-orange-400", bg:"bg-orange-400/10", earnedAt: today },
+                  lcS >= 500 && { icon:"👑", title:"LeetCode Guardian",        desc:`LeetCode . ${lcS} problems solved`,            color:"text-yellow-500", bg:"bg-yellow-500/10", earnedAt: today },
+                  lcS >= 200 && { icon:"🗡️", title:"LeetCode Knight",          desc:`LeetCode . ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  lcS >= 100 && { icon:"💯", title:"LeetCode - 100 Solved",    desc:`LeetCode . ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  lcS >= 50  && { icon:"⚡", title:"LeetCode - 50 Solved",     desc:`LeetCode . ${lcS} problems solved`,            color:"text-amber-400",  bg:"bg-amber-400/10",  earnedAt: today },
+                  cfR >= 2100 && { icon:"🏆", title:"Codeforces Master",       desc:`Codeforces . Rating ${cfR}`,                   color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  cfR >= 1900 && { icon:"🏅", title:"CF Candidate Master",     desc:`Codeforces . Rating ${cfR}`,                   color:"text-purple-500", bg:"bg-purple-500/10", earnedAt: today },
+                  cfR >= 1600 && { icon:"🟣", title:"Codeforces Expert",       desc:`Codeforces . Rating ${cfR}`,                   color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
+                  cfR >= 1400 && { icon:"🔵", title:"Codeforces Specialist",   desc:`Codeforces . Rating ${cfR}`,                   color:"text-cyan-500",   bg:"bg-cyan-500/10",   earnedAt: today },
+                  cfR >= 1200 && { icon:"🟢", title:"Codeforces Pupil",        desc:`Codeforces . Rating ${cfR}`,                   color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  ccR >= 2000 && { icon:"🏅", title:"CodeChef 5★",             desc:`CodeChef . Rating ${ccR}`,                     color:"text-red-500",    bg:"bg-red-500/10",    earnedAt: today },
+                  ccR >= 1800 && { icon:"🌟", title:"CodeChef 4★",             desc:`CodeChef . Rating ${ccR}`,                     color:"text-orange-500", bg:"bg-orange-500/10", earnedAt: today },
+                  ccR >= 1600 && { icon:"⭐⭐⭐", title:"CodeChef 3★",          desc:`CodeChef . Rating ${ccR}`,                     color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  ccR >= 1400 && { icon:"⭐⭐", title:"CodeChef 2★",            desc:`CodeChef . Rating ${ccR}`,                     color:"text-amber-400",  bg:"bg-amber-400/10",  earnedAt: today },
+                  ccR >= 1    && { icon:"⭐",   title:"CodeChef 1★",            desc:`CodeChef . Rating ${ccR}`,                     color:"text-gray-400",   bg:"bg-gray-400/10",   earnedAt: today },
+                  ghC >= 500  && { icon:"💚", title:"GitHub Power User",       desc:`GitHub . ${ghC} contributions`,                color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  ghC >= 200  && { icon:"🦑", title:"GitHub Active",           desc:`GitHub . ${ghC} contributions`,                color:"text-emerald-600",bg:"bg-emerald-600/10",earnedAt: today },
+                  ghC >= 50   && { icon:"🐙", title:"GitHub Contributor",      desc:`GitHub . ${ghC} contributions`,                color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
+                  hrB >= 10   && { icon:"🥇", title:"HackerRank - 10 Badges", desc:`HackerRank . ${hrB} badges earned`,            color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
+                  hrB >= 5    && { icon:"🥈", title:"HackerRank - 5 Badges",  desc:`HackerRank . ${hrB} badges earned`,            color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  hrB >= 1    && { icon:"🥉", title:"HackerRank - First Badge",desc:`HackerRank . ${hrB} badges earned`,            color:"text-green-400",  bg:"bg-green-400/10",  earnedAt: today },
+                  gfgS >= 200 && { icon:"🏆", title:"GFG - 200 Problems",     desc:`GeeksforGeeks . ${gfgS} problems`,             color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
+                  gfgS >= 100 && { icon:"🌲", title:"GFG - 100 Problems",     desc:`GeeksforGeeks . ${gfgS} problems`,             color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
+                  gfgS >= 50  && { icon:"🌿", title:"GFG - 50 Problems",      desc:`GeeksforGeeks . ${gfgS} problems`,             color:"text-green-600",  bg:"bg-green-600/10",  earnedAt: today },
+                  acS >= 200  && { icon:"🏅", title:"AtCoder - 200 Problems", desc:`AtCoder . ${acS} problems solved`,             color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
+                  acS >= 50   && { icon:"🎯", title:"AtCoder - 50 Problems",  desc:`AtCoder . ${acS} problems solved`,             color:"text-violet-400", bg:"bg-violet-400/10", earnedAt: today },
+                  streak >= 30 && { icon:"🔥", title:"LeetCode - 30 Day Streak",desc:"LeetCode . 30 consecutive days",             color:"text-orange-500", bg:"bg-orange-500/10", earnedAt: today },
+                  streak >= 7  && { icon:"🔥", title:"LeetCode - 7 Day Streak", desc:"LeetCode . 7 consecutive days",              color:"text-orange-400", bg:"bg-orange-400/10", earnedAt: today },
                   pCount >= 6  && { icon:"🌍", title:"Platform Master",        desc:`Active on ${pCount} coding platforms`,        color:"text-blue-500",   bg:"bg-blue-500/10",   earnedAt: today },
                   pCount >= 3  && { icon:"🌐", title:"Multi-Platform Coder",   desc:`Active on ${pCount} coding platforms`,        color:"text-sky-500",    bg:"bg-sky-500/10",    earnedAt: today },
                 ].filter(Boolean) as any[]
@@ -454,9 +454,9 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
                   const score2 = s.codingScore ?? 0
                   const stars  = s.stars ?? ""
                   const stat   = rating > 0
-                    ? `${solved > 0 ? solved + " Solved · " : ""}Rating ${rating}`
+                    ? `${solved > 0 ? solved + " Solved . " : ""}Rating ${rating}`
                     : solved > 0
-                      ? `${solved} ${score2 > 0 ? "· Score " + score2 : ""}`
+                      ? `${solved} ${score2 > 0 ? ". Score " + score2 : ""}`
                       : stars
                         ? `${stars} Star`
                         : "-"
@@ -468,7 +468,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-semibold text-foreground">{cfg.label}</p>
-                        <p className="text-[10px] text-muted-foreground">@{pd.username} · {stat}</p>
+                        <p className="text-[10px] text-muted-foreground">@{pd.username} . {stat}</p>
                       </div>
                       <a href={cfg.url(pd.username)} target="_blank" rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground transition-colors">
@@ -508,7 +508,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
               </p>
               <p className="text-[10px] text-muted-foreground truncate">
                 {user?.resumeFile
-                  ? `${(user.resumeFile.sizeBytes / 1024).toFixed(0)} KB · click Edit to replace`
+                  ? `${(user.resumeFile.sizeBytes / 1024).toFixed(0)} KB . click Edit to replace`
                   : user?.resumeUrl
                     ? user.resumeUrl
                     : "PDF, Word, or link"}
@@ -539,7 +539,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
               <p className="text-xs font-semibold text-foreground">Smart Resume</p>
               <p className="text-[10px] text-muted-foreground">
                 {user?.resumeFile || user?.resumeUrl
-                  ? "AI analysis ready — go to Career Hub"
+                  ? "AI analysis ready - go to Career Hub"
                   : "Upload a resume then analyse in Career Hub"}
               </p>
             </div>
@@ -590,7 +590,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
           </div>
           <Button size="sm" onClick={onEdit} variant="outline"
             className="border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 shrink-0">
-            Improve Now →
+            Improve Now ->
           </Button>
         </motion.div>
       )}

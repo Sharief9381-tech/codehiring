@@ -168,7 +168,7 @@ export function SmartResume() {
           </div>
           <div>
             <p className="font-bold text-foreground">Smart Resume Analyser</p>
-            <p className="text-xs text-muted-foreground">ResumeWorded-style deep analysis — ATS score, bullet grading, skill gaps, job match</p>
+            <p className="text-xs text-muted-foreground">ResumeWorded-style deep analysis - ATS score, bullet grading, skill gaps, job match</p>
           </div>
         </div>
 
@@ -207,7 +207,7 @@ export function SmartResume() {
           </div>
           <div className="text-center">
             <p className="font-bold text-foreground">Analysing your resume…</p>
-            <p className="text-sm text-muted-foreground mt-1">Running ATS check · Grading bullets · Matching job roles · Finding gaps</p>
+            <p className="text-sm text-muted-foreground mt-1">Running ATS check . Grading bullets . Matching job roles . Finding gaps</p>
           </div>
         </div>
       )}
@@ -293,7 +293,7 @@ export function SmartResume() {
                 {(a as any).atsReason && <p className="text-xs text-muted-foreground mb-3 italic">{(a as any).atsReason}</p>}
                 <div className="space-y-2">
                   <div><p className="text-xs text-emerald-400 font-semibold mb-1.5">✓ Found in resume</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.found ?? []).map(k => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{k}</span>)}</div></div>
-                  <div><p className="text-xs text-red-400 font-semibold mb-1.5">✗ Missing — add these to your resume</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.missing ?? []).map(k => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">{k}</span>)}</div></div>
+                  <div><p className="text-xs text-red-400 font-semibold mb-1.5">✗ Missing - add these to your resume</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.missing ?? []).map(k => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">{k}</span>)}</div></div>
                   {(a as any).atsKeywords?.suggestedReason && <p className="text-[10px] text-muted-foreground italic">{(a as any).atsKeywords.suggestedReason}</p>}
                 </div>
               </div>
@@ -380,7 +380,7 @@ export function SmartResume() {
               )}
               <div className="rounded-xl border border-border bg-card/50 p-4">
                 <p className="text-sm font-semibold text-foreground mb-1">Word Count</p>
-                <p className="text-sm text-muted-foreground">Current: <strong className="text-foreground">{a.wordCount?.current ?? "N/A"}</strong> · Ideal: {a.wordCount?.ideal} · <span style={{ color: a.wordCount?.status === "Good" ? "#10b981" : "#f59e0b" }}>{a.wordCount?.status}</span></p>
+                <p className="text-sm text-muted-foreground">Current: <strong className="text-foreground">{a.wordCount?.current ?? "N/A"}</strong> . Ideal: {a.wordCount?.ideal} . <span style={{ color: a.wordCount?.status === "Good" ? "#10b981" : "#f59e0b" }}>{a.wordCount?.status}</span></p>
               </div>
             </div>
           )}

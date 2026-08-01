@@ -410,7 +410,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         name: "CodeChef", icon: Code,
         getStatLines: (s) => [
           { label: "Rating",     value: s?.currentRating ?? 0 },
-          { label: "Stars",      value: s?.stars ?? "—" },
+          { label: "Stars",      value: s?.stars ?? "-" },
           { label: "Solved",     value: s?.problemsSolved ?? 0 },
           { label: "Max Rating", value: s?.highestRating ?? 0 },
         ],
@@ -422,7 +422,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
           { label: "Badges",        value: s?.badges?.length ?? 0 },
           { label: "Certifications",value: s?.certifications?.length ?? 0 },
           { label: "Score",         value: s?.totalScore ?? 0 },
-          { label: "Rank",          value: s?.globalRank ? `#${s.globalRank}` : "—" },
+          { label: "Rank",          value: s?.globalRank ? `#${s.globalRank}` : "-" },
         ],
         getProfileUrl: (u) => `https://www.hackerrank.com/profile/${u}`,
       },
@@ -451,7 +451,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         getStatLines: (s) => [
           { label: "Solved",     value: s?.problemsSolved ?? 0 },
           { label: "Rating",     value: s?.rating ?? 0 },
-          { label: "Accuracy",   value: s?.accuracy ? `${s.accuracy}%` : "—" },
+          { label: "Accuracy",   value: s?.accuracy ? `${s.accuracy}%` : "-" },
           { label: "Challenges", value: s?.challengesSolved ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.hackerearth.com/@${u}`,
@@ -481,7 +481,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         getStatLines: (s) => [
           { label: "Solved",     value: s?.problemsSolved ?? 0 },
           { label: "Score",      value: s?.score ?? 0 },
-          { label: "World Rank", value: s?.rank ?? s?.worldRank ?? "—" },
+          { label: "World Rank", value: s?.rank ?? s?.worldRank ?? "-" },
           { label: "Accepted",   value: s?.acceptedSubmissions ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.spoj.com/users/${u}/`,
@@ -491,8 +491,8 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         getStatLines: (s) => [
           { label: "Solved",    value: s?.problemsSolved ?? 0 },
           { label: "Score",     value: s?.score ?? 0 },
-          { label: "Rank",      value: s?.rank ?? "—" },
-          { label: "Countries", value: s?.countriesRank ?? "—" },
+          { label: "Rank",      value: s?.rank ?? "-" },
+          { label: "Countries", value: s?.countriesRank ?? "-" },
         ],
         getProfileUrl: (u) => `https://open.kattis.com/users/${u}`,
       },
@@ -511,7 +511,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         getStatLines: (s) => [
           { label: "Solved",   value: s?.problemsSolved ?? 0 },
           { label: "Score",    value: s?.score ?? 0 },
-          { label: "Rank",     value: s?.rank ?? "—" },
+          { label: "Rank",     value: s?.rank ?? "-" },
           { label: "Streaks",  value: s?.streak ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.interviewbit.com/profile/${u}`,
@@ -521,7 +521,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         getStatLines: (s) => [
           { label: "Solved",   value: s?.problemsSolved ?? 0 },
           { label: "Total",    value: s?.totalProblems ?? 300 },
-          { label: "Progress", value: s?.totalProblems ? `${Math.round(((s?.problemsSolved ?? 0) / s.totalProblems) * 100)}%` : "—" },
+          { label: "Progress", value: s?.totalProblems ? `${Math.round(((s?.problemsSolved ?? 0) / s.totalProblems) * 100)}%` : "-" },
           { label: "Accepted", value: s?.acceptedSubmissions ?? 0 },
         ],
         getProfileUrl: (u) => `https://cses.fi/user/${u}`,
@@ -531,7 +531,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         getStatLines: (s) => [
           { label: "Solved",  value: s?.problemsSolved ?? 0 },
           { label: "Score",   value: s?.score ?? 0 },
-          { label: "Rank",    value: s?.rank ?? "—" },
+          { label: "Rank",    value: s?.rank ?? "-" },
           { label: "Streaks", value: s?.streak ?? 0 },
         ],
         getProfileUrl: (u) => `https://www.codingninjas.com/studio/profile/${u}`,
@@ -560,7 +560,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         name: "UVa Online Judge", icon: Code,
         getStatLines: (s) => [
           { label: "Solved",    value: s?.problemsSolved ?? 0 },
-          { label: "Rank",      value: s?.rank ?? "—" },
+          { label: "Rank",      value: s?.rank ?? "-" },
           { label: "Accepted",  value: s?.acceptedSubmissions ?? 0 },
           { label: "Attempted", value: s?.attempted ?? 0 },
         ],
@@ -623,13 +623,13 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
             </Badge>
           </div>
 
-          {/* Stats — always 2x2 grid */}
+          {/* Stats - always 2x2 grid */}
           {statLines.length > 0 ? (
             <div className="grid grid-cols-2 gap-2 mb-4">
               {statLines.slice(0, 4).map(({ label, value }) => (
                 <div key={label} className="rounded-lg bg-muted/40 px-3 py-2">
                   <p className="text-[10px] text-muted-foreground leading-none mb-0.5">{label}</p>
-                  <p className="text-sm font-bold text-foreground">{value ?? "—"}</p>
+                  <p className="text-sm font-bold text-foreground">{value ?? "-"}</p>
                 </div>
               ))}
             </div>
@@ -828,7 +828,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         </CardContent>
       </Card>
 
-      {/* Platform Ratings + Recent Activity — side by side below platforms */}
+      {/* Platform Ratings + Recent Activity - side by side below platforms */}
       {hasLinkedPlatforms && (
         <div className="grid gap-5 lg:grid-cols-2">
 
@@ -925,7 +925,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
                     if (!s) return (
                       <div key={pid} className="flex items-start gap-3">
                         <div className="h-2 w-2 rounded-full shrink-0 mt-1.5 bg-muted-foreground/40" />
-                        <p className="text-sm text-muted-foreground">{name} connected · @{uname}</p>
+                        <p className="text-sm text-muted-foreground">{name} connected . @{uname}</p>
                       </div>
                     )
                     const solved = s.totalSolved || s.problemsSolved || 0
@@ -936,9 +936,9 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
                         ? `${name} rating: ${rating}${solved > 0 ? ` ${solved} solved` : ''}`
                         : solved > 0 ? `${solved} problems solved on ${name}` : `${name} connected`
                     const detail = pid === 'leetcode' && s.easySolved != null
-                      ? `Easy: ${s.easySolved} · Medium: ${s.mediumSolved || 0} · Hard: ${s.hardSolved || 0}`
-                      : pid === 'github' ? `${s.publicRepos || 0} public repos · ${s.followers || 0} followers`
-                      : pid === 'codechef' ? `Highest: ${s.highestRating || rating} · ${solved} problems solved`
+                      ? `Easy: ${s.easySolved} . Medium: ${s.mediumSolved || 0} . Hard: ${s.hardSolved || 0}`
+                      : pid === 'github' ? `${s.publicRepos || 0} public repos . ${s.followers || 0} followers`
+                      : pid === 'codechef' ? `Highest: ${s.highestRating || rating} . ${solved} problems solved`
                       : s.codingScore ? `Coding score: ${s.codingScore}` : null
                     return (
                       <div key={pid} className="flex items-start gap-3">

@@ -64,7 +64,7 @@ const tabs = [
       { icon: Brain, title: "AI Talent Matching", desc: "Find candidates whose skills are verified across platforms, not self-reported." },
       { icon: Target, title: "Advanced Filters", desc: "Filter by stack, ratings, contest ranks, GitHub activity, CGPA, and more." },
       { icon: Users, title: "Bulk Outreach", desc: "Shortlist and contact multiple candidates efficiently with smart automation." },
-      { icon: ShieldCheck, title: "Verified Profiles", desc: "Every stat is pulled directly from the platform — no resume fraud." },
+      { icon: ShieldCheck, title: "Verified Profiles", desc: "Every stat is pulled directly from the platform - no resume fraud." },
       { icon: BarChart3, title: "Hiring Pipeline", desc: "Track every candidate from screening to offer in a visual pipeline." },
       { icon: FileText, title: "Assessment Builder", desc: "Create AI-powered coding assessments tailored to your job requirements." },
     ],
@@ -81,7 +81,7 @@ export function Features() {
             Built for Every Role in the Ecosystem
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-            Whether you are a student building your career, a college driving placements, or a company finding talent — CodeHiring has you covered.
+            Whether you are a student building your career, a college driving placements, or a company finding talent - CodeHiring has you covered.
           </p>
         </div>
 

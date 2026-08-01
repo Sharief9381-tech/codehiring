@@ -69,7 +69,7 @@ function MessageBubble({ msg }: { msg: Message }) {
 export default function AIInsightsPage() {
   const [messages, setMessages] = useState<Message[]>([{
     role: "assistant",
-    content: "Hi! I'm CodeHiring AI 👋\n\nI have full access to your verified coding stats — LeetCode, GitHub, Codeforces and more. Ask me anything about placement prep, skill gaps, or career direction. I'll give you personalised, data-backed advice.",
+    content: "Hi! I'm CodeHiring AI 👋\n\nI have full access to your verified coding stats - LeetCode, GitHub, Codeforces and more. Ask me anything about placement prep, skill gaps, or career direction. I'll give you personalised, data-backed advice.",
   }])
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)

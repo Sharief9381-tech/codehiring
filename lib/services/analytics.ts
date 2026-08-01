@@ -361,7 +361,7 @@ export class AnalyticsService {
           connected: true,
         })
       } else {
-        // Platform connected but not yet synced — include with zeros
+        // Platform connected but not yet synced - include with zeros
         platformStats.push({
           platform: platformId.charAt(0).toUpperCase() + platformId.slice(1),
           platformId,

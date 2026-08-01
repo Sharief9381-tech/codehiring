@@ -1,6 +1,6 @@
 /**
  * AtCoder scraper
- * Uses AtCoder's public JSON endpoints — no scraping needed.
+ * Uses AtCoder's public JSON endpoints - no scraping needed.
  *   Profile verify : https://atcoder.jp/users/{u}
  *   Contest history: https://atcoder.jp/users/{u}/history/json
  *   AC rank        : https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank?user={u}
@@ -35,7 +35,7 @@ export async function scrapeAtCoder(username: string): Promise<NormalizedPlatfor
     return failResult(PLATFORM, u, "User not found")
   }
 
-  // 2. Contest history → current rating + highest rating
+  // 2. Contest history -> current rating + highest rating
   let rating = 0, highestRating = 0, contests = 0
   const history = await fetchJSON<any[]>(`${profileUrl}/history/json`, { timeoutMs: 12000 })
   if (Array.isArray(history) && history.length > 0) {

@@ -1,5 +1,5 @@
 /**
- * Discussion model — community discussion board (LeetCode Discussions style)
+ * Discussion model - community discussion board (LeetCode Discussions style)
  * Collection: `discussions`
  */
 import { getDatabase } from "@/lib/database"

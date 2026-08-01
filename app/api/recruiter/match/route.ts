@@ -74,7 +74,7 @@ export async function GET(request: Request) {
         }
       }
     } else if (!stats || stats.totalProblems === 0) {
-      // Stats never computed — aggregate from existing platform data
+      // Stats never computed - aggregate from existing platform data
       stats = await aggregateStudentStats(studentId)
     }
 

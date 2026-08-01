@@ -1,5 +1,5 @@
 /**
- * Shortlist model — stored in the `shortlists` MongoDB collection.
+ * Shortlist model - stored in the `shortlists` MongoDB collection.
  * Recruiters create shortlists and add candidates (students) to them.
  */
 import { getDatabase } from "@/lib/database"

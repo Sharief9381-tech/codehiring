@@ -94,7 +94,7 @@ const FEATURES = [
     desc: "Track every platform. Build a verified profile. Land your dream job.",
     items: [
       { icon: BarChart3, title: "Unified Dashboard",  sub: "All platform stats in one verified profile." },
-      { icon: Trophy,    title: "CodeHiring Score",   sub: "Normalized 0–1000 score across platforms." },
+      { icon: Trophy,    title: "CodeHiring Score",   sub: "Normalized 0-1000 score across platforms." },
       { icon: FileText,  title: "AI Resume",          sub: "Auto-generate verified resume with real data." },
       { icon: Target,    title: "AI Job Match",       sub: "Personalized jobs based on your actual profile." },
       { icon: GitBranch, title: "GitHub Insights",    sub: "Contributions and repos tracked automatically." },
@@ -141,7 +141,7 @@ function StatItem({ s, loaded, stats }: { s: typeof STAT_META[number]; loaded: b
         <Icon className={`h-4 w-4 ${s.color}`} style={{ width: 16, height: 16 }} />
       </div>
       <span className={`text-2xl font-black tabular-nums leading-none ${s.color}`}>
-        {loaded ? (val > 0 ? formatNum(count) : "—") : "—"}
+        {loaded ? (val > 0 ? formatNum(count) : "-") : "-"}
       </span>
       <span className="text-[10px] text-[var(--sci-fg)]/30 font-semibold text-[10px]">{s.label}</span>
     </motion.div>
@@ -277,7 +277,7 @@ export function LandingPage() {
 
               <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-zinc-400 max-w-xl leading-relaxed mb-8 text-base">
-                Track coding performance across platforms, discover top talent, and hire with confidence — all backed by verified real-time data.
+                Track coding performance across platforms, discover top talent, and hire with confidence - all backed by verified real-time data.
               </motion.p>
 
               {/* CTAs */}
@@ -316,7 +316,7 @@ export function LandingPage() {
               </motion.div>
             </div>
 
-            {/* RIGHT — terminal mockup */}
+            {/* RIGHT - terminal mockup */}
             <motion.div
               initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
@@ -330,7 +330,7 @@ export function LandingPage() {
                     <div className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
                     <div className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
                     <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/60" />
-                    <span className="ml-3 text-[10px] font-medium text-muted-foreground/50">codehiring.io — student@dashboard</span>
+                    <span className="ml-3 text-[10px] font-medium text-muted-foreground/50">codehiring.io - student@dashboard</span>
                   </div>
                   <div className="p-5 space-y-4 text-xs">
                     {/* score */}
@@ -446,7 +446,7 @@ export function LandingPage() {
             <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-3">
               Make It Feel Like<br />an AI Product
             </h2>
-            <p className="text-muted-foreground text-sm mb-10">Every feature runs on verified data — not guesswork, not keywords.</p>
+            <p className="text-muted-foreground text-sm mb-10">Every feature runs on verified data - not guesswork, not keywords.</p>
           </FadeUp>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
             className="flex gap-4">
@@ -564,7 +564,7 @@ export function LandingPage() {
             <div className="text-center mb-8">
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-2">Integrations</p>
               <h2 className="text-3xl font-black text-foreground tracking-tight">8 Platforms. One Profile.</h2>
-              <p className="mt-2 text-muted-foreground text-sm">Live data pulled directly — always accurate, never self-reported.</p>
+              <p className="mt-2 text-muted-foreground text-sm">Live data pulled directly - always accurate, never self-reported.</p>
             </div>
           </FadeUp>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
@@ -675,7 +675,7 @@ export function LandingPage() {
               {openCareers > 0 && (
                 <motion.div whileHover={{ x: 3 }} className="inline-block mt-4">
                   <Link href="/careers" className="text-violet-400 hover:text-violet-300 transition-colors text-sm flex items-center gap-1.5">
-                    We're hiring — {openCareers} open role{openCareers > 1 ? "s" : ""} <ArrowRight className="h-3.5 w-3.5" />
+                    We're hiring - {openCareers} open role{openCareers > 1 ? "s" : ""} <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </motion.div>
               )}

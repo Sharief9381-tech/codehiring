@@ -1,7 +1,7 @@
 /**
  * Recruiter jobs API
- * GET  /api/recruiter/jobs  — list jobs posted by the logged-in recruiter
- * POST /api/recruiter/jobs  — create a new job posting
+ * GET  /api/recruiter/jobs  - list jobs posted by the logged-in recruiter
+ * POST /api/recruiter/jobs  - create a new job posting
  */
 import { NextResponse } from "next/server"
 import { JobModel } from "@/lib/models/job"

@@ -134,7 +134,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
   return (
     <div className="space-y-5">
 
-      {/* ”€”€ HERO BANNER ”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€”€ */}
+      {/* "€"€ HERO BANNER "€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€"€ */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
         className="relative rounded-2xl border border-border bg-card overflow-hidden">
         {/* gradient banner */}
@@ -177,7 +177,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
               </div>
               <p className="text-xs text-muted-foreground">
                 {student.branch}
-                {isGraduate ? ` · Graduate ${student.graduationYear}` : ` · ${student.collegeCode} · Class of ${student.graduationYear}`}
+                {isGraduate ? ` . Graduate ${student.graduationYear}` : ` . ${student.collegeCode} . Class of ${student.graduationYear}`}
               </p>
             </div>
 
@@ -204,7 +204,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
             ].map(({ label, val, color, bg, icon: Icon }) => (
               <div key={label} className={`flex flex-col items-center justify-center gap-1.5 px-3 py-4 rounded-xl ${bg}`}>
                 <Icon className={`h-7 w-7 ${color}`} />
-                <p className={`text-2xl font-black tabular-nums leading-none ${color}`}>{val || "—"}</p>
+                <p className={`text-2xl font-black tabular-nums leading-none ${color}`}>{val || "-"}</p>
                 <p className="text-xs text-muted-foreground leading-none text-center">{label}</p>
               </div>
             ))}
@@ -216,7 +216,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
       {/* SCORE + RANKS + JOB MATCHES */}
       <div className="grid gap-5 lg:grid-cols-5">
 
-        {/* Score ring — 2 cols */}
+        {/* Score ring - 2 cols */}
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
           className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 flex flex-col items-center justify-center gap-4">
           <ScoreRing score={codehiringScore} />
@@ -241,14 +241,14 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
           </div>
         </motion.div>
 
-        {/* Ranks — fills full height, each card takes half */}
+        {/* Ranks - fills full height, each card takes half */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
           className="flex flex-col gap-3 self-stretch">
           <div className="flex-1 rounded-2xl border border-border bg-card flex flex-col items-center justify-center gap-3">
             <div className="flex items-center gap-3">
               <Globe className="h-10 w-10 text-blue-500 shrink-0" />
               <p className="text-5xl font-black tabular-nums text-foreground leading-none">
-                {ranking?.globalRank != null ? `#${ranking.globalRank.toLocaleString()}` : "—"}
+                {ranking?.globalRank != null ? `#${ranking.globalRank.toLocaleString()}` : "-"}
               </p>
             </div>
             <p className="text-sm text-muted-foreground">Global Rank</p>
@@ -257,14 +257,14 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
             <div className="flex items-center gap-3">
               <Building2 className="h-10 w-10 text-emerald-500 shrink-0" />
               <p className="text-5xl font-black tabular-nums text-foreground leading-none">
-                {ranking?.collegeRank != null ? `#${ranking.collegeRank.toLocaleString()}` : "—"}
+                {ranking?.collegeRank != null ? `#${ranking.collegeRank.toLocaleString()}` : "-"}
               </p>
             </div>
             <p className="text-sm text-muted-foreground">College Rank</p>
           </div>
         </motion.div>
 
-        {/* Job Matches — 2 cols */}
+        {/* Job Matches - 2 cols */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           className="lg:col-span-2 rounded-2xl border border-border bg-card p-5 flex flex-col">
           <div className="flex items-center justify-between mb-4">
@@ -290,7 +290,7 @@ export function DashboardHero({ student, onSync, isSyncing }: DashboardHeroProps
                     <div className="flex items-center gap-3 rounded-xl border border-border hover:border-primary/30 hover:bg-primary/3 transition-all p-3 cursor-pointer group">
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-foreground text-sm truncate group-hover:text-primary transition-colors">{job.title}</p>
-                        <p className="text-xs text-muted-foreground">{job.companyName} · {job.type}</p>
+                        <p className="text-xs text-muted-foreground">{job.companyName} . {job.type}</p>
                       </div>
                       <div className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-bold ${
                         job.matchScore >= 80 ? "bg-emerald-500/10 text-emerald-600" :

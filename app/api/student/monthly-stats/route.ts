@@ -7,7 +7,7 @@
  * 1. Using LeetCode's recent submissions (if available in cached stats)
  * 2. Using Codeforces contests/submissions by date (if available)
  * 3. For all other platforms, distributing their total evenly based on the
- *    platform's linkedAt date and current total — giving a realistic growth curve
+ *    platform's linkedAt date and current total - giving a realistic growth curve
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     if (!doc) return NextResponse.json({ error: "Not found" }, { status: 404 })
 
     const lp: Record<string, any> = (doc as any).linkedPlatforms || {}
-    const monthly = buildEmptyYear()   // index 0–11 = Jan–Dec
+    const monthly = buildEmptyYear()   // index 0-11 = Jan-Dec
     const now = new Date()
 
     for (const [pid, pdata] of Object.entries(lp)) {
@@ -89,7 +89,7 @@ export async function GET(request: Request) {
 
     const data = MONTH_NAMES.map((month, i) => ({ month, problems: monthly[i] }))
 
-    // Available years — from earliest linkedAt to current year
+    // Available years - from earliest linkedAt to current year
     const years: number[] = []
     for (const pdata of Object.values(lp)) {
       if (pdata && typeof pdata === "object" && (pdata as any).linkedAt) {

@@ -1,5 +1,5 @@
 /**
- * Topic Questions — 6 modules per topic (2 Easy, 2 Medium, 2 Hard)
+ * Topic Questions - 6 modules per topic (2 Easy, 2 Medium, 2 Hard)
  * Each module has 5 problems. Total: 30 problems per topic.
  */
 

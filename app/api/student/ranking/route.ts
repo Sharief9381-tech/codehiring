@@ -37,7 +37,7 @@ function normalizeCollegeCode(raw: string | undefined): string {
   const upper = raw.trim().toUpperCase()
   // Check alias map
   if (COLLEGE_CODE_ALIASES[upper]) return COLLEGE_CODE_ALIASES[upper]
-  // Strip common noise: spaces, dashes, dots → canonical form
+  // Strip common noise: spaces, dashes, dots -> canonical form
   const stripped = upper.replace(/[\s\-\.]+/g, "")
   if (COLLEGE_CODE_ALIASES[stripped]) return COLLEGE_CODE_ALIASES[stripped]
   // Return stripped canonical (so "KITS" and "kits" both become "KITS")

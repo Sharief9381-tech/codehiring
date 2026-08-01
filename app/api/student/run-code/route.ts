@@ -9,8 +9,8 @@
  *  4. Run: node server.mjs (starts the executor)
  *
  * Local dev (Windows): Docker sandboxing requires Linux.
- *   → Run the executor inside WSL2 or a Linux VM.
- *   → Or use the dev fallback below (child_process direct exec — no sandbox).
+ *   -> Run the executor inside WSL2 or a Linux VM.
+ *   -> Or use the dev fallback below (child_process direct exec - no sandbox).
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -34,7 +34,7 @@ const LANG_KEY: Record<string, string> = {
   Java:"java","C++":"c++",C:"c","C#":"c#",Go:"go",Kotlin:"kotlin",Swift:"swift",
 }
 
-// ── Resolve executor URL (handles localhost → WSL2 IP fallback) ───────────────
+// ── Resolve executor URL (handles localhost -> WSL2 IP fallback) ───────────────
 // On Windows dev, EXECUTOR_URL=localhost:4000 fails because the executor runs in WSL2.
 // We try the configured URL first, then fall back to auto-detecting the WSL2 IP.
 let _resolvedExecutorUrl: string | null = null
@@ -55,9 +55,9 @@ async function resolveExecutorUrl(): Promise<string> {
     if (r.ok) { _resolvedExecutorUrl = configured; return configured }
   } catch {}
 
-  // Configured URL failed — try to find WSL2 IP automatically
+  // Configured URL failed - try to find WSL2 IP automatically
   // WSL2 gateway is reachable at the Windows host IP on the virtual switch
-  // We check common WSL2 subnet ranges (172.16–31.x.x)
+  // We check common WSL2 subnet ranges (172.16-31.x.x)
   const { exec } = await import("child_process")
   const { promisify } = await import("util")
   const execAsync = promisify(exec)
@@ -107,7 +107,7 @@ async function executeCode(code: string, language: string, stdin: string, timeou
 
 // ── Extract actual method name from student's Python code ────────────────────
 // The AI generates tests calling e.g. sol.containsDuplicate(...)
-// but the student's starter has def solve(self, ...) — we need to patch the call.
+// but the student's starter has def solve(self, ...) - we need to patch the call.
 function extractPythonMethodName(code: string): string | null {
   // Match: def methodName(self, ...)  inside a class
   const match = code.match(/class\s+Solution[\s\S]*?def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(self/)
@@ -129,7 +129,7 @@ function buildTestCases(
   language: string,
   studentCode?: string
 ): Array<{ input: string; expected: string; isPublic: boolean; isScript?: boolean }> {
-  // Function-style (LeetCode) — use AI-generated test scripts
+  // Function-style (LeetCode) - use AI-generated test scripts
   if (problem.pythonTest1 && language === "Python") {
     // Extract actual method name from student code to patch test scripts
     const actualMethod = studentCode ? extractPythonMethodName(studentCode) : null
@@ -142,7 +142,7 @@ function buildTestCases(
     ].filter(t => t.script && t.script.trim())
 
     return tests.slice(0, count).map(t => {
-      // Unescape \\n → real newlines (AI sometimes returns escaped strings)
+      // Unescape \\n -> real newlines (AI sometimes returns escaped strings)
       const rawScript = t.script.replace(/\\n/g, "\n").replace(/\\t/g, "\t")
       // Patch method name mismatch if we found one
       const script = actualMethod ? patchTestScript(rawScript, actualMethod) : rawScript
@@ -155,7 +155,7 @@ function buildTestCases(
     })
   }
 
-  // Fallback: no pythonTest scripts available yet — run code with empty stdin and pass if no error
+  // Fallback: no pythonTest scripts available yet - run code with empty stdin and pass if no error
   const pub = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
   const cases = [pub, pub, pub, pub]
   return cases.slice(0, count).map((c, i) => ({ ...c, isPublic: i < 2 }))

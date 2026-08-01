@@ -1,7 +1,7 @@
 /**
  * College jobs API
- * GET  /api/college/jobs  — list jobs posted by the logged-in college
- * POST /api/college/jobs  — create a new on-campus job/drive
+ * GET  /api/college/jobs  - list jobs posted by the logged-in college
+ * POST /api/college/jobs  - create a new on-campus job/drive
  */
 import { NextResponse } from "next/server"
 import { JobModel } from "@/lib/models/job"

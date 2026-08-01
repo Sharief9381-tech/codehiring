@@ -3,7 +3,7 @@ import Image from "next/image"
 import { ArrowLeft } from "lucide-react"
 
 export const metadata = {
-  title: "Privacy Policy — CodeHiring",
+  title: "Privacy Policy - CodeHiring",
   description: "How CodeHiring collects, uses, and protects your data.",
 }
 
@@ -37,11 +37,11 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-foreground mb-3">1. Information We Collect</h2>
             <p className="leading-relaxed mb-4">When you use CodeHiring, we collect the following types of information:</p>
             <ul className="list-disc list-inside space-y-2 text-sm">
-              <li><strong className="text-foreground">Account data</strong> — name, email address, role (student / college / recruiter), and password (hashed).</li>
-              <li><strong className="text-foreground">Profile data</strong> — college, branch, graduation year, company name, designation, and preferences you provide.</li>
-              <li><strong className="text-foreground">Platform usernames</strong> — LeetCode, GitHub, Codeforces, and other coding platform handles you connect.</li>
-              <li><strong className="text-foreground">Performance data</strong> — coding stats fetched from third-party platforms via public APIs (problems solved, ratings, contest history).</li>
-              <li><strong className="text-foreground">Usage data</strong> — pages visited, features used, and session metadata for improving the product.</li>
+              <li><strong className="text-foreground">Account data</strong> - name, email address, role (student / college / recruiter), and password (hashed).</li>
+              <li><strong className="text-foreground">Profile data</strong> - college, branch, graduation year, company name, designation, and preferences you provide.</li>
+              <li><strong className="text-foreground">Platform usernames</strong> - LeetCode, GitHub, Codeforces, and other coding platform handles you connect.</li>
+              <li><strong className="text-foreground">Performance data</strong> - coding stats fetched from third-party platforms via public APIs (problems solved, ratings, contest history).</li>
+              <li><strong className="text-foreground">Usage data</strong> - pages visited, features used, and session metadata for improving the product.</li>
             </ul>
           </section>
 

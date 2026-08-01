@@ -60,7 +60,7 @@ export async function GET() {
 
     const { password, ...safe } = student as any
 
-    // Strip the heavy base64 payload — only send metadata to the client
+    // Strip the heavy base64 payload - only send metadata to the client
     if (safe.resumeFile?.dataUri) {
       const { dataUri: _omit, ...fileMeta } = safe.resumeFile
       safe.resumeFile = fileMeta

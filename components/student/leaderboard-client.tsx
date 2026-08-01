@@ -75,8 +75,8 @@ function LeaderboardRow({ entry, isMe }: { entry: LeaderboardEntry; isMe?: boole
         </div>
         <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
           {entry.collegeCode && <span>{entry.collegeCode}</span>}
-          {entry.branch && <><span>·</span><span>{entry.branch}</span></>}
-          {entry.graduationYear && <><span>·</span><span>{entry.graduationYear}</span></>}
+          {entry.branch && <><span>.</span><span>{entry.branch}</span></>}
+          {entry.graduationYear && <><span>.</span><span>{entry.graduationYear}</span></>}
         </div>
       </div>
       <div className="hidden sm:flex items-center gap-6 text-sm">
@@ -85,7 +85,7 @@ function LeaderboardRow({ entry, isMe }: { entry: LeaderboardEntry; isMe?: boole
           <div className="text-xs text-muted-foreground">Problems</div>
         </div>
         <div className="w-16 text-center">
-          <div className="font-bold text-blue-400">{entry.rating || "—"}</div>
+          <div className="font-bold text-blue-400">{entry.rating || "-"}</div>
           <div className="text-xs text-muted-foreground">Rating</div>
         </div>
         <div className="w-16 text-center">
@@ -153,7 +153,7 @@ function MyRankCard({ myRank }: { myRank: MyRank }) {
       <div className="flex flex-wrap gap-6">
         <div className="text-center">
           <p className="text-2xl font-black text-primary">
-            {myRank.globalRank != null ? `#${myRank.globalRank}` : "—"}
+            {myRank.globalRank != null ? `#${myRank.globalRank}` : "-"}
           </p>
           <p className="text-xs text-muted-foreground">Global Rank</p>
           {myRank.totalGlobal > 0 && <p className="text-xs text-muted-foreground">of {myRank.totalGlobal}</p>}
@@ -235,7 +235,7 @@ export function LeaderboardClient() {
             <CardContent className="p-4 flex items-center gap-3">
               <Globe className="h-8 w-8 text-blue-400" />
               <div>
-                <div className="text-2xl font-bold text-foreground">{loading ? "—" : (data?.totalStudents ?? 0)}</div>
+                <div className="text-2xl font-bold text-foreground">{loading ? "-" : (data?.totalStudents ?? 0)}</div>
                 <div className="text-sm text-blue-300">Total Students</div>
               </div>
             </CardContent>
@@ -247,7 +247,7 @@ export function LeaderboardClient() {
               <Trophy className="h-8 w-8 text-emerald-400" />
               <div>
                 <div className="text-2xl font-bold text-foreground">
-                  {loading ? "—" : myRank?.globalRank != null ? `#${myRank.globalRank}` : "—"}
+                  {loading ? "-" : myRank?.globalRank != null ? `#${myRank.globalRank}` : "-"}
                 </div>
                 <div className="text-sm text-emerald-300">Your Global Rank</div>
               </div>
@@ -258,8 +258,8 @@ export function LeaderboardClient() {
             <CardContent className="p-4 flex items-center gap-3">
               <TrendingUp className="h-8 w-8 text-yellow-400" />
               <div>
-                <div className="text-2xl font-bold text-foreground truncate max-w-[120px]">{loading ? "—" : (topSolver?.name ?? "—")}</div>
-                <div className="text-sm text-yellow-300">Top Solver · {topSolver?.problems ?? 0} problems</div>
+                <div className="text-2xl font-bold text-foreground truncate max-w-[120px]">{loading ? "-" : (topSolver?.name ?? "-")}</div>
+                <div className="text-sm text-yellow-300">Top Solver . {topSolver?.problems ?? 0} problems</div>
               </div>
             </CardContent>
           </Card>
@@ -309,7 +309,7 @@ export function LeaderboardClient() {
               <CardTitle className="flex items-center gap-2 text-foreground">
                 <Building2 className="h-5 w-5 text-emerald-400" />My College
                 {selectedCollege && (
-                  <span className="text-base font-semibold text-emerald-500 ml-1">— {selectedCollege}</span>
+                  <span className="text-base font-semibold text-emerald-500 ml-1">- {selectedCollege}</span>
                 )}
               </CardTitle>
               <CardDescription className="text-muted-foreground">

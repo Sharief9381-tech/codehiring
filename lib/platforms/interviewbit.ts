@@ -1,5 +1,5 @@
 ﻿/**
- * InterviewBit scraper — v3 (definitive)
+ * InterviewBit scraper - v3 (definitive)
  *
  * Deep investigation (June 2026) confirmed:
  *  - /profile/<username> returns a Next.js App Router shell with NO server-rendered data
@@ -13,9 +13,9 @@
  *
  * Strategy:
  *  1. Fetch /profile/<username> and look for {"username":"<username>"} in the RSC payload
- *     — confirms the profile exists
+ *     - confirms the profile exists
  *  2. Return _apiLimited: true so the UI shows "Connected" instead of a broken state
- *  3. Score/rank/problems stay 0 — there is no public data surface
+ *  3. Score/rank/problems stay 0 - there is no public data surface
  *
  * If InterviewBit ever re-exposes public profile data, update the stat extraction below.
  */
@@ -118,7 +118,7 @@ export async function fetchInterviewBitStats(
     }
 
     // ── 4. Return confirmed-but-limited result ────────────────────────────
-    // All stat endpoints require an authenticated session — no public data available
+    // All stat endpoints require an authenticated session - no public data available
 
     return {
       username:       u,

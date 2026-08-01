@@ -1,6 +1,6 @@
 /**
- * PATCH /api/drives/[id]/verify — Step 2: CodeHiring admin verifies a hiring request
- * Advances status from pending_review → verified or cancelled
+ * PATCH /api/drives/[id]/verify - Step 2: CodeHiring admin verifies a hiring request
+ * Advances status from pending_review -> verified or cancelled
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

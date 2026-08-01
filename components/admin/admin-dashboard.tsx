@@ -351,10 +351,10 @@ export function AdminDashboard() {
                     <tbody>
                       {filteredUsers.map((u, i) => (
                         <tr key={u._id ?? i} className="border-b border-border/40 last:border-0 hover:bg-muted/20">
-                          <td className="px-4 py-3 font-medium">{u.name ?? "—"}</td>
+                          <td className="px-4 py-3 font-medium">{u.name ?? "-"}</td>
                           <td className="px-4 py-3 text-muted-foreground text-xs">{u.email}</td>
                           <td className="px-4 py-3"><StatusBadge status={u.role ?? "student"} /></td>
-                          <td className="px-4 py-3 text-muted-foreground text-xs">{u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}</td>
+                          <td className="px-4 py-3 text-muted-foreground text-xs">{u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "-"}</td>
                           <td className="px-4 py-3"><StatusBadge status="active" /></td>
                         </tr>
                       ))}
@@ -480,7 +480,7 @@ export function AdminDashboard() {
             </div>
           </TabsContent>
 
-          {/* DRIVES — Step 2: Requirement Verification */}
+          {/* DRIVES - Step 2: Requirement Verification */}
           <TabsContent value="drives" className="space-y-5">
             <div className="flex items-center justify-between">
               <div>
@@ -511,13 +511,13 @@ export function AdminDashboard() {
                           </div>
                           <p className="text-sm text-primary font-medium">{drive.companyName}</p>
                           <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mt-2">
-                            <span>{drive.type} · {drive.location}</span>
+                            <span>{drive.type} . {drive.location}</span>
                             {drive.salary && <span>{drive.salary}</span>}
                             <span>{drive.openPositions} position{drive.openPositions > 1 ? "s" : ""}</span>
                           </div>
                           <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{drive.description}</p>
                           {drive.selectionProcess?.length > 0 && (
-                            <p className="text-xs text-muted-foreground mt-1">Process: {drive.selectionProcess.join(" → ")}</p>
+                            <p className="text-xs text-muted-foreground mt-1">Process: {drive.selectionProcess.join(" -> ")}</p>
                           )}
                           <p className="text-[10px] text-muted-foreground/60 mt-2">Submitted {new Date(drive.createdAt).toLocaleDateString()}</p>
                         </div>

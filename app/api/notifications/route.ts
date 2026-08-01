@@ -1,6 +1,6 @@
 /**
- * GET  /api/notifications        — get notifications for current user
- * POST /api/notifications/read   — mark one or all as read
+ * GET  /api/notifications        - get notifications for current user
+ * POST /api/notifications/read   - mark one or all as read
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

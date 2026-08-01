@@ -1,7 +1,7 @@
 /**
  * GET /api/public/profile/[username]
  * Returns a public student profile by name slug or email prefix.
- * No auth required — safe fields only.
+ * No auth required - safe fields only.
  */
 import { NextResponse } from "next/server"
 import { getDatabase, isDatabaseAvailable } from "@/lib/database"
@@ -20,7 +20,7 @@ export async function GET(
     const { username } = await params
     const slug = username.toLowerCase()
 
-    // Search by name slug (lowercase, spaces→hyphens) or email prefix
+    // Search by name slug (lowercase, spaces->hyphens) or email prefix
     const students = await db
       .collection("users")
       .find({ role: "student" }, { projection: { password: 0 } })

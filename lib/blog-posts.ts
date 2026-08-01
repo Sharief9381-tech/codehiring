@@ -30,22 +30,22 @@ LeetCode changed the game by giving developers a standardized way to demonstrate
 
 Top-tier companies have quietly shifted their screening process. Many now ask for LeetCode profiles upfront. What they look at:
 
-- **Total problems solved** — consistency and volume of practice
-- **Difficulty breakdown** — ratio of medium/hard problems shows depth
-- **Contest rating** — performance under time pressure reflects real interview conditions
-- **Consistency** — recent activity shows you're still sharp
+- **Total problems solved** - consistency and volume of practice
+- **Difficulty breakdown** - ratio of medium/hard problems shows depth
+- **Contest rating** - performance under time pressure reflects real interview conditions
+- **Consistency** - recent activity shows you're still sharp
 
 ## The Verified Advantage
 
 The biggest shift is verification. A resume says "experienced in dynamic programming." A LeetCode profile shows 120 hard problems solved with a contest rating of 1900. One is a claim. The other is proof.
 
-CodeHiring takes this further by pulling your stats directly from LeetCode's API — no self-reporting, no cherry-picking. Recruiters see exactly what the platform shows.
+CodeHiring takes this further by pulling your stats directly from LeetCode's API - no self-reporting, no cherry-picking. Recruiters see exactly what the platform shows.
 
 ## What This Means for You
 
 If you're a student, the time you spend on LeetCode is no longer invisible. Every problem you solve is building a verifiable track record that follows you into every job application.
 
-Focus on consistency over cramming. A steady 2–3 problems per day over a year beats a panic sprint the week before interviews.
+Focus on consistency over cramming. A steady 2-3 problems per day over a year beats a panic sprint the week before interviews.
 
 ## The Bottom Line
 
@@ -59,7 +59,7 @@ Your LeetCode score isn't everything. But in a world where everyone claims the s
     tagColor: "bg-emerald-500/10 text-emerald-600",
     title: "How Data-Driven Placement Cells Are Outperforming the Rest",
     excerpt:
-      "Colleges that track coding activity in real time are seeing 30–40% better placement outcomes. We break down what they're doing differently.",
+      "Colleges that track coding activity in real time are seeing 30-40% better placement outcomes. We break down what they're doing differently.",
     readTime: "7 min read",
     content: `
 ## The Old Way vs. The New Way
@@ -80,10 +80,10 @@ Colleges using real-time coding analytics report:
 ## The Key Differences
 
 **1. Real-Time Monitoring**
-Instead of waiting for semester-end reports, TPOs can see daily activity. When a student's LeetCode activity drops for two weeks, that's an early warning signal — not a post-mortem discovery.
+Instead of waiting for semester-end reports, TPOs can see daily activity. When a student's LeetCode activity drops for two weeks, that's an early warning signal - not a post-mortem discovery.
 
 **2. Skill Gap Identification**
-Aggregated data across a batch shows which skills are consistently weak. If 60% of your final year students have never solved a dynamic programming problem, you can run a targeted workshop — before placement season, not during.
+Aggregated data across a batch shows which skills are consistently weak. If 60% of your final year students have never solved a dynamic programming problem, you can run a targeted workshop - before placement season, not during.
 
 **3. Transparent Recruiter Access**
 Companies now expect data. Placement cells that can share verified, structured coding profiles get more recruiter attention than those sending static PDFs. Transparency builds trust.
@@ -129,11 +129,11 @@ None of this is malicious. Most candidates genuinely believe their self-assessme
 
 ## The Verification Gap
 
-The gap between claimed and verified performance is widest at the middle of the skill distribution — not at the extremes. Strong candidates tend to undersell themselves. Weak candidates tend to oversell. Recruiters using only resumes consistently end up interviewing the wrong half.
+The gap between claimed and verified performance is widest at the middle of the skill distribution - not at the extremes. Strong candidates tend to undersell themselves. Weak candidates tend to oversell. Recruiters using only resumes consistently end up interviewing the wrong half.
 
 ## How Verified Profiles Fix This
 
-When every stat comes directly from the source — LeetCode's API, GitHub's contribution graph, Codeforces's rating system — the self-reporting bias disappears entirely.
+When every stat comes directly from the source - LeetCode's API, GitHub's contribution graph, Codeforces's rating system - the self-reporting bias disappears entirely.
 
 A recruiter looking at a CodeHiring profile sees:
 - Problems solved: 347 (pulled live from LeetCode)
@@ -151,7 +151,7 @@ Companies that shifted to verified-profile-first screening report:
 
 ## The Bottom Line
 
-Resumes won't disappear. But for technical roles, they should be the last thing you look at — not the first. Start with verified performance, and use the resume only to understand context.
+Resumes won't disappear. But for technical roles, they should be the last thing you look at - not the first. Start with verified performance, and use the resume only to understand context.
     `,
   },
   {
@@ -161,7 +161,7 @@ Resumes won't disappear. But for technical roles, they should be the last thing 
     tagColor: "bg-violet-500/10 text-violet-600",
     title: "How CodeHiring's AI Matching Actually Works",
     excerpt:
-      "A behind-the-scenes look at how we use coding platform data, normalized scores, and job requirements to rank candidates — without keyword matching.",
+      "A behind-the-scenes look at how we use coding platform data, normalized scores, and job requirements to rank candidates - without keyword matching.",
     readTime: "8 min read",
     content: `
 ## The Problem with Keyword Matching
@@ -178,7 +178,7 @@ Here's what we actually look at:
 
 ### 1. The CodeScore
 
-Every student on CodeHiring has a normalized CodeScore — a single number that synthesizes:
+Every student on CodeHiring has a normalized CodeScore - a single number that synthesizes:
 - Total problems solved across platforms (weighted by difficulty)
 - Contest participation and ratings
 - GitHub activity (commits, PRs, repos)
@@ -200,14 +200,14 @@ Our system translates these requirements into performance benchmarks based on hi
 
 Candidates are ranked for each job using a weighted scoring function:
 
-- **40%** — CodeScore percentile
-- **25%** — Skill overlap (but verified: we check if the student has solved problems tagged with required skills)
-- **20%** — Recency (recent activity weighted higher — active practice matters)
-- **15%** — Platform-specific signals (e.g., for backend roles, GitHub activity weighted higher)
+- **40%** - CodeScore percentile
+- **25%** - Skill overlap (but verified: we check if the student has solved problems tagged with required skills)
+- **20%** - Recency (recent activity weighted higher - active practice matters)
+- **15%** - Platform-specific signals (e.g., for backend roles, GitHub activity weighted higher)
 
 ### 4. The Groq AI Layer
 
-On top of the numeric scoring, we use Groq's LLM API to generate natural-language match explanations. Recruiters don't just see a score — they see "This candidate has solved 45 graph problems and has a Codeforces rating in the top 15% for your required stack."
+On top of the numeric scoring, we use Groq's LLM API to generate natural-language match explanations. Recruiters don't just see a score - they see "This candidate has solved 45 graph problems and has a Codeforces rating in the top 15% for your required stack."
 
 ## What We Deliberately Don't Do
 
@@ -219,7 +219,7 @@ The goal is to surface talent that keyword-based systems miss. That's only possi
 
 ## Results So Far
 
-Early recruiter partners report 60% fewer failed technical screens and 2x more diverse candidate pipelines compared to their previous processes. The matching isn't perfect — no algorithm is — but it's consistently better than the alternative.
+Early recruiter partners report 60% fewer failed technical screens and 2x more diverse candidate pipelines compared to their previous processes. The matching isn't perfect - no algorithm is - but it's consistently better than the alternative.
     `,
   },
   {
@@ -234,28 +234,28 @@ Early recruiter partners report 60% fewer failed technical screens and 2x more d
     content: `
 ## Step 1: Create Your Account
 
-Sign up at CodeHiring with your college email. During signup, you'll enter your college code — ask your placement officer if you don't have it. This links your profile to your college's placement cell and makes you visible to authorized recruiters.
+Sign up at CodeHiring with your college email. During signup, you'll enter your college code - ask your placement officer if you don't have it. This links your profile to your college's placement cell and makes you visible to authorized recruiters.
 
-Fill in your basic profile: branch, graduation year, and skills. Don't overthink the skills list — it's supplementary to your verified platform data.
+Fill in your basic profile: branch, graduation year, and skills. Don't overthink the skills list - it's supplementary to your verified platform data.
 
 ## Step 2: Connect Your Platforms
 
-This is the most important step. Go to **Dashboard → Platforms** and connect every coding profile you have.
+This is the most important step. Go to **Dashboard -> Platforms** and connect every coding profile you have.
 
 Priority order:
-1. **LeetCode** — most heavily weighted for job matching
-2. **GitHub** — critical for any development role
-3. **Codeforces** — high weight for competitive programming roles
-4. **CodeChef** — useful, especially for Indian company hiring
-5. **HackerRank** — good for certifications and skill badges
+1. **LeetCode** - most heavily weighted for job matching
+2. **GitHub** - critical for any development role
+3. **Codeforces** - high weight for competitive programming roles
+4. **CodeChef** - useful, especially for Indian company hiring
+5. **HackerRank** - good for certifications and skill badges
 
-For each platform, enter your username. CodeHiring pulls your data automatically — no manual entry needed.
+For each platform, enter your username. CodeHiring pulls your data automatically - no manual entry needed.
 
-**Pro tip:** Connect platforms even if your stats aren't great yet. Having a verified "0 contest rating" is better than no data at all — it shows honesty and gives you a baseline to improve from.
+**Pro tip:** Connect platforms even if your stats aren't great yet. Having a verified "0 contest rating" is better than no data at all - it shows honesty and gives you a baseline to improve from.
 
 ## Step 3: Understand Your CodeScore
 
-After syncing, you'll see your CodeScore on the dashboard. This is a normalized score (0–1000) that represents your percentile among all students on CodeHiring.
+After syncing, you'll see your CodeScore on the dashboard. This is a normalized score (0-1000) that represents your percentile among all students on CodeHiring.
 
 What moves your score:
 - Solving more problems (especially medium/hard on LeetCode)
@@ -272,35 +272,35 @@ CodeHiring's AI analyzes your problem-solving history and flags gaps. Common exa
 - Strong on LeetCode but no competitive programming experience
 - Good GitHub activity but no open-source contributions
 
-Use these gaps as a study roadmap. Closing a flagged gap typically moves your CodeScore by 15–30 points.
+Use these gaps as a study roadmap. Closing a flagged gap typically moves your CodeScore by 15-30 points.
 
 ## Step 5: Browse and Apply to Jobs
 
-Go to **Jobs** to see your matched opportunities. Jobs are sorted by match score — the top results are where your profile aligns best with the recruiter's requirements.
+Go to **Jobs** to see your matched opportunities. Jobs are sorted by match score - the top results are where your profile aligns best with the recruiter's requirements.
 
 For each job, you'll see:
 - Why you matched (specific skills and scores that triggered the match)
 - What's missing (skills the recruiter wants that you don't yet have)
 - Application instructions
 
-Apply through the platform. Your CodeHiring profile is automatically shared with the recruiter — no separate resume submission needed unless requested.
+Apply through the platform. Your CodeHiring profile is automatically shared with the recruiter - no separate resume submission needed unless requested.
 
 ## Step 6: Keep Your Profile Fresh
 
 Sync your platforms at least once a week. Recruiters can see your last-active date. A profile that hasn't been updated in 3 months signals low engagement.
 
-Set a reminder: every Sunday, solve 2–3 LeetCode problems and push a commit to a project. It takes 30 minutes and keeps your profile active.
+Set a reminder: every Sunday, solve 2-3 LeetCode problems and push a commit to a project. It takes 30 minutes and keeps your profile active.
 
 ## Common Mistakes to Avoid
 
-- **Connecting platforms with incomplete profiles** — Make sure your LeetCode profile is public before connecting
-- **Ignoring the skill gap report** — This is free coaching. Use it.
-- **Only applying to reach roles** — Apply to a mix: 30% reach, 50% match, 20% safety
-- **Not updating after a skill improvement** — Re-sync after completing a course or hitting a milestone
+- **Connecting platforms with incomplete profiles** - Make sure your LeetCode profile is public before connecting
+- **Ignoring the skill gap report** - This is free coaching. Use it.
+- **Only applying to reach roles** - Apply to a mix: 30% reach, 50% match, 20% safety
+- **Not updating after a skill improvement** - Re-sync after completing a course or hitting a milestone
 
 ## Final Note
 
-CodeHiring surfaces your effort automatically. The more consistently you practice, the better your profile looks — no extra work required. The platform is only as useful as the data you give it.
+CodeHiring surfaces your effort automatically. The more consistently you practice, the better your profile looks - no extra work required. The platform is only as useful as the data you give it.
     `,
   },
   {
@@ -315,13 +315,13 @@ CodeHiring surfaces your effort automatically. The more consistently you practic
     content: `
 ## The Landscape Has Shifted
 
-Campus hiring in 2025 looks meaningfully different from three years ago. The post-pandemic hiring boom, followed by the 2023–24 correction, has forced both companies and colleges to rethink their approaches. Here are the trends that are actually shaping outcomes this year.
+Campus hiring in 2025 looks meaningfully different from three years ago. The post-pandemic hiring boom, followed by the 2023-24 correction, has forced both companies and colleges to rethink their approaches. Here are the trends that are actually shaping outcomes this year.
 
 ## 1. Skills-First Hiring is No Longer Optional
 
 Major tech companies have formally dropped degree requirements for many roles. This has created downstream pressure on campus hiring: companies visiting campuses now care less about CGPA and more about demonstrable skills.
 
-For students, this is good news — a lower GPA with strong verified coding stats is increasingly competitive. For colleges, it means placement cells need skill-tracking infrastructure, not just relationship management.
+For students, this is good news - a lower GPA with strong verified coding stats is increasingly competitive. For colleges, it means placement cells need skill-tracking infrastructure, not just relationship management.
 
 ## 2. AI-Assisted Screening is Standard
 
@@ -331,13 +331,13 @@ The implication: keyword-stuffed resumes are less effective than ever. AI screen
 
 ## 3. The Internship-to-PPO Pipeline is Dominant
 
-Pre-placement offers (PPOs) from internships now account for a significant portion of campus placements at top colleges. Companies have realized that a 2–3 month internship is a better signal than a 45-minute technical interview.
+Pre-placement offers (PPOs) from internships now account for a significant portion of campus placements at top colleges. Companies have realized that a 2-3 month internship is a better signal than a 45-minute technical interview.
 
 For students: treat every internship as a 3-month interview. For colleges: internship placement rates are becoming as important as final placement rates.
 
 ## 4. Niche Skill Premiums Are Growing
 
-Generalist developer demand has softened. Demand for specific skills — particularly ML/AI engineering, systems programming, and full-stack with specific framework expertise — has intensified.
+Generalist developer demand has softened. Demand for specific skills - particularly ML/AI engineering, systems programming, and full-stack with specific framework expertise - has intensified.
 
 Students who have visible, verified depth in a niche skill set (demonstrated through platform stats, projects, or certifications) are commanding significant salary premiums over generalists.
 
@@ -355,7 +355,7 @@ This is perhaps the most significant long-term trend: geographic and institution
 
 ## What to Do With This
 
-**If you're a student:** Focus on depth in 1–2 platforms, pursue an internship aggressively, and make sure your coding activity is visible and verified.
+**If you're a student:** Focus on depth in 1-2 platforms, pursue an internship aggressively, and make sure your coding activity is visible and verified.
 
 **If you're a placement officer:** Invest in analytics infrastructure now. The colleges winning recruiter relationships in 2025 are the ones that can answer data questions instantly.
 

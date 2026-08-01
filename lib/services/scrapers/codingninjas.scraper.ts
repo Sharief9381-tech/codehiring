@@ -4,7 +4,7 @@
  *              (old: https://www.codingninjas.com/studio/profile/{username})
  *
  * Coding Ninjas migrated to Naukri Code360. Both URLs redirect to the same page.
- * The page is a React SPA — stats are embedded in a <script id="__NEXT_DATA__"> tag.
+ * The page is a React SPA - stats are embedded in a <script id="__NEXT_DATA__"> tag.
  */
 import type { NormalizedPlatformStats } from "../scraper-types"
 import { failResult, fetchHTML, extractInt, extractStr } from "../scraper-utils"
@@ -17,7 +17,7 @@ export async function scrapeCodingNinjas(username: string): Promise<NormalizedPl
     .replace(/\/$/, "")
   if (!u) return failResult(PLATFORM, username, "Invalid username")
 
-  // Try both URLs — Naukri Code360 is the current one
+  // Try both URLs - Naukri Code360 is the current one
   const urls = [
     `https://www.naukri.com/code360/profile/${u}`,
     `https://www.codingninjas.com/studio/profile/${u}`,

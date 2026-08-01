@@ -17,7 +17,7 @@ export async function GET() {
       return NextResponse.json({ error: "No uploaded resume found" }, { status: 404 })
     }
 
-    // Strip the data URI prefix → pure base64
+    // Strip the data URI prefix -> pure base64
     const base64 = resumeFile.dataUri.replace(/^data:[^;]+;base64,/, "")
     const buffer = Buffer.from(base64, "base64")
 

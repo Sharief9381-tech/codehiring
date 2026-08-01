@@ -1,7 +1,7 @@
 /**
  * /api/drives
- * Step 1 — Company Hiring Request: POST creates a drive (status=pending_review)
- * GET — list drives (admin: all, recruiter: own, student: eligible)
+ * Step 1 - Company Hiring Request: POST creates a drive (status=pending_review)
+ * GET - list drives (admin: all, recruiter: own, student: eligible)
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

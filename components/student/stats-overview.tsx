@@ -95,7 +95,7 @@ function getPlatformStatLines(platformId: string, platformData: any): { label: s
       return [
         { label: "Problems Solved", value: stats.totalSolved ?? 0 },
         { label: "Easy / Med / Hard", value: `${stats.easySolved ?? 0} / ${stats.mediumSolved ?? 0} / ${stats.hardSolved ?? 0}` },
-        { label: "Ranking", value: stats.ranking ? `#${stats.ranking.toLocaleString()}` : "—" },
+        { label: "Ranking", value: stats.ranking ? `#${stats.ranking.toLocaleString()}` : "-" },
       ]
     case "github":
       return [
@@ -112,20 +112,20 @@ function getPlatformStatLines(platformId: string, platformData: any): { label: s
     case "codechef":
       return [
         { label: "Rating", value: stats.currentRating ?? 0 },
-        { label: "Stars", value: stats.stars ?? "—" },
+        { label: "Stars", value: stats.stars ?? "-" },
         { label: "Problems Solved", value: stats.problemsSolved ?? 0 },
       ]
     case "hackerrank":
       return [
         { label: "Badges", value: stats.badges?.length ?? 0 },
-        { label: "Top Badge", value: stats.badges?.[0]?.name ? `${stats.badges[0].name} (${stats.badges[0].stars}★)` : "—" },
+        { label: "Top Badge", value: stats.badges?.[0]?.name ? `${stats.badges[0].name} (${stats.badges[0].stars}★)` : "-" },
         { label: "Total Score", value: stats.totalScore ?? 0 },
       ]
     case "geeksforgeeks":
       return [
         { label: "Problems Solved", value: stats.problemsSolved ?? 0 },
         { label: "Coding Score", value: stats.codingScore ?? 0 },
-        { label: "Current Streak", value: stats.currentStreak ? `${stats.currentStreak} days` : "—" },
+        { label: "Current Streak", value: stats.currentStreak ? `${stats.currentStreak} days` : "-" },
       ]
     case "hackerearth":
       return [
@@ -135,7 +135,7 @@ function getPlatformStatLines(platformId: string, platformData: any): { label: s
     case "atcoder":
       return [
         { label: "Rating", value: stats.rating ?? 0 },
-        { label: "Rank", value: stats.rank ?? "—" },
+        { label: "Rank", value: stats.rank ?? "-" },
         { label: "Problems Solved", value: stats.problemsSolved ?? 0 },
       ]
     default: {

@@ -1,6 +1,6 @@
 /**
  * TopCoder scraper
- * Uses TopCoder's public v5 REST API — no scraping needed.
+ * Uses TopCoder's public v5 REST API - no scraping needed.
  *   Member info : https://api.topcoder.com/v5/members/{username}
  *   Member stats: https://api.topcoder.com/v5/members/{username}/stats
  */

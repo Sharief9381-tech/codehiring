@@ -184,7 +184,7 @@ export function SignupBackground() {
       {[
         { t:"<Code/>",   x:"6%",  y:"18%", delay:"0s",   rot:"-8deg"  },
         { t:"{...}",     x:"87%", y:"22%", delay:"1.2s", rot:"6deg"   },
-        { t:"→ match",   x:"4%",  y:"65%", delay:"2.4s", rot:"-5deg"  },
+        { t:"-> match",   x:"4%",  y:"65%", delay:"2.4s", rot:"-5deg"  },
         { t:"# AI",      x:"88%", y:"60%", delay:"0.8s", rot:"10deg"  },
         { t:"git push",  x:"12%", y:"85%", delay:"3s",   rot:"-7deg"  },
         { t:"npm run",   x:"78%", y:"82%", delay:"1.8s", rot:"5deg"   },

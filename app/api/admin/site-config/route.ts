@@ -1,7 +1,7 @@
 /**
  * Admin API for landing page site config
- * GET   /api/admin/site-config  — fetch current config
- * POST  /api/admin/site-config  — update config (partial upsert)
+ * GET   /api/admin/site-config  - fetch current config
+ * POST  /api/admin/site-config  - update config (partial upsert)
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

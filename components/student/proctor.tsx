@@ -66,7 +66,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     return () => document.removeEventListener("fullscreenchange", onFsChange)
   }, [started, showWarning, reportViolation])
 
-  // ── Tab / window blur — suppress during FS transition ──
+  // ── Tab / window blur - suppress during FS transition ──
   useEffect(() => {
     if (!started) return
     const onBlur = () => {
@@ -148,7 +148,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     }
   }, [])
 
-  // ── PRE-START screen — shown BEFORE fullscreen, normal layout ──
+  // ── PRE-START screen - shown BEFORE fullscreen, normal layout ──
   if (!started) {
     return (
       <div className="flex-1 flex items-center justify-center p-4 py-12">
@@ -158,13 +158,13 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
               <Shield className="h-7 w-7 text-primary" />
             </div>
             <h2 className="text-2xl font-black text-foreground mb-2">Proctored Assessment</h2>
-            <p className="text-sm text-muted-foreground">{companyName} — AI Hiring Simulation</p>
+            <p className="text-sm text-muted-foreground">{companyName} - AI Hiring Simulation</p>
           </div>
 
           <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-5">
             {[
               { icon: "🖥️", text: "Full-screen mode will be enforced throughout the exam" },
-              { icon: "📷", text: "Camera access required — your session is monitored" },
+              { icon: "📷", text: "Camera access required - your session is monitored" },
               { icon: "📋", text: "Copy and paste are disabled during the assessment" },
               { icon: "🔒", text: "Tab switching is detected and recorded" },
               { icon: "🖱️", text: "Right-click and DevTools are disabled" },
@@ -200,7 +200,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
 
   // ── ACTIVE PROCTORED SHELL ──
   // Uses fixed inset-0 with very high z-index to sit ABOVE the sidebar/navbar
-  // Hardcoded dark colors — immune to light/dark theme switching
+  // Hardcoded dark colors - immune to light/dark theme switching
   return (
     <div
       className="fixed inset-0 overflow-y-auto"
@@ -219,7 +219,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
         </div>
       )}
 
-      {/* Fullscreen-required overlay — blocks content until back in FS */}
+      {/* Fullscreen-required overlay - blocks content until back in FS */}
       {!isFullscreen && (
         <div className="fixed inset-0 z-[10000] bg-black/98 flex flex-col items-center justify-center gap-5">
           <AlertCircle className="h-16 w-16 text-red-400" />
@@ -239,7 +239,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
         </div>
       )}
 
-      {/* Camera feed — bottom-right corner */}
+      {/* Camera feed - bottom-right corner */}
       <div className="fixed bottom-4 right-4 z-[10001] rounded-xl overflow-hidden shadow-xl"
         style={{ width: 120, height: 90, border: "2px solid rgba(124,58,237,0.5)" }}>
         <video ref={videoRef} muted autoPlay playsInline
@@ -251,15 +251,15 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
         <Camera className="absolute top-1 right-1 h-3 w-3 text-white/50" />
       </div>
 
-      {/* Proctor status bar — bottom-left */}
+      {/* Proctor status bar - bottom-left */}
       <div className="fixed bottom-4 left-4 z-[10001] flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border bg-background/90 backdrop-blur text-xs text-muted-foreground">
         <Shield className="h-3 w-3 text-primary" />
         <span>Proctored</span>
         {violations.current.tabSwitches > 0 && (
-          <span className="text-amber-400 font-semibold">· {violations.current.tabSwitches} switch{violations.current.tabSwitches > 1 ? "es" : ""}</span>
+          <span className="text-amber-400 font-semibold">. {violations.current.tabSwitches} switch{violations.current.tabSwitches > 1 ? "es" : ""}</span>
         )}
         {violations.current.copyAttempts > 0 && (
-          <span className="text-red-400 font-semibold">· {violations.current.copyAttempts} copy</span>
+          <span className="text-red-400 font-semibold">. {violations.current.copyAttempts} copy</span>
         )}
       </div>
 

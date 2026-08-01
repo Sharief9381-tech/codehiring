@@ -105,7 +105,7 @@ export default function BlogPage() {
                         </h3>
                         <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-4">{post.excerpt}</p>
                         <div className="flex items-center justify-between pt-3 border-t border-border">
-                          <span className="text-xs text-muted-foreground">{post.date} · {post.readTime}</span>
+                          <span className="text-xs text-muted-foreground">{post.date} . {post.readTime}</span>
                           <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
                       </div>

@@ -1,4 +1,4 @@
-// lib/auth.ts — safe to import in route handlers AND server components
+// lib/auth.ts - safe to import in route handlers AND server components
 
 import { UserModel } from "./models/user"
 import { SessionModel } from "./models/session"
@@ -100,7 +100,7 @@ export async function getUsers() {
   return await UserModel.findAll()
 }
 
-// ── Current user — uses dynamic import to avoid bundling next/headers in route handlers ──
+// ── Current user - uses dynamic import to avoid bundling next/headers in route handlers ──
 
 export async function getCurrentUser(): Promise<
   | Omit<StudentProfile, "password">

@@ -84,8 +84,8 @@ const tierColor: Record<Internship["tier"], string> = {
 
 const internships: Internship[] = [
   { company: "Internshala", logo: "IN", role: "CS / Web Dev / ML / Android", description: "India's #1 internship platform. 1000+ live tech internships daily. Filter by role, stipend, remote, and duration.", stipend: "Rs 5K-30K/month", deadline: "Ongoing", tags: ["All Roles", "Remote", "Fresher"], applyUrl: "https://internshala.com/internships/computer-science-internship/", tier: "startup" },
-  { company: "Cutshort", logo: "CS", role: "Tech Intern · Vetted Startups", description: "AI-matched live internships at vetted Indian product companies and startups. No spam, quality roles only.", stipend: "Rs 10K-50K/month", deadline: "Ongoing", tags: ["Startup", "AI-matched", "India"], applyUrl: "https://cutshort.io/jobs?type=internship", tier: "startup" },
-  { company: "Wellfound", logo: "WF", role: "Startup Intern · All Roles", description: "AngelList's job board with thousands of live startup internships in SWE, design, data, and product.", stipend: "Varies", deadline: "Ongoing", tags: ["Startup", "Global", "All Roles"], applyUrl: "https://wellfound.com/jobs?jobType=internship", tier: "startup" },
+  { company: "Cutshort", logo: "CS", role: "Tech Intern . Vetted Startups", description: "AI-matched live internships at vetted Indian product companies and startups. No spam, quality roles only.", stipend: "Rs 10K-50K/month", deadline: "Ongoing", tags: ["Startup", "AI-matched", "India"], applyUrl: "https://cutshort.io/jobs?type=internship", tier: "startup" },
+  { company: "Wellfound", logo: "WF", role: "Startup Intern . All Roles", description: "AngelList's job board with thousands of live startup internships in SWE, design, data, and product.", stipend: "Varies", deadline: "Ongoing", tags: ["Startup", "Global", "All Roles"], applyUrl: "https://wellfound.com/jobs?jobType=internship", tier: "startup" },
   { company: "GirlScript SoC", logo: "GS", role: "Open Source Contributor", description: "India's largest student open source program. Contribute to live projects, earn points, get certificates.", stipend: "Goodies + Certificate", deadline: "Ongoing", tags: ["Open Source", "India", "GSSoC"], applyUrl: "https://gssoc.girlscript.tech/", tier: "startup" },
   { company: "Razorpay", logo: "RP", role: "SWE / ML / DevOps Intern", description: "India's top fintech unicorn. Work on payment infrastructure, ML fraud detection, and platform engineering.", stipend: "Rs 60K-1L/month", deadline: "Ongoing", tags: ["Fintech", "Unicorn", "PPO"], applyUrl: "https://razorpay.com/jobs/?team=engineering&type=intern", tier: "unicorn" },
   { company: "Swiggy", logo: "SW", role: "SDE / Data Science Intern", description: "Real-time logistics, ML demand forecasting, and consumer engineering at India's top delivery unicorn.", stipend: "Rs 50K-80K/month", deadline: "Ongoing", tags: ["SDE", "ML", "Unicorn"], applyUrl: "https://careers.swiggy.com/#/", tier: "unicorn" },
@@ -95,7 +95,7 @@ const internships: Internship[] = [
   { company: "Google", logo: "GO", role: "STEP / SWE Intern", description: "Google's engineering intern program. Work on products used by billions, with mentorship and strong PPO history.", stipend: "Rs 1.2L-2L/month", deadline: "Applications open Nov-Dec", tags: ["SWE", "MNC", "PPO"], applyUrl: "https://careers.google.com/jobs/results/?category=INTERNSHIP&employment_type=INTERN", tier: "mnc" },
   { company: "Microsoft", logo: "MS", role: "Software Engineer Intern", description: "Summer internship across SWE, data science, and PM. Strong PPO culture across India and global offices.", stipend: "Rs 1L-1.8L/month", deadline: "Applications open Oct-Jan", tags: ["SWE", "MNC", "PPO"], applyUrl: "https://careers.microsoft.com/students/us/en/job/internship", tier: "mnc" },
   { company: "Amazon", logo: "AZ", role: "SDE Intern", description: "Build features used by millions on Amazon's platform. Excellent PPO conversion and competitive stipend.", stipend: "Rs 90K-1.5L/month", deadline: "Applications open Aug-Oct", tags: ["SDE", "MNC", "PPO"], applyUrl: "https://www.amazon.jobs/en/job_categories/software-development?job_type%5B%5D=Internship", tier: "mnc" },
-  { company: "Adobe", logo: "AD", role: "Software Development Intern", description: "Adobe India intern program · Creative Cloud, Document Cloud, and Experience Cloud product teams.", stipend: "Rs 80K-1.3L/month", deadline: "Applications open Nov-Feb", tags: ["SWE", "MNC", "Product"], applyUrl: "https://careers.adobe.com/us/en/search-results?keywords=intern", tier: "mnc" },
+  { company: "Adobe", logo: "AD", role: "Software Development Intern", description: "Adobe India intern program . Creative Cloud, Document Cloud, and Experience Cloud product teams.", stipend: "Rs 80K-1.3L/month", deadline: "Applications open Nov-Feb", tags: ["SWE", "MNC", "Product"], applyUrl: "https://careers.adobe.com/us/en/search-results?keywords=intern", tier: "mnc" },
   { company: "LinkedIn", logo: "LI", role: "SWE / Data / PM Intern", description: "Browse all live intern listings across every company. Sort by recency for the freshest openings.", stipend: "Varies", deadline: "Ongoing", tags: ["All Companies", "Global", "Filter"], applyUrl: "https://www.linkedin.com/jobs/search/?keywords=software+engineer+intern&f_JT=I&sortBy=DD", tier: "mnc" },
 ]
 
@@ -107,17 +107,17 @@ const trendingSkills: SkillCard[] = [
   { name: "React", hot: true, category: "Frontend", description: "The most widely-used UI library. Powers Facebook, Instagram, Airbnb, and thousands of startups.", tags: ["Frontend", "UI", "Popular"], learnUrl: "https://react.dev/learn", videoUrl: "https://www.youtube.com/watch?v=SqcY0GlETPk", notesUrl: "https://devhints.io/react" },
   { name: "LLM / GenAI", hot: true, category: "AI/ML", description: "Build with GPT, Gemini, Claude. The most demanded skill in 2025 across product and research roles.", tags: ["AI", "GenAI", "Trending"], learnUrl: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/", videoUrl: "https://www.youtube.com/watch?v=c-g6epk3fFE", notesUrl: "https://platform.openai.com/docs/quickstart" },
   { name: "Next.js", hot: true, category: "Full Stack", description: "React-based full stack framework. Used by Vercel, TikTok, Notion. Best for modern web apps.", tags: ["Full Stack", "React", "SSR"], learnUrl: "https://nextjs.org/learn", videoUrl: "https://www.youtube.com/watch?v=wm5gMKuwSYk", notesUrl: "https://nextjs.org/docs" },
-  { name: "AWS", hot: true, category: "Cloud", description: "World's #1 cloud. EC2, S3, Lambda — knowing AWS is a must for any backend or DevOps role.", tags: ["Cloud", "DevOps", "MNC"], learnUrl: "https://aws.amazon.com/training/learn-about/cloud-essentials/", videoUrl: "https://www.youtube.com/watch?v=ubCNZFXx8F8", notesUrl: "https://aws.amazon.com/getting-started/hands-on/" },
+  { name: "AWS", hot: true, category: "Cloud", description: "World's #1 cloud. EC2, S3, Lambda - knowing AWS is a must for any backend or DevOps role.", tags: ["Cloud", "DevOps", "MNC"], learnUrl: "https://aws.amazon.com/training/learn-about/cloud-essentials/", videoUrl: "https://www.youtube.com/watch?v=ubCNZFXx8F8", notesUrl: "https://aws.amazon.com/getting-started/hands-on/" },
   { name: "Docker", hot: true, category: "DevOps", description: "Containerisation platform used by every company. Makes your apps run the same everywhere.", tags: ["DevOps", "Containers", "CI/CD"], learnUrl: "https://docs.docker.com/get-started/", videoUrl: "https://www.youtube.com/watch?v=3c-iBn73dDE", notesUrl: "https://quickref.me/docker.html" },
-  { name: "LangChain", hot: true, category: "AI/ML", description: "Framework for building LLM-powered apps — chatbots, RAG pipelines, AI agents. Exploding demand.", tags: ["AI", "LLM", "Agents"], learnUrl: "https://python.langchain.com/docs/get_started/introduction", videoUrl: "https://www.youtube.com/watch?v=lG7Uxts9SXs", notesUrl: "https://python.langchain.com/docs/expression_language/cookbook/" },
+  { name: "LangChain", hot: true, category: "AI/ML", description: "Framework for building LLM-powered apps - chatbots, RAG pipelines, AI agents. Exploding demand.", tags: ["AI", "LLM", "Agents"], learnUrl: "https://python.langchain.com/docs/get_started/introduction", videoUrl: "https://www.youtube.com/watch?v=lG7Uxts9SXs", notesUrl: "https://python.langchain.com/docs/expression_language/cookbook/" },
   { name: "HuggingFace", hot: true, category: "AI/ML", description: "Open-source hub for pretrained ML models. Standard tool for NLP, CV, and speech research roles.", tags: ["AI", "NLP", "Models"], learnUrl: "https://huggingface.co/learn/nlp-course/chapter1/1", videoUrl: "https://www.youtube.com/watch?v=QEaBAZQCtwE", notesUrl: "https://huggingface.co/docs/transformers/index" },
   { name: "Go (Golang)", hot: true, category: "Language", description: "Fast, simple, concurrent. Used at Google, Uber, Dropbox. Great for microservices and backend.", tags: ["Backend", "Microservices", "Google"], learnUrl: "https://go.dev/tour/welcome/1", videoUrl: "https://www.youtube.com/watch?v=yyUHQIec83I", notesUrl: "https://quickref.me/go.html" },
   { name: "PostgreSQL", hot: true, category: "Database", description: "Most advanced open-source relational DB. Standard choice for startups and product companies.", tags: ["Database", "SQL", "Backend"], learnUrl: "https://www.postgresql.org/docs/current/tutorial.html", videoUrl: "https://www.youtube.com/watch?v=qw--VYLpxG4", notesUrl: "https://quickref.me/postgres.html" },
   { name: "Redis", hot: true, category: "Database", description: "In-memory data store for caching, sessions, queues. Found in virtually every scalable system.", tags: ["Database", "Caching", "Real-time"], learnUrl: "https://redis.io/docs/get-started/", videoUrl: "https://www.youtube.com/watch?v=jgpVdJB2sKQ", notesUrl: "https://quickref.me/redis.html" },
   { name: "CI/CD", hot: true, category: "DevOps", description: "Automate build, test, deploy pipelines with GitHub Actions. Expected skill in every SDE role.", tags: ["DevOps", "Automation", "GitHub"], learnUrl: "https://docs.github.com/en/actions/learn-github-actions", videoUrl: "https://www.youtube.com/watch?v=R8_veQiYBjI", notesUrl: "https://docs.github.com/en/actions/reference" },
   { name: "PyTorch", hot: true, category: "AI/ML", description: "Facebook's deep learning framework. Industry standard for research and production ML models.", tags: ["AI", "Deep Learning", "Research"], learnUrl: "https://pytorch.org/tutorials/beginner/basics/intro.html", videoUrl: "https://www.youtube.com/watch?v=c36lUUr864M", notesUrl: "https://pytorch.org/docs/stable/index.html" },
-  { name: "Data Structures", hot: false, category: "Core CS", description: "Foundation of every coding interview. Arrays, trees, graphs, heaps — master these to crack any OA.", tags: ["DSA", "Interviews", "Must Do"], learnUrl: "https://www.geeksforgeeks.org/data-structures/", videoUrl: "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O", notesUrl: "https://www.geeksforgeeks.org/top-algorithms-and-data-structures-for-competitive-programming/" },
-  { name: "Algorithms", hot: false, category: "Core CS", description: "Sorting, searching, DP, greedy — the building blocks that interviewers test in every round.", tags: ["DSA", "LeetCode", "Must Do"], learnUrl: "https://neetcode.io/roadmap", videoUrl: "https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", notesUrl: "https://cp-algorithms.com/" },
+  { name: "Data Structures", hot: false, category: "Core CS", description: "Foundation of every coding interview. Arrays, trees, graphs, heaps - master these to crack any OA.", tags: ["DSA", "Interviews", "Must Do"], learnUrl: "https://www.geeksforgeeks.org/data-structures/", videoUrl: "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O", notesUrl: "https://www.geeksforgeeks.org/top-algorithms-and-data-structures-for-competitive-programming/" },
+  { name: "Algorithms", hot: false, category: "Core CS", description: "Sorting, searching, DP, greedy - the building blocks that interviewers test in every round.", tags: ["DSA", "LeetCode", "Must Do"], learnUrl: "https://neetcode.io/roadmap", videoUrl: "https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", notesUrl: "https://cp-algorithms.com/" },
   { name: "System Design", hot: false, category: "Core CS", description: "Design scalable systems like YouTube, WhatsApp. Critical for SDE-2+ and senior roles.", tags: ["Architecture", "HLD", "Senior"], learnUrl: "https://github.com/donnemartin/system-design-primer", videoUrl: "https://www.youtube.com/playlist?list=PLMCXHnjXnTnvo6alSjVkgxV-VH6EPyvoX", notesUrl: "https://github.com/donnemartin/system-design-primer" },
   { name: "Node.js", hot: false, category: "Backend", description: "JavaScript on the server. Powers Netflix, LinkedIn, PayPal. Paired with Express for REST APIs.", tags: ["Backend", "JavaScript", "APIs"], learnUrl: "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs", videoUrl: "https://www.youtube.com/watch?v=Oe421EPjeBE", notesUrl: "https://nodejs.org/en/docs/" },
   { name: "Kubernetes", hot: false, category: "DevOps", description: "Container orchestration platform. Manages Docker containers at scale. Big tech standard.", tags: ["DevOps", "Containers", "Scale"], learnUrl: "https://kubernetes.io/docs/tutorials/kubernetes-basics/", videoUrl: "https://www.youtube.com/watch?v=X48VuDVv0do", notesUrl: "https://kubernetes.io/docs/reference/kubectl/cheatsheet/" },
@@ -136,17 +136,17 @@ const trendingSkills: SkillCard[] = [
   // Additional skills
   { name: "Vue.js", hot: false, category: "Frontend", description: "Progressive JS framework. Used at GitLab, Alibaba. Easier learning curve than React for beginners.", tags: ["Frontend", "JavaScript", "Popular"], learnUrl: "https://vuejs.org/guide/introduction.html" },
   { name: "Angular", hot: false, category: "Frontend", description: "Google's enterprise frontend framework. Used heavily in banking and MNC projects.", tags: ["Frontend", "TypeScript", "Enterprise"], learnUrl: "https://angular.io/start" },
-  { name: "Spring Boot", hot: false, category: "Backend", description: "Java framework for REST APIs. Standard in enterprise India — TCS, Infosys, Wipro projects.", tags: ["Backend", "Java", "Enterprise"], learnUrl: "https://spring.io/quickstart" },
+  { name: "Spring Boot", hot: false, category: "Backend", description: "Java framework for REST APIs. Standard in enterprise India - TCS, Infosys, Wipro projects.", tags: ["Backend", "Java", "Enterprise"], learnUrl: "https://spring.io/quickstart" },
   { name: "Java", hot: false, category: "Language", description: "Most-used enterprise language. Required for Android, Spring Boot, and most MNC placement tests.", tags: ["Language", "Android", "Enterprise"], learnUrl: "https://dev.java/learn/" },
   { name: "C++", hot: false, category: "Language", description: "Fastest language for competitive programming. Used in game engines, trading systems, embedded.", tags: ["Language", "CP", "Systems"], learnUrl: "https://www.learncpp.com/" },
   { name: "Kotlin", hot: false, category: "Mobile", description: "Modern Android development language. Fully interoperable with Java, more concise and safe.", tags: ["Mobile", "Android", "JVM"], learnUrl: "https://developer.android.com/kotlin/first" },
   { name: "Swift", hot: false, category: "Mobile", description: "Apple's iOS/macOS language. Required for native iOS app development.", tags: ["Mobile", "iOS", "Apple"], learnUrl: "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/" },
   { name: "Django", hot: false, category: "Backend", description: "Python web framework. Powers Instagram, Pinterest. Great for rapid full-stack development.", tags: ["Backend", "Python", "Web"], learnUrl: "https://docs.djangoproject.com/en/stable/intro/tutorial01/" },
-  { name: "FastAPI", hot: true, category: "Backend", description: "Modern Python API framework. Fastest-growing backend tool — ideal for AI/ML API serving.", tags: ["Backend", "Python", "AI APIs"], learnUrl: "https://fastapi.tiangolo.com/tutorial/" },
+  { name: "FastAPI", hot: true, category: "Backend", description: "Modern Python API framework. Fastest-growing backend tool - ideal for AI/ML API serving.", tags: ["Backend", "Python", "AI APIs"], learnUrl: "https://fastapi.tiangolo.com/tutorial/" },
   { name: "Express.js", hot: false, category: "Backend", description: "Minimal Node.js framework. Most popular choice for building REST APIs in JavaScript.", tags: ["Backend", "Node.js", "REST"], learnUrl: "https://expressjs.com/en/starter/installing.html" },
   { name: "Tailwind CSS", hot: true, category: "Frontend", description: "Utility-first CSS framework. Fastest way to build beautiful UIs. Used in most modern projects.", tags: ["Frontend", "CSS", "UI"], learnUrl: "https://tailwindcss.com/docs/utility-first" },
-  { name: "Figma", hot: false, category: "Frontend", description: "Industry-standard UI/UX design tool. Required for frontend roles — know the basics.", tags: ["Design", "UI/UX", "Frontend"], learnUrl: "https://www.figma.com/resource-library/getting-started-in-figma/" },
-  { name: "Git", hot: false, category: "DevOps", description: "Version control — essential for every developer. Know branching, merging, pull requests.", tags: ["DevOps", "Essential", "Beginner"], learnUrl: "https://git-scm.com/book/en/v2" },
+  { name: "Figma", hot: false, category: "Frontend", description: "Industry-standard UI/UX design tool. Required for frontend roles - know the basics.", tags: ["Design", "UI/UX", "Frontend"], learnUrl: "https://www.figma.com/resource-library/getting-started-in-figma/" },
+  { name: "Git", hot: false, category: "DevOps", description: "Version control - essential for every developer. Know branching, merging, pull requests.", tags: ["DevOps", "Essential", "Beginner"], learnUrl: "https://git-scm.com/book/en/v2" },
   { name: "Linux / Bash", hot: false, category: "DevOps", description: "Command line skills are expected in every SDE role. Know file ops, scripts, process management.", tags: ["DevOps", "Linux", "Scripting"], learnUrl: "https://linuxjourney.com/" },
   { name: "Terraform", hot: false, category: "Cloud", description: "Infrastructure as Code. Define cloud infra with code. High demand in DevOps and SRE roles.", tags: ["Cloud", "IaC", "DevOps"], learnUrl: "https://developer.hashicorp.com/terraform/tutorials/aws-get-started" },
   { name: "Azure", hot: false, category: "Cloud", description: "Microsoft's cloud platform. Dominant in enterprise. AZ-900 is an easy entry certification.", tags: ["Cloud", "Microsoft", "Enterprise"], learnUrl: "https://learn.microsoft.com/en-us/azure/fundamentals/" },
@@ -156,11 +156,11 @@ const trendingSkills: SkillCard[] = [
   { name: "gRPC", hot: false, category: "API", description: "High-performance RPC framework by Google. Used for microservice communication at scale.", tags: ["API", "Backend", "Microservices"], learnUrl: "https://grpc.io/docs/languages/python/quickstart/" },
   { name: "OpenAI API", hot: true, category: "AI/ML", description: "Build GPT-4, DALL-E, Whisper integrations. Must-know for any AI product role in 2025.", tags: ["AI", "LLM", "API"], learnUrl: "https://platform.openai.com/docs/quickstart" },
   { name: "Pandas", hot: false, category: "AI/ML", description: "Python data analysis library. Foundation for any data science or data engineering role.", tags: ["AI/ML", "Python", "Data"], learnUrl: "https://pandas.pydata.org/docs/getting_started/intro_tutorials/" },
-  { name: "NumPy", hot: false, category: "AI/ML", description: "Numerical computing in Python. Used in every ML pipeline — arrays, matrices, linear algebra.", tags: ["AI/ML", "Python", "Math"], learnUrl: "https://numpy.org/learn/" },
+  { name: "NumPy", hot: false, category: "AI/ML", description: "Numerical computing in Python. Used in every ML pipeline - arrays, matrices, linear algebra.", tags: ["AI/ML", "Python", "Math"], learnUrl: "https://numpy.org/learn/" },
   { name: "Scikit-learn", hot: false, category: "AI/ML", description: "Classical ML library. Regression, classification, clustering. Quick to learn, widely used.", tags: ["AI/ML", "ML", "Python"], learnUrl: "https://scikit-learn.org/stable/tutorial/basic/tutorial.html" },
   { name: "OpenCV", hot: false, category: "AI/ML", description: "Computer vision library. Used in face detection, object tracking, medical imaging.", tags: ["AI/ML", "Vision", "Python"], learnUrl: "https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html" },
-  { name: "SQL", hot: false, category: "Database", description: "Structured Query Language — asked in every technical interview. Joins, indexes, aggregations.", tags: ["Database", "Interviews", "Essential"], learnUrl: "https://sqlzoo.net/wiki/SQL_Tutorial" },
-  { name: "Firebase", hot: false, category: "Database", description: "Google's BaaS — real-time database, auth, hosting. Great for building MVPs fast.", tags: ["Database", "BaaS", "Mobile"], learnUrl: "https://firebase.google.com/docs/guides" },
+  { name: "SQL", hot: false, category: "Database", description: "Structured Query Language - asked in every technical interview. Joins, indexes, aggregations.", tags: ["Database", "Interviews", "Essential"], learnUrl: "https://sqlzoo.net/wiki/SQL_Tutorial" },
+  { name: "Firebase", hot: false, category: "Database", description: "Google's BaaS - real-time database, auth, hosting. Great for building MVPs fast.", tags: ["Database", "BaaS", "Mobile"], learnUrl: "https://firebase.google.com/docs/guides" },
   { name: "Prisma", hot: false, category: "Database", description: "Modern TypeScript ORM. Used with PostgreSQL/MySQL. Best developer experience for DB access.", tags: ["Database", "TypeScript", "ORM"], learnUrl: "https://www.prisma.io/docs/getting-started" },
   { name: "WebSockets", hot: false, category: "Backend", description: "Real-time bidirectional communication. Used in chat, trading platforms, live dashboards.", tags: ["Backend", "Real-time", "API"], learnUrl: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API" },
   { name: "Three.js", hot: false, category: "Frontend", description: "3D graphics in the browser. Used in product showcases, games, data visualisations.", tags: ["Frontend", "3D", "WebGL"], learnUrl: "https://threejs.org/docs/#manual/en/introduction/Installation" },
@@ -183,7 +183,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
       {
         id: "learning", title: "Learning Paths", icon: <BookOpen className="h-4 w-4" />,
         items: [
-          { label: "Programming Basics — C", description: "Variables, loops, functions, pointers, memory management", tags: ["C", "Beginner"], links: [
+          { label: "Programming Basics - C", description: "Variables, loops, functions, pointers, memory management", tags: ["C", "Beginner"], links: [
             { text: "GFG C Course", url: "https://www.geeksforgeeks.org/c-programming-language/", type: "course" },
             { text: "CS50x Harvard", url: "https://cs50.harvard.edu/x/2024/", type: "course" },
             { text: "Jenny's C Lectures", url: "https://www.youtube.com/playlist?list=PLdo5W4Nhv31a8UcMN9-35ghv8qyFWD9_S", type: "youtube" },
@@ -191,7 +191,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
             { text: "C Cheatsheet (GFG)", url: "https://www.geeksforgeeks.org/c-cheatsheet/", type: "notes" },
             { text: "C Quick Notes", url: "https://quickref.me/c.html", type: "notes" },
           ]},
-          { label: "Programming Basics — Python", description: "Syntax, OOP, data types, file handling, libraries", tags: ["Python", "Beginner"], links: [
+          { label: "Programming Basics - Python", description: "Syntax, OOP, data types, file handling, libraries", tags: ["Python", "Beginner"], links: [
             { text: "Python.org Tutorial", url: "https://docs.python.org/3/tutorial/", type: "course" },
             { text: "freeCodeCamp Python", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/", type: "course" },
             { text: "TechWorld Python Full Course", url: "https://www.youtube.com/watch?v=t8pPdKYpowI", type: "youtube" },
@@ -199,7 +199,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
             { text: "Python Cheatsheet", url: "https://www.pythoncheatsheet.org/", type: "notes" },
             { text: "Python Quick Ref", url: "https://quickref.me/python.html", type: "notes" },
           ]},
-          { label: "DSA Beginner Track", description: "Arrays, Strings, Linked Lists, Stacks, Recursion — step by step", tags: ["Arrays", "DSA"], links: [
+          { label: "DSA Beginner Track", description: "Arrays, Strings, Linked Lists, Stacks, Recursion - step by step", tags: ["Arrays", "DSA"], links: [
             { text: "GFG DSA Self-Paced", url: "https://www.geeksforgeeks.org/courses/dsa-self-paced", type: "course" },
             { text: "CodeChef DSA Course", url: "https://www.codechef.com/learn/course/dsa", type: "course" },
             { text: "Abdul Bari Algorithms", url: "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O", type: "youtube" },
@@ -207,7 +207,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
             { text: "DSA Notes PDF (Apna College)", url: "https://www.apnacollege.in/notes", type: "notes" },
             { text: "DSA Cheatsheet (GFG)", url: "https://www.geeksforgeeks.org/top-algorithms-and-data-structures-for-competitive-programming/", type: "notes" },
           ]},
-          { label: "Web Dev Basics", description: "HTML, CSS, JavaScript — build your first webpage from scratch", tags: ["HTML", "CSS", "JS"], links: [
+          { label: "Web Dev Basics", description: "HTML, CSS, JavaScript - build your first webpage from scratch", tags: ["HTML", "CSS", "JS"], links: [
             { text: "freeCodeCamp Web", url: "https://www.freecodecamp.org/learn/responsive-web-design/", type: "course" },
             { text: "The Odin Project", url: "https://www.theodinproject.com/paths/foundations/courses/foundations", type: "course" },
             { text: "Traversy Media HTML/CSS", url: "https://www.youtube.com/watch?v=UB1O30fR-EE", type: "youtube" },
@@ -224,7 +224,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
             { text: "NumPy Cheatsheet", url: "https://www.datacamp.com/cheat-sheet/numpy-cheat-sheet-data-analysis-in-python", type: "notes" },
             { text: "Pandas Cheatsheet", url: "https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf", type: "notes" },
           ]},
-          { label: "Git & GitHub", description: "Version control, branching, pull requests — essential skill", tags: ["Git", "GitHub"], links: [
+          { label: "Git & GitHub", description: "Version control, branching, pull requests - essential skill", tags: ["Git", "GitHub"], links: [
             { text: "Git Handbook", url: "https://guides.github.com/introduction/git-handbook/", type: "course" },
             { text: "GitHub Learning Lab", url: "https://skills.github.com/", type: "course" },
             { text: "Git & GitHub Crash Course", url: "https://www.youtube.com/watch?v=RGOj5yH7evk", type: "youtube" },
@@ -232,7 +232,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
             { text: "Git Cheatsheet (GitHub)", url: "https://training.github.com/downloads/github-git-cheat-sheet.pdf", type: "notes" },
             { text: "Git Quick Ref", url: "https://quickref.me/git.html", type: "notes" },
           ]},
-          { label: "CS50 — Intro to CS", description: "Harvard's legendary free CS course — highly recommended", tags: ["CS Fundamentals"], links: [
+          { label: "CS50 - Intro to CS", description: "Harvard's legendary free CS course - highly recommended", tags: ["CS Fundamentals"], links: [
             { text: "CS50x (Free)", url: "https://cs50.harvard.edu/x/2024/", type: "course" },
             { text: "CS50 Python", url: "https://cs50.harvard.edu/python/2022/", type: "course" },
             { text: "CS50 Full Lecture 0", url: "https://www.youtube.com/watch?v=3LPJfIKxwWc", type: "youtube" },
@@ -252,20 +252,20 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
       {
         id: "skills", title: "Skills to Build", icon: <TrendingUp className="h-4 w-4" />,
         skills: [
-          { name:"Python", category:"Language", hot:true, demand:98, learnUrl:"https://docs.python.org/3/tutorial/", jobs:50000, description:"Most in-demand language — used in AI, data, backend & automation", tags:["Beginner","AI/ML","Backend"] },
-          { name:"C/C++", category:"Language", hot:false, demand:85, learnUrl:"https://www.learncpp.com/", jobs:30000, description:"Foundation language taught in first year — essential for placements", tags:["Beginner","Systems","DSA"] },
-          { name:"JavaScript", category:"Language", hot:true, demand:95, learnUrl:"https://javascript.info/", jobs:60000, description:"Language of the web — runs in every browser", tags:["Web","Frontend","Beginner"] },
-          { name:"HTML & CSS", category:"Frontend", hot:false, demand:90, learnUrl:"https://www.freecodecamp.org/learn/responsive-web-design/", jobs:40000, description:"Build your first webpage — must-know for any developer", tags:["Web","Beginner","Frontend"] },
-          { name:"Git & GitHub", category:"DevOps", hot:false, demand:95, learnUrl:"https://skills.github.com/", jobs:80000, description:"Version control — used in every software job globally", tags:["Essential","DevOps","Collaboration"] },
-          { name:"Data Structures", category:"Core CS", hot:true, demand:99, learnUrl:"https://www.geeksforgeeks.org/data-structures/", jobs:70000, description:"Arrays, Linked Lists, Trees — core of all technical interviews", tags:["DSA","Interviews","Essential"] },
-          { name:"SQL Basics", category:"Database", hot:false, demand:88, learnUrl:"https://sqlzoo.net/", jobs:45000, description:"Query databases — needed for data and backend roles", tags:["Database","Beginner","Backend"] },
-          { name:"Linux Terminal", category:"DevOps", hot:false, demand:80, learnUrl:"https://linuxjourney.com/", jobs:35000, description:"Command line basics — used daily by engineers", tags:["Linux","DevOps","Beginner"] },
+          { name:"Python", category:"Language", hot:true, demand:98, learnUrl:"https://docs.python.org/3/tutorial/", jobs:50000, description:"Most in-demand language - used in AI, data, backend & automation", tags:["Beginner","AI/ML","Backend"] },
+          { name:"C/C++", category:"Language", hot:false, demand:85, learnUrl:"https://www.learncpp.com/", jobs:30000, description:"Foundation language taught in first year - essential for placements", tags:["Beginner","Systems","DSA"] },
+          { name:"JavaScript", category:"Language", hot:true, demand:95, learnUrl:"https://javascript.info/", jobs:60000, description:"Language of the web - runs in every browser", tags:["Web","Frontend","Beginner"] },
+          { name:"HTML & CSS", category:"Frontend", hot:false, demand:90, learnUrl:"https://www.freecodecamp.org/learn/responsive-web-design/", jobs:40000, description:"Build your first webpage - must-know for any developer", tags:["Web","Beginner","Frontend"] },
+          { name:"Git & GitHub", category:"DevOps", hot:false, demand:95, learnUrl:"https://skills.github.com/", jobs:80000, description:"Version control - used in every software job globally", tags:["Essential","DevOps","Collaboration"] },
+          { name:"Data Structures", category:"Core CS", hot:true, demand:99, learnUrl:"https://www.geeksforgeeks.org/data-structures/", jobs:70000, description:"Arrays, Linked Lists, Trees - core of all technical interviews", tags:["DSA","Interviews","Essential"] },
+          { name:"SQL Basics", category:"Database", hot:false, demand:88, learnUrl:"https://sqlzoo.net/", jobs:45000, description:"Query databases - needed for data and backend roles", tags:["Database","Beginner","Backend"] },
+          { name:"Linux Terminal", category:"DevOps", hot:false, demand:80, learnUrl:"https://linuxjourney.com/", jobs:35000, description:"Command line basics - used daily by engineers", tags:["Linux","DevOps","Beginner"] },
         ] as any,
       },
       {
         id: "practice", title: "Daily Practice", icon: <Code2 className="h-4 w-4" />,
         items: [
-          { label: "LeetCode Easy Problems", description: "Start with Easy — build confidence and consistency", tags: ["Easy", "Beginner"], links: [
+          { label: "LeetCode Easy Problems", description: "Start with Easy - build confidence and consistency", tags: ["Easy", "Beginner"], links: [
             { text: "Start Solving", url: "https://leetcode.com/problemset/?difficulty=EASY&page=1", type: "practice" },
             { text: "LeetCode Beginner Guide", url: "https://www.youtube.com/watch?v=SVvr3ZjtjI8", type: "youtube" },
             { text: "NeetCode Roadmap", url: "https://www.youtube.com/watch?v=H8TldXIVTNs", type: "youtube" },
@@ -280,7 +280,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
             { text: "GFG Basics Playlist", url: "https://www.youtube.com/playlist?list=PLqM7alHXFySEQDk2MDfmcpAiCH5ZOSY7B", type: "youtube" },
             { text: "GFG DSA Notes", url: "https://www.geeksforgeeks.org/data-structures/", type: "notes" },
           ]},
-          { label: "LeetCode Daily Challenge", description: "One problem a day — build the habit early", tags: ["Daily", "Streak"], links: [
+          { label: "LeetCode Daily Challenge", description: "One problem a day - build the habit early", tags: ["Daily", "Streak"], links: [
             { text: "Today's Problem", url: "https://leetcode.com/problemset/", type: "practice" },
             { text: "How to Use LeetCode", url: "https://www.youtube.com/watch?v=eqHFQAoQF7I", type: "youtube" },
             { text: "Blind 75 Cheatsheet", url: "https://www.techinterviewhandbook.org/grind75", type: "notes" },
@@ -319,7 +319,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
       {
         id: "placement", title: "Placement Tools", icon: <Trophy className="h-4 w-4" />,
         items: [
-          { label: "Company-wise Questions · GFG", description: "Interview questions sorted by company", tags: ["Amazon", "Google", "TCS"], links: [{ text: "Amazon Prep", url: "https://www.geeksforgeeks.org/amazon-interview-preparation/" }, { text: "Google Prep", url: "https://www.geeksforgeeks.org/google-interview-preparation/" }, { text: "TCS NQT Prep", url: "https://www.geeksforgeeks.org/tcs-nqt-preparation/" }] },
+          { label: "Company-wise Questions . GFG", description: "Interview questions sorted by company", tags: ["Amazon", "Google", "TCS"], links: [{ text: "Amazon Prep", url: "https://www.geeksforgeeks.org/amazon-interview-preparation/" }, { text: "Google Prep", url: "https://www.geeksforgeeks.org/google-interview-preparation/" }, { text: "TCS NQT Prep", url: "https://www.geeksforgeeks.org/tcs-nqt-preparation/" }] },
           { label: "LeetCode Company Tags", description: "Filter problems by the company that asked them", tags: ["LeetCode", "OA"], links: [{ text: "Company Tags", url: "https://leetcode.com/company/" }, { text: "LeetCode Mock", url: "https://leetcode.com/interview/" }] },
           { label: "Mock Interviews", description: "Practice live mock interviews with peers or AI", tags: ["Mock", "Technical", "HR"], links: [{ text: "Pramp Free Mock", url: "https://www.pramp.com/#/" }, { text: "InterviewBit Mock", url: "https://www.interviewbit.com/mock-interview/" }] },
           { label: "Aptitude Practice", description: "Quant, verbal, logical reasoning for placement tests", tags: ["Quant", "Verbal"], links: [{ text: "IndiaBix Quant", url: "https://www.indiabix.com/aptitude/questions-and-answers/" }, { text: "PrepInsta TCS", url: "https://prepinsta.com/tcs-nqt/" }, { text: "PrepInsta Infosys", url: "https://prepinsta.com/infosys/" }] },
@@ -419,7 +419,7 @@ function SkillsView({ skills }: { skills: SkillCard[] }) {
       </div>
       <p className="flex items-center gap-2 text-sm text-muted-foreground">
         <TrendingUp className="h-4 w-4 text-primary" />
-        Most demanded skills in 2025 · click any card to start learning
+        Most demanded skills in 2025 . click any card to start learning
       </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {filtered.map(skill => (
@@ -646,7 +646,7 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
 
   return (
     <div className="space-y-4">
-      {/* Top-level tab: Drives | Roadmap — hidden for 1st year */}
+      {/* Top-level tab: Drives | Roadmap - hidden for 1st year */}
       {year !== 1 && (
         <div className="flex gap-1 border-b border-border pb-px">
           {[
@@ -662,12 +662,12 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
         </div>
       )}
 
-      {/* DRIVES TAB · on-campus + off-campus — not shown for 1st year */}
+      {/* DRIVES TAB . on-campus + off-campus - not shown for 1st year */}
       {hubTab === "drives" && year !== 1 && (
         <StudentDrivesInline student={student} />
       )}
 
-      {/* ROADMAP TAB · existing career hub content */}
+      {/* ROADMAP TAB . existing career hub content */}
       {hubTab === "roadmap" && (
       <div className="space-y-4">
 
@@ -679,7 +679,7 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
             <p className="font-semibold text-base">{content.label} &mdash; {content.tagline}</p>
             <p className="text-white/70 text-xs mt-0.5">
               {graduationYear
-                ? `Graduating ${graduationYear} · Year ${year} detected automatically`
+                ? `Graduating ${graduationYear} . Year ${year} detected automatically`
                 : "Set your graduation year in profile for personalised content"}
             </p>
           </div>
@@ -701,9 +701,9 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
             </button>
             <div className="absolute left-0 top-full mt-1.5 z-50 w-56 rounded-xl border border-white/10 bg-background shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 pointer-events-none group-hover:pointer-events-auto">
               {[
-                { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", color: "#f59e0b", href: "/student/prep?track=aptitude" },
-                { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
-                { label: "Communication", sub: "Grammar · Vocab · Reading",       color: "#10b981", href: "/student/prep?track=communication" },
+                { label: "Aptitude",      sub: "Quant . Logical . Data Interp.", color: "#f59e0b", href: "/student/prep?track=aptitude" },
+                { label: "Coding / DSA",  sub: "Arrays . Trees . DP . Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
+                { label: "Communication", sub: "Grammar . Vocab . Reading",       color: "#10b981", href: "/student/prep?track=communication" },
               ].map(opt => (
                 <a key={opt.label} href={opt.href}
                   className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors border-b border-border/50 last:border-0">
@@ -955,7 +955,7 @@ function StudentDrivesInline({ student }: { student?: any }) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-foreground text-sm">{job.title}</p>
-              <p className="text-xs text-primary">{job.companyName} · {job.type} · {job.location}</p>
+              <p className="text-xs text-primary">{job.companyName} . {job.type} . {job.location}</p>
               {job.salary && <p className="text-xs text-muted-foreground mt-0.5">{job.salary}</p>}
             </div>
             <a href="/student/jobs"
@@ -964,7 +964,7 @@ function StudentDrivesInline({ student }: { student?: any }) {
                   ? "border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/5"
                   : "border-blue-500/30 text-blue-600 hover:bg-blue-500/5"
               }`}>
-              Apply †’
+              Apply †'
             </a>
           </div>
         ))}
@@ -1040,7 +1040,7 @@ function StudentDrivesInline({ student }: { student?: any }) {
 
   return (
     <div className="space-y-4">
-      {/* Tab switcher €” removed "Live Jobs", kept On-Campus / Off-Campus / My Applications */}
+      {/* Tab switcher €" removed "Live Jobs", kept On-Campus / Off-Campus / My Applications */}
       <div className="flex gap-1 border-b border-border pb-px">
         {[
           { id: "campus",    label: `On-Campus (${campusDrives.length + onCampusJobs.filter(j => !j.deadline || new Date(j.deadline) >= new Date()).length})` },
@@ -1079,10 +1079,10 @@ function StudentDrivesInline({ student }: { student?: any }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-foreground text-sm">{d.title}</p>
-                    <p className="text-xs text-primary">{d.companyName} · {d.type}</p>
+                    <p className="text-xs text-primary">{d.companyName} . {d.type}</p>
                     {d.assessmentScore != null && (
                       <p className="text-xs mt-1 text-violet-500 font-bold">
-                        Score: {d.assessmentScore}%{d.assessmentRank ? ` · Rank #${d.assessmentRank}` : ""}
+                        Score: {d.assessmentScore}%{d.assessmentRank ? ` . Rank #${d.assessmentRank}` : ""}
                       </p>
                     )}
                   </div>

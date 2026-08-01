@@ -1,6 +1,6 @@
 ﻿/**
- * POST /api/feedback  — authenticated user submits feedback (type 1 or type 2)
- * GET  /api/feedback  — returns approved general feedback for landing page testimonials
+ * POST /api/feedback  - authenticated user submits feedback (type 1 or type 2)
+ * GET  /api/feedback  - returns approved general feedback for landing page testimonials
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

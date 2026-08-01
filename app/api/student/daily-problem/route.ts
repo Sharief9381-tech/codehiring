@@ -1,7 +1,7 @@
 /**
  * GET /api/student/daily-problem
  * Returns today's AI-generated coding problem.
- * Difficulty progresses Basic → Intermediate → Advanced based on day-of-year.
+ * Difficulty progresses Basic -> Intermediate -> Advanced based on day-of-year.
  * Cached in DB by date so all users get the same problem and API is called once/day.
  */
 import { NextResponse } from "next/server"
@@ -15,7 +15,7 @@ function getDifficulty(dayOfYear: number): { level: string; color: string } {
   return              { level: "Advanced",      color: "#ef4444" }
 }
 
-// Topic rotation — 30 topics, cycles every 30 days
+// Topic rotation - 30 topics, cycles every 30 days
 const TOPICS = [
   "Variables, data types and basic I/O",
   "Arithmetic and logical operators",
@@ -103,7 +103,7 @@ Return ONLY a valid JSON object, no markdown:
   return JSON.parse(clean)
 }
 
-// Static fallback pool — used if OpenAI fails
+// Static fallback pool - used if OpenAI fails
 const FALLBACK_POOL = [
   // Basic
   { title: "Sum of Two Numbers",          desc: "Write a program that takes two numbers and prints their sum.", input: "5, 3", output: "8", explain: "Simply add the two numbers.", difficulty:"Basic", topic:"Arithmetic", hint:"Use the + operator." },
@@ -141,7 +141,7 @@ export async function GET() {
     const todayKey = getTodayKey()
     const dayOfYear = getDayOfYear()
 
-    // Check cache — same problem for all users today
+    // Check cache - same problem for all users today
     const cached = await db.collection("daily_problems").findOne({ dateKey: todayKey })
     // Only use cache if it has the new fields (inputFormat etc.)
     if (cached?.problem && cached.problem.inputFormat) {
@@ -159,7 +159,7 @@ export async function GET() {
       problem.color      = color
       problem.topic      = topic
     } catch {
-      // Fallback to static pool — pick by day
+      // Fallback to static pool - pick by day
       const fallback = FALLBACK_POOL[dayOfYear % FALLBACK_POOL.length]
       problem = { ...fallback, color }
     }

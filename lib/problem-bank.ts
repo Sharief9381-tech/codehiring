@@ -1,5 +1,5 @@
 /**
- * Static problem bank — LeetCode-style problems with full data.
+ * Static problem bank - LeetCode-style problems with full data.
  * No AI generation. Each problem has description, examples, constraints,
  * starter code for all languages, and test cases.
  */
@@ -6997,7 +6997,7 @@ export const PROBLEM_BANK: Record<string, StaticProblem> = {
 } // end PROBLEM_BANK
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Lookup helper — returns problem by title (case-insensitive)
+// Lookup helper - returns problem by title (case-insensitive)
 // ─────────────────────────────────────────────────────────────────────────────
 export function getProblem(title: string): StaticProblem | null {
   const exact = PROBLEM_BANK[title]

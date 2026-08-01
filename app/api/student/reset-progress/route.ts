@@ -1,7 +1,7 @@
 /**
  * POST /api/student/reset-progress
  * Resets all first-year learning progress for the current user.
- * Clears XP, streak, badges, challenges, milestones — fresh start.
+ * Clears XP, streak, badges, challenges, milestones - fresh start.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

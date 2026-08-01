@@ -148,7 +148,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
             )}
           </Link>
 
-          {/* Nav — desktop */}
+          {/* Nav - desktop */}
           <nav className="hidden md:flex items-center gap-0.5">
             {links.map((link) => {
               const Icon = link.icon

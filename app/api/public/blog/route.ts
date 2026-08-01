@@ -1,6 +1,6 @@
 /**
- * GET /api/public/blog          — list published posts (DB first, static fallback)
- * GET /api/public/blog?slug=x   — single post by slug
+ * GET /api/public/blog          - list published posts (DB first, static fallback)
+ * GET /api/public/blog?slug=x   - single post by slug
  *
  * Self-triggers daily auto-generation if no post exists for today.
  */
@@ -19,7 +19,7 @@ async function triggerDailyPostIfNeeded(baseUrl: string) {
     today.setHours(0, 0, 0, 0)
     const count = await db.collection("blogs").countDocuments({ createdAt: { $gte: today } })
     if (count === 0) {
-      // Fire-and-forget — don't await so we don't block the response
+      // Fire-and-forget - don't await so we don't block the response
       fetch(`${baseUrl}/api/cron/generate-blog`, { method: "POST" }).catch(() => {})
     }
   } catch {}
@@ -57,7 +57,7 @@ export async function GET(req: Request) {
           })),
         })
       }
-      // Less than 3 DB posts — pad with static posts
+      // Less than 3 DB posts - pad with static posts
       if (posts.length > 0) {
         const dbSlugs = new Set(posts.map((p: any) => p.slug))
         const staticPad = [...blogPosts]
@@ -76,7 +76,7 @@ export async function GET(req: Request) {
     } catch {}
   }
 
-  // Static fallback — sorted newest first
+  // Static fallback - sorted newest first
   const sorted = [...blogPosts].sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   )

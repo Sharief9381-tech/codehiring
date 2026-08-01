@@ -4,14 +4,14 @@
  * Stats are always read from user.stats (kept fresh by platform sync + aggregator).
  *
  * Query params:
- *   q           — name/skill keyword
- *   minProblems — number
- *   minRating   — number
- *   skills      — comma-separated list
- *   colleges    — comma-separated list
- *   openToWork  — "true"
- *   sort        — "match" | "problems" | "rating"
- *   jobId       — compute match score against this specific job
+ *   q           - name/skill keyword
+ *   minProblems - number
+ *   minRating   - number
+ *   skills      - comma-separated list
+ *   colleges    - comma-separated list
+ *   openToWork  - "true"
+ *   sort        - "match" | "problems" | "rating"
+ *   jobId       - compute match score against this specific job
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
       : []
 
     // For students whose stats are missing/zero but have linked platforms,
-    // re-aggregate from stored platform data (fast — no external API calls)
+    // re-aggregate from stored platform data (fast - no external API calls)
     const studentsWithStats = await Promise.all(
       students.map(async (s) => {
         const hasLinkedPlatforms =

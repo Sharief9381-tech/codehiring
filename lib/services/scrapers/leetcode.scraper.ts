@@ -1,6 +1,6 @@
 /**
  * LeetCode scraper
- * Uses the official public GraphQL API — no scraping needed.
+ * Uses the official public GraphQL API - no scraping needed.
  */
 import type { NormalizedPlatformStats } from "../scraper-types"
 import { failResult, fetchJSON } from "../scraper-utils"

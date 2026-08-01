@@ -4,7 +4,7 @@ import { ArrowLeft, Mail, Twitter, Linkedin, Github, MessageSquare, Building2, G
 import { SpotlightCard } from "@/components/landing/spotlight-card"
 
 export const metadata = {
-  title: "Contact — CodeHiring",
+  title: "Contact - CodeHiring",
   description: "Get in touch with the CodeHiring team.",
 }
 
@@ -68,7 +68,7 @@ export default function ContactPage() {
           <p className="text-sm text-primary font-semibold uppercase tracking-widest mb-3">Contact</p>
           <h1 className="text-4xl font-bold text-foreground mb-4">Get in Touch</h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
-            We're a small team and we read every message. Reach out to the right inbox and we'll get back to you within 24–48 hours.
+            We're a small team and we read every message. Reach out to the right inbox and we'll get back to you within 24-48 hours.
           </p>
         </div>
 
@@ -115,7 +115,7 @@ export default function ContactPage() {
         <div className="flex items-center gap-3 rounded-xl border border-border bg-secondary/20 px-5 py-4">
           <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
           <p className="text-sm text-muted-foreground">
-            We typically respond within <span className="text-foreground font-medium">24–48 hours</span> on business days.
+            We typically respond within <span className="text-foreground font-medium">24-48 hours</span> on business days.
             For urgent issues, include "URGENT" in your subject line.
           </p>
         </div>

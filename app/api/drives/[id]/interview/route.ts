@@ -1,7 +1,7 @@
 ﻿/**
- * POST /api/drives/[id]/interview — Step 10: Schedule interview for a candidate
- * GET  — list all interviews for a drive
- * PATCH — update interview result/feedback
+ * POST /api/drives/[id]/interview - Step 10: Schedule interview for a candidate
+ * GET  - list all interviews for a drive
+ * PATCH - update interview result/feedback
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

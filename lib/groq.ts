@@ -1,5 +1,5 @@
 /**
- * Groq AI client — uses llama-3.1-8b-instant (free, fast)
+ * Groq AI client - uses llama-3.1-8b-instant (free, fast)
  * Get your free key at https://console.groq.com
  */
 
@@ -33,7 +33,7 @@ export async function groqChat(
 
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`Groq API error: ${res.status} — ${err}`)
+    throw new Error(`Groq API error: ${res.status} - ${err}`)
   }
 
   const data = await res.json()

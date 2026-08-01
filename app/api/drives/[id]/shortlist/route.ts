@@ -1,6 +1,6 @@
 /**
- * POST /api/drives/[id]/shortlist — Step 8: Generate shortlist from assessment scores
- * GET  — fetch current shortlist
+ * POST /api/drives/[id]/shortlist - Step 8: Generate shortlist from assessment scores
+ * GET  - fetch current shortlist
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -54,7 +54,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         .slice(0, topN || drive.openPositions * 3)
       toShortlist = passed.map(a => a.studentId)
     } else {
-      // No assessment — shortlist by CodeHiring score
+      // No assessment - shortlist by CodeHiring score
       const sorted = (drive.applicants || [])
         .filter(a => a.status === "applied")
         .sort((a, b) => (b.codeHiringScore ?? 0) - (a.codeHiringScore ?? 0))

@@ -1,12 +1,12 @@
 /**
  * POST /api/student/problem-detail
  * Returns problem data. Flow:
- * 1. Check static problem-bank — if fully detailed (has testCases), return instantly
- * 2. Check MongoDB cache — if cached full version exists, return it
+ * 1. Check static problem-bank - if fully detailed (has testCases), return instantly
+ * 2. Check MongoDB cache - if cached full version exists, return it
  * 3. Generate via Groq/OpenAI, cache in MongoDB, return
  *
  * This means stub problems auto-generate the first time any student opens them,
- * then are cached forever — no manual work needed.
+ * then are cached forever - no manual work needed.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -14,7 +14,7 @@ import { getDatabase } from "@/lib/database"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 import { getProblem } from "@/lib/problem-bank"
 
-// Build a flat map of problemId → { title, topic, difficulty }
+// Build a flat map of problemId -> { title, topic, difficulty }
 const PROBLEM_MAP: Record<string, { title: string; topic: string; difficulty: string }> = {}
 for (const topic of TOPIC_QUESTIONS) {
   for (const q of topic.questions) {
@@ -63,7 +63,7 @@ Use real concrete values in testCases. No backslashes inside expected strings.`
     let raw = d.choices?.[0]?.message?.content?.trim() ?? ""
     raw = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
     const p = JSON.parse(raw)
-    // Unescape \\n → real newlines
+    // Unescape \\n -> real newlines
     for (const k of ["pythonStarter","jsStarter","tsStarter","javaStarter","cppStarter"]) {
       if (typeof p[k] === "string") p[k] = p[k].replace(/\\n/g, "\n").replace(/\\t/g, "    ")
     }
@@ -133,7 +133,7 @@ export async function POST(req: Request) {
         title      = meta.title
         difficulty = meta.difficulty
       } else if (body.problemId.startsWith("daily-")) {
-        // Synthetic daily challenge ID — convert back to title
+        // Synthetic daily challenge ID - convert back to title
         title = body.problemId
           .replace(/^daily-/, "")
           .replace(/-/g, " ")
@@ -148,7 +148,7 @@ export async function POST(req: Request) {
     // ── 1. Check static bank ──────────────────────────────────────────────────
     const sp = getProblem(title)
     if (sp && sp.testCases && sp.testCases.length > 0) {
-      // Fully detailed static entry — return immediately
+      // Fully detailed static entry - return immediately
       return NextResponse.json({ problem: bankToWire(sp, title, difficulty), fromCache: false, source: "static" })
     }
 
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
     const aiData = await generateProblem(title, difficulty)
 
     if (!aiData) {
-      // AI unavailable — return stub with whatever static data we have
+      // AI unavailable - return stub with whatever static data we have
       const stubProblem = sp ? bankToWire(sp, title, difficulty) : {
         title, difficulty, badge: difficulty,
         desc: `Solve the ${title} problem.`,

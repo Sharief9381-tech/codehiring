@@ -1,5 +1,5 @@
 /**
- * Normalized platform response — every scraper returns this shape.
+ * Normalized platform response - every scraper returns this shape.
  * Platform-specific extras live in `rawStats` for display purposes.
  */
 export interface NormalizedPlatformStats {

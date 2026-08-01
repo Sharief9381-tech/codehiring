@@ -90,7 +90,7 @@ export function AssessmentLeaderboard({ company, companyName, onClose }: {
             </div>
             <div>
               <p className="font-bold text-foreground">{companyName} Leaderboard</p>
-              <p className="text-xs text-muted-foreground">{data?.totalParticipants ?? "—"} students attempted</p>
+              <p className="text-xs text-muted-foreground">{data?.totalParticipants ?? "-"} students attempted</p>
             </div>
           </div>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors text-lg">✕</button>
@@ -137,7 +137,7 @@ export function AssessmentLeaderboard({ company, companyName, onClose }: {
                       </p>
                       {e.isCurrentUser && <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-violet-500/20 text-violet-400 font-bold">YOU</span>}
                     </div>
-                    {e.collegeCode && <p className="text-xs text-muted-foreground">{e.collegeCode} · {e.attempts} attempt{e.attempts > 1 ? "s" : ""}</p>}
+                    {e.collegeCode && <p className="text-xs text-muted-foreground">{e.collegeCode} . {e.attempts} attempt{e.attempts > 1 ? "s" : ""}</p>}
                   </div>
                   <div className="text-right shrink-0">
                     <p className="text-lg font-black tabular-nums"
@@ -287,7 +287,7 @@ export function AssessmentHistoryPage() {
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     {new Date(attempt.completedAt).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}
-                    {attempt.timeTaken > 0 && ` · ${Math.round(attempt.timeTaken / 60)} min`}
+                    {attempt.timeTaken > 0 && ` . ${Math.round(attempt.timeTaken / 60)} min`}
                   </p>
                 </div>
                 <div className="text-right shrink-0">
@@ -304,18 +304,18 @@ export function AssessmentHistoryPage() {
               {/* Details */}
               <div className="px-5 py-3 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-border/50">
                 <div className="text-center">
-                  <p className="text-sm font-bold text-foreground">{attempt.readinessScore ?? "—"}%</p>
+                  <p className="text-sm font-bold text-foreground">{attempt.readinessScore ?? "-"}%</p>
                   <p className="text-[10px] text-muted-foreground">Readiness</p>
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-bold text-foreground">
-                    {attempt.rank ? `#${attempt.rank}` : "—"}
+                    {attempt.rank ? `#${attempt.rank}` : "-"}
                     {attempt.totalParticipants ? ` / ${attempt.totalParticipants}` : ""}
                   </p>
                   <p className="text-[10px] text-muted-foreground">Rank</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-bold text-foreground">{attempt.percentile ?? "—"}%</p>
+                  <p className="text-sm font-bold text-foreground">{attempt.percentile ?? "-"}%</p>
                   <p className="text-[10px] text-muted-foreground">Percentile</p>
                 </div>
                 <div className="text-center">
@@ -325,7 +325,7 @@ export function AssessmentHistoryPage() {
                       {trend > 0 ? <ArrowUp className="h-3.5 w-3.5" /> : trend < 0 ? <ArrowDown className="h-3.5 w-3.5" /> : <Minus className="h-3.5 w-3.5" />}
                       {Math.abs(trend)}%
                     </p>
-                  ) : <p className="text-sm font-bold text-muted-foreground">—</p>}
+                  ) : <p className="text-sm font-bold text-muted-foreground">-</p>}
                   <p className="text-[10px] text-muted-foreground">Trend</p>
                 </div>
               </div>

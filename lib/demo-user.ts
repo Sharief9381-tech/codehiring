@@ -1,4 +1,4 @@
-// Demo users — used when auth is bypassed (no login required)
+// Demo users - used when auth is bypassed (no login required)
 import type { StudentProfile, CollegeProfile, RecruiterProfile } from "./types"
 
 export const DEMO_STUDENT: StudentProfile = {

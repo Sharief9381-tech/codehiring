@@ -1,6 +1,6 @@
 /**
- * POST /api/drives/[id]/evaluate — Step 7: AI-powered evaluation & ranking
- * Called after submission — evaluates coding/SQL/case study with Groq
+ * POST /api/drives/[id]/evaluate - Step 7: AI-powered evaluation & ranking
+ * Called after submission - evaluates coding/SQL/case study with Groq
  * Also recomputes rankings across all submissions
  */
 import { NextResponse } from "next/server"
@@ -96,7 +96,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       aiEvaluation: {
         strengths: aiStrengths,
         weaknesses: aiWeaknesses,
-        summary: `Scored ${newPct}% — ${newPct >= assessment.passingScore ? "Passed" : "Did not pass"}`,
+        summary: `Scored ${newPct}% - ${newPct >= assessment.passingScore ? "Passed" : "Did not pass"}`,
       },
     })
 

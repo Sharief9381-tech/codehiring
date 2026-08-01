@@ -365,7 +365,7 @@ export function TalentSearch() {
 
                     {/* College */}
                     <p className="text-xs text-muted-foreground">
-                      {candidate.college}{candidate.branch ? ` · ${candidate.branch}` : ""}{candidate.year ? ` · ${candidate.year}` : ""}
+                      {candidate.college}{candidate.branch ? ` . ${candidate.branch}` : ""}{candidate.year ? ` . ${candidate.year}` : ""}
                     </p>
 
                     {/* Stats row */}

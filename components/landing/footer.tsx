@@ -30,14 +30,14 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-6">
 
-          {/* Brand — full width on mobile, 2 cols on md */}
+          {/* Brand - full width on mobile, 2 cols on md */}
           <div className="col-span-1 sm:col-span-2 md:col-span-2">
             <Link href="/" className="flex items-center mb-4">
               <Image src="/codehiring-logo.svg" alt="CodeHiring" width={150} height={38} className="h-8 w-auto block dark:hidden" />
               <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={150} height={38} className="h-8 w-auto hidden dark:block" />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-xs">
-              Unifying coding performance tracking, placement analytics, and AI-powered recruitment — all in one platform.
+              Unifying coding performance tracking, placement analytics, and AI-powered recruitment - all in one platform.
             </p>
             <div className="flex items-center gap-3">
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"

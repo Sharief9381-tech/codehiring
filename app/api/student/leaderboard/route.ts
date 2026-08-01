@@ -4,7 +4,7 @@ import { isDatabaseAvailable } from "@/lib/database"
 
 /**
  * Normalize college codes so variants of the same institution are grouped together.
- * Key = raw code stored in DB → Value = canonical code to display
+ * Key = raw code stored in DB -> Value = canonical code to display
  */
 const COLLEGE_CODE_ALIASES: Record<string, string> = {
   // Aditya

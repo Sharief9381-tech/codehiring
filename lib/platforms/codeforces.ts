@@ -37,7 +37,7 @@ async function cfFetch(url: string): Promise<Response> {
     headers: { "User-Agent": "Mozilla/5.0 (compatible; CodeTrack/1.0)" },
     signal: AbortSignal.timeout(10000),
   })
-  if (res.status === 429) throw new Error("Codeforces rate limit hit — try again later")
+  if (res.status === 429) throw new Error("Codeforces rate limit hit - try again later")
   return res
 }
 
@@ -48,7 +48,7 @@ export async function fetchCodeforcesStats(username: string): Promise<Codeforces
     const match = cleanUsername.match(urlPattern)
     if (match) cleanUsername = match[1]
 
-    // Cooldown check — prevent hammering the API
+    // Cooldown check - prevent hammering the API
     const now = Date.now()
     const last = _cfLastCall[cleanUsername] || 0
     if (now - last < CF_COOLDOWN_MS) {
@@ -110,7 +110,7 @@ export async function fetchCodeforcesStats(username: string): Promise<Codeforces
       }
     } catch { /* ignore rating fetch error */ }
 
-    // Submissions — fetch enough to cover the full year
+    // Submissions - fetch enough to cover the full year
     let submissions: CodeforcesStats["submissions"] = []
     let problemsSolved = 0
     try {

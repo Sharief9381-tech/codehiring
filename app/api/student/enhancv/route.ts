@@ -2,9 +2,9 @@
  * POST /api/student/enhancv
  *
  * Free resume parsing pipeline:
- * 1. APILayer Resume Parser API (free, no CC) — parses PDF to structured JSON
+ * 1. APILayer Resume Parser API (free, no CC) - parses PDF to structured JSON
  *    Get key: https://apilayer.com/marketplace/resume_parser-api (free signup)
- * 2. Groq AI — deep ResumeWorded-style analysis on the parsed data
+ * 2. Groq AI - deep ResumeWorded-style analysis on the parsed data
  *
  * Falls back to raw text extraction if API key not set.
  */
@@ -62,7 +62,7 @@ async function groqDeepAnalysis(parsedResume: any, profileCtx: string): Promise<
 
   const prompt = `You are a senior technical recruiter at Google/Amazon with 10+ years experience. 
 Perform a DEEP ResumeWorded-style review of this candidate's resume.
-Be specific — cite actual content from the resume in every explanation.
+Be specific - cite actual content from the resume in every explanation.
 
 PARSED RESUME:
 ${resumeStr}
@@ -200,7 +200,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Step 2: Fallback — extract raw text and structure it ourselves via Groq
+    // Step 2: Fallback - extract raw text and structure it ourselves via Groq
     if (!parsedResume) {
       const rawText = extractPDFText(fileBuffer).slice(0, 4000)
       parsedResume  = { rawText, source: "text_extracted" }

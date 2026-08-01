@@ -1,5 +1,5 @@
 /**
- * GET /api/student/my-drives — student's application status across all drives
+ * GET /api/student/my-drives - student's application status across all drives
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

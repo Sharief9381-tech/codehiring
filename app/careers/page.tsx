@@ -79,7 +79,7 @@ export default function CareersPage() {
             Help us build the future of tech hiring.
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-            We're a small team with a big mission — making hiring fair, transparent, and based on what developers can actually do. If that excites you, we'd love to hear from you.
+            We're a small team with a big mission - making hiring fair, transparent, and based on what developers can actually do. If that excites you, we'd love to hear from you.
           </p>
         </div>
 
@@ -136,7 +136,7 @@ export default function CareersPage() {
             <div className="rounded-xl border border-border bg-secondary/20 p-12 text-center">
               <p className="text-muted-foreground font-medium mb-1">No open roles right now</p>
               <p className="text-sm text-muted-foreground">
-                We add new positions regularly — check back soon or send a general application below.
+                We add new positions regularly - check back soon or send a general application below.
               </p>
             </div>
           ) : (

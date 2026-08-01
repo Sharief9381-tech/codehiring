@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     const lcMedium      = student?.linkedPlatforms?.leetcode?.stats?.mediumSolved ?? 0
     const totalNow      = Math.max(totalProblems, easyProblems + lcMedium, lcEasy + lcMedium)
 
-    // Record the snapshot — upsert so retrying overwrites
+    // Record the snapshot - upsert so retrying overwrites
     await db.collection("first_year_progress").updateOne(
       { userId: uid },
       {

@@ -151,8 +151,8 @@ export function DriveDetailClient({ driveId }: { driveId: string }) {
               {/* Flow description */}
               <div className={`mt-2 text-[10px] font-medium flex items-center gap-1.5 ${drive.postedByRole === "college" ? "text-emerald-500" : "text-blue-500"}`}>
                 {drive.postedByRole === "college"
-                  ? "📋 College Drive — applicant list sent to college after applications close"
-                  : "🤖 CodeHiring Drive — AI-proctored assessment → auto-shortlist → company review"}
+                  ? "📋 College Drive - applicant list sent to college after applications close"
+                  : "🤖 CodeHiring Drive - AI-proctored assessment -> auto-shortlist -> company review"}
               </div>
             </div>
           </div>
@@ -205,7 +205,7 @@ export function DriveDetailClient({ driveId }: { driveId: string }) {
             { label: "Applied",    val: drive.applicationCount || 0, color: "text-blue-500" },
             { label: "Shortlisted",val: drive.shortlistedCount || 0,  color: "text-violet-500" },
             { label: "Hired",      val: drive.hiredCount || 0,         color: "text-emerald-500" },
-            { label: "Deadline",   val: drive.applicationDeadline ? new Date(drive.applicationDeadline).toLocaleDateString() : "—", color: "text-amber-500" },
+            { label: "Deadline",   val: drive.applicationDeadline ? new Date(drive.applicationDeadline).toLocaleDateString() : "-", color: "text-amber-500" },
           ].map(({ label, val, color }) => (
             <div key={label} className="text-center">
               <p className={`text-lg font-black tabular-nums ${color}`}>{val}</p>
@@ -292,7 +292,7 @@ export function DriveDetailClient({ driveId }: { driveId: string }) {
                         a.status === "hired" ? "bg-violet-500/10 text-violet-500" :
                         "bg-blue-500/10 text-blue-500"}`}>{a.status}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground">{a.college} · {a.branch} · {a.graduationYear}</p>
+                    <p className="text-xs text-muted-foreground">{a.college} . {a.branch} . {a.graduationYear}</p>
                     <div className="flex flex-wrap gap-3 mt-1 text-[10px] text-muted-foreground">
                       {a.totalProblems > 0 && <span>{a.totalProblems} problems</span>}
                       {a.highestRating > 0 && <span>Rating: {a.highestRating}</span>}
@@ -358,7 +358,7 @@ export function DriveDetailClient({ driveId }: { driveId: string }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-foreground text-sm">{a.name}</p>
-                    <p className="text-xs text-muted-foreground">{a.college} · {a.branch}</p>
+                    <p className="text-xs text-muted-foreground">{a.college} . {a.branch}</p>
                     <div className="flex gap-3 mt-1 text-xs">
                       {a.assessmentScore != null && <span className="text-violet-500 font-bold">Score: {a.assessmentScore}%</span>}
                       {a.totalProblems > 0 && <span className="text-muted-foreground">{a.totalProblems} problems</span>}
@@ -489,7 +489,7 @@ function AssessmentTab({ driveId, drive, onRefresh }: { driveId: string; drive: 
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="font-bold text-foreground">{assessment.title}</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">{assessment.totalTime} min · {assessment.passingScore}% passing · {assessment.totalPoints} pts</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{assessment.totalTime} min . {assessment.passingScore}% passing . {assessment.totalPoints} pts</p>
           </div>
           <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
             assessment.status === "active" ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" :
@@ -506,7 +506,7 @@ function AssessmentTab({ driveId, drive, onRefresh }: { driveId: string; drive: 
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-foreground">{s.name}</p>
-                <p className="text-xs text-muted-foreground">{s.type} · {s.timeLimit} min · {s.questions?.length || 0} questions</p>
+                <p className="text-xs text-muted-foreground">{s.type} . {s.timeLimit} min . {s.questions?.length || 0} questions</p>
               </div>
             </div>
           ))}
@@ -632,7 +632,7 @@ function InterviewTab({ driveId, shortlisted, onRefresh }: { driveId: string; sh
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-foreground text-sm">{iv.studentName}</p>
-                <p className="text-xs text-muted-foreground">{iv.type} Interview · {new Date(iv.scheduledAt).toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">{iv.type} Interview . {new Date(iv.scheduledAt).toLocaleString()}</p>
                 {iv.meetLink && <a href={iv.meetLink} target="_blank" rel="noopener noreferrer" className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-0.5"><ExternalLink className="h-3 w-3" />{iv.meetLink}</a>}
               </div>
               <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0 ${

@@ -6,7 +6,7 @@ import { RefreshCw } from "lucide-react"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 import dynamic from "next/dynamic"
 
-// Build slug → problemId lookup
+// Build slug -> problemId lookup
 const SLUG_TO_ID: Record<string, string> = {}
 for (const topic of TOPIC_QUESTIONS) {
   for (const q of topic.questions) {

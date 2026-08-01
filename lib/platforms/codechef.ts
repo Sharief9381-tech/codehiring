@@ -6,7 +6,7 @@
   globalRank: number
   countryRank: number
   problemsSolved: number
-  // Daily heatmap: { "YYYY-MM-DD": count } — last 6 months from codechef-api
+  // Daily heatmap: { "YYYY-MM-DD": count } - last 6 months from codechef-api
   heatMap?: Record<string, number>
 }
 
@@ -49,7 +49,7 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
           const stars = data.stars ?? getStarsFromRating(currentRating)
 
           // heatMap comes as array of { date: "YYYY-MM-DD", value: N }
-          // or as object { "YYYY-MM-DD": N } — normalise to Record<string,number>
+          // or as object { "YYYY-MM-DD": N } - normalise to Record<string,number>
           let heatMap: Record<string, number> | undefined
           if (Array.isArray(data.heatMap)) {
             heatMap = {}

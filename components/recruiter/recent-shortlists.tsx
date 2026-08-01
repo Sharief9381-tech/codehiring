@@ -69,7 +69,7 @@ export function RecentShortlists() {
               <div className="group flex items-center justify-between rounded-xl border border-border/60 bg-card p-3 hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer">
                 <div>
                   <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{list.name}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{list.candidates} candidates · {timeAgo(list.updatedAt)}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{list.candidates} candidates . {timeAgo(list.updatedAt)}</p>
                 </div>
                 <Badge className={`text-[10px] px-2 py-0.5 ${STATUS[list.status] ?? "bg-secondary text-muted-foreground"}`}>
                   {list.status.charAt(0).toUpperCase() + list.status.slice(1)}

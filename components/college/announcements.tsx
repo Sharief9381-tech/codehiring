@@ -18,10 +18,10 @@ interface Announcement {
 }
 
 const MOCK: Announcement[] = [
-  { id: "1", title: "Google Campus Drive – Register Now", message: "Google visits Feb 20. Eligible: CSE/IT 2026, 7+ CGPA. Register by Feb 15.", audience: "all", branch: null, year: null, type: "drive", createdAt: "2026-01-18", pinned: true },
+  { id: "1", title: "Google Campus Drive - Register Now", message: "Google visits Feb 20. Eligible: CSE/IT 2026, 7+ CGPA. Register by Feb 15.", audience: "all", branch: null, year: null, type: "drive", createdAt: "2026-01-18", pinned: true },
   { id: "2", title: "Infosys Resume Deadline Extended", message: "Resume submission for Infosys drive extended to Feb 22.", audience: "branch", branch: "CSE", year: null, type: "alert", createdAt: "2026-01-17", pinned: false },
-  { id: "3", title: "Mock Interview Session – Jan 25", message: "Mock interviews for 4th year. Seminar Hall, 10 AM – 4 PM.", audience: "year", branch: null, year: "4th Year", type: "training", createdAt: "2026-01-16", pinned: false },
-  { id: "4", title: "DSA Workshop – Microsoft", message: "Microsoft is conducting a 2-day DSA workshop for all branches. Seats limited.", audience: "all", branch: null, year: null, type: "training", createdAt: "2026-01-15", pinned: false },
+  { id: "3", title: "Mock Interview Session - Jan 25", message: "Mock interviews for 4th year. Seminar Hall, 10 AM - 4 PM.", audience: "year", branch: null, year: "4th Year", type: "training", createdAt: "2026-01-16", pinned: false },
+  { id: "4", title: "DSA Workshop - Microsoft", message: "Microsoft is conducting a 2-day DSA workshop for all branches. Seats limited.", audience: "all", branch: null, year: null, type: "training", createdAt: "2026-01-15", pinned: false },
   { id: "5", title: "Placement Brochure Submission", message: "Final placement brochure to be submitted by Jan 30. Contact TPO for format.", audience: "all", branch: null, year: null, type: "general", createdAt: "2026-01-14", pinned: false },
 ]
 

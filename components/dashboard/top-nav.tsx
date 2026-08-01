@@ -99,7 +99,7 @@ export function TopNav({ user }: TopNavProps) {
           </span>
         </Link>
 
-        {/* Nav links — desktop */}
+        {/* Nav links - desktop */}
         <nav className="hidden md:flex items-center gap-0.5 flex-1">
           {links.map(({ href, label, icon: Icon }) => {
             const active = pathname === href || pathname.startsWith(href + "/")
@@ -129,7 +129,7 @@ export function TopNav({ user }: TopNavProps) {
 
         {/* Right actions */}
         <div className="ml-auto flex items-center gap-2">
-          {/* Sync — student only */}
+          {/* Sync - student only */}
           {user.role === "student" && (
             <button
               onClick={handleSync}

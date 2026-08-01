@@ -1,5 +1,5 @@
 /**
- * Hiring Drive model — end-to-end recruitment drive
+ * Hiring Drive model - end-to-end recruitment drive
  * Maps the full 11-step CodeHiring workflow
  */
 import { getDatabase } from "@/lib/database"
@@ -40,7 +40,7 @@ export interface DriveDocument {
   verifiedBy?: string              // CodeHiring admin who verified
   verifiedAt?: Date
 
-  // Step 1 — Hiring Request Details
+  // Step 1 - Hiring Request Details
   title: string                    // Job role
   type: "Internship" | "Full-time" | "Contract"
   description: string
@@ -49,7 +49,7 @@ export interface DriveDocument {
   openPositions: number
   hiringTimeline: string           // e.g. "March 2026"
 
-  // Step 3 — Drive Config
+  // Step 3 - Drive Config
   applicationDeadline: string      // ISO date
   assessmentDate?: string          // ISO date
   resultDate?: string              // ISO date

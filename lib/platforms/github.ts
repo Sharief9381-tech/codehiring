@@ -55,7 +55,7 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
       if (userResponse.status === 404) {
         return null
       } else if (userResponse.status === 403 || userResponse.status === 429) {
-        // Rate limited — try with a different User-Agent
+        // Rate limited - try with a different User-Agent
         const retryResponse = await fetch(`https://api.github.com/users/${cleanUsername}`, {
           headers: {
             Accept: "application/vnd.github.v3+json",
@@ -214,7 +214,7 @@ export async function fetchGitHubStats(username: string): Promise<GitHubStats | 
           // Count push events (commits) + PR events + issue events as contributions
           const contributionTypes = ['PushEvent', 'PullRequestEvent', 'IssuesEvent', 'CreateEvent', 'CommitCommentEvent']
           const count = events.filter((e: any) => contributionTypes.includes(e.type)).length
-          // PushEvent can have multiple commits — sum them up
+          // PushEvent can have multiple commits - sum them up
           const pushCount = events
             .filter((e: any) => e.type === 'PushEvent')
             .reduce((sum: number, e: any) => sum + (e.payload?.commits?.length || 1), 0)

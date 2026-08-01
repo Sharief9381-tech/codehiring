@@ -162,7 +162,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           </div>
           <div className="flex-1">
             <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
-              Type 1 — General Experience
+              Type 1 - General Experience
             </p>
             <p className="text-sm text-muted-foreground mt-0.5">
               Give an overall star rating and share your experience in your own words.
@@ -180,7 +180,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           </div>
           <div className="flex-1">
             <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
-              Type 2 — Specific Questions
+              Type 2 - Specific Questions
             </p>
             <p className="text-sm text-muted-foreground mt-0.5">
               Answer {SPECIFIC_QUESTIONS.length} targeted questions about your experience with CodeHiring.
@@ -213,7 +213,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Tell us how CodeHiring helped you — finding a job, hiring talent, or managing placements..."
+            placeholder="Tell us how CodeHiring helped you - finding a job, hiring talent, or managing placements..."
             rows={4}
             className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/30"
           />

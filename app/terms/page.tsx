@@ -3,7 +3,7 @@ import Image from "next/image"
 import { ArrowLeft } from "lucide-react"
 
 export const metadata = {
-  title: "Terms of Service — CodeHiring",
+  title: "Terms of Service - CodeHiring",
   description: "Terms and conditions for using the CodeHiring platform.",
 }
 
@@ -36,7 +36,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">1. Acceptance of Terms</h2>
             <p className="text-sm leading-relaxed">
-              By creating an account or using CodeHiring, you agree to be bound by these Terms of Service. If you do not agree, do not use the platform. These terms apply to all users — students, colleges, and recruiters.
+              By creating an account or using CodeHiring, you agree to be bound by these Terms of Service. If you do not agree, do not use the platform. These terms apply to all users - students, colleges, and recruiters.
             </p>
           </section>
 

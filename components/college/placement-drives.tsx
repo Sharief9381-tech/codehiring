@@ -98,7 +98,7 @@ export function PlacementDrives() {
         </button>
         <div>
           <h2 className="text-lg font-bold text-foreground">{selectedDrive.title}</h2>
-          <p className="text-xs text-muted-foreground">{selectedDrive.companyName} · {applicants.length} applicants</p>
+          <p className="text-xs text-muted-foreground">{selectedDrive.companyName} . {applicants.length} applicants</p>
         </div>
       </div>
 
@@ -125,8 +125,8 @@ export function PlacementDrives() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-foreground text-sm">{a.name}</p>
-                <p className="text-xs text-muted-foreground">{a.college} · {a.branch} · {a.graduationYear}</p>
-                {a.totalProblems > 0 && <p className="text-[10px] text-muted-foreground mt-0.5">{a.totalProblems} problems · Rating {a.highestRating || "—"}</p>}
+                <p className="text-xs text-muted-foreground">{a.college} . {a.branch} . {a.graduationYear}</p>
+                {a.totalProblems > 0 && <p className="text-[10px] text-muted-foreground mt-0.5">{a.totalProblems} problems . Rating {a.highestRating || "-"}</p>}
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500">Applied</span>
@@ -231,7 +231,7 @@ export function PlacementDrives() {
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-bold text-foreground text-sm">{drive.title}</p>
-                        <p className="text-xs text-muted-foreground">{drive.companyName} · {drive.type} · {drive.location}</p>
+                        <p className="text-xs text-muted-foreground">{drive.companyName} . {drive.type} . {drive.location}</p>
                       </div>
                       <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 ${cfg.color}`}>
                         <Icon className="h-3 w-3" />{cfg.label}

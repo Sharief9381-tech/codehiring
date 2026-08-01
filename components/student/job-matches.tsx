@@ -240,7 +240,7 @@ export function JobMatches() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground">Your Match Profile</p>
               <p className="text-xs text-muted-foreground">
-                {profile.platformCount} platform{profile.platformCount !== 1 ? "s" : ""} · {profile.totalProblems} problems{profile.rating > 0 ? ` · Rating ${profile.rating}` : ""}
+                {profile.platformCount} platform{profile.platformCount !== 1 ? "s" : ""} . {profile.totalProblems} problems{profile.rating > 0 ? ` . Rating ${profile.rating}` : ""}
               </p>
             </div>
             <div className="text-right shrink-0">

@@ -88,7 +88,7 @@ export function TopPerformers() {
                       <p className="text-sm font-medium text-foreground truncate">{p.name}</p>
                       {statusBadge(p.placementStatus)}
                     </div>
-                    <p className="text-xs text-muted-foreground">{p.rollNumber} · {p.branch}</p>
+                    <p className="text-xs text-muted-foreground">{p.rollNumber} . {p.branch}</p>
                   </div>
                   {/* Stats */}
                   <div className="text-right shrink-0">

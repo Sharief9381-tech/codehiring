@@ -74,7 +74,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
         }
         const failed = data.summary?.failed ?? 0
         toast[failed > 0 ? "warning" : "success"](
-          failed > 0 ? `Synced €” ${failed} platform(s) unavailable` : `All ${data.summary?.successful ?? 0} platforms synced`
+          failed > 0 ? `Synced €" ${failed} platform(s) unavailable` : `All ${data.summary?.successful ?? 0} platforms synced`
         )
         // Invalidate server cache so dashboard picks up fresh stats
         router.refresh()
@@ -186,7 +186,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                   <p className="text-sm font-semibold text-gray-200">Profile Verified</p>
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed px-1">
                     {platformId === 'interviewbit'
-                      ? 'InterviewBit stats require login €” all their data APIs are auth-only. Your profile is linked and counts toward your score.'
+                      ? 'InterviewBit stats require login €" all their data APIs are auth-only. Your profile is linked and counts toward your score.'
                       : 'Stats are loaded client-side and not publicly accessible. Your profile is linked.'}
                   </p>
                 </div>
@@ -339,7 +339,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       <div className="w-1/12" />
                     </div></div>
                     {stats._apiLimited && (
-                      <p className="text-[10px] text-amber-400/70 text-center">š  Stats from page meta · HackerEarth API is private</p>
+                      <p className="text-[10px] text-amber-400/70 text-center">š  Stats from page meta . HackerEarth API is private</p>
                     )}
                   </>
                 )}
@@ -405,7 +405,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       </div>
                     )}
                     {stats._apiLimited && (
-                      <p className="text-[10px] text-amber-400/70 text-center">š  Stats via page scraping · InterviewBit API is private</p>
+                      <p className="text-[10px] text-amber-400/70 text-center">š  Stats via page scraping . InterviewBit API is private</p>
                     )}
                   </>
                 )}
@@ -426,7 +426,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
           </div>
         </CardContent>
 
-        {/* Footer bar €” View Details | Verified | Delete */}
+        {/* Footer bar €" View Details | Verified | Delete */}
         <div className="absolute bottom-0 left-0 right-0 p-2 border-t border-gray-700 bg-gray-800/50">
           <div className="flex items-center justify-between">
             <a
@@ -491,7 +491,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
         </div>
       )}
 
-      {/* Problems by Platform — segmented colour bar with hover tooltip */}
+      {/* Problems by Platform - segmented colour bar with hover tooltip */}
       {connectedIds.length > 0 && (() => {
         const COLORS: Record<string, string> = {
           leetcode: '#f59e0b', geeksforgeeks: '#0d9488', atcoder: '#8b5cf6',
@@ -533,7 +533,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                   <div key={p.pid} className="group relative flex items-center gap-3 cursor-pointer">
                     <span className="text-xs font-medium text-foreground w-28 shrink-0 truncate">{p.name}</span>
                     <div className="flex-1 h-2.5 rounded-full bg-muted overflow-hidden flex">
-                      {/* If difficulty data available — stacked Easy/Med/Hard colours */}
+                      {/* If difficulty data available - stacked Easy/Med/Hard colours */}
                       {(p.easy > 0 || p.medium > 0 || p.hard > 0) ? (
                         <>
                           {p.easy   > 0 && <div className="h-full bg-emerald-500" style={{ width: `${(p.easy   / p.solved) * 100}%` }} />}
@@ -545,7 +545,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                           )}
                         </>
                       ) : (
-                        /* No difficulty data — single platform colour */
+                        /* No difficulty data - single platform colour */
                         <div className="h-full rounded-full" style={{ width: `${(p.solved / bars[0].solved) * 100}%`, backgroundColor: p.color }} />
                       )}
                     </div>
@@ -556,9 +556,9 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                       {(p.easy > 0 || p.medium > 0 || p.hard > 0) ? (
                         <>
                           <span className="text-[10px] text-emerald-500 font-medium">Easy {p.easy}</span>
-                          <span className="text-muted-foreground/40">·</span>
+                          <span className="text-muted-foreground/40">.</span>
                           <span className="text-[10px] text-amber-500 font-medium">Med {p.medium}</span>
-                          <span className="text-muted-foreground/40">·</span>
+                          <span className="text-muted-foreground/40">.</span>
                           <span className="text-[10px] text-red-500 font-medium">Hard {p.hard}</span>
                         </>
                       ) : (
@@ -569,7 +569,7 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
                 ))}
               </div>
 
-              <p className="text-xs text-muted-foreground mt-3">Total: {total.toLocaleString()} problems · hover a bar for details</p>
+              <p className="text-xs text-muted-foreground mt-3">Total: {total.toLocaleString()} problems . hover a bar for details</p>
             </CardContent>
           </Card>
         )

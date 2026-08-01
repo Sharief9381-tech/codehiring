@@ -175,8 +175,8 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
           { label: "GitHub Contributions", val: aggregatedStats.githubContributions, sub: "Total contributions", icon: GitBranch, gradient: "from-emerald-900 to-emerald-800", border: "border-emerald-700", text: "text-emerald-200", sub2: "text-emerald-300", iconC: "text-emerald-400", href: "/student/platforms" },
           { label: "Contests", val: aggregatedStats.contestsAttended, sub: "Participated", icon: Trophy, gradient: "from-purple-900 to-purple-800", border: "border-purple-700", text: "text-purple-200", sub2: "text-purple-300", iconC: "text-purple-400", href: "/student/analytics" },
           { label: "Activity Level", val: skillsAnalysis.activityLevel, sub: `Rank: ${skillsAnalysis.overallRank}`, icon: Activity, gradient: "from-amber-900 to-amber-800", border: "border-amber-700", text: "text-amber-200", sub2: "text-amber-300", iconC: "text-amber-400", href: "/student/analytics" },
-          { label: "Global Rank", val: ranking?.globalRank != null ? `#${ranking.globalRank}` : "—", sub: ranking?.totalGlobal ? `of ${ranking.totalGlobal} students` : "by problems", icon: Trophy, gradient: "from-rose-900 to-rose-800", border: "border-rose-700", text: "text-rose-200", sub2: "text-rose-300", iconC: "text-rose-400", href: "/student/leaderboard" },
-          { label: "College Rank", val: ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "—", sub: ranking?.totalCollege ? `of ${ranking.totalCollege}` : "no data yet", icon: Star, gradient: "from-cyan-900 to-cyan-800", border: "border-cyan-700", text: "text-cyan-200", sub2: "text-cyan-300", iconC: "text-cyan-400", href: "/student/leaderboard" },
+          { label: "Global Rank", val: ranking?.globalRank != null ? `#${ranking.globalRank}` : "-", sub: ranking?.totalGlobal ? `of ${ranking.totalGlobal} students` : "by problems", icon: Trophy, gradient: "from-rose-900 to-rose-800", border: "border-rose-700", text: "text-rose-200", sub2: "text-rose-300", iconC: "text-rose-400", href: "/student/leaderboard" },
+          { label: "College Rank", val: ranking?.collegeRank != null ? `#${ranking.collegeRank}` : "-", sub: ranking?.totalCollege ? `of ${ranking.totalCollege}` : "no data yet", icon: Star, gradient: "from-cyan-900 to-cyan-800", border: "border-cyan-700", text: "text-cyan-200", sub2: "text-cyan-300", iconC: "text-cyan-400", href: "/student/leaderboard" },
         ].map(c => (
           <Link key={c.label} href={c.href}>
             <Card className={`bg-gradient-to-br ${c.gradient} ${c.border} cursor-pointer hover:scale-[1.02] transition-transform`}>
@@ -222,7 +222,7 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
         </Card>
       </div>
 
-      {/* Difficulty Distribution by Platform — half grid */}
+      {/* Difficulty Distribution by Platform - half grid */}
       {combinedData.length > 0 && (
         <div className="grid gap-6 md:grid-cols-2">
           <Card>
@@ -230,11 +230,11 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
               <CardTitle className="text-base">Difficulty by Platform</CardTitle>
               <CardDescription>
                 <span className="text-emerald-500 font-medium">■ Easy</span>
-                {' · '}
+                {' . '}
                 <span className="text-amber-500 font-medium">■ Medium</span>
-                {' · '}
+                {' . '}
                 <span className="text-red-500 font-medium">■ Hard</span>
-                {' · '}
+                {' . '}
                 <span className="text-slate-400 font-medium">■ Unrated</span>
               </CardDescription>
             </CardHeader>
@@ -268,7 +268,7 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
             </CardContent>
           </Card>
 
-          {/* Achievements — beside the bar chart */}
+          {/* Achievements - beside the bar chart */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base"><Award className="h-4 w-4 text-amber-500" />Achievements</CardTitle>

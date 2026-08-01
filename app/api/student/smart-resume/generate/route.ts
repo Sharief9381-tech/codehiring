@@ -1,7 +1,7 @@
 /**
  * POST /api/student/smart-resume/generate
  * Generates a complete AI resume from the student's platform data.
- * No file upload needed — uses verified coding stats directly.
+ * No file upload needed - uses verified coding stats directly.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

@@ -1,5 +1,5 @@
 /**
- * Job model — stored in the `jobs` MongoDB collection.
+ * Job model - stored in the `jobs` MongoDB collection.
  * Recruiters create jobs; students see matched jobs.
  */
 import { getDatabase, isDatabaseAvailable } from "@/lib/database"

@@ -24,7 +24,7 @@ const MILESTONES = [
   { id: "project-1",    title: "First Project",           desc: "Built and pushed a project to GitHub", xp: 120 },
 ]
 
-// Build a flat map of all badge IDs → xp from TOPIC_QUESTIONS
+// Build a flat map of all badge IDs -> xp from TOPIC_QUESTIONS
 const BADGE_XP_MAP: Record<string, number> = {}
 for (const topic of TOPIC_QUESTIONS) {
   for (const q of topic.questions) {
@@ -52,7 +52,7 @@ export async function GET() {
       progress = doc
     }
 
-    // Check streak — reset if last activity was before yesterday
+    // Check streak - reset if last activity was before yesterday
     const today = new Date(); today.setHours(0,0,0,0)
     const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1)
     const lastAct = progress.lastActivity ? new Date(progress.lastActivity) : null
@@ -137,7 +137,7 @@ export async function POST(req: Request) {
       let newStreak = progress.streak ?? 0
       if (!lastActDay || lastActDay.getTime() < yesterday.getTime()) newStreak = 1
       else if (lastActDay.getTime() === yesterday.getTime()) newStreak += 1
-      // else same day — streak unchanged
+      // else same day - streak unchanged
     // Update streak and track max streak
     const today2 = new Date(); today2.setHours(0,0,0,0)
     const lastAct2 = progress.lastActivity ? new Date(progress.lastActivity) : null

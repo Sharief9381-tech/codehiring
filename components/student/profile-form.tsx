@@ -154,7 +154,7 @@ export function ProfileForm({ user, onChange }: Props) {
                       value={user.graduationYear}
                       readOnly
                     />
-                    <p className="text-[10px] text-muted-foreground mt-1">Set at signup — cannot be changed</p>
+                    <p className="text-[10px] text-muted-foreground mt-1">Set at signup - cannot be changed</p>
                   </>
                 ) : (
                   <>
@@ -168,7 +168,7 @@ export function ProfileForm({ user, onChange }: Props) {
                         <option key={y} value={y}>{y}</option>
                       ))}
                     </select>
-                    <p className="text-[10px] text-amber-500 mt-1">Not set — select your graduation year to unlock Career Hub</p>
+                    <p className="text-[10px] text-amber-500 mt-1">Not set - select your graduation year to unlock Career Hub</p>
                   </>
                 )}
               </div>
@@ -214,7 +214,7 @@ export function ProfileForm({ user, onChange }: Props) {
           </div>
         </div>
 
-        {/* Open to Work — shown for 3rd/4th year students and graduates */}
+        {/* Open to Work - shown for 3rd/4th year students and graduates */}
         {(() => {
           const gradYear = user?.graduationYear
           const currentYear = new Date().getFullYear()
@@ -236,7 +236,7 @@ export function ProfileForm({ user, onChange }: Props) {
                   <p className="text-xs text-muted-foreground mt-0.5">
                     {isGraduate
                       ? "Let recruiters know you're actively looking"
-                      : `Visible to recruiters — Class of ${gradYear}`}
+                      : `Visible to recruiters - Class of ${gradYear}`}
                   </p>
                 </div>
                 <button
@@ -282,7 +282,7 @@ export function ProfileForm({ user, onChange }: Props) {
               </div>
               <div className="pb-1">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-bold text-foreground">{user?.name || "—"}</span>
+                  <span className="text-sm font-bold text-foreground">{user?.name || "-"}</span>
                   <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20">Verified</span>
                 </div>
                 <div className="flex items-center gap-1.5 mt-0.5">
@@ -301,10 +301,10 @@ export function ProfileForm({ user, onChange }: Props) {
             {/* Stats */}
             <div className="grid grid-cols-2 gap-2 mb-4">
               {[
-                { label: "Contest Rating",  value: user?.stats?.rating        || "—", color: "text-purple-500" },
-                { label: "Problems Solved", value: user?.stats?.totalProblems || "—", color: "text-blue-500"   },
-                { label: "Day Streak",      value: user?.stats?.streak        || "—", color: "text-teal-500"   },
-                { label: "Global Rank",     value: user?.stats?.globalRank    || "—", color: "text-pink-500"   },
+                { label: "Contest Rating",  value: user?.stats?.rating        || "-", color: "text-purple-500" },
+                { label: "Problems Solved", value: user?.stats?.totalProblems || "-", color: "text-blue-500"   },
+                { label: "Day Streak",      value: user?.stats?.streak        || "-", color: "text-teal-500"   },
+                { label: "Global Rank",     value: user?.stats?.globalRank    || "-", color: "text-pink-500"   },
               ].map(({ label, value, color }) => (
                 <div key={label} className="rounded-xl bg-secondary border border-border p-2.5 text-center">
                   <div className={`text-base font-bold ${color}`}>{value}</div>

@@ -1,9 +1,9 @@
 /**
  * Admin CRUD for career postings
- * GET    /api/admin/careers         — list all (including inactive)
- * POST   /api/admin/careers         — create new posting
- * PATCH  /api/admin/careers?id=     — update posting
- * DELETE /api/admin/careers?id=     — delete posting
+ * GET    /api/admin/careers         - list all (including inactive)
+ * POST   /api/admin/careers         - create new posting
+ * PATCH  /api/admin/careers?id=     - update posting
+ * DELETE /api/admin/careers?id=     - delete posting
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

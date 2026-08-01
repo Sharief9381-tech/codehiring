@@ -6,7 +6,7 @@ import { RefreshCw } from "lucide-react"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 import dynamic from "next/dynamic"
 
-// Build slug → problemId lookup
+// Build slug -> problemId lookup
 const SLUG_TO_ID: Record<string, string> = {}
 const TITLE_TO_ID: Record<string, string> = {}
 for (const topic of TOPIC_QUESTIONS) {
@@ -56,7 +56,7 @@ function DailyChallengeContent() {
   // 1. ?problemId=arrays-m1-q1  (clean, from topic hub)
   // 2. ?title=Two+Sum            (title lookup)
   // 3. ?slug=two-sum             (slug lookup)
-  // 4. Old URL params (title, desc, input, etc.) → redirect to problem editor
+  // 4. Old URL params (title, desc, input, etc.) -> redirect to problem editor
 
   const problemId = params.get("problemId")
   const titleParam = params.get("title")
@@ -97,7 +97,7 @@ function DailyChallengeContent() {
     return <ProblemEditor problemId={resolvedId} />
   }
 
-  // Old URL format with desc/input params — extract and show with problemId from title
+  // Old URL format with desc/input params - extract and show with problemId from title
   if (titleParam && params.get("desc")) {
     // Try to find in bank by title (fuzzy match)
     const normalizedTitle = titleParam.toLowerCase().replace(/[^a-z0-9]/g, "")
@@ -115,7 +115,7 @@ function DailyChallengeContent() {
       return <ProblemEditor problemId={foundId} />
     }
 
-    // Not in topic-questions — create a synthetic problemId from title
+    // Not in topic-questions - create a synthetic problemId from title
     const syntheticId = `daily-${titleParam
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "-")
@@ -146,7 +146,7 @@ function DailyChallengeContent() {
             { input, output, explanation: explain },
           ],
           starters: {},
-          // No test cases yet — problem-detail API will generate them on first load
+          // No test cases yet - problem-detail API will generate them on first load
           pythonTest1: "", expectedTest1: "",
           pythonTest2: "", expectedTest2: "",
           pythonTest3: "", expectedTest3: "",
@@ -165,7 +165,7 @@ function DailyChallengeContent() {
     return <ProblemEditor problemId={syntheticId} />
   }
 
-  // No valid params — show an error
+  // No valid params - show an error
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-4"
       style={{ background: "#0d1117", color: "#8b949e" }}>

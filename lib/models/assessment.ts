@@ -1,5 +1,5 @@
 /**
- * Assessment model — complete test engine for CodeHiring hiring drives
+ * Assessment model - complete test engine for CodeHiring hiring drives
  * Supports: MCQ, Coding, SQL, Aptitude, Debugging, Case Study
  */
 import { getDatabase } from "@/lib/database"

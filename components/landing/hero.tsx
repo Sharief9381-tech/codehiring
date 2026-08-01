@@ -8,7 +8,7 @@ import { ArrowRight, Sparkles, ChevronDown } from "lucide-react"
 function formatStat(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M+`
   if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K+`
-  return n > 0 ? `${n}+` : "—"
+  return n > 0 ? `${n}+` : "-"
 }
 
 function useCountUp(target: number, duration = 1400) {
@@ -37,7 +37,7 @@ function HeroStat({ label, value, loaded }: { label: string; value: number; load
   return (
     <div className="text-center">
       <p className="text-3xl font-bold text-foreground tabular-nums">
-        {loaded ? formatStat(count) : "—"}
+        {loaded ? formatStat(count) : "-"}
       </p>
       <p className="text-sm text-muted-foreground mt-1">{label}</p>
     </div>
@@ -81,7 +81,7 @@ export function Hero() {
 
         <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           CodeHiring unifies student coding performance across all platforms, gives colleges placement
-          analytics, and helps recruiters find verified talent — all in one place.
+          analytics, and helps recruiters find verified talent - all in one place.
         </p>
 
         {/* CTAs */}

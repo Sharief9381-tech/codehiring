@@ -235,7 +235,7 @@ export function PlacementTracker() {
                   {selectedBranch && <Badge variant="secondary">{selectedBranch}</Badge>}
                   {selectedBranch && selectedYear && <ChevronRight className="h-3 w-3" />}
                   {selectedYear && <Badge variant="secondary">{selectedYear}</Badge>}
-                  <span>— {filteredStudents.length} student{filteredStudents.length !== 1 ? "s" : ""}</span>
+                  <span>- {filteredStudents.length} student{filteredStudents.length !== 1 ? "s" : ""}</span>
                   <button onClick={clearFilters} className="ml-1 text-muted-foreground hover:text-foreground">
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -302,7 +302,7 @@ export function PlacementTracker() {
                             {!selectedBranch && <td className="px-5 py-4 text-sm text-muted-foreground">{student.branch}</td>}
                             <td className="px-5 py-4 text-center text-sm text-muted-foreground">{student.year}</td>
                             <td className="px-5 py-4 text-center font-semibold text-foreground">{student.totalProblems}</td>
-                            <td className="px-5 py-4 text-center font-semibold text-amber-500">{student.currentRating || "—"}</td>
+                            <td className="px-5 py-4 text-center font-semibold text-amber-500">{student.currentRating || "-"}</td>
                             <td className="px-5 py-4 text-center">
                               <Badge className={`text-xs ${activity}`}>{student.activityLevel}</Badge>
                             </td>
@@ -367,9 +367,9 @@ export function PlacementTracker() {
                     </div>
                     <div className="flex justify-between text-xs text-muted-foreground border-t border-border pt-2">
                       <span>Avg Problems: <strong className="text-foreground">{dept.avgProblems}</strong></span>
-                      <span>Avg Rating: <strong className="text-foreground">{dept.avgRating || "—"}</strong></span>
+                      <span>Avg Rating: <strong className="text-foreground">{dept.avgRating || "-"}</strong></span>
                     </div>
-                    <p className="text-xs text-primary font-medium text-right">View students →</p>
+                    <p className="text-xs text-primary font-medium text-right">View students -></p>
                   </CardContent>
                 </Card>
               ))}

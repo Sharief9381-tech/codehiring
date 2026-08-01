@@ -1,13 +1,13 @@
 /**
  * Canonical CodeHiring Score calculation.
- * Single source of truth — used by dashboard, profile, public profile, and API routes.
+ * Single source of truth - used by dashboard, profile, public profile, and API routes.
  *
  * Max 1000 pts breakdown:
- *   400 — Problems solved  (maxes at 500 problems)
- *   200 — Highest rating   (maxes at 1600)
- *   150 — GitHub contribs  (maxes at 365/year)
- *   150 — Contests         (maxes at 20)
- *   100 — Profile complete (5 checklist items × 20pts each)
+ *   400 - Problems solved  (maxes at 500 problems)
+ *   200 - Highest rating   (maxes at 1600)
+ *   150 - GitHub contribs  (maxes at 365/year)
+ *   150 - Contests         (maxes at 20)
+ *   100 - Profile complete (5 checklist items × 20pts each)
  */
 export function computeCodeHiringScore(student: any): number {
   const linkedPlatforms: Record<string, any> = student?.linkedPlatforms || {}
@@ -54,7 +54,7 @@ export function computeCodeHiringScore(student: any): number {
     !!linkedPlatforms?.github,
   ].filter(Boolean).length
 
-  const profileComplete = checklistDone * 20  // 0–100
+  const profileComplete = checklistDone * 20  // 0-100
 
   return Math.min(1000, Math.round(
     Math.min((totalProblems     / 500)  * 400, 400) +

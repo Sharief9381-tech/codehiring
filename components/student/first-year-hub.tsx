@@ -127,7 +127,7 @@ export function FirstYearHub() {
             <div className="text-center">
               <div className="text-4xl mb-3">👋</div>
               <h2 className="text-xl font-bold text-foreground">Welcome to your 1st Year Hub!</h2>
-              <p className="text-sm text-muted-foreground mt-1.5">Quick question — what's your coding experience right now?</p>
+              <p className="text-sm text-muted-foreground mt-1.5">Quick question - what's your coding experience right now?</p>
             </div>
             <div className="space-y-2">
               {SKILL_LEVELS.map(s => (
@@ -158,7 +158,7 @@ export function FirstYearHub() {
         <Flame className="h-8 w-8 text-amber-400 shrink-0" />
         <div className="flex-1">
           <p className="font-bold text-foreground">Current Streak</p>
-          <p className="text-xs text-muted-foreground">{streak} day{streak !== 1 ? "s" : ""} in a row — keep it going!</p>
+          <p className="text-xs text-muted-foreground">{streak} day{streak !== 1 ? "s" : ""} in a row - keep it going!</p>
         </div>
         <p className="text-3xl font-black text-amber-400">{streak}</p>
       </div>
@@ -172,7 +172,7 @@ export function FirstYearHub() {
             </div>
             <div>
               <p className="font-bold text-foreground">Daily Challenge</p>
-              <p className="text-xs text-muted-foreground">One easy problem · keep your streak alive</p>
+              <p className="text-xs text-muted-foreground">One easy problem . keep your streak alive</p>
             </div>
           </div>
           {dailyDone ? (

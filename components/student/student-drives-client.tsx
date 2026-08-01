@@ -182,14 +182,14 @@ export function StudentDrivesClient({ student }: { student: any }) {
               <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/8 border border-emerald-500/20 text-xs text-emerald-600 dark:text-emerald-400">
                 <Building2 className="h-3.5 w-3.5 shrink-0" />
                 <span className="font-semibold">On-Campus Drives</span>
-                <span className="text-muted-foreground font-normal">— posted by your college for your batch</span>
+                <span className="text-muted-foreground font-normal">- posted by your college for your batch</span>
               </div>
             )}
             {activeTab === "offcampus" && (
               <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-500/8 border border-blue-500/20 text-xs text-blue-600 dark:text-blue-400">
                 <Globe className="h-3.5 w-3.5 shrink-0" />
                 <span className="font-semibold">Off-Campus Drives</span>
-                <span className="text-muted-foreground font-normal">— open to all eligible candidates</span>
+                <span className="text-muted-foreground font-normal">- open to all eligible candidates</span>
               </div>
             )}
             {filtered.map((drive, i) => {

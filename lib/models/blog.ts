@@ -1,5 +1,5 @@
 /**
- * Blog model — stored in the `blogs` MongoDB collection.
+ * Blog model - stored in the `blogs` MongoDB collection.
  * Falls back to hardcoded posts from lib/blog-posts.ts if DB unavailable.
  */
 import { getDatabase } from "@/lib/database"

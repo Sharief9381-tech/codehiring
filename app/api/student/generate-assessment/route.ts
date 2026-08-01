@@ -180,7 +180,7 @@ export async function POST(req: Request) {
             source: "scraped",
           })
         }
-        // Partial scrape — use what we got and generate the rest
+        // Partial scrape - use what we got and generate the rest
         if (scrapeData.questions?.length > 0) {
         }
       }
@@ -205,7 +205,7 @@ Rules:
 - Each problem must feel like a REAL ${pattern.name} OA question
 - Include problem statement, constraints, example input/output
 - Match difficulty exactly: ${sectionData.difficulty}
-- Create NEW problems inspired by the previous year patterns above — do NOT repeat them
+- Create NEW problems inspired by the previous year patterns above - do NOT repeat them
 
 Return ONLY valid JSON array (no markdown, no explanation):
 [
@@ -231,12 +231,12 @@ Difficulty: ${sectionData.difficulty}
 Count needed: ${count}
 
 Rules:
-- Questions must feel like REAL ${pattern.name} exam questions — study the PYQ style above carefully
+- Questions must feel like REAL ${pattern.name} exam questions - study the PYQ style above carefully
 - Match the same difficulty, topic distribution, and question style as the PYQs
 - Each question has exactly 4 options (A,B,C,D) with one correct answer
 - Include detailed step-by-step explanation for the correct answer (like the PYQs above)
 - Cover different topics from the list above
-- Create NEW questions inspired by the PYQ patterns — do NOT repeat them verbatim
+- Create NEW questions inspired by the PYQ patterns - do NOT repeat them verbatim
 
 Return ONLY valid JSON array (no markdown, no explanation):
 [

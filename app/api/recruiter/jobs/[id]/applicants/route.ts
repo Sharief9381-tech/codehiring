@@ -1,7 +1,7 @@
 /**
  * GET /api/recruiter/jobs/[id]/applicants
  * Returns all applicants for a specific job (recruiter only).
- * PATCH — update applicant status (shortlist/reject/hire)
+ * PATCH - update applicant status (shortlist/reject/hire)
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

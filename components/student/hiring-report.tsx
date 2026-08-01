@@ -136,7 +136,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
             { label: "Readiness", value: `${report.readinessScore}%`, sub: report.readinessLabel, color: readinessColor },
             { label: "Benchmark", value: `${report.companyBenchmark}%`, sub: report.benchmarkStatus, color: aboveBenchmark ? "#10b981" : "#ef4444" },
             { label: "Selection Chance", value: `${report.selectionProbability?.overall ?? 0}%`, sub: "Overall probability", color: companyColor },
-            { label: "AI Verdict", value: report.hrReport?.verdict ?? "—", sub: "HR Assessment", color: verdictStyle.text },
+            { label: "AI Verdict", value: report.hrReport?.verdict ?? "-", sub: "HR Assessment", color: verdictStyle.text },
           ].map(m => (
             <div key={m.label} className="rounded-xl border border-border bg-card/50 p-3 text-center">
               <p className="text-xs text-muted-foreground mb-1">{m.label}</p>
@@ -150,7 +150,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         <div>
           <div className="flex items-center justify-between text-xs mb-1.5">
             <span className="text-muted-foreground">Company Readiness Score</span>
-            <span className="font-bold" style={{ color: readinessColor }}>{report.readinessScore}% — {report.readinessLabel}</span>
+            <span className="font-bold" style={{ color: readinessColor }}>{report.readinessScore}% - {report.readinessLabel}</span>
           </div>
           <ScoreBar value={report.readinessScore} benchmark={report.companyBenchmark} color={readinessColor} />
           <p className="text-[10px] text-muted-foreground mt-1">White line = {report.companyName} benchmark ({report.companyBenchmark}%)</p>
@@ -209,7 +209,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
       )}
 
       {/* ── CRACK THE COMPANY ── */}
-      <Section title={`Crack ${report.companyName} — AI Strategy`} icon={<Zap className="h-5 w-5" />}>
+      <Section title={`Crack ${report.companyName} - AI Strategy`} icon={<Zap className="h-5 w-5" />}>
         <div className="space-y-5 pt-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4">

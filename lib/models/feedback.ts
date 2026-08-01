@@ -15,10 +15,10 @@ export interface FeedbackDocument {
   role: string
   avatar: string
   type: FeedbackType
-  // Type 1 — General
+  // Type 1 - General
   text?: string
-  rating?: number    // 1–5
-  // Type 2 — Specific
+  rating?: number    // 1-5
+  // Type 2 - Specific
   answers?: SpecificAnswer[]
   status: "pending" | "approved" | "rejected"
   createdAt: Date

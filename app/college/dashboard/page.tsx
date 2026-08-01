@@ -14,7 +14,7 @@ export default async function CollegeDashboard() {
     <div className="flex flex-col">
       <DashboardHeader
         title="Dashboard"
-        description={`${college.collegeName || college.name} — overview and analytics`}
+        description={`${college.collegeName || college.name} - overview and analytics`}
       />
       <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full">
         <CollegeDashboardTabs college={college} />

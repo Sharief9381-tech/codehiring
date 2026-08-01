@@ -61,14 +61,14 @@ Skills listed: ${(doc.skills ?? []).join(", ") || "none"}
 Coding platforms: ${platforms || "none"}
 Bio: ${doc.bio ?? "none"}
 Resume URL: ${doc.resumeUrl ?? "none"}
-${resumeText ? `\nRESUME CONTENT:\n${resumeText}` : "\n(No resume file uploaded — analyse profile only)"}`.trim()
+${resumeText ? `\nRESUME CONTENT:\n${resumeText}` : "\n(No resume file uploaded - analyse profile only)"}`.trim()
 
-    const prompt = `You are a senior technical recruiter with 10+ years experience at Google, Amazon, and top product companies. You are doing a DEEP resume review exactly like ResumeWorded — giving specific, actionable, numbered feedback with clear reasoning for every score.
+    const prompt = `You are a senior technical recruiter with 10+ years experience at Google, Amazon, and top product companies. You are doing a DEEP resume review exactly like ResumeWorded - giving specific, actionable, numbered feedback with clear reasoning for every score.
 
 CANDIDATE PROFILE:
 ${profileContext}
 
-Analyse this resume/profile and return a comprehensive JSON report. Every score must have a clear "why" explanation — not generic advice, but specific to THIS candidate.
+Analyse this resume/profile and return a comprehensive JSON report. Every score must have a clear "why" explanation - not generic advice, but specific to THIS candidate.
 
 Rules:
 - Be brutally honest but constructive
@@ -81,16 +81,16 @@ Return ONLY valid JSON:
 
 {
   "overallScore": <0-100>,
-  "overallReason": "2 sentence explanation of why this specific score — cite actual resume content",
+  "overallReason": "2 sentence explanation of why this specific score - cite actual resume content",
   "scoreBreakdown": {
-    "impact": { "score": <0-20>, "max": 20, "label": "Impact", "why": "Specific reason — e.g. '3 of 5 bullets have no numbers or measurable outcomes'" },
-    "brevity": { "score": <0-20>, "max": 20, "label": "Brevity", "why": "Specific reason — e.g. 'Resume fits 1 page but 2 bullets exceed 2 lines'" },
-    "style": { "score": <0-20>, "max": 20, "label": "Style", "why": "Specific reason — e.g. 'Consistent formatting, but dates are inconsistently placed'" },
-    "sections": { "score": <0-20>, "max": 20, "label": "Sections", "why": "Specific reason — e.g. 'Missing a Summary section and Certifications'" },
-    "skills": { "score": <0-20>, "max": 20, "label": "Skills", "why": "Specific reason — e.g. 'Skills listed but not demonstrated in project bullets'" }
+    "impact": { "score": <0-20>, "max": 20, "label": "Impact", "why": "Specific reason - e.g. '3 of 5 bullets have no numbers or measurable outcomes'" },
+    "brevity": { "score": <0-20>, "max": 20, "label": "Brevity", "why": "Specific reason - e.g. 'Resume fits 1 page but 2 bullets exceed 2 lines'" },
+    "style": { "score": <0-20>, "max": 20, "label": "Style", "why": "Specific reason - e.g. 'Consistent formatting, but dates are inconsistently placed'" },
+    "sections": { "score": <0-20>, "max": 20, "label": "Sections", "why": "Specific reason - e.g. 'Missing a Summary section and Certifications'" },
+    "skills": { "score": <0-20>, "max": 20, "label": "Skills", "why": "Specific reason - e.g. 'Skills listed but not demonstrated in project bullets'" }
   },
   "atsScore": <0-100>,
-  "atsReason": "Why this ATS score — e.g. 'Missing 6 high-frequency keywords from SDE job postings'",
+  "atsReason": "Why this ATS score - e.g. 'Missing 6 high-frequency keywords from SDE job postings'",
   "atsKeywords": {
     "found": ["Python", "REST API", "Git"],
     "missing": ["Docker", "CI/CD", "System Design", "Microservices", "Agile"],
@@ -101,8 +101,8 @@ Return ONLY valid JSON:
       "name": "Work Experience",
       "score": <0-100>,
       "grade": "A|B|C|D|F",
-      "feedback": "Specific feedback citing actual content — e.g. 'Your TCS internship bullet says you worked on a project but gives no outcome. Recruiters need to see impact.'",
-      "issues": ["Bullet 1: No quantified result — how many users? What % improvement?", "Missing: Technologies used in each role"],
+      "feedback": "Specific feedback citing actual content - e.g. 'Your TCS internship bullet says you worked on a project but gives no outcome. Recruiters need to see impact.'",
+      "issues": ["Bullet 1: No quantified result - how many users? What % improvement?", "Missing: Technologies used in each role"],
       "howToFix": "Add numbers: 'Improved API response time by 40%' not 'Improved API performance'"
     }
   ],
@@ -110,7 +110,7 @@ Return ONLY valid JSON:
     {
       "original": "Worked on backend API development using Python",
       "score": <0-10>,
-      "issues": ["Weak verb 'Worked on' — use 'Built', 'Designed', 'Engineered'", "No quantified result — how many endpoints? What load?", "Missing tech stack details"],
+      "issues": ["Weak verb 'Worked on' - use 'Built', 'Designed', 'Engineered'", "No quantified result - how many endpoints? What load?", "Missing tech stack details"],
       "improved": "Engineered 12 RESTful API endpoints using Python/FastAPI, reducing average response latency by 35% and serving 10,000+ daily requests",
       "explanation": "The original gives no signal of scale or impact. The rewrite uses a strong verb, specifies the number of endpoints, names the framework, quantifies latency improvement, and shows scale (10K requests). Each of these elements increases recruiter confidence."
     }
@@ -134,32 +134,32 @@ Return ONLY valid JSON:
       "howToClose": "Add DBMS project or coursework to resume. Mention OS concepts in skills."
     }
   ],
-  "wordCount": { "current": <number>, "ideal": "400-600 words", "status": "Too short|Good|Too long", "advice": "Your resume has X words. For a fresher, 450-550 is ideal — enough detail without padding." },
+  "wordCount": { "current": <number>, "ideal": "400-600 words", "status": "Too short|Good|Too long", "advice": "Your resume has X words. For a fresher, 450-550 is ideal - enough detail without padding." },
   "formattingIssues": [
-    "Dates not consistently right-aligned — use a table or tab stops",
-    "Font size varies between sections — standardize to 10-11pt"
+    "Dates not consistently right-aligned - use a table or tab stops",
+    "Font size varies between sections - standardize to 10-11pt"
   ],
   "strengthPoints": [
-    "Strong LeetCode profile with 300+ problems solved — top 20% signal",
+    "Strong LeetCode profile with 300+ problems solved - top 20% signal",
     "Internship at a named company shows real-world exposure"
   ],
   "criticalIssues": [
-    "No quantified results in any bullet — this alone drops ATS score by 15-20 points",
+    "No quantified results in any bullet - this alone drops ATS score by 15-20 points",
     "Skills section lists technologies but no proficiency level or context"
   ],
   "quickWins": [
     { "action": "Add 1 number to each internship bullet (users, requests, time saved, % improvement)", "impact": "high", "effort": "low", "whyItMatters": "Quantified bullets are the #1 factor separating shortlisted from rejected resumes at top companies" },
-    { "action": "Add Docker and CI/CD to skills — they appear in 70% of SDE JDs", "impact": "high", "effort": "low", "whyItMatters": "ATS systems filter for these keywords before a human sees your resume" }
+    { "action": "Add Docker and CI/CD to skills - they appear in 70% of SDE JDs", "impact": "high", "effort": "low", "whyItMatters": "ATS systems filter for these keywords before a human sees your resume" }
   ],
   "improvedSummary": "Results-driven Computer Science graduate with proven track record in backend development (Python, Node.js) and competitive programming (LeetCode Top 20%). Delivered production-grade APIs during internship at [Company]. Seeking SDE role to apply strong DSA foundations and system design knowledge.",
   "summaryExplanation": "This summary works because: (1) opens with a credibility signal, (2) names specific tech stack, (3) quantifies coding achievement, (4) shows real-world experience, (5) states clear career objective",
   "templateRecommendation": {
     "name": "Technical",
-    "reason": "Your strongest assets are technical skills and coding stats — a Technical template with a prominent skills section and project highlights will showcase these better than a generic template"
+    "reason": "Your strongest assets are technical skills and coding stats - a Technical template with a prominent skills section and project highlights will showcase these better than a generic template"
   },
   "linkedinTips": [
     "Your LinkedIn headline should match your resume title exactly for ATS consistency",
-    "Add your LeetCode profile link to LinkedIn — recruiters actively check this"
+    "Add your LeetCode profile link to LinkedIn - recruiters actively check this"
   ],
   "interviewReadiness": <0-100>,
   "interviewReadinessReason": "Based on your LeetCode rating and problem count, you can handle standard DSA rounds. Gaps: system design experience not visible in resume, no evidence of large-scale project work."

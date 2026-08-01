@@ -11,8 +11,8 @@ import { SignupBackground } from "@/components/signup-background"
 type Role = "student" | "college" | "recruiter" | "graduate"
 
 const roles = [
-  { id: "student"   as Role, label: "Student",   description: "Currently enrolled — track coding progress and get matched with jobs", icon: GraduationCap },
-  { id: "graduate"  as Role, label: "Graduate",  description: "Already passed out — showcase your profile and get hired",             icon: Award         },
+  { id: "student"   as Role, label: "Student",   description: "Currently enrolled - track coding progress and get matched with jobs", icon: GraduationCap },
+  { id: "graduate"  as Role, label: "Graduate",  description: "Already passed out - showcase your profile and get hired",             icon: Award         },
   { id: "college"   as Role, label: "College",   description: "Monitor student performance and manage placements",                    icon: Building2     },
   { id: "recruiter" as Role, label: "Recruiter", description: "Find and hire top coding talent with AI matching",                     icon: Briefcase     },
 ]
@@ -279,7 +279,7 @@ function SignupForm() {
               )}
               {devOtp && (
                 <div style={{ padding: "10px 14px", fontSize: 13, color: "#34d399", background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.20)", borderRadius: 12, textAlign: "center" }}>
-                  Dev mode — OTP: <strong style={{ letterSpacing: 6 }}>{devOtp}</strong>
+                  Dev mode - OTP: <strong style={{ letterSpacing: 6 }}>{devOtp}</strong>
                 </div>
               )}
               {/* 4-digit OTP boxes */}
@@ -301,7 +301,7 @@ function SignupForm() {
                   />
                 ))}
               </div>
-              <p style={{ textAlign: "center", fontSize: 12, color: "rgba(167,139,250,0.5)", margin: 0 }}>Code expires in 5 minutes · Max 5 attempts</p>
+              <p style={{ textAlign: "center", fontSize: 12, color: "rgba(167,139,250,0.5)", margin: 0 }}>Code expires in 5 minutes . Max 5 attempts</p>
               <button type="button" onClick={verifyOtp} disabled={otpVerifying || otp.join("").length < 4}
                 style={{ height: 46, borderRadius: 12, fontWeight: 600, fontSize: 14, color: "#ffffff", background: "linear-gradient(135deg,#7c3aed,#6366f1)", border: "none", cursor: (otpVerifying || otp.join("").length < 4) ? "not-allowed" : "pointer", opacity: (otpVerifying || otp.join("").length < 4) ? 0.6 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
                 {otpVerifying ? <><Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} />Verifying…</> : <><ShieldCheck style={{ width: 16, height: 16 }} />Verify Code</>}
@@ -431,7 +431,7 @@ function SignupForm() {
                           <div>
                             <p style={{ fontSize: 13, fontWeight: 500, color: "#ffffff", margin: 0 }}>{c.name}</p>
                             <p style={{ fontSize: 11, color: "rgba(167,139,250,0.6)", margin: "2px 0 0", display: "flex", alignItems: "center", gap: 4 }}>
-                              <MapPin style={{ width: 11, height: 11 }} />{c.location} · {c.code}
+                              <MapPin style={{ width: 11, height: 11 }} />{c.location} . {c.code}
                             </p>
                           </div>
                         </button>

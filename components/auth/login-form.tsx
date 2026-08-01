@@ -86,7 +86,7 @@ export function LoginForm() {
           required autoComplete="email"
           style={{
             ...focusStyle("email"),
-            // placeholder via ::placeholder in global css — force color inline for webkit
+            // placeholder via ::placeholder in global css - force color inline for webkit
             WebkitTextFillColor: "#ffffff",
           }}
         />

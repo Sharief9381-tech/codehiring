@@ -475,7 +475,7 @@ export function JobPostings() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Users className="h-5 w-5 text-primary" />
-              Applicants — {applicantsJobTitle}
+              Applicants - {applicantsJobTitle}
             </DialogTitle>
             <DialogDescription>
               {applicants.length} candidate{applicants.length !== 1 ? "s" : ""} applied
@@ -512,7 +512,7 @@ export function JobPostings() {
                         </div>
                         <p className="text-xs text-muted-foreground">{a.email}</p>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          {a.college}{a.branch ? ` · ${a.branch}` : ""}{a.graduationYear ? ` · ${a.graduationYear}` : ""}
+                          {a.college}{a.branch ? ` . ${a.branch}` : ""}{a.graduationYear ? ` . ${a.graduationYear}` : ""}
                         </p>
                         <div className="flex flex-wrap gap-3 mt-2 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1"><Code2 className="h-3 w-3" />{a.totalProblems} problems</span>

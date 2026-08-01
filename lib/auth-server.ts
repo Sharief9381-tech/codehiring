@@ -1,4 +1,4 @@
-// lib/auth-server.ts — Server Component only (uses next/headers cookies)
+// lib/auth-server.ts - Server Component only (uses next/headers cookies)
 // Import this ONLY in Server Components and page.tsx files, NOT in route handlers.
 
 import { cookies } from "next/headers"

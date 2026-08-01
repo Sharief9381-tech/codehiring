@@ -44,26 +44,26 @@ function generateActivityEvents(platformId: string, username: string, stats: any
 
   if (platformId === 'leetcode') {
     const total = stats.totalSolved || 0
-    if (total > 0) events.push({ platform: platformId, username, type: 'problem_solved', title: `${total} problems solved on LeetCode`, detail: `Easy: ${stats.easySolved || 0} · Medium: ${stats.mediumSolved || 0} · Hard: ${stats.hardSolved || 0}`, timestamp: now })
+    if (total > 0) events.push({ platform: platformId, username, type: 'problem_solved', title: `${total} problems solved on LeetCode`, detail: `Easy: ${stats.easySolved || 0} . Medium: ${stats.mediumSolved || 0} . Hard: ${stats.hardSolved || 0}`, timestamp: now })
   } else if (platformId === 'codeforces') {
     // Use real recent submissions
     const subs: any[] = stats.submissions || []
     const accepted = subs.filter((s: any) => s.verdict === 'OK').slice(0, 3)
     accepted.forEach((s: any) => {
-      events.push({ platform: platformId, username, type: 'problem_solved', title: `Solved "${s.problem?.name || 'a problem'}" on Codeforces`, detail: `Rating: ${s.problem?.rating || 'unrated'} · ${s.language || ''}`, timestamp: new Date((s.creationTimeSeconds || Date.now() / 1000) * 1000) })
+      events.push({ platform: platformId, username, type: 'problem_solved', title: `Solved "${s.problem?.name || 'a problem'}" on Codeforces`, detail: `Rating: ${s.problem?.rating || 'unrated'} . ${s.language || ''}`, timestamp: new Date((s.creationTimeSeconds || Date.now() / 1000) * 1000) })
     })
     // Most recent contest
     const contests: any[] = stats.contests || []
     if (contests.length > 0) {
       const c = contests[0]
-      events.push({ platform: platformId, username, type: 'contest', title: `Participated in "${c.contestName}"`, detail: `Rank: ${c.rank} · Rating: ${c.oldRating} → ${c.newRating} (${c.ratingChange >= 0 ? '+' : ''}${c.ratingChange})`, timestamp: now })
+      events.push({ platform: platformId, username, type: 'contest', title: `Participated in "${c.contestName}"`, detail: `Rank: ${c.rank} . Rating: ${c.oldRating} -> ${c.newRating} (${c.ratingChange >= 0 ? '+' : ''}${c.ratingChange})`, timestamp: now })
     }
-    if (stats.rating) events.push({ platform: platformId, username, type: 'rating_change', title: `Codeforces rating: ${stats.rating}`, detail: `Max rating: ${stats.maxRating || stats.rating} · Rank: ${stats.rank || 'unrated'}`, timestamp: now })
+    if (stats.rating) events.push({ platform: platformId, username, type: 'rating_change', title: `Codeforces rating: ${stats.rating}`, detail: `Max rating: ${stats.maxRating || stats.rating} . Rank: ${stats.rank || 'unrated'}`, timestamp: now })
   } else if (platformId === 'github') {
-    if (stats.totalContributions > 0) events.push({ platform: platformId, username, type: 'contribution', title: `${stats.totalContributions} contributions on GitHub`, detail: `${stats.publicRepos || 0} public repos · ${stats.followers || 0} followers`, timestamp: now })
+    if (stats.totalContributions > 0) events.push({ platform: platformId, username, type: 'contribution', title: `${stats.totalContributions} contributions on GitHub`, detail: `${stats.publicRepos || 0} public repos . ${stats.followers || 0} followers`, timestamp: now })
     else if (stats.publicRepos > 0) events.push({ platform: platformId, username, type: 'contribution', title: `${stats.publicRepos} repositories on GitHub`, detail: `${stats.followers || 0} followers`, timestamp: now })
   } else if (platformId === 'codechef') {
-    if (stats.currentRating) events.push({ platform: platformId, username, type: 'rating_change', title: `CodeChef rating: ${stats.currentRating} ${stats.stars || ''}`, detail: `Highest: ${stats.highestRating || stats.currentRating} · ${stats.problemsSolved || 0} problems solved`, timestamp: now })
+    if (stats.currentRating) events.push({ platform: platformId, username, type: 'rating_change', title: `CodeChef rating: ${stats.currentRating} ${stats.stars || ''}`, detail: `Highest: ${stats.highestRating || stats.currentRating} . ${stats.problemsSolved || 0} problems solved`, timestamp: now })
   } else if (platformId === 'hackerrank') {
     const badges = stats.badges?.length || 0
     if (badges > 0) events.push({ platform: platformId, username, type: 'problem_solved', title: `${badges} badges earned on HackerRank`, detail: `${stats.certifications?.length || 0} certifications`, timestamp: now })
@@ -163,7 +163,7 @@ export class PlatformSyncService {
         if (stats) {
           const newEvents = generateActivityEvents(platformId, pd.username, stats)
 
-          // Single atomic update — avoids race conditions and ensures stats object
+          // Single atomic update - avoids race conditions and ensures stats object
           // (which may contain arrays like badges[]) is stored correctly
           await UserModel.update(userId, {
             [`linkedPlatforms.${platformId}.lastSync`]: new Date(),
@@ -194,13 +194,13 @@ export class PlatformSyncService {
 
           await UserModel.update(userId, {
             [`linkedPlatforms.${platformId}.lastSync`]: new Date(),
-            // Do NOT null out stats — keep last known good data
+            // Do NOT null out stats - keep last known good data
           })
 
           results.push({
             platform: platformId,
             success: false,
-            error: 'Unable to fetch data — profile may be private or rate limited',
+            error: 'Unable to fetch data - profile may be private or rate limited',
           })
         }
       } catch (error: any) {

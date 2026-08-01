@@ -1,6 +1,6 @@
 /**
  * POST /api/recruiter/copilot
- * Recruiter pastes a Job Description → AI finds best matching students
+ * Recruiter pastes a Job Description -> AI finds best matching students
  * and generates a Candidate Strength Report for each.
  */
 import { NextResponse } from "next/server"

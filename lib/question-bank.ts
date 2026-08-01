@@ -46,7 +46,7 @@ export const TCS_QUANT: PYQ[] = [
     company:"tcs", section:"quantitative", year:2022, difficulty:"Medium", topic:"Profit & Loss",
     question:"A shopkeeper sold an article at 10% loss. If he sold it for Rs.50 more he would have gained 5%. The cost price is?",
     options:["Rs.333","Rs.300","Rs.400","Rs.350"], correct:0,
-    explanation:"Let CP=x. 0.9x + 50 = 1.05x → 50 = 0.15x → x = 333.33 ≈ Rs.333"
+    explanation:"Let CP=x. 0.9x + 50 = 1.05x -> 50 = 0.15x -> x = 333.33 ≈ Rs.333"
   },
   {
     company:"tcs", section:"quantitative", year:2023, difficulty:"Medium", topic:"Number Series",
@@ -91,7 +91,7 @@ export const TCS_LOGICAL: PYQ[] = [
     company:"tcs", section:"logical", year:2022, difficulty:"Medium", topic:"Coding-Decoding",
     question:"If FRIEND is coded as HUMJTK, how is CANDLE coded?",
     options:["ECODLG","DCPFMH","ECPFMH","DCPFNH"], correct:0,
-    explanation:"Each letter +2. C→E, A→C, N→P, D→F, L→N, E→G = ECPFNG... pattern shift"
+    explanation:"Each letter +2. C->E, A->C, N->P, D->F, L->N, E->G = ECPFNG... pattern shift"
   },
   {
     company:"tcs", section:"logical", year:2023, difficulty:"Medium", topic:"Series",
@@ -134,7 +134,7 @@ export const INFOSYS_QUANT: PYQ[] = [
     company:"infosys", section:"quantitative", year:2022, difficulty:"Medium", topic:"Ratios",
     question:"Salaries of Ravi and Sumit are in ratio 2:3. If both salaries increased by Rs.4000, ratio becomes 40:57. Ravi's salary is?",
     options:["Rs.17,000","Rs.20,000","Rs.25,500","Rs.38,000"], correct:0,
-    explanation:"Let 2x,3x. (2x+4000)/(3x+4000) = 40/57 → solve → x=8500, Ravi=17000"
+    explanation:"Let 2x,3x. (2x+4000)/(3x+4000) = 40/57 -> solve -> x=8500, Ravi=17000"
   },
   {
     company:"infosys", section:"quantitative", year:2023, difficulty:"Hard", topic:"Mixtures",
@@ -164,7 +164,7 @@ export const AMAZON_CODING: PYQ[] = [
   {
     company:"amazon", section:"coding", year:2023, difficulty:"Hard", topic:"Arrays & Hashing",
     question:"Given an array, find the number of subarrays with XOR equal to k.",
-    options:["Use prefix XOR with hashmap","Nested loops O(n²)","Sort and binary search","Sliding window"], correct:0,
+    options:["Use prefix XOR with hashmap","Nested loops O(n^2)","Sort and binary search","Sliding window"], correct:0,
     explanation:"Prefix XOR approach: for each index compute prefix XOR, track count[XOR^k] in hashmap. O(n) time."
   },
   {
@@ -193,7 +193,7 @@ export const WIPRO_QUANT: PYQ[] = [
     company:"wipro", section:"quantitative", year:2022, difficulty:"Easy", topic:"Ages",
     question:"The sum of ages of 5 children born at intervals of 3 years is 50 years. Age of youngest child?",
     options:["4 years","6 years","8 years","10 years"], correct:0,
-    explanation:"Let youngest be x. x+(x+3)+(x+6)+(x+9)+(x+12)=50 → 5x+30=50 → x=4"
+    explanation:"Let youngest be x. x+(x+3)+(x+6)+(x+9)+(x+12)=50 -> 5x+30=50 -> x=4"
   },
 ]
 
@@ -209,7 +209,7 @@ export const COGNIZANT_QUANT: PYQ[] = [
     company:"cognizant", section:"quantitative", year:2022, difficulty:"Easy", topic:"Percentage",
     question:"A number is increased by 20% and then decreased by 20%. Net change?",
     options:["4% decrease","4% increase","No change","6% decrease"], correct:0,
-    explanation:"100 → 120 → 96. Net = -4%"
+    explanation:"100 -> 120 -> 96. Net = -4%"
   },
 ]
 
@@ -224,12 +224,12 @@ export const GOOGLE_CODING: PYQ[] = [
   {
     company:"google", section:"coding", year:2022, difficulty:"Hard", topic:"Optimization",
     question:"Trapping rainwater problem. Most efficient approach?",
-    options:["Two pointers O(n) space O(1)","DP O(n) space O(n)","Stack O(n)","Brute O(n²)"], correct:0,
+    options:["Two pointers O(n) space O(1)","DP O(n) space O(n)","Stack O(n)","Brute O(n^2)"], correct:0,
     explanation:"Two pointer: l=0,r=n-1, track maxL,maxR. If maxL<maxR: water+=maxL-height[l], l++, else r--."
   },
 ]
 
-// ─── Master map: company → section → questions ───────────────────────────────
+// ─── Master map: company -> section -> questions ───────────────────────────────
 export const QUESTION_BANK: Record<string, Record<string, PYQ[]>> = {
   tcs:       { quantitative: TCS_QUANT,       logical: TCS_LOGICAL,    verbal: TCS_VERBAL },
   infosys:   { quantitative: INFOSYS_QUANT,    logical: INFOSYS_PSEUDO, verbal: TCS_VERBAL },
@@ -260,5 +260,5 @@ Options: ${q.options.map((o,j)=>`${["A","B","C","D"][j]}) ${o}`).join(" | ")}
 Correct: ${["A","B","C","D"][q.correct]}
 Explanation: ${q.explanation}`).join("\n")}
 
-IMPORTANT: Generate NEW questions in this EXACT style, difficulty, and topic distribution. Do NOT repeat these questions verbatim — create fresh variations.`
+IMPORTANT: Generate NEW questions in this EXACT style, difficulty, and topic distribution. Do NOT repeat these questions verbatim - create fresh variations.`
 }

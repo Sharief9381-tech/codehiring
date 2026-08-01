@@ -1,6 +1,6 @@
 /**
  * POST /api/student/ai-chat
- * AI career chatbot for students — powered by Groq.
+ * AI career chatbot for students - powered by Groq.
  * Maintains conversation context via messages array sent from client.
  */
 import { NextResponse } from "next/server"
@@ -114,11 +114,11 @@ export async function POST(request: Request) {
     const studentContext = student ? buildStudentContext(student) : ""
 
     const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-    const systemPrompt = `You are CodeHiring AI — a smart, data-driven career advisor for software engineering students in India.
+    const systemPrompt = `You are CodeHiring AI - a smart, data-driven career advisor for software engineering students in India.
 You have FULL access to the student's complete profile below including all platform stats, skills, achievements, resume analysis, and placement status.
 Use the specific numbers and data from their profile to give personalised, accurate advice.
 Be concise, friendly, and action-oriented. Use bullet points for lists. Mention specific stats when relevant.
-Never say you "don't have access" — you have everything below.
+Never say you "don't have access" - you have everything below.
 Focus on: placement preparation, coding improvement, career guidance, skill gaps, job matching, company-specific prep.
 
 ${studentContext}`

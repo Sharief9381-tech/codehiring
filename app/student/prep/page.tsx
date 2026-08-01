@@ -22,7 +22,7 @@ interface CodingQ { id: number; title: string; difficulty: string; statement: st
 
 // ─── Company data ─────────────────────────────────────────────────────────────
 const COMPANIES = [
-  { id:"tcs",       name:"TCS",          abbr:"TC", color:"#7c3aed", logo:"🔷", duration:75,  questions:60, difficulty:"Medium",    sections:["quantitative","logical","verbal","coding"], desc:"TCS NQT — National Qualifier Test",      category:"Service",    roles:["Systems Engineer","Developer","Analyst"] },
+  { id:"tcs",       name:"TCS",          abbr:"TC", color:"#7c3aed", logo:"🔷", duration:75,  questions:60, difficulty:"Medium",    sections:["quantitative","logical","verbal","coding"], desc:"TCS NQT - National Qualifier Test",      category:"Service",    roles:["Systems Engineer","Developer","Analyst"] },
   { id:"infosys",   name:"Infosys",       abbr:"IN", color:"#059669", logo:"🟢", duration:95,  questions:65, difficulty:"Medium",    sections:["quantitative","logical","verbal","coding"], desc:"InfyTQ Certification Test",              category:"Service",    roles:["Systems Engineer","Technology Analyst"] },
   { id:"wipro",     name:"Wipro",         abbr:"WI", color:"#0284c7", logo:"🔵", duration:60,  questions:55, difficulty:"Easy",      sections:["quantitative","logical","verbal","coding"], desc:"Wipro NLTH Online Test",                 category:"Service",    roles:["Project Engineer","Software Developer"] },
   { id:"cognizant", name:"Cognizant",     abbr:"CG", color:"#0891b2", logo:"🔹", duration:70,  questions:55, difficulty:"Easy",      sections:["quantitative","logical","verbal","coding"], desc:"Cognizant GenC Elevate",                 category:"Service",    roles:["Programmer Analyst","GenC Developer"] },
@@ -38,7 +38,7 @@ const COMPANIES = [
   { id:"microsoft", name:"Microsoft",     abbr:"MS", color:"#3b82f6", logo:"🪟", duration:90,  questions:3,  difficulty:"Hard",      sections:["coding","logical"],                        desc:"Microsoft OA + Coding Rounds",           category:"Product",    roles:["SDE","Software Engineer","PM"] },
   { id:"google",    name:"Google",        abbr:"GO", color:"#ef4444", logo:"🔍", duration:60,  questions:2,  difficulty:"Very Hard", sections:["coding"],                                  desc:"Google Coding Screen",                   category:"Product",    roles:["SWE","L3 Engineer"] },
   { id:"adobe",     name:"Adobe",         abbr:"AD", color:"#ef4444", logo:"📐", duration:75,  questions:3,  difficulty:"Hard",      sections:["coding","logical"],                        desc:"Adobe Online Assessment",                category:"Product",    roles:["MTS","Software Engineer"] },
-  { id:"oracle",    name:"Oracle",        abbr:"OR", color:"#dc2626", logo:"🔴", duration:90,  questions:3,  difficulty:"Hard",      sections:["coding","quantitative"],                   desc:"Oracle OA — DSA + Aptitude",             category:"Product",    roles:["Applications Engineer","Software Engineer"] },
+  { id:"oracle",    name:"Oracle",        abbr:"OR", color:"#dc2626", logo:"🔴", duration:90,  questions:3,  difficulty:"Hard",      sections:["coding","quantitative"],                   desc:"Oracle OA - DSA + Aptitude",             category:"Product",    roles:["Applications Engineer","Software Engineer"] },
   { id:"atlassian", name:"Atlassian",     abbr:"AT", color:"#0052cc", logo:"⚡", duration:75,  questions:3,  difficulty:"Hard",      sections:["coding","logical"],                        desc:"Atlassian Coding Assessment",            category:"Product",    roles:["Software Engineer","Developer"] },
   { id:"salesforce",name:"Salesforce",    abbr:"SF", color:"#00a1e0", logo:"☁️", duration:70,  questions:3,  difficulty:"Hard",      sections:["coding","logical"],                        desc:"Salesforce OA",                          category:"Product",    roles:["Associate MTS","Software Engineer"] },
   { id:"qualcomm",  name:"Qualcomm",      abbr:"QC", color:"#3253dc", logo:"📡", duration:90,  questions:3,  difficulty:"Hard",      sections:["coding","quantitative"],                   desc:"Qualcomm Coding + Technical",            category:"Product",    roles:["Engineer","Software Engineer"] },
@@ -264,11 +264,11 @@ function CodingQuestion({ q, index, total, onNext }: { q: CodingQ; index: number
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-lg bg-muted/30 p-3">
               <p className="text-xs font-semibold text-muted-foreground mb-1">Input</p>
-              <p className="text-xs font-mono text-foreground">{q.example.input ?? "—"}</p>
+              <p className="text-xs font-mono text-foreground">{q.example.input ?? "-"}</p>
             </div>
             <div className="rounded-lg bg-muted/30 p-3">
               <p className="text-xs font-semibold text-muted-foreground mb-1">Output</p>
-              <p className="text-xs font-mono text-foreground">{q.example.output ?? "—"}</p>
+              <p className="text-xs font-mono text-foreground">{q.example.output ?? "-"}</p>
             </div>
           </div>
         )}
@@ -708,7 +708,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           <Star className="h-4 w-4 text-amber-400" /> Recommended Study Plan
         </p>
         <div className="space-y-2">
-          {["Week 1: Master Quantitative — focus on speed and accuracy", "Week 2: Logical Reasoning patterns — practice daily sets", "Week 3: Verbal & Coding — mock tests every alternate day", "Week 4: Full-length mocks — time yourself strictly"].map((s, i) => (
+          {["Week 1: Master Quantitative - focus on speed and accuracy", "Week 2: Logical Reasoning patterns - practice daily sets", "Week 3: Verbal & Coding - mock tests every alternate day", "Week 4: Full-length mocks - time yourself strictly"].map((s, i) => (
             <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
               <span className="text-amber-400 font-bold shrink-0">{i + 1}.</span> {s}
             </div>
@@ -718,7 +718,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
       <button onClick={() => setStage("instructions")}
         className="w-full h-12 rounded-xl font-semibold text-white flex items-center justify-center gap-2"
         style={{ background: `linear-gradient(135deg,${company.color},${company.color}cc)` }}>
-        <Play className="h-4 w-4" /> I'm Ready — Start Assessment
+        <Play className="h-4 w-4" /> I'm Ready - Start Assessment
       </button>
     </div>
   )
@@ -730,12 +730,12 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
       <div className="rounded-xl border border-border bg-card/40 p-5 space-y-3">
         {[
           `Total duration: ${company.duration} minutes`,
-          `${company.sections.length} sections — complete all in sequence`,
+          `${company.sections.length} sections - complete all in sequence`,
           "Each section has its own set of questions generated for you",
           "For MCQs: select your answer and click Next",
           "For Coding: write your solution and click Submit",
           "No going back to previous questions",
-          "Timer runs continuously — manage your time",
+          "Timer runs continuously - manage your time",
         ].map((t, i) => (
           <div key={i} className="flex items-start gap-3 text-sm">
             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-[10px] font-bold mt-0.5">{i + 1}</span>
@@ -794,7 +794,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
             {company.abbr}
           </div>
           <div>
-            <p className="text-xs" style={{ color: "#71717A" }}>{company.name} · Section {curSection + 1}/{company.sections.length}</p>
+            <p className="text-xs" style={{ color: "#71717A" }}>{company.name} . Section {curSection + 1}/{company.sections.length}</p>
             <p className="font-semibold text-sm" style={{ color: "#FAFAFA" }}>{SECTION_LABELS[section]}</p>
           </div>
         </div>
@@ -881,7 +881,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
       </div>
       <div className="text-center">
         <p className="font-bold text-xl text-foreground">Generating AI Recruitment Report</p>
-        <p className="text-sm text-muted-foreground mt-1">Analysing performance · Benchmarking · Creating personalised roadmap…</p>
+        <p className="text-sm text-muted-foreground mt-1">Analysing performance . Benchmarking . Creating personalised roadmap…</p>
       </div>
     </div>
   )
@@ -899,7 +899,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
       <div className="max-w-3xl mx-auto space-y-4">
         <button onClick={() => setShowLeaderboard(true)}
           className="flex items-center gap-2 px-4 py-2 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 text-sm font-semibold hover:bg-amber-500/20 transition-all">
-          <Trophy className="h-4 w-4" /> View Leaderboard — See how you rank vs others
+          <Trophy className="h-4 w-4" /> View Leaderboard - See how you rank vs others
         </button>
         <HiringReport
           report={hiringReport}
@@ -921,7 +921,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
 
     return (
       <div className="max-w-xl mx-auto space-y-5">
-        <h3 className="text-xl font-bold text-foreground text-center">{company.name} — Assessment Complete</h3>
+        <h3 className="text-xl font-bold text-foreground text-center">{company.name} - Assessment Complete</h3>
         {nonCodingQs.length > 0 ? (
           <Results
             score={finalScore}
@@ -1061,7 +1061,7 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
         </div>
       </div>
 
-      {/* Filters — Unstop style */}
+      {/* Filters - Unstop style */}
       <div className="flex items-center gap-3 flex-wrap">
         {/* Category */}
         <div className="relative">
@@ -1072,7 +1072,7 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
           <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
         </div>
 
-        {/* Company — search input */}
+        {/* Company - search input */}
         <div className="relative">
           <input
             value={companyFilter === "All" ? "" : companyFilter}
@@ -1125,7 +1125,7 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
         ))}
       </div>
 
-      {/* Grid — Unstop card style */}
+      {/* Grid - Unstop card style */}
       {filtered.length === 0 ? (
         <div className="text-center py-16 text-muted-foreground">
           <Building2 className="h-12 w-12 mx-auto mb-3 opacity-30" />
@@ -1153,7 +1153,7 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
 
                 {/* Info */}
                 <div className="p-4 flex-1 flex flex-col">
-                  {/* Role — first role in list */}
+                  {/* Role - first role in list */}
                   <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors mb-0.5">
                     {((c as any).roles ?? ["Software Engineer"])[0]}
                   </p>
@@ -1201,7 +1201,7 @@ function LearningPathsPlaceholder() {
       <a href="/student/learn#learning"
         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white"
         style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-        Go to Learning Paths →
+        Go to Learning Paths ->
       </a>
     </div>
   )
@@ -1354,20 +1354,20 @@ export default function PrepHubPage() {
               {pathMeta.topics.map((t: any) => {
                 const notes: Record<string, { formula?: string; points: string[]; example?: string }> = {
                   "percentages": { formula: "Percentage = (Part / Whole) × 100", points: ["Percentage increase = (New − Old)/Old × 100","Successive discounts: a% + b% = (a+b − ab/100)%","Profit% = (Profit/CP) × 100"], example: "If CP=200 and SP=250, Profit% = 50/200×100 = 25%" },
-                  "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount → SP=400" },
-                  "time-work": { formula: "Work = Rate × Time  →  1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 → together = 12×18/30 = 7.2 days" },
+                  "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount -> SP=400" },
+                  "time-work": { formula: "Work = Rate × Time  ->  1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 -> together = 12×18/30 = 7.2 days" },
                   "speed-distance": { formula: "Speed = Distance / Time", points: ["Relative speed (same dir): |S1−S2|","Relative speed (opp dir): S1+S2","Average speed = 2S1×S2/(S1+S2) for equal distances"], example: "Train 300m at 60km/h passes pole in 300/60×3.6 = 18s" },
                   "probability": { formula: "P(E) = Favourable / Total outcomes", points: ["P(A∪B) = P(A)+P(B)−P(A∩B)","P(A') = 1 − P(A)","Independent events: P(A∩B)=P(A)×P(B)"], example: "2 dice: P(sum=7) = 6/36 = 1/6" },
-                  "arrays": { points: ["Access O(1), Insert/Delete O(n)","Two-pointer for sorted arrays","Kadane's algorithm for max subarray","Prefix sums for range queries"], formula: "prefix[i] = prefix[i-1] + arr[i]", example: "Max subarray [−2,1,−3,4,−1,2] → 6 (Kadane)" },
+                  "arrays": { points: ["Access O(1), Insert/Delete O(n)","Two-pointer for sorted arrays","Kadane's algorithm for max subarray","Prefix sums for range queries"], formula: "prefix[i] = prefix[i-1] + arr[i]", example: "Max subarray [−2,1,−3,4,−1,2] -> 6 (Kadane)" },
                   "strings": { points: ["Sliding window for substring problems","KMP for pattern matching O(n+m)","Palindrome check: two pointers from ends","Anagram: sort or frequency map"], formula: "Window expand/shrink for substring problems", example: "Longest substring without repeat: sliding window" },
-                  "linked-lists": { points: ["Fast/slow pointer for cycle detection","Reverse: prev→cur→next iteration","Merge sorted lists: dummy head pattern","Find middle: slow+fast pointers"], example: "Floyd's cycle: slow moves 1, fast moves 2" },
+                  "linked-lists": { points: ["Fast/slow pointer for cycle detection","Reverse: prev->cur->next iteration","Merge sorted lists: dummy head pattern","Find middle: slow+fast pointers"], example: "Floyd's cycle: slow moves 1, fast moves 2" },
                   "trees": { points: ["DFS: preorder, inorder, postorder","BFS: level-order with queue","BST: left < root < right","Height = 1 + max(left, right)"], formula: "nodes in complete tree = 2^h − 1", example: "Inorder of BST gives sorted array" },
                   "graphs": { points: ["BFS: shortest path (unweighted)","DFS: cycle detection, topological sort","Dijkstra: shortest path (weighted)","Union-Find: connected components"], formula: "Dijkstra: O((V+E) log V)", example: "BFS from source, dist[] updated per level" },
-                  "dbms": { points: ["ACID: Atomicity, Consistency, Isolation, Durability","Normalization: 1NF→2NF→3NF→BCNF","Indexing: B-tree, Hash","JOIN types: INNER, LEFT, RIGHT, FULL OUTER"], formula: "SELECT col FROM table WHERE condition GROUP BY col HAVING agg", example: "1NF: no repeating groups; 2NF: no partial dependency" },
-                  "os": { points: ["Scheduling: FCFS, SJF, Round Robin, Priority","Deadlock: Mutual exclusion, Hold & Wait, No preemption, Circular wait","Paging: page table maps virtual→physical","Semaphore: binary (mutex) and counting"], formula: "Turnaround = Completion − Arrival; Waiting = Turnaround − Burst", example: "Round Robin Q=3: P1(10),P2(5),P3(8) → context switch every 3ms" },
-                  "cn": { points: ["OSI 7 layers: Physical→Data Link→Network→Transport→Session→Presentation→Application","TCP: reliable, connection-oriented; UDP: fast, connectionless","IP classes: A(0−127) B(128−191) C(192−223)","Subnetting: borrow bits from host portion"], formula: "Subnet mask /24 = 255.255.255.0 → 254 hosts", example: "HTTP=80, HTTPS=443, FTP=21, SSH=22, DNS=53" },
-                  "oops": { points: ["4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism","Overloading: same name, different params (compile-time)","Overriding: same signature, different class (runtime)","Interface vs Abstract: interface = pure contract"], example: "Animal→speak() overridden by Dog→speak() 'Woof'" },
-                  "java": { points: ["JVM: bytecode → machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable→Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
+                  "dbms": { points: ["ACID: Atomicity, Consistency, Isolation, Durability","Normalization: 1NF->2NF->3NF->BCNF","Indexing: B-tree, Hash","JOIN types: INNER, LEFT, RIGHT, FULL OUTER"], formula: "SELECT col FROM table WHERE condition GROUP BY col HAVING agg", example: "1NF: no repeating groups; 2NF: no partial dependency" },
+                  "os": { points: ["Scheduling: FCFS, SJF, Round Robin, Priority","Deadlock: Mutual exclusion, Hold & Wait, No preemption, Circular wait","Paging: page table maps virtual->physical","Semaphore: binary (mutex) and counting"], formula: "Turnaround = Completion − Arrival; Waiting = Turnaround − Burst", example: "Round Robin Q=3: P1(10),P2(5),P3(8) -> context switch every 3ms" },
+                  "cn": { points: ["OSI 7 layers: Physical->Data Link->Network->Transport->Session->Presentation->Application","TCP: reliable, connection-oriented; UDP: fast, connectionless","IP classes: A(0−127) B(128−191) C(192−223)","Subnetting: borrow bits from host portion"], formula: "Subnet mask /24 = 255.255.255.0 -> 254 hosts", example: "HTTP=80, HTTPS=443, FTP=21, SSH=22, DNS=53" },
+                  "oops": { points: ["4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism","Overloading: same name, different params (compile-time)","Overriding: same signature, different class (runtime)","Interface vs Abstract: interface = pure contract"], example: "Animal->speak() overridden by Dog->speak() 'Woof'" },
+                  "java": { points: ["JVM: bytecode -> machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
                   "sql": { points: ["DDL: CREATE, ALTER, DROP; DML: INSERT, UPDATE, DELETE, SELECT","GROUP BY + HAVING for aggregates","Subquery vs JOIN: JOIN faster on indexed columns","RANK(), ROW_NUMBER(), DENSE_RANK() for window functions"], formula: "SELECT dept, COUNT(*) FROM emp GROUP BY dept HAVING COUNT(*)>5", example: "INNER JOIN: only matching rows; LEFT JOIN: all left rows + matched right" },
                 }
                 const note = notes[t.id] || { points: ["Study this topic systematically", "Practice with timed questions", "Review formulas and examples"] }
@@ -1401,7 +1401,7 @@ export default function PrepHubPage() {
                     <button onClick={() => setActiveTopic({ id: t.id, name: t.name })}
                       className="w-full h-8 rounded-lg text-xs font-semibold text-white mt-1"
                       style={{ background: `linear-gradient(135deg,${t.color || pathMeta.color},${t.color || pathMeta.color}cc)` }}>
-                      Practice {t.name} →
+                      Practice {t.name} ->
                     </button>
                   </div>
                 )
@@ -1428,7 +1428,7 @@ export default function PrepHubPage() {
               <button onClick={() => setSubView("learn")}
                 className="rounded-xl border border-border bg-card/40 hover:border-primary/30 p-5 text-left transition-all group">
                 <BookOpen className="h-5 w-5 mb-3" style={{ color: pathMeta.color }} />
-                <p className="font-semibold text-foreground">Learn — Notes & Concepts</p>
+                <p className="font-semibold text-foreground">Learn - Notes & Concepts</p>
                 <p className="text-xs text-muted-foreground mt-1">Key formulas, rules and examples for every topic</p>
               </button>
               <button onClick={() => setSubView("mock")}
@@ -1469,7 +1469,7 @@ export default function PrepHubPage() {
             </div>
             <div>
               <h3 className="text-xl font-bold text-foreground">Full {pathMeta.label} Mock</h3>
-              <p className="text-sm text-muted-foreground mt-2">30 questions across all topics · 30 minutes · AI-generated</p>
+              <p className="text-sm text-muted-foreground mt-2">30 questions across all topics . 30 minutes . AI-generated</p>
             </div>
             <button onClick={() => {
               const firstTopic = pathMeta.topics[0]
@@ -1554,10 +1554,10 @@ export default function PrepHubPage() {
           </div>
           <div className="flex-1 min-w-0">
             <h2 className="text-2xl font-black text-white tracking-tight">Prep Track</h2>
-            <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments · company patterns · real results</p>
+            <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments . company patterns . real results</p>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
-            {/* Practice dropdown — click to open, fixed position to avoid clipping */}
+            {/* Practice dropdown - click to open, fixed position to avoid clipping */}
             <div className="relative">
               <button
                 onClick={e => {
@@ -1581,9 +1581,9 @@ export default function PrepHubPage() {
                       right: (window as any).__practiceMenuR ?? 20,
                     }}>
                     {[
-                      { label:"Aptitude",      sub:"Quant · Logical · Data Interp.", color:"#f59e0b", href:"/student/prep?track=aptitude" },
-                      { label:"Coding / DSA",  sub:"Arrays · Trees · DP · Graphs",   color:"#6366f1", href:"/student/prep?track=coding" },
-                      { label:"Communication", sub:"Grammar · Vocab · Reading",       color:"#10b981", href:"/student/prep?track=communication" },
+                      { label:"Aptitude",      sub:"Quant . Logical . Data Interp.", color:"#f59e0b", href:"/student/prep?track=aptitude" },
+                      { label:"Coding / DSA",  sub:"Arrays . Trees . DP . Graphs",   color:"#6366f1", href:"/student/prep?track=coding" },
+                      { label:"Communication", sub:"Grammar . Vocab . Reading",       color:"#10b981", href:"/student/prep?track=communication" },
                     ].map(opt => (
                       <a key={opt.label} href={opt.href}
                         onClick={() => setShowPracticeMenu(false)}
@@ -1623,7 +1623,7 @@ export default function PrepHubPage() {
           {[
             { label:"Companies",   value:"189+",            icon:<Building2 className="h-4 w-4" />, color:"#c4b5fd" },
             { label:"AI Questions",value:"Real Patterns",    icon:<Cpu className="h-4 w-4" />,       color:"#6ee7b7" },
-            { label:"Topics",      value:"Apt · DSA · Comm", icon:<Target className="h-4 w-4" />,   color:"#fcd34d" },
+            { label:"Topics",      value:"Apt . DSA . Comm", icon:<Target className="h-4 w-4" />,   color:"#fcd34d" },
           ].map(s => (
             <div key={s.label} className="flex items-center gap-2.5">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg" style={{ background:"rgba(255,255,255,0.15)", border:"1px solid rgba(255,255,255,0.25)", color:s.color }}>{s.icon}</div>
@@ -1636,7 +1636,7 @@ export default function PrepHubPage() {
         </div>
       </div>
 
-      {/* Company Prep Tracks — Choose From The Top Roles */}
+      {/* Company Prep Tracks - Choose From The Top Roles */}
       {yearLoaded && !isFirstYear && (
         <div className="space-y-4">
           {/* constants computed inline from component-level state */}

@@ -1,5 +1,5 @@
 ﻿/**
- * Email utility — Gmail SMTP only via nodemailer
+ * Email utility - Gmail SMTP only via nodemailer
  * Setup:
  *   GMAIL_USER=yourname@gmail.com
  *   GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx  (from myaccount.google.com/apppasswords)
@@ -74,7 +74,7 @@ export function otpEmailHtml(otp: string, name?: string): string {
     </tr>
     <tr>
       <td style="padding:16px 32px 24px;border-top:1px solid #2a2a35;text-align:center">
-        <p style="margin:0;font-size:11px;color:#4b5563">© 2026 CodeHiring · Where Coding Skills Meet Opportunities</p>
+        <p style="margin:0;font-size:11px;color:#4b5563">© 2026 CodeHiring . Where Coding Skills Meet Opportunities</p>
       </td>
     </tr>
   </table>

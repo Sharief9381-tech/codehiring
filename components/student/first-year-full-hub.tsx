@@ -106,7 +106,7 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
       const data = await res.json()
       const p    = data.problem
       if (p) {
-        // Store in sessionStorage — so the editor page can read it
+        // Store in sessionStorage - so the editor page can read it
         const key = `problem_${q.id}`
         sessionStorage.setItem(key, JSON.stringify({
           title:        p.title        ?? q.title,
@@ -142,7 +142,7 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
     setLoadingMore(true)
     try {
       // Generate a new module: 4 Easy + 4 Medium + 2 Hard = 10 problems
-      // No repeats — pass existing problem titles to avoid
+      // No repeats - pass existing problem titles to avoid
       const existing = [
         ...(TOPIC_QUESTIONS.find(t => t.track === topicTrack)?.questions ?? []).map(q => q.title),
         ...(extraProblems[topicTrack] ?? []).map((q: any) => q.title),
@@ -304,21 +304,21 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
   )
 }
 
-// â”€â”€ DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ DATA â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
 const SOFT_SKILLS = [
   {
     id: "comm-basics", title: "How to Speak So People Listen",
-    desc: "Julian Treasure's viral TED talk — 7 deadly sins of speaking and how to fix them. Essential for standups, interviews and demos.",
+    desc: "Julian Treasure's viral TED talk - 7 deadly sins of speaking and how to fix them. Essential for standups, interviews and demos.",
     duration: "10 min", badge: "Communicator",
     steps: ["Identify speaking habits that turn people off", "Use HAIL: Honesty, Authenticity, Integrity, Love", "Control your vocal tone and pace", "Apply these in daily standups and code reviews"],
     videoUrl: "https://www.youtube.com/watch?v=eIho2S0ZahI",
   },
   {
     id: "conversation", title: "10 Ways to Have Better Conversations",
-    desc: "Celeste Headlee's TED talk — how to actively listen, ask good questions, and connect with anyone you meet.",
+    desc: "Celeste Headlee's TED talk - how to actively listen, ask good questions, and connect with anyone you meet.",
     duration: "12 min", badge: "Communicator",
-    steps: ["Be present — put down your phone", "Ask open-ended questions", "Don't equate your experience with theirs", "Listen to understand, not to reply"],
+    steps: ["Be present - put down your phone", "Ask open-ended questions", "Don't equate your experience with theirs", "Listen to understand, not to reply"],
     videoUrl: "https://www.youtube.com/watch?v=saXfavo1OQo",
   },
   {
@@ -329,36 +329,36 @@ const SOFT_SKILLS = [
     videoUrl: "https://www.youtube.com/watch?v=Ks-_Mh1QhMc",
   },
   {
-    id: "public-speaking", title: "How to Speak — MIT Lecture",
+    id: "public-speaking", title: "How to Speak - MIT Lecture",
     desc: "Patrick Winston's legendary MIT lecture on speaking and presenting. One of the most watched talks on communication.",
     duration: "60 min", badge: "Speaker",
-    steps: ["Start strong — no jokes at the beginning", "Build a fence around your ideas", "Use verbal punctuation and ask questions", "Inspire people with your talk"],
+    steps: ["Start strong - no jokes at the beginning", "Build a fence around your ideas", "Use verbal punctuation and ask questions", "Inspire people with your talk"],
     videoUrl: "https://www.youtube.com/watch?v=Unzc731iCUY",
   },
   {
     id: "growth-mindset", title: "The Power of Believing You Can Improve",
-    desc: "Carol Dweck on growth mindset — the idea that changes how you approach learning, debugging and failure.",
+    desc: "Carol Dweck on growth mindset - the idea that changes how you approach learning, debugging and failure.",
     duration: "10 min", badge: "Growth Mindset",
-    steps: ["Understand fixed vs growth mindset", "Reframe mistakes as learning opportunities", "Use 'not yet' instead of 'I failed'", "Praise effort not talent — apply to your own self-talk"],
+    steps: ["Understand fixed vs growth mindset", "Reframe mistakes as learning opportunities", "Use 'not yet' instead of 'I failed'", "Praise effort not talent - apply to your own self-talk"],
     videoUrl: "https://www.youtube.com/watch?v=_X0mgOOSpLU",
   },
   {
     id: "teamwork", title: "Collaboration & Code Reviews",
-    desc: "How real dev teams work — branches, PRs, pair programming, and giving/receiving feedback professionally.",
+    desc: "How real dev teams work - branches, PRs, pair programming, and giving/receiving feedback professionally.",
     duration: "8 min", badge: "Team Player",
     steps: ["Git branching and pull request workflow", "How to give constructive code review feedback", "Pair programming basics and etiquette", "Slack/Discord professional communication"],
     videoUrl: "https://www.youtube.com/watch?v=MnUd31TvBoU",
   },
   {
     id: "networking", title: "Build Your Network Before You Need It",
-    desc: "How to connect with seniors, professors and developers on LinkedIn and in person — starting from year 1.",
+    desc: "How to connect with seniors, professors and developers on LinkedIn and in person - starting from year 1.",
     duration: "8 min", badge: "Networker",
-    steps: ["Why networking matters in year 1 and 2", "Optimize your LinkedIn profile as a student", "How to send a professional cold message", "Give value first — share, comment, contribute"],
+    steps: ["Why networking matters in year 1 and 2", "Optimize your LinkedIn profile as a student", "How to send a professional cold message", "Give value first - share, comment, contribute"],
     videoUrl: "https://www.youtube.com/watch?v=ntqfzQ4OuJ8",
   },
   {
     id: "resume-basics", title: "Document Your Developer Journey",
-    desc: "Build a habit of tracking what you learn and build — your GitHub profile, README writing, and achievement log.",
+    desc: "Build a habit of tracking what you learn and build - your GitHub profile, README writing, and achievement log.",
     duration: "6 min", badge: "Self-Aware",
     steps: ["Why document your journey from day 1?", "What counts as an achievement at your stage?", "Daily log template: what I built today", "Turn your GitHub into a visual portfolio"],
     videoUrl: "https://www.youtube.com/watch?v=s-TZCBdJv5A",
@@ -373,7 +373,7 @@ interface SeniorStory {
   avatar: string
 }
 
-// â”€â”€ Tag config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Tag config â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 const TAG_COLORS: Record<string, string> = {
   Question:    "bg-blue-500/15 text-blue-400 border-blue-500/20",
   Tip:         "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
@@ -385,7 +385,7 @@ const TAG_COLORS: Record<string, string> = {
 
 const ALL_TAGS = ["All", "Question", "Tip", "Resource", "Achievement", "Help", "General"] as const
 
-// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Types â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 interface DiscussionPost {
   _id: string
   authorId: string
@@ -417,7 +417,7 @@ interface DiscussionDetail extends DiscussionPost {
   replies: DiscussionReply[]
 }
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Helpers â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime()
   const mins  = Math.floor(diff / 60000)
@@ -430,7 +430,7 @@ function timeAgo(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" })
 }
 
-// â”€â”€ Thread view â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Thread view â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function ThreadView({
   post,
   currentUserId,
@@ -517,7 +517,7 @@ function ThreadView({
               <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${TAG_COLORS[localPost.tag] ?? TAG_COLORS.General}`}>
                 {localPost.tag}
               </span>
-              {localPost.pinned && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-500/15 text-amber-400 border-amber-500/20">ðŸ“Œ Pinned</span>}
+              {localPost.pinned && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-500/15 text-amber-400 border-amber-500/20">ðŸ"Œ Pinned</span>}
               <span className="text-[10px] text-muted-foreground ml-auto">{timeAgo(localPost.createdAt)}</span>
             </div>
             <h2 className="text-base font-bold text-foreground mt-1">{localPost.title}</h2>
@@ -617,7 +617,7 @@ function ThreadView({
   )
 }
 
-// â”€â”€ Community Discussions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Community Discussions â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function CommunityDiscussions({ student }: { student: any }) {
   const [posts, setPosts]           = useState<DiscussionPost[]>([])
   const [loading, setLoading]       = useState(true)
@@ -709,7 +709,7 @@ function CommunityDiscussions({ student }: { student: any }) {
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
             <MessageCircle className="h-5 w-5 text-primary" /> Discussions
           </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Ask questions, share tips, celebrate wins â€” {total} posts</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Ask questions, share tips, celebrate wins â€" {total} posts</p>
         </div>
         <button
           onClick={() => setShowForm(v => !v)}
@@ -726,7 +726,7 @@ function CommunityDiscussions({ student }: { student: any }) {
           <input
             value={newTitle}
             onChange={e => setNewTitle(e.target.value)}
-            placeholder="Title â€” what's this about?"
+            placeholder="Title â€" what's this about?"
             className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
           />
           <textarea
@@ -808,7 +808,7 @@ function CommunityDiscussions({ student }: { student: any }) {
                 </div>
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    {post.pinned && <span className="text-[10px] text-amber-400">ðŸ“Œ</span>}
+                    {post.pinned && <span className="text-[10px] text-amber-400">ðŸ"Œ</span>}
                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${TAG_COLORS[post.tag] ?? TAG_COLORS.General}`}>
                       {post.tag}
                     </span>
@@ -849,7 +849,7 @@ function CommunityDiscussions({ student }: { student: any }) {
           <span className="text-xs text-muted-foreground">Page {page} of {totalPages}</span>
           <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
             className="px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground disabled:opacity-40 transition-all">
-            Next â†’
+            Next â†'
           </button>
         </div>
       )}
@@ -867,22 +867,22 @@ const RECOMMENDED_BOOKS = [
 
 const RECOMMENDED_BLOGS = [
   { name: "GeeksforGeeks", desc: "Theory + code examples for every CS topic. Your go-to reference.", url: "https://www.geeksforgeeks.org/", tag: "Reference" },
-  { name: "Dev.to", desc: "Developer community â€” read stories, tutorials, and career advice.", url: "https://dev.to/", tag: "Community" },
-  { name: "FreeCodeCamp Blog", desc: "Long-form tutorials on web dev, Python, data science â€” all free.", url: "https://www.freecodecamp.org/news/", tag: "Tutorials" },
+  { name: "Dev.to", desc: "Developer community â€" read stories, tutorials, and career advice.", url: "https://dev.to/", tag: "Community" },
+  { name: "FreeCodeCamp Blog", desc: "Long-form tutorials on web dev, Python, data science â€" all free.", url: "https://www.freecodecamp.org/news/", tag: "Tutorials" },
   { name: "Roadmap.sh", desc: "Visual learning roadmaps for every tech role. Know what to learn next.", url: "https://roadmap.sh/", tag: "Roadmaps" },
-  { name: "CS50 Discourse", desc: "CS50's community forum â€” ask questions, get help from thousands of learners.", url: "https://cs50.stackexchange.com/", tag: "Community" },
-  { name: "The Missing Semester (MIT)", desc: "Tools every developer needs â€” shell, git, editors. Free MIT course.", url: "https://missing.csail.mit.edu/", tag: "Free" },
+  { name: "CS50 Discourse", desc: "CS50's community forum â€" ask questions, get help from thousands of learners.", url: "https://cs50.stackexchange.com/", tag: "Community" },
+  { name: "The Missing Semester (MIT)", desc: "Tools every developer needs â€" shell, git, editors. Free MIT course.", url: "https://missing.csail.mit.edu/", tag: "Free" },
 ]
 
 const TOPIC_QUIZZES: Record<string, { q: string; opts: string[]; ans: number; explain: string }[]> = {
   python: [
     { q: "What is the output of: print(type(3.14))?", opts: ["<class 'int'>", "<class 'float'>", "<class 'str'>", "<class 'double'>"], ans: 1, explain: "3.14 is a float literal in Python." },
     { q: "Which is used to define a function in Python?", opts: ["function", "def", "func", "define"], ans: 1, explain: "'def' keyword is used to define functions in Python." },
-    { q: "What does len([1,2,3]) return?", opts: ["2", "3", "4", "Error"], ans: 1, explain: "len() returns the number of items â€” the list has 3 items." },
+    { q: "What does len([1,2,3]) return?", opts: ["2", "3", "4", "Error"], ans: 1, explain: "len() returns the number of items â€" the list has 3 items." },
     { q: "Which loop runs a set number of times?", opts: ["while", "for", "do-while", "repeat"], ans: 1, explain: "'for' loop is typically used for a known number of iterations." },
   ],
   dsa: [
-    { q: "What is the time complexity of binary search?", opts: ["O(n)", "O(log n)", "O(n²)", "O(1)"], ans: 1, explain: "Binary search halves the search space each step â€” O(log n)." },
+    { q: "What is the time complexity of binary search?", opts: ["O(n)", "O(log n)", "O(n^2)", "O(1)"], ans: 1, explain: "Binary search halves the search space each step â€" O(log n)." },
     { q: "Which data structure uses LIFO?", opts: ["Queue", "Stack", "Array", "Linked List"], ans: 1, explain: "Stack follows Last In First Out (LIFO) principle." },
     { q: "Which is NOT a linear data structure?", opts: ["Array", "Tree", "Queue", "Linked List"], ans: 1, explain: "Trees are hierarchical (non-linear). Others are linear." },
     { q: "What does Big O notation measure?", opts: ["Memory only", "Time only", "Worst-case performance", "Best-case performance"], ans: 2, explain: "Big O describes the worst-case time/space complexity." },
@@ -895,7 +895,7 @@ const TOPIC_QUIZZES: Record<string, { q: string; opts: string[]; ans: number; ex
   ],
 }
 
-// â”€â”€ Quiz Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Quiz Component â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function TopicQuiz({ topic, onComplete }: { topic: string; onComplete: () => void }) {
   const qs = TOPIC_QUIZZES[topic] ?? []
   const [cur, setCur] = useState(0)
@@ -965,7 +965,7 @@ function TopicQuiz({ topic, onComplete }: { topic: string; onComplete: () => voi
   )
 }
 
-// â”€â”€ Leaderboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Leaderboard â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function FirstYearLeaderboard() {
   const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -982,7 +982,7 @@ function FirstYearLeaderboard() {
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground flex items-center gap-2">
         <Users className="h-4 w-4 text-primary" />
-        Only 1st-year students â€” friendly competition, no pressure
+        Only 1st-year students â€" friendly competition, no pressure
       </p>
       {loading ? (
         <div className="flex justify-center py-8"><RefreshCw className="h-5 w-5 animate-spin text-muted-foreground" /></div>
@@ -1001,7 +1001,7 @@ function FirstYearLeaderboard() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-foreground truncate">{e.isCurrentUser ? "You" : e.userName}</p>
-                <p className="text-[10px] text-muted-foreground">{e.completed} milestones · {e.streak} day streak</p>
+                <p className="text-[10px] text-muted-foreground">{e.completed} milestones . {e.streak} day streak</p>
               </div>
               <div className="text-right shrink-0">
                 <p className="text-sm font-black tabular-nums" style={{ color: "#f59e0b" }}>{e.totalXP} XP</p>
@@ -1014,7 +1014,7 @@ function FirstYearLeaderboard() {
   )
 }
 
-// â”€â”€ Main component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Main component â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 export function FirstYearFullHub({ student }: { student: any }) {
   const [activeTab, setActiveTab] = useState("progress")
   const [standaloneMode, setStandaloneMode] = useState(false)
@@ -1058,7 +1058,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [xpPop, setXpPop] = useState<string | null>(null)
   const [monthlySolved, setMonthlySolved] = useState(0)
 
-  // Daily problem â€” fetched from API (AI-generated, Basic â†’ Advanced, infinite)
+  // Daily problem â€" fetched from API (AI-generated, Basic â†' Advanced, infinite)
   const [todayProblem, setTodayProblem] = useState<{
     title: string; desc: string; input: string; output: string
     explain: string; difficulty?: string; color?: string; topic?: string; hint?: string
@@ -1162,7 +1162,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const [completingChallenge, setCompletingChallenge] = useState<string | null>(null)
   const [newChallenge, setNewChallenge] = useState<string | null>(null)
 
-  // Debug challenges â€” AI-fetched
+  // Debug challenges â€" AI-fetched
   interface DebugChallenge {
     id: string; type: string; title: string; desc: string
     fullCode: string; snippet: string; badge: string; color: string; xp: number
@@ -1219,7 +1219,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
         setDebugResults(p => ({ ...p, [challenge.id]: { correct: true, explanation: data.explanation } }))
         setXp(data.newTotal ?? xp)
         // xp removed
-        // After 1.5s â€” mark done and trigger replacement
+        // After 1.5s â€" mark done and trigger replacement
         setTimeout(async () => {
           setCompletedChallenges(p => [...p, challenge.id])
           setDebugChallenges(p => p.filter(c => c.id !== challenge.id))
@@ -1247,7 +1247,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
     }
   }
 
-  // Project challenges â€” AI-fetched, Basic â†’ Intermediate â†’ Advanced, infinite
+  // Project challenges â€" AI-fetched, Basic â†' Intermediate â†' Advanced, infinite
   interface ProjectChallenge {
     id: string; title: string; desc: string; badge: string
     color: string; xp: number; techHint?: string; features?: string[]
@@ -1284,7 +1284,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
       })
       setCompletedChallenges(prev => [...prev, id])
       showXpPop("+20 XP")
-      // Fetch fresh challenges â€” server now knows this one is done
+      // Fetch fresh challenges â€" server now knows this one is done
       const r2   = await fetch("/api/student/project-challenges")
       const d2   = await r2.json()
       const fresh = (d2.challenges ?? []).filter(
@@ -1303,7 +1303,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
     }
   }
 
-  // Remove old static pools â€” kept empty for reference only
+  // Remove old static pools â€" kept empty for reference only
   const DEBUG_POOL: any[] = []
 
   // Re-fetch project challenges when user comes back to the page (after editor)
@@ -1364,7 +1364,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
           </div>
         </div>
       )}
-      {/* Header â€” hidden in standalone mode */}
+      {/* Header â€" hidden in standalone mode */}
       {!standaloneMode && (
       <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-600/15 via-cyan-600/5 to-transparent p-6">
         <div className="flex items-center gap-3 flex-wrap">
@@ -1373,7 +1373,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-xl font-bold text-foreground">1st Year Learning Hub</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">Build your foundation · No pressure · Just growth</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Build your foundation . No pressure . Just growth</p>
           </div>
           <div className="ml-auto flex items-center gap-2 flex-wrap">
             <button
@@ -1388,7 +1388,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
             </button>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/10 shrink-0">
               <span className="text-xs text-blue-400 font-semibold">Year 1</span>
-              <span className="text-xs text-muted-foreground">·</span>
+              <span className="text-xs text-muted-foreground">.</span>
               <span className="text-xs text-muted-foreground">Grad {student.graduationYear}</span>
             </div>
           </div>
@@ -1396,10 +1396,10 @@ export function FirstYearFullHub({ student }: { student: any }) {
       </div>
       )}
 
-      {/* Tabs â€” hidden in standalone mode */}
+      {/* Tabs â€" hidden in standalone mode */}
       {!standaloneMode && (
       <div className="flex gap-2 flex-wrap items-center">
-        {/* My Progress â€” first */}
+        {/* My Progress â€" first */}
         <button onClick={() => switchTab("progress")}
           className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
           style={activeTab === "progress"
@@ -1408,7 +1408,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
           <TrendingUp className="h-4 w-4" /> My Progress
         </button>
 
-        {/* Practice â€” second, hover dropdown */}
+        {/* Practice â€" second, hover dropdown */}
         <div className="relative group">
           <button
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer"
@@ -1418,9 +1418,9 @@ export function FirstYearFullHub({ student }: { student: any }) {
           </button>
           <div className="absolute left-0 top-full mt-1.5 z-50 w-56 rounded-xl border border-border bg-card shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 pointer-events-none group-hover:pointer-events-auto">
             {[
-              { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", color: "#f59e0b", href: "/student/prep?track=aptitude" },
-              { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
-              { label: "Communication", sub: "Grammar · Vocab · Reading",       color: "#10b981", href: "/student/prep?track=communication" },
+              { label: "Aptitude",      sub: "Quant . Logical . Data Interp.", color: "#f59e0b", href: "/student/prep?track=aptitude" },
+              { label: "Coding / DSA",  sub: "Arrays . Trees . DP . Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
+              { label: "Communication", sub: "Grammar . Vocab . Reading",       color: "#10b981", href: "/student/prep?track=communication" },
             ].map(opt => (
               <a key={opt.label} href={opt.href}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors border-b border-border/50 last:border-0">
@@ -1457,7 +1457,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
         </div>
       )}
 
-      {/* My Progress tab â€” dashboard layout */}
+      {/* My Progress tab â€" dashboard layout */}
       {activeTab === "progress" && (
         <div className="space-y-5">
           {/* Welcome */}
@@ -1525,11 +1525,11 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     </div>
                     {todayProblem.hint && (
                       <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-[11px] text-amber-400">
-                        ðŸ’¡ Hint: {todayProblem.hint}
+                        ðŸ'¡ Hint: {todayProblem.hint}
                       </div>
                     )}
                     <div className="flex items-center justify-between gap-3">
-                      <p className="text-xs text-muted-foreground">Earn <span className="text-primary font-bold">10 points</span> · write & submit your code to get evaluated</p>
+                      <p className="text-xs text-muted-foreground">Earn <span className="text-primary font-bold">10 points</span> . write & submit your code to get evaluated</p>
                       {dailyDone ? (
                         <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-sm font-semibold">
                           <CheckCircle2 className="h-4 w-4" /> Done today! +10 XP
@@ -1554,8 +1554,8 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   <p className="font-bold text-foreground text-sm">Recommended Resources</p>
                 </div>
                 {[
-                  { title: "CS50's Introduction to Computer Science", desc: "Harvard's legendary intro course â€” perfect for beginners", tag: "Video", duration: "Ongoing", url: "https://cs50.harvard.edu/x/" },
-                  { title: "freeCodeCamp Python Tutorial", desc: "Comprehensive Python course â€” 4+ hours of content", tag: "Video", duration: "4 hours", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/" },
+                  { title: "CS50's Introduction to Computer Science", desc: "Harvard's legendary intro course â€" perfect for beginners", tag: "Video", duration: "Ongoing", url: "https://cs50.harvard.edu/x/" },
+                  { title: "freeCodeCamp Python Tutorial", desc: "Comprehensive Python course â€" 4+ hours of content", tag: "Video", duration: "4 hours", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/" },
                   { title: "Git & GitHub Basics", desc: "A beginner-friendly introduction to version control and GitHub", tag: "Guide", duration: "15 min read", url: "https://skills.github.com/" },
                 ].map(r => (
                   <div key={r.title} className="flex items-start justify-between gap-3 p-3 rounded-lg border border-border/50 hover:border-border transition-all">
@@ -1578,13 +1578,13 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 </button>
               </div>
 
-              {/* Quick Actions — grid matching stats cards */}
+              {/* Quick Actions - grid matching stats cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {[
                   { label: "View All Challenges", tab: "challenges", icon: <Code2 className="h-5 w-5" />, color: "#3b82f6", desc: "Solve coding problems" },
                   { label: "Learning Roadmap",    tab: "progress",   icon: <Target className="h-5 w-5" />, color: "#10b981", desc: "Track your progress" },
                   { label: "Community",           tab: "community",  icon: <Users className="h-5 w-5" />, color: "#f59e0b", desc: "Connect with peers" },
-                  { label: "Reset Progress",      tab: "",           icon: <RefreshCw className="h-5 w-5" />, color: "#ef4444", desc: "Dev — clear all data", isReset: true },
+                  { label: "Reset Progress",      tab: "",           icon: <RefreshCw className="h-5 w-5" />, color: "#ef4444", desc: "Dev - clear all data", isReset: true },
                 ].map(a => (
                   <button key={a.label}
                     onClick={async () => {
@@ -1617,7 +1617,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 </div>
                 <p className="text-5xl font-black tabular-nums text-amber-400">{streak}</p>
                 <p className="text-xs text-muted-foreground">days</p>
-                <p className="text-xs font-semibold text-foreground">{streak === 0 ? "Solve today's problem to start!" : streak === 1 ? "Great start! Come back tomorrow." : `${streak} day streak â€” keep it up!`}</p>
+                <p className="text-xs font-semibold text-foreground">{streak === 0 ? "Solve today's problem to start!" : streak === 1 ? "Great start! Come back tomorrow." : `${streak} day streak â€" keep it up!`}</p>
                 <div className="rounded-lg bg-amber-500/5 border border-amber-500/15 p-2 mt-2">
                   <p className="text-[10px] text-amber-400">
                     {dailyDone ? "Today's problem solved!" : "Solve today's problem to extend your streak"}
@@ -1640,10 +1640,10 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     { label: "First Problem",   color: "#ef4444", earned: completedChallenges.length >= 1,   icon: <Zap className="h-3.5 w-3.5" />,    how: "Solve your first problem on our platform" },
                     { label: "First Blood",     color: "#f97316", earned: completedChallenges.length >= 5,   icon: <Star className="h-3.5 w-3.5" />,   how: "Complete 5 problems on our platform" },
                     { label: "Daily Grinder",   color: "#f59e0b", earned: streak >= 7,                       icon: <Flame className="h-3.5 w-3.5" />,  how: "Solve the daily coding problem 7 days in a row" },
-                    { label: "Decathlon",       color: "#10b981", earned: completedChallenges.length >= 10,  icon: <Target className="h-3.5 w-3.5" />, how: "Complete 10 challenges â€” projects + debug combined" },
+                    { label: "Decathlon",       color: "#10b981", earned: completedChallenges.length >= 10,  icon: <Target className="h-3.5 w-3.5" />, how: "Complete 10 challenges â€" projects + debug combined" },
                     { label: "Badge Hunter",    color: "#06b6d4", earned: completedBadges.length >= 6,       icon: <Award className="h-3.5 w-3.5" />,  how: "Earn all 6 platform badges" },
                     { label: "Two-Week Warrior",color: "#8b5cf6", earned: streak >= 14,                      icon: <Trophy className="h-3.5 w-3.5" />, how: "Keep your daily problem streak alive for 14 days straight" },
-                    { label: "XP Legend",       color: "#ec4899", earned: xp >= 500,                         icon: <Sparkles className="h-3.5 w-3.5" />, how: "Stack 500 XP â€” every challenge, badge and daily adds up" },
+                    { label: "XP Legend",       color: "#ec4899", earned: xp >= 500,                         icon: <Sparkles className="h-3.5 w-3.5" />, how: "Stack 500 XP â€" every challenge, badge and daily adds up" },
                   ].map(b => (
                     <div key={b.label} className={`flex items-center gap-3 p-2 rounded-lg transition-all ${b.earned ? "bg-white/5" : "opacity-60"}`}>
                       <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
@@ -1652,7 +1652,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className={`text-xs font-semibold ${b.earned ? "text-foreground" : "text-muted-foreground"}`}>{b.label}</p>
-                        <p className="text-[10px] text-muted-foreground truncate">{b.earned ? "âœ“ Earned" : b.how}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{b.earned ? "âœ" Earned" : b.how}</p>
                       </div>
                       {b.earned && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400" />}
                     </div>
@@ -1677,13 +1677,13 @@ export function FirstYearFullHub({ student }: { student: any }) {
           <p className="text-sm text-muted-foreground">Step-by-step learning paths with YouTube videos, courses, and cheatsheets for each topic.</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { label: "Programming Basics â€” C", desc: "Variables, loops, functions, pointers, memory management", tags: ["C", "Beginner"], links: [
+              { label: "Programming Basics â€" C", desc: "Variables, loops, functions, pointers, memory management", tags: ["C", "Beginner"], links: [
                 { text: "GFG C Course", url: "https://www.geeksforgeeks.org/c-programming-language/", type: "course" },
                 { text: "CS50x Harvard", url: "https://cs50.harvard.edu/x/2024/", type: "course" },
                 { text: "Jenny's C Lectures", url: "https://www.youtube.com/playlist?list=PLdo5W4Nhv31a8UcMN9-35ghv8qyFWD9_S", type: "youtube" },
                 { text: "C Cheatsheet", url: "https://www.geeksforgeeks.org/c-cheatsheet/", type: "notes" },
               ]},
-              { label: "Programming Basics â€” Python", desc: "Syntax, OOP, data types, file handling, libraries", tags: ["Python", "Beginner"], links: [
+              { label: "Programming Basics â€" Python", desc: "Syntax, OOP, data types, file handling, libraries", tags: ["Python", "Beginner"], links: [
                 { text: "Python.org Tutorial", url: "https://docs.python.org/3/tutorial/", type: "course" },
                 { text: "freeCodeCamp Python", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/", type: "course" },
                 { text: "Python Full Course", url: "https://www.youtube.com/watch?v=t8pPdKYpowI", type: "youtube" },
@@ -1695,19 +1695,19 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 { text: "Striver DSA Sheet", url: "https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", type: "youtube" },
                 { text: "DSA Cheatsheet GFG", url: "https://www.geeksforgeeks.org/top-algorithms-and-data-structures-for-competitive-programming/", type: "notes" },
               ]},
-              { label: "Web Dev Basics", desc: "HTML, CSS, JavaScript â€” build your first webpage", tags: ["HTML", "CSS", "JS"], links: [
+              { label: "Web Dev Basics", desc: "HTML, CSS, JavaScript â€" build your first webpage", tags: ["HTML", "CSS", "JS"], links: [
                 { text: "freeCodeCamp Web", url: "https://www.freecodecamp.org/learn/responsive-web-design/", type: "course" },
                 { text: "The Odin Project", url: "https://www.theodinproject.com/", type: "course" },
                 { text: "Traversy HTML/CSS", url: "https://www.youtube.com/watch?v=UB1O30fR-EE", type: "youtube" },
                 { text: "HTML Cheatsheet", url: "https://htmlcheatsheet.com/", type: "notes" },
               ]},
-              { label: "Git & GitHub", desc: "Version control, branching, pull requests â€” essential skill", tags: ["Git", "GitHub"], links: [
+              { label: "Git & GitHub", desc: "Version control, branching, pull requests â€" essential skill", tags: ["Git", "GitHub"], links: [
                 { text: "Git Handbook", url: "https://guides.github.com/introduction/git-handbook/", type: "course" },
                 { text: "Git Crash Course", url: "https://www.youtube.com/watch?v=RGOj5yH7evk", type: "youtube" },
                 { text: "Kunal Kushwaha Git", url: "https://www.youtube.com/watch?v=apGV9Kg7ics", type: "youtube" },
                 { text: "Git Cheatsheet", url: "https://training.github.com/downloads/github-git-cheat-sheet.pdf", type: "notes" },
               ]},
-              { label: "CS50 â€” Intro to CS", desc: "Harvard's legendary free CS course â€” highly recommended", tags: ["CS Fundamentals"], links: [
+              { label: "CS50 â€" Intro to CS", desc: "Harvard's legendary free CS course â€" highly recommended", tags: ["CS Fundamentals"], links: [
                 { text: "CS50x (Free)", url: "https://cs50.harvard.edu/x/2024/", type: "course" },
                 { text: "CS50 Lecture 0", url: "https://www.youtube.com/watch?v=3LPJfIKxwWc", type: "youtube" },
                 { text: "CS50 Playlist", url: "https://www.youtube.com/playlist?list=PLhQjrBD2T381WAHyx1pq-sBfykqMBI7V4", type: "youtube" },
@@ -1761,7 +1761,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 {/* Topic-based coding problems */}
                 <TopicCodingProblems completedChallenges={completedChallenges} />
 
-                {/* Debug challenges â€” AI-generated, infinite */}
+                {/* Debug challenges â€" AI-generated, infinite */}
                 <div className="space-y-3">
                   {/* Language selector */}
                   <div className="flex items-center gap-3 flex-wrap">
@@ -1802,7 +1802,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                   className={`w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary/10 ${debugLang === lang ? "text-primary font-semibold bg-primary/5" : "text-foreground"}`}
                                 >
                                   {lang}
-                                  {debugLang === lang && <span className="ml-1 text-primary">âœ“</span>}
+                                  {debugLang === lang && <span className="ml-1 text-primary">âœ"</span>}
                                 </button>
                               ))}
                           </div>
@@ -1855,7 +1855,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                             {/* Answer input + result */}
                             {result?.correct ? (
                               <div className="rounded-lg p-3 text-xs space-y-1 bg-emerald-500/10 border border-emerald-500/20">
-                                <p className="font-bold text-emerald-400">âœ“ Correct! +{c.xp} XP earned</p>
+                                <p className="font-bold text-emerald-400">âœ" Correct! +{c.xp} XP earned</p>
                                 {result.explanation && <p className="text-muted-foreground">{result.explanation}</p>}
                                 <p className="text-[10px] text-emerald-400/70">Replacing with next challenge...</p>
                               </div>
@@ -1871,7 +1871,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                 {/* Wrong answer feedback */}
                                 {result && !result.correct && (
                                   <div className="rounded-lg p-2.5 bg-red-500/10 border border-red-500/20 space-y-1">
-                                    <p className="text-xs text-red-400 font-semibold">âœ— Not quite â€” try again</p>
+                                    <p className="text-xs text-red-400 font-semibold">âœ- Not quite â€" try again</p>
                                     {result.correctAnswer && (
                                       <p className="text-[10px] text-muted-foreground">
                                         Answer: <span className="text-amber-400 font-medium">{result.correctAnswer}</span>
@@ -1894,7 +1894,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                 {/* Revealed answer panel */}
                                 {revealedAnswers[c.id] && (
                                   <div className="rounded-lg p-2.5 bg-amber-500/10 border border-amber-500/20 space-y-1">
-                                    <p className="text-[10px] font-bold text-amber-400">ðŸ’¡ Answer Revealed</p>
+                                    <p className="text-[10px] font-bold text-amber-400">ðŸ'¡ Answer Revealed</p>
                                     <p className="text-xs text-foreground font-medium">{revealedAnswers[c.id].answer}</p>
                                     {revealedAnswers[c.id].explanation && (
                                       <p className="text-[10px] text-muted-foreground">{revealedAnswers[c.id].explanation}</p>
@@ -1919,7 +1919,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                       }}
                                       className="flex items-center gap-1 text-[10px] text-amber-400/80 hover:text-amber-400 transition-colors font-medium"
                                     >
-                                      {revealing === c.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : "ðŸ’¡"} Reveal
+                                      {revealing === c.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : "ðŸ'¡"} Reveal
                                     </button>
                                   )}
                                   <button
@@ -1951,17 +1951,17 @@ export function FirstYearFullHub({ student }: { student: any }) {
       {/* Resources */}
       {activeTab === "resources" && (
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Curated courses, cheatsheets, and references â€” everything you need to build a solid foundation.</p>
+          <p className="text-sm text-muted-foreground">Curated courses, cheatsheets, and references â€" everything you need to build a solid foundation.</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { title: "CS50x Harvard",     type: "Course", color: "#ef4444", desc: "The world's best intro CS course. Free, beginner-friendly.",             url: "https://cs50.harvard.edu/x/" },
               { title: "freeCodeCamp",      type: "Course", color: "#10b981", desc: "Full web dev + Python curriculum, completely free.",                      url: "https://www.freecodecamp.org/" },
               { title: "The Odin Project",  type: "Course", color: "#f97316", desc: "Project-based full-stack web dev path. Build real things.",               url: "https://www.theodinproject.com/" },
               { title: "Kaggle Learn",      type: "ML",     color: "#06b6d4", desc: "Hands-on Python, ML, and data science micro-courses.",                    url: "https://www.kaggle.com/learn" },
-              { title: "GFG DSA",           type: "DSA",    color: "#8b5cf6", desc: "Comprehensive DSA â€” theory, problems, and solutions.",                    url: "https://www.geeksforgeeks.org/data-structures/" },
+              { title: "GFG DSA",           type: "DSA",    color: "#8b5cf6", desc: "Comprehensive DSA â€" theory, problems, and solutions.",                    url: "https://www.geeksforgeeks.org/data-structures/" },
               { title: "Python Cheatsheet", type: "Notes",  color: "#f59e0b", desc: "Quick reference for Python syntax and common patterns.",                  url: "https://www.pythoncheatsheet.org/" },
               { title: "Git Cheatsheet",    type: "Notes",  color: "#3b82f6", desc: "All essential git commands in one place. Bookmark this.",                 url: "https://education.github.com/git-cheat-sheet-education.pdf" },
-              { title: "DBMS Notes GFG",    type: "Notes",  color: "#14b8a6", desc: "Database fundamentals â€” ER models, normalization, SQL.",                  url: "https://www.geeksforgeeks.org/dbms/" },
+              { title: "DBMS Notes GFG",    type: "Notes",  color: "#14b8a6", desc: "Database fundamentals â€" ER models, normalization, SQL.",                  url: "https://www.geeksforgeeks.org/dbms/" },
             ].map(r => (
               <div key={r.title} className="rounded-xl border border-border bg-card/40 p-4 flex flex-col gap-2.5 hover:border-primary/30 transition-all">
                 <div className="flex items-center justify-between gap-2">
@@ -2018,7 +2018,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
       {/* Self-check quizzes */}
       {activeTab === "quizzes" && !quizTopic && (
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Short 4-question quizzes to check your understanding. Encouraging feedback â€” no pressure.</p>
+          <p className="text-sm text-muted-foreground">Short 4-question quizzes to check your understanding. Encouraging feedback â€" no pressure.</p>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { id: "python", label: "Python Basics", icon: "PY", color: "#3b82f6", desc: "Variables, types, loops, functions" },
@@ -2062,7 +2062,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
         </div>
       )}
 
-      {/* Community â€” Discussion Board */}
+      {/* Community â€" Discussion Board */}
       {activeTab === "community" && (
         <CommunityDiscussions student={student} />
       )}

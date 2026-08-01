@@ -122,7 +122,7 @@ export function CampusDrives() {
                         {!isExpired && !isApplied && <Badge className="text-xs bg-emerald-500/10 text-emerald-600">Open</Badge>}
                         {isApplied && <Badge className="text-xs bg-blue-500/10 text-blue-600"><CheckCircle2 className="h-3 w-3 mr-1" />Applied</Badge>}
                       </div>
-                      <p className="text-xs text-muted-foreground mb-2">{drive.companyName} · {drive.location}</p>
+                      <p className="text-xs text-muted-foreground mb-2">{drive.companyName} . {drive.location}</p>
                       <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{drive.description}</p>
                       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-2">
                         {drive.salary && (

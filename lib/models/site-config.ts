@@ -1,5 +1,5 @@
 /**
- * SiteConfig — stores admin-editable landing page content in MongoDB.
+ * SiteConfig - stores admin-editable landing page content in MongoDB.
  * Only ONE document exists (upserted by key "landing").
  */
 import { getDatabase } from "@/lib/database"
@@ -53,7 +53,7 @@ const DEFAULT_CONFIG: Omit<SiteConfigDocument, "updatedAt"> = {
     headline: "Where Coding Skills",
     headlineHighlight: "Meet Opportunities",
     subtext:
-      "CodeHiring unifies student coding performance across all platforms, gives colleges placement analytics, and helps recruiters find verified talent — all in one place.",
+      "CodeHiring unifies student coding performance across all platforms, gives colleges placement analytics, and helps recruiters find verified talent - all in one place.",
     ctaPrimary: "Get Started Free",
     ctaSecondary: "Sign In",
   },

@@ -199,7 +199,7 @@ export function AdminBlog() {
                 <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${editing.published ? "translate-x-4" : "translate-x-0.5"}`} />
               </button>
               <span className="text-sm text-foreground">
-                {editing.published ? "Published — visible on site" : "Draft — hidden from public"}
+                {editing.published ? "Published - visible on site" : "Draft - hidden from public"}
               </span>
             </div>
 
@@ -227,7 +227,7 @@ export function AdminBlog() {
           <div>
             <h1 className="text-2xl font-bold text-foreground">Blog Posts</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Create and manage articles — new posts appear on the homepage and blog immediately.
+              Create and manage articles - new posts appear on the homepage and blog immediately.
             </p>
           </div>
           <button onClick={openNew}
@@ -243,7 +243,7 @@ export function AdminBlog() {
         ) : posts.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-muted-foreground mb-4">No posts yet.</p>
-            <button onClick={openNew} className="text-sm text-primary hover:underline">Create your first post →</button>
+            <button onClick={openNew} className="text-sm text-primary hover:underline">Create your first post -></button>
           </div>
         ) : (
           <div className="space-y-3">
@@ -258,7 +258,7 @@ export function AdminBlog() {
                     )}
                   </div>
                   <p className="text-sm font-semibold text-foreground truncate">{post.title}</p>
-                  <p className="text-xs text-muted-foreground">{post.date} · {post.readTime}</p>
+                  <p className="text-xs text-muted-foreground">{post.date} . {post.readTime}</p>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   {/* Toggle publish */}

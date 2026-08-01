@@ -59,7 +59,7 @@ const FETCHERS: Record<string, (username: string) => Promise<any>> = {
 }
 
 /**
- * Get stats for a platform — use cached stats from DB first, fetch live if missing.
+ * Get stats for a platform - use cached stats from DB first, fetch live if missing.
  */
 async function getStats(platformId: string, username: string, cachedStats: any): Promise<any> {
   if (cachedStats && Object.keys(cachedStats).length > 1) {

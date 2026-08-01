@@ -24,16 +24,16 @@ const PARTNERS = [
   { id: "3", name: "Infosys",   logo: "IN", industry: "IT Services",    size: "MNC",     status: "active",  score: 78, totalHired: 180, avgPackage: "3.6 LPA", lastVisit: "Jan 2026", mou: true, mouExpiry: "2029", hiringTypes: ["Full-time","Training"],   notes: "Mass recruiter. Runs InfyTQ training program." },
   { id: "4", name: "Razorpay",  logo: "RP", industry: "Fintech",        size: "Unicorn", status: "active",  score: 82, totalHired: 12,  avgPackage: "18 LPA", lastVisit: "Dec 2025", mou: false, mouExpiry: null,   hiringTypes: ["Internship","Full-time"],  notes: "New partnership. Great packages for web dev." },
   { id: "5", name: "Wipro",     logo: "WI", industry: "IT Services",    size: "MNC",     status: "expired", score: 55, totalHired: 90,  avgPackage: "3.5 LPA", lastVisit: "Jun 2022", mou: false, mouExpiry: null,  hiringTypes: ["Full-time"],              notes: "Partnership lapsed. Renewal pending." },
-  { id: "6", name: "Swiggy",    logo: "SW", industry: "Logistics/AI",   size: "Unicorn", status: "pending", score: 0,  totalHired: 0,   avgPackage: "—",      lastVisit: "—",        mou: false, mouExpiry: null,   hiringTypes: ["Internship","Full-time"],  notes: "Request sent. Awaiting response." },
+  { id: "6", name: "Swiggy",    logo: "SW", industry: "Logistics/AI",   size: "Unicorn", status: "pending", score: 0,  totalHired: 0,   avgPackage: "-",      lastVisit: "-",        mou: false, mouExpiry: null,   hiringTypes: ["Internship","Full-time"],  notes: "Request sent. Awaiting response." },
 ]
 
 const DISCOVER = [
-  { id: "d1", name: "NVIDIA",   logo: "NV", industry: "AI/ML",           size: "MNC",     match: 95, reason: "Hiring AI Engineers — matches your 300+ AI students",    hiringTypes: ["Full-time","Research"]   },
-  { id: "d2", name: "Amazon",   logo: "AZ", industry: "E-Commerce/Cloud", size: "MNC",     match: 91, reason: "SDE-1 and cloud roles — strong DSA demand",              hiringTypes: ["Full-time","Internship"] },
-  { id: "d3", name: "Meesho",   logo: "ME", industry: "E-Commerce",       size: "Unicorn", match: 87, reason: "ML + Full Stack — matches your top skill profile",        hiringTypes: ["Internship","Full-time"] },
-  { id: "d4", name: "PhonePe",  logo: "PP", industry: "Fintech",          size: "Unicorn", match: 84, reason: "Fintech backend roles — Java, Spring Boot demand",        hiringTypes: ["Full-time"]              },
+  { id: "d1", name: "NVIDIA",   logo: "NV", industry: "AI/ML",           size: "MNC",     match: 95, reason: "Hiring AI Engineers - matches your 300+ AI students",    hiringTypes: ["Full-time","Research"]   },
+  { id: "d2", name: "Amazon",   logo: "AZ", industry: "E-Commerce/Cloud", size: "MNC",     match: 91, reason: "SDE-1 and cloud roles - strong DSA demand",              hiringTypes: ["Full-time","Internship"] },
+  { id: "d3", name: "Meesho",   logo: "ME", industry: "E-Commerce",       size: "Unicorn", match: 87, reason: "ML + Full Stack - matches your top skill profile",        hiringTypes: ["Internship","Full-time"] },
+  { id: "d4", name: "PhonePe",  logo: "PP", industry: "Fintech",          size: "Unicorn", match: 84, reason: "Fintech backend roles - Java, Spring Boot demand",        hiringTypes: ["Full-time"]              },
   { id: "d5", name: "Adobe",    logo: "AD", industry: "Software/Design",  size: "MNC",     match: 80, reason: "SDE roles with strong product focus",                     hiringTypes: ["Full-time","Internship"] },
-  { id: "d6", name: "Zomato",   logo: "ZO", industry: "Food Tech",        size: "Unicorn", match: 76, reason: "Android + Data roles — active campus recruiter",          hiringTypes: ["Internship"]             },
+  { id: "d6", name: "Zomato",   logo: "ZO", industry: "Food Tech",        size: "Unicorn", match: 76, reason: "Android + Data roles - active campus recruiter",          hiringTypes: ["Internship"]             },
 ]
 
 const VISITS = [
@@ -157,7 +157,7 @@ export function CompanyNetwork() {
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-background/70 backdrop-blur font-bold text-xs text-foreground shrink-0">{p.logo}</div>
                         <div>
                           <p className="font-bold text-sm">{p.name}</p>
-                          <p className="text-xs text-muted-foreground">{p.industry} · {p.size}</p>
+                          <p className="text-xs text-muted-foreground">{p.industry} . {p.size}</p>
                         </div>
                       </div>
                       <Badge className={`text-[10px] px-2 py-0.5 gap-1 shrink-0 ${st.color}`}>
@@ -166,7 +166,7 @@ export function CompanyNetwork() {
                     </div>
                     <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                       {p.totalHired > 0 && <span className="flex items-center gap-1"><Users className="h-3 w-3" />{p.totalHired} hired</span>}
-                      {p.avgPackage !== "—" && <span className="flex items-center gap-1"><IndianRupee className="h-3 w-3" />{p.avgPackage}</span>}
+                      {p.avgPackage !== "-" && <span className="flex items-center gap-1"><IndianRupee className="h-3 w-3" />{p.avgPackage}</span>}
                       {p.score > 0 && <span className={`font-bold ${p.score>=85?"text-emerald-600":p.score>=70?"text-amber-600":"text-red-500"}`}>{p.score}/100</span>}
                     </div>
                     <div className="flex flex-wrap gap-1">
@@ -209,7 +209,7 @@ export function CompanyNetwork() {
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-background/70 backdrop-blur font-bold text-xs text-foreground shrink-0">{c.logo}</div>
                         <div>
                           <p className="font-bold text-sm">{c.name}</p>
-                          <p className="text-xs text-muted-foreground">{c.industry} · {c.size}</p>
+                          <p className="text-xs text-muted-foreground">{c.industry} . {c.size}</p>
                         </div>
                       </div>
                       <div className="text-right shrink-0">
@@ -364,7 +364,7 @@ export function CompanyNetwork() {
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="font-bold text-sm leading-snug">{prog.title}</p>
-                        <p className="text-xs text-muted-foreground">{prog.company} · {prog.type}</p>
+                        <p className="text-xs text-muted-foreground">{prog.company} . {prog.type}</p>
                       </div>
                       <Badge className={`text-[10px] px-2 shrink-0 ml-2 ${isActive ? "bg-emerald-500/10 text-emerald-600" : "bg-blue-500/10 text-blue-600"}`}>{prog.status}</Badge>
                     </div>
@@ -471,7 +471,7 @@ export function CompanyNetwork() {
       {/* Partnership Request Dialog */}
       <Dialog open={!!requestDialog} onOpenChange={() => setRequestDialog(null)}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>Request Partnership — {requestDialog?.name}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Request Partnership - {requestDialog?.name}</DialogTitle></DialogHeader>
           <div className="space-y-4 py-2">
             <div className="rounded-xl bg-muted/30 p-4 space-y-2 text-sm">
               <p className="font-medium">Request will include:</p>

@@ -1,9 +1,9 @@
 /**
  * HackerRank scraper
  * Uses HackerRank's public REST endpoints:
- *   /rest/hackers/{username}          → profile + badges
- *   /rest/hackers/{username}/badges   → badge list
- *   /rest/contests/master/hackers/{username}/certificate → certs
+ *   /rest/hackers/{username}          -> profile + badges
+ *   /rest/hackers/{username}/badges   -> badge list
+ *   /rest/contests/master/hackers/{username}/certificate -> certs
  */
 import type { NormalizedPlatformStats } from "../scraper-types"
 import { failResult, fetchJSON } from "../scraper-utils"

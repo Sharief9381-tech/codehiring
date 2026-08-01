@@ -1,6 +1,6 @@
 /**
- * GET  /api/student/assessment-history  — get all past attempts
- * POST /api/student/assessment-history  — save a new attempt
+ * GET  /api/student/assessment-history  - get all past attempts
+ * POST /api/student/assessment-history  - save a new attempt
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

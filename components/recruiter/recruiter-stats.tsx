@@ -94,7 +94,7 @@ export function RecruiterStats() {
             </div>
 
             <p className="text-2xl font-bold text-foreground tabular-nums">
-              {loading ? "—" : value.toLocaleString()}
+              {loading ? "-" : value.toLocaleString()}
             </p>
             <p className="text-sm font-medium text-foreground/80 mt-0.5">{item.label}</p>
             <p className="text-xs text-muted-foreground">{item.sub}</p>

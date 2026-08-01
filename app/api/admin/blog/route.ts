@@ -1,9 +1,9 @@
 /**
  * Admin blog CRUD
- * GET    /api/admin/blog         — all posts
- * POST   /api/admin/blog         — create post
- * PATCH  /api/admin/blog?id=     — update post
- * DELETE /api/admin/blog?id=     — delete post
+ * GET    /api/admin/blog         - all posts
+ * POST   /api/admin/blog         - create post
+ * PATCH  /api/admin/blog?id=     - update post
+ * DELETE /api/admin/blog?id=     - delete post
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

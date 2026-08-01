@@ -1,5 +1,5 @@
 /**
- * POST /api/drives/[id]/submit — Step 6b: Student submits assessment answers
+ * POST /api/drives/[id]/submit - Step 6b: Student submits assessment answers
  * Triggers Step 7: AI-powered evaluation
  */
 import { NextResponse } from "next/server"
@@ -46,12 +46,12 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
             sectionScore += q.points
           }
         } else if (q.type === "debugging") {
-          // Simple check — if answer contains the fix keywords
+          // Simple check - if answer contains the fix keywords
           if (answer.code && q.solutionCode && answer.code.length > 10) {
             sectionScore += Math.round(q.points * 0.7) // partial credit
           }
         }
-        // Coding / SQL / case_study — scored by AI in next step
+        // Coding / SQL / case_study - scored by AI in next step
       }
       scores.push({
         sectionName: section.name,

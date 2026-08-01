@@ -1,6 +1,6 @@
 /**
- * GET  /api/recruiter/shortlists  — list all shortlists for the recruiter
- * POST /api/recruiter/shortlists  — create a new shortlist
+ * GET  /api/recruiter/shortlists  - list all shortlists for the recruiter
+ * POST /api/recruiter/shortlists  - create a new shortlist
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

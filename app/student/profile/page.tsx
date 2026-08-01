@@ -10,14 +10,14 @@ export default async function ProfilePage() {
   const user = await getCurrentUser()
   if (!user || user.role !== "student") redirect("/login")
 
-  // Fetch full document — all fields including bio, phone, location, etc.
+  // Fetch full document - all fields including bio, phone, location, etc.
   const student = await UserModel.findById(user._id as string)
   if (!student) redirect("/login")
 
-  // Strip only the password, serialize everything else (ObjectIds, Dates → strings)
+  // Strip only the password, serialize everything else (ObjectIds, Dates -> strings)
   const { password, ...safe } = student as any
 
-  // Don't send the heavy base64 payload to the client — only metadata
+  // Don't send the heavy base64 payload to the client - only metadata
   if (safe.resumeFile?.dataUri) {
     const { dataUri: _omit, ...fileMeta } = safe.resumeFile
     safe.resumeFile = fileMeta

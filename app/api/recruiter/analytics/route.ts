@@ -34,7 +34,7 @@ export async function GET() {
     const hiringFunnel = stages.map((stage) => ({
       name: stage,
       value: allCandidates.filter((c) => {
-        // Funnel is cumulative — count everyone who reached this stage or beyond
+        // Funnel is cumulative - count everyone who reached this stage or beyond
         const stageIndex = stages.indexOf(stage)
         const candidateIndex = stages.indexOf(c.stage)
         return candidateIndex >= stageIndex

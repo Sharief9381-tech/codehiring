@@ -1,6 +1,6 @@
 /**
  * POST /api/student/evaluate-code
- * Evaluates student code using Mistral (primary) → Groq → OpenAI fallback chain.
+ * Evaluates student code using Mistral (primary) -> Groq -> OpenAI fallback chain.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

@@ -1,5 +1,5 @@
 /**
- * OpenAI client — GPT-4o-mini for fast, cost-effective question generation
+ * OpenAI client - GPT-4o-mini for fast, cost-effective question generation
  * Set OPENAI_API_KEY in .env
  */
 
@@ -33,7 +33,7 @@ export async function openaiChat(
 
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`OpenAI API error: ${res.status} — ${err}`)
+    throw new Error(`OpenAI API error: ${res.status} - ${err}`)
   }
 
   const data = await res.json()

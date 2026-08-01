@@ -7,7 +7,7 @@
   ranking: number
   contributionPoints: number
   reputation: number
-  submissionCalendar?: Record<string, number>  // unix timestamp (day) → count
+  submissionCalendar?: Record<string, number>  // unix timestamp (day) -> count
 }
 
 export async function fetchLeetCodeStats(username: string): Promise<LeetCodeStats | null> {

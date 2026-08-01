@@ -4,7 +4,7 @@ import { ArrowLeft, Target, Heart, Zap, Users } from "lucide-react"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
 
 export const metadata = {
-  title: "About — CodeHiring",
+  title: "About - CodeHiring",
   description: "The story behind CodeHiring and why we built it.",
 }
 
@@ -12,7 +12,7 @@ const values = [
   {
     icon: Target,
     title: "Merit Over Keywords",
-    desc: "We believe hiring should be based on what you can actually do — not how well your resume is formatted.",
+    desc: "We believe hiring should be based on what you can actually do - not how well your resume is formatted.",
   },
   {
     icon: Zap,
@@ -27,7 +27,7 @@ const values = [
   {
     icon: Heart,
     title: "Students First",
-    desc: "When students win — getting better jobs — everyone wins. That's the north star we build toward.",
+    desc: "When students win - getting better jobs - everyone wins. That's the north star we build toward.",
   },
 ]
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
             </p>
             <p>
               CodeHiring connects all three sides of this problem. Students get a verified profile that speaks for itself.
-              Colleges get real-time analytics. Recruiters get candidates ranked by actual verified performance — not
+              Colleges get real-time analytics. Recruiters get candidates ranked by actual verified performance - not
               self-reported numbers.
             </p>
           </div>
@@ -104,7 +104,7 @@ export default function AboutPage() {
         <div className="rounded-xl border border-primary/20 bg-primary/5 p-8 text-center">
           <h2 className="text-xl font-bold text-foreground mb-3">Want to be part of this?</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            Whether you're a student, a college, or a company — there's a place for you on CodeHiring.
+            Whether you're a student, a college, or a company - there's a place for you on CodeHiring.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/signup" className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">

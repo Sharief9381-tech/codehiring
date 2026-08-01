@@ -160,7 +160,7 @@ export function StudentAssessmentClient({ driveId }: { driveId: string }) {
             <FileText className="h-8 w-8 text-primary" />
           </div>
           <h2 className="text-xl font-black text-foreground">{assessment.title}</h2>
-          <p className="text-sm text-muted-foreground mt-1">{drive?.companyName} · {drive?.title}</p>
+          <p className="text-sm text-muted-foreground mt-1">{drive?.companyName} . {drive?.title}</p>
         </div>
         <div className="space-y-2 mb-6">
           {[

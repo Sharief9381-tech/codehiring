@@ -1,5 +1,5 @@
 /**
- * POST /api/drives/[id]/offer — Step 11: Send offer to selected candidates
+ * POST /api/drives/[id]/offer - Step 11: Send offer to selected candidates
  * Marks drive as completed when all offers sent
  */
 import { NextResponse } from "next/server"

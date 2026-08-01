@@ -106,7 +106,7 @@ export default function LoginPage() {
   ]
 
   return (
-    /* force dark background — immune to light/dark mode */
+    /* force dark background - immune to light/dark mode */
     <div style={{ minHeight: "100vh", position: "relative", overflow: "hidden", background: "#050508" }}>
       <SignupBackground />
 
@@ -147,7 +147,7 @@ export default function LoginPage() {
 
             <LiveIndicator />
 
-            {/* Stats row — fixed height prevents layout shift */}
+            {/* Stats row - fixed height prevents layout shift */}
             <div style={{ display: "flex", gap: 16, marginBottom: 32, minHeight: 62 }}>
               {loading
                 ? [0,1,2].map(i => (

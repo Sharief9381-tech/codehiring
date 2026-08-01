@@ -1,5 +1,5 @@
 /**
- * POST /api/drives/[id]/apply — Step 5: Candidate applies to drive
+ * POST /api/drives/[id]/apply - Step 5: Candidate applies to drive
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

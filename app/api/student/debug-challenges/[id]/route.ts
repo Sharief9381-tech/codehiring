@@ -19,7 +19,7 @@ export async function POST(
     const db  = await getDatabase()
     const uid = user._id?.toString() ?? ""
 
-    // ── Reveal action — just return the answer without marking complete ────────
+    // ── Reveal action - just return the answer without marking complete ────────
     const url = new URL(request.url)
     if (url.searchParams.get("action") === "reveal") {
       const cached = await db.collection("debug_challenges").findOne({ userId: uid })
@@ -75,7 +75,7 @@ export async function POST(
       isCorrect = correct.includes(student) || alts.some(a => a.includes(student))
     }
 
-    // 4. Word overlap — if student hits >50% of the key words in correct answer
+    // 4. Word overlap - if student hits >50% of the key words in correct answer
     if (!isCorrect) {
       const correctWords = correct.split(" ").filter(w => w.length > 2)
       const studentWords = new Set(student.split(" "))

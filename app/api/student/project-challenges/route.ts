@@ -1,27 +1,27 @@
 /**
  * GET /api/student/project-challenges
- * Returns AI-generated project challenges — Basic → Intermediate → Advanced.
+ * Returns AI-generated project challenges - Basic -> Intermediate -> Advanced.
  * Infinite: each completion advances difficulty. Cached per user.
  *
- * POST ?action=refresh — force regeneration
+ * POST ?action=refresh - force regeneration
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { getDatabase } from "@/lib/database"
 
 const COLLECTION = "project_challenges"
-const CHALLENGES_PER_LEVEL = 6  // complete 6 → advance to next tier
+const CHALLENGES_PER_LEVEL = 6  // complete 6 -> advance to next tier
 
-// 3 difficulty tiers — real-world, industry-relevant projects
+// 3 difficulty tiers - real-world, industry-relevant projects
 const TIERS = [
   {
     level: "Beginner", color: "#10b981", xp: 30,
-    desc: "Real-world mini apps that mirror actual products. Focus on core functionality, clean UI, and working logic. No frameworks needed — plain HTML/CSS/JS or Python.",
+    desc: "Real-world mini apps that mirror actual products. Focus on core functionality, clean UI, and working logic. No frameworks needed - plain HTML/CSS/JS or Python.",
     examples: "QR code generator, URL shortener UI, Password strength checker, Markdown to HTML converter, Color palette generator, BMI calculator with health advice, Currency converter using exchange rate API, Random joke/quote generator, IP address lookup tool, Lyrics finder using an API",
   },
   {
     level: "Intermediate", color: "#f59e0b", xp: 50,
-    desc: "Real apps people actually use — clones of popular products, API-powered tools, or data-driven dashboards. Requires multiple components, API integration, and state management.",
+    desc: "Real apps people actually use - clones of popular products, API-powered tools, or data-driven dashboards. Requires multiple components, API integration, and state management.",
     examples: "Twitter/X clone (post, like, follow), Spotify playlist manager using Spotify API, YouTube video search and player, Reddit-style discussion board, Google Maps location tracker, Trello clone kanban board, Slack-style messaging UI, Instagram-style photo feed with filters, Amazon product search with cart, GitHub activity tracker dashboard",
   },
   {
@@ -32,7 +32,7 @@ const TIERS = [
 ]
 
 function getTierInfo(projectSolved: number) {
-  // 0-2 solved → Beginner, 3-5 → Intermediate, 6+ → Advanced (cycles back)
+  // 0-2 solved -> Beginner, 3-5 -> Intermediate, 6+ -> Advanced (cycles back)
   const tierIdx = Math.min(Math.floor(projectSolved / CHALLENGES_PER_LEVEL), TIERS.length - 1)
   return TIERS[tierIdx]
 }
@@ -59,7 +59,7 @@ Return ONLY a valid JSON array, no markdown:
 [
   {
     "id": "ai-proj-${ts}-1",
-    "title": "Project name — real product inspired (e.g. 'Twitter Clone', 'Spotify Playlist Manager')",
+    "title": "Project name - real product inspired (e.g. 'Twitter Clone', 'Spotify Playlist Manager')",
     "desc": "1 sentence: what the student builds and which real product it mirrors",
     "problemStatement": "3-4 sentences explaining exactly what to build: core screens/pages, user interactions, what data is shown, and what the end result looks like. Be specific like a product brief.",
     "explanation": "2-3 sentences on the key technical concepts the student will practice (APIs, auth, state, real-time, etc.)",
@@ -111,19 +111,19 @@ const FALLBACK: Record<string, any[]> = {
       badge:"Beginner", color:"#10b981", xp:30, techHint:"HTML/CSS/JS + exchangerate API",
       features:["Live exchange rates","Currency dropdown","Conversion result","Last updated time"] },
     { id:"fb-p-b4", title:"Random Quote Generator",
-      desc:"Inspirational quote machine that tweets the quote — like brainyquote.com.",
+      desc:"Inspirational quote machine that tweets the quote - like brainyquote.com.",
       problemStatement:"Build a quote generator that fetches a random inspirational quote from a public API (e.g. quotable.io) on page load and on button click. Display the quote text and author with a smooth fade transition. Add a Tweet button that opens Twitter with the quote pre-filled. Add a Copy to Clipboard button.",
       explanation:"Practice fetch API calls, CSS transitions for smooth quote changes, and using the Web Share API or Twitter intent URLs for sharing.",
       badge:"Beginner", color:"#10b981", xp:30, techHint:"HTML/CSS/JS + quotable.io",
       features:["Random quote fetch","Author display","Tweet button","Copy to clipboard"] },
     { id:"fb-p-b5", title:"IP Address Tracker",
-      desc:"Look up any IP address and show location on a map — like whatismyipaddress.com.",
+      desc:"Look up any IP address and show location on a map - like whatismyipaddress.com.",
       problemStatement:"Build an IP address tracker where the user enters an IP address and clicks Search. Use the ipapi.co or ip-api.com free API to fetch location data: city, region, country, timezone, and ISP. Display this info in a clean card layout. Show the location on an embedded map using Leaflet.js (free, no API key needed).",
       explanation:"Practice API calls with dynamic query params, JSON parsing, and embedding an interactive map with Leaflet.js. Handle the user's own IP by default on page load.",
       badge:"Beginner", color:"#10b981", xp:30, techHint:"HTML/CSS/JS + ipapi.co + Leaflet.js",
       features:["IP lookup","Location details","Map pin","Default to user IP"] },
     { id:"fb-p-b6", title:"Age Calculator",
-      desc:"Calculate exact age in years, months, and days — like the one on timeanddate.com.",
+      desc:"Calculate exact age in years, months, and days - like the one on timeanddate.com.",
       problemStatement:"Build an age calculator where the user enters their date of birth using a date picker. On Calculate, show the exact age broken down into years, months, and days. Also show the day of the week they were born, how many days until their next birthday, and their age in total days, hours, and minutes.",
       explanation:"Practice JavaScript Date object manipulation, arithmetic with dates, and formatting numbers. Calculate the difference between today and the birth date using getTime() for precision.",
       badge:"Beginner", color:"#10b981", xp:30, techHint:"HTML/CSS/JS",
@@ -132,44 +132,44 @@ const FALLBACK: Record<string, any[]> = {
   Intermediate: [
     { id:"fb-p-i1", title:"GitHub Activity Dashboard",
       desc:"A developer analytics dashboard like GitHub's own profile page.",
-      problemStatement:"Build a GitHub analytics dashboard where users search for any GitHub username. Display profile info (avatar, bio, followers, following), a list of their most starred repos, programming languages used as a pie chart, contribution stats, and recent commit activity. Use the GitHub REST API — no auth key needed for public data.",
+      problemStatement:"Build a GitHub analytics dashboard where users search for any GitHub username. Display profile info (avatar, bio, followers, following), a list of their most starred repos, programming languages used as a pie chart, contribution stats, and recent commit activity. Use the GitHub REST API - no auth key needed for public data.",
       explanation:"Practice consuming a real REST API with pagination, aggregating data for charts using Chart.js, and rendering complex nested JSON responses. Handle rate limiting and 404 errors gracefully.",
       badge:"Intermediate", color:"#f59e0b", xp:50, techHint:"React + GitHub API + Chart.js",
       features:["User profile","Starred repos","Language chart","Commit activity"] },
     { id:"fb-p-i2", title:"YouTube Clone",
-      desc:"A video browsing app using the YouTube Data API — like YouTube's homepage.",
+      desc:"A video browsing app using the YouTube Data API - like YouTube's homepage.",
       problemStatement:"Build a YouTube-style video browser using the YouTube Data API v3. Show a grid of trending or searched videos with thumbnail, title, channel name, view count, and upload date. Clicking a video opens a detail page with the embedded player, video description, and a list of related videos. Implement a search bar that fetches results in real time.",
       explanation:"Practice working with a real production API with an API key, building a multi-page SPA with React Router, and rendering dynamic lists of media content with lazy loading.",
       badge:"Intermediate", color:"#f59e0b", xp:50, techHint:"React + YouTube Data API v3",
       features:["Video grid","YouTube player","Search","Related videos"] },
     { id:"fb-p-i3", title:"Twitter/X Clone",
-      desc:"A social feed app where users post, like, and follow — mirroring Twitter's core.",
+      desc:"A social feed app where users post, like, and follow - mirroring Twitter's core.",
       problemStatement:"Build a Twitter/X-style social feed with user authentication. After login, users see a feed of posts from people they follow. They can create posts (text, max 280 chars), like posts, follow/unfollow users, and view any user's profile page with their post history. Use localStorage or a simple backend for persistence.",
       explanation:"Practice component-based architecture, state management for a dynamic feed, optimistic UI updates for likes, and implementing a follow/unfollow relationship between users.",
       badge:"Intermediate", color:"#f59e0b", xp:50, techHint:"React + localStorage or Firebase",
       features:["Post feed","Like system","Follow/unfollow","User profiles"] },
     { id:"fb-p-i4", title:"Spotify Playlist Manager",
-      desc:"Browse your Spotify playlists and manage tracks — using the Spotify Web API.",
+      desc:"Browse your Spotify playlists and manage tracks - using the Spotify Web API.",
       problemStatement:"Build a Spotify playlist manager using OAuth 2.0 authentication with the Spotify Web API. After login, display the user's playlists. Clicking a playlist shows all tracks with cover art, duration, and artist. Allow the user to remove tracks from playlists and search for new tracks to add. Show the currently playing track if any.",
       explanation:"Practice OAuth 2.0 authorization flow, making authenticated API requests with Bearer tokens, and implementing CRUD operations on playlist tracks using Spotify's API endpoints.",
       badge:"Intermediate", color:"#f59e0b", xp:50, techHint:"React + Spotify Web API + OAuth 2.0",
       features:["OAuth login","Playlist display","Track management","Search & add"] },
     { id:"fb-p-i5", title:"Reddit Clone",
-      desc:"A community discussion board with posts, votes, and comments — like Reddit.",
+      desc:"A community discussion board with posts, votes, and comments - like Reddit.",
       problemStatement:"Build a Reddit-style discussion board where users can create topic communities (subreddits), post text or links, upvote/downvote posts, comment on posts, and sort by Hot/New/Top. Show vote scores next to each post. Implement user accounts with post/comment history. Use a database for persistence.",
-      explanation:"Practice relational data modeling (users → posts → comments), vote aggregation queries, and implementing a sorting algorithm (hot score = upvotes - downvotes / age).",
+      explanation:"Practice relational data modeling (users -> posts -> comments), vote aggregation queries, and implementing a sorting algorithm (hot score = upvotes - downvotes / age).",
       badge:"Intermediate", color:"#f59e0b", xp:50, techHint:"Next.js + MongoDB",
       features:["Communities","Posts & voting","Comments","Sort by Hot/New/Top"] },
     { id:"fb-p-i6", title:"Trello Clone",
-      desc:"A Kanban task board with drag-and-drop — mirroring Trello.",
+      desc:"A Kanban task board with drag-and-drop - mirroring Trello.",
       problemStatement:"Build a Trello-style kanban board where users create boards, add columns (lists), and add cards to columns. Cards can be dragged between columns using drag-and-drop. Each card has a title, description, due date, and color label. Support multiple boards per user, with board data persisted in localStorage or a database.",
-      explanation:"Practice the HTML5 Drag and Drop API or react-beautiful-dnd, complex nested state management (boards → columns → cards), and CRUD operations at multiple levels.",
+      explanation:"Practice the HTML5 Drag and Drop API or react-beautiful-dnd, complex nested state management (boards -> columns -> cards), and CRUD operations at multiple levels.",
       badge:"Intermediate", color:"#f59e0b", xp:50, techHint:"React + react-beautiful-dnd + localStorage",
       features:["Boards & columns","Drag-and-drop cards","Card details","Multiple boards"] },
   ],
   Advanced: [
     { id:"fb-p-a1", title:"Netflix Clone",
-      desc:"A video streaming platform with auth, genres, and movie details — like Netflix.",
+      desc:"A video streaming platform with auth, genres, and movie details - like Netflix.",
       problemStatement:"Build a Netflix-style streaming platform using the TMDB API for movie/show data. Implement user authentication with JWT. Show a hero banner with a featured movie, genre rows with horizontally scrollable movie cards, and a detail page for each title (trailer via YouTube API, cast, ratings). Add a My List feature to save favorites. Deploy to Vercel.",
       explanation:"Practice JWT auth with refresh tokens, TMDB API integration, video embedding, and implementing smooth horizontal scroll carousels. Use React Query or SWR for efficient data fetching and caching.",
       badge:"Advanced", color:"#ef4444", xp:80, techHint:"Next.js + MongoDB + TMDB API + JWT",
@@ -177,7 +177,7 @@ const FALLBACK: Record<string, any[]> = {
     { id:"fb-p-a2", title:"Food Delivery App",
       desc:"A Zomato/Swiggy-style food ordering platform with real-time order tracking.",
       problemStatement:"Build a food delivery app with three user roles: customer, restaurant owner, and delivery agent. Customers browse restaurants, add items to cart, place orders, and track delivery status in real time. Restaurant owners manage their menu and incoming orders. Delivery agents see assigned orders and update delivery status. Use WebSockets for real-time order status updates.",
-      explanation:"Practice role-based access control, WebSocket-driven real-time status updates, complex relational data (users → orders → order items → restaurants), and multi-panel dashboards for different user roles.",
+      explanation:"Practice role-based access control, WebSocket-driven real-time status updates, complex relational data (users -> orders -> order items -> restaurants), and multi-panel dashboards for different user roles.",
       badge:"Advanced", color:"#ef4444", xp:80, techHint:"Next.js + PostgreSQL + Socket.io",
       features:["3 user roles","Cart & checkout","Real-time order tracking","Restaurant dashboard"] },
     { id:"fb-p-a3", title:"LinkedIn Clone",
@@ -187,13 +187,13 @@ const FALLBACK: Record<string, any[]> = {
       badge:"Advanced", color:"#ef4444", xp:80, techHint:"Next.js + PostgreSQL + Socket.io",
       features:["Profile & connections","News feed","Jobs board","Real-time messaging"] },
     { id:"fb-p-a4", title:"Online Code Editor",
-      desc:"A browser-based code editor like CodePen — run HTML/CSS/JS in the browser.",
+      desc:"A browser-based code editor like CodePen - run HTML/CSS/JS in the browser.",
       problemStatement:"Build an online code editor with three panels: HTML, CSS, and JavaScript editors. The output panel renders the combined code in a sandboxed iframe that updates in real time as the user types. Support saving pens to a database with shareable URLs, a gallery of public pens, forking others' pens, and syntax highlighting in the editors.",
       explanation:"Practice using CodeMirror or Monaco Editor for syntax highlighting, sandboxed iframe communication for safe code execution, debouncing live preview updates, and generating short shareable URL slugs.",
       badge:"Advanced", color:"#ef4444", xp:80, techHint:"React + MongoDB + CodeMirror",
       features:["HTML/CSS/JS editors","Live preview","Save & share","Syntax highlighting"] },
     { id:"fb-p-a5", title:"Airbnb Clone",
-      desc:"A property listing and booking platform — mirroring Airbnb's core flow.",
+      desc:"A property listing and booking platform - mirroring Airbnb's core flow.",
       problemStatement:"Build an Airbnb-style rental platform where hosts list properties with photos, descriptions, pricing, amenities, and availability calendars. Guests can search by location and date, filter by price/amenities, view property details with a photo gallery, and book available dates. Implement a review system after completed stays and a host/guest messaging system.",
       explanation:"Practice geolocation-based search with a map integration (Leaflet.js), a date availability calendar, image upload to cloud storage (Cloudinary), and a booking conflict detection system.",
       badge:"Advanced", color:"#ef4444", xp:80, techHint:"Next.js + MongoDB + Cloudinary + Leaflet",
@@ -241,7 +241,7 @@ export async function GET() {
           tier: tier.level, projectSolved,
         })
       }
-      // Not enough active — fall through to generate a fresh batch
+      // Not enough active - fall through to generate a fresh batch
     }
 
     // Generate fresh batch (6 so we have buffer for replacements)

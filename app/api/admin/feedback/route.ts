@@ -1,7 +1,7 @@
 /**
  * Admin feedback moderation
- * GET   /api/admin/feedback           — list all feedback
- * PATCH /api/admin/feedback?id=&status= — approve or reject
+ * GET   /api/admin/feedback           - list all feedback
+ * PATCH /api/admin/feedback?id=&status= - approve or reject
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

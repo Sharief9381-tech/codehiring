@@ -121,7 +121,7 @@ export async function POST(request: Request) {
                   }
                 }
               } catch {
-                // API unavailable — use code as name
+                // API unavailable - use code as name
               }
 
               await db.collection("users").insertOne({

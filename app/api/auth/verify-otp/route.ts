@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       }, { status: 400 })
     }
 
-    // Success — mark as verified
+    // Success - mark as verified
     await otps.updateOne({ email }, { $set: { verified: true, verifiedAt: new Date() } })
 
     return NextResponse.json({ success: true })

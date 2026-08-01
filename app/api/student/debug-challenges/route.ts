@@ -1,9 +1,9 @@
 /**
  * GET  /api/student/debug-challenges?lang=Python
  * Returns 3 AI-generated "find and fix the bug" challenges in the chosen language.
- * Basic → Intermediate → Advanced curriculum, infinite progression.
+ * Basic -> Intermediate -> Advanced curriculum, infinite progression.
  *
- * POST ?action=refresh  — force regeneration
+ * POST ?action=refresh  - force regeneration
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

@@ -245,9 +245,9 @@ export function RecruiterDrivesClient() {
                       <div>
                         <h4 className="font-bold text-foreground">{drive.title}</h4>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          {drive.type} · {drive.location}
-                          {drive.salary && ` · ${drive.salary}`}
-                          {drive.openPositions > 1 && ` · ${drive.openPositions} positions`}
+                          {drive.type} . {drive.location}
+                          {drive.salary && ` . ${drive.salary}`}
+                          {drive.openPositions > 1 && ` . ${drive.openPositions} positions`}
                         </p>
                       </div>
                       <span className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold ${cfg.color}`}>
@@ -263,7 +263,7 @@ export function RecruiterDrivesClient() {
                         </div>
                       ))}
                     </div>
-                    <p className="text-[10px] text-muted-foreground">Step {step + 1} of 11 · {STEPS[step] || "Completed"}</p>
+                    <p className="text-[10px] text-muted-foreground">Step {step + 1} of 11 . {STEPS[step] || "Completed"}</p>
 
                     <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1"><Users className="h-3 w-3" />{drive.applicationCount || 0} applied</span>

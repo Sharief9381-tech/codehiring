@@ -1,6 +1,6 @@
 /**
- * GET  /api/student/discussions        — list posts (tag, sort, page)
- * POST /api/student/discussions        — create a new post
+ * GET  /api/student/discussions        - list posts (tag, sort, page)
+ * POST /api/student/discussions        - create a new post
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

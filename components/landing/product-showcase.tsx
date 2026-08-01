@@ -22,7 +22,7 @@ const STEPS = [
     id: "score",
     tag: "02 / Platform",
     headline: "Skill score updates instantly",
-    sub: "CodeHiring Score recalculates across difficulty, rating, streak and GitHub activity — a single verified number.",
+    sub: "CodeHiring Score recalculates across difficulty, rating, streak and GitHub activity - a single verified number.",
     accent: "blue",
     icon: TrendingUp,
     visual: <ScoreVisual />,
@@ -31,7 +31,7 @@ const STEPS = [
     id: "college",
     tag: "03 / College",
     headline: "College tracks every placement",
-    sub: "TPOs see real-time analytics — who's placed, who's interviewing, which branch is leading. No spreadsheets.",
+    sub: "TPOs see real-time analytics - who's placed, who's interviewing, which branch is leading. No spreadsheets.",
     accent: "teal",
     icon: GraduationCap,
     visual: <CollegeVisual />,
@@ -86,7 +86,7 @@ function SolveVisual() {
           <span className="ml-2 text-[10px] text-zinc-600 font-mono">two-sum.py</span>
         </div>
         <div className="p-4 font-mono text-[11px] leading-relaxed">
-          <p className="text-zinc-600"># Two Sum — Medium</p>
+          <p className="text-zinc-600"># Two Sum - Medium</p>
           <p className="text-violet-300">def <span className="text-blue-300">twoSum</span><span className="text-zinc-400">(nums, target):</span></p>
           <p className="text-zinc-400 pl-4">seen = {"{}"}</p>
           <p className="text-zinc-400 pl-4"><span className="text-violet-300">for</span> i, n <span className="text-violet-300">in</span> <span className="text-blue-300">enumerate</span>(nums):</p>
@@ -184,7 +184,7 @@ function ScoreVisual() {
         <Sparkles className="h-5 w-5 text-blue-400 shrink-0" />
         <div>
           <p className="text-xs font-bold text-white">Score recalculated</p>
-          <p className="text-[10px] text-zinc-500">738 → <span className="text-blue-400 font-bold">742</span> · +4 points</p>
+          <p className="text-[10px] text-zinc-500">738 -> <span className="text-blue-400 font-bold">742</span> . +4 points</p>
         </div>
         <TrendingUp className="h-4 w-4 text-emerald-400 ml-auto" />
       </motion.div>
@@ -205,7 +205,7 @@ function DiscoverVisual() {
         <div className="bg-gradient-to-r from-amber-500/12 to-orange-500/5 px-4 py-3">
           <div className="flex items-center justify-between">
             <p className="text-xs font-bold text-amber-400">🤖 AI Talent Match</p>
-            <span className="text-[10px] text-zinc-600">SDE Intern · Backend</span>
+            <span className="text-[10px] text-zinc-600">SDE Intern . Backend</span>
           </div>
         </div>
         <div className="p-3 space-y-2">
@@ -224,7 +224,7 @@ function DiscoverVisual() {
                   </div>
                   <div>
                     <p className={`text-[11px] font-bold ${c.highlight ? "text-white" : "text-zinc-300"}`}>{c.name}</p>
-                    <p className="text-[9px] text-zinc-600">{c.college} · {c.solved} solved</p>
+                    <p className="text-[9px] text-zinc-600">{c.college} . {c.solved} solved</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -243,7 +243,7 @@ function DiscoverVisual() {
         <Users className="h-4 w-4 text-emerald-400 shrink-0" />
         <div>
           <p className="text-xs font-bold text-white">Arjun Sharma shortlisted</p>
-          <p className="text-[10px] text-zinc-500">97% match · Verified skills · No resume needed</p>
+          <p className="text-[10px] text-zinc-500">97% match . Verified skills . No resume needed</p>
         </div>
       </motion.div>
     </div>
@@ -268,13 +268,13 @@ function HiredVisual() {
               <Trophy className="h-5 w-5 text-emerald-400" />
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Technical Round — Arjun Sharma</p>
-              <p className="text-xs text-zinc-500 mt-0.5">Tomorrow · 10:00 AM · Google Meet</p>
+              <p className="text-sm font-bold text-white">Technical Round - Arjun Sharma</p>
+              <p className="text-xs text-zinc-500 mt-0.5">Tomorrow . 10:00 AM . Google Meet</p>
             </div>
           </div>
           <div className="space-y-1.5 text-[11px]">
             {[
-              { label: "Role",       val: "SDE Intern — Backend" },
+              { label: "Role",       val: "SDE Intern - Backend" },
               { label: "Company",    val: "TechCorp India" },
               { label: "Verified by",val: "CodeHiring Score: 742" },
             ].map(({ label, val }) => (
@@ -294,7 +294,7 @@ function HiredVisual() {
         <Zap className="h-5 w-5 text-amber-400 shrink-0" />
         <div>
           <p className="text-xs font-bold text-white">Hired in 4 hours</p>
-          <p className="text-[10px] text-zinc-500">From problem solved → interview booked</p>
+          <p className="text-[10px] text-zinc-500">From problem solved -> interview booked</p>
         </div>
         <Star className="h-4 w-4 text-amber-400 ml-auto fill-amber-400" />
       </motion.div>
@@ -361,7 +361,7 @@ function CollegeVisual() {
         <span className="text-xl shrink-0">🏆</span>
         <div>
           <p className="text-xs font-bold text-white">Drive completed</p>
-          <p className="text-[10px] text-zinc-500">12 students placed · Data auto-updated</p>
+          <p className="text-[10px] text-zinc-500">12 students placed . Data auto-updated</p>
         </div>
       </motion.div>
     </div>
@@ -415,14 +415,14 @@ export function ProductShowcase() {
             See CodeHiring in Action
           </h2>
           <p className="text-zinc-500 max-w-md mx-auto text-sm leading-relaxed">
-            From first keystroke to hired — the entire hiring loop runs on verified skill data.
+            From first keystroke to hired - the entire hiring loop runs on verified skill data.
           </p>
         </div>
 
         {/* Scroll-driven layout */}
         <div ref={containerRef} className="relative">
 
-          {/* Sticky progress indicator — left rail */}
+          {/* Sticky progress indicator - left rail */}
           <div className="hidden lg:flex flex-col gap-0 absolute -left-12 top-0 bottom-0 justify-center">
             <div className="relative flex flex-col gap-6 items-center">
               {/* Spine */}
@@ -540,7 +540,7 @@ export function ProductShowcase() {
               </motion.div>
               <h3 className="text-2xl font-black text-white mb-2">The entire loop. Automated.</h3>
               <p className="text-zinc-500 text-sm max-w-sm mx-auto mb-6">
-                Student solves a problem → Score updates → Recruiter finds them → Interview booked.
+                Student solves a problem -> Score updates -> Recruiter finds them -> Interview booked.
                 No resume. No guessing. Just proof.
               </p>
               <div className="flex items-center justify-center gap-3 flex-wrap">

@@ -116,16 +116,16 @@ export function CollegeReports() {
         </CardHeader>
         <CardContent className="space-y-2">
           {[
-            { name: "Placement Report 2025 — PDF", date: "Jan 15, 2026", size: "2.4 MB" },
-            { name: "Department Report 2025 — Excel", date: "Jan 10, 2026", size: "1.1 MB" },
-            { name: "Skill Analysis 2025 — CSV", date: "Jan 5, 2026", size: "0.8 MB" },
+            { name: "Placement Report 2025 - PDF", date: "Jan 15, 2026", size: "2.4 MB" },
+            { name: "Department Report 2025 - Excel", date: "Jan 10, 2026", size: "1.1 MB" },
+            { name: "Skill Analysis 2025 - CSV", date: "Jan 5, 2026", size: "0.8 MB" },
           ].map(file => (
             <div key={file.name} className="flex items-center justify-between py-2 border-b border-border/40 last:border-0">
               <div className="flex items-center gap-2">
                 <FileText className="h-4 w-4 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium">{file.name}</p>
-                  <p className="text-xs text-muted-foreground">{file.date} · {file.size}</p>
+                  <p className="text-xs text-muted-foreground">{file.date} . {file.size}</p>
                 </div>
               </div>
               <Button variant="ghost" size="sm">

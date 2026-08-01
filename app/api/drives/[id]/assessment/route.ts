@@ -1,6 +1,6 @@
 /**
- * POST /api/drives/[id]/assessment — Step 6: Create/attach assessment to drive
- * GET  — fetch assessment config for a drive
+ * POST /api/drives/[id]/assessment - Step 6: Create/attach assessment to drive
+ * GET  - fetch assessment config for a drive
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"

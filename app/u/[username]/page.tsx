@@ -143,7 +143,7 @@ export default async function PublicProfilePage({ params }: Props) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { label: "Problems Solved", value: totalProblems, icon: Code2, color: "text-blue-500", bg: "bg-blue-500/10" },
-            { label: "Highest Rating", value: highestRating || "—", icon: Star, color: "text-amber-500", bg: "bg-amber-500/10" },
+            { label: "Highest Rating", value: highestRating || "-", icon: Star, color: "text-amber-500", bg: "bg-amber-500/10" },
             { label: "GitHub Contributions", value: githubContributions, icon: GitBranch, color: "text-green-500", bg: "bg-green-500/10" },
             { label: "Contests", value: contests, icon: Trophy, color: "text-purple-500", bg: "bg-purple-500/10" },
           ].map((item) => (

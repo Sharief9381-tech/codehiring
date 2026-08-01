@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { getDatabase } from "@/lib/database"
 
-// Short cache — 30 seconds only, always try real DB first
+// Short cache - 30 seconds only, always try real DB first
 let cache: { data: any; at: number; isReal: boolean } | null = null
 const CACHE_MS = 30_000
 
@@ -42,7 +42,7 @@ export async function GET() {
     return NextResponse.json(data)
   } catch (err) {
     console.error("Public stats error:", err)
-    // Never cache fallback data — always retry DB next request
+    // Never cache fallback data - always retry DB next request
     return NextResponse.json({
       students: 0, companies: 0, problems: 0,
       platforms: 8, colleges: 0, placements: 0,

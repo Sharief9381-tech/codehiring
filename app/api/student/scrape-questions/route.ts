@@ -77,7 +77,7 @@ async function fetchPageText(url: string): Promise<string> {
     })
     if (!res.ok) return ""
     const html = await res.text()
-    // Strip HTML tags, scripts, styles — keep readable text
+    // Strip HTML tags, scripts, styles - keep readable text
     return html
       .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
       .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
@@ -89,7 +89,7 @@ async function fetchPageText(url: string): Promise<string> {
       .replace(/&#?\w+;/g, " ")
       .replace(/\s{3,}/g, "\n")
       .trim()
-      .slice(0, 8000) // keep first 8k chars — most questions are near top
+      .slice(0, 8000) // keep first 8k chars - most questions are near top
   } catch {
     return ""
   }
@@ -114,7 +114,7 @@ ${rawText.slice(0, 5000)}
 
 TASK:
 1. Extract up to ${count} real MCQ questions from the text above
-2. If you find real questions, extract them exactly — don't change the question text
+2. If you find real questions, extract them exactly - don't change the question text
 3. If the text doesn't have enough questions, generate NEW ones in the EXACT same style, difficulty, and topic
 4. Make sure you return EXACTLY ${count} questions total
 5. Each question must have exactly 4 options with one correct answer
