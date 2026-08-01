@@ -882,7 +882,7 @@ const TOPIC_QUIZZES: Record<string, { q: string; opts: string[]; ans: number; ex
     { q: "Which loop runs a set number of times?", opts: ["while", "for", "do-while", "repeat"], ans: 1, explain: "'for' loop is typically used for a known number of iterations." },
   ],
   dsa: [
-    { q: "What is the time complexity of binary search?", opts: ["O(n)", "O(log n)", "O(nÂ²)", "O(1)"], ans: 1, explain: "Binary search halves the search space each step â€” O(log n)." },
+    { q: "What is the time complexity of binary search?", opts: ["O(n)", "O(log n)", "O(n²)", "O(1)"], ans: 1, explain: "Binary search halves the search space each step â€” O(log n)." },
     { q: "Which data structure uses LIFO?", opts: ["Queue", "Stack", "Array", "Linked List"], ans: 1, explain: "Stack follows Last In First Out (LIFO) principle." },
     { q: "Which is NOT a linear data structure?", opts: ["Array", "Tree", "Queue", "Linked List"], ans: 1, explain: "Trees are hierarchical (non-linear). Others are linear." },
     { q: "What does Big O notation measure?", opts: ["Memory only", "Time only", "Worst-case performance", "Best-case performance"], ans: 2, explain: "Big O describes the worst-case time/space complexity." },
