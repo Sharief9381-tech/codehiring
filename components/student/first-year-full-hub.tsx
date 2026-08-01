@@ -308,31 +308,59 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
 
 const SOFT_SKILLS = [
   {
-    id: "comm-basics", title: "Technical Communication Basics",
-    desc: "How to explain code, ask good questions, write clear emails to teammates.",
+    id: "comm-basics", title: "How to Speak So People Listen",
+    desc: "Julian Treasure's viral TED talk — 7 deadly sins of speaking and how to fix them. Essential for standups, interviews and demos.",
     duration: "10 min", badge: "Communicator",
-    steps: ["What is technical communication?", "How to ask a good question", "Writing clear commit messages", "Explaining your code to others"],
-    videoUrl: "https://www.youtube.com/watch?v=zJFNHH4XKCE",
+    steps: ["Identify speaking habits that turn people off", "Use HAIL: Honesty, Authenticity, Integrity, Love", "Control your vocal tone and pace", "Apply these in daily standups and code reviews"],
+    videoUrl: "https://www.youtube.com/watch?v=eIho2S0ZahI",
   },
   {
-    id: "teamwork", title: "Working in a Dev Team",
-    desc: "Git collaboration, code reviews, pair programming â€” what it's really like.",
-    duration: "8 min", badge: "Team Player",
-    steps: ["Git for teams: branches and PRs", "How code reviews work", "Pair programming basics", "Slack/Discord etiquette for devs"],
-    videoUrl: "https://www.youtube.com/watch?v=MnUd31TvBoU",
+    id: "conversation", title: "10 Ways to Have Better Conversations",
+    desc: "Celeste Headlee's TED talk — how to actively listen, ask good questions, and connect with anyone you meet.",
+    duration: "12 min", badge: "Communicator",
+    steps: ["Be present — put down your phone", "Ask open-ended questions", "Don't equate your experience with theirs", "Listen to understand, not to reply"],
+    videoUrl: "https://www.youtube.com/watch?v=saXfavo1OQo",
   },
   {
-    id: "growth-mindset", title: "Growth Mindset for Developers",
-    desc: "Why debugging is learning. How to stay motivated when things are hard.",
-    duration: "7 min", badge: "Growth Mindset",
-    steps: ["Fixed vs growth mindset", "How to deal with imposter syndrome", "Celebrating small wins", "Building consistency over perfection"],
+    id: "body-language", title: "Body Language Shapes Who You Are",
+    desc: "Amy Cuddy's famous TED talk on power poses, presence and confidence. Perfect before interviews.",
+    duration: "11 min", badge: "Confident",
+    steps: ["Understand how posture affects confidence", "Use power poses before high-stakes situations", "Project presence without words", "Apply in technical interviews and group discussions"],
+    videoUrl: "https://www.youtube.com/watch?v=Ks-_Mh1QhMc",
+  },
+  {
+    id: "public-speaking", title: "How to Speak — MIT Lecture",
+    desc: "Patrick Winston's legendary MIT lecture on speaking and presenting. One of the most watched talks on communication.",
+    duration: "60 min", badge: "Speaker",
+    steps: ["Start strong — no jokes at the beginning", "Build a fence around your ideas", "Use verbal punctuation and ask questions", "Inspire people with your talk"],
+    videoUrl: "https://www.youtube.com/watch?v=Unzc731iCUY",
+  },
+  {
+    id: "growth-mindset", title: "The Power of Believing You Can Improve",
+    desc: "Carol Dweck on growth mindset — the idea that changes how you approach learning, debugging and failure.",
+    duration: "10 min", badge: "Growth Mindset",
+    steps: ["Understand fixed vs growth mindset", "Reframe mistakes as learning opportunities", "Use 'not yet' instead of 'I failed'", "Praise effort not talent — apply to your own self-talk"],
     videoUrl: "https://www.youtube.com/watch?v=_X0mgOOSpLU",
   },
   {
-    id: "resume-basics", title: "Start Your Achievement Journal",
-    desc: "Document what you build â€” not for jobs yet, just for self-awareness and growth.",
-    duration: "5 min", badge: "Self-Aware",
-    steps: ["Why document your journey?", "What counts as an achievement?", "Simple template: What I built today", "GitHub as your portfolio"],
+    id: "teamwork", title: "Collaboration & Code Reviews",
+    desc: "How real dev teams work — branches, PRs, pair programming, and giving/receiving feedback professionally.",
+    duration: "8 min", badge: "Team Player",
+    steps: ["Git branching and pull request workflow", "How to give constructive code review feedback", "Pair programming basics and etiquette", "Slack/Discord professional communication"],
+    videoUrl: "https://www.youtube.com/watch?v=MnUd31TvBoU",
+  },
+  {
+    id: "networking", title: "Build Your Network Before You Need It",
+    desc: "How to connect with seniors, professors and developers on LinkedIn and in person — starting from year 1.",
+    duration: "8 min", badge: "Networker",
+    steps: ["Why networking matters in year 1 and 2", "Optimize your LinkedIn profile as a student", "How to send a professional cold message", "Give value first — share, comment, contribute"],
+    videoUrl: "https://www.youtube.com/watch?v=ntqfzQ4OuJ8",
+  },
+  {
+    id: "resume-basics", title: "Document Your Developer Journey",
+    desc: "Build a habit of tracking what you learn and build — your GitHub profile, README writing, and achievement log.",
+    duration: "6 min", badge: "Self-Aware",
+    steps: ["Why document your journey from day 1?", "What counts as an achievement at your stage?", "Daily log template: what I built today", "Turn your GitHub into a visual portfolio"],
     videoUrl: "https://www.youtube.com/watch?v=s-TZCBdJv5A",
   },
 ]
@@ -1958,21 +1986,14 @@ export function FirstYearFullHub({ student }: { student: any }) {
           <p className="text-sm text-muted-foreground">Bite-sized modules on communication, teamwork, and growth mindset. Each takes under 10 minutes.</p>
           <div className="grid gap-4 sm:grid-cols-2">
             {SOFT_SKILLS.map(skill => {
-              const done = completedSoftSkills.includes(skill.id)
               return (
-                <div key={skill.id} className={`rounded-2xl border p-5 space-y-3 transition-all ${done ? "border-emerald-500/20 bg-emerald-500/5" : "border-border bg-card"}`}>
+                <div key={skill.id} className="rounded-2xl border border-border bg-card p-5 space-y-3 transition-all hover:border-primary/30">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="font-semibold text-foreground">{skill.title}</p>
-                        {done && <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />}
-                      </div>
+                      <p className="font-semibold text-foreground mb-1">{skill.title}</p>
                       <p className="text-xs text-muted-foreground">{skill.desc}</p>
                     </div>
-                    <div className="flex flex-col items-end gap-1.5 shrink-0">
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 font-semibold">{skill.duration}</span>
-                      {done && <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">{skill.badge}</span>}
-                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 font-semibold shrink-0">{skill.duration}</span>
                   </div>
                   <div className="space-y-1.5">
                     {skill.steps.map((s, i) => (
@@ -1982,19 +2003,11 @@ export function FirstYearFullHub({ student }: { student: any }) {
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-2 pt-1">
-                    <a href={skill.videoUrl} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20 transition-all">
-                      <svg viewBox="0 0 24 24" className="h-3 w-3 shrink-0" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                      Watch
-                    </a>
-                    {!done && (
-                      <button onClick={() => setCompletedSoftSkills(p => [...p, skill.id])}
-                        className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20 transition-all">
-                        <CheckCircle2 className="h-3 w-3" /> Mark Done
-                      </button>
-                    )}
-                  </div>
+                  <a href={skill.videoUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20 transition-all">
+                    <svg viewBox="0 0 24 24" className="h-3 w-3 shrink-0" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    Watch on YouTube
+                  </a>
                 </div>
               )
             })}
