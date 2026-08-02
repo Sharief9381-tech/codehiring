@@ -243,7 +243,7 @@ export function AdminBlog() {
         ) : posts.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-muted-foreground mb-4">No posts yet.</p>
-            <button onClick={openNew} className="text-sm text-primary hover:underline">Create your first post -></button>
+            <button onClick={openNew} className="text-sm text-primary hover:underline">Create your first post &rarr;</button>
           </div>
         ) : (
           <div className="space-y-3">

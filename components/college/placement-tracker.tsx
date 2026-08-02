@@ -369,7 +369,7 @@ export function PlacementTracker() {
                       <span>Avg Problems: <strong className="text-foreground">{dept.avgProblems}</strong></span>
                       <span>Avg Rating: <strong className="text-foreground">{dept.avgRating || "-"}</strong></span>
                     </div>
-                    <p className="text-xs text-primary font-medium text-right">View students -></p>
+                    <p className="text-xs text-primary font-medium text-right">View students &rarr;</p>
                   </CardContent>
                 </Card>
               ))}
