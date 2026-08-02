@@ -1401,7 +1401,7 @@ export default function PrepHubPage() {
                     <button onClick={() => setActiveTopic({ id: t.id, name: t.name })}
                       className="w-full h-8 rounded-lg text-xs font-semibold text-white mt-1"
                       style={{ background: `linear-gradient(135deg,${t.color || pathMeta.color},${t.color || pathMeta.color}cc)` }}>
-                      Practice {t.name} ->
+                      Practice {t.name} &rarr;
                     </button>
                   </div>
                 )

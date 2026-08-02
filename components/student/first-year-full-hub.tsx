@@ -726,7 +726,7 @@ function CommunityDiscussions({ student }: { student: any }) {
           <input
             value={newTitle}
             onChange={e => setNewTitle(e.target.value)}
-            placeholder="Title â€" what's this about?"
+            placeholder="Title - what's this about?"
             className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
           />
           <textarea
