@@ -294,7 +294,7 @@ function HiredVisual() {
         <Zap className="h-5 w-5 text-amber-400 shrink-0" />
         <div>
           <p className="text-xs font-bold text-white">Hired in 4 hours</p>
-          <p className="text-[10px] text-zinc-500">From problem solved -> interview booked</p>
+          <p className="text-[10px] text-zinc-500">From problem solved → interview booked</p>
         </div>
         <Star className="h-4 w-4 text-amber-400 ml-auto fill-amber-400" />
       </motion.div>
@@ -540,7 +540,7 @@ export function ProductShowcase() {
               </motion.div>
               <h3 className="text-2xl font-black text-white mb-2">The entire loop. Automated.</h3>
               <p className="text-zinc-500 text-sm max-w-sm mx-auto mb-6">
-                Student solves a problem -> Score updates -> Recruiter finds them -> Interview booked.
+                Student solves a problem &rarr; Score updates &rarr; Recruiter finds them &rarr; Interview booked.
                 No resume. No guessing. Just proof.
               </p>
               <div className="flex items-center justify-center gap-3 flex-wrap">

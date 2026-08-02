@@ -590,7 +590,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
           </div>
           <Button size="sm" onClick={onEdit} variant="outline"
             className="border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 shrink-0">
-            Improve Now ->
+            Improve Now →
           </Button>
         </motion.div>
       )}

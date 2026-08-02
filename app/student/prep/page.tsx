@@ -1201,7 +1201,7 @@ function LearningPathsPlaceholder() {
       <a href="/student/learn#learning"
         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white"
         style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-        Go to Learning Paths ->
+        Go to Learning Paths →
       </a>
     </div>
   )
@@ -1354,8 +1354,8 @@ export default function PrepHubPage() {
               {pathMeta.topics.map((t: any) => {
                 const notes: Record<string, { formula?: string; points: string[]; example?: string }> = {
                   "percentages": { formula: "Percentage = (Part / Whole) × 100", points: ["Percentage increase = (New − Old)/Old × 100","Successive discounts: a% + b% = (a+b − ab/100)%","Profit% = (Profit/CP) × 100"], example: "If CP=200 and SP=250, Profit% = 50/200×100 = 25%" },
-                  "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount -> SP=400" },
-                  "time-work": { formula: "Work = Rate × Time  ->  1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 -> together = 12×18/30 = 7.2 days" },
+                  "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount → SP=400" },
+                  "time-work": { formula: "Work = Rate × Time → 1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 → together = 12×18/30 = 7.2 days" },
                   "speed-distance": { formula: "Speed = Distance / Time", points: ["Relative speed (same dir): |S1−S2|","Relative speed (opp dir): S1+S2","Average speed = 2S1×S2/(S1+S2) for equal distances"], example: "Train 300m at 60km/h passes pole in 300/60×3.6 = 18s" },
                   "probability": { formula: "P(E) = Favourable / Total outcomes", points: ["P(A∪B) = P(A)+P(B)−P(A∩B)","P(A') = 1 − P(A)","Independent events: P(A∩B)=P(A)×P(B)"], example: "2 dice: P(sum=7) = 6/36 = 1/6" },
                   "arrays": { points: ["Access O(1), Insert/Delete O(n)","Two-pointer for sorted arrays","Kadane's algorithm for max subarray","Prefix sums for range queries"], formula: "prefix[i] = prefix[i-1] + arr[i]", example: "Max subarray [−2,1,−3,4,−1,2] -> 6 (Kadane)" },
@@ -1367,7 +1367,7 @@ export default function PrepHubPage() {
                   "os": { points: ["Scheduling: FCFS, SJF, Round Robin, Priority","Deadlock: Mutual exclusion, Hold & Wait, No preemption, Circular wait","Paging: page table maps virtual->physical","Semaphore: binary (mutex) and counting"], formula: "Turnaround = Completion − Arrival; Waiting = Turnaround − Burst", example: "Round Robin Q=3: P1(10),P2(5),P3(8) -> context switch every 3ms" },
                   "cn": { points: ["OSI 7 layers: Physical->Data Link->Network->Transport->Session->Presentation->Application","TCP: reliable, connection-oriented; UDP: fast, connectionless","IP classes: A(0−127) B(128−191) C(192−223)","Subnetting: borrow bits from host portion"], formula: "Subnet mask /24 = 255.255.255.0 -> 254 hosts", example: "HTTP=80, HTTPS=443, FTP=21, SSH=22, DNS=53" },
                   "oops": { points: ["4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism","Overloading: same name, different params (compile-time)","Overriding: same signature, different class (runtime)","Interface vs Abstract: interface = pure contract"], example: "Animal->speak() overridden by Dog->speak() 'Woof'" },
-                  "java": { points: ["JVM: bytecode -> machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
+                  "java": { points: ["JVM: bytecode → machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
                   "sql": { points: ["DDL: CREATE, ALTER, DROP; DML: INSERT, UPDATE, DELETE, SELECT","GROUP BY + HAVING for aggregates","Subquery vs JOIN: JOIN faster on indexed columns","RANK(), ROW_NUMBER(), DENSE_RANK() for window functions"], formula: "SELECT dept, COUNT(*) FROM emp GROUP BY dept HAVING COUNT(*)>5", example: "INNER JOIN: only matching rows; LEFT JOIN: all left rows + matched right" },
                 }
                 const note = notes[t.id] || { points: ["Study this topic systematically", "Practice with timed questions", "Review formulas and examples"] }
