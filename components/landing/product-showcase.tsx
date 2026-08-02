@@ -184,7 +184,7 @@ function ScoreVisual() {
         <Sparkles className="h-5 w-5 text-blue-400 shrink-0" />
         <div>
           <p className="text-xs font-bold text-white">Score recalculated</p>
-          <p className="text-[10px] text-zinc-500">738 -> <span className="text-blue-400 font-bold">742</span> . +4 points</p>
+          <p className="text-[10px] text-zinc-500">738 &rarr; <span className="text-blue-400 font-bold">742</span> . +4 points</p>
         </div>
         <TrendingUp className="h-4 w-4 text-emerald-400 ml-auto" />
       </motion.div>
