@@ -88,7 +88,7 @@ export function PlacementDrives() {
   const inp = "bg-background border border-border rounded-xl px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary/30"
   const lbl = "text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block"
 
-  // ── Applicant list view ─────────────────────────────────────────
+  // -- Applicant list view -----------------------------------------
   if (selectedDrive) return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
@@ -143,7 +143,7 @@ export function PlacementDrives() {
     </div>
   )
 
-  // ── Drive list ──────────────────────────────────────────────────
+  // -- Drive list --------------------------------------------------
   const totalApplied = drives.reduce((s, d) => s + (d.applicationCount || 0), 0)
   const activeDrives = drives.filter(d => d.status === "active").length
 

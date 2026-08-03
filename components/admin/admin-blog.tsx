@@ -103,7 +103,7 @@ export function AdminBlog() {
     load()
   }
 
-  /* ── EDIT FORM ── */
+  /* -- EDIT FORM -- */
   if (view === "edit" && editing) {
     return (
       <main className="pt-14 min-h-screen bg-background">
@@ -219,7 +219,7 @@ export function AdminBlog() {
     )
   }
 
-  /* ── POST LIST ── */
+  /* -- POST LIST -- */
   return (
     <main className="pt-14 min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-6 py-10">

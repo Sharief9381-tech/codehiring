@@ -677,7 +677,7 @@ export function DashboardClient({ student: initialStudent }: DashboardClientProp
         </div>
       )}
 
-      {/* ── New Hero Section ─────────────────────────────────── */}
+      {/* -- New Hero Section ----------------------------------- */}
       <DashboardHero
         student={student}
         onSync={async () => {

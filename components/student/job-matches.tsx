@@ -140,7 +140,7 @@ export function JobMatches() {
               <Badge className={`text-[10px] px-2 py-0 shrink-0 ${mc.badge}`}>
                 <Star className="h-2.5 w-2.5 mr-0.5" />{job.matchScore}% match
               </Badge>
-              {isApplied && <Badge className="text-[10px] px-2 py-0 bg-emerald-500/15 text-emerald-400 border-emerald-500/20">✓ Applied</Badge>}
+              {isApplied && <Badge className="text-[10px] px-2 py-0 bg-emerald-500/15 text-emerald-400 border-emerald-500/20">v Applied</Badge>}
             </div>
             <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <span className="flex items-center gap-1"><Building2 className="h-3 w-3" />{job.companyName}</span>
@@ -189,7 +189,7 @@ export function JobMatches() {
             className={`h-7 gap-1.5 text-xs ${isApplied ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20" : "bg-primary text-primary-foreground"}`}
             onClick={() => handleApply(job)}>
             {applying === job._id ? <Loader2 className="h-3 w-3 animate-spin" /> :
-              isApplied ? "✓ Applied" : <><ArrowRight className="h-3 w-3" />Apply Now</>}
+              isApplied ? "v Applied" : <><ArrowRight className="h-3 w-3" />Apply Now</>}
           </Button>
         </div>
       </div>

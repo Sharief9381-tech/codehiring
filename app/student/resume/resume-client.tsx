@@ -26,7 +26,7 @@ function fmtBytes(b: number) {
   return `${(b / 1024 / 1024).toFixed(1)} MB`
 }
 
-// ─── Resume HTML builders (unchanged) ────────────────────────────────────────
+// --- Resume HTML builders (unchanged) ----------------------------------------
 function buildTechnicalHTML(s: any): string {
   const platforms = Object.entries(s.linkedPlatforms ?? {}).filter(([,v]:any)=>v?.username)
     .map(([pid,pd]:any)=>{const st=pd.stats??{};const sv=st.totalSolved??st.problemsSolved??0;const rt=st.rating??st.currentRating??0;return`<div class="pr"><span class="pn">${pid.charAt(0).toUpperCase()+pid.slice(1)}</span><span class="pu">@${pd.username}</span>${sv?`<span class="ps">${sv} solved</span>`:""}${rt?`<span class="ps">Rating ${rt}</span>`:""}</div>`}).join("")
@@ -55,7 +55,7 @@ function getTemplateHTML(name: TemplateName, student: any): string {
   return buildTechnicalHTML(student)
 }
 
-// ─── Main component ────────────────────────────────────────────────────────
+// --- Main component --------------------------------------------------------
 export function ResumeClient({ student: init, autoAnalyze = false }: { student: any; autoAnalyze?: boolean }) {
   const [student, setStudent]   = useState<any>(init)
   const [template, setTemplate] = useState<TemplateName>("Technical")
@@ -138,7 +138,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
 
   return (
     <div className="min-h-screen bg-background">
-      {/* ── Header ── */}
+      {/* -- Header -- */}
       <div className="border-b border-border/60 bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -167,7 +167,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
         <div className="grid gap-6 lg:grid-cols-5">
 
-          {/* ── LEFT COLUMN (Upload + Templates) ── */}
+          {/* -- LEFT COLUMN (Upload + Templates) -- */}
           <div className="lg:col-span-2 space-y-4">
 
             {/* Resume Upload Card */}
@@ -310,7 +310,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN (Analysis Results) ── */}
+          {/* -- RIGHT COLUMN (Analysis Results) -- */}
           <div className="lg:col-span-3 space-y-4">
             {!a && !aiLoading && (
               <div className="rounded-2xl border border-dashed border-border bg-card/40 flex flex-col items-center justify-center text-center py-20 px-6">
@@ -387,7 +387,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                   {(a.strengthPoints ?? []).length > 0 && (
                     <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
                       <p className="text-xs font-bold text-emerald-400 mb-2 flex items-center gap-1.5"><Star className="h-3.5 w-3.5" />Strengths</p>
-                      <ul className="space-y-1">{a.strengthPoints.map((s: string, i: number) => <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5"><span className="text-emerald-400 shrink-0">✓</span>{s}</li>)}</ul>
+                      <ul className="space-y-1">{a.strengthPoints.map((s: string, i: number) => <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5"><span className="text-emerald-400 shrink-0">v</span>{s}</li>)}</ul>
                     </div>
                   )}
                 </div>
@@ -397,7 +397,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                   <p className="text-sm font-semibold text-foreground mb-1">ATS Keywords</p>
                   {a.atsReason && <p className="text-xs text-muted-foreground mb-3 italic">{a.atsReason}</p>}
                   <div className="space-y-2">
-                    <div><p className="text-[10px] font-bold text-emerald-400 mb-1.5">✓ FOUND IN RESUME</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.found ?? []).map((k: string) => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{k}</span>)}</div></div>
+                    <div><p className="text-[10px] font-bold text-emerald-400 mb-1.5">v FOUND IN RESUME</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.found ?? []).map((k: string) => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{k}</span>)}</div></div>
                     <div><p className="text-[10px] font-bold text-red-400 mb-1.5">✗ MISSING - ADD THESE</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.missing ?? []).map((k: string) => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">{k}</span>)}</div></div>
                   </div>
                 </div>

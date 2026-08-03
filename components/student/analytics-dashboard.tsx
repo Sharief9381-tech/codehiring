@@ -110,7 +110,7 @@ export function AnalyticsDashboard({ student }: AnalyticsDashboardProps) {
 
   const { aggregatedStats, skillsAnalysis, progressData, platformStats, achievements } = analytics
 
-  // ── Combined stacked chart ────────────────────────────────────────────────
+  // -- Combined stacked chart ------------------------------------------------
   // For each platform build a stacked bar: Easy (green), Medium (amber), Hard (red), Other (slate)
   const combinedData = platformStats
     .filter((p: any) => (p.problems || 0) > 0)

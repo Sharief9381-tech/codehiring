@@ -95,7 +95,7 @@ export default function SecurityPage() {
             href="mailto:security@CodeHiring.io"
             className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 hover:text-amber-500 transition-colors"
           >
-            Report a vulnerability → security@CodeHiring.io
+            Report a vulnerability -> security@CodeHiring.io
           </a>
         </div>
       </div>

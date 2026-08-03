@@ -28,7 +28,7 @@ function useLivePosts() {
   return posts
 }
 
-// ─── animation ───────────────────────────────────────────────────
+// --- animation ---------------------------------------------------
 const fadeUp  = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }
 const stagger = { visible: { transition: { staggerChildren: 0.08 } } }
 
@@ -67,7 +67,7 @@ function formatNum(n: number) {
   return n > 0 ? `${n}+` : "0"
 }
 
-// ─── static data ─────────────────────────────────────────────────
+// --- static data -------------------------------------------------
 const PLATFORMS = [
   { name: "LeetCode",      icon: Code2,    color: "text-amber-400",   bg: "bg-amber-400/10",   desc: "Problems & contests" },
   { name: "GitHub",        icon: Github,   color: "text-slate-300",   bg: "bg-slate-300/10",   desc: "Contributions & repos" },
@@ -127,7 +127,7 @@ const FEATURES = [
   },
 ]
 
-// ─── per-stat component (hook at top level) ───────────────────────
+// --- per-stat component (hook at top level) -----------------------
 function StatItem({ s, loaded, stats }: { s: typeof STAT_META[number]; loaded: boolean; stats: Record<string, number> }) {
   const val   = stats[s.key] ?? 0
   const count = useCountUp(loaded ? val : 0)
@@ -148,7 +148,7 @@ function StatItem({ s, loaded, stats }: { s: typeof STAT_META[number]; loaded: b
   )
 }
 
-// ─── terminal typewriter ──────────────────────────────────────────
+// --- terminal typewriter ------------------------------------------
 function Typewriter({ text, delay = 0 }: { text: string; delay?: number }) {
   const [displayed, setDisplayed] = useState("")
   const [started, setStarted]     = useState(false)
@@ -168,7 +168,7 @@ function Typewriter({ text, delay = 0 }: { text: string; delay?: number }) {
   return <span ref={ref}>{displayed}<span className="animate-pulse text-[var(--sci-fg)]">_</span></span>
 }
 
-// ─── sci-fi grid bg ───────────────────────────────────────────────
+// --- sci-fi grid bg -----------------------------------------------
 function GridBg() {
   return (
     <>
@@ -182,7 +182,7 @@ function GridBg() {
   )
 }
 
-// ─── section wrapper ──────────────────────────────────────────────
+// --- section wrapper ----------------------------------------------
 function Section({ id, children, className = "" }: { id?: string; children: React.ReactNode; className?: string }) {
   return (
     <section id={id} className={`relative py-16 bg-background overflow-hidden ${className}`}>
@@ -192,7 +192,7 @@ function Section({ id, children, className = "" }: { id?: string; children: Reac
   )
 }
 
-// ─── terminal label ───────────────────────────────────────────────
+// --- terminal label -----------------------------------------------
 function TermLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4"
@@ -205,7 +205,7 @@ function TermLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-// ─── tech card ────────────────────────────────────────────────────
+// --- tech card ----------------------------------------------------
 function TechCard({ children, className = "", glow = "cyan" }: { children: React.ReactNode; className?: string; glow?: string }) {
   const glowMap: Record<string, string> = {
     cyan:    "hover:border-[rgb(var(--sci))]/40 hover:shadow-[0_0_30px_rgba(var(--sci),0.1)]",
@@ -220,7 +220,7 @@ function TechCard({ children, className = "", glow = "cyan" }: { children: React
   )
 }
 
-// ─── main ─────────────────────────────────────────────────────────
+// --- main ---------------------------------------------------------
 export function LandingPage() {
   const [data, setData]           = useState<any>(null)
   const [loaded, setLoaded]       = useState(false)

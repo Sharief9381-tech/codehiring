@@ -7,7 +7,7 @@ import {
   Sparkles, Zap, ArrowRight, Trophy, Star, Github, GraduationCap,
 } from "lucide-react"
 
-// ─── Step definitions ─────────────────────────────────────────────────────────
+// --- Step definitions ---------------------------------------------------------
 const STEPS = [
   {
     id: "solve",
@@ -64,7 +64,7 @@ const ACCENT: Record<string, { text: string; border: string; bg: string; glow: s
   amber:   { text: "text-amber-400",   border: "border-amber-500/30",   bg: "bg-amber-500/8",    glow: "shadow-amber-500/20",   dot: "bg-amber-400" },
 }
 
-// ─── Visual components ────────────────────────────────────────────────────────
+// --- Visual components --------------------------------------------------------
 function SolveVisual() {
   const [solved, setSolved] = useState(441)
   const [active, setActive] = useState(false)
@@ -96,7 +96,7 @@ function SolveVisual() {
           <p className="text-zinc-400 pl-8">seen[n] = i</p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: active ? 1 : 0 }} transition={{ duration: 0.3 }}
             className="mt-3 pt-3 border-t border-white/6 flex items-center gap-2">
-            <span className="text-emerald-400">✓</span>
+            <span className="text-emerald-400">v</span>
             <span className="text-emerald-400 font-semibold">Accepted</span>
             <span className="text-zinc-600 ml-auto">Runtime: 48ms</span>
           </motion.div>
@@ -294,7 +294,7 @@ function HiredVisual() {
         <Zap className="h-5 w-5 text-amber-400 shrink-0" />
         <div>
           <p className="text-xs font-bold text-white">Hired in 4 hours</p>
-          <p className="text-[10px] text-zinc-500">From problem solved → interview booked</p>
+          <p className="text-[10px] text-zinc-500">From problem solved &rarr; interview booked</p>
         </div>
         <Star className="h-4 w-4 text-amber-400 ml-auto fill-amber-400" />
       </motion.div>
@@ -358,7 +358,7 @@ function CollegeVisual() {
       <motion.div initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         transition={{ delay: 0.4 }}
         className="flex items-center gap-3 rounded-xl border border-teal-500/20 bg-teal-500/6 px-4 py-3">
-        <span className="text-xl shrink-0">🏆</span>
+        <span className="text-xl shrink-0">*</span>
         <div>
           <p className="text-xs font-bold text-white">Drive completed</p>
           <p className="text-[10px] text-zinc-500">12 students placed . Data auto-updated</p>

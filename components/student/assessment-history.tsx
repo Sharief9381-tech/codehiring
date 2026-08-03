@@ -63,7 +63,7 @@ function RankBadge({ rank }: { rank: number }) {
   return <span className="text-sm font-bold text-muted-foreground">#{rank}</span>
 }
 
-// ─── Leaderboard Panel ────────────────────────────────────────────────────────
+// --- Leaderboard Panel --------------------------------------------------------
 export function AssessmentLeaderboard({ company, companyName, onClose }: {
   company: string; companyName: string; onClose: () => void
 }) {
@@ -163,7 +163,7 @@ export function AssessmentLeaderboard({ company, companyName, onClose }: {
   )
 }
 
-// ─── History Page ─────────────────────────────────────────────────────────────
+// --- History Page -------------------------------------------------------------
 export function AssessmentHistoryPage() {
   const [history, setHistory] = useState<AttemptRecord[]>([])
   const [loading, setLoading] = useState(true)

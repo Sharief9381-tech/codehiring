@@ -126,7 +126,7 @@ export function CompanyNetwork() {
           ))}
         </TabsList>
 
-        {/* ── NETWORK ─────────────────────────────────────────── */}
+        {/* -- NETWORK ------------------------------------------- */}
         <TabsContent value="network" className="space-y-4 mt-4">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
@@ -189,7 +189,7 @@ export function CompanyNetwork() {
           </div>
         </TabsContent>
 
-        {/* ── DISCOVER ────────────────────────────────────────── */}
+        {/* -- DISCOVER ------------------------------------------ */}
         <TabsContent value="discover" className="space-y-4 mt-4">
           <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 p-4 flex items-start gap-3">
             <Sparkles className="h-5 w-5 text-violet-500 shrink-0 mt-0.5" />
@@ -234,7 +234,7 @@ export function CompanyNetwork() {
           </div>
         </TabsContent>
 
-        {/* ── MoU ─────────────────────────────────────────────── */}
+        {/* -- MoU ----------------------------------------------- */}
         <TabsContent value="mou" className="space-y-4 mt-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Manage official agreements and MoU documents</p>
@@ -272,7 +272,7 @@ export function CompanyNetwork() {
           </div>
         </TabsContent>
 
-        {/* ── CRM ─────────────────────────────────────────────── */}
+        {/* -- CRM ----------------------------------------------- */}
         <TabsContent value="crm" className="space-y-4 mt-4">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {PARTNERS.filter(p => p.status === "active").map(p => (
@@ -311,7 +311,7 @@ export function CompanyNetwork() {
           </div>
         </TabsContent>
 
-        {/* ── VISITS ──────────────────────────────────────────── */}
+        {/* -- VISITS -------------------------------------------- */}
         <TabsContent value="visits" className="space-y-4 mt-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Schedule and track campus visits</p>
@@ -352,7 +352,7 @@ export function CompanyNetwork() {
           </div>
         </TabsContent>
 
-        {/* ── TRAINING ────────────────────────────────────────── */}
+        {/* -- TRAINING ------------------------------------------ */}
         <TabsContent value="programs" className="space-y-4 mt-4">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {PROGRAMS.map(prog => {
@@ -388,7 +388,7 @@ export function CompanyNetwork() {
           </div>
         </TabsContent>
 
-        {/* ── ANALYTICS ───────────────────────────────────────── */}
+        {/* -- ANALYTICS ----------------------------------------- */}
         <TabsContent value="analytics" className="space-y-6 mt-4">
           <Card>
             <CardHeader className="pb-3">

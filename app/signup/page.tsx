@@ -17,7 +17,7 @@ const roles = [
   { id: "recruiter" as Role, label: "Recruiter", description: "Find and hire top coding talent with AI matching",                     icon: Briefcase     },
 ]
 
-/* ── shared inline style constants ── */
+/* -- shared inline style constants -- */
 const inputS: React.CSSProperties = {
   background: "rgba(255,255,255,0.05)",
   borderWidth: "1px",
@@ -120,7 +120,7 @@ function SignupForm() {
 
   const set = (k: keyof typeof formData) => (v: string) => setFormData(p => ({ ...p, [k]: v }))
 
-  // ── OTP handlers ──────────────────────────────────────────
+  // -- OTP handlers ------------------------------------------
   const sendOtp = async () => {
     if (!verifyEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(verifyEmail)) {
       setError("Please enter a valid email address"); return
@@ -248,7 +248,7 @@ function SignupForm() {
             </p>
           </div>
 
-          {/* ── EMAIL STEP ── */}
+          {/* -- EMAIL STEP -- */}
           {step === "email" && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {error && (
@@ -271,7 +271,7 @@ function SignupForm() {
             </div>
           )}
 
-          {/* ── OTP STEP ── */}
+          {/* -- OTP STEP -- */}
           {step === "otp" && (
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {error && (
@@ -309,7 +309,7 @@ function SignupForm() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
                 <button type="button" onClick={() => { setStep("email"); setOtp(["","","",""]); setError("") }}
                   style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                  ← Change email
+                  <- Change email
                 </button>
                 <button type="button" onClick={sendOtp} disabled={resendCooldown > 0 || otpSending}
                   style={{ fontSize: 13, color: resendCooldown > 0 ? "rgba(167,139,250,0.35)" : "#a78bfa", background: "none", border: "none", cursor: resendCooldown > 0 ? "not-allowed" : "pointer", padding: 0, fontWeight: 600 }}>
@@ -319,7 +319,7 @@ function SignupForm() {
             </div>
           )}
 
-          {/* ── VERIFIED SUCCESS ── */}
+          {/* -- VERIFIED SUCCESS -- */}
           {step === "verified" && (
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: "16px 0" }}>
               <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(52,211,153,0.15)", border: "2px solid rgba(52,211,153,0.4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -331,7 +331,7 @@ function SignupForm() {
             </div>
           )}
 
-          {/* ── ROLE STEP ── */}
+          {/* -- ROLE STEP -- */}
           {step === "role" && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {roles.map(role => (
@@ -360,7 +360,7 @@ function SignupForm() {
             </div>
           )}
 
-          {/* ── DETAILS STEP ── */}
+          {/* -- DETAILS STEP -- */}
           {step === "details" && (
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {error && (

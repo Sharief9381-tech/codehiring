@@ -27,7 +27,7 @@ interface DashboardSidebarProps {
   user: StudentProfile | CollegeProfile | RecruiterProfile | AdminProfile
 }
 
-// ── Standard student nav (year 2-4) ──────────────────────────────────────────
+// -- Standard student nav (year 2-4) ------------------------------------------
 const studentLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
@@ -37,7 +37,7 @@ const studentLinks = [
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
 ]
 
-// ── 2nd-year nav (no Prep Track yet) ─────────────────────────────────────────
+// -- 2nd-year nav (no Prep Track yet) -----------------------------------------
 const secondYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
@@ -46,7 +46,7 @@ const secondYearLinks = [
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
 ]
 
-// ── 1st-year dedicated nav ────────────────────────────────────────────────────
+// -- 1st-year dedicated nav ----------------------------------------------------
 const firstYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",   icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",   icon: Code2 },

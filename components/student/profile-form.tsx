@@ -65,7 +65,7 @@ export function ProfileForm({ user, onChange }: Props) {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
 
-      {/* ── LEFT COLUMN ── */}
+      {/* -- LEFT COLUMN -- */}
       <div className="xl:col-span-2 space-y-5">
 
         {/* Personal Info */}
@@ -264,7 +264,7 @@ export function ProfileForm({ user, onChange }: Props) {
         })()}
       </div>
 
-      {/* ── RIGHT COLUMN ── */}
+      {/* -- RIGHT COLUMN -- */}
       <div className="space-y-5">
 
         {/* Profile Preview Card */}

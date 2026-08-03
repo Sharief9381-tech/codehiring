@@ -77,7 +77,7 @@ export function DepartmentBreakdown() {
                   />
                 </div>
                 <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
-                  <span className="text-emerald-500">✓ {dept.placed} placed</span>
+                  <span className="text-emerald-500">v {dept.placed} placed</span>
                   <span className="text-amber-500">⏳ {dept.interviewing} interviewing</span>
                   <span>🔍 {dept.searching} searching</span>
                   <span className="ml-auto">avg {dept.avgProblems} problems</span>

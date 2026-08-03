@@ -120,7 +120,7 @@ export default function LoginPage() {
           display: "flex", flexDirection: "row", gap: 40, alignItems: "center",
         }} className="flex-col-mobile">
 
-          {/* ── LEFT: Brand panel ────────────────────────────────── */}
+          {/* -- LEFT: Brand panel ---------------------------------- */}
           <div style={{ flex: 1 }} className="hide-mobile">
             <Link href="/" style={{ display: "inline-flex", marginBottom: 40 }}>
               <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={160} height={40} style={{ height: 36, width: "auto" }} />
@@ -180,7 +180,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* ── RIGHT: Login card ─────────────────────────────────── */}
+          {/* -- RIGHT: Login card ----------------------------------- */}
           <div style={{ width: "100%", maxWidth: 400, flexShrink: 0 }}>
             {/* Mobile logo */}
             <div className="show-mobile" style={{ display: "none", justifyContent: "center", marginBottom: 28 }}>

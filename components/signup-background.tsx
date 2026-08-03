@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 
-/* ── Particle system on canvas ───────────────────────────────────────────── */
+/* -- Particle system on canvas --------------------------------------------- */
 function ParticleCanvas() {
   const ref = useRef<HTMLCanvasElement>(null)
 
@@ -20,7 +20,7 @@ function ParticleCanvas() {
     resize()
     window.addEventListener("resize", resize)
 
-    // ── Particles ──────────────────────────────────────────────────────────
+    // -- Particles ----------------------------------------------------------
     const N = 120
     interface P { x:number; y:number; vx:number; vy:number; r:number; a:number; va:number; color:string }
     const COLORS = ["#7c3aed","#6366f1","#8b5cf6","#a78bfa","#60a5fa","#c084fc"]
@@ -35,7 +35,7 @@ function ParticleCanvas() {
       color: COLORS[Math.floor(Math.random()*COLORS.length)],
     }))
 
-    // ── Shooting stars ─────────────────────────────────────────────────────
+    // -- Shooting stars -----------------------------------------------------
     interface S { x:number; y:number; len:number; speed:number; angle:number; a:number; life:number; maxLife:number }
     const stars: S[] = []
     function spawnStar() {
@@ -48,7 +48,7 @@ function ParticleCanvas() {
     }
     let starTimer = 0
 
-    // ── Hex grid overlay ───────────────────────────────────────────────────
+    // -- Hex grid overlay ---------------------------------------------------
     function drawHexGrid() {
       const size = 55, rows = Math.ceil(h/size/1.5)+2, cols = Math.ceil(w/size/Math.sqrt(3))+2
       ctx.strokeStyle = "rgba(139,92,246,0.06)"
@@ -174,7 +174,7 @@ function ParticleCanvas() {
   return <canvas ref={ref} className="absolute inset-0 w-full h-full" />
 }
 
-/* ── Static CSS decorations on top of canvas ─────────────────────────────── */
+/* -- Static CSS decorations on top of canvas ------------------------------- */
 export function SignupBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

@@ -33,7 +33,7 @@ const ROADMAP_STEPS = [
   { id: "arrays",       title: "DSA: Arrays & Strings",     icon: "📊", color: "#8b5cf6", milestone: "arrays" },
   { id: "lc-10",        title: "Solve 10 Easy Problems",    icon: "🧩", color: "#ef4444", milestone: "lc-10" },
   { id: "dsa-track",    title: "Start a DSA Course",        icon: "📚", color: "#6366f1", milestone: "dsa-track" },
-  { id: "lc-25",        title: "Reach 25 Problems",         icon: "🏆", color: "#f59e0b", milestone: "lc-25" },
+  { id: "lc-25",        title: "Reach 25 Problems",         icon: "*", color: "#f59e0b", milestone: "lc-25" },
   { id: "project-1",    title: "Build Your First Project",  icon: "🚀", color: "#10b981", milestone: "project-1" },
 ]
 
@@ -222,7 +222,7 @@ export function FirstYearHub() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className={`text-sm font-semibold ${done ? "text-muted-foreground" : "text-foreground"}`}>{step.title}</p>
-                  {isNext && !done && <p className="text-xs text-primary font-medium mt-0.5">← Your next step</p>}
+                  {isNext && !done && <p className="text-xs text-primary font-medium mt-0.5"><- Your next step</p>}
                 </div>
                 {!done && (
                   <button onClick={() => completeMilestone(step.milestone)}

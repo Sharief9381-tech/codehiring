@@ -38,7 +38,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
 
   const reportViolation = useCallback(() => onViolation({ ...violations.current }), [onViolation])
 
-  // ── Fullscreen ──
+  // -- Fullscreen --
   const enterFullscreen = useCallback(async () => {
     try {
       fsTransition.current = true
@@ -66,11 +66,11 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     return () => document.removeEventListener("fullscreenchange", onFsChange)
   }, [started, showWarning, reportViolation])
 
-  // ── Tab / window blur - suppress during FS transition ──
+  // -- Tab / window blur - suppress during FS transition --
   useEffect(() => {
     if (!started) return
     const onBlur = () => {
-      if (fsTransition.current) return   // ← ignore blur during fullscreen entry
+      if (fsTransition.current) return   // <- ignore blur during fullscreen entry
       violations.current.tabSwitches++
       showWarning("⚠️ Tab switch detected! This is recorded.")
       reportViolation()
@@ -79,7 +79,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     return () => window.removeEventListener("blur", onBlur)
   }, [started, showWarning, reportViolation])
 
-  // ── Copy / Paste / Right-click / DevTools ──
+  // -- Copy / Paste / Right-click / DevTools --
   useEffect(() => {
     if (!started) return
     const onCopy = (e: ClipboardEvent) => {
@@ -123,7 +123,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     }
   }, [started, showWarning, reportViolation])
 
-  // ── Camera ──
+  // -- Camera --
   const startCamera = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 160, height: 120 }, audio: false })
@@ -140,7 +140,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     return () => { streamRef.current?.getTracks().forEach(t => t.stop()) }
   }, [started, startCamera])
 
-  // ── Cleanup on unmount ──
+  // -- Cleanup on unmount --
   useEffect(() => {
     return () => {
       streamRef.current?.getTracks().forEach(t => t.stop())
@@ -148,7 +148,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     }
   }, [])
 
-  // ── PRE-START screen - shown BEFORE fullscreen, normal layout ──
+  // -- PRE-START screen - shown BEFORE fullscreen, normal layout --
   if (!started) {
     return (
       <div className="flex-1 flex items-center justify-center p-4 py-12">
@@ -198,7 +198,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
     )
   }
 
-  // ── ACTIVE PROCTORED SHELL ──
+  // -- ACTIVE PROCTORED SHELL --
   // Uses fixed inset-0 with very high z-index to sit ABOVE the sidebar/navbar
   // Hardcoded dark colors - immune to light/dark theme switching
   return (

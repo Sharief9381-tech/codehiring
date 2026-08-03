@@ -292,7 +292,7 @@ export function SmartResume() {
                 <p className="text-sm font-bold text-foreground mb-1">ATS Keywords</p>
                 {(a as any).atsReason && <p className="text-xs text-muted-foreground mb-3 italic">{(a as any).atsReason}</p>}
                 <div className="space-y-2">
-                  <div><p className="text-xs text-emerald-400 font-semibold mb-1.5">✓ Found in resume</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.found ?? []).map(k => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{k}</span>)}</div></div>
+                  <div><p className="text-xs text-emerald-400 font-semibold mb-1.5">v Found in resume</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.found ?? []).map(k => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{k}</span>)}</div></div>
                   <div><p className="text-xs text-red-400 font-semibold mb-1.5">✗ Missing - add these to your resume</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.missing ?? []).map(k => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">{k}</span>)}</div></div>
                   {(a as any).atsKeywords?.suggestedReason && <p className="text-[10px] text-muted-foreground italic">{(a as any).atsKeywords.suggestedReason}</p>}
                 </div>

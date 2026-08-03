@@ -152,7 +152,7 @@ export function DriveDetailClient({ driveId }: { driveId: string }) {
               <div className={`mt-2 text-[10px] font-medium flex items-center gap-1.5 ${drive.postedByRole === "college" ? "text-emerald-500" : "text-blue-500"}`}>
                 {drive.postedByRole === "college"
                   ? "📋 College Drive - applicant list sent to college after applications close"
-                  : "🤖 CodeHiring Drive - AI-proctored assessment → auto-shortlist → company review"}
+                  : "🤖 CodeHiring Drive - AI-proctored assessment -> auto-shortlist -> company review"}
               </div>
             </div>
           </div>
@@ -384,7 +384,7 @@ export function DriveDetailClient({ driveId }: { driveId: string }) {
   )
 }
 
-// ── Assessment Tab ────────────────────────────────────────────────────────────
+// -- Assessment Tab ------------------------------------------------------------
 function AssessmentTab({ driveId, drive, onRefresh }: { driveId: string; drive: any; onRefresh: () => void }) {
   const [assessment, setAssessment] = useState<any>(null)
   const [loading, setLoading]       = useState(true)
@@ -527,7 +527,7 @@ function AssessmentTab({ driveId, drive, onRefresh }: { driveId: string; drive: 
   )
 }
 
-// ── Interview Tab ─────────────────────────────────────────────────────────────
+// -- Interview Tab -------------------------------------------------------------
 function InterviewTab({ driveId, shortlisted, onRefresh }: { driveId: string; shortlisted: any[]; onRefresh: () => void }) {
   const [interviews, setInterviews] = useState<any[]>([])
   const [loading, setLoading]       = useState(true)

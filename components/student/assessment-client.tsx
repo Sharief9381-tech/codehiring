@@ -139,7 +139,7 @@ export function StudentAssessmentClient({ driveId }: { driveId: string }) {
           <>
             <div className="text-5xl font-black text-primary tabular-nums my-4">{result.score}%</div>
             <p className={`text-sm font-semibold mb-2 ${result.passed ? "text-emerald-500" : "text-red-500"}`}>
-              {result.passed ? "✓ Passed" : "✗ Did not meet passing threshold"}
+              {result.passed ? "v Passed" : "✗ Did not meet passing threshold"}
             </p>
           </>
         )}
@@ -236,7 +236,7 @@ export function StudentAssessmentClient({ driveId }: { driveId: string }) {
                       isCurrent ? "bg-primary/15 text-primary font-bold" :
                       answered ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" :
                       "text-muted-foreground hover:bg-muted"}`}>
-                    Q{qIdFlat + 1} {answered ? "✓" : ""}
+                    Q{qIdFlat + 1} {answered ? "v" : ""}
                   </button>
                 )
               })}

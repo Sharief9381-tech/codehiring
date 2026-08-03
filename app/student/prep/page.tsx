@@ -14,13 +14,13 @@ import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/stude
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// --- Types --------------------------------------------------------------------
 type Path = "aptitude" | "coding" | "cs" | "company" | "communication"
 
 interface MCQ { id: number; question: string; options: string[]; correct: number; explanation: string; topic: string }
 interface CodingQ { id: number; title: string; difficulty: string; statement: string; constraints: string; example: { input: string; output: string; explanation: string }; hints: string[]; topic: string }
 
-// ─── Company data ─────────────────────────────────────────────────────────────
+// --- Company data -------------------------------------------------------------
 const COMPANIES = [
   { id:"tcs",       name:"TCS",          abbr:"TC", color:"#7c3aed", logo:"🔷", duration:75,  questions:60, difficulty:"Medium",    sections:["quantitative","logical","verbal","coding"], desc:"TCS NQT - National Qualifier Test",      category:"Service",    roles:["Systems Engineer","Developer","Analyst"] },
   { id:"infosys",   name:"Infosys",       abbr:"IN", color:"#059669", logo:"🟢", duration:95,  questions:65, difficulty:"Medium",    sections:["quantitative","logical","verbal","coding"], desc:"InfyTQ Certification Test",              category:"Service",    roles:["Systems Engineer","Technology Analyst"] },
@@ -53,7 +53,7 @@ const SECTION_QTY: Record<string, number> = {
   quantitative: 15, logical: 12, verbal: 10, coding: 3,
 }
 
-// ─── Aptitude topics ──────────────────────────────────────────────────────────
+// --- Aptitude topics ----------------------------------------------------------
 const APT_TOPICS = [
   { id: "percentages",    name: "Percentages",       icon: "%" },
   { id: "profit-loss",    name: "Profit & Loss",     icon: "₹" },
@@ -65,7 +65,7 @@ const APT_TOPICS = [
   { id: "permcomb",       name: "Permutation & Combination", icon: "∑" },
 ]
 
-// ─── CS topics ────────────────────────────────────────────────────────────────
+// --- CS topics ----------------------------------------------------------------
 const CS_TOPICS = [
   { id: "dbms", name: "DBMS",                icon: "🗄", color: "#3b82f6" },
   { id: "os",   name: "Operating Systems",   icon: "💻", color: "#8b5cf6" },
@@ -75,7 +75,7 @@ const CS_TOPICS = [
   { id: "sql",  name: "SQL",                 icon: "🔍", color: "#10b981" },
 ]
 
-// ─── Communication topics ─────────────────────────────────────────────────────
+// --- Communication topics -----------------------------------------------------
 const COMM_TOPICS = [
   { id: "grammar",       name: "Grammar & Sentence Correction", icon: "G",  color: "#10b981" },
   { id: "vocabulary",    name: "Vocabulary & Word Meaning",     icon: "V",  color: "#06b6d4" },
@@ -85,7 +85,7 @@ const COMM_TOPICS = [
   { id: "verbal-logic",  name: "Verbal Reasoning",              icon: "VR", color: "#ef4444" },
 ]
 
-// ─── DSA topics ───────────────────────────────────────────────────────────────
+// --- DSA topics ---------------------------------------------------------------
 const DSA_TOPICS = [
   { id: "arrays",       name: "Arrays",        color: "#6366f1" },
   { id: "strings",      name: "Strings",       color: "#8b5cf6" },
@@ -97,7 +97,7 @@ const DSA_TOPICS = [
   { id: "recursion",    name: "Recursion",     color: "#84cc16" },
 ]
 
-// ─── Shared components ────────────────────────────────────────────────────────
+// --- Shared components --------------------------------------------------------
 function PathCard({ icon, label, desc, color, onClick, badge }: {
   icon: React.ReactNode; label: string; desc: string; color: string; onClick: () => void; badge?: string
 }) {
@@ -144,7 +144,7 @@ function ScoreBadge({ score }: { score: number }) {
   )
 }
 
-// ─── MCQ Quiz component ───────────────────────────────────────────────────────
+// --- MCQ Quiz component -------------------------------------------------------
 function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (score: number, answers: number[], qs: MCQ[]) => void }) {
   const [cur, setCur] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
@@ -238,7 +238,7 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
   )
 }
 
-// ─── Coding Question component ────────────────────────────────────────────────
+// --- Coding Question component ------------------------------------------------
 function CodingQuestion({ q, index, total, onNext }: { q: CodingQ; index: number; total: number; onNext: () => void }) {
   const [code, setCode] = useState(`// ${q.title}\n// Write your solution here\n\nfunction solution() {\n  \n}`)
   const [showHint, setShowHint] = useState(false)
@@ -302,7 +302,7 @@ function CodingQuestion({ q, index, total, onNext }: { q: CodingQ; index: number
       )}
       {showHint && q.hints && (
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-1">
-          {q.hints.map((h, i) => <p key={i} className="text-sm text-amber-300">💡 {h}</p>)}
+          {q.hints.map((h, i) => <p key={i} className="text-sm text-amber-300">! {h}</p>)}
         </div>
       )}
 
@@ -332,7 +332,7 @@ function CodingQuestion({ q, index, total, onNext }: { q: CodingQ; index: number
   )
 }
 
-// ─── Results screen ───────────────────────────────────────────────────────────
+// --- Results screen -----------------------------------------------------------
 function Results({ score, answers, questions, company, section, onRetry, onBack }: {
   score: number; answers: number[]; questions: MCQ[]; company: any; section: string;
   onRetry: () => void; onBack: () => void
@@ -437,7 +437,7 @@ function Results({ score, answers, questions, company, section, onRetry, onBack 
   )
 }
 
-// ─── Company Assessment flow ──────────────────────────────────────────────────
+// --- Company Assessment flow --------------------------------------------------
 type AssessStage = "info" | "roadmap" | "instructions" | "section" | "results" | "coding" | "report"
 
 function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[0]; onBack: () => void }) {
@@ -616,7 +616,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     { label: "Coding", pct: company.sections.includes("coding") ? 55 : 0, topic: "Arrays, Strings, Basic DP" },
   ].filter(r => r.pct > 0)
 
-  // ── INFO ──
+  // -- INFO --
   if (stage === "info") return (
     <div className="max-w-xl mx-auto space-y-6">
       <button onClick={onBack} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -675,7 +675,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     </div>
   )
 
-  // ── ROADMAP ──
+  // -- ROADMAP --
   if (stage === "roadmap") return (
     <div className="max-w-xl mx-auto space-y-5">
       <button onClick={() => setStage("info")} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -723,7 +723,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     </div>
   )
 
-  // ── INSTRUCTIONS ──
+  // -- INSTRUCTIONS --
   if (stage === "instructions") return (
     <div className="max-w-xl mx-auto space-y-5">
       <h3 className="text-xl font-bold text-foreground">Assessment Instructions</h3>
@@ -762,7 +762,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     </div>
   )
 
-  // ── LOADING SECTION ──
+  // -- LOADING SECTION --
   if (loading) {
     const content = (
       <div className="flex flex-col items-center justify-center min-h-screen gap-5">
@@ -783,7 +783,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     ) : content
   }
 
-  // ── Exam top bar (shared between section & coding) ──
+  // -- Exam top bar (shared between section & coding) --
   const ExamTopBar = () => (
     <div className="sticky top-0 z-10"
       style={{ background: "rgba(9,9,11,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
@@ -820,7 +820,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     </div>
   )
 
-  // ── MCQ SECTION ──
+  // -- MCQ SECTION --
   if (stage === "section") {
     const content = (
       <div className="min-h-screen">
@@ -837,7 +837,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     )
   }
 
-  // ── CODING SECTION ──
+  // -- CODING SECTION --
   if (stage === "coding") {
     const content = (
       <div className="min-h-screen">
@@ -872,7 +872,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     )
   }
 
-  // ── GENERATING REPORT ──
+  // -- GENERATING REPORT --
   if (reportLoading) return (
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-5" style={{ background: "var(--background)" }}>
       <div className="relative">
@@ -886,7 +886,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     </div>
   )
 
-  // ── AI HIRING REPORT ──
+  // -- AI HIRING REPORT --
   if (stage === "report" && hiringReport) return (
     <div className="flex-1 p-4 md:p-8 max-w-screen-xl mx-auto w-full">
       {showLeaderboard && (
@@ -911,7 +911,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     </div>
   )
 
-  // ── RESULTS (fallback if report failed) ──
+  // -- RESULTS (fallback if report failed) --
   if (stage === "results") {
     const nonCodingQs = allQuestions.filter(q => q.options?.length > 0)
     const nonCodingAnswers = allAnswers.slice(0, nonCodingQs.length)
@@ -950,7 +950,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   return null
 }
 
-// ─── Topic Practice (Aptitude / CS / Coding) ─────────────────────────────────
+// --- Topic Practice (Aptitude / CS / Coding) ---------------------------------
 function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: string; name: string }; onBack: () => void }) {
   const [stage, setStage] = useState<"loading" | "quiz" | "results">("loading")
   const [questions, setQuestions] = useState<MCQ[]>([])
@@ -1028,7 +1028,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
   )
 }
 
-// ─── Company Assessment Grid (Unstop-style) ───────────────────────────────────
+// --- Company Assessment Grid (Unstop-style) -----------------------------------
 function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => void; onBack: () => void }) {
   const [categoryFilter, setCategoryFilter] = useState<string>("All")
   const [companyFilter, setCompanyFilter]   = useState<string>("All")
@@ -1189,7 +1189,7 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
   )
 }
 
-// ── Learning Paths placeholder (full paths are in /student/learn) ─────────────
+// -- Learning Paths placeholder (full paths are in /student/learn) -------------
 function LearningPathsPlaceholder() {
   return (
     <div className="text-center py-16 space-y-4">
@@ -1201,13 +1201,13 @@ function LearningPathsPlaceholder() {
       <a href="/student/learn#learning"
         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white"
         style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-        Go to Learning Paths →
+        Go to Learning Paths &rarr;
       </a>
     </div>
   )
 }
 
-// ─── MAIN PAGE ────────────────────────────────────────────────────────────────
+// --- MAIN PAGE ----------------------------------------------------------------
 export default function PrepHubPage() {
   const [activePath, setActivePath] = useState<Path | null>(null)
   const [activeCompany, setActiveCompany] = useState<typeof ALL_COMPANIES[0] | null>(null)
@@ -1286,7 +1286,7 @@ export default function PrepHubPage() {
     }
   }, [yearLoaded, isFirstYear, isSecondYear])
 
-  // ── COMPANY ASSESSMENT ──
+  // -- COMPANY ASSESSMENT --
   if (activePath === "company" && activeCompany) {
     return (
       <div className="flex-1 p-4 md:p-8 max-w-screen-xl mx-auto w-full">
@@ -1295,7 +1295,7 @@ export default function PrepHubPage() {
     )
   }
 
-  // ── TOPIC PRACTICE ──
+  // -- TOPIC PRACTICE --
   if (activeTopic) {
     return (
       <div className="flex-1 p-4 md:p-8 max-w-screen-xl mx-auto w-full">
@@ -1304,7 +1304,7 @@ export default function PrepHubPage() {
     )
   }
 
-  // ── PATH DETAIL ──
+  // -- PATH DETAIL --
   if (activePath) {
     const pathMeta = {
       aptitude:      { label: "Aptitude",           color: "#f59e0b", topics: APT_TOPICS },
@@ -1354,8 +1354,8 @@ export default function PrepHubPage() {
               {pathMeta.topics.map((t: any) => {
                 const notes: Record<string, { formula?: string; points: string[]; example?: string }> = {
                   "percentages": { formula: "Percentage = (Part / Whole) × 100", points: ["Percentage increase = (New − Old)/Old × 100","Successive discounts: a% + b% = (a+b − ab/100)%","Profit% = (Profit/CP) × 100"], example: "If CP=200 and SP=250, Profit% = 50/200×100 = 25%" },
-                  "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount → SP=400" },
-                  "time-work": { formula: "Work = Rate × Time → 1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 → together = 12×18/30 = 7.2 days" },
+                  "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount -> SP=400" },
+                  "time-work": { formula: "Work = Rate × Time -> 1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 -> together = 12×18/30 = 7.2 days" },
                   "speed-distance": { formula: "Speed = Distance / Time", points: ["Relative speed (same dir): |S1−S2|","Relative speed (opp dir): S1+S2","Average speed = 2S1×S2/(S1+S2) for equal distances"], example: "Train 300m at 60km/h passes pole in 300/60×3.6 = 18s" },
                   "probability": { formula: "P(E) = Favourable / Total outcomes", points: ["P(A∪B) = P(A)+P(B)−P(A∩B)","P(A') = 1 − P(A)","Independent events: P(A∩B)=P(A)×P(B)"], example: "2 dice: P(sum=7) = 6/36 = 1/6" },
                   "arrays": { points: ["Access O(1), Insert/Delete O(n)","Two-pointer for sorted arrays","Kadane's algorithm for max subarray","Prefix sums for range queries"], formula: "prefix[i] = prefix[i-1] + arr[i]", example: "Max subarray [−2,1,−3,4,−1,2] -> 6 (Kadane)" },
@@ -1367,7 +1367,7 @@ export default function PrepHubPage() {
                   "os": { points: ["Scheduling: FCFS, SJF, Round Robin, Priority","Deadlock: Mutual exclusion, Hold & Wait, No preemption, Circular wait","Paging: page table maps virtual->physical","Semaphore: binary (mutex) and counting"], formula: "Turnaround = Completion − Arrival; Waiting = Turnaround − Burst", example: "Round Robin Q=3: P1(10),P2(5),P3(8) -> context switch every 3ms" },
                   "cn": { points: ["OSI 7 layers: Physical->Data Link->Network->Transport->Session->Presentation->Application","TCP: reliable, connection-oriented; UDP: fast, connectionless","IP classes: A(0−127) B(128−191) C(192−223)","Subnetting: borrow bits from host portion"], formula: "Subnet mask /24 = 255.255.255.0 -> 254 hosts", example: "HTTP=80, HTTPS=443, FTP=21, SSH=22, DNS=53" },
                   "oops": { points: ["4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism","Overloading: same name, different params (compile-time)","Overriding: same signature, different class (runtime)","Interface vs Abstract: interface = pure contract"], example: "Animal->speak() overridden by Dog->speak() 'Woof'" },
-                  "java": { points: ["JVM: bytecode → machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
+                  "java": { points: ["JVM: bytecode -> machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
                   "sql": { points: ["DDL: CREATE, ALTER, DROP; DML: INSERT, UPDATE, DELETE, SELECT","GROUP BY + HAVING for aggregates","Subquery vs JOIN: JOIN faster on indexed columns","RANK(), ROW_NUMBER(), DENSE_RANK() for window functions"], formula: "SELECT dept, COUNT(*) FROM emp GROUP BY dept HAVING COUNT(*)>5", example: "INNER JOIN: only matching rows; LEFT JOIN: all left rows + matched right" },
                 }
                 const note = notes[t.id] || { points: ["Study this topic systematically", "Practice with timed questions", "Review formulas and examples"] }
@@ -1485,7 +1485,7 @@ export default function PrepHubPage() {
     )
   }
 
-  // ── HOME ──
+  // -- HOME --
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full space-y-6">
 

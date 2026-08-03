@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react"
 import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Moon, Maximize2, Minimize2, BookOpen, Clock } from "lucide-react"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
-// ── Problem lookup from topic questions ──────────────────────────────────────
+// -- Problem lookup from topic questions --------------------------------------
 const PROBLEM_LOOKUP: Record<string, { title: string; difficulty: string }> = {}
 for (const topic of TOPIC_QUESTIONS) {
   for (const q of topic.questions) {
@@ -12,7 +12,7 @@ for (const topic of TOPIC_QUESTIONS) {
   }
 }
 
-// ── Languages ────────────────────────────────────────────────────────────────
+// -- Languages ----------------------------------------------------------------
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
 const DEFAULT_STARTERS: Record<string, string> = {
@@ -28,7 +28,7 @@ const DEFAULT_STARTERS: Record<string, string> = {
   Swift:      "class Solution {\n    func solve(_ nums: [Int]) -> Int {\n        return 0\n    }\n}\n",
 }
 
-// ── Syntax Highlighting ──────────────────────────────────────────────────────
+// -- Syntax Highlighting ------------------------------------------------------
 
 // Keyword sets per language
 const KEYWORDS: Record<string, string[]> = {
@@ -111,14 +111,14 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
     const n = line.length
 
     while (i < n) {
-      // ── Line comment ──────────────────────────────────────────────────────
+      // -- Line comment ------------------------------------------------------
       if (lineComment && line.startsWith(lineComment, i)) {
         out += cmt(esc(line.slice(i)))
         i = n
         continue
       }
 
-      // ── Block comment start /* ────────────────────────────────────────────
+      // -- Block comment start /* --------------------------------------------
       if ((lang === "Java" || lang === "C++" || lang === "C" || lang === "JavaScript" || lang === "TypeScript" || lang === "C#" || lang === "Go" || lang === "Kotlin" || lang === "Swift") && line[i] === "/" && line[i+1] === "*") {
         const end = line.indexOf("*/", i + 2)
         if (end !== -1) {
@@ -129,7 +129,7 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
         continue
       }
 
-      // ── Preprocessor (#include, #define) for C/C++ ────────────────────────
+      // -- Preprocessor (#include, #define) for C/C++ ------------------------
       if ((lang === "C" || lang === "C++") && line[i] === "#" && i === 0) {
         // highlight whole line as keyword-ish
         const spaceIdx = line.indexOf(" ", i)
@@ -139,7 +139,7 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
         continue
       }
 
-      // ── String literals ───────────────────────────────────────────────────
+      // -- String literals ---------------------------------------------------
       const ch = line[i]
       if (ch === '"' || ch === "'" || (ch === "`" && (lang === "JavaScript" || lang === "TypeScript"))) {
         // Python triple quotes
@@ -164,7 +164,7 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
         continue
       }
 
-      // ── Numbers ───────────────────────────────────────────────────────────
+      // -- Numbers -----------------------------------------------------------
       if (/\d/.test(ch) && (i === 0 || !/\w/.test(line[i-1]))) {
         let j = i
         while (j < n && /[\d.xXbBoOeE_a-fA-F]/.test(line[j])) j++
@@ -172,7 +172,7 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
         continue
       }
 
-      // ── Identifiers and keywords ──────────────────────────────────────────
+      // -- Identifiers and keywords ------------------------------------------
       if (/[a-zA-Z_$]/.test(ch)) {
         let j = i
         while (j < n && /[\w$]/.test(line[j])) j++
@@ -212,14 +212,14 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
         continue
       }
 
-      // ── Operators ─────────────────────────────────────────────────────────
+      // -- Operators ---------------------------------------------------------
       if (/[+\-*/%=<>!&|^~?:]/.test(ch)) {
         out += `<span style="color:${theme.operator}">${esc(ch)}</span>`
         i++
         continue
       }
 
-      // ── Default ───────────────────────────────────────────────────────────
+      // -- Default -----------------------------------------------------------
       out += esc(ch)
       i++
     }
@@ -235,7 +235,7 @@ export default function ProblemEditor({ problemId }: Props) {
   const highlightRef = useRef<HTMLDivElement>(null)
   const editorRef    = useRef<HTMLDivElement>(null)
 
-  // ── Problem data ────────────────────────────────────────────────────────────
+  // -- Problem data ------------------------------------------------------------
   const [problem, setProblemState] = useState<any>(null)
   const problemRef = useRef<any>(null)
   const setProblem = (p: any) => { problemRef.current = p; setProblemState(p) }
@@ -281,12 +281,12 @@ export default function ProblemEditor({ problemId }: Props) {
     }).catch(() => {})
   }, [problemId])
 
-  // ── Theme & layout ──────────────────────────────────────────────────────────
+  // -- Theme & layout ----------------------------------------------------------
   const [themeKey, setThemeKey]       = useState<ThemeKey>("dark")
   const [fullscreen, setFullscreen]   = useState(false)
   const theme = THEMES[themeKey]
 
-  // ── Editor state ────────────────────────────────────────────────────────────
+  // -- Editor state ------------------------------------------------------------
   const [lang, setLang]         = useState("Python")
   const langRef = useRef("Python")
   const [code, setCode]         = useState(() => DEFAULT_STARTERS["Python"])
@@ -307,7 +307,7 @@ export default function ProblemEditor({ problemId }: Props) {
   const [activeLineY, setActiveLineY] = useState(0)
   const dragH = useRef(false); const dragV = useRef(false)
 
-  // ── Derived ─────────────────────────────────────────────────────────────────
+  // -- Derived -----------------------------------------------------------------
   const title      = problem?.title      ?? PROBLEM_LOOKUP[problemId]?.title    ?? "Loading…"
   const difficulty = problem?.difficulty ?? PROBLEM_LOOKUP[problemId]?.difficulty ?? "Easy"
   const desc       = problem?.desc       ?? ""
@@ -317,7 +317,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
   const diffColor = difficulty === "Easy" ? "#3fb950" : difficulty === "Medium" ? "#d29922" : "#f85149"
 
-  // ── Horizontal drag ─────────────────────────────────────────────────────────
+  // -- Horizontal drag ---------------------------------------------------------
   const onHDrag = useCallback((e: React.MouseEvent) => {
     e.preventDefault(); dragH.current = true
     const startX = e.clientX; const startW = leftW
@@ -329,7 +329,7 @@ export default function ProblemEditor({ problemId }: Props) {
     window.addEventListener("mousemove", move); window.addEventListener("mouseup", up)
   }, [leftW])
 
-  // ── Vertical drag ───────────────────────────────────────────────────────────
+  // -- Vertical drag -----------------------------------------------------------
   const onVDrag = useCallback((e: React.MouseEvent) => {
     e.preventDefault(); dragV.current = true
     const startY = e.clientY; const startH = bottomH
@@ -341,14 +341,14 @@ export default function ProblemEditor({ problemId }: Props) {
     window.addEventListener("mousemove", move); window.addEventListener("mouseup", up)
   }, [bottomH])
 
-  // ── Change language ─────────────────────────────────────────────────────────
+  // -- Change language ---------------------------------------------------------
   const changeLang = (l: string) => {
     setLang(l); langRef.current = l
     const starter = problem?.starters?.[l] ?? DEFAULT_STARTERS[l] ?? ""
     setCode(starter); setRes(null); setError("")
   }
 
-  // ── Sync highlight scroll with textarea ────────────────────────────────────
+  // -- Sync highlight scroll with textarea ------------------------------------
   const syncScroll = () => {
     if (textareaRef.current && highlightRef.current) {
       highlightRef.current.scrollTop  = textareaRef.current.scrollTop
@@ -358,7 +358,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
   const highlighted = useMemo(() => highlight(code, lang, theme), [code, lang, theme])
 
-  // ── Smart keyboard handler ──────────────────────────────────────────────────
+  // -- Smart keyboard handler --------------------------------------------------
   const BRACE_LANGS = new Set(["JavaScript","TypeScript","Java","C++","C","C#","Go","Kotlin","Swift"])
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -437,7 +437,7 @@ export default function ProblemEditor({ problemId }: Props) {
     }
   }
 
-  // ── Run tests ───────────────────────────────────────────────────────────────
+  // -- Run tests ---------------------------------------------------------------
   const runTests = async (mode: "run" | "submit") => {
     if (!code.trim()) return
     if (!problemRef.current) { setError("Problem still loading…"); setBot("results"); return }
@@ -492,7 +492,7 @@ export default function ProblemEditor({ problemId }: Props) {
     <div className={`h-screen flex flex-col overflow-hidden select-none ${fullscreen ? "fixed inset-0 z-50" : ""}`}
       style={{ background: T.bg, fontFamily: "'Segoe UI',Inter,sans-serif", color: T.text }}>
 
-      {/* ── Top bar ─────────────────────────────────────────────────────── */}
+      {/* -- Top bar ------------------------------------------------------- */}
       <div className="flex items-center px-3 h-11 border-b shrink-0 gap-2"
         style={{ background: T.panel, borderColor: T.border }}>
         {/* Back */}
@@ -531,16 +531,16 @@ export default function ProblemEditor({ problemId }: Props) {
         </button>
       </div>
 
-      {/* ── Body ────────────────────────────────────────────────────────── */}
+      {/* -- Body ---------------------------------------------------------- */}
       <div className="flex flex-1 min-h-0 overflow-hidden relative">
 
-        {/* ── LEFT PANEL ─────────────────────────────────────────────────── */}
+        {/* -- LEFT PANEL --------------------------------------------------- */}
         <div className="shrink-0 flex flex-col overflow-hidden border-r"
           style={{ width: `${leftW}px`, background: T.bg, borderColor: T.border }}>
 
           {/* Left tabs */}
           <div className="flex items-center border-b shrink-0 px-2" style={{ background: T.panel, borderColor: T.border }}>
-            {([["desc","📄","Description"],["editorial","💡","Editorial"]] as [string,string,string][]).map(([id,icon,label]) => (
+            {([["desc","📄","Description"],["editorial","!","Editorial"]] as [string,string,string][]).map(([id,icon,label]) => (
               <button key={id} onClick={() => setLeftTab(id as any)}
                 className="flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium border-b-2 transition-colors"
                 style={{ borderColor: leftTab === id ? diffColor : "transparent", color: leftTab === id ? diffColor : T.muted }}>
@@ -624,13 +624,13 @@ export default function ProblemEditor({ problemId }: Props) {
           </div>
         </div>
 
-        {/* ── Horizontal drag handle ─────────────────────────────────────── */}
+        {/* -- Horizontal drag handle --------------------------------------- */}
         <div onMouseDown={onHDrag} className="absolute z-20 cursor-col-resize"
           style={{ left: `${leftW - 2}px`, top: 0, bottom: 0, width: "5px", background: "transparent" }}
           onMouseEnter={e => (e.currentTarget.style.background = diffColor + "44")}
           onMouseLeave={e => (e.currentTarget.style.background = "transparent")} />
 
-        {/* ── RIGHT - Editor + Console ──────────────────────────────────── */}
+        {/* -- RIGHT - Editor + Console ------------------------------------ */}
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
           {/* Editor header */}
@@ -660,7 +660,7 @@ export default function ProblemEditor({ problemId }: Props) {
             </div>
           </div>
 
-          {/* ── Code editor (syntax highlighted textarea overlay) ─────────── */}
+          {/* -- Code editor (syntax highlighted textarea overlay) ----------- */}
           <div ref={editorRef} className="flex-1 min-h-0 overflow-hidden flex" style={{ background: T.bg }}>
             {/* Line numbers */}
             <div className="shrink-0 pt-4 pb-4 text-right pr-3 select-none overflow-hidden"
@@ -699,7 +699,7 @@ export default function ProblemEditor({ problemId }: Props) {
             </div>
           </div>
 
-          {/* ── Console panel ─────────────────────────────────────────────── */}
+          {/* -- Console panel ----------------------------------------------- */}
           <div className="border-t shrink-0 flex flex-col" style={{ background: T.bg, borderColor: T.border, height: `${bottomH}px` }}>
             {/* Vertical drag handle */}
             <div onMouseDown={onVDrag} className="w-full cursor-row-resize shrink-0 flex items-center justify-center"
@@ -712,7 +712,7 @@ export default function ProblemEditor({ problemId }: Props) {
             {/* Console tab bar + Run/Submit */}
             <div className="flex items-center justify-between px-3 border-b shrink-0" style={{ background: T.panel, borderColor: T.border, height: "40px" }}>
               <div className="flex gap-0.5">
-                {([["sample","✓","Cases"],["custom","⊞","Custom"],["results","▶","Results"]] as [string,string,string][]).map(([id,icon,label]) => (
+                {([["sample","v","Cases"],["custom","⊞","Custom"],["results","▶","Results"]] as [string,string,string][]).map(([id,icon,label]) => (
                   <button key={id} onClick={() => setBot(id as any)}
                     className="flex items-center gap-1 px-3 py-1 rounded text-xs font-medium transition-all"
                     style={{ color: bottomTab === id ? T.text : T.muted, background: bottomTab === id ? T.bg : "transparent" }}>
@@ -729,7 +729,7 @@ export default function ProblemEditor({ problemId }: Props) {
                 <button onClick={() => runTests("submit")} disabled={submitting || running || !code.trim() || completed}
                   className="flex items-center gap-1.5 px-4 py-1 rounded text-xs font-bold disabled:opacity-40 transition-all"
                   style={{ background: completed ? "#238636" : "#fd8c73", color: completed ? "#fff" : "#000", border: `1px solid ${completed ? "#2ea043" : "#e06c75"}` }}>
-                  {submitting ? <><RefreshCw className="h-3 w-3 animate-spin" /> Testing…</> : completed ? "✓ Accepted" : "Submit"}
+                  {submitting ? <><RefreshCw className="h-3 w-3 animate-spin" /> Testing…</> : completed ? "v Accepted" : "Submit"}
                 </button>
               </div>
             </div>
@@ -752,7 +752,7 @@ export default function ProblemEditor({ problemId }: Props) {
                             color: selCase === i ? (pass?"#3fb950":fail?"#f85149":"#58a6ff") : (pass?"#3fb950":fail?"#f85149":T.muted),
                             border: `1px solid ${selCase===i?(pass?"#3fb95044":fail?"#f8514944":"#388bfd44"):"transparent"}`,
                           }}>
-                          {pass && "✓"}{fail && "✗"} Case {i + 1}
+                          {pass && "v"}{fail && "✗"} Case {i + 1}
                         </button>
                       )
                     })}
@@ -834,7 +834,7 @@ export default function ProblemEditor({ problemId }: Props) {
                         </div>
                         <span className="font-bold"
                           style={{ color: r.tle?"#d29922":r.passed?"#3fb950":"#f85149" }}>
-                          {r.tle ? "⏱ TLE" : r.passed ? "✓ Accepted" : "✗ Wrong Answer"}
+                          {r.tle ? "⏱ TLE" : r.passed ? "v Accepted" : "✗ Wrong Answer"}
                         </span>
                       </div>
                       {r.isPublic && (

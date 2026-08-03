@@ -5,7 +5,7 @@ import { Star, MessageSquare, ClipboardList, CheckCircle2, Loader2, ChevronRight
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-// ─── Specific questions definition ───────────────────────────────────────────
+// --- Specific questions definition -------------------------------------------
 
 const SPECIFIC_QUESTIONS = [
   {
@@ -30,7 +30,7 @@ const SPECIFIC_QUESTIONS = [
   },
 ]
 
-// ─── Star Rating ─────────────────────────────────────────────────────────────
+// --- Star Rating -------------------------------------------------------------
 
 function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [hovered, setHovered] = useState(0)
@@ -60,7 +60,7 @@ function StarRating({ value, onChange }: { value: number; onChange: (v: number) 
   )
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// --- Main Component -----------------------------------------------------------
 
 interface FeedbackFormProps {
   onSuccess?: () => void
@@ -129,7 +129,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     }
   }
 
-  // ── Success ──
+  // -- Success --
   if (submitted) {
     return (
       <div className="flex flex-col items-center gap-4 py-10 text-center">
@@ -144,7 +144,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     )
   }
 
-  // ── Type selection ──
+  // -- Type selection --
   if (!activeType) {
     return (
       <div className="space-y-4">
@@ -192,12 +192,12 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     )
   }
 
-  // ── Type 1: General ──
+  // -- Type 1: General --
   if (activeType === "general") {
     return (
       <div className="space-y-5">
         <div className="flex items-center gap-3 mb-2">
-          <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">← Back</button>
+          <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors"><- Back</button>
           <h3 className="text-base font-semibold text-foreground">General Experience</h3>
         </div>
 
@@ -229,7 +229,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     )
   }
 
-  // ── Type 2: Specific questions (one at a time) ──
+  // -- Type 2: Specific questions (one at a time) --
   const q = SPECIFIC_QUESTIONS[currentQ]
   const isLast = currentQ === SPECIFIC_QUESTIONS.length - 1
   const allAnswered = SPECIFIC_QUESTIONS.every((q) => answers[q.id])
@@ -237,7 +237,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3 mb-2">
-        <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">← Back</button>
+        <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors"><- Back</button>
         <h3 className="text-base font-semibold text-foreground">Specific Questions</h3>
         <span className="ml-auto text-xs text-muted-foreground">{currentQ + 1} / {SPECIFIC_QUESTIONS.length}</span>
       </div>

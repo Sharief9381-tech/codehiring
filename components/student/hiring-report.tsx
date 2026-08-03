@@ -116,7 +116,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
   return (
     <div className="space-y-5 max-w-3xl mx-auto">
 
-      {/* ── HERO BANNER ── */}
+      {/* -- HERO BANNER -- */}
       <div className="rounded-2xl border p-6 space-y-4" style={{ borderColor: `${companyColor}30`, background: `${companyColor}08` }}>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -157,7 +157,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </div>
       </div>
 
-      {/* ── SELECTION PROBABILITY ── */}
+      {/* -- SELECTION PROBABILITY -- */}
       <Section title="Selection Probability by Round" icon={<BarChart3 className="h-5 w-5" />}>
         <div className="pt-4">
           <div className="flex gap-6 justify-around flex-wrap">
@@ -184,7 +184,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </div>
       </Section>
 
-      {/* ── SECTION ANALYSIS ── */}
+      {/* -- SECTION ANALYSIS -- */}
       {report.sectionAnalysis?.length > 0 && (
         <Section title="Section-wise Performance" icon={<Target className="h-5 w-5" />}>
           <div className="space-y-4 pt-4">
@@ -208,7 +208,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </Section>
       )}
 
-      {/* ── CRACK THE COMPANY ── */}
+      {/* -- CRACK THE COMPANY -- */}
       <Section title={`Crack ${report.companyName} - AI Strategy`} icon={<Zap className="h-5 w-5" />}>
         <div className="space-y-5 pt-4">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -227,7 +227,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
               <ul className="space-y-1.5">
                 {(report.crackTheCompany?.whyMaySucceed ?? []).map((r, i) => (
                   <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
-                    <span className="text-emerald-400 mt-0.5 shrink-0">✓</span> {r}
+                    <span className="text-emerald-400 mt-0.5 shrink-0">v</span> {r}
                   </li>
                 ))}
               </ul>
@@ -269,7 +269,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </div>
       </Section>
 
-      {/* ── AI HR REPORT ── */}
+      {/* -- AI HR REPORT -- */}
       <Section title="AI HR Evaluation Report" icon={<Users className="h-5 w-5" />}>
         <div className="space-y-4 pt-4">
           {/* Verdict banner */}
@@ -332,7 +332,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </div>
       </Section>
 
-      {/* ── PREPARATION PLAN ── */}
+      {/* -- PREPARATION PLAN -- */}
       <Section title="Personalized Preparation Plan" icon={<Calendar className="h-5 w-5" />}>
         <div className="space-y-4 pt-4">
           <div className="flex gap-2 flex-wrap">
@@ -363,7 +363,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </div>
       </Section>
 
-      {/* ── COMPANY INSIGHTS ── */}
+      {/* -- COMPANY INSIGHTS -- */}
       <Section title={`${report.companyName} Insider Insights`} icon={<Brain className="h-5 w-5" />} defaultOpen={false}>
         <div className="space-y-4 pt-4">
           <div>
@@ -391,7 +391,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </div>
       </Section>
 
-      {/* ── INTEGRITY ── */}
+      {/* -- INTEGRITY -- */}
       <Section title="Integrity & Proctoring Analysis" icon={<Shield className="h-5 w-5" />} defaultOpen={false}>
         <div className="pt-4 space-y-3">
           <div className="flex items-center gap-4">
@@ -414,7 +414,7 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
         </div>
       </Section>
 
-      {/* ── ACTIONS ── */}
+      {/* -- ACTIONS -- */}
       <div className="flex gap-3">
         <button onClick={onRetry}
           className="flex-1 h-12 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all">

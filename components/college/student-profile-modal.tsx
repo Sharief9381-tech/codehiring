@@ -348,7 +348,7 @@ export function StudentProfileModal({ student, open, onClose }: StudentProfileMo
                   <Progress value={Math.min(95, readiness + 5)} className="h-2" />
                   <div className="space-y-2 mt-3">
                     <p className="text-xs font-semibold text-emerald-500">Strengths</p>
-                    {aiStrengths.map(s => <p key={s} className="text-xs text-muted-foreground">✓ {s}</p>)}
+                    {aiStrengths.map(s => <p key={s} className="text-xs text-muted-foreground">v {s}</p>)}
                     <p className="text-xs font-semibold text-red-500 mt-2">Improvements</p>
                     {aiWeaknesses.map(w => <p key={w} className="text-xs text-muted-foreground">-> {w}</p>)}
                   </div>

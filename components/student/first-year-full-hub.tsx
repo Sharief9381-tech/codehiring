@@ -867,11 +867,11 @@ const RECOMMENDED_BOOKS = [
 
 const RECOMMENDED_BLOGS = [
   { name: "GeeksforGeeks", desc: "Theory + code examples for every CS topic. Your go-to reference.", url: "https://www.geeksforgeeks.org/", tag: "Reference" },
-  { name: "Dev.to", desc: "Developer community â€" read stories, tutorials, and career advice.", url: "https://dev.to/", tag: "Community" },
-  { name: "FreeCodeCamp Blog", desc: "Long-form tutorials on web dev, Python, data science â€" all free.", url: "https://www.freecodecamp.org/news/", tag: "Tutorials" },
+  { name: "Dev.to", desc: "Developer community - read stories, tutorials, and career advice.", url: "https://dev.to/", tag: "Community" },
+  { name: "FreeCodeCamp Blog", desc: "Long-form tutorials on web dev, Python, data science - all free.", url: "https://www.freecodecamp.org/news/", tag: "Tutorials" },
   { name: "Roadmap.sh", desc: "Visual learning roadmaps for every tech role. Know what to learn next.", url: "https://roadmap.sh/", tag: "Roadmaps" },
-  { name: "CS50 Discourse", desc: "CS50's community forum â€" ask questions, get help from thousands of learners.", url: "https://cs50.stackexchange.com/", tag: "Community" },
-  { name: "The Missing Semester (MIT)", desc: "Tools every developer needs â€" shell, git, editors. Free MIT course.", url: "https://missing.csail.mit.edu/", tag: "Free" },
+  { name: "CS50 Discourse", desc: "CS50 community forum - ask questions, get help from thousands of learners.", url: "https://cs50.stackexchange.com/", tag: "Community" },
+  { name: "The Missing Semester (MIT)", desc: "Tools every developer needs - shell, git, editors. Free MIT course.", url: "https://missing.csail.mit.edu/", tag: "Free" },
 ]
 
 const TOPIC_QUIZZES: Record<string, { q: string; opts: string[]; ans: number; explain: string }[]> = {
@@ -1466,7 +1466,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
             <p className="text-sm text-muted-foreground mt-0.5">You're on the right path. Keep going!</p>
           </div>
 
-          {/* ── Stats row ─────────────────────────────────────────── */}
+          {/* -- Stats row ------------------------------------------- */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {[
               { label: "Problems Solved", value: completedChallenges.length, sub: completedChallenges.length === 0 ? "Start solving" : `${completedChallenges.length} solved on platform`, color: "#3b82f6" },

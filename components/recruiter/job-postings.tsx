@@ -194,7 +194,7 @@ export function JobPostings() {
   const totalApps = jobs.reduce((s, j) => s + j.applications, 0)
   const totalViews = jobs.reduce((s, j) => s + j.views, 0)
 
-  // ── Applicants dialog state ──────────────────────────────────────────────
+  // -- Applicants dialog state ----------------------------------------------
   const [applicantsJobId, setApplicantsJobId] = useState<string | null>(null)
   const [applicantsJobTitle, setApplicantsJobTitle] = useState("")
   const [applicants, setApplicants] = useState<any[]>([])
@@ -469,7 +469,7 @@ export function JobPostings() {
         </div>
       )}
 
-      {/* ── Applicants Dialog ─────────────────────────────────────────────── */}
+      {/* -- Applicants Dialog ----------------------------------------------- */}
       <Dialog open={!!applicantsJobId} onOpenChange={open => !open && setApplicantsJobId(null)}>
         <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col">
           <DialogHeader>
@@ -556,7 +556,7 @@ export function JobPostings() {
                         {a.status === "shortlisted" && (
                           <Button size="sm" className="gap-1.5 text-xs h-7 bg-purple-600 hover:bg-purple-700"
                             onClick={() => updateApplicantStatus(a.studentId, "hired")}>
-                            ✓ Hire
+                            v Hire
                           </Button>
                         )}
                       </div>

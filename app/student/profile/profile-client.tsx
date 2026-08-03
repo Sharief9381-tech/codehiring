@@ -17,7 +17,7 @@ import { ActivityHeatmap } from "@/components/student/activity-heatmap"
 import { useRouter } from "next/navigation"
 import { computeCodeHiringScore } from "@/lib/score"
 
-// ─── helpers ─────────────────────────────────────────────────────────────────
+// --- helpers -----------------------------------------------------------------
 const ini = (n: string) =>
   (n || "?").split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase()
 
@@ -61,7 +61,7 @@ function useCountUp(target: number, dur = 1200) {
   return v
 }
 
-// ─── Score Ring ───────────────────────────────────────────────────────────────
+// --- Score Ring ---------------------------------------------------------------
 function ScoreRing({ score, pct }: { score: number; pct: number }) {
   const r = 54
   const circ = 2 * Math.PI * r
@@ -97,7 +97,7 @@ function ScoreRing({ score, pct }: { score: number; pct: number }) {
   )
 }
 
-// ─── Skill Radar ─────────────────────────────────────────────────────────────
+// --- Skill Radar -------------------------------------------------------------
 function SkillRadar({ skills }: { skills: string[] }) {
   const top6 = skills.slice(0, 6)
   if (!top6.length) return (
@@ -144,7 +144,7 @@ function SkillRadar({ skills }: { skills: string[] }) {
   )
 }
 
-// ─── Profile View ─────────────────────────────────────────────────────────────
+// --- Profile View -------------------------------------------------------------
 function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
   const [ranking, setRanking] = useState<any>(null)
 
@@ -186,7 +186,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-5">
 
-      {/* ── HEADER CARD ──────────────────────────────────────────── */}
+      {/* -- HEADER CARD -------------------------------------------- */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-border bg-card overflow-hidden">
         <div className="h-20 bg-gradient-to-r from-violet-500/20 via-primary/10 to-blue-500/15" />
@@ -282,7 +282,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
         </div>
       </motion.div>
 
-      {/* ── ROW 1 ────────────────────────────────────────────────── */}
+      {/* -- ROW 1 -------------------------------------------------- */}
       <div className="grid gap-4 lg:grid-cols-3">
 
         {/* About Me */}
@@ -346,7 +346,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
         </motion.div>
       </div>
 
-      {/* ── ROW 2 ────────────────────────────────────────────────── */}
+      {/* -- ROW 2 -------------------------------------------------- */}
       <div className="grid gap-4 lg:grid-cols-3">
 
         {/* Achievements */}
@@ -379,7 +379,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
                   lcS >= 200 && { icon:"🗡️", title:"LeetCode Knight",          desc:`LeetCode . ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
                   lcS >= 100 && { icon:"💯", title:"LeetCode - 100 Solved",    desc:`LeetCode . ${lcS} problems solved`,            color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
                   lcS >= 50  && { icon:"⚡", title:"LeetCode - 50 Solved",     desc:`LeetCode . ${lcS} problems solved`,            color:"text-amber-400",  bg:"bg-amber-400/10",  earnedAt: today },
-                  cfR >= 2100 && { icon:"🏆", title:"Codeforces Master",       desc:`Codeforces . Rating ${cfR}`,                   color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
+                  cfR >= 2100 && { icon:"*", title:"Codeforces Master",       desc:`Codeforces . Rating ${cfR}`,                   color:"text-amber-500",  bg:"bg-amber-500/10",  earnedAt: today },
                   cfR >= 1900 && { icon:"🏅", title:"CF Candidate Master",     desc:`Codeforces . Rating ${cfR}`,                   color:"text-purple-500", bg:"bg-purple-500/10", earnedAt: today },
                   cfR >= 1600 && { icon:"🟣", title:"Codeforces Expert",       desc:`Codeforces . Rating ${cfR}`,                   color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
                   cfR >= 1400 && { icon:"🔵", title:"Codeforces Specialist",   desc:`Codeforces . Rating ${cfR}`,                   color:"text-cyan-500",   bg:"bg-cyan-500/10",   earnedAt: today },
@@ -395,7 +395,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
                   hrB >= 10   && { icon:"🥇", title:"HackerRank - 10 Badges", desc:`HackerRank . ${hrB} badges earned`,            color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
                   hrB >= 5    && { icon:"🥈", title:"HackerRank - 5 Badges",  desc:`HackerRank . ${hrB} badges earned`,            color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
                   hrB >= 1    && { icon:"🥉", title:"HackerRank - First Badge",desc:`HackerRank . ${hrB} badges earned`,            color:"text-green-400",  bg:"bg-green-400/10",  earnedAt: today },
-                  gfgS >= 200 && { icon:"🏆", title:"GFG - 200 Problems",     desc:`GeeksforGeeks . ${gfgS} problems`,             color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
+                  gfgS >= 200 && { icon:"*", title:"GFG - 200 Problems",     desc:`GeeksforGeeks . ${gfgS} problems`,             color:"text-emerald-500",bg:"bg-emerald-500/10",earnedAt: today },
                   gfgS >= 100 && { icon:"🌲", title:"GFG - 100 Problems",     desc:`GeeksforGeeks . ${gfgS} problems`,             color:"text-green-500",  bg:"bg-green-500/10",  earnedAt: today },
                   gfgS >= 50  && { icon:"🌿", title:"GFG - 50 Problems",      desc:`GeeksforGeeks . ${gfgS} problems`,             color:"text-green-600",  bg:"bg-green-600/10",  earnedAt: today },
                   acS >= 200  && { icon:"🏅", title:"AtCoder - 200 Problems", desc:`AtCoder . ${acS} problems solved`,             color:"text-violet-500", bg:"bg-violet-500/10", earnedAt: today },
@@ -590,7 +590,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
           </div>
           <Button size="sm" onClick={onEdit} variant="outline"
             className="border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 shrink-0">
-            Improve Now →
+            Improve Now &rarr;
           </Button>
         </motion.div>
       )}
@@ -598,7 +598,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
   )
 }
 
-// ─── Main Client Component ────────────────────────────────────────────────────
+// --- Main Client Component ----------------------------------------------------
 export function ProfileClient({ initialUser }: { initialUser: any }) {
   const router = useRouter()
   const [saving,  setSaving]  = useState(false)

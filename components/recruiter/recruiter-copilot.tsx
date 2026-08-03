@@ -89,7 +89,7 @@ export function RecruiterCopilot() {
           <Badge className="text-xs bg-primary/10 text-primary">AI-Powered</Badge>
         </div>
         <p className="text-sm text-muted-foreground">
-          Paste a job description → AI finds your best matching candidates instantly
+          Paste a job description -> AI finds your best matching candidates instantly
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
