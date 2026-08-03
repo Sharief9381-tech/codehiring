@@ -197,7 +197,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     return (
       <div className="space-y-5">
         <div className="flex items-center gap-3 mb-2">
-          <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors"><- Back</button>
+          <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">&larr; Back</button>
           <h3 className="text-base font-semibold text-foreground">General Experience</h3>
         </div>
 
@@ -237,7 +237,7 @@ export function FeedbackForm({ onSuccess }: FeedbackFormProps) {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3 mb-2">
-        <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors"><- Back</button>
+        <button onClick={() => setActiveType(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">&larr; Back</button>
         <h3 className="text-base font-semibold text-foreground">Specific Questions</h3>
         <span className="ml-auto text-xs text-muted-foreground">{currentQ + 1} / {SPECIFIC_QUESTIONS.length}</span>
       </div>

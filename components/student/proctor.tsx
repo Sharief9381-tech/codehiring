@@ -70,7 +70,7 @@ export function ProctoredShell({ children, onViolation, companyName, onAbort }: 
   useEffect(() => {
     if (!started) return
     const onBlur = () => {
-      if (fsTransition.current) return   // <- ignore blur during fullscreen entry
+      if (fsTransition.current) return   // &larr; ignore blur during fullscreen entry
       violations.current.tabSwitches++
       showWarning("⚠️ Tab switch detected! This is recorded.")
       reportViolation()

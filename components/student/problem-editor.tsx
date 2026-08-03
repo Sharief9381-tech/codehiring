@@ -16,7 +16,7 @@ for (const topic of TOPIC_QUESTIONS) {
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
 const DEFAULT_STARTERS: Record<string, string> = {
-  Python:     "from typing import List, Optional\n\nclass Solution:\n    def solve(self, nums: List[int]) -> int:\n        # Write your solution here\n        pass\n",
+  Python:     "from typing import List, Optional\n\nclass Solution:\n    def solve(self, nums: List[int]) &rarr; int:\n        # Write your solution here\n        pass\n",
   JavaScript: "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar solve = function(nums) {\n    \n};\n",
   TypeScript: "function solve(nums: number[]): number {\n    \n};\n",
   Java:       "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}\n",
@@ -25,7 +25,7 @@ const DEFAULT_STARTERS: Record<string, string> = {
   "C#":       "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}\n",
   Go:         "func solve(nums []int) int {\n    return 0\n}\n",
   Kotlin:     "class Solution {\n    fun solve(nums: IntArray): Int {\n        return 0\n    }\n}\n",
-  Swift:      "class Solution {\n    func solve(_ nums: [Int]) -> Int {\n        return 0\n    }\n}\n",
+  Swift:      "class Solution {\n    func solve(_ nums: [Int]) &rarr; Int {\n        return 0\n    }\n}\n",
 }
 
 // -- Syntax Highlighting ------------------------------------------------------

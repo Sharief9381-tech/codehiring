@@ -222,7 +222,7 @@ export function FirstYearHub() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className={`text-sm font-semibold ${done ? "text-muted-foreground" : "text-foreground"}`}>{step.title}</p>
-                  {isNext && !done && <p className="text-xs text-primary font-medium mt-0.5"><- Your next step</p>}
+                  {isNext && !done && <p className="text-xs text-primary font-medium mt-0.5">&larr; Your next step</p>}
                 </div>
                 {!done && (
                   <button onClick={() => completeMilestone(step.milestone)}

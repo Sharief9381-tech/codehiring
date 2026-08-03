@@ -309,7 +309,7 @@ function SignupForm() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
                 <button type="button" onClick={() => { setStep("email"); setOtp(["","","",""]); setError("") }}
                   style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                  <- Change email
+                  &larr; Change email
                 </button>
                 <button type="button" onClick={sendOtp} disabled={resendCooldown > 0 || otpSending}
                   style={{ fontSize: 13, color: resendCooldown > 0 ? "rgba(167,139,250,0.35)" : "#a78bfa", background: "none", border: "none", cursor: resendCooldown > 0 ? "not-allowed" : "pointer", padding: 0, fontWeight: 600 }}>

@@ -517,7 +517,7 @@ export function AdminDashboard() {
                           </div>
                           <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{drive.description}</p>
                           {drive.selectionProcess?.length > 0 && (
-                            <p className="text-xs text-muted-foreground mt-1">Process: {drive.selectionProcess.join(" -> ")}</p>
+                            <p className="text-xs text-muted-foreground mt-1">Process: {drive.selectionProcess.join(" &rarr; ")}</p>
                           )}
                           <p className="text-[10px] text-muted-foreground/60 mt-2">Submitted {new Date(drive.createdAt).toLocaleDateString()}</p>
                         </div>
