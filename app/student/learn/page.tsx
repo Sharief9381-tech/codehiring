@@ -31,8 +31,8 @@ export default async function LearnPage() {
   const { password, ...safe } = doc as any
   const student = serializeDocument(safe)
 
-  // Year 1: rich XP/gamification hub
-  if (year === 1) {
+  // Year 1 & 2: rich XP/gamification hub
+  if (year === 1 || year === 2) {
     return <FirstYearFullHub student={student} />
   }
 

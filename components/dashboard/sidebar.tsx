@@ -113,7 +113,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
   const links =
     user.role === "student"
-      ? (isFirstYear ? firstYearLinks : isSecondYear ? secondYearLinks : studentLinks)
+      ? (isFirstYear || isSecondYear ? firstYearLinks : studentLinks)
       : user.role === "college"
       ? collegeLinks
       : recruiterLinks
