@@ -1749,10 +1749,18 @@ export function FirstYearFullHub({ student }: { student: any }) {
         <div className="space-y-6">
           {/* Hero banner */}
           <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-violet-500/5 to-transparent p-5">
-            <p className="text-lg font-black text-foreground">Coding Challenges</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {completedChallenges.length} challenge{completedChallenges.length !== 1 ? "s" : ""} completed{completedChallenges.length > 0 ? ` - +${completedChallenges.length * 20} XP` : ""}
-            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-lg font-black text-foreground">Coding Challenges</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {completedChallenges.length} challenge{completedChallenges.length !== 1 ? "s" : ""} completed{completedChallenges.length > 0 ? ` - +${completedChallenges.length * 20} XP` : ""}
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center h-14 w-14 rounded-xl bg-violet-500/15 border border-violet-500/30 shrink-0">
+                <span className="text-2xl font-black text-violet-400 leading-none">{completedChallenges.length}</span>
+                <span className="text-[9px] text-violet-400/70 font-medium mt-0.5">done</span>
+              </div>
+            </div>
           </div>
 
           {(() => {
