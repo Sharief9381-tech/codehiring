@@ -26,8 +26,8 @@ export async function sendEmail({
     const nodemailer = await import("nodemailer")
     const transporter = nodemailer.default.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // TLS
+      port: 465,
+      secure: true, // SSL
       auth: {
         user: gmailUser,
         pass: gmailPass.replace(/\s/g, ""), // remove spaces from app password
