@@ -1756,9 +1756,9 @@ export function FirstYearFullHub({ student }: { student: any }) {
                   {completedChallenges.length} challenge{completedChallenges.length !== 1 ? "s" : ""} completed{completedChallenges.length > 0 ? ` - +${completedChallenges.length * 20} XP` : ""}
                 </p>
               </div>
-              <div className="flex flex-col items-center justify-center h-14 w-14 rounded-xl bg-violet-500/15 border border-violet-500/30 shrink-0">
-                <span className="text-2xl font-black text-violet-400 leading-none">{completedChallenges.length}</span>
-                <span className="text-[9px] text-violet-400/70 font-medium mt-0.5">done</span>
+              <div className="flex flex-col items-center justify-center h-16 w-16 rounded-xl bg-violet-500/15 border border-violet-500/30 shrink-0">
+                <span className="text-3xl font-black text-violet-400 leading-none">{completedChallenges.length}</span>
+                <span className="text-[10px] text-violet-400/70 font-medium mt-1">done</span>
               </div>
             </div>
           </div>
