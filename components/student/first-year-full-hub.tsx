@@ -1748,17 +1748,17 @@ export function FirstYearFullHub({ student }: { student: any }) {
       {activeTab === "challenges" && (
         <div className="space-y-6">
           {/* Hero banner */}
-          <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-violet-500/5 to-transparent p-5">
+          <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-violet-500/5 to-transparent p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-lg font-black text-foreground">Coding Challenges</p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xl font-black text-foreground">Coding Challenges</p>
+                <p className="text-sm text-muted-foreground mt-1">
                   {completedChallenges.length} challenge{completedChallenges.length !== 1 ? "s" : ""} completed{completedChallenges.length > 0 ? ` - +${completedChallenges.length * 20} XP` : ""}
                 </p>
               </div>
-              <div className="flex flex-col items-center justify-center h-16 w-16 rounded-xl bg-violet-500/15 border border-violet-500/30 shrink-0">
-                <span className="text-3xl font-black text-violet-400 leading-none">{completedChallenges.length}</span>
-                <span className="text-[10px] text-violet-400/70 font-medium mt-1">done</span>
+              <div className="flex flex-col items-center justify-center h-20 w-20 rounded-2xl bg-violet-500/20 border-2 border-violet-500/40 shrink-0">
+                <span className="text-4xl font-black text-violet-300 leading-none">{completedChallenges.length}</span>
+                <span className="text-[11px] text-violet-400 font-semibold mt-1 uppercase tracking-wide">done</span>
               </div>
             </div>
           </div>
