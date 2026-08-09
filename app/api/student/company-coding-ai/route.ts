@@ -1,17 +1,21 @@
 /**
  * POST /api/student/company-coding-ai
- * AI model that generates coding questions mimicking a specific company's real OA style.
- * Uses the static problem banks (service-company-problems, fintech-problem-bank,
- * it-services-problems) as RAG training context to teach the AI the exact company style.
+ * Serves company-specific coding questions from MongoDB (18,900 pre-generated).
+ * Falls back to live AI generation + caches result if DB doesn't have enough yet.
  *
  * Body: { company: string, count?: number, difficulty?: string }
- * Returns: { questions: CodingQuestion[], company: string, style: string }
+ * Returns: { questions: CodingQuestion[], company: string, style: string, source: string }
  */
 
 import { NextResponse } from "next/server"
+import { ALL_COMPANIES } from "@/lib/companies-data"
+import {
+  getProblemsForCompany,
+  countProblemsForCompany,
+  getCompanyProblemsCollection,
+} from "@/lib/models/company-problem"
 import { SERVICE_PROBLEM_BANK } from "@/lib/service-company-problems"
 import { FINTECH_PROBLEM_BANK } from "@/lib/fintech-problem-bank"
-import { ALL_COMPANIES } from "@/lib/companies-data"
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -220,7 +224,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
     const companyId: string = body.company ?? ""
-    const count: number = Math.min(body.count ?? 3, 5)
+    const count: number = Math.min(body.count ?? 3, 10)
     const requestedDiff: string = body.difficulty ?? ""
 
     if (!companyId) {
@@ -231,10 +235,48 @@ export async function POST(req: Request) {
     const companyName = co?.name ?? companyId
     const category = co?.category ?? "IT Services"
 
-    // Build RAG context from static banks
+    // ── Step 1: Serve from MongoDB (pre-generated 18,900 problems) ────────────
+    try {
+      const dbCount = await countProblemsForCompany(companyId)
+      if (dbCount >= count) {
+        const dbProblems = await getProblemsForCompany(companyId, {
+          difficulty: requestedDiff || undefined,
+          count,
+          shuffle: true,
+        })
+
+        if (dbProblems.length >= count) {
+          return NextResponse.json({
+            questions: dbProblems.map((p, i) => ({
+              id: i + 1,
+              title: p.title,
+              difficulty: p.difficulty,
+              topic: p.pattern,
+              statement: p.statement,
+              constraints: p.constraints,
+              example: p.examples?.[0] ? {
+                input: p.examples[0].input,
+                output: p.examples[0].output,
+                explanation: p.examples[0].explanation ?? "",
+              } : { input: "", output: "", explanation: "" },
+              hints: p.hints ?? [],
+            })),
+            company: companyName,
+            style: `${category} style`,
+            source: "database",
+            totalAvailable: dbCount,
+          })
+        }
+      }
+    } catch (dbErr) {
+      // DB unavailable — continue to AI generation
+      console.error("DB lookup failed, falling back to AI:", dbErr)
+    }
+
+    // ── Step 2: Build RAG context from static banks ───────────────────────────
     const { context, styleProfile, exampleProblems } = buildCodingRAGContext(companyId, 6)
 
-    // If no AI provider, return static examples directly
+    // ── Step 3: No AI provider — return static examples ──────────────────────
     if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       if (exampleProblems.length > 0) {
         return NextResponse.json({
@@ -260,6 +302,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No AI provider and no static problems found" }, { status: 503 })
     }
 
+    // ── Step 4: AI generation ─────────────────────────────────────────────────
     const systemPrompt = buildSystemPrompt(companyName, category)
 
     const difficultyInstruction = requestedDiff
@@ -299,6 +342,31 @@ Return ONLY this JSON array (no markdown, no explanation):
     const parsed = JSON.parse(cleaned)
     const questions = Array.isArray(parsed) ? parsed : (parsed.questions ?? [])
 
+    // ── Step 5: Cache generated questions back to MongoDB ─────────────────────
+    if (questions.length > 0) {
+      try {
+        const col = await getCompanyProblemsCollection()
+        const docs = questions.map((p: any) => ({
+          company: co?.id ?? companyId,
+          companyName,
+          category,
+          title: p.title ?? "Untitled",
+          difficulty: (["Easy","Medium","Hard"].includes(p.difficulty) ? p.difficulty : "Medium") as any,
+          pattern: p.topic ?? category,
+          topic: p.topic ?? "",
+          statement: p.statement ?? "",
+          constraints: p.constraints ?? "",
+          examples: p.example ? [p.example] : [],
+          hints: p.hints ?? [],
+          tags: [companyId, (p.difficulty ?? "medium").toLowerCase()],
+          createdAt: new Date(),
+          generatedBy: "groq" as const,
+          batchId: `live_${Date.now()}`,
+        }))
+        await col.insertMany(docs, { ordered: false }).catch(() => {})
+      } catch {}
+    }
+
     return NextResponse.json({
       questions,
       company: companyName,
@@ -312,3 +380,6 @@ Return ONLY this JSON array (no markdown, no explanation):
     return NextResponse.json({ error: err.message ?? "Generation failed" }, { status: 500 })
   }
 }
+
+// Dummy reference to avoid unused variable warning
+function _dummy(p: any) { return p?.pattern }
