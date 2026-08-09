@@ -226,52 +226,93 @@ function buildBatchPrompt(
   existingTitles: string[]
 ): string {
   const difficultyMap: Record<string, string> = {
-    "Product": "2 Easy, 4 Medium, 4 Hard",
-    "IT Services": "5 Easy, 4 Medium, 1 Hard",
-    "Startups": "2 Easy, 5 Medium, 3 Hard",
-    "BFSI": "3 Easy, 5 Medium, 2 Hard",
+    "Product":    "2 Easy, 4 Medium, 4 Hard",
+    "IT Services":"5 Easy, 4 Medium, 1 Hard",
+    "Startups":   "2 Easy, 5 Medium, 3 Hard",
+    "BFSI":       "3 Easy, 5 Medium, 2 Hard",
     "Consulting": "6 Easy, 3 Medium, 1 Hard",
-    "Core Engg": "3 Easy, 5 Medium, 2 Hard",
-    "Default": "4 Easy, 4 Medium, 2 Hard",
+    "Core Engg":  "3 Easy, 5 Medium, 2 Hard",
+    "Telecom":    "3 Easy, 5 Medium, 2 Hard",
+    "FMCG":       "6 Easy, 3 Medium, 1 Hard",
+    "Pharma":     "4 Easy, 4 Medium, 2 Hard",
+    "EV/Auto":    "2 Easy, 5 Medium, 3 Hard",
+    "Defence":    "2 Easy, 4 Medium, 4 Hard",
   }
-  const diffDist = difficultyMap[category] ?? difficultyMap["Default"]
+  const diffDist = difficultyMap[category] ?? "4 Easy, 4 Medium, 2 Hard"
+
+  // Industry-specific framing for authentic problems
+  const contextMap: Record<string, string> = {
+    "Product":    `Tech product company. Frame problems around real product features — search, recommendations, messaging, feeds, APIs.`,
+    "IT Services":`IT services company hiring freshers for client delivery. Problems should be straightforward, solvable in 15-20 minutes with basic DSA.`,
+    "Startups":   `High-growth startup. Frame around real business scenarios: food delivery, ride sharing, fintech transactions, e-commerce. Optimize for scale.`,
+    "BFSI":       `Banking and financial services. Frame around transactions, portfolios, interest calculations, risk scoring, account management. Precision is critical.`,
+    "Consulting": `Consulting/analytics firm. Focus on data manipulation, business logic, statistical calculations. Clean and readable code valued.`,
+    "Core Engg":  `Core engineering (automotive/manufacturing). Problems involve systems programming, bit manipulation, memory management, algorithms for real-time systems.`,
+    "Telecom":    `Telecom company. Problems involve network routing, signal processing, packet switching, protocol handling, bandwidth optimization.`,
+    "FMCG":       `Consumer goods company. Problems involve supply chain management, distribution networks, sales analytics, inventory optimization.`,
+    "Pharma":     `Pharmaceutical company. Problems involve clinical data processing, drug interaction detection, patient management, scientific data analysis.`,
+    "EV/Auto":    `Electric vehicle company. Problems involve battery optimization, route planning, sensor data processing, embedded systems logic.`,
+    "Defence":    `Defence/space organization. Problems involve navigation algorithms, signal processing, resource allocation, engineering mathematics.`,
+  }
+  const context = contextMap[category] ?? `Technology company. Standard software engineering assessment.`
+
+  // Constraint sizes appropriate to difficulty level
+  const constraintMap: Record<string, string> = {
+    "Product":    "Arrays: 1<=n<=10^5 for Easy/Medium, 1<=n<=10^6 for Hard",
+    "IT Services":"Arrays: 1<=n<=10^4, Strings: 1<=s.length<=500",
+    "Startups":   "Arrays: 1<=n<=10^5, Graphs: 1<=V<=10^4",
+    "BFSI":       "Arrays: 1<=n<=10^5, Values: financial range",
+    "Consulting": "Arrays: 1<=n<=10^3, Keep constraints simple",
+    "Core Engg":  "Arrays: 1<=n<=10^5, Integers: 32-bit range",
+    "Telecom":    "Networks: 1<=nodes<=10^4, Arrays: 1<=n<=10^5",
+    "FMCG":       "Arrays: 1<=n<=10^3, Simple integer values",
+    "Pharma":     "Records: 1<=n<=10^4, Numeric values in medical range",
+    "EV/Auto":    "Arrays: 1<=n<=10^5, Physics values",
+    "Defence":    "Arrays: 1<=n<=10^5, Technical precision required",
+  }
+  const constraints = constraintMap[category] ?? "Standard constraints appropriate to difficulty"
 
   const avoidList = existingTitles.length > 0
-    ? `\nAVOID these already-generated titles (do not repeat): ${existingTitles.slice(-20).join(", ")}`
+    ? `\nALREADY GENERATED — DO NOT REPEAT ANY OF THESE: ${existingTitles.slice(-25).join(" | ")}`
     : ""
 
-  return `You are generating coding problems for ${companyName}'s campus hiring online assessment.
+  return `You are the CodeHiring AI model. Your task: generate 10 ORIGINAL coding assessment problems for ${companyName}'s campus OA.
 
+COMPANY: ${companyName} (${category})
+INDUSTRY CONTEXT: ${context}
+BATCH: ${batchNum} of ${totalBatches}
 ${avoidList}
 
-BATCH ${batchNum} of ${totalBatches}. Generate exactly 10 problems.
+PATTERNS TO COVER (one problem per pattern): ${patterns.join(", ")}
 
-TARGET PATTERNS: ${patterns.join(", ")}
 DIFFICULTY DISTRIBUTION: ${diffDist}
-COMPANY CONTEXT: ${companyName} is a ${category} company. Problems must feel authentic to their real OA.
+CONSTRAINT SIZES: ${constraints}
 
-RULES:
-1. Each problem must cover a DIFFERENT pattern from the list above
-2. Real ${companyName} OA style: appropriate difficulty, realistic constraints, clear statement
-3. At least 2 examples per problem with CORRECT input/output
-4. Hints should guide toward the optimal approach
-5. Problems must be original — not copied from LeetCode, but inspired by real patterns
+STRICT RULES:
+1. Each problem uses a DIFFERENT pattern — no repeats within this batch
+2. Problems must authentically reflect how ${companyName} asks questions in real campus OA
+3. Use ${category} industry scenarios to frame the problems (not generic "Given array..." every time)
+4. Every example must have CORRECT input/output — verify manually before including
+5. Constraints must match the difficulty: Easy=small, Hard=large
+6. At least 2 examples per problem covering different cases
+7. Hints should guide the student toward the optimal O(n) or O(n log n) approach
+8. Problems must be ORIGINAL — inspired by real patterns, not copied from LeetCode
 
-Return ONLY valid JSON array (no markdown, no code blocks):
+Return ONLY a valid JSON array. No markdown. No code fences. No explanation. Nothing before or after the []:
 [
   {
-    "title": "Clear problem title",
+    "title": "Specific descriptive problem title",
     "difficulty": "Easy|Medium|Hard",
-    "pattern": "Pattern name from the list",
-    "topic": "Specific algorithm/data structure",
-    "statement": "Full problem statement — what is given, what to return, all edge cases",
+    "pattern": "Exact pattern name from the list above",
+    "topic": "Specific algorithm or data structure used",
+    "statement": "Complete problem statement: what is given, what to return, all edge cases",
     "constraints": "n == nums.length\\n1 <= n <= 10^5\\n-10^9 <= nums[i] <= 10^9",
     "examples": [
-      { "input": "nums = [1,2,3], target = 4", "output": "true", "explanation": "1+3=4" },
-      { "input": "nums = [1,2], target = 10", "output": "false", "explanation": "No pair sums to 10" }
+      { "input": "specific example input", "output": "correct output", "explanation": "step by step reasoning" },
+      { "input": "different input covering edge case", "output": "correct output", "explanation": "why" }
     ],
-    "hints": ["Use a hash set to track complements", "Iterate once — O(n) time possible"],
-    "tags": ["arrays", "hashing", "easy"]
+    "hints": ["Key algorithmic insight", "Important edge case to handle"],
+    "tags": ["${companyName.toLowerCase().replace(/\s+/g, "-")}", "pattern-slug", "difficulty-lowercase"]
   }
 ]`
 }
