@@ -477,6 +477,367 @@ export const COMPANY_CODING_PROFILES: Record<string, CompanyCodingProfile> = {
       },
     },
   },
+
+  meta: {
+    companyId: "meta",
+    companyName: "Meta",
+    category: "Product",
+    globalStyle: [
+      "Social network / graph inspired problems",
+      "Very clean, precise problem statements",
+      "Constraints are very large — optimal solution mandatory",
+      "Often tests graph theory, DP on trees, system design elements",
+    ],
+    realExamNotes: "Meta coding interview is 2 problems in 45 min. Very Hard. Strong emphasis on graph algorithms, DP, and design. Facebook/Instagram/WhatsApp framing.",
+    sections: {
+      "coding": {
+        name: "Coding Interview",
+        description: "Meta SWE — 2 Very Hard problems",
+        count: 2,
+        timeMinutes: 45,
+        difficulty: "Hard",
+        patterns: [
+          "Graph BFS/DFS", "Dynamic Programming", "Tree DP",
+          "Union Find", "Topological Sort", "Sliding Window",
+          "Two Pointers", "Binary Search", "Divide and Conquer",
+          "Segment Tree", "String DP",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^6", stringLen: "1 <= s.length <= 10^5", treeNodes: "1 <= nodes <= 10^5", graphNodes: "1 <= V, E <= 10^5" },
+        style: [
+          "Meta/Facebook context: social graphs, news feeds, friend suggestions",
+          "Optimal O(n) or O(n log n) required",
+          "Multiple examples with edge cases",
+          "No Easy problems — minimum Medium-Hard",
+        ],
+        avoidPatterns: ["Pattern Printing", "Simple string reversal"],
+      },
+    },
+  },
+
+  apple: {
+    companyId: "apple",
+    companyName: "Apple",
+    category: "Product",
+    globalStyle: [
+      "Elegant, clean problems with real Apple product context",
+      "iOS/macOS related scenarios when possible",
+      "Emphasis on code quality and readability",
+      "System design thinking valued",
+    ],
+    realExamNotes: "Apple coding assessment is 2-3 problems. Hard difficulty. Often involves trees (UI hierarchy), graphs (dependency), and DP. Swift/Objective-C context occasionally.",
+    sections: {
+      "coding": {
+        name: "Coding Assessment",
+        description: "Apple SWE — 2-3 Hard problems",
+        count: 2,
+        timeMinutes: 60,
+        difficulty: "Hard",
+        patterns: [
+          "Tree DFS/BFS", "Dynamic Programming", "Graphs",
+          "Design Patterns", "Sliding Window", "Binary Search",
+          "Hash Map", "Recursion", "Two Pointers",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^5", stringLen: "1 <= s.length <= 10^5", treeNodes: "1 <= nodes <= 10^5", graphNodes: "1 <= V <= 10^4" },
+        style: [
+          "Apple product context: UI trees, app dependency graphs",
+          "Clean, readable solution over complex optimizations",
+          "Edge cases explicitly tested",
+        ],
+        avoidPatterns: ["Trivial implementation"],
+      },
+    },
+  },
+
+  swiggy: {
+    companyId: "swiggy",
+    companyName: "Swiggy",
+    category: "Startups",
+    globalStyle: [
+      "Food delivery inspired problems: order routing, delivery optimization",
+      "Mix of implementation and algorithmic thinking",
+      "Real-world constraints matter — not just toy examples",
+    ],
+    realExamNotes: "Swiggy OA has 3 problems (90 min). 1 Medium + 2 Hard. Food/delivery framing. BFS for routing, DP for optimization, graphs for city maps.",
+    sections: {
+      "coding": {
+        name: "SDE Online Assessment",
+        description: "Swiggy SDE OA — 3 problems",
+        count: 3,
+        timeMinutes: 90,
+        difficulty: "Hard",
+        patterns: [
+          "BFS", "Dijkstra's Algorithm", "Dynamic Programming",
+          "Greedy", "Priority Queue", "Sliding Window",
+          "Hash Map", "Binary Search", "Interval Problems",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^5", stringLen: "1 <= s.length <= 10^4", treeNodes: "N/A", graphNodes: "1 <= V <= 10^4" },
+        style: [
+          "Swiggy context: restaurants, delivery partners, order queues",
+          "Optimization is key — minimize delivery time/cost",
+          "Problem 1: Medium (25 min), Problems 2-3: Hard (65 min)",
+        ],
+        avoidPatterns: ["Pattern Printing", "Simple arrays"],
+      },
+    },
+  },
+
+  zomato: {
+    companyId: "zomato",
+    companyName: "Zomato",
+    category: "Startups",
+    globalStyle: [
+      "Food-tech inspired: restaurant search, ratings, delivery",
+      "DSA depth required — not just implementation",
+      "Mix of algorithms and system design thinking",
+    ],
+    realExamNotes: "Zomato OA has 3 problems (75 min). Medium-Hard. Restaurant search (trie/hash), delivery routing (graphs), order management (queues/heaps).",
+    sections: {
+      "coding": {
+        name: "SDE Assessment",
+        description: "Zomato SDE OA — 3 problems",
+        count: 3,
+        timeMinutes: 75,
+        difficulty: "Hard",
+        patterns: [
+          "Hash Map", "Trie", "Priority Queue", "BFS/DFS",
+          "Sorting + Binary Search", "Sliding Window",
+          "Dynamic Programming", "Greedy",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^5", stringLen: "1 <= s.length <= 10^4", treeNodes: "N/A", graphNodes: "1 <= V <= 10^4" },
+        style: [
+          "Zomato context: restaurant catalog, order history, delivery",
+          "Efficient algorithms required — large datasets",
+        ],
+        avoidPatterns: [],
+      },
+    },
+  },
+
+  paytm: {
+    companyId: "paytm",
+    companyName: "Paytm",
+    category: "Startups",
+    globalStyle: [
+      "Fintech + consumer tech: payments, wallets, transactions",
+      "Security and precision matter in financial problems",
+      "Mix of algorithmic and implementation problems",
+    ],
+    realExamNotes: "Paytm OA has 3 problems (75 min). Medium-Hard. Financial calculations, transaction processing, graph-based fraud detection.",
+    sections: {
+      "coding": {
+        name: "Campus Assessment",
+        description: "Paytm SDE OA — 3 problems",
+        count: 3,
+        timeMinutes: 75,
+        difficulty: "Hard",
+        patterns: [
+          "Hash Map", "Dynamic Programming", "Graphs",
+          "Sorting", "Math & Statistics", "String Processing",
+          "Sliding Window", "Priority Queue",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^5", stringLen: "1 <= s.length <= 10^4", treeNodes: "N/A", graphNodes: "1 <= V <= 10^3" },
+        style: [
+          "Paytm context: payment transactions, wallet operations, merchant data",
+          "Precision required — no floating point errors",
+        ],
+        avoidPatterns: [],
+      },
+    },
+  },
+
+  "goldman-sachs": {
+    companyId: "goldman-sachs",
+    companyName: "Goldman Sachs",
+    category: "BFSI",
+    globalStyle: [
+      "Financial domain: portfolio, risk, trading algorithms",
+      "Correctness over speed — every edge case matters",
+      "Problems test mathematical and algorithmic thinking",
+    ],
+    realExamNotes: "Goldman Sachs OA has 3 problems (90 min). Medium-Hard. Financial framing — stock prices, portfolio optimization, risk scoring.",
+    sections: {
+      "coding": {
+        name: "Technology OA",
+        description: "Goldman Sachs Technology — 3 problems",
+        count: 3,
+        timeMinutes: 90,
+        difficulty: "Hard",
+        patterns: [
+          "Dynamic Programming", "Greedy", "Priority Queue",
+          "Sliding Window", "Math & Statistics", "Binary Search",
+          "Hash Map", "Sorting Algorithms", "Graph BFS/DFS",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^5", stringLen: "1 <= s.length <= 10^4", treeNodes: "N/A", graphNodes: "1 <= V <= 5000" },
+        style: [
+          "Goldman context: stock prices, portfolio weights, transaction risk",
+          "Problem 1: Medium (30 min), Problems 2-3: Hard (60 min)",
+          "Emphasis on correct, clean implementation",
+        ],
+        avoidPatterns: ["Pattern Printing"],
+      },
+    },
+  },
+
+  deloitte: {
+    companyId: "deloitte",
+    companyName: "Deloitte",
+    category: "Consulting",
+    globalStyle: [
+      "Business intelligence and data manipulation focus",
+      "Practical problem-solving over algorithmic depth",
+      "Clean, readable solutions preferred",
+    ],
+    realExamNotes: "Deloitte campus coding is Easy-Medium. 1-2 problems focused on data processing, sorting, and basic algorithms. Business context.",
+    sections: {
+      "coding": {
+        name: "Technical Assessment",
+        description: "Deloitte Technology — 2 problems",
+        count: 2,
+        timeMinutes: 45,
+        difficulty: "Easy",
+        patterns: [
+          "Array Operations", "Sorting", "String Manipulation",
+          "Hash Map", "Math", "Basic DP", "Counting",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^4", stringLen: "1 <= s.length <= 500", treeNodes: "N/A", graphNodes: "N/A" },
+        style: [
+          "Business context: employee data, financial records",
+          "Problem 1: Very Easy, Problem 2: Easy-Medium",
+          "No advanced DSA required",
+        ],
+        avoidPatterns: ["Graphs", "Trees", "Complex DP", "Backtracking", "Segment Trees"],
+      },
+    },
+  },
+
+  hcl: {
+    companyId: "hcl",
+    companyName: "HCL Technologies",
+    category: "IT Services",
+    globalStyle: [
+      "Fresher-friendly implementation problems",
+      "Standard input/output format",
+      "Basic data structures only",
+    ],
+    realExamNotes: "HCL GET coding has 1-2 Easy problems. Array/string/math operations. Designed for CS freshers.",
+    sections: {
+      "coding": {
+        name: "GET Coding",
+        description: "HCL GET — 1-2 Easy problems",
+        count: 1,
+        timeMinutes: 20,
+        difficulty: "Easy",
+        patterns: [
+          "Array Operations", "String Manipulation", "Math",
+          "Counting", "Basic Sorting", "Simple Loops", "Number Properties",
+        ],
+        constraints: { arraySize: "1 <= n <= 1000", stringLen: "1 <= s.length <= 200", treeNodes: "N/A", graphNodes: "N/A" },
+        style: [
+          "Very basic — equivalent to first-year CS lab problems",
+          "Output a single value or array",
+          "No complex logic required",
+        ],
+        avoidPatterns: ["DP", "Trees", "Graphs", "Heaps", "Backtracking"],
+      },
+    },
+  },
+
+  "tech-mahindra": {
+    companyId: "tech-mahindra",
+    companyName: "Tech Mahindra",
+    category: "IT Services",
+    globalStyle: [
+      "Fresher-level coding assessment",
+      "Implementation-focused, not algorithm-heavy",
+      "Any common programming language accepted",
+    ],
+    realExamNotes: "Tech Mahindra SmartHire has 1 Easy coding problem. Very basic — suitable for freshers with minimal DSA knowledge.",
+    sections: {
+      "coding": {
+        name: "SmartHire Coding",
+        description: "Tech Mahindra — 1 Easy problem",
+        count: 1,
+        timeMinutes: 20,
+        difficulty: "Easy",
+        patterns: [
+          "Array Traversal", "String Operations", "Math",
+          "Counting", "Simple Sorting", "Loop Logic",
+        ],
+        constraints: { arraySize: "1 <= n <= 100", stringLen: "1 <= s.length <= 100", treeNodes: "N/A", graphNodes: "N/A" },
+        style: [
+          "Beginner-level: no DSA knowledge beyond arrays",
+          "Clear input/output format",
+          "Solution requires at most one loop or function",
+        ],
+        avoidPatterns: ["DP", "Trees", "Graphs", "Recursion", "Sorting algorithms"],
+      },
+    },
+  },
+
+  nvidia: {
+    companyId: "nvidia",
+    companyName: "NVIDIA",
+    category: "Product",
+    globalStyle: [
+      "GPU/parallel computing inspired problems",
+      "Very Hard difficulty — top-tier candidates only",
+      "Math, bit manipulation, and optimization focus",
+    ],
+    realExamNotes: "NVIDIA assessment is Very Hard. Tests computer architecture knowledge + advanced DSA. GPU parallelism scenarios.",
+    sections: {
+      "coding": {
+        name: "Technical Assessment",
+        description: "NVIDIA SWE — 3 Very Hard problems",
+        count: 3,
+        timeMinutes: 90,
+        difficulty: "Hard",
+        patterns: [
+          "Bit Manipulation", "Math & Number Theory", "Dynamic Programming",
+          "Parallel Algorithm Simulation", "Graph Algorithms",
+          "Divide and Conquer", "Matrix Operations", "Optimization",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^6", stringLen: "N/A", treeNodes: "N/A", graphNodes: "1 <= V <= 10^5" },
+        style: [
+          "GPU context: parallel processing, matrix multiplication, memory access patterns",
+          "Very Large constraints — must be O(n) or O(n log n)",
+          "Mathematical insight required",
+        ],
+        avoidPatterns: ["Simple string ops", "Pattern printing"],
+      },
+    },
+  },
+
+  "ola-electric": {
+    companyId: "ola-electric",
+    companyName: "Ola Electric",
+    category: "EV/Auto",
+    globalStyle: [
+      "EV/embedded systems context: battery management, route optimization",
+      "C/C++ friendly problems",
+      "Systems programming mindset",
+    ],
+    realExamNotes: "Ola Electric OA: 3 problems (75 min). Mix of embedded-style and standard DSA. Hard difficulty.",
+    sections: {
+      "coding": {
+        name: "SWE Assessment",
+        description: "Ola Electric — 3 Hard problems",
+        count: 3,
+        timeMinutes: 75,
+        difficulty: "Hard",
+        patterns: [
+          "Bit Manipulation", "Graph BFS/DFS", "Dynamic Programming",
+          "Simulation", "Priority Queue", "Binary Search",
+          "Array Manipulation", "Math",
+        ],
+        constraints: { arraySize: "1 <= n <= 10^5", stringLen: "N/A", treeNodes: "N/A", graphNodes: "1 <= V <= 10^4" },
+        style: [
+          "EV context: battery range, charging stations, route optimization",
+          "Efficient solutions required",
+        ],
+        avoidPatterns: ["String Manipulation"],
+      },
+    },
+  },
 }
 
 // Companies that share similar profiles — used for fallback
@@ -539,18 +900,30 @@ export const CATEGORY_DEFAULT_PROFILES: Record<string, Partial<CodingSection>> =
 
 /** Get a company's coding profile. Falls back to category default if not defined. */
 export function getCompanyCodingProfile(companyId: string, category: string): CompanyCodingProfile | null {
+  // Direct profile match
   if (COMPANY_CODING_PROFILES[companyId]) {
     return COMPANY_CODING_PROFILES[companyId]
   }
 
-  // Build a default profile from category
+  // Build a smart default from category + company data
   const catDefault = CATEGORY_DEFAULT_PROFILES[category] ?? CATEGORY_DEFAULT_PROFILES["IT Services"]
+
+  // Smart difficulty inference from company difficulty field in companies-data
+  const companyDiffMap: Record<string, "Easy" | "Medium" | "Hard"> = {
+    "Easy": "Easy", "Easy-Medium": "Easy", "Medium": "Medium",
+    "Hard": "Hard", "Very Hard": "Hard",
+  }
+
   return {
     companyId,
     companyName: companyId,
     category,
-    globalStyle: catDefault.style ?? [],
-    realExamNotes: `${category} company coding assessment`,
+    globalStyle: [
+      ...(catDefault.style ?? []),
+      `Problems reflect ${category} industry standards`,
+      "Clear problem statement with at least 2 examples",
+    ],
+    realExamNotes: `${category} standard coding assessment. Problems are designed for campus hiring.`,
     sections: {
       coding: {
         name: "Coding Assessment",
@@ -558,9 +931,14 @@ export function getCompanyCodingProfile(companyId: string, category: string): Co
         count: catDefault.count ?? 2,
         timeMinutes: catDefault.timeMinutes ?? 60,
         difficulty: catDefault.difficulty as any ?? "Medium",
-        patterns: catDefault.patterns ?? [],
-        constraints: catDefault.constraints ?? { arraySize: "1 <= n <= 10^4", stringLen: "1 <= s.length <= 500", treeNodes: "N/A", graphNodes: "N/A" },
-        style: catDefault.style ?? [],
+        patterns: catDefault.patterns ?? ["Array Traversal", "String Manipulation", "Hash Map", "Sorting"],
+        constraints: catDefault.constraints ?? {
+          arraySize: "1 <= n <= 10^4",
+          stringLen: "1 <= s.length <= 500",
+          treeNodes: "N/A",
+          graphNodes: "N/A",
+        },
+        style: catDefault.style ?? ["Clear problem statement", "2 examples required"],
         avoidPatterns: catDefault.avoidPatterns ?? [],
       },
     },
