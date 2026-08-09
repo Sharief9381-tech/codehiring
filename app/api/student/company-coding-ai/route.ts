@@ -48,19 +48,19 @@ async function callAI(systemPrompt: string, userPrompt: string, maxTokens = 6000
 }
 
 /** Pull static RAG examples for a company from all problem banks */
-function getStaticExamples(companyId: string, limit = 5): any[] {
+async function getStaticExamples(companyId: string, limit = 5): Promise<any[]> {
   const normId = companyId.replace(/-/g, "")
+  // Only use SERVICE_PROBLEM_BANK and FINTECH_PROBLEM_BANK here.
+  // IT_SERVICES_PROBLEM_BANK is excluded to avoid Turbopack bundling the incomplete file.
   const allBanks: Record<string, any> = { ...SERVICE_PROBLEM_BANK, ...FINTECH_PROBLEM_BANK }
-  try {
-    const { IT_SERVICES_PROBLEM_BANK } = require("@/lib/it-services-problems")
-    Object.assign(allBanks, IT_SERVICES_PROBLEM_BANK)
-  } catch {}
 
   const direct = Object.values(allBanks).filter((p: any) => p.company === normId || p.company === companyId)
   if (direct.length >= 3) return direct.sort(() => Math.random() - 0.5).slice(0, limit)
 
   const co = ALL_COMPANIES.find(c => c.id === companyId)
-  const similarIds = ALL_COMPANIES.filter(c => c.category === co?.category && c.id !== companyId).map(c => c.id.replace(/-/g, ""))
+  const similarIds = ALL_COMPANIES
+    .filter(c => c.category === co?.category && c.id !== companyId)
+    .map(c => c.id.replace(/-/g, ""))
   const fallback = Object.values(allBanks).filter((p: any) => similarIds.includes(p.company))
   return [...direct, ...fallback].sort(() => Math.random() - 0.5).slice(0, limit)
 }
@@ -124,7 +124,7 @@ export async function POST(req: Request) {
       style: ["Clear problem statement", "2 examples"], avoidPatterns: [],
     }
 
-    const staticExamples = getStaticExamples(companyId, 5)
+    const staticExamples = await getStaticExamples(companyId, 5)
     const ragText = formatRAGExamples(staticExamples, 4)
     const batchPatterns = selectBatchPatterns(section, 0, Math.max(1, count))
 
