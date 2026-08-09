@@ -332,7 +332,34 @@ export async function POST(req: Request) {
       return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
     }
 
-    // -- Step 1: Try live web scraping first -----------------------------------
+    // -- Step 1: For coding sections, use the company-specific AI model first ---
+    if (section === "coding") {
+      try {
+        const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000"
+        const codingRes = await fetch(`${baseUrl}/api/student/company-coding-ai`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ company, count, difficulty: sectionData.difficulty }),
+          signal: AbortSignal.timeout(20000),
+        })
+        if (codingRes.ok) {
+          const codingData = await codingRes.json()
+          if (codingData.questions?.length > 0) {
+            return NextResponse.json({
+              questions: codingData.questions,
+              company: pattern.name,
+              section: sectionData.name,
+              source: codingData.source,
+              style: codingData.style,
+            })
+          }
+        }
+      } catch (codingErr) {
+        console.error("company-coding-ai error:", codingErr)
+      }
+    }
+
+    // -- Step 2: Try live web scraping -------------------------------------------
     try {
       const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000"
       const scrapeRes = await fetch(`${baseUrl}/api/student/scrape-questions`, {
