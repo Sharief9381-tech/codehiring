@@ -156,8 +156,19 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
             {links.map((link) => {
               const Icon = link.icon
               const isPractice = link.label === "Practice"
-              const isActive = pathname === link.href || pathname.startsWith(link.href + "/")
-              const isPracticeActive = isPractice && (pathname.startsWith("/student/practice") || pathname.startsWith("/student/problems") || (pathname === "/student/prep" && typeof window !== "undefined" && window.location.search.includes("path=")))
+              const isPrepTrack = link.label === "Prep Track"
+              // Check if we're in a practice sub-section (track= param means came from Practice flyout)
+              const hasPracticeTrack = typeof window !== "undefined" && window.location.search.includes("track=")
+              const isPracticeActive = isPractice && (
+                pathname.startsWith("/student/practice") ||
+                pathname.startsWith("/student/problems") ||
+                (pathname === "/student/prep" && hasPracticeTrack)
+              )
+              // Prep Track is active only when on /student/prep WITHOUT a track= param
+              const isPrepActive = isPrepTrack && pathname === "/student/prep" && !hasPracticeTrack
+              const isActive = isPrepTrack
+                ? isPrepActive
+                : (pathname === link.href || pathname.startsWith(link.href + "/"))
 
               if (isPractice) {
                 return (
