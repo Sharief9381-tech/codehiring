@@ -45,12 +45,30 @@ const COMPANIES = [
 ]
 
 const SECTION_LABELS: Record<string, string> = {
-  quantitative: "Quantitative", logical: "Logical Reasoning",
-  verbal: "Verbal Ability", coding: "Coding",
+  quantitative:      "Quantitative Aptitude",
+  "advanced-aptitude": "Advanced Aptitude",
+  verbal:            "Verbal Ability",
+  "basic-coding":    "Basic Coding",
+  "advanced-coding": "Advanced Coding",
+  // legacy aliases
+  logical: "Logical Reasoning",
+  coding:  "Coding",
 }
 
 const SECTION_QTY: Record<string, number> = {
-  quantitative: 15, logical: 12, verbal: 10, coding: 3,
+  quantitative:      15,
+  "advanced-aptitude": 12,
+  verbal:            10,
+  "basic-coding":    1,
+  "advanced-coding": 1,
+  // legacy
+  logical: 12,
+  coding:  2,
+}
+
+// Section type: determines which component handles it
+function isCodingSection(sectionKey: string): boolean {
+  return sectionKey === "basic-coding" || sectionKey === "advanced-coding" || sectionKey === "coding"
 }
 
 // --- Aptitude topics ----------------------------------------------------------
@@ -461,7 +479,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const section = company.sections[curSection]
-  const isCoding = section === "coding"
+  const isCoding = isCodingSection(section)
   const totalScore = Object.values(sectionScores).length > 0
     ? Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / Object.values(sectionScores).length)
     : 0
@@ -1388,7 +1406,7 @@ export default function PrepHubPage() {
                     <ul className="space-y-1">
                       {note.points.map((p, i) => (
                         <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                          <span className="text-primary mt-0.5 shrink-0">•</span>{p}
+                          <span className="text-primary mt-0.5 shrink-0">.</span>{p}
                         </li>
                       ))}
                     </ul>
