@@ -31,6 +31,7 @@ interface DashboardSidebarProps {
 const studentLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
+  { href: "/student/problems",   label: "Practice",     icon: Target },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
   { href: "/student/prep",       label: "Prep Track",   icon: Flag },
@@ -41,6 +42,7 @@ const studentLinks = [
 const secondYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
+  { href: "/student/problems",   label: "Practice",     icon: Target },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
@@ -50,6 +52,7 @@ const secondYearLinks = [
 const firstYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",   icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",   icon: Code2 },
+  { href: "/student/problems",   label: "Practice",    icon: Target },
   { href: "/student/analytics",  label: "Analytics",   icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard", icon: Trophy },
   { href: "/student/learn",      label: "Learn",       icon: BookOpen },
