@@ -31,7 +31,7 @@ interface DashboardSidebarProps {
 const studentLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
-  { href: "/student/problems",   label: "Practice",     icon: Target },
+  { href: "/student/practice",   label: "Practice",     icon: Target },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
   { href: "/student/prep",       label: "Prep Track",   icon: Flag },
@@ -42,7 +42,7 @@ const studentLinks = [
 const secondYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
-  { href: "/student/problems",   label: "Practice",     icon: Target },
+  { href: "/student/practice",   label: "Practice",     icon: Target },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
@@ -52,7 +52,7 @@ const secondYearLinks = [
 const firstYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",   icon: LayoutDashboard },
   { href: "/student/platforms",  label: "Platforms",   icon: Code2 },
-  { href: "/student/problems",   label: "Practice",    icon: Target },
+  { href: "/student/practice",   label: "Practice",    icon: Target },
   { href: "/student/analytics",  label: "Analytics",   icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard", icon: Trophy },
   { href: "/student/learn",      label: "Learn",       icon: BookOpen },
@@ -155,7 +155,50 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
           <nav className="hidden md:flex items-center gap-0.5">
             {links.map((link) => {
               const Icon = link.icon
+              const isPractice = link.label === "Practice"
               const isActive = pathname === link.href || pathname.startsWith(link.href + "/")
+              const isPracticeActive = isPractice && (pathname.startsWith("/student/practice") || pathname.startsWith("/student/problems") || (pathname === "/student/prep" && typeof window !== "undefined" && window.location.search.includes("path=")))
+
+              if (isPractice) {
+                return (
+                  <div key={link.href} className="relative group/practice">
+                    <button
+                      className={cn(
+                        "relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
+                        isPracticeActive
+                          ? "text-primary bg-primary/8"
+                          : "text-muted-foreground hover:text-foreground hover:bg-secondary/80"
+                      )}
+                    >
+                      <Target className="h-4 w-4 shrink-0" />
+                      <span>Practice</span>
+                      <svg className="h-3 w-3 ml-0.5 transition-transform group-hover/practice:rotate-180" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    {/* Flyout dropdown */}
+                    <div className="absolute top-full left-0 mt-1 w-56 rounded-2xl shadow-2xl border border-border/60 overflow-hidden opacity-0 pointer-events-none group-hover/practice:opacity-100 group-hover/practice:pointer-events-auto transition-all duration-150 z-50"
+                      style={{ background: "var(--background)", boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}>
+                      {[
+                        { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", icon: "A", color: "#f59e0b", href: "/student/prep?path=aptitude" },
+                        { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   icon: "C", color: "#6366f1", href: "/student/problems" },
+                        { label: "Communication", sub: "Grammar · Vocab · Reading",       icon: "C", color: "#10b981", href: "/student/prep?path=communication" },
+                      ].map((item, i) => (
+                        <Link key={item.label} href={item.href}
+                          className={cn("flex items-center gap-3 px-4 py-3 hover:bg-secondary/60 transition-colors", i > 0 && "border-t border-border/40")}>
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black text-white"
+                            style={{ background: item.color }}>
+                            {item.icon}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-foreground">{item.label}</p>
+                            <p className="text-[11px] text-muted-foreground truncate">{item.sub}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )
+              }
+
               return (
                 <Link
                   key={link.href}
