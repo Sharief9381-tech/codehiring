@@ -178,9 +178,9 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                     <div className="absolute top-full left-0 mt-1 w-56 rounded-2xl shadow-2xl border border-border/60 overflow-hidden opacity-0 pointer-events-none group-hover/practice:opacity-100 group-hover/practice:pointer-events-auto transition-all duration-150 z-50"
                       style={{ background: "var(--background)", boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}>
                       {[
-                        { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", icon: "A", color: "#f59e0b", href: "/student/prep?path=aptitude" },
+                        { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", icon: "A", color: "#f59e0b", href: "/student/prep?track=aptitude" },
                         { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   icon: "C", color: "#6366f1", href: "/student/problems" },
-                        { label: "Communication", sub: "Grammar · Vocab · Reading",       icon: "C", color: "#10b981", href: "/student/prep?path=communication" },
+                        { label: "Communication", sub: "Grammar · Vocab · Reading",       icon: "C", color: "#10b981", href: "/student/prep?track=communication" },
                       ].map((item, i) => (
                         <Link key={item.label} href={item.href}
                           className={cn("flex items-center gap-3 px-4 py-3 hover:bg-secondary/60 transition-colors", i > 0 && "border-t border-border/40")}>
