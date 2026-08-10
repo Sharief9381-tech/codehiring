@@ -1575,51 +1575,6 @@ export default function PrepHubPage() {
             <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments . company patterns . real results</p>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
-            {/* Practice dropdown - click to open, fixed position to avoid clipping */}
-            <div className="relative">
-              <button
-                onClick={e => {
-                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-                  setShowPracticeMenu(v => !v)
-                  ;(window as any).__practiceMenuY = rect.bottom + 8
-                  ;(window as any).__practiceMenuR = window.innerWidth - rect.right
-                }}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
-                style={{ background:"rgba(129,140,248,0.22)", color:"#a5b4fc", border:"1.5px solid rgba(129,140,248,0.55)" }}>
-                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-                Practice
-                <svg viewBox="0 0 24 24" className={`h-3 w-3 transition-transform ${showPracticeMenu ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
-              </button>
-              {showPracticeMenu && (
-                <>
-                  <div className="fixed inset-0 z-[60]" onClick={() => setShowPracticeMenu(false)} />
-                  <div className="fixed z-[61] w-60 rounded-xl border border-border bg-card shadow-2xl overflow-hidden"
-                    style={{
-                      top: (window as any).__practiceMenuY ?? 80,
-                      right: (window as any).__practiceMenuR ?? 20,
-                    }}>
-                    {[
-                      { label:"Aptitude",      sub:"Quant . Logical . Data Interp.", color:"#f59e0b", href:"/student/prep?track=aptitude" },
-                      { label:"Coding / DSA",  sub:"Arrays . Trees . DP . Graphs",   color:"#6366f1", href:"/student/prep?track=coding" },
-                      { label:"Communication", sub:"Grammar . Vocab . Reading",       color:"#10b981", href:"/student/prep?track=communication" },
-                    ].map(opt => (
-                      <a key={opt.label} href={opt.href}
-                        onClick={() => setShowPracticeMenu(false)}
-                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-primary/5 transition-colors border-b border-border/50 last:border-0 cursor-pointer">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black"
-                          style={{ background:`${opt.color}20`, color:opt.color }}>
-                          {opt.label[0]}
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-foreground">{opt.label}</p>
-                          <p className="text-[10px] text-muted-foreground">{opt.sub}</p>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
             <button onClick={() => setShowLearningPaths(true)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
               style={{ background:"rgba(96,165,250,0.22)", color:"#93c5fd", border:"1.5px solid rgba(96,165,250,0.55)" }}>
