@@ -1,6 +1,7 @@
 ﻿"use client"
 
 import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import {
   Brain, Code2, BookOpen, Building2, ChevronRight, ArrowLeft,
   Play, Trophy, Target, CheckCircle2, XCircle, Timer, Loader2,
@@ -1236,6 +1237,8 @@ export default function PrepHubPage() {
   const [showSmartResume, setShowSmartResume] = useState(false)
   const [showPracticeMenu, setShowPracticeMenu] = useState(false)
   const [studentYear, setStudentYear] = useState<number | null>(null)
+  const [fromPractice, setFromPractice] = useState(false)  // came from Practice flyout
+  const router = useRouter()
   // Role filter states for company grid
   const [roleSearch, setRoleSearch]       = useState("")
   const [roleCategory, setRoleCategory]   = useState("All")
@@ -1264,12 +1267,13 @@ export default function PrepHubPage() {
       setShowSmartResume(true)
       window.history.replaceState(null, "", window.location.pathname)
     }
-    // Auto-open track if ?track= param is present
+    // Auto-open track if ?track= param is present (came from Practice flyout)
     const urlParams = new URLSearchParams(window.location.search)
     const track = urlParams.get("track")
     if (track === "aptitude" || track === "coding" || track === "communication") {
       setActivePath(track as Path)
       setSubView("home")
+      setFromPractice(true)
       window.history.replaceState(null, "", window.location.pathname)
     }
   }, [])
@@ -1339,7 +1343,14 @@ export default function PrepHubPage() {
     return (
       <div className="flex-1 p-4 md:p-8 max-w-screen-xl mx-auto w-full space-y-6">
         <div className="flex items-center gap-4">
-          <button onClick={() => { setActivePath(null); setSubView("home") }}
+          <button onClick={() => {
+            if (fromPractice) {
+              router.push("/student/practice")
+            } else {
+              setActivePath(null)
+              setSubView("home")
+            }
+          }}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> Back
           </button>
