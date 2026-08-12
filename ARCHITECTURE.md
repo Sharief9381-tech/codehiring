@@ -295,33 +295,6 @@ SEED_SECRET          # Auth token for /api/admin/seed-problems
 
 ---
 
-## Key Workflows
-
-### Student Placement Prep (Year 3-4)
-1. Student opens **Prep Track** from nav
-2. Sees 189 company cards filtered by category
-3. Clicks TCS → sees Section 1/4 (Quantitative)
-4. AI generates 15 MCQ questions matching TCS NQT patterns
-5. Completes all 4 sections → gets AI hiring report
-6. Report saved to assessment history
-
-### Coding Practice (All Years)
-1. Click **Practice** → dropdown shows Aptitude / Coding / Communication
-2. **Coding** → `/student/problems` — 750 problems filterable by topic/difficulty
-3. Select problem → Monaco editor opens
-4. Write code → Run (Docker sandbox) → Submit
-5. Progress saved to `localStorage` + MongoDB
-
-### College Hiring Drive
-1. College admin creates drive with JD, eligibility, date
-2. Students apply from drives page
-3. Recruiter adds coding assessment to drive
-4. Students take proctored assessment
-5. Recruiter shortlists → sends offers
-6. College gets placement report
-
----
-
 ## API Route Summary
 
 | Prefix | Handler |
@@ -333,3 +306,5 @@ SEED_SECRET          # Auth token for /api/admin/seed-problems
 | `/api/admin/*` | Admin panel + problem seeder |
 | `/api/public/*` | Public data (no auth) — stats, profiles, colleges |
 | `/api/drives/*` | Drive management shared by college + recruiter |
+
+> See [WORKFLOWS.md](./WORKFLOWS.md) for detailed step-by-step user journey workflows.
