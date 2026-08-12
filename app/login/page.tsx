@@ -40,11 +40,11 @@ function useCountUp(target: number, duration = 1400) {
   return v
 }
 
-function StatCard({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
-  const animated = useCountUp(value)
-  const display = value >= 1000
+function StatCard({ value, label, suffix = "" }: { value: number | string; label: string; suffix?: string }) {
+  const animated = useCountUp(typeof value === "number" ? value : 0)
+  const display = typeof value === "string" ? value : (value >= 1000
     ? (animated >= 1000 ? `${(animated / 1000).toFixed(1)}K` : animated.toString())
-    : animated.toString()
+    : animated.toString())
 
   return (
     <div style={{

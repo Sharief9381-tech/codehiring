@@ -238,7 +238,7 @@ export async function GET(req: Request) {
 
     // Use cache if same topic + language
     const cached = await db.collection(COLLECTION).findOne({ userId: uid })
-    if (cached?.challenges?.length > 0 && cached.cacheKey === cacheKey) {
+    if (cached && cached?.challenges?.length > 0 && cached.cacheKey === cacheKey) {
       const active = (cached.challenges as any[]).filter(c => !completedIds.includes(c.id))
       if (active.length >= 3) {
         return NextResponse.json({
