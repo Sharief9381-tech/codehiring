@@ -715,7 +715,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
           <div className="flex-1 overflow-y-auto" style={{ scrollbarColor: `${T.scrollbar} transparent` }}>
             {leftTab === "desc" ? (
-              <div className="p-5 space-y-5 text-sm" style={{ color: T.text }}>
+              <div className="p-4 space-y-4 text-sm" style={{ color: T.text }}>
                 {isLoading ? (
                   <div className="flex items-center gap-2 text-xs" style={{ color: T.muted }}>
                     <RefreshCw className="h-3 w-3 animate-spin" /> Loading problem...
@@ -723,16 +723,16 @@ export default function ProblemEditor({ problemId }: Props) {
                 ) : (
                   <>
                     <div>
-                      <h1 className="text-lg font-black mb-3" style={{ color: T.text }}>{title}</h1>
-                      <p className="leading-relaxed" style={{ color: T.text, lineHeight: "1.75" }}
+                      <h1 className="text-base font-black mb-2" style={{ color: T.text }}>{title}</h1>
+                      <p className="text-sm leading-relaxed" style={{ color: T.text, lineHeight: "1.7" }}
                         dangerouslySetInnerHTML={{ __html: desc.replace(/`([^`]+)`/g, `<code style="background:${T.panel};color:${T.keyword};padding:1px 5px;border-radius:4px;font-family:monospace">$1</code>`) }} />
                     </div>
 
                     {/* Input Format — skip only raw function signatures */}
                     {problem?.inputFormat && !problem.inputFormat.trim().match(/^(def |function |class |public |private )\w/) && (
                       <div>
-                        <p className="font-bold mb-2" style={{ color: T.text }}>Input Format</p>
-                        <div className="rounded-lg p-4 text-sm leading-relaxed"
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Input Format</p>
+                        <div className="rounded-lg p-3 text-sm leading-relaxed"
                           style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.text }}>
                           {problem.inputFormat.replace(/^Function signature:\s*/i, "")}
                         </div>
@@ -742,8 +742,8 @@ export default function ProblemEditor({ problemId }: Props) {
                     {/* Output Format */}
                     {problem?.outputFormat && (
                       <div>
-                        <p className="font-bold mb-2" style={{ color: T.text }}>Output Format</p>
-                        <div className="rounded-lg p-4 text-sm leading-relaxed"
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Output Format</p>
+                        <div className="rounded-lg p-3 text-sm leading-relaxed"
                           style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.text }}>
                           {problem.outputFormat}
                         </div>
@@ -753,28 +753,25 @@ export default function ProblemEditor({ problemId }: Props) {
                     {/* Examples */}
                     {examples.map((ex: any, i: number) => (
                       <div key={i}>
-                        <p className="font-bold mb-2 text-sm" style={{ color: T.text }}>Example {i + 1}:</p>
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Example {i + 1}:</p>
                         <div className="rounded-lg border overflow-hidden"
                           style={{ background: T.panel, borderColor: T.border }}>
                           <div className="grid grid-cols-2 divide-x" style={{ borderColor: T.border }}>
-                            {/* Input box */}
-                            <div className="p-4">
-                              <p className="text-[11px] font-semibold mb-2" style={{ color: T.muted }}>Input:</p>
+                            <div className="p-3">
+                              <p className="text-[11px] font-semibold mb-1.5" style={{ color: T.muted }}>Input:</p>
                               <pre className="font-mono text-xs whitespace-pre-wrap leading-relaxed" style={{ color: T.string }}>
                                 {ex.input || "—"}
                               </pre>
                             </div>
-                            {/* Output box */}
-                            <div className="p-4">
-                              <p className="text-[11px] font-semibold mb-2" style={{ color: T.muted }}>Output:</p>
+                            <div className="p-3">
+                              <p className="text-[11px] font-semibold mb-1.5" style={{ color: T.muted }}>Output:</p>
                               <pre className="font-mono text-xs whitespace-pre-wrap leading-relaxed" style={{ color: T.function }}>
                                 {ex.output || "—"}
                               </pre>
                             </div>
                           </div>
-                          {/* Explanation below */}
                           {ex.explanation && (
-                            <div className="px-4 py-3 border-t text-xs" style={{ borderColor: T.border, color: T.muted }}>
+                            <div className="px-3 py-2.5 border-t text-xs" style={{ borderColor: T.border, color: T.muted }}>
                               <span className="font-semibold" style={{ color: T.text }}>Explanation: </span>
                               {ex.explanation}
                             </div>
@@ -786,8 +783,8 @@ export default function ProblemEditor({ problemId }: Props) {
                     {/* Constraints */}
                     {constraints.length > 0 && (
                       <div>
-                        <p className="font-bold mb-2" style={{ color: T.text }}>Constraints:</p>
-                        <ul className="space-y-1.5">
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Constraints:</p>
+                        <ul className="space-y-1">
                           {constraints.map((c: string, i: number) => (
                             <li key={i} className="flex items-start gap-2 text-xs">
                               <span className="mt-0.5 shrink-0" style={{ color: T.keyword }}>•</span>
