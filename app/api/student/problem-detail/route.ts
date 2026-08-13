@@ -31,6 +31,8 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
 Return ONLY valid JSON (no markdown):
 {
   "desc": "2-3 sentence description with backtick inline code",
+  "inputFormat": "A clear 1-2 sentence description of the input format. E.g. 'The first line contains an integer n. The second line contains n space-separated integers representing the array.'",
+  "outputFormat": "A clear 1 sentence description of the output. E.g. 'Print a single integer representing the answer.' or 'Return the indices as a list of two integers.'",
   "examples": [
     {"input": "readable input like nums=[1,2,3]", "output": "expected output", "explanation": "brief one sentence"},
     {"input": "second input", "output": "second output"}
@@ -94,8 +96,8 @@ function bankToWire(sp: any, title: string, difficulty: string) {
     difficulty,
     badge: difficulty,
     desc:          sp.desc          ?? `Solve the ${title} problem.`,
-    inputFormat:   sp.functionSignature ? `Function signature:\n${sp.functionSignature}` : "",
-    outputFormat:  "",
+    inputFormat:   sp.inputFormat   ?? (sp.functionSignature ? `Function signature: ${sp.functionSignature}` : ""),
+    outputFormat:  sp.outputFormat  ?? "",
     constraints:   sp.constraints   ?? [],
     input:         sp.examples?.[0]?.input  ?? "",
     output:        sp.examples?.[0]?.output ?? "",
@@ -155,7 +157,7 @@ export async function POST(req: Request) {
     // -- 2. Check MongoDB cache ------------------------------------------------
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-    const cached = await db.collection("problem_details_v2").findOne({ cacheKey })
+    const cached = await db.collection("problem_details_v3").findOne({ cacheKey })
     if (cached?.problem?.pythonTest1) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
     }
@@ -184,8 +186,8 @@ export async function POST(req: Request) {
     const merged = {
       title, difficulty, badge: difficulty,
       desc:          aiData.desc          ?? sp?.desc ?? `Solve the ${title} problem.`,
-      inputFormat:   aiData.functionSignature ? `Function signature:\n${aiData.functionSignature}` : "",
-      outputFormat:  "",
+      inputFormat:   aiData.inputFormat   ?? (aiData.functionSignature ? `Function signature: ${aiData.functionSignature}` : ""),
+      outputFormat:  aiData.outputFormat  ?? "",
       constraints:   aiData.constraints   ?? sp?.constraints ?? [],
       input:         aiData.examples?.[0]?.input  ?? sp?.examples?.[0]?.input  ?? "",
       output:        aiData.examples?.[0]?.output ?? sp?.examples?.[0]?.output ?? "",
@@ -212,7 +214,7 @@ export async function POST(req: Request) {
     }
 
     // Cache in MongoDB so next request is instant
-    await db.collection("problem_details_v2").updateOne(
+    await db.collection("problem_details_v3").updateOne(
       { cacheKey },
       { $set: { cacheKey, problem: merged, generatedAt: new Date() } },
       { upsert: true }

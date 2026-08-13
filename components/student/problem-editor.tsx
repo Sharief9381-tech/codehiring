@@ -302,6 +302,8 @@ export default function ProblemEditor({ problemId }: Props) {
   const [bottomTab, setBot]     = useState<"sample"|"custom"|"results">("sample")
   const [selCase, setSelCase]   = useState(0)
   const [customIn, setCustomIn] = useState("")
+  const [customOut, setCustomOut] = useState<{ output: string; error: string; runtimeMs: number } | null>(null)
+  const [customRunning, setCustomRunning] = useState(false)
   const [leftW, setLeftW]       = useState(420)
   const [bottomH, setBottomH]   = useState(240)
   const [activeLineY, setActiveLineY] = useState(0)
@@ -463,6 +465,37 @@ export default function ProblemEditor({ problemId }: Props) {
     }
   }
 
+  // -- Run custom input --------------------------------------------------------
+  const runCustom = async () => {
+    if (!code.trim() || !customIn.trim()) return
+    setCustomRunning(true)
+    setCustomOut(null)
+    try {
+      // Build a minimal problem payload that forces stdin mode (no pythonTest scripts)
+      const stdinProblem = {
+        title: problem?.title ?? title,
+        desc: "", input: customIn, output: "",
+        // No pythonTest* keys → run-code will use stdin mode
+      }
+      const res = await fetch("/api/student/run-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, language: lang, problem: stdinProblem, mode: "run" }),
+      })
+      const data = await res.json()
+      if (data.results?.[0]) {
+        const r = data.results[0]
+        setCustomOut({ output: r.actualOutput ?? "", error: r.error ?? "", runtimeMs: r.runtimeMs ?? 0 })
+      } else {
+        setCustomOut({ output: "", error: data.error ?? "Execution failed", runtimeMs: 0 })
+      }
+    } catch (e: any) {
+      setCustomOut({ output: "", error: e.message ?? "Network error", runtimeMs: 0 })
+    } finally {
+      setCustomRunning(false)
+    }
+  }
+
   // -- Run tests ---------------------------------------------------------------
   const runTests = async (mode: "run" | "submit") => {
     if (!code.trim()) return
@@ -618,6 +651,28 @@ export default function ProblemEditor({ problemId }: Props) {
                       </div>
                     ))}
 
+                    {/* Input Format */}
+                    {problem?.inputFormat && (
+                      <div>
+                        <p className="font-bold mb-2" style={{ color: T.text }}>Input Format</p>
+                        <div className="rounded-lg p-4 text-sm leading-relaxed"
+                          style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.text }}>
+                          {problem.inputFormat.replace(/^Function signature:\s*/i, "")}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Output Format */}
+                    {problem?.outputFormat && (
+                      <div>
+                        <p className="font-bold mb-2" style={{ color: T.text }}>Output Format</p>
+                        <div className="rounded-lg p-4 text-sm leading-relaxed"
+                          style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.text }}>
+                          {problem.outputFormat}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Constraints */}
                     {constraints.length > 0 && (
                       <div>
@@ -625,7 +680,7 @@ export default function ProblemEditor({ problemId }: Props) {
                         <ul className="space-y-1.5">
                           {constraints.map((c: string, i: number) => (
                             <li key={i} className="flex items-start gap-2 text-xs">
-                              <span className="mt-0.5 shrink-0" style={{ color: T.keyword }}>.</span>
+                              <span className="mt-0.5 shrink-0" style={{ color: T.keyword }}>•</span>
                               <code style={{ color: T.text, fontFamily: "monospace" }}
                                 dangerouslySetInnerHTML={{ __html: c.replace(/\^(\d+)/g, "<sup>$1</sup>") }} />
                             </li>
@@ -635,14 +690,6 @@ export default function ProblemEditor({ problemId }: Props) {
                     )}
 
                     {/* Function signature */}
-                    {problem?.inputFormat && (
-                      <div className="rounded-lg border p-3" style={{ background: T.panel, borderColor: T.border }}>
-                        <p className="text-xs font-bold mb-1" style={{ color: T.muted }}>Function Signature</p>
-                        <code className="text-xs" style={{ color: T.function, fontFamily: "monospace" }}>
-                          {problem.inputFormat.replace("Function signature:\n", "")}
-                        </code>
-                      </div>
-                    )}
                   </>
                 )}
               </div>
@@ -828,16 +875,34 @@ export default function ProblemEditor({ problemId }: Props) {
               {/* Custom tab */}
               {bottomTab === "custom" && (
                 <div className="space-y-2">
-                  <p style={{ color: T.muted }}>Custom input (function args, one per line):</p>
-                  <textarea value={customIn} onChange={e => setCustomIn(e.target.value)}
-                    placeholder="e.g. [1,2,3,4]&#10;9"
-                    className="w-full rounded border px-3 py-2 font-mono focus:outline-none resize-none h-20"
-                    style={{ background: T.panel, borderColor: T.border, color: T.text }} />
-                  <button onClick={() => runTests("run")} disabled={running || !customIn.trim()}
-                    className="px-4 py-1.5 rounded font-bold text-xs disabled:opacity-40"
-                    style={{ background: "#238636", color: "#fff" }}>
-                    {running ? "Running…" : "Run Custom"}
+                  <p className="text-[11px]" style={{ color: T.muted }}>
+                    Paste your own input below and run — output appears immediately.
+                  </p>
+                  <textarea value={customIn} onChange={e => { setCustomIn(e.target.value); setCustomOut(null) }}
+                    placeholder={"e.g.\n[2,7,11,15]\n9"}
+                    className="w-full rounded border px-3 py-2 font-mono focus:outline-none resize-none h-24"
+                    style={{ background: T.panel, borderColor: T.border, color: T.text, fontSize: "12px" }} />
+                  <button onClick={runCustom} disabled={customRunning || !customIn.trim() || !code.trim()}
+                    className="flex items-center gap-1.5 px-4 py-1.5 rounded font-bold text-xs disabled:opacity-40 transition-all"
+                    style={{ background: "#238636", color: "#fff", border: "1px solid #2ea043" }}>
+                    {customRunning
+                      ? <><RefreshCw className="h-3 w-3 animate-spin" /> Running…</>
+                      : <><Play className="h-3 w-3" /> Run Custom</>
+                    }
                   </button>
+                  {customOut && (
+                    <div className="space-y-2 mt-1">
+                      <div>
+                        <p className="font-semibold mb-1 text-[11px]" style={{ color: T.muted }}>
+                          Output {customOut.runtimeMs > 0 && <span style={{ color: "#58a6ff" }}>· {customOut.runtimeMs}ms</span>}
+                        </p>
+                        <div className="rounded px-3 py-2 font-mono text-xs whitespace-pre-wrap"
+                          style={{ background: T.panel, border: `1px solid ${customOut.error ? "#f8514944" : "#2ea04344"}`, color: customOut.error ? "#f85149" : "#3fb950", minHeight: "36px" }}>
+                          {customOut.error ? customOut.error : (customOut.output || <span style={{ color: T.lineNum }}>(no output)</span>)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
