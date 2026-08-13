@@ -254,8 +254,15 @@ export default function ProblemEditor({ problemId }: Props) {
           // Fully cached - use it directly
           setProblem(p)
           const lang = langRef.current
-          const starter = p.starters?.[lang] ?? p.starters?.["Python"]
-          if (starter) setCode(starter)
+          // Load accepted code if exists, else use starter
+          const savedCode = localStorage.getItem(`accepted_code_${problemId}_${lang}`)
+          if (savedCode) {
+            setCode(savedCode)
+            setDone(true)
+          } else {
+            const starter = p.starters?.[lang] ?? p.starters?.["Python"]
+            if (starter) setCode(starter)
+          }
           return
         }
         // Partial stub (daily challenge URL params) - show immediately but still fetch
@@ -273,10 +280,16 @@ export default function ProblemEditor({ problemId }: Props) {
       if (data.problem) {
         setProblem(data.problem)
         try { sessionStorage.setItem(key, JSON.stringify(data.problem)) } catch {}
-        // Set language-specific starter
+        // Set language-specific starter (only if no saved accepted code)
         const lang = langRef.current
-        const starter = data.problem.starters?.[lang] ?? data.problem.starters?.["Python"]
-        if (starter) setCode(starter)
+        const savedCode = localStorage.getItem(`accepted_code_${problemId}_${lang}`)
+        if (savedCode) {
+          setCode(savedCode)
+          setDone(true)  // mark as completed if we have saved accepted code
+        } else {
+          const starter = data.problem.starters?.[lang] ?? data.problem.starters?.["Python"]
+          if (starter) setCode(starter)
+        }
       }
     }).catch(() => {})
   }, [problemId])
@@ -308,6 +321,14 @@ export default function ProblemEditor({ problemId }: Props) {
   const [bottomH, setBottomH]   = useState(240)
   const [activeLineY, setActiveLineY] = useState(0)
   const dragH = useRef(false); const dragV = useRef(false)
+
+  // -- Tab size per language (spaces) ------------------------------------------
+  const TAB_SIZE: Record<string, number> = {
+    Python: 4, Java: 4, "C++": 4, C: 4, "C#": 4, Go: 4, Kotlin: 4, Swift: 4,
+    JavaScript: 2, TypeScript: 2,
+  }
+  const tabSize = TAB_SIZE[lang] ?? 4
+  const TAB_STR = " ".repeat(tabSize)
 
   // -- Derived -----------------------------------------------------------------
   const title      = problem?.title      ?? PROBLEM_LOOKUP[problemId]?.title    ?? "Loading…"
@@ -346,8 +367,15 @@ export default function ProblemEditor({ problemId }: Props) {
   // -- Change language ---------------------------------------------------------
   const changeLang = (l: string) => {
     setLang(l); langRef.current = l
-    const starter = problem?.starters?.[l] ?? DEFAULT_STARTERS[l] ?? ""
-    setCode(starter); setRes(null); setError("")
+    // Load saved accepted code for this language, else show starter
+    const savedCode = localStorage.getItem(`accepted_code_${problemId}_${l}`)
+    if (savedCode) {
+      setCode(savedCode)
+    } else {
+      const starter = problem?.starters?.[l] ?? DEFAULT_STARTERS[l] ?? ""
+      setCode(starter)
+    }
+    setRes(null); setError("")
   }
 
   // -- Sync highlight scroll with textarea ------------------------------------
@@ -369,17 +397,26 @@ export default function ProblemEditor({ problemId }: Props) {
     const before = code.slice(0, ss); const after = code.slice(se)
     const curLine = before.slice(before.lastIndexOf("\n") + 1)
 
-    // -- Ctrl shortcuts (let browser handle Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+Z, Ctrl+X) --
+    // -- Ctrl / Meta shortcuts ------------------------------------------------
     if (e.ctrlKey || e.metaKey) {
-      // Ctrl+/ — toggle comment
+      // Ctrl+A — select all text in textarea (not the page)
+      if (e.key === "a" || e.key === "A") {
+        e.preventDefault()
+        requestAnimationFrame(() => {
+          ta.selectionStart = 0
+          ta.selectionEnd   = ta.value.length
+        })
+        return
+      }
+      // Ctrl+/ — toggle line comment
       if (e.key === "/") {
         e.preventDefault()
         const commentChar = lang === "Python" ? "#" : "//"
         const lineStart = before.lastIndexOf("\n") + 1
-        const lineEnd = code.indexOf("\n", ss) === -1 ? code.length : code.indexOf("\n", ss)
-        const fullLine = code.slice(lineStart, lineEnd)
-        const trimmed = fullLine.trimStart()
-        const indent = fullLine.slice(0, fullLine.length - trimmed.length)
+        const lineEnd   = code.indexOf("\n", ss) === -1 ? code.length : code.indexOf("\n", ss)
+        const fullLine  = code.slice(lineStart, lineEnd)
+        const trimmed   = fullLine.trimStart()
+        const indent    = fullLine.slice(0, fullLine.length - trimmed.length)
         let newCode: string
         if (trimmed.startsWith(commentChar + " ")) {
           newCode = code.slice(0, lineStart) + indent + trimmed.slice(commentChar.length + 1) + code.slice(lineEnd)
@@ -390,32 +427,35 @@ export default function ProblemEditor({ problemId }: Props) {
         }
         setCode(newCode)
         requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss })
+        return
       }
-      // Let all other Ctrl shortcuts pass through to browser (Ctrl+A, Z, C, V, X, etc.)
+      // Let browser handle Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+Z, Ctrl+Y etc.
       return
     }
 
     if (e.key === "Enter") {
       e.preventDefault()
       if (lang === "Python") {
-        const ind  = curLine.match(/^(\s*)/)?.[1] ?? ""
-        const extra = curLine.trimEnd().endsWith(":") ? "    " : ""
-        const ins = "\n" + ind + extra
-        const nxt = before + ins + after; setCode(nxt)
+        const ind   = curLine.match(/^(\s*)/)?.[1] ?? ""
+        const extra = curLine.trimEnd().endsWith(":") ? TAB_STR : ""
+        const ins   = "\n" + ind + extra
+        const nxt   = before + ins + after; setCode(nxt)
         requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + ins.length })
         return
       }
       if (BRACE_LANGS.has(lang)) {
         const cb = before.slice(-1); const ca = after.slice(0,1)
         if (cb === "{" && ca === "}") {
-          const ind = curLine.match(/^(\s*)/)?.[1] ?? ""
-          const inner = "\n" + ind + "    "; const close = "\n" + ind
-          const nxt = before + inner + close + "}" + after.slice(1); setCode(nxt)
+          const ind   = curLine.match(/^(\s*)/)?.[1] ?? ""
+          const inner = "\n" + ind + TAB_STR
+          const close = "\n" + ind
+          const nxt   = before + inner + close + "}" + after.slice(1); setCode(nxt)
           requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + inner.length })
           return
         }
         const ind = curLine.match(/^(\s*)/)?.[1] ?? ""
-        const ins = "\n" + ind; const nxt = before + ins + after; setCode(nxt)
+        const ins = "\n" + ind
+        const nxt = before + ins + after; setCode(nxt)
         requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + ins.length })
         return
       }
@@ -425,15 +465,17 @@ export default function ProblemEditor({ problemId }: Props) {
     if (e.key === "Tab") {
       e.preventDefault()
       if (e.shiftKey) {
+        // Shift+Tab — remove one indent level
         const ls = before.lastIndexOf("\n") + 1
-        const sp = code.slice(ls).match(/^( {1,4})/)?.[1] ?? ""
+        const sp = code.slice(ls).match(new RegExp(`^( {1,${tabSize}})`))?.[1] ?? ""
         if (sp) {
           setCode(code.slice(0, ls) + code.slice(ls + sp.length))
           requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = Math.max(ls, ss - sp.length) })
         }
       } else {
-        setCode(before + "    " + after)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 4 })
+        // Tab — insert language-specific spaces
+        setCode(before + TAB_STR + after)
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + tabSize })
       }
       return
     }
@@ -529,7 +571,11 @@ export default function ProblemEditor({ problemId }: Props) {
         if (mode === "submit") setBot("results")
         if (mode === "submit" && data.allPassed) {
           setDone(true)
-          // Save to localStorage so the problems list shows the green tick
+          // Save accepted code to localStorage (persists across sessions)
+          try {
+            localStorage.setItem(`accepted_code_${problemId}_${lang}`, code)
+          } catch {}
+          // Save to completedChallenges for the green tick on problems list
           try {
             const stored = localStorage.getItem("completedChallenges")
             const arr: string[] = stored ? JSON.parse(stored) : []
