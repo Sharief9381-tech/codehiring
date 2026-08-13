@@ -624,6 +624,7 @@ export default function ProblemEditor({ problemId }: Props) {
       {/* -- Top bar ------------------------------------------------------- */}
       <div className="flex items-center px-3 h-11 border-b shrink-0 gap-2"
         style={{ background: T.panel, borderColor: T.border }}>
+
         {/* Back */}
         <button onClick={() => window.history.back()}
           className="flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors hover:opacity-80"
@@ -632,35 +633,9 @@ export default function ProblemEditor({ problemId }: Props) {
         </button>
         <div className="w-px h-4" style={{ background: T.border }} />
 
-        {/* Prev / Next */}
-        <button
-          onClick={() => prevProblem && goToProblem(prevProblem.slug)}
-          disabled={!prevProblem}
-          title="Previous problem"
-          className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all disabled:opacity-30"
-          style={{ color: T.muted, border: `1px solid ${T.border}` }}
-          onMouseEnter={e => { if (prevProblem) e.currentTarget.style.color = T.text }}
-          onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>
-          <ChevronLeft className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Prev</span>
-        </button>
-        <button
-          onClick={() => nextProblem && goToProblem(nextProblem.slug)}
-          disabled={!nextProblem}
-          title="Next problem"
-          className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all disabled:opacity-30"
-          style={{ color: T.muted, border: `1px solid ${T.border}` }}
-          onMouseEnter={e => { if (nextProblem) e.currentTarget.style.color = T.text }}
-          onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>
-          <span className="hidden sm:inline">Next</span>
-          <ChevronRight className="h-3.5 w-3.5" />
-        </button>
-
-        <div className="w-px h-4" style={{ background: T.border }} />
-        {/* Title + badge */}
+        {/* Title + difficulty (no background color) */}
         <span className="font-bold text-sm truncate max-w-xs" style={{ color: T.text }}>{title}</span>
-        <span className="text-xs font-semibold px-2 py-0.5 rounded-full border shrink-0"
-          style={{ color: diffColor, borderColor: diffColor + "44", background: diffColor + "15" }}>
+        <span className="text-xs font-semibold shrink-0" style={{ color: diffColor }}>
           {difficulty}
         </span>
         {/* Problem index counter */}
@@ -669,7 +644,36 @@ export default function ProblemEditor({ problemId }: Props) {
             {currentIdx + 1} / {ALL_PROBLEMS_ORDERED.length}
           </span>
         )}
+
         <div className="flex-1" />
+
+        {/* Prev / Next — left of theme selector */}
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => prevProblem && goToProblem(prevProblem.slug)}
+            disabled={!prevProblem}
+            title="Previous problem"
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all disabled:opacity-30"
+            style={{ color: T.muted }}
+            onMouseEnter={e => { if (prevProblem) { e.currentTarget.style.color = T.text; e.currentTarget.style.background = T.bg + "88" } }}
+            onMouseLeave={e => { e.currentTarget.style.color = T.muted; e.currentTarget.style.background = "transparent" }}>
+            <ChevronLeft className="h-3.5 w-3.5" />
+            <span>Prev</span>
+          </button>
+          <button
+            onClick={() => nextProblem && goToProblem(nextProblem.slug)}
+            disabled={!nextProblem}
+            title="Next problem"
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all disabled:opacity-30"
+            style={{ color: T.muted }}
+            onMouseEnter={e => { if (nextProblem) { e.currentTarget.style.color = T.text; e.currentTarget.style.background = T.bg + "88" } }}
+            onMouseLeave={e => { e.currentTarget.style.color = T.muted; e.currentTarget.style.background = "transparent" }}>
+            <span>Next</span>
+            <ChevronRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+        <div className="w-px h-4" style={{ background: T.border }} />
+
         {/* Theme selector */}
         <div className="flex items-center gap-1 rounded-md border px-2 py-1"
           style={{ borderColor: T.border, background: T.bg }}>
