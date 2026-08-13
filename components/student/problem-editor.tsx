@@ -753,16 +753,30 @@ export default function ProblemEditor({ problemId }: Props) {
                     {/* Examples */}
                     {examples.map((ex: any, i: number) => (
                       <div key={i}>
-                        <p className="font-bold mb-2" style={{ color: T.text }}>Example {i + 1}:</p>
-                        <div className="rounded-lg border p-4 space-y-2 font-mono text-xs"
+                        <p className="font-bold mb-2 text-sm" style={{ color: T.text }}>Example {i + 1}:</p>
+                        <div className="rounded-lg border overflow-hidden"
                           style={{ background: T.panel, borderColor: T.border }}>
-                          <div><span className="font-bold" style={{ color: T.text }}>Input: </span>
-                            <span style={{ color: T.string }}>{ex.input}</span></div>
-                          <div><span className="font-bold" style={{ color: T.text }}>Output: </span>
-                            <span style={{ color: T.function }}>{ex.output}</span></div>
+                          <div className="grid grid-cols-2 divide-x" style={{ borderColor: T.border }}>
+                            {/* Input box */}
+                            <div className="p-4">
+                              <p className="text-[11px] font-semibold mb-2" style={{ color: T.muted }}>Input:</p>
+                              <pre className="font-mono text-xs whitespace-pre-wrap leading-relaxed" style={{ color: T.string }}>
+                                {ex.input || "—"}
+                              </pre>
+                            </div>
+                            {/* Output box */}
+                            <div className="p-4">
+                              <p className="text-[11px] font-semibold mb-2" style={{ color: T.muted }}>Output:</p>
+                              <pre className="font-mono text-xs whitespace-pre-wrap leading-relaxed" style={{ color: T.function }}>
+                                {ex.output || "—"}
+                              </pre>
+                            </div>
+                          </div>
+                          {/* Explanation below */}
                           {ex.explanation && (
-                            <div className="mt-1 pt-2 border-t text-[11px]" style={{ borderColor: T.border, color: T.muted }}>
-                              <span className="font-bold" style={{ color: T.text }}>Explanation: </span>{ex.explanation}
+                            <div className="px-4 py-3 border-t text-xs" style={{ borderColor: T.border, color: T.muted }}>
+                              <span className="font-semibold" style={{ color: T.text }}>Explanation: </span>
+                              {ex.explanation}
                             </div>
                           )}
                         </div>
