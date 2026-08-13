@@ -1,310 +1,402 @@
-# CodeHiring — Architecture & Workflow
-
-## Overview
-
-CodeHiring is a full-stack campus hiring platform connecting students, colleges, and recruiters. It provides AI-powered placement preparation, real company assessments, coding practice, job tracking, and hiring management.
+# CodeHiring — System Architecture
 
 ---
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | Next.js 16 (App Router), TypeScript, Tailwind CSS |
-| Backend | Next.js API Routes (serverless) |
-| Database | MongoDB Atlas (via native driver) |
-| Authentication | Custom JWT + session model |
-| AI | OpenAI GPT-4o-mini (primary), Groq LLaMA-3.3-70B (fallback) |
-| Code Execution | Docker sandbox (code-executor service) |
-| Email | Gmail SMTP (port 465, SSL) |
-| Deployment | Vercel |
-
----
-
-## Directory Structure
+## High-Level System Overview
 
 ```
-codehiring/
-├── app/                          # Next.js App Router
-│   ├── api/                      # All backend API routes
-│   │   ├── admin/                # Admin-only endpoints
-│   │   │   └── seed-problems/    # Seeds 18,900 AI problems to MongoDB
-│   │   ├── auth/                 # Login, signup, OTP, email verify
-│   │   ├── college/              # College portal APIs
-│   │   ├── recruiter/            # Recruiter portal APIs
-│   │   ├── student/              # Student feature APIs
-│   │   │   ├── generate-assessment/   # MCQ + coding assessment generator
-│   │   │   ├── company-coding-ai/     # CodeHiring coding model
-│   │   │   ├── run-code/              # Code execution sandbox
-│   │   │   ├── first-year-progress/   # XP + badge tracking
-│   │   │   └── ...
-│   │   └── public/               # Public endpoints (no auth)
-│   ├── student/                  # Student pages
-│   │   ├── dashboard/            # Student home
-│   │   ├── learn/                # Year-based learning hub
-│   │   ├── practice/             # Practice landing (Apt/DSA/Comm)
-│   │   ├── problems/             # Coding problem list + editor
-│   │   ├── prep/                 # Company prep track
-│   │   └── ...
-│   ├── college/                  # College portal pages
-│   ├── recruiter/                # Recruiter portal pages
-│   └── admin/                   # Admin panel
-├── components/
-│   ├── dashboard/sidebar.tsx     # Global nav with Practice flyout
-│   ├── student/
-│   │   ├── first-year-full-hub.tsx   # Year 1-2 gamified learning hub
-│   │   ├── career-hub.tsx            # Year 3-4 career prep hub
-│   │   └── problem-editor.tsx        # Monaco code editor
-│   └── ...
-├── lib/
-│   ├── coding-model/
-│   │   ├── company-profiles.ts   # Per-company OA section definitions
-│   │   └── generator.ts          # Pattern templates + prompt builder
-│   ├── models/
-│   │   ├── user.ts               # User schema (student/college/recruiter)
-│   │   ├── company-problem.ts    # 18,900-problem MongoDB collection
-│   │   └── ...
-│   ├── companies-data.ts         # 189 companies with sections config
-│   ├── topic-questions.ts        # 750 curated problems (25 topics)
-│   ├── service-company-problems.ts   # 105 IT service company problems
-│   ├── fintech-problem-bank.ts   # 225 FinTech/Quant problems
-│   ├── it-services-problems.ts   # Extended IT services problems
-│   └── question-bank.ts          # PYQ bank for aptitude generation
-└── seed-problems.mjs             # Local script to seed MongoDB
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CODEHIRING PLATFORM                            │
+│                          AI-Powered Campus Hiring                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+        ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+        │   STUDENT    │    │   COLLEGE    │    │  RECRUITER   │
+        │  (Browser)   │    │  (Browser)   │    │  (Browser)   │
+        └──────┬───────┘    └──────┬───────┘    └──────┬───────┘
+               │                   │                    │
+               └─────────────────┬─┘────────────────────┘
+                                  │  HTTPS
+                                  ▼
+                    ┌─────────────────────────┐
+                    │      NEXT.JS APP         │
+                    │   (Vercel Edge/SSR)      │
+                    │                         │
+                    │  ┌───────┐ ┌─────────┐  │
+                    │  │ Pages │ │  API    │  │
+                    │  │ (RSC) │ │ Routes  │  │
+                    │  └───────┘ └────┬────┘  │
+                    └─────────────────┼────────┘
+                                      │
+              ┌───────────────────────┼─────────────────────────┐
+              │                       │                         │
+              ▼                       ▼                         ▼
+  ┌───────────────────┐  ┌────────────────────┐  ┌─────────────────────┐
+  │   MONGODB ATLAS   │  │     GROQ / OPENAI  │  │   CODE EXECUTOR     │
+  │                   │  │                    │  │   (Docker Sandbox)  │
+  │  users            │  │  LLaMA-3.3-70B     │  │                     │
+  │  drives           │  │  GPT-4o-mini       │  │  Python / JS        │
+  │  assessments      │  │                    │  │  Java / C++         │
+  │  company_problems │  │  Assessment Gen    │  │  Timeout + Isolate  │
+  │  blogs            │  │  Hiring Reports    │  │                     │
+  │  sessions         │  │  Blog Writing      │  └─────────────────────┘
+  │  notifications    │  │  AI Insights       │
+  └───────────────────┘  └────────────────────┘
+              │
+              ▼
+  ┌───────────────────┐
+  │   GMAIL SMTP      │
+  │  (Port 465 SSL)   │
+  │                   │
+  │  OTP emails       │
+  │  Verification     │
+  │  Offer letters    │
+  └───────────────────┘
 ```
 
 ---
 
-## User Roles & Portals
+## Application Layer
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                      CodeHiring                         │
-├──────────────┬──────────────────┬───────────────────────┤
-│   STUDENT    │     COLLEGE      │      RECRUITER        │
-│              │                  │                       │
-│ Dashboard    │ Student Mgmt     │ Drive Management      │
-│ Practice Hub │ Drive Creation   │ Talent Search         │
-│ Prep Track   │ Analytics        │ Shortlisting          │
-│ Problems     │ Announcements    │ Job Postings          │
-│ Platforms    │ Placement Report │ Analytics             │
-│ AI Insights  │ College Website  │ AI Copilot            │
-└──────────────┴──────────────────┴───────────────────────┘
-```
-
----
-
-## Student Year-Based Experience
-
-```
-Year 1 & 2  →  FirstYearFullHub  (gamified, XP, badges, topic practice)
-Year 3 & 4  →  CareerHub         (company prep, job tracking, drives)
-
-All Years   →  Practice Nav Flyout:
-                ├── Aptitude      → /student/prep?track=aptitude
-                ├── Coding/DSA    → /student/problems  (750+ problems)
-                └── Communication → /student/prep?track=communication
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          NEXT.JS APP ROUTER                                 │
+├──────────────────────┬──────────────────────┬──────────────────────────────┤
+│    STUDENT PORTAL    │   COLLEGE PORTAL     │    RECRUITER PORTAL          │
+│                      │                      │                              │
+│  /student/dashboard  │  /college/dashboard  │  /recruiter/dashboard        │
+│  /student/learn      │  /college/students   │  /recruiter/search           │
+│  /student/practice   │  /college/drives     │  /recruiter/drives           │
+│  /student/problems   │  /college/reports    │  /recruiter/jobs             │
+│  /student/prep       │  /college/analytics  │  /recruiter/shortlists       │
+│  /student/drives     │                      │  /recruiter/analytics        │
+│  /student/jobs       │                      │                              │
+│  /student/ai         │                      │                              │
+├──────────────────────┴──────────────────────┴──────────────────────────────┤
+│                          PUBLIC PAGES                                       │
+│  /  /login  /signup  /blog  /explore  /about  /careers                     │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Assessment Generation Pipeline
-
-When a student takes a company test (e.g., TCS):
+## API Routes Structure
 
 ```
-Student selects company
-        │
-        ▼
-POST /api/student/generate-assessment
-{ company: "tcs", section: "basic-coding", count: 1 }
-        │
-        ├─── Coding sections ──────────────────────────────────────┐
-        │                                                           │
-        │    POST /api/student/company-coding-ai                    │
-        │    { company: "tcs", section: "basic-coding" }            │
-        │              │                                            │
-        │    Step 1: Check MongoDB (18,900 pre-seeded problems)     │
-        │              │ found → return instantly (sub-100ms)       │
-        │              │ not found ↓                                │
-        │    Step 2: Load company profile (company-profiles.ts)     │
-        │              TCS basic-coding = Easy, loops/arrays only   │
-        │              │                                            │
-        │    Step 3: RAG context from static banks                  │
-        │              (service/fintech problems as examples)        │
-        │              │                                            │
-        │    Step 4: Groq AI generates problem                      │
-        │              using company profile + RAG context          │
-        │              │                                            │
-        │    Step 5: Cache result to MongoDB                        │
-        │              └─────────────────────────────────────────── ┘
-        │
-        └─── Aptitude sections ─────────────────────────────────────
-             Web scrape → Groq AI with PYQ context → Static fallback
+/api
+ ├── auth/
+ │    ├── login              POST  → JWT session + cookie
+ │    ├── signup             POST  → create user + send OTP
+ │    ├── verify-email       POST  → verify OTP → activate
+ │    ├── logout             POST  → clear session
+ │    ├── google             GET   → OAuth callback
+ │    ├── forgot-password    POST  → send reset link
+ │    ├── reset-password     POST  → update password
+ │    └── user               GET   → current user
+ │
+ ├── student/
+ │    ├── generate-assessment   POST  → MCQ + coding questions
+ │    ├── company-coding-ai     POST  → CodeHiring coding model
+ │    ├── run-code              POST  → Docker sandbox execution
+ │    ├── first-year-progress   GET   → XP, badges, streaks
+ │    ├── badge-try             POST  → mark solved, award XP
+ │    ├── ai-insights           GET   → personalized AI career advice
+ │    ├── hiring-report         POST  → AI post-assessment report
+ │    ├── platforms/sync        POST  → sync LeetCode/CodeChef stats
+ │    ├── leaderboard           GET   → college rankings
+ │    └── ...25 more routes
+ │
+ ├── college/
+ │    ├── dashboard          GET   → placement stats
+ │    ├── students           GET   → student list + filters
+ │    ├── drives             GET/POST → manage drives
+ │    └── announcements      GET/POST
+ │
+ ├── recruiter/
+ │    ├── dashboard          GET   → hiring pipeline
+ │    ├── search             GET   → AI talent search
+ │    ├── drives             GET/POST/PATCH
+ │    ├── jobs               GET/POST
+ │    └── copilot            POST  → AI recruitment assistant
+ │
+ ├── drives/[id]/
+ │    ├── apply              POST  → student applies
+ │    ├── assessment         GET/POST → drive test config
+ │    ├── submit             POST  → assessment submission
+ │    ├── shortlist          POST  → recruiter shortlists
+ │    └── offer              POST  → send offer
+ │
+ ├── admin/
+ │    └── seed-problems      POST/GET → seed 18,900 AI problems
+ │
+ └── public/
+      ├── stats              GET   → platform stats (cached 1min)
+      ├── colleges           GET   → college directory
+      └── drives             GET   → public drive listings
+```
+
+---
+
+## Student Experience by Year
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    STUDENT YEAR-BASED ROUTING                               │
+│                                                                             │
+│  Graduate Year Detection:                                                   │
+│  now.year - graduationYear  →  current academic year (1, 2, 3, 4)          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ YEAR 1 & 2                          YEAR 3 & 4
+ ──────────────────────               ──────────────────────
+ /student/learn                       /student/prep
+      │                                     │
+      ▼                                     ▼
+ FirstYearFullHub                    CareerHub
+ ├── XP + Badges + Streak            ├── 189 Company Cards
+ ├── Daily Coding Challenges         ├── Company Assessments
+ ├── Topic Learning Modules          ├── AI Hiring Report
+ └── Community Feed                  └── Interview Prep
+
+ PRACTICE (All Years — Nav Flyout)
+ ──────────────────────────────────
+ Practice ▼
+ ├── Aptitude      →  /student/prep?track=aptitude
+ │                    (Quantitative, Logical, Data Interp)
+ ├── Coding / DSA  →  /student/problems
+ │                    (750 problems, 25 topics, Monaco editor)
+ └── Communication →  /student/prep?track=communication
+                       (Grammar, Vocab, Reading)
+```
+
+---
+
+## AI Assessment Generation Pipeline
+
+```
+Student starts company test (e.g., TCS)
+              │
+              ▼
+ ┌────────────────────────────┐
+ │  TCS has 4 sections:       │
+ │  1. Quantitative (15 MCQ)  │
+ │  2. Advanced Aptitude (12) │
+ │  3. Basic Coding (1)       │
+ │  4. Advanced Coding (1)    │
+ └────────────┬───────────────┘
+              │
+    ┌─────────┴─────────┐
+    │                   │
+    ▼                   ▼
+ APTITUDE            CODING
+ SECTIONS            SECTIONS
+    │                   │
+    ▼                   ▼
+ /api/student/       /api/student/
+ generate-           company-
+ assessment          coding-ai
+    │                   │
+    │           ┌───────┴────────┐
+    │           │  Priority:     │
+    │           │  1. MongoDB    │ ← 18,900 pre-seeded
+    │           │  2. Company    │ ← lib/coding-model/
+    │           │     Profile    │   company-profiles.ts
+    │           │  3. RAG        │ ← static problem banks
+    │           │  4. Groq AI    │ ← generate fresh
+    │           │  5. Cache      │ → save to MongoDB
+    │           └───────────────┘
+    │
+    ▼
+ ┌──────────────────────────────────┐
+ │  Web Scrape (PYQ patterns)       │
+ │      ↓ if scrape fails           │
+ │  Groq AI + PYQ context           │
+ │      ↓ if AI fails               │
+ │  Static fallback (question-bank) │
+ └──────────────────────────────────┘
 ```
 
 ---
 
 ## CodeHiring Coding Model
 
-The platform's own model for generating company-authentic coding problems.
-
 ```
-lib/coding-model/company-profiles.ts
-├── 26 explicit company profiles (TCS, Amazon, Google, Infosys...)
-│   Each defines:
-│   ├── sections (basic-coding, advanced-coding)
-│   ├── difficulty per section
-│   ├── allowed patterns (Arrays, DP, Graphs...)
-│   ├── forbidden patterns (e.g., TCS basic = no DP/Trees)
-│   ├── constraint sizes
-│   ├── style rules (e.g., "max 100 words", "Amazon context")
-│   └── real exam notes
-└── 9 category fallbacks (IT Services, Product, BFSI, Consulting...)
-    Auto-applied for remaining 163 companies
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    CODEHIRING CODING MODEL                                  │
+│             (Own model — not generic AI prompting)                          │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-lib/coding-model/generator.ts
-├── 16 pattern templates (Array Traversal, Binary Search, DP...)
-├── buildModelPrompt() — structured prompt from profile
-├── selectBatchPatterns() — ensures variety across 100 problems
-└── formatRAGExamples() — formats static bank examples for context
-```
-
----
-
-## Problem Banks (Static)
-
-| Bank | Companies | Problems |
-|---|---|---|
-| `service-company-problems.ts` | TCS, Infosys, Wipro, Cognizant, Accenture, HCL, TechMahindra | 105 |
-| `fintech-problem-bank.ts` | Stripe, Block, PayPal, Plaid, Robinhood, Coinbase, Affirm, Brex, Jane Street, Citadel, Two Sigma, HRT, Jump, D.E. Shaw, Bloomberg | 225 |
-| `it-services-problems.ts` | Capgemini, Mphasis, Hexaware, LTIMindtree, Zensar, Persistent, Cyient, Birlasoft, Sonata | ~900 |
-| `topic-questions.ts` | All (DSA practice) | 750 |
-| **MongoDB** (`company_problems`) | All 189 companies | 18,900 (AI-generated) |
-
----
-
-## MongoDB Collections
-
-| Collection | Purpose |
-|---|---|
-| `users` | All users (student/college/recruiter/admin) |
-| `sessions` | Auth sessions |
-| `company_problems` | 18,900 AI-generated coding problems |
-| `drives` | Hiring drives created by recruiters/colleges |
-| `assessments` | Drive assessment configs + submissions |
-| `notifications` | In-app notifications |
-| `blogs` | AI-generated blog posts |
-| `site-config` | Platform-wide settings |
-
----
-
-## 189 Company Assessment Sections
-
-Sections are defined per company in `lib/companies-data.ts`:
-
-| Company Category | Sections |
-|---|---|
-| IT Services (TCS, Infosys, etc.) | quantitative → advanced-aptitude → basic-coding → advanced-coding |
-| Product (Amazon, Google, etc.) | basic-coding → advanced-coding |
-| Consulting (Deloitte, McKinsey) | quantitative → advanced-aptitude → verbal |
-| BFSI with coding (JPMorgan, Goldman) | quantitative → advanced-aptitude → basic-coding → advanced-coding |
-| BFSI banks (ICICI, HDFC, SBI) | quantitative → advanced-aptitude → verbal |
-| Core Engineering (BHEL, NTPC) | quantitative → advanced-aptitude → verbal |
-| Core Engg with coding (Bosch, Siemens) | quantitative → advanced-aptitude → basic-coding → advanced-coding |
-| Defence/FMCG/Pharma | quantitative → advanced-aptitude → verbal |
-
----
-
-## Authentication Flow
-
-```
-Signup/Login
-    │
-    ├── Email + Password
-    │       └── bcrypt hash → MongoDB users collection
-    │           JWT session token → cookie (httpOnly)
-    │
-    ├── Google OAuth
-    │       └── OAuth callback → upsert user → session
-    │
-    └── OTP Verification
-            └── Gmail SMTP (port 465) → 6-digit OTP → verify
+lib/coding-model/
+├── company-profiles.ts
+│    ├── 26 explicit profiles
+│    │    ┌──────────────────────────────────────────────────────────┐
+│    │    │  TCS basic-coding:                                       │
+│    │    │  • difficulty: Easy                                      │
+│    │    │  • patterns: [Array Traversal, String Manipulation,     │
+│    │    │               Basic Math, Counting, Simple Loops]        │
+│    │    │  • FORBIDDEN: [DP, Trees, Graphs, Backtracking]         │
+│    │    │  • constraints: n ≤ 10^4                                │
+│    │    │  • style: "under 100 words, single loop sufficient"     │
+│    │    └──────────────────────────────────────────────────────────┘
+│    └── 9 category defaults (for remaining 163 companies)
+│         IT Services, Product, BFSI, Consulting, Core Engg...
+│
+└── generator.ts
+     ├── 16 pattern templates
+     │    (Array Traversal, Binary Search, Sliding Window, DP...)
+     ├── buildModelPrompt()
+     │    → structured prompt from profile + RAG + templates
+     ├── selectBatchPatterns()
+     │    → rotates patterns for variety across 100 problems
+     └── formatRAGExamples()
+          → formats static bank examples as few-shot context
 ```
 
 ---
 
-## Code Execution
+## Problem Bank Architecture
 
 ```
-Student submits code
-        │
-        ▼
-POST /api/student/run-code
-        │
-        ▼
-code-executor service (Docker)
-        ├── Python: subprocess + timeout
-        ├── JavaScript: Node.js subprocess
-        ├── Java: compile + run
-        └── C++: g++ compile + run
-        │
-        ▼
-Return: stdout, stderr, execution time
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         PROBLEM BANKS                                       │
+├──────────────────────────┬──────────────────┬──────────────────────────────┤
+│      STATIC BANKS        │   DYNAMIC BANK   │    PRACTICE BANK             │
+│    (TypeScript files)    │   (MongoDB)      │  (topic-questions.ts)        │
+├──────────────────────────┼──────────────────┼──────────────────────────────┤
+│ service-company-         │                  │                              │
+│  problems.ts             │ company_problems  │ 25 Topics                    │
+│  7 IT companies          │ collection        │ 6 modules each               │
+│  105 problems            │                  │ (2E + 2M + 2H)               │
+│                          │ 18,900 problems   │ 30 problems/topic            │
+│ fintech-problem-         │ 189 companies     │                              │
+│  bank.ts                 │ × 100 each        │ = 750 total                  │
+│  15 FinTech companies    │                  │                              │
+│  225 problems            │ All AI-generated  │ LeetCode-linked              │
+│                          │ by Groq           │ with XP values               │
+│ it-services-problems.ts  │                  │                              │
+│  9 more IT companies     │ Served via        │                              │
+│  ~900 problems           │ company-coding-ai │                              │
+└──────────────────────────┴──────────────────┴──────────────────────────────┘
+
+          RAG Flow: Static Banks → AI Context → MongoDB Cache
 ```
 
 ---
 
-## Seeding 18,900 Problems
+## Authentication Architecture
 
-```bash
-# Start dev server
-cd codehiring && npm run dev
+```
+┌──────────────┐      ┌─────────────────────────────────┐
+│   Browser    │      │          API Routes              │
+│              │      │                                  │
+│  httpOnly    │◄────►│  /api/auth/login                 │
+│  cookie      │      │  ├── bcrypt.compare()            │
+│  (JWT 7d)    │      │  ├── sign JWT (NEXTAUTH_SECRET)  │
+│              │      │  └── set-cookie: session=...     │
+│  No JS       │      │                                  │
+│  access      │      │  /api/auth/user (middleware)     │
+│              │      │  ├── verify JWT                  │
+│              │      │  └── return { user, role }       │
+└──────────────┘      └─────────────────────────────────┘
 
-# In another terminal — seeds all 189 companies
-node seed-problems.mjs
-
-# Check progress
-node seed-problems.mjs --check
-
-# Resume from company 50
-node seed-problems.mjs --start=50
-
-# Seed specific companies only
-node seed-problems.mjs --only=amazon,google,tcs
+ Roles: student | college | recruiter | admin
+ Route protection: each API checks role before processing
 ```
 
-Each company gets 100 problems across 10 batches × 10 problems.
-Groq generates problems using the company profile + industry context.
-Rate: ~2.5s per company → ~8 hours for all 189.
+---
+
+## Hiring Drive Flow
+
+```
+  COLLEGE                  PLATFORM                STUDENT
+  ───────                  ────────                ───────
+  Create Drive        →    POST /api/drives     ←  See at /student/drives
+  Set eligibility          Store in MongoDB        Check criteria
+  Set assessment           
+                      →    Drive published         Apply button appears
+  
+  Students apply      ←    POST .../apply      →   Apply
+                           Eligibility check
+                           Add to applicants
+  
+  Assessment window   →    Config loaded           Students take test
+                           Proctored shell          (MCQ + Coding)
+                           violations tracked       Time limited
+  
+  Results ready       ←    Auto-grade              Scores calculated
+                           AI evaluate code
+                           Rank candidates
+  
+  Shortlist           →    POST .../shortlist   →  Notification sent
+                           Email via Gmail          Status updated
+  
+  Offer               →    POST .../offer       →  Offer letter
+                           Generate PDF             Download + Accept
+```
+
+---
+
+## Data Flow: Student Progress
+
+```
+Student solves problem
+         │
+         ▼
+  POST /api/student/badge-try
+  { challengeId, topic, difficulty }
+         │
+    ┌────┴──────────────────────────┐
+    │  1. Add to completedChallenges│
+    │  2. Award XP (+20/30/40)      │
+    │  3. Update streak             │
+    │  4. Check badge conditions    │
+    │     - Topic Master (all done) │
+    │     - Streak badges           │
+    │     - Level up badges         │
+    │  5. Save to MongoDB           │
+    └────┬──────────────────────────┘
+         │
+         ▼
+  Return { xp, badges, streakDays, level }
+         │
+         ▼
+  UI updates: XP bar, badge popup, leaderboard
+```
+
+---
+
+## Tech Stack
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  FRONTEND         Next.js 16 App Router · TypeScript · Tailwind CSS        │
+│  BACKEND          Next.js API Routes (serverless) · Node.js runtime         │
+│  DATABASE         MongoDB Atlas (native driver, no ORM)                     │
+│  AI - Primary     Groq LLaMA-3.3-70B (free tier, fast)                     │
+│  AI - Fallback    OpenAI GPT-4o-mini (paid, higher quality)                 │
+│  CODE EXECUTION   Docker sandbox (code-executor/ directory)                 │
+│  EMAIL            Gmail SMTP port 465 SSL (nodemailer)                      │
+│  AUTH             Custom JWT + bcrypt (no NextAuth library)                 │
+│  DEPLOYMENT       Vercel (serverless, edge functions)                       │
+│  MONITORING       Vercel Analytics + custom /api/analytics                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## Environment Variables
 
-```env
-MONGODB_URI          # MongoDB Atlas connection string
-NEXTAUTH_SECRET      # JWT signing secret / seed auth token
-GROQ_API_KEY         # Groq AI (free tier) — primary AI provider
-OPENAI_API_KEY       # OpenAI (optional) — premium AI provider
-GMAIL_USER           # Gmail address for OTP/verification emails
-GMAIL_PASS           # Gmail app password (not account password)
-NEXTAUTH_URL         # Deployed URL (https://codehiring.com)
-SEED_SECRET          # Auth token for /api/admin/seed-problems
+```
+MONGODB_URI          MongoDB Atlas connection string
+NEXTAUTH_SECRET      JWT signing key + seed API auth token
+GROQ_API_KEY         Groq AI (free) — primary question generator
+OPENAI_API_KEY       OpenAI (optional) — premium fallback
+GMAIL_USER           Gmail address for transactional emails
+GMAIL_PASS           Gmail app password (16-char, not login password)
+NEXTAUTH_URL         Deployed URL  e.g. https://codehiring.vercel.app
+SEED_SECRET          Auth token for /api/admin/seed-problems
 ```
 
 ---
 
-## API Route Summary
-
-| Prefix | Handler |
-|---|---|
-| `/api/auth/*` | Login, signup, OTP, email verification, password reset |
-| `/api/student/*` | All student features (assessments, coding, platforms, AI) |
-| `/api/college/*` | College portal (students, drives, announcements) |
-| `/api/recruiter/*` | Recruiter portal (drives, search, shortlists, jobs) |
-| `/api/admin/*` | Admin panel + problem seeder |
-| `/api/public/*` | Public data (no auth) — stats, profiles, colleges |
-| `/api/drives/*` | Drive management shared by college + recruiter |
-
-> See [WORKFLOWS.md](./WORKFLOWS.md) for detailed step-by-step user journey workflows.
+> See [WORKFLOWS.md](./WORKFLOWS.md) for step-by-step user journey workflows.
