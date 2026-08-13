@@ -105,6 +105,7 @@ async function executeViaJudge0(code: string, language: string, stdin: string, t
       "Content-Type": "application/json",
       "X-RapidAPI-Key": apiKey,
       "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+      "Accept": "application/json",
     },
     body: JSON.stringify({
       source_code: code,
@@ -127,9 +128,18 @@ async function executeViaJudge0(code: string, language: string, stdin: string, t
   return { output, error, runtimeMs, tle }
 }
 async function executeCode(code: string, language: string, stdin: string, timeoutMs: number) {
+  const executorUrl = process.env.EXECUTOR_URL?.trim()
+
+  // If no executor URL configured, skip Docker and go straight to Judge0
+  if (!executorUrl) {
+    if (process.env.JUDGE0_RAPIDAPI_KEY) {
+      return executeViaJudge0(code, language, stdin, timeoutMs)
+    }
+    throw new Error("No code executor configured. Set EXECUTOR_URL or JUDGE0_RAPIDAPI_KEY in .env")
+  }
+
   // Try Docker executor first
   try {
-    const executorUrl    = await resolveExecutorUrl()
     const executorSecret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
     const langKey = LANG_KEY[language] ?? language.toLowerCase()
     const res = await fetch(`${executorUrl}/execute`, {
