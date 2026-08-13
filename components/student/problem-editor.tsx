@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react"
-import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Moon, Maximize2, Minimize2, BookOpen, Clock } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Moon, Maximize2, Minimize2, BookOpen, Clock, ChevronLeft, ChevronRight } from "lucide-react"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
 // -- Problem lookup from topic questions --------------------------------------
@@ -228,12 +229,26 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
   }).join("\n")
 }
 
+// -- Flat ordered problem list for Prev/Next navigation ----------------------
+const ALL_PROBLEMS_ORDERED = TOPIC_QUESTIONS.flatMap(t => t.questions.map(q => ({
+  id: q.id,
+  slug: q.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim(),
+})))
+
 interface Props { problemId: string }
 
 export default function ProblemEditor({ problemId }: Props) {
   const textareaRef  = useRef<HTMLTextAreaElement>(null)
   const highlightRef = useRef<HTMLDivElement>(null)
   const editorRef    = useRef<HTMLDivElement>(null)
+  const router       = useRouter()
+
+  // -- Prev / Next navigation --------------------------------------------------
+  const currentIdx = ALL_PROBLEMS_ORDERED.findIndex(p => p.id === problemId)
+  const prevProblem = currentIdx > 0 ? ALL_PROBLEMS_ORDERED[currentIdx - 1] : null
+  const nextProblem = currentIdx < ALL_PROBLEMS_ORDERED.length - 1 ? ALL_PROBLEMS_ORDERED[currentIdx + 1] : null
+
+  const goToProblem = (slug: string) => router.push(`/student/problems/${slug}`)
 
   // -- Problem data ------------------------------------------------------------
   const [problem, setProblemState] = useState<any>(null)
@@ -616,12 +631,44 @@ export default function ProblemEditor({ problemId }: Props) {
           <ArrowLeft className="h-3.5 w-3.5" />
         </button>
         <div className="w-px h-4" style={{ background: T.border }} />
+
+        {/* Prev / Next */}
+        <button
+          onClick={() => prevProblem && goToProblem(prevProblem.slug)}
+          disabled={!prevProblem}
+          title="Previous problem"
+          className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all disabled:opacity-30"
+          style={{ color: T.muted, border: `1px solid ${T.border}` }}
+          onMouseEnter={e => { if (prevProblem) e.currentTarget.style.color = T.text }}
+          onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>
+          <ChevronLeft className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Prev</span>
+        </button>
+        <button
+          onClick={() => nextProblem && goToProblem(nextProblem.slug)}
+          disabled={!nextProblem}
+          title="Next problem"
+          className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all disabled:opacity-30"
+          style={{ color: T.muted, border: `1px solid ${T.border}` }}
+          onMouseEnter={e => { if (nextProblem) e.currentTarget.style.color = T.text }}
+          onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>
+          <span className="hidden sm:inline">Next</span>
+          <ChevronRight className="h-3.5 w-3.5" />
+        </button>
+
+        <div className="w-px h-4" style={{ background: T.border }} />
         {/* Title + badge */}
         <span className="font-bold text-sm truncate max-w-xs" style={{ color: T.text }}>{title}</span>
         <span className="text-xs font-semibold px-2 py-0.5 rounded-full border shrink-0"
           style={{ color: diffColor, borderColor: diffColor + "44", background: diffColor + "15" }}>
           {difficulty}
         </span>
+        {/* Problem index counter */}
+        {currentIdx >= 0 && (
+          <span className="text-[11px] shrink-0" style={{ color: T.lineNum }}>
+            {currentIdx + 1} / {ALL_PROBLEMS_ORDERED.length}
+          </span>
+        )}
         <div className="flex-1" />
         {/* Theme selector */}
         <div className="flex items-center gap-1 rounded-md border px-2 py-1"
@@ -678,25 +725,6 @@ export default function ProblemEditor({ problemId }: Props) {
                         dangerouslySetInnerHTML={{ __html: desc.replace(/`([^`]+)`/g, `<code style="background:${T.panel};color:${T.keyword};padding:1px 5px;border-radius:4px;font-family:monospace">$1</code>`) }} />
                     </div>
 
-                    {/* Examples */}
-                    {examples.map((ex: any, i: number) => (
-                      <div key={i}>
-                        <p className="font-bold mb-2" style={{ color: T.text }}>Example {i + 1}:</p>
-                        <div className="rounded-lg border p-4 space-y-2 font-mono text-xs"
-                          style={{ background: T.panel, borderColor: T.border }}>
-                          <div><span className="font-bold" style={{ color: T.text }}>Input: </span>
-                            <span style={{ color: T.string }}>{ex.input}</span></div>
-                          <div><span className="font-bold" style={{ color: T.text }}>Output: </span>
-                            <span style={{ color: T.function }}>{ex.output}</span></div>
-                          {ex.explanation && (
-                            <div className="mt-1 pt-2 border-t text-[11px]" style={{ borderColor: T.border, color: T.muted }}>
-                              <span className="font-bold" style={{ color: T.text }}>Explanation: </span>{ex.explanation}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-
                     {/* Input Format */}
                     {problem?.inputFormat && (
                       <div>
@@ -719,6 +747,25 @@ export default function ProblemEditor({ problemId }: Props) {
                       </div>
                     )}
 
+                    {/* Examples */}
+                    {examples.map((ex: any, i: number) => (
+                      <div key={i}>
+                        <p className="font-bold mb-2" style={{ color: T.text }}>Example {i + 1}:</p>
+                        <div className="rounded-lg border p-4 space-y-2 font-mono text-xs"
+                          style={{ background: T.panel, borderColor: T.border }}>
+                          <div><span className="font-bold" style={{ color: T.text }}>Input: </span>
+                            <span style={{ color: T.string }}>{ex.input}</span></div>
+                          <div><span className="font-bold" style={{ color: T.text }}>Output: </span>
+                            <span style={{ color: T.function }}>{ex.output}</span></div>
+                          {ex.explanation && (
+                            <div className="mt-1 pt-2 border-t text-[11px]" style={{ borderColor: T.border, color: T.muted }}>
+                              <span className="font-bold" style={{ color: T.text }}>Explanation: </span>{ex.explanation}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
                     {/* Constraints */}
                     {constraints.length > 0 && (
                       <div>
@@ -734,8 +781,6 @@ export default function ProblemEditor({ problemId }: Props) {
                         </ul>
                       </div>
                     )}
-
-                    {/* Function signature */}
                   </>
                 )}
               </div>
