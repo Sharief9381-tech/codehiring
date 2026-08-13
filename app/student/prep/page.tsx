@@ -507,7 +507,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
         body: JSON.stringify({ company: company.id, section: sectionKey, count: SECTION_QTY[sectionKey] ?? 5 }),
       })
       const data = await res.json()
-      if (sectionKey === "coding") {
+      if (isCodingSection(sectionKey)) {
         setCodingQs(data.questions ?? [])
         setCodingIdx(0)
         setStage("coding")

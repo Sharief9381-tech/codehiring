@@ -242,9 +242,19 @@ Return ONLY valid JSON array:
 // ── Fallback questions ────────────────────────────────────────────────────────
 
 function getFallbackQuestions(company: string, section: string, count: number) {
+  const isCoding = section === "coding" || section === "basic-coding" || section === "advanced-coding"
+
+  // For coding sections — NEVER fall back to aptitude questions
+  if (isCoding) {
+    return [
+      { id:1, title:"Two Sum", difficulty:"Easy", statement:"Given an array of integers nums and an integer target, return indices of the two numbers that add up to target. You may assume each input has exactly one solution.", constraints:"2<=nums.length<=10^4, -10^9<=nums[i]<=10^9", example:{input:"nums=[2,7,11,15], target=9",output:"[0,1]",explanation:"nums[0]+nums[1]=9"}, hints:["Use a hash map to store complement","Single pass O(n) solution possible"], topic:"Arrays & Hashing" },
+      { id:2, title:"Reverse String", difficulty:"Easy", statement:"Write a function that reverses a string. The input string is given as an array of characters s. Modify the array in-place.", constraints:"1<=s.length<=10^5, s[i] is a printable ASCII character", example:{input:'s=["h","e","l","l","o"]',output:'["o","l","l","e","h"]',explanation:"Reversed in place"}, hints:["Use two pointers from both ends","Swap characters until pointers meet"], topic:"Two Pointers" },
+    ].slice(0, count)
+  }
+
+  // For aptitude sections — use PYQ bank
   const { QUESTION_BANK } = require("@/lib/question-bank")
   const bank = QUESTION_BANK[company]?.[section]
-    ?? QUESTION_BANK[company]?.["quantitative"]
     ?? QUESTION_BANK["tcs"]?.[section]
     ?? QUESTION_BANK["tcs"]?.["quantitative"]
     ?? []
@@ -254,13 +264,6 @@ function getFallbackQuestions(company: string, section: string, count: number) {
     return shuffled.slice(0, Math.min(count, shuffled.length)).map((q: any, i: number) => ({ ...q, id: i + 1 }))
   }
 
-  const isCoding = section === "coding" || section === "basic-coding" || section === "advanced-coding"
-  if (isCoding) {
-    return [
-      { id:1, title:"Two Sum", difficulty:"Easy", statement:"Given array nums and target, return indices of two numbers that add up to target.", constraints:"2<=nums.length<=10^4", example:{input:"nums=[2,7,11,15],target=9",output:"[0,1]",explanation:"nums[0]+nums[1]=9"}, hints:["Use a hash map"], topic:"Arrays & Hashing" },
-      { id:2, title:"Reverse String", difficulty:"Easy", statement:"Reverse the string in-place.", constraints:"1<=s.length<=10^5", example:{input:'s=["h","e","l","l","o"]',output:'["o","l","l","e","h"]',explanation:"Reversed"}, hints:["Two pointers"], topic:"Two Pointers" },
-    ].slice(0, count)
-  }
   return [
     { id:1, question:"A train 240m long passes a pole in 24 seconds. How long to pass a 650m platform?", options:["89 sec","85 sec","90 sec","80 sec"], correct:0, explanation:"Speed=240/24=10m/s. Time=(240+650)/10=89sec", topic:"Speed & Distance", difficulty:"Medium" },
     { id:2, question:"If 20% of a number is 120, what is 35% of that number?", options:["200","210","205","195"], correct:1, explanation:"Number=120/0.20=600. 35% of 600=210", topic:"Percentages", difficulty:"Medium" },
