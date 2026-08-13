@@ -183,7 +183,6 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                     >
                       <Target className="h-4 w-4 shrink-0" />
                       <span>Practice</span>
-                      <svg className="h-3 w-3 ml-0.5 transition-transform group-hover/practice:rotate-180" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     {/* Flyout dropdown */}
                     <div className="absolute top-full left-0 mt-1 w-56 rounded-2xl shadow-2xl border border-border/60 overflow-hidden opacity-0 pointer-events-none group-hover/practice:opacity-100 group-hover/practice:pointer-events-auto transition-all duration-150 z-50"
