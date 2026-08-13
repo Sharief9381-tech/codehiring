@@ -86,23 +86,72 @@ async function resolveExecutorUrl(): Promise<string> {
   throw new Error(`Executor unreachable. Configured: ${configured}. Is the executor running in WSL2? Run: node /path/to/code-executor/server.mjs`)
 }
 
-// -- Execute code --------------------------------------------------------------
-async function executeCode(code: string, language: string, stdin: string, timeoutMs: number) {
-  const executorUrl    = await resolveExecutorUrl()
-  const executorSecret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
-  const langKey = LANG_KEY[language] ?? language.toLowerCase()
-  const res = await fetch(`${executorUrl}/execute`, {
+// -- Judge0 fallback (when Docker executor unreachable) -----------------------
+const JUDGE0_LANGUAGE_IDS: Record<string, number> = {
+  python: 71, javascript: 63, typescript: 74,
+  java: 62, "c++": 54, c: 50, "c#": 51, go: 60, kotlin: 78, swift: 83,
+}
+
+async function executeViaJudge0(code: string, language: string, stdin: string, timeoutMs: number) {
+  const apiKey = process.env.JUDGE0_RAPIDAPI_KEY
+  if (!apiKey) throw new Error("Judge0 API key not configured")
+
+  const langKey = language.toLowerCase()
+  const langId = JUDGE0_LANGUAGE_IDS[langKey] ?? 71 // default Python
+
+  const createRes = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
     method: "POST",
-    headers: { "Content-Type":"application/json", "Authorization":`Bearer ${executorSecret}` },
-    body: JSON.stringify({ code, language: langKey, stdin, timeoutMs }),
-    signal: AbortSignal.timeout(timeoutMs + 10000),
+    headers: {
+      "Content-Type": "application/json",
+      "X-RapidAPI-Key": apiKey,
+      "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+    },
+    body: JSON.stringify({
+      source_code: code,
+      language_id: langId,
+      stdin: stdin || "",
+      cpu_time_limit: Math.min(timeoutMs / 1000, 5),
+      memory_limit: 128000,
+    }),
+    signal: AbortSignal.timeout(15000),
   })
-  if (!res.ok) {
-    const body = await res.text().catch(() => "")
-    throw new Error(`Executor error ${res.status}: ${body}`)
+
+  if (!createRes.ok) throw new Error(`Judge0 error: ${createRes.status}`)
+  const data = await createRes.json()
+
+  const output = data.stdout?.trim() ?? ""
+  const error  = data.stderr?.trim() || data.compile_output?.trim() || ""
+  const tle    = data.status?.id === 5
+  const runtimeMs = data.time ? Math.round(Number(data.time) * 1000) : 0
+
+  return { output, error, runtimeMs, tle }
+}
+async function executeCode(code: string, language: string, stdin: string, timeoutMs: number) {
+  // Try Docker executor first
+  try {
+    const executorUrl    = await resolveExecutorUrl()
+    const executorSecret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
+    const langKey = LANG_KEY[language] ?? language.toLowerCase()
+    const res = await fetch(`${executorUrl}/execute`, {
+      method: "POST",
+      headers: { "Content-Type":"application/json", "Authorization":`Bearer ${executorSecret}` },
+      body: JSON.stringify({ code, language: langKey, stdin, timeoutMs }),
+      signal: AbortSignal.timeout(timeoutMs + 10000),
+    })
+    if (!res.ok) {
+      const body = await res.text().catch(() => "")
+      throw new Error(`Executor error ${res.status}: ${body}`)
+    }
+    const data = await res.json()
+    return { output: data.output ?? "", error: data.error ?? "", runtimeMs: data.runtimeMs ?? 0, tle: data.tle ?? false }
+  } catch (dockerErr: any) {
+    // Docker executor unreachable — fall back to Judge0
+    console.warn("[run-code] Docker executor failed, trying Judge0:", dockerErr.message?.slice(0, 100))
+    if (process.env.JUDGE0_RAPIDAPI_KEY) {
+      return executeViaJudge0(code, language, stdin, timeoutMs)
+    }
+    throw dockerErr
   }
-  const data = await res.json()
-  return { output: data.output ?? "", error: data.error ?? "", runtimeMs: data.runtimeMs ?? 0, tle: data.tle ?? false }
 }
 
 // -- Extract actual method name from student's Python code --------------------
