@@ -683,7 +683,7 @@ export default function ProblemEditor({ problemId }: Props) {
               className="w-4 h-4 rounded-full border-2 transition-transform hover:scale-110"
               style={{
                 background: k === "dark" ? "#0d1117" : k === "light" ? "#ffffff" : k === "monokai" ? "#272822" : "#002b36",
-                borderColor: themeKey === k ? diffColor : "transparent",
+                borderColor: themeKey === k ? T.text : "transparent",
               }} />
           ))}
         </div>
