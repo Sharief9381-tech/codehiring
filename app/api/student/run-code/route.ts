@@ -1,16 +1,17 @@
 /**
  * POST /api/student/run-code
- * Uses our own Docker-based execution engine (code-executor/server.mjs).
+ * Execution chain (tries in order, falls back automatically):
  *
- * Setup:
- *  1. Deploy code-executor/ to a Linux VPS with Docker installed
- *  2. Set EXECUTOR_URL and EXECUTOR_SECRET in .env
- *  3. Run: node setup.mjs (pulls Docker images)
- *  4. Run: node server.mjs (starts the executor)
+ *  1. Our Docker/isolate executor (EXECUTOR_URL) — fastest, fully sandboxed
+ *     Local dev: runs in WSL2. Production: deploy code-executor/ to any Linux VPS.
  *
- * Local dev (Windows): Docker sandboxing requires Linux.
- *   -> Run the executor inside WSL2 or a Linux VM.
- *   -> Or use the dev fallback below (child_process direct exec - no sandbox).
+ *  2. Piston API (https://emkc.org/api/v2/piston) — FREE, no API key needed,
+ *     supports 30+ languages. Works on Vercel with zero config.
+ *
+ *  3. Judge0 via RapidAPI (JUDGE0_RAPIDAPI_KEY) — backup, free tier 50 req/day
+ *
+ * For Vercel deployments: Piston handles all execution automatically.
+ * Set EXECUTOR_URL in Vercel env vars only if you have a dedicated VPS.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -34,59 +35,130 @@ const LANG_KEY: Record<string, string> = {
   Java:"java","C++":"c++",C:"c","C#":"c#",Go:"go",Kotlin:"kotlin",Swift:"swift",
 }
 
-// -- Resolve executor URL (handles localhost -> WSL2 IP fallback) ---------------
-// On Windows dev, EXECUTOR_URL=localhost:4000 fails because the executor runs in WSL2.
-// We try the configured URL first, then fall back to auto-detecting the WSL2 IP.
+// ── 1. Our own Docker/isolate executor ───────────────────────────────────────
 let _resolvedExecutorUrl: string | null = null
 
-// Reset cache on module reload (new URL in env)
-const _configuredUrl = process.env.EXECUTOR_URL ?? ""
-
-async function resolveExecutorUrl(): Promise<string> {
-  const configured = process.env.EXECUTOR_URL ?? ""
+async function executeViaDocker(code: string, language: string, stdin: string, timeoutMs: number) {
+  const configured = process.env.EXECUTOR_URL?.trim()
   if (!configured) throw new Error("EXECUTOR_URL not set")
 
-  // Already resolved and cached
-  if (_resolvedExecutorUrl) return _resolvedExecutorUrl
-
-  // Try configured URL first
-  try {
-    const r = await fetch(`${configured}/health`, { signal: AbortSignal.timeout(2000) })
-    if (r.ok) { _resolvedExecutorUrl = configured; return configured }
-  } catch {}
-
-  // Configured URL failed - try to find WSL2 IP automatically
-  // WSL2 gateway is reachable at the Windows host IP on the virtual switch
-  // We check common WSL2 subnet ranges (172.16-31.x.x)
-  const { exec } = await import("child_process")
-  const { promisify } = await import("util")
-  const execAsync = promisify(exec)
-
-  try {
-    // Get WSL2 IP from within WSL
-    const { stdout } = await execAsync(
-      "wsl.exe -e bash -c \"ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1\"",
-      { timeout: 3000 }
-    )
-    const wslIp = stdout.trim()
-    if (wslIp) {
-      const port = new URL(configured).port || "4000"
-      const wslUrl = `http://${wslIp}:${port}`
-      try {
+  // Try configured URL; on Windows dev auto-detect WSL2 IP as fallback
+  let executorUrl = _resolvedExecutorUrl
+  if (!executorUrl) {
+    try {
+      const r = await fetch(`${configured}/health`, { signal: AbortSignal.timeout(2000) })
+      if (r.ok) { _resolvedExecutorUrl = configured; executorUrl = configured }
+    } catch {}
+  }
+  if (!executorUrl) {
+    // Auto-detect WSL2 IP (dev-only fallback)
+    try {
+      const { exec } = await import("child_process")
+      const { promisify } = await import("util")
+      const { stdout } = await promisify(exec)(
+        "wsl.exe -e bash -c \"ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1\"",
+        { timeout: 3000 }
+      )
+      const wslIp = stdout.trim()
+      if (wslIp) {
+        const port = new URL(configured).port || "4000"
+        const wslUrl = `http://${wslIp}:${port}`
         const r2 = await fetch(`${wslUrl}/health`, { signal: AbortSignal.timeout(2000) })
-        if (r2.ok) {
-          console.log(`[executor] WSL2 fallback: using ${wslUrl}`)
-          _resolvedExecutorUrl = wslUrl
-          return wslUrl
-        }
-      } catch {}
-    }
-  } catch {}
+        if (r2.ok) { _resolvedExecutorUrl = wslUrl; executorUrl = wslUrl }
+      }
+    } catch {}
+  }
+  if (!executorUrl) throw new Error(`Executor unreachable: ${configured}`)
 
-  throw new Error(`Executor unreachable. Configured: ${configured}. Is the executor running in WSL2? Run: node /path/to/code-executor/server.mjs`)
+  const secret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
+  const langKey = LANG_KEY[language] ?? language.toLowerCase()
+  const res = await fetch(`${executorUrl}/execute`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${secret}` },
+    body: JSON.stringify({ code, language: langKey, stdin, timeoutMs }),
+    signal: AbortSignal.timeout(timeoutMs + 10000),
+  })
+  if (!res.ok) throw new Error(`Executor ${res.status}: ${await res.text().catch(() => "")}`)
+  const d = await res.json()
+  return { output: d.output ?? "", error: d.error ?? "", runtimeMs: d.runtimeMs ?? 0, tle: d.tle ?? false }
 }
 
-// -- Judge0 fallback (when Docker executor unreachable) -----------------------
+// ── 2. Piston API — free, no key, works on Vercel ────────────────────────────
+// https://github.com/engineer-man/piston
+// Public instance: https://emkc.org/api/v2/piston
+const PISTON_LANGUAGES: Record<string, { language: string; version: string }> = {
+  python:     { language: "python",     version: "3.10.0"  },
+  javascript: { language: "javascript", version: "18.15.0" },
+  typescript: { language: "typescript", version: "5.0.3"   },
+  java:       { language: "java",       version: "15.0.2"  },
+  "c++":      { language: "c++",        version: "10.2.0"  },
+  c:          { language: "c",          version: "10.2.0"  },
+  "c#":       { language: "csharp",     version: "6.12.0"  },
+  go:         { language: "go",         version: "1.16.2"  },
+  kotlin:     { language: "kotlin",     version: "1.8.20"  },
+  swift:      { language: "swift",      version: "5.3.3"   },
+}
+
+// Filename mapping (Piston needs correct filename per language)
+const PISTON_FILENAMES: Record<string, string> = {
+  python: "main.py", javascript: "main.js", typescript: "main.ts",
+  java: "Main.java", "c++": "main.cpp", c: "main.c",
+  csharp: "main.cs", go: "main.go", kotlin: "main.kt", swift: "main.swift",
+}
+
+async function executeViaPiston(code: string, language: string, stdin: string, timeoutMs: number) {
+  const langKey = language.toLowerCase()
+  const pistonLang = PISTON_LANGUAGES[langKey]
+  if (!pistonLang) throw new Error(`Piston: unsupported language "${language}"`)
+
+  const filename = PISTON_FILENAMES[pistonLang.language] ?? "main.py"
+
+  const start = Date.now()
+  const res = await fetch("https://emkc.org/api/v2/piston/execute", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      language: pistonLang.language,
+      version:  pistonLang.version,
+      files:    [{ name: filename, content: code }],
+      stdin:    stdin || "",
+      run_timeout: Math.min(timeoutMs, 10000),
+      compile_timeout: 15000,
+    }),
+    signal: AbortSignal.timeout(timeoutMs + 15000),
+  })
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "")
+    throw new Error(`Piston error ${res.status}: ${body.slice(0, 200)}`)
+  }
+
+  const data = await res.json()
+  const runtimeMs = Date.now() - start
+
+  // Piston response: { run: { stdout, stderr, code, signal }, compile?: { stdout, stderr } }
+  const compileErr = data.compile?.stderr?.trim() || data.compile?.stdout?.trim() || ""
+  const stdout     = data.run?.stdout?.trim()  ?? ""
+  const stderr     = data.run?.stderr?.trim()  ?? ""
+  const exitCode   = data.run?.code   ?? 0
+  const signal     = data.run?.signal ?? null
+
+  // Detect TLE (Piston kills with SIGKILL on timeout)
+  const tle = signal === "SIGKILL" || signal === "SIGTERM"
+
+  let error = ""
+  if (compileErr) {
+    error = `Compilation Error:\n${compileErr}`
+  } else if (tle) {
+    error = "Time Limit Exceeded"
+  } else if (stderr && exitCode !== 0) {
+    error = stderr
+  }
+
+  return { output: stdout, error, runtimeMs, tle }
+}
+
+// ── 3. Judge0 via RapidAPI ────────────────────────────────────────────────────
 const JUDGE0_LANGUAGE_IDS: Record<string, number> = {
   python: 71, javascript: 63, typescript: 74,
   java: 62, "c++": 54, c: 50, "c#": 51, go: 60, kotlin: 78, swift: 83,
@@ -97,71 +169,67 @@ async function executeViaJudge0(code: string, language: string, stdin: string, t
   if (!apiKey) throw new Error("Judge0 API key not configured")
 
   const langKey = language.toLowerCase()
-  const langId = JUDGE0_LANGUAGE_IDS[langKey] ?? 71 // default Python
+  const langId  = JUDGE0_LANGUAGE_IDS[langKey] ?? 71
 
-  const createRes = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
+  const res = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-RapidAPI-Key": apiKey,
       "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-      "Accept": "application/json",
     },
     body: JSON.stringify({
-      source_code: code,
-      language_id: langId,
-      stdin: stdin || "",
-      cpu_time_limit: Math.min(timeoutMs / 1000, 5),
-      memory_limit: 128000,
+      source_code: code, language_id: langId, stdin: stdin || "",
+      cpu_time_limit: Math.min(timeoutMs / 1000, 5), memory_limit: 128000,
     }),
     signal: AbortSignal.timeout(15000),
   })
+  if (!res.ok) throw new Error(`Judge0 error: ${res.status}`)
+  const data = await res.json()
 
-  if (!createRes.ok) throw new Error(`Judge0 error: ${createRes.status}`)
-  const data = await createRes.json()
-
-  const output = data.stdout?.trim() ?? ""
-  const error  = data.stderr?.trim() || data.compile_output?.trim() || ""
-  const tle    = data.status?.id === 5
-  const runtimeMs = data.time ? Math.round(Number(data.time) * 1000) : 0
-
-  return { output, error, runtimeMs, tle }
+  return {
+    output:    data.stdout?.trim() ?? "",
+    error:     data.stderr?.trim() || data.compile_output?.trim() || "",
+    runtimeMs: data.time ? Math.round(Number(data.time) * 1000) : 0,
+    tle:       data.status?.id === 5,
+  }
 }
+
+// ── Main execution dispatcher — tries each provider in order ─────────────────
 async function executeCode(code: string, language: string, stdin: string, timeoutMs: number) {
-  const executorUrl = process.env.EXECUTOR_URL?.trim()
+  const errors: string[] = []
 
-  // If no executor URL configured, skip Docker and go straight to Judge0
-  if (!executorUrl) {
-    if (process.env.JUDGE0_RAPIDAPI_KEY) {
-      return executeViaJudge0(code, language, stdin, timeoutMs)
+  // 1. Try our own Docker executor if EXECUTOR_URL is set
+  if (process.env.EXECUTOR_URL?.trim()) {
+    try {
+      return await executeViaDocker(code, language, stdin, timeoutMs)
+    } catch (e: any) {
+      errors.push(`Docker: ${e.message?.slice(0, 80)}`)
+      console.warn("[run-code] Docker executor failed:", e.message?.slice(0, 80))
     }
-    throw new Error("No code executor configured. Set EXECUTOR_URL or JUDGE0_RAPIDAPI_KEY in .env")
   }
 
-  // Try Docker executor first
+  // 2. Try Piston (free, no key, always available on Vercel)
   try {
-    const executorSecret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
-    const langKey = LANG_KEY[language] ?? language.toLowerCase()
-    const res = await fetch(`${executorUrl}/execute`, {
-      method: "POST",
-      headers: { "Content-Type":"application/json", "Authorization":`Bearer ${executorSecret}` },
-      body: JSON.stringify({ code, language: langKey, stdin, timeoutMs }),
-      signal: AbortSignal.timeout(timeoutMs + 10000),
-    })
-    if (!res.ok) {
-      const body = await res.text().catch(() => "")
-      throw new Error(`Executor error ${res.status}: ${body}`)
-    }
-    const data = await res.json()
-    return { output: data.output ?? "", error: data.error ?? "", runtimeMs: data.runtimeMs ?? 0, tle: data.tle ?? false }
-  } catch (dockerErr: any) {
-    // Docker executor unreachable — fall back to Judge0
-    console.warn("[run-code] Docker executor failed, trying Judge0:", dockerErr.message?.slice(0, 100))
-    if (process.env.JUDGE0_RAPIDAPI_KEY) {
-      return executeViaJudge0(code, language, stdin, timeoutMs)
-    }
-    throw dockerErr
+    console.log("[run-code] Using Piston API")
+    return await executeViaPiston(code, language, stdin, timeoutMs)
+  } catch (e: any) {
+    errors.push(`Piston: ${e.message?.slice(0, 80)}`)
+    console.warn("[run-code] Piston failed:", e.message?.slice(0, 80))
   }
+
+  // 3. Try Judge0 as last resort
+  if (process.env.JUDGE0_RAPIDAPI_KEY) {
+    try {
+      console.log("[run-code] Using Judge0 API")
+      return await executeViaJudge0(code, language, stdin, timeoutMs)
+    } catch (e: any) {
+      errors.push(`Judge0: ${e.message?.slice(0, 80)}`)
+      console.warn("[run-code] Judge0 failed:", e.message?.slice(0, 80))
+    }
+  }
+
+  throw new Error(`All executors failed: ${errors.join(" | ")}`)
 }
 
 // -- Extract actual method name from student's Python code --------------------
