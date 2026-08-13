@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
+import dynamic from "next/dynamic"
 import {
   Brain, Code2, BookOpen, Building2, ChevronRight, ArrowLeft,
   Play, Trophy, Target, CheckCircle2, XCircle, Timer, Loader2,
@@ -14,6 +15,16 @@ import { ProctoredShell, type ViolationLog } from "@/components/student/proctor"
 import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/student/assessment-history"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
+
+// Full problem editor — loaded dynamically to avoid SSR issues
+const ProblemEditor = dynamic(
+  () => import("@/components/student/problem-editor"),
+  { ssr: false, loading: () => (
+    <div className="h-screen flex items-center justify-center" style={{ background: "#0d1117", color: "#8b949e", fontSize: 14 }}>
+      Loading editor...
+    </div>
+  )}
+)
 
 // --- Types --------------------------------------------------------------------
 type Path = "aptitude" | "coding" | "cs" | "company" | "communication"
@@ -856,34 +867,67 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     )
   }
 
-  // -- CODING SECTION --
+  // -- CODING SECTION — uses the full ProblemEditor for every coding question --
   if (stage === "coding") {
+    const q = codingQs[codingIdx]
+    const isLast = codingIdx + 1 >= codingQs.length
+
+    // Store AI question into sessionStorage so ProblemEditor can read it
+    const syntheticId = `prep-${company.id}-${curSection}-q${codingIdx}`
+    if (q) {
+      try {
+        const problemData = {
+          title:       q.title,
+          difficulty:  q.difficulty,
+          badge:       q.difficulty,
+          desc:        q.statement,
+          inputFormat: "",
+          outputFormat: "",
+          constraints: q.constraints ? [q.constraints] : [],
+          examples:    q.example ? [{ input: q.example.input, output: q.example.output, explanation: q.example.explanation }] : [],
+          input:       q.example?.input  ?? "",
+          output:      q.example?.output ?? "",
+          starters:    {
+            Python:     `from typing import List, Optional\n\nclass Solution:\n    def solve(self):\n        # ${q.title}\n        pass\n`,
+            JavaScript: `// ${q.title}\nfunction solution() {\n  \n}\n`,
+            TypeScript: `// ${q.title}\nfunction solution(): void {\n  \n}\n`,
+            Java:       `class Solution {\n    // ${q.title}\n    public void solve() {\n        \n    }\n}\n`,
+            "C++":      `// ${q.title}\nclass Solution {\npublic:\n    void solve() {\n        \n    }\n};\n`,
+          },
+          pythonTest1: "", expectedTest1: "",
+          pythonTest2: "", expectedTest2: "",
+          pythonTest3: "", expectedTest3: "",
+          pythonTest4: "", expectedTest4: "",
+          static: false,
+        }
+        sessionStorage.setItem(`problem_v4_${syntheticId}`, JSON.stringify(problemData))
+      } catch {}
+    }
+
     const content = (
-      <div className="min-h-screen">
-        <ExamTopBar />
-        <div className="max-w-3xl mx-auto px-4 md:px-6 py-6">
-          {codingQs.length > 0 ? (
-            <CodingQuestion
-              q={codingQs[codingIdx]}
-              index={codingIdx}
-              total={codingQs.length}
-              onNext={() => {
-                if (codingIdx + 1 < codingQs.length) {
-                  setCodingIdx(i => i + 1)
-                } else {
-                  codingDone()
-                }
-              }}
-            />
-          ) : (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground">No coding questions available</p>
-              <button onClick={codingDone} className="mt-4 px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">Continue</button>
-            </div>
-          )}
+      <div className="h-screen flex flex-col" style={{ background: "#0d1117" }}>
+        {/* Thin exam top bar showing progress */}
+        <div className="flex items-center justify-between px-4 py-2 border-b shrink-0"
+          style={{ background: "#161b22", borderColor: "#30363d", fontSize: 12 }}>
+          <div className="flex items-center gap-3" style={{ color: "#8b949e" }}>
+            <span className="font-semibold" style={{ color: "#e6edf3" }}>{company.name}</span>
+            <span>·</span>
+            <span>Problem {codingIdx + 1} of {codingQs.length}</span>
+          </div>
+          <button
+            onClick={() => { if (codingIdx + 1 < codingQs.length) { setCodingIdx(i => i + 1) } else { codingDone() } }}
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold text-white transition-all"
+            style={{ background: isLast ? "#238636" : "#7c3aed", border: `1px solid ${isLast ? "#2ea043" : "#6d28d9"}` }}>
+            {isLast ? "Finish Section" : "Next Problem →"}
+          </button>
+        </div>
+        {/* Full problem editor fills remaining space */}
+        <div className="flex-1 min-h-0">
+          <ProblemEditor problemId={syntheticId} />
         </div>
       </div>
     )
+
     return (
       <ProctoredShell companyName={company.name} onViolation={setViolationLog} onAbort={() => { setProctorActive(false); setStage("info") }}>
         {content}
