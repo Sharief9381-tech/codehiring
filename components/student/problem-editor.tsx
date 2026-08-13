@@ -257,7 +257,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
   useEffect(() => {
     if (!problemId) return
-    const key = `problem_v2_${problemId}`
+    const key = `problem_v3_${problemId}`
 
     // Check sessionStorage first - show immediately even if it's a stub (no testCases yet)
     let cachedStub: any = null
@@ -725,8 +725,8 @@ export default function ProblemEditor({ problemId }: Props) {
                         dangerouslySetInnerHTML={{ __html: desc.replace(/`([^`]+)`/g, `<code style="background:${T.panel};color:${T.keyword};padding:1px 5px;border-radius:4px;font-family:monospace">$1</code>`) }} />
                     </div>
 
-                    {/* Input Format */}
-                    {problem?.inputFormat && (
+                    {/* Input Format — only show if it's a real description, not a function signature */}
+                    {problem?.inputFormat && !problem.inputFormat.trim().startsWith("def ") && !problem.inputFormat.trim().startsWith("Function signature") && !problem.inputFormat.trim().startsWith("function ") && (
                       <div>
                         <p className="font-bold mb-2" style={{ color: T.text }}>Input Format</p>
                         <div className="rounded-lg p-4 text-sm leading-relaxed"
@@ -737,7 +737,7 @@ export default function ProblemEditor({ problemId }: Props) {
                     )}
 
                     {/* Output Format */}
-                    {problem?.outputFormat && (
+                    {problem?.outputFormat && !problem.outputFormat.trim().startsWith("Return ") && (
                       <div>
                         <p className="font-bold mb-2" style={{ color: T.text }}>Output Format</p>
                         <div className="rounded-lg p-4 text-sm leading-relaxed"
