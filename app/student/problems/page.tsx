@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import {
   Search, Code2, Filter, ChevronRight, CheckCircle2,
@@ -44,12 +44,21 @@ export default function ProblemsPage() {
   const [showFilters, setShowFilters] = useState(false)
 
   // Load solved from localStorage on mount
-  useState(() => {
+  useEffect(() => {
     try {
       const stored = localStorage.getItem("completedChallenges")
       if (stored) setSolved(new Set(JSON.parse(stored)))
     } catch {}
-  })
+    // Re-check whenever we come back to this page (e.g. after solving a problem)
+    const onFocus = () => {
+      try {
+        const stored = localStorage.getItem("completedChallenges")
+        if (stored) setSolved(new Set(JSON.parse(stored)))
+      } catch {}
+    }
+    window.addEventListener("focus", onFocus)
+    return () => window.removeEventListener("focus", onFocus)
+  }, [])
 
   const filtered = useMemo(() => {
     return ALL_PROBLEMS.filter(p => {
@@ -281,12 +290,17 @@ export default function ProblemsPage() {
                         {(idx + 1).toString().padStart(3, "0")}
                       </span>
 
-                      {/* Status */}
+                      {/* Status circle */}
                       <div className="shrink-0">
                         {isSolved ? (
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                          <div className="h-5 w-5 rounded-full flex items-center justify-center"
+                            style={{ background: "#10b981", border: "2px solid #10b981" }}>
+                            <svg viewBox="0 0 10 10" className="h-3 w-3" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="1.5,5 4,7.5 8.5,2.5" />
+                            </svg>
+                          </div>
                         ) : (
-                          <div className="h-4 w-4 rounded-full border border-gray-700" />
+                          <div className="h-5 w-5 rounded-full border-2 border-gray-600" />
                         )}
                       </div>
 

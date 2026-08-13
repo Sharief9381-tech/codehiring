@@ -367,6 +367,32 @@ export default function ProblemEditor({ problemId }: Props) {
     const before = code.slice(0, ss); const after = code.slice(se)
     const curLine = before.slice(before.lastIndexOf("\n") + 1)
 
+    // -- Ctrl shortcuts (let browser handle Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+Z, Ctrl+X) --
+    if (e.ctrlKey || e.metaKey) {
+      // Ctrl+/ — toggle comment
+      if (e.key === "/") {
+        e.preventDefault()
+        const commentChar = lang === "Python" ? "#" : "//"
+        const lineStart = before.lastIndexOf("\n") + 1
+        const lineEnd = code.indexOf("\n", ss) === -1 ? code.length : code.indexOf("\n", ss)
+        const fullLine = code.slice(lineStart, lineEnd)
+        const trimmed = fullLine.trimStart()
+        const indent = fullLine.slice(0, fullLine.length - trimmed.length)
+        let newCode: string
+        if (trimmed.startsWith(commentChar + " ")) {
+          newCode = code.slice(0, lineStart) + indent + trimmed.slice(commentChar.length + 1) + code.slice(lineEnd)
+        } else if (trimmed.startsWith(commentChar)) {
+          newCode = code.slice(0, lineStart) + indent + trimmed.slice(commentChar.length) + code.slice(lineEnd)
+        } else {
+          newCode = code.slice(0, lineStart) + indent + commentChar + " " + trimmed + code.slice(lineEnd)
+        }
+        setCode(newCode)
+        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss })
+      }
+      // Let all other Ctrl shortcuts pass through to browser (Ctrl+A, Z, C, V, X, etc.)
+      return
+    }
+
     if (e.key === "Enter") {
       e.preventDefault()
       if (lang === "Python") {
@@ -470,6 +496,15 @@ export default function ProblemEditor({ problemId }: Props) {
         if (mode === "submit") setBot("results")
         if (mode === "submit" && data.allPassed) {
           setDone(true)
+          // Save to localStorage so the problems list shows the green tick
+          try {
+            const stored = localStorage.getItem("completedChallenges")
+            const arr: string[] = stored ? JSON.parse(stored) : []
+            if (!arr.includes(problemId)) {
+              arr.push(problemId)
+              localStorage.setItem("completedChallenges", JSON.stringify(arr))
+            }
+          } catch {}
           fetch("/api/student/first-year-progress", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"problem-solved", problemId }) }).catch(()=>{})
         }
       } else {
@@ -689,6 +724,7 @@ export default function ProblemEditor({ problemId }: Props) {
                 onSelect={syncScroll}
                 spellCheck={false}
                 disabled={completed}
+                tabIndex={0}
                 className="absolute inset-0 resize-none focus:outline-none pt-4 pr-4 pb-4 pl-3 disabled:opacity-60"
                 style={{
                   background: "transparent", color: "transparent", caretColor: T.text,
