@@ -568,7 +568,7 @@ export default function ProblemEditor({ problemId }: Props) {
         setRes(data.results); setAllPassed(data.allPassed ?? false)
         if (data.runtimeMs) { setRuntime(data.runtimeMs); setTL(data.timeLimit ?? 5000) }
         if (mode === "run") { setBot("sample"); setSelCase(0) }
-        if (mode === "submit") setBot("results")
+        if (mode === "submit") { setBot("results"); setSelCase(0) }
         if (mode === "submit" && data.allPassed) {
           setDone(true)
           // Save accepted code to localStorage (persists across sessions)
@@ -954,64 +954,154 @@ export default function ProblemEditor({ problemId }: Props) {
 
               {/* Results tab */}
               {bottomTab === "results" && (
-                <div className="space-y-2">
+                <div className="space-y-3">
+                  {/* Loading state */}
                   {(running || submitting) && (
-                    <div className="flex items-center gap-2" style={{ color: T.muted }}>
+                    <div className="flex items-center gap-2 py-2" style={{ color: T.muted }}>
                       <RefreshCw className="h-3 w-3 animate-spin" />
                       {running ? "Running sample cases…" : "Running all test cases…"}
                     </div>
                   )}
+
+                  {/* Error */}
                   {error && (
-                    <div className="rounded px-3 py-2 font-mono" style={{ background: "#2d0b0b", border: "1px solid #f8514933", color: "#f85149" }}>
+                    <div className="rounded px-3 py-2 font-mono text-xs"
+                      style={{ background: "#2d0b0b", border: "1px solid #f8514933", color: "#f85149" }}>
                       {error}
                     </div>
                   )}
-                  {runResults?.map((r: any, i: number) => (
-                    <div key={i} className="rounded border p-3 space-y-1"
-                      style={{ background: r.passed?"#0d2818":"#2d0b0b", borderColor: r.passed?"#2ea04333":"#f8514933" }}>
+
+                  {/* Test case results — tab-style like the screenshot */}
+                  {runResults && runResults.length > 0 && (
+                    <>
+                      {/* Header: "Test Cases Results" + pass count */}
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span style={{ color: T.muted }}>
-                            {r.isPublic ? `Testcase ${i+1} (public)` : `Testcase ${i+1} (hidden)`}
+                        <span className="text-xs font-semibold" style={{ color: T.text }}>Test Cases Results</span>
+                        <span className="text-xs" style={{ color: T.muted }}>
+                          <span style={{ color: runResults.every(r=>r.passed) ? "#3fb950" : "#f85149", fontWeight: 700 }}>
+                            {runResults.filter(r=>r.passed).length} passed
                           </span>
-                          {r.runtimeMs > 0 && (
-                            <span className="px-1.5 py-0.5 rounded text-[10px]"
-                              style={{ background: T.panel, color: "#58a6ff" }}>{r.runtimeMs}ms</span>
-                          )}
-                        </div>
-                        <span className="font-bold"
-                          style={{ color: r.tle?"#d29922":r.passed?"#3fb950":"#f85149" }}>
-                          {r.tle ? "⏱ TLE" : r.passed ? "v Accepted" : "✗ Wrong Answer"}
+                          {"  "}{runResults.length} total
                         </span>
                       </div>
-                      {r.isPublic && (
-                        <div className="font-mono space-y-0.5 mt-1 text-[11px]">
-                          <p><span style={{ color: T.muted }}>Input: </span><span style={{ color: T.string }}>{r.input?.length > 200 ? r.input.slice(0,200)+"…" : r.input}</span></p>
-                          <p><span style={{ color: T.muted }}>Expected: </span><span style={{ color: "#3fb950" }}>{r.expectedOutput}</span></p>
-                          <p><span style={{ color: T.muted }}>Output: </span><span style={{ color: r.passed?"#3fb950":"#f85149" }}>{r.actualOutput}</span></p>
+
+                      {/* Test tabs */}
+                      <div className="flex flex-wrap gap-2">
+                        {runResults.map((r: any, i: number) => {
+                          const isSelected = selCase === i
+                          return (
+                            <button key={i} onClick={() => setSelCase(i)}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                              style={{
+                                background: isSelected
+                                  ? (r.passed ? "#238636" : "#da3633")
+                                  : (r.passed ? "#0d2818" : "#2d0b0b"),
+                                border: `1px solid ${isSelected
+                                  ? (r.passed ? "#3fb950" : "#f85149")
+                                  : (r.passed ? "#2ea04333" : "#f8514933")}`,
+                                color: r.passed ? "#3fb950" : "#f85149",
+                              }}>
+                              <svg viewBox="0 0 10 10" width="10" height="10" fill="none"
+                                stroke={r.passed ? "#3fb950" : "#f85149"}
+                                strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                {r.passed
+                                  ? <polyline points="1.5,5 4,7.5 8.5,2.5" />
+                                  : <><line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/></>
+                                }
+                              </svg>
+                              Test {i + 1}
+                            </button>
+                          )
+                        })}
+                      </div>
+
+                      {/* Selected test case detail */}
+                      {runResults[selCase] && (() => {
+                        const r = runResults[selCase]
+                        return (
+                          <div className="space-y-2">
+                            {/* Input */}
+                            <div>
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <div className="w-0.5 h-3.5 rounded-full" style={{ background: "#58a6ff" }} />
+                                <p className="text-[11px] font-semibold" style={{ color: T.text }}>Input</p>
+                              </div>
+                              <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
+                                style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.string, minHeight: "32px" }}>
+                                {r.isPublic
+                                  ? (r.input?.replace(/^# -- test harness --\n[\s\S]*/,'').trim() || <span style={{color:T.lineNum}}>—</span>)
+                                  : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden test case</span>
+                                }
+                              </div>
+                            </div>
+
+                            {/* Expected Output */}
+                            <div>
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <div className="w-0.5 h-3.5 rounded-full" style={{ background: "#3fb950" }} />
+                                <p className="text-[11px] font-semibold" style={{ color: T.text }}>Expected Output</p>
+                              </div>
+                              <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
+                                style={{ background: T.panel, border: `1px solid ${T.border}`, color: "#3fb950", minHeight: "32px" }}>
+                                {r.isPublic
+                                  ? (r.expectedOutput && r.expectedOutput !== "(hidden)" ? r.expectedOutput : <span style={{color:T.lineNum}}>—</span>)
+                                  : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden</span>
+                                }
+                              </div>
+                            </div>
+
+                            {/* Your Output */}
+                            <div>
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <div className="w-0.5 h-3.5 rounded-full" style={{ background: r.passed ? "#3fb950" : "#f85149" }} />
+                                <p className="text-[11px] font-semibold" style={{ color: T.text }}>Your Output</p>
+                                {r.runtimeMs > 0 && (
+                                  <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded"
+                                    style={{ background: T.panel, color: "#58a6ff" }}>{r.runtimeMs}ms</span>
+                                )}
+                              </div>
+                              <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
+                                style={{
+                                  background: r.passed ? "rgba(35,134,54,0.1)" : "rgba(218,54,51,0.1)",
+                                  border: `1px solid ${r.passed ? "#2ea04344" : "#f8514944"}`,
+                                  color: r.passed ? "#3fb950" : "#f85149",
+                                  minHeight: "32px",
+                                }}>
+                                {r.tle ? "⏱ Time Limit Exceeded"
+                                  : r.actualOutput || <span style={{ color: T.lineNum }}>(no output)</span>
+                                }
+                              </div>
+                              {r.error && !r.tle && (
+                                <div className="mt-1 rounded px-3 py-2 font-mono text-[11px] whitespace-pre-wrap"
+                                  style={{ background: "#2d0b0b", border: "1px solid #f8514933", color: "#f85149" }}>
+                                  {r.error.slice(0, 400)}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })()}
+
+                      {/* All passed banner */}
+                      {completed && (
+                        <div className="rounded-lg border p-3 flex items-center gap-3 mt-2"
+                          style={{ background: "rgba(35,134,54,0.12)", borderColor: "#2ea04344" }}>
+                          <Trophy className="h-4 w-4 shrink-0" style={{ color: "#3fb950" }} />
+                          <div>
+                            <p className="font-bold text-xs" style={{ color: "#3fb950" }}>All test cases passed! 🎉</p>
+                            {runtimeMs !== null && (
+                              <p className="text-[11px] mt-0.5" style={{ color: T.muted }}>
+                                Runtime: <span style={{ color: "#58a6ff" }}>{runtimeMs}ms</span> / Limit: {timeLimit}ms
+                              </p>
+                            )}
+                          </div>
                         </div>
                       )}
-                      {!r.isPublic && !r.passed && (
-                        <p className="text-[10px] mt-1" style={{ color: T.muted }}>Hidden test failed - check edge cases</p>
-                      )}
-                      {r.error && (
-                        <p className="font-mono text-[10px] mt-1" style={{ color: "#f85149" }}>{r.error.slice(0,200)}</p>
-                      )}
-                    </div>
-                  ))}
-                  {completed && (
-                    <div className="rounded border p-3 space-y-1"
-                      style={{ background: "#0d2818", borderColor: "#2ea04333" }}>
-                      <div className="flex items-center gap-2 font-bold" style={{ color: "#3fb950" }}>
-                        <Trophy className="h-4 w-4" /> All tests passed! 🎉
-                      </div>
-                      {runtimeMs !== null && (
-                        <p style={{ color: T.muted }}>Runtime: <span style={{ color: "#58a6ff" }}>{runtimeMs}ms</span> / Limit: {timeLimit}ms</p>
-                      )}
-                    </div>
+                    </>
                   )}
+
                   {!runResults && !running && !submitting && !error && (
-                    <p style={{ color: T.lineNum }}>Click Run to test your solution.</p>
+                    <p className="text-xs py-2" style={{ color: T.lineNum }}>Click Submit to run all test cases.</p>
                   )}
                 </div>
               )}
