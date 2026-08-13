@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ── Premium Dark-First Design Tokens ──────────────────────────── */
+/* -- Premium Dark-First Design Tokens ---------------------------- */
 :root {
   --background: #09090B;
   --foreground: #FAFAFA;
@@ -40,7 +40,7 @@
   --sidebar-ring: oklch(0.65 0.22 285);
 }
 
-/* Light mode — keep accessible */
+/* Light mode - keep accessible */
 .light {
   --background: oklch(0.985 0 0);
   --foreground: oklch(0.12 0.012 260);
@@ -158,17 +158,17 @@
   }
 }
 
-/* ── Scrollbar ──────────────────────────────────────────────── */
+/* -- Scrollbar ------------------------------------------------ */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 .light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
 
-/* ── Selection ──────────────────────────────────────────────── */
+/* -- Selection ------------------------------------------------ */
 ::selection { background: oklch(0.65 0.22 285 / 0.3); color: #fff; }
 
-/* ── Glass morphism ─────────────────────────────────────────── */
+/* -- Glass morphism ------------------------------------------- */
 .glass {
   background: rgba(24,24,27,0.97);
   backdrop-filter: blur(16px) saturate(1.8);
@@ -180,7 +180,7 @@
   border: 1px solid rgba(0,0,0,0.06);
 }
 
-/* ── Card hover glow ────────────────────────────────────────── */
+/* -- Card hover glow ------------------------------------------ */
 .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
 .card-hover:hover {
   transform: translateY(-2px);
@@ -188,7 +188,7 @@
   border-color: rgba(255,255,255,0.12);
 }
 
-/* ── Gradient text ──────────────────────────────────────────── */
+/* -- Gradient text -------------------------------------------- */
 .gradient-text {
   background: linear-gradient(135deg, #A78BFA, #60A5FA, #34D399);
   -webkit-background-clip: text;
@@ -196,7 +196,7 @@
   background-clip: text;
 }
 
-/* ── Sci-fi accent (landing page) ──────────────────────────── */
+/* -- Sci-fi accent (landing page) ---------------------------- */
 /* Dark: cyan terminal feel. Light: violet/indigo professional */
 :root {
   --sci: 0, 255, 255;        /* cyan rgb values */
@@ -219,18 +219,18 @@
   --sci-text-dim: rgba(99,102,241,0.4);
 }
 
-/* ── Glow effects ───────────────────────────────────────────── */
+/* -- Glow effects --------------------------------------------- */
 .glow-purple { box-shadow: 0 0 40px oklch(0.65 0.22 285 / 0.3); }
 .glow-blue   { box-shadow: 0 0 40px oklch(0.6 0.2 220 / 0.25); }
 
-/* ── AI badge glow ──────────────────────────────────────────── */
+/* -- AI badge glow -------------------------------------------- */
 .ai-badge {
   background: linear-gradient(135deg, oklch(0.65 0.22 285 / 0.2), oklch(0.6 0.2 220 / 0.15));
   border: 1px solid oklch(0.65 0.22 285 / 0.4);
   box-shadow: 0 0 20px oklch(0.65 0.22 285 / 0.15);
 }
 
-/* ── Skeleton ───────────────────────────────────────────────── */
+/* -- Skeleton ------------------------------------------------- */
 @keyframes shimmer {
   from { background-position: -200% 0; }
   to   { background-position:  200% 0; }
@@ -242,16 +242,16 @@
   border-radius: 0.5rem;
 }
 
-/* ── Transitions ────────────────────────────────────────────── */
+/* -- Transitions ---------------------------------------------- */
 *, *::before, *::after {
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.1s ease, box-shadow 0.2s ease;
 }
 .no-transition * { transition: none !important; }
 
-/* ── Active nav ─────────────────────────────────────────────── */
+/* -- Active nav ----------------------------------------------- */
 .bg-primary\/8 { background-color: oklch(0.65 0.22 285 / 0.1); }
 
-/* ── Light mode overrides for hardcoded dark colors ──────────── */
+/* -- Light mode overrides for hardcoded dark colors ------------ */
 html.light .bg-gray-900, html.light .bg-gray-900\/50 {
   background-color: oklch(0.97 0 0) !important; color: oklch(0.12 0.012 260);
 }
@@ -266,14 +266,14 @@ html.light .border-gray-700, html.light .border-gray-600, html.light .border-gra
 }
 html.light .text-gray-400, html.light .text-gray-500 { color: oklch(0.48 0.01 260) !important; }
 
-/* ── Light mode: text visibility fixes ───────────────────────── */
+/* -- Light mode: text visibility fixes ------------------------- */
 /* Ensure white text becomes dark text on light backgrounds */
 html.light .text-white { color: oklch(0.12 0.012 260) !important; }
 html.light .text-zinc-400 { color: oklch(0.42 0.01 260) !important; }
 html.light .text-zinc-500 { color: oklch(0.5 0.01 260) !important; }
 html.light .text-zinc-600 { color: oklch(0.55 0.01 260) !important; }
 
-/* ── Light mode: semi-transparent white borders → subtle gray ── */
+/* -- Light mode: semi-transparent white borders -> subtle gray -- */
 html.light .border-white\/6,
 html.light .border-white\/8,
 html.light .border-white\/10,
@@ -281,7 +281,7 @@ html.light .border-white\/15 {
   border-color: oklch(0.88 0.005 260) !important;
 }
 
-/* ── Scrollbar in light mode ────────────────────────────────── */
+/* -- Scrollbar in light mode ---------------------------------- */
 html.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
 
 /* ══ Terminal Design System ═════════════════════════════════════ */
@@ -330,14 +330,14 @@ html.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
   100% { transform: translateX(300%); }
 }
 
-/* AI badge — terminal variant (purple glow) */
+/* AI badge - terminal variant (purple glow) */
 .ai-badge-terminal {
   background: linear-gradient(135deg, rgba(124,105,255,0.2), rgba(124,105,255,0.1));
   border: 0.8px solid rgba(124,105,255,0.4);
   box-shadow: rgba(124,105,255,0.15) 0px 0px 20px 0px;
 }
 
-/* ── Landing page light mode fixes ─────────────────────────── */
+/* -- Landing page light mode fixes --------------------------- */
 html.light .text-foreground\/80  { color: oklch(0.2 0.012 260) !important; }
 html.light .text-muted-foreground { color: oklch(0.45 0.01 260) !important; }
 
@@ -357,7 +357,7 @@ html.light {
 html.light .text-\[var\(--sci-fg\)\],
 html.light [style*="var(--sci-fg)"] { color: #6366f1 !important; }
 
-/* ── Cursor pointer on all interactive elements ────────────── */
+/* -- Cursor pointer on all interactive elements -------------- */
 button,
 a,
 [role="button"],

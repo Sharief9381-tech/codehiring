@@ -24,7 +24,7 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
       return null
     }
 
-    // ── 1. Community API (most reliable, returns structured JSON) ──────────
+    // -- 1. Community API (most reliable, returns structured JSON) ----------
     try {
       const apiUrl = `https://codechef-api.vercel.app/${cleanUsername}`
       const res = await fetch(apiUrl, {
@@ -66,7 +66,7 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
     } catch (e: any) {
     }
 
-    // ── 2. Web scraping fallback ───────────────────────────────────────────
+    // -- 2. Web scraping fallback -------------------------------------------
     try {
       const profileUrl = `https://www.codechef.com/users/${cleanUsername}`
       const res = await fetch(profileUrl, {

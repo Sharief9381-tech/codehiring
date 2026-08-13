@@ -30,7 +30,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const { answers, attemptId } = await req.json()
     const u = user as any
 
-    // ── Auto-evaluate MCQ, Aptitude, Debugging ────────────────
+    // -- Auto-evaluate MCQ, Aptitude, Debugging ----------------
     const scores: AssessmentAttempt["scores"] = []
     let totalScore = 0, totalMax = 0
 

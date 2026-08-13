@@ -15,13 +15,13 @@ import { UserModel } from "@/lib/models/user"
 const GROQ_API     = "https://api.groq.com/openai/v1/chat/completions"
 const APILAYER_URL = "https://api.apilayer.com/resume_parser/upload"
 
-// ── Extract readable text from PDF buffer ──────────────────────────────────────
+// -- Extract readable text from PDF buffer --------------------------------------
 function extractPDFText(buf: Buffer): string {
   return (buf.toString("latin1").match(/[\x20-\x7E]{4,}/g) ?? [])
     .join(" ").replace(/\s{2,}/g, " ").trim()
 }
 
-// ── Parse resume via APILayer (free tier) ──────────────────────────────────────
+// -- Parse resume via APILayer (free tier) --------------------------------------
 async function parseWithAPILayer(fileBuffer: Buffer, fileName: string): Promise<any> {
   const key = process.env.APILAYER_RESUME_KEY
   if (!key) throw new Error("APILAYER_RESUME_KEY not set")
@@ -54,7 +54,7 @@ async function parseWithAPILayer(fileBuffer: Buffer, fileName: string): Promise<
   */
 }
 
-// ── Deep analysis via Groq ─────────────────────────────────────────────────────
+// -- Deep analysis via Groq -----------------------------------------------------
 async function groqDeepAnalysis(parsedResume: any, profileCtx: string): Promise<any> {
   if (!process.env.GROQ_API_KEY) return null
 

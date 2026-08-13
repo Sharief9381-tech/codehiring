@@ -50,7 +50,7 @@ function extractString(html: string, ...patterns: RegExp[]): string {
 
 export async function fetchHackerEarthStats(username: string): Promise<HackerEarthStats | null> {
   try {
-    // ── 1. Normalise username ────────────────────────────────────────────
+    // -- 1. Normalise username --------------------------------------------
     let u = username.trim().replace(/^@/, '')
     const urlMatch = u.match(/(?:https?:\/\/)?(?:www\.)?hackerearth\.com\/@?([^\/\?\s#]+)/i)
     if (urlMatch) u = urlMatch[1]
@@ -58,7 +58,7 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
     if (!u || !/^[a-zA-Z0-9_.-]+$/.test(u)) return null
 
 
-    // ── 2. Fetch profile HTML ────────────────────────────────────────────
+    // -- 2. Fetch profile HTML --------------------------------------------
     const profileUrl = `https://www.hackerearth.com/@${u}/`
     const htmlRes = await fetch(profileUrl, {
       headers: {
@@ -76,7 +76,7 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
 
     const html = await htmlRes.text()
 
-    // ── 3. Check for "not found" signals ────────────────────────────────
+    // -- 3. Check for "not found" signals --------------------------------
     const lower = html.toLowerCase()
     if (
       lower.includes('page not found') ||
@@ -87,14 +87,14 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
       return null
     }
 
-    // ── 4. Parse OG / meta tags ─────────────────────────────────────────
+    // -- 4. Parse OG / meta tags -----------------------------------------
     const ogTitle    = extractString(html, /<meta\s+property="og:title"\s+content="([^"]+)"/i, /<meta\s+name="title"\s+content="([^"]+)"/i)
     const ogImage    = extractString(html, /<meta\s+property="og:image"\s+content="([^"]+)"/i)
     const ogDesc     = extractString(html, /<meta\s+property="og:description"\s+content="([^"]+)"/i)
     const metaName   = extractString(html, /<title[^>]*>([^<|]+)/i)
 
 
-    // ── 5. Parse inline JSON fragments ──────────────────────────────────
+    // -- 5. Parse inline JSON fragments ----------------------------------
     // HackerEarth embeds some user data in script tags as serialised props
     let name         = ogTitle.replace(/\s*\|\s*HackerEarth.*/i, '').replace(/\s*-\s*HackerEarth.*/i, '').trim() || u
     let rating       = extractNumber(html,
@@ -111,11 +111,11 @@ export async function fetchHackerEarthStats(username: string): Promise<HackerEar
     let country      = extractString(html, /"country"\s*:\s*"([^"]+)"/)
     let avatar       = ogImage
 
-    // ── 6. Verify profile via RSC flight data ────────────────────────────
+    // -- 6. Verify profile via RSC flight data ----------------------------
     // The RSC route returns a small JSON with the username confirming it exists
     let profileVerified = html.includes(u) || ogTitle.toLowerCase().includes(u.toLowerCase())
 
-    // ── 7. Try OG description for numeric data ───────────────────────────
+    // -- 7. Try OG description for numeric data ---------------------------
     // e.g. "Solved 120 problems . Rating 1820 . Rank 5342"
     if (ogDesc) {
       const solvedInDesc = ogDesc.match(/solved\s+(\d+)\s+problems?/i) || ogDesc.match(/(\d+)\s+problems?\s+solved/i)

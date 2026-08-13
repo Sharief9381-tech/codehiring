@@ -29,7 +29,7 @@ export async function GET(req: Request) {
   const { searchParams, origin } = new URL(req.url)
   const slug = searchParams.get("slug")
 
-  // ── Single post ──
+  // -- Single post --
   if (slug) {
     if (isDatabaseAvailable()) {
       try {
@@ -43,7 +43,7 @@ export async function GET(req: Request) {
       : NextResponse.json({ error: "Not found" }, { status: 404 })
   }
 
-  // ── All posts ──
+  // -- All posts --
   if (isDatabaseAvailable()) {
     try {
       // Self-trigger daily post generation (non-blocking)

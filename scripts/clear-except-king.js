@@ -3,7 +3,7 @@
 const PRESERVE_EMAIL = 'king@gmail.com'
 
 async function clearExceptKing() {
-  console.log(`Starting cleanup — preserving user: ${PRESERVE_EMAIL}\n`)
+  console.log(`Starting cleanup - preserving user: ${PRESERVE_EMAIL}\n`)
 
   // Check server
   try {

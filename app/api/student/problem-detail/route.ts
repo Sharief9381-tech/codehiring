@@ -22,7 +22,7 @@ for (const topic of TOPIC_QUESTIONS) {
   }
 }
 
-// ── AI generation ─────────────────────────────────────────────────────────────
+// -- AI generation -------------------------------------------------------------
 async function generateProblem(title: string, difficulty: string): Promise<any> {
   const groqKey   = process.env.GROQ_API_KEY
   const openaiKey = process.env.OPENAI_API_KEY
@@ -87,7 +87,7 @@ Use real concrete values in testCases. No backslashes inside expected strings.`
   return data
 }
 
-// ── Convert static bank entry + AI data to wire format ───────────────────────
+// -- Convert static bank entry + AI data to wire format -----------------------
 function bankToWire(sp: any, title: string, difficulty: string) {
   return {
     title,
@@ -117,7 +117,7 @@ function bankToWire(sp: any, title: string, difficulty: string) {
   }
 }
 
-// ── POST handler ──────────────────────────────────────────────────────────────
+// -- POST handler --------------------------------------------------------------
 export async function POST(req: Request) {
   try {
     const user = await getCurrentUser()
@@ -145,14 +145,14 @@ export async function POST(req: Request) {
     }
     if (!title) return NextResponse.json({ error: "title or problemId required" }, { status: 400 })
 
-    // ── 1. Check static bank ──────────────────────────────────────────────────
+    // -- 1. Check static bank --------------------------------------------------
     const sp = getProblem(title)
     if (sp && sp.testCases && sp.testCases.length > 0) {
       // Fully detailed static entry - return immediately
       return NextResponse.json({ problem: bankToWire(sp, title, difficulty), fromCache: false, source: "static" })
     }
 
-    // ── 2. Check MongoDB cache ────────────────────────────────────────────────
+    // -- 2. Check MongoDB cache ------------------------------------------------
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
     const cached = await db.collection("problem_details_v2").findOne({ cacheKey })
@@ -160,7 +160,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
     }
 
-    // ── 3. Generate via AI ────────────────────────────────────────────────────
+    // -- 3. Generate via AI ----------------------------------------------------
     const aiData = await generateProblem(title, difficulty)
 
     if (!aiData) {

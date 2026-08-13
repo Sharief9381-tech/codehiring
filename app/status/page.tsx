@@ -134,7 +134,7 @@ export default async function StatusPage() {
             <CardContent className="space-y-2">
               {data.recommendations.map((rec: string, i: number) => (
                 <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <span className="text-primary mt-0.5 shrink-0">•</span>{rec}
+                  <span className="text-primary mt-0.5 shrink-0">.</span>{rec}
                 </div>
               ))}
             </CardContent>

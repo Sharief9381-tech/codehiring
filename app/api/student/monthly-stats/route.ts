@@ -41,7 +41,7 @@ export async function GET(request: Request) {
 
       const linkedAt = (pdata as any).linkedAt ? new Date((pdata as any).linkedAt) : null
 
-      // ── LeetCode: use recentSubmissions if cached ─────────────────────────
+      // -- LeetCode: use recentSubmissions if cached -------------------------
       if (pid === "leetcode") {
         const subs: any[] = s.recentSubmissions || s.recentAcSubmissions || []
         if (subs.length > 0) {
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
         continue
       }
 
-      // ── Codeforces: use submissions array ─────────────────────────────────
+      // -- Codeforces: use submissions array ---------------------------------
       if (pid === "codeforces") {
         const subs: any[] = s.submissions || []
         if (subs.length > 0) {
@@ -80,7 +80,7 @@ export async function GET(request: Request) {
         continue
       }
 
-      // ── All other platforms: distribute total evenly ──────────────────────
+      // -- All other platforms: distribute total evenly ----------------------
       const total = s.totalSolved || s.problemsSolved || s.completedExercises || 0
       if (total > 0) {
         distributeProblems(monthly, total, linkedAt, year, now)

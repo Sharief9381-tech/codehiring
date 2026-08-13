@@ -16,7 +16,7 @@ export interface PYQ {
   topic: string
 }
 
-// ─── TCS NQT Previous Year Questions ──────────────────────────────────────────
+// --- TCS NQT Previous Year Questions ------------------------------------------
 export const TCS_QUANT: PYQ[] = [
   {
     company:"tcs", section:"quantitative", year:2023, difficulty:"Medium", topic:"Time & Work",
@@ -122,7 +122,7 @@ export const TCS_VERBAL: PYQ[] = [
   },
 ]
 
-// ─── Infosys InfyTQ Previous Year Questions ───────────────────────────────────
+// --- Infosys InfyTQ Previous Year Questions -----------------------------------
 export const INFOSYS_QUANT: PYQ[] = [
   {
     company:"infosys", section:"quantitative", year:2023, difficulty:"Medium", topic:"Averages",
@@ -159,7 +159,7 @@ export const INFOSYS_PSEUDO: PYQ[] = [
   },
 ]
 
-// ─── Amazon OA Previous Year Questions ───────────────────────────────────────
+// --- Amazon OA Previous Year Questions ---------------------------------------
 export const AMAZON_CODING: PYQ[] = [
   {
     company:"amazon", section:"coding", year:2023, difficulty:"Hard", topic:"Arrays & Hashing",
@@ -181,7 +181,7 @@ export const AMAZON_CODING: PYQ[] = [
   },
 ]
 
-// ─── Wipro NLTH Previous Year Questions ──────────────────────────────────────
+// --- Wipro NLTH Previous Year Questions --------------------------------------
 export const WIPRO_QUANT: PYQ[] = [
   {
     company:"wipro", section:"quantitative", year:2023, difficulty:"Easy", topic:"Simple Interest",
@@ -197,7 +197,7 @@ export const WIPRO_QUANT: PYQ[] = [
   },
 ]
 
-// ─── Cognizant GenC Previous Year Questions ───────────────────────────────────
+// --- Cognizant GenC Previous Year Questions -----------------------------------
 export const COGNIZANT_QUANT: PYQ[] = [
   {
     company:"cognizant", section:"quantitative", year:2023, difficulty:"Easy", topic:"HCF & LCM",
@@ -213,7 +213,7 @@ export const COGNIZANT_QUANT: PYQ[] = [
   },
 ]
 
-// ─── Google Coding Patterns ────────────────────────────────────────────────────
+// --- Google Coding Patterns ----------------------------------------------------
 export const GOOGLE_CODING: PYQ[] = [
   {
     company:"google", section:"coding", year:2023, difficulty:"Hard", topic:"Algorithms",
@@ -229,7 +229,7 @@ export const GOOGLE_CODING: PYQ[] = [
   },
 ]
 
-// ─── Master map: company -> section -> questions ───────────────────────────────
+// --- Master map: company -> section -> questions -------------------------------
 export const QUESTION_BANK: Record<string, Record<string, PYQ[]>> = {
   tcs:       { quantitative: TCS_QUANT,       logical: TCS_LOGICAL,    verbal: TCS_VERBAL },
   infosys:   { quantitative: INFOSYS_QUANT,    logical: INFOSYS_PSEUDO, verbal: TCS_VERBAL },

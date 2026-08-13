@@ -494,7 +494,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                             </div>
                             <div className="h-1.5 rounded-full bg-white/10 mb-2"><div className="h-full rounded-full" style={{ width: `${j.match}%`, background: c }} /></div>
                             <p className="text-xs text-muted-foreground">{j.reason}</p>
-                            {j.howToClose && <p className="text-[10px] text-violet-400 mt-1 italic">-> {j.howToClose}</p>}
+                            {j.howToClose && <p className="text-[10px] text-violet-400 mt-1 italic">{"->"} {j.howToClose}</p>}
                           </div>
                         )
                       })}

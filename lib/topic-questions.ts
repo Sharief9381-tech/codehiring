@@ -56,7 +56,7 @@ function buildTopic(
 
 export const TOPIC_QUESTIONS: TopicData[] = [
 
-// ── ARRAYS ────────────────────────────────────────────────────────────────────
+// -- ARRAYS --------------------------------------------------------------------
 buildTopic("arrays","Arrays","#10b981",
   [["Two Sum","two-sum"],["Contains Duplicate","contains-duplicate"],["Missing Number","missing-number"],["Single Number","single-number"],["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"]],
   [["Move Zeroes","move-zeroes"],["Find All Numbers Disappeared","find-all-numbers-disappeared-in-an-array"],["Shuffle Array","shuffle-the-array"],["Squares of Sorted Array","squares-of-a-sorted-array"],["Running Sum of 1D Array","running-sum-of-1d-array"]],
@@ -66,7 +66,7 @@ buildTopic("arrays","Arrays","#10b981",
   [["Largest Rectangle in Histogram","largest-rectangle-in-histogram"],["Maximum Sum Circular Subarray","maximum-sum-circular-subarray"],["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Jump Game II","jump-game-ii"],["Minimum Window Substring","minimum-window-substring"]]
 ),
 
-// ── STRINGS ───────────────────────────────────────────────────────────────────
+// -- STRINGS -------------------------------------------------------------------
 buildTopic("strings","Strings","#10b981",
   [["Valid Anagram","valid-anagram"],["Valid Palindrome","valid-palindrome"],["Reverse String","reverse-string"],["First Unique Character","first-unique-character-in-a-string"],["Is Subsequence","is-subsequence"]],
   [["Ransom Note","ransom-note"],["Longest Common Prefix","longest-common-prefix"],["String to Integer","string-to-integer-atoi"],["Count and Say","count-and-say"],["Detect Capital","detect-capital"]],
@@ -76,7 +76,7 @@ buildTopic("strings","Strings","#10b981",
   [["Concatenated Words","concatenated-words"],["Palindrome Pairs","palindrome-pairs"],["Substring with Concatenation of All Words","substring-with-concatenation-of-all-words"],["Largest Number","largest-number"],["Short Encoding of Words","short-encoding-of-words"]]
 ),
 
-// ── MATRIX ───────────────────────────────────────────────────────────────────
+// -- MATRIX -------------------------------------------------------------------
 buildTopic("matrix","Matrix","#10b981",
   [["Flood Fill","flood-fill"],["Count Negative Numbers in Sorted Matrix","count-negative-numbers-in-a-sorted-matrix"],["Richest Customer Wealth","richest-customer-wealth"],["Matrix Diagonal Sum","matrix-diagonal-sum"],["Lucky Numbers in Matrix","lucky-numbers-in-a-matrix"]],
   [["Transpose Matrix","transpose-matrix"],["Reshape Matrix","reshape-the-matrix"],["Toeplitz Matrix","toeplitz-matrix"],["Flipping an Image","flipping-an-image"],["Image Smoother","image-smoother"]],
@@ -86,7 +86,7 @@ buildTopic("matrix","Matrix","#10b981",
   [["Maximal Rectangle","maximal-rectangle"],["Longest Increasing Path in a Matrix","longest-increasing-path-in-a-matrix"],["Count Servers That Communicate","count-servers-that-communicate"],["Strange Printer II","strange-printer-ii"],["Number of Ways to Stay in the Same Place","number-of-ways-to-stay-in-the-same-place-after-some-steps"]]
 ),
 
-// ── HASHING ──────────────────────────────────────────────────────────────────
+// -- HASHING ------------------------------------------------------------------
 buildTopic("hashing","Hashing","#3b82f6",
   [["Two Sum","two-sum"],["Ransom Note","ransom-note"],["Isomorphic Strings","isomorphic-strings"],["Word Pattern","word-pattern"],["Happy Number","happy-number"]],
   [["Contains Duplicate","contains-duplicate"],["Contains Duplicate II","contains-duplicate-ii"],["Intersection of Two Arrays","intersection-of-two-arrays"],["Find Common Characters","find-common-characters"],["Unique Number of Occurrences","unique-number-of-occurrences"]],
@@ -96,7 +96,7 @@ buildTopic("hashing","Hashing","#3b82f6",
   [["Palindrome Pairs","palindrome-pairs"],["Substring with Concatenation of All Words","substring-with-concatenation-of-all-words"],["Minimum Size Subarray Sum","minimum-size-subarray-sum"],["Design In-Memory File System","design-in-memory-file-system"],["Distinct Echo Substrings","distinct-echo-substrings"]]
 ),
 
-// ── LINKED LIST ───────────────────────────────────────────────────────────────
+// -- LINKED LIST ---------------------------------------------------------------
 buildTopic("linked-list","Linked List","#3b82f6",
   [["Reverse Linked List","reverse-linked-list"],["Merge Two Sorted Lists","merge-two-sorted-lists"],["Linked List Cycle","linked-list-cycle"],["Middle of Linked List","middle-of-the-linked-list"],["Palindrome Linked List","palindrome-linked-list"]],
   [["Remove Duplicates from Sorted List","remove-duplicates-from-sorted-list"],["Intersection of Two Linked Lists","intersection-of-two-linked-lists"],["Delete Node in Linked List","delete-node-in-a-linked-list"],["Convert Binary to Decimal","convert-binary-number-in-a-linked-list-to-integer"],["Remove Linked List Elements","remove-linked-list-elements"]],
@@ -106,7 +106,7 @@ buildTopic("linked-list","Linked List","#3b82f6",
   [["Design Linked List","design-linked-list"],["Insert into a Cyclic Sorted List","insert-into-a-sorted-circular-linked-list"],["Reverse Linked List II","reverse-linked-list-ii"],["Remove Zero Sum Sublists","remove-zero-sum-consecutive-nodes-from-linked-list"],["Linked List Random Node","linked-list-random-node"]]
 ),
 
-// ── STACK ─────────────────────────────────────────────────────────────────────
+// -- STACK ---------------------------------------------------------------------
 buildTopic("stack","Stack","#3b82f6",
   [["Valid Parentheses","valid-parentheses"],["Remove Outermost Parentheses","remove-outermost-parentheses"],["Backspace String Compare","backspace-string-compare"],["Make the String Great","make-the-string-great"],["Remove All Adjacent Duplicates","remove-all-adjacent-duplicates-in-string"]],
   [["Implement Queue Using Stacks","implement-queue-using-stacks"],["Baseball Game","baseball-game"],["Next Greater Element I","next-greater-element-i"],["Build an Array With Stack Operations","build-an-array-with-stack-operations"],["Crawler Log Folder","crawler-log-folder"]],
@@ -116,7 +116,7 @@ buildTopic("stack","Stack","#3b82f6",
   [["Basic Calculator II","basic-calculator-ii"],["Maximum Frequency Stack","maximum-frequency-stack"],["Number of Visible People in a Queue","number-of-visible-people-in-a-queue"],["Minimum Cost Tree From Leaf Values","minimum-cost-tree-from-leaf-values"],["Score of Parentheses","score-of-parentheses"]]
 ),
 
-// ── QUEUE ─────────────────────────────────────────────────────────────────────
+// -- QUEUE ---------------------------------------------------------------------
 buildTopic("queue","Queue","#3b82f6",
   [["Number of Recent Calls","number-of-recent-calls"],["Implement Stack Using Queues","implement-stack-using-queues"],["First Unique Character","first-unique-character-in-a-string"],["Design Circular Queue","design-circular-queue"],["Moving Average from Data Stream","moving-average-from-data-stream"]],
   [["Time Needed to Buy Tickets","time-needed-to-buy-tickets"],["Reveal Cards in Increasing Order","reveal-cards-in-increasing-order"],["Number of Students Unable to Eat Lunch","number-of-students-unable-to-eat-lunch"],["Average of Levels in Binary Tree","average-of-levels-in-binary-tree"],["Maximum Width of Binary Tree","maximum-width-of-binary-tree"]],
@@ -126,7 +126,7 @@ buildTopic("queue","Queue","#3b82f6",
   [["Word Ladder II","word-ladder-ii"],["Cut Off Trees for Golf Event","cut-off-trees-for-golf-event"],["Bus Routes","bus-routes"],["Minimum Jumps to Reach Home","minimum-jumps-to-reach-home"],["Shortest Path Visiting All Nodes","shortest-path-visiting-all-nodes"]]
 ),
 
-// ── DEQUE ─────────────────────────────────────────────────────────────────────
+// -- DEQUE ---------------------------------------------------------------------
 buildTopic("deque","Deque","#f59e0b",
   [["Design Circular Deque","design-circular-deque"],["First Unique Character","first-unique-character-in-a-string"],["Moving Average from Data Stream","moving-average-from-data-stream"],["Design Front Middle Back Queue","design-front-middle-back-queue"],["K Radius Subarray Averages","k-radius-subarray-averages"]],
   [["Maximum Value at a Given Index in a Bounded Array","maximum-value-at-a-given-index-in-a-bounded-array"],["Find the Most Competitive Subsequence","find-the-most-competitive-subsequence"],["Longest Subarray of 1s After Deleting One Element","longest-subarray-of-1s-after-deleting-one-element"],["Maximum of All Subarrays of Size K","sliding-window-maximum"],["Stock Price Fluctuation","stock-price-fluctuation"]],
@@ -136,7 +136,7 @@ buildTopic("deque","Deque","#f59e0b",
   [["Shortest Subarray with Sum at Least K","shortest-subarray-with-sum-at-least-k"],["Maximum Number of Books You Can Take","maximum-number-of-books-you-can-take"],["Count Subarrays Where Max Element Appears at Least K Times","count-subarrays-where-max-element-appears-at-least-k-times"],["Minimum Adjacent Swaps for K Consecutive Ones","minimum-adjacent-swaps-for-k-consecutive-ones"],["Minimum Operations to Reduce X to Zero","minimum-operations-to-reduce-x-to-zero"]]
 ),
 
-// ── HEAP ──────────────────────────────────────────────────────────────────────
+// -- HEAP ----------------------------------------------------------------------
 buildTopic("heap","Heap (Priority Queue)","#f59e0b",
   [["Kth Largest Element in a Stream","kth-largest-element-in-a-stream"],["Last Stone Weight","last-stone-weight"],["Relative Ranks","relative-ranks"],["Maximum Product of Two Elements","maximum-product-of-two-elements-in-an-array"],["Minimum Cost to Connect Sticks","minimum-cost-to-connect-sticks"]],
   [["Sort Array by Increasing Frequency","sort-array-by-increasing-frequency"],["Find Subsequence of Length K With the Largest Sum","find-subsequence-of-length-k-with-the-largest-sum"],["Remove Stones to Minimize the Total","remove-stones-to-minimize-the-total"],["Smallest Number in Infinite Set","smallest-number-in-infinite-set"],["Minimum Operations to Halve Array Sum","minimum-operations-to-halve-array-sum"]],
@@ -146,7 +146,7 @@ buildTopic("heap","Heap (Priority Queue)","#f59e0b",
   [["Minimum Number of Refueling Stops","minimum-number-of-refueling-stops"],["Single-Threaded CPU","single-threaded-cpu"],["Parallel Courses II","parallel-courses-ii"],["Maximum Subsequence Score","maximum-subsequence-score"],["Minimum Space Wasted With K Resizing Operations","minimum-space-wasted-with-k-resizing-operations"]]
 ),
 
-// ── TREE ──────────────────────────────────────────────────────────────────────
+// -- TREE ----------------------------------------------------------------------
 buildTopic("tree","Tree","#f59e0b",
   [["Invert Binary Tree","invert-binary-tree"],["Maximum Depth of Binary Tree","maximum-depth-of-binary-tree"],["Diameter of Binary Tree","diameter-of-binary-tree"],["Balanced Binary Tree","balanced-binary-tree"],["Same Tree","same-tree"]],
   [["Subtree of Another Tree","subtree-of-another-tree"],["Path Sum","path-sum"],["Symmetric Tree","symmetric-tree"],["Merge Two Binary Trees","merge-two-binary-trees"],["Search in a Binary Search Tree","search-in-a-binary-search-tree"]],
@@ -156,7 +156,7 @@ buildTopic("tree","Tree","#f59e0b",
   [["Binary Tree Postorder Traversal","binary-tree-postorder-traversal"],["Distribute Coins in Binary Tree","distribute-coins-in-binary-tree"],["Delete Nodes and Return Forest","delete-nodes-and-return-forest"],["Maximum Sum BST in Binary Tree","maximum-sum-bst-in-binary-tree"],["Number of Good Leaf Nodes Pairs","number-of-good-leaf-nodes-pairs"]]
 ),
 
-// ── BINARY TREE ───────────────────────────────────────────────────────────────
+// -- BINARY TREE ---------------------------------------------------------------
 buildTopic("binary-tree","Binary Tree","#f59e0b",
   [["Binary Tree Inorder Traversal","binary-tree-inorder-traversal"],["Binary Tree Preorder Traversal","binary-tree-preorder-traversal"],["Binary Tree Postorder Traversal","binary-tree-postorder-traversal"],["N-ary Tree Preorder Traversal","n-ary-tree-preorder-traversal"],["Find Mode in Binary Search Tree","find-mode-in-binary-search-tree"]],
   [["Range Sum of BST","range-sum-of-bst"],["Increasing Order Search Tree","increasing-order-search-tree"],["Average of Levels in Binary Tree","average-of-levels-in-binary-tree"],["Minimum Depth of Binary Tree","minimum-depth-of-binary-tree"],["Sum of Left Leaves","sum-of-left-leaves"]],
@@ -166,7 +166,7 @@ buildTopic("binary-tree","Binary Tree","#f59e0b",
   [["Maximum Width of Binary Tree","maximum-width-of-binary-tree"],["Count Complete Tree Nodes","count-complete-tree-nodes"],["Find Duplicate Subtrees","find-duplicate-subtrees"],["Largest BST Subtree","largest-bst-subtree"],["Flip Binary Tree to Match Preorder Traversal","flip-binary-tree-to-match-preorder-traversal"]]
 ),
 
-// ── BST ───────────────────────────────────────────────────────────────────────
+// -- BST -----------------------------------------------------------------------
 buildTopic("bst","Binary Search Tree (BST)","#f59e0b",
   [["Search in a Binary Search Tree","search-in-a-binary-search-tree"],["Find Mode in BST","find-mode-in-binary-search-tree"],["Range Sum of BST","range-sum-of-bst"],["Minimum Absolute Difference in BST","minimum-absolute-difference-in-bst"],["Increasing Order Search Tree","increasing-order-search-tree"]],
   [["Two Sum IV - BST","two-sum-iv-input-is-a-bst"],["Minimum Distance Between BST Nodes","minimum-distance-between-bst-nodes"],["Trim a BST","trim-a-binary-search-tree"],["Convert Sorted Array to BST","convert-sorted-array-to-binary-search-tree"],["Univalued Binary Tree","univalued-binary-tree"]],
@@ -175,7 +175,7 @@ buildTopic("bst","Binary Search Tree (BST)","#f59e0b",
   [["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Closest Binary Search Tree Value II","closest-binary-search-tree-value-ii"],["Maximum Sum BST in Binary Tree","maximum-sum-bst-in-binary-tree"],["All Elements in Two Binary Search Trees","all-elements-in-two-binary-search-trees"],["Construct BST from Preorder Traversal","construct-binary-search-tree-from-preorder-traversal"]],
   [["Count Nodes Equal to Average of Subtree","count-nodes-equal-to-average-of-subtree"],["Kth Largest Element in a BST","kth-largest-element-in-a-bst"],["Two Sum BST","two-sum-bsts"],["Minimum Swaps to Make Sequences Increasing","minimum-swaps-to-make-sequences-increasing"],["Number of Ways to Reorder Array to Get Same BST","number-of-ways-to-reorder-array-to-get-same-bst"]]
 ),
-// ── TRIE ──────────────────────────────────────────────────────────────────────
+// -- TRIE ----------------------------------------------------------------------
 buildTopic("trie","Trie","#ef4444",
   [["Implement Trie (Prefix Tree)","implement-trie-prefix-tree"],["Search Suggestions System","search-suggestions-system"],["Replace Words","replace-words"],["Longest Word in Dictionary","longest-word-in-dictionary"],["Implement Magic Dictionary","implement-magic-dictionary"]],
   [["Design Add and Search Words Data Structure","design-add-and-search-words-data-structure"],["Map Sum Pairs","map-sum-pairs"],["Add and Search Word","design-add-and-search-words-data-structure"],["Count Words Obtained After Adding a Letter","count-words-obtained-after-adding-a-letter"],["Longest Common Prefix","longest-common-prefix"]],
@@ -184,7 +184,7 @@ buildTopic("trie","Trie","#ef4444",
   [["Word Search II","word-search-ii"],["Maximum XOR With an Element From Array","maximum-xor-with-an-element-from-array"],["Count Pairs With XOR in a Range","count-pairs-with-xor-in-a-range"],["Design File System","design-file-system"],["Prefix and Suffix Search","prefix-and-suffix-search"]],
   [["Sum of Prefix Scores of Strings","sum-of-prefix-scores-of-strings"],["Minimum Cost to Replace Characters","minimum-cost-to-replace-characters-in-string-1-with-string-2"],["Longest Word With All Prefixes","longest-word-with-all-prefixes"],["Number of Valid Words for Each Puzzle","number-of-valid-words-for-each-puzzle"],["Maximum Score After Splitting a String","maximum-score-after-splitting-a-string"]]
 ),
-// ── GRAPH ─────────────────────────────────────────────────────────────────────
+// -- GRAPH ---------------------------------------------------------------------
 buildTopic("graph","Graph","#f59e0b",
   [["Find Center of Star Graph","find-center-of-star-graph"],["Find the Town Judge","find-the-town-judge"],["Number of Provinces","number-of-provinces"],["Find if Path Exists in Graph","find-if-path-exists-in-graph"],["Minimum Number of Vertices to Reach All Nodes","minimum-number-of-vertices-to-reach-all-nodes"]],
   [["Clone Graph","clone-graph"],["Number of Islands","number-of-islands"],["Max Area of Island","max-area-of-island"],["Flood Fill","flood-fill"],["Connected Components in Undirected Graph","number-of-connected-components-in-an-undirected-graph"]],
@@ -194,7 +194,7 @@ buildTopic("graph","Graph","#f59e0b",
   [["Alien Dictionary","alien-dictionary"],["Word Ladder II","word-ladder-ii"],["Reconstruct Itinerary","reconstruct-itinerary"],["Minimum Number of Days to Disconnect Island","minimum-number-of-days-to-disconnect-island"],["Count Subtrees With Max Distance Between Cities","count-subtrees-with-max-distance-between-cities"]]
 ),
 
-// ── GREEDY ────────────────────────────────────────────────────────────────────
+// -- GREEDY --------------------------------------------------------------------
 buildTopic("greedy","Greedy Algorithms","#f59e0b",
   [["Lemonade Change","lemonade-change"],["Assign Cookies","assign-cookies"],["Can Place Flowers","can-place-flowers"],["Buy Two Chocolates","buy-two-chocolates"],["Minimum Operations to Make the Array Increasing","minimum-operations-to-make-the-array-increasing"]],
   [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Walking Robot Simulation","walking-robot-simulation"],["Maximum Units on a Truck","maximum-units-on-a-truck"],["Minimum Number of Moves to Seat Everyone","minimum-number-of-moves-to-seat-everyone"],["Divide a String Into Groups of Size k","divide-a-string-into-groups-of-size-k"]],
@@ -203,7 +203,7 @@ buildTopic("greedy","Greedy Algorithms","#f59e0b",
   [["IPO","ipo"],["Minimum Number of Arrows to Burst Balloons","minimum-number-of-arrows-to-burst-balloons"],["Non-overlapping Intervals","non-overlapping-intervals"],["Largest Number","largest-number"],["Candy","candy"]],
   [["Minimum Cost to Hire K Workers","minimum-cost-to-hire-k-workers"],["Split Array Into Consecutive Subsequences","split-array-into-consecutive-subsequences"],["Maximize Score After N Operations","maximize-score-after-n-operations"],["Maximum Profit in Job Scheduling","maximum-profit-in-job-scheduling"],["Minimum Number of Taps to Open to Water a Garden","minimum-number-of-taps-to-open-to-water-a-garden"]]
 ),
-// ── DYNAMIC PROGRAMMING ───────────────────────────────────────────────────────
+// -- DYNAMIC PROGRAMMING -------------------------------------------------------
 buildTopic("dp","Dynamic Programming (DP)","#ef4444",
   [["Climbing Stairs","climbing-stairs"],["Fibonacci Number","fibonacci-number"],["N-th Tribonacci Number","n-th-tribonacci-number"],["Min Cost Climbing Stairs","min-cost-climbing-stairs"],["Pascal's Triangle","pascals-triangle"]],
   [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Maximum Subarray","maximum-subarray"],["Range Sum Query - Immutable","range-sum-query-immutable"],["Counting Bits","counting-bits"],["Is Subsequence","is-subsequence"]],
@@ -212,7 +212,7 @@ buildTopic("dp","Dynamic Programming (DP)","#ef4444",
   [["Burst Balloons","burst-balloons"],["Regular Expression Matching","regular-expression-matching"],["Edit Distance","edit-distance"],["Distinct Subsequences","distinct-subsequences"],["Cherry Pickup","cherry-pickup"]],
   [["Minimum Cost to Cut a Stick","minimum-cost-to-cut-a-stick"],["Strange Printer","strange-printer"],["Zuma Game","zuma-game"],["Minimum Window Substring","minimum-window-substring"],["Count Different Palindromic Subsequences","count-different-palindromic-subsequences"]]
 ),
-// ── RECURSION ─────────────────────────────────────────────────────────────────
+// -- RECURSION -----------------------------------------------------------------
 buildTopic("recursion","Recursion","#f59e0b",
   [["Fibonacci Number","fibonacci-number"],["Power of Two","power-of-two"],["Reverse String","reverse-string"],["Merge Two Sorted Lists","merge-two-sorted-lists"],["Sum of Digits of a Number","sum-of-digits-of-a-number"]],
   [["Factorial Trailing Zeroes","factorial-trailing-zeroes"],["Pow(x, n)","powx-n"],["Count Good Numbers","count-good-numbers"],["Number of Digit One","number-of-digit-one"],["Count Digit One","number-of-digit-one"]],
@@ -222,7 +222,7 @@ buildTopic("recursion","Recursion","#f59e0b",
   [["Remove Boxes","remove-boxes"],["Strange Printer","strange-printer"],["Guess Number Higher or Lower II","guess-number-higher-or-lower-ii"],["Burst Balloons","burst-balloons"],["Count Vowels Permutation","count-vowels-permutation"]]
 ),
 
-// ── BACKTRACKING ──────────────────────────────────────────────────────────────
+// -- BACKTRACKING --------------------------------------------------------------
 buildTopic("backtrack","Backtracking","#ef4444",
   [["Letter Combinations of Phone Number","letter-combinations-of-a-phone-number"],["Binary Watch","binary-watch"],["Find K-Length Substrings With No Repeated Characters","find-k-length-substrings-with-no-repeated-characters"],["Maximum Length of a Concatenated String","maximum-length-of-a-concatenated-string-with-unique-characters"],["Generate Parentheses","generate-parentheses"]],
   [["Permutations","permutations"],["Subsets","subsets"],["Combination Sum","combination-sum"],["Combinations","combinations"],["Path Sum II","path-sum-ii"]],
@@ -231,7 +231,7 @@ buildTopic("backtrack","Backtracking","#ef4444",
   [["N-Queens","n-queens"],["Sudoku Solver","sudoku-solver"],["Word Ladder II","word-ladder-ii"],["Expression Add Operators","expression-add-operators"],["Generalized Abbreviation","generalized-abbreviation"]],
   [["N-Queens II","n-queens-ii"],["24 Game","24-game"],["Find Minimum Time to Finish All Jobs","find-minimum-time-to-finish-all-jobs"],["Verbal Arithmetic Puzzle","verbal-arithmetic-puzzle"],["Maximum Students Taking Exam","maximum-students-taking-exam"]]
 ),
-// ── SEARCHING ─────────────────────────────────────────────────────────────────
+// -- SEARCHING -----------------------------------------------------------------
 buildTopic("searching","Searching","#3b82f6",
   [["Binary Search","binary-search"],["Search Insert Position","search-insert-position"],["First Bad Version","first-bad-version"],["Count Negative Numbers in Sorted Matrix","count-negative-numbers-in-a-sorted-matrix"],["Valid Perfect Square","valid-perfect-square"]],
   [["Guess Number Higher or Lower","guess-number-higher-or-lower"],["Sqrt(x)","sqrtx"],["Peak Index in a Mountain Array","peak-index-in-a-mountain-array"],["Two Sum Less Than K","two-sum-less-than-k"],["Check if N and Its Double Exist","check-if-n-and-its-double-exist"]],
@@ -240,7 +240,7 @@ buildTopic("searching","Searching","#3b82f6",
   [["Median of Two Sorted Arrays","median-of-two-sorted-arrays"],["Split Array Largest Sum","split-array-largest-sum"],["Count of Range Sum","count-of-range-sum"],["Russian Doll Envelopes","russian-doll-envelopes"],["Max Sum of Rectangle No Larger Than K","max-sum-of-rectangle-no-larger-than-k"]],
   [["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Smallest Rectangle Enclosing Black Pixels","smallest-rectangle-enclosing-black-pixels"],["Find K-th Smallest Pair Distance","find-k-th-smallest-pair-distance"],["Minimize Max Distance to Gas Station","minimize-max-distance-to-gas-station"],["Swim in Rising Water","swim-in-rising-water"]]
 ),
-// ── SORTING ───────────────────────────────────────────────────────────────────
+// -- SORTING -------------------------------------------------------------------
 buildTopic("sorting","Sorting","#f59e0b",
   [["Sort Array By Parity","sort-array-by-parity"],["Sort Array by Parity II","sort-array-by-parity-ii"],["Squares of a Sorted Array","squares-of-a-sorted-array"],["Merge Sorted Array","merge-sorted-array"],["Sort Colors","sort-colors"]],
   [["Sort Array","sort-an-array"],["Relative Sort Array","relative-sort-array"],["Height Checker","height-checker"],["Find the Distance Value Between Two Arrays","find-the-distance-value-between-two-arrays"],["Sort the People","sort-the-people"]],
@@ -250,7 +250,7 @@ buildTopic("sorting","Sorting","#f59e0b",
   [["Maximum Number of Tasks You Can Assign","maximum-number-of-tasks-you-can-assign"],["Count Good Triplets in an Array","count-good-triplets-in-an-array"],["Number of Pairs of Interchangeable Rectangles","number-of-pairs-of-interchangeable-rectangles"],["Find Median from Data Stream","find-median-from-data-stream"],["Minimum Operations to Make Array Equal II","minimum-operations-to-make-array-equal-ii"]]
 ),
 
-// ── BINARY SEARCH ─────────────────────────────────────────────────────────────
+// -- BINARY SEARCH -------------------------------------------------------------
 buildTopic("binary-search","Binary Search","#f59e0b",
   [["Binary Search","binary-search"],["Search Insert Position","search-insert-position"],["Sqrt(x)","sqrtx"],["Guess Number Higher or Lower","guess-number-higher-or-lower"],["Valid Perfect Square","valid-perfect-square"]],
   [["First Bad Version","first-bad-version"],["Peak Index in a Mountain Array","peak-index-in-a-mountain-array"],["Two Sum II - Input Array Is Sorted","two-sum-ii-input-array-is-sorted"],["Find Smallest Letter Greater Than Target","find-smallest-letter-greater-than-target"],["Count Negative Numbers in Sorted Matrix","count-negative-numbers-in-a-sorted-matrix"]],
@@ -259,7 +259,7 @@ buildTopic("binary-search","Binary Search","#f59e0b",
   [["Median of Two Sorted Arrays","median-of-two-sorted-arrays"],["Split Array Largest Sum","split-array-largest-sum"],["Find K-th Smallest Pair Distance","find-k-th-smallest-pair-distance"],["Minimize Max Distance to Gas Station","minimize-max-distance-to-gas-station"],["Swim in Rising Water","swim-in-rising-water"]],
   [["Minimum Number of Days to Make m Bouquets","minimum-number-of-days-to-make-m-bouquets"],["Magnetic Force Between Two Balls","magnetic-force-between-two-balls"],["Maximum Number of Tasks You Can Assign","maximum-number-of-tasks-you-can-assign"],["Kth Smallest Number in Multiplication Table","kth-smallest-number-in-multiplication-table"],["Find Minimum Time to Finish All Jobs","find-minimum-time-to-finish-all-jobs"]]
 ),
-// ── TWO POINTERS ──────────────────────────────────────────────────────────────
+// -- TWO POINTERS --------------------------------------------------------------
 buildTopic("two-pointers","Two Pointers","#f59e0b",
   [["Valid Palindrome","valid-palindrome"],["Merge Sorted Array","merge-sorted-array"],["Remove Duplicates from Sorted Array","remove-duplicates-from-sorted-array"],["Move Zeroes","move-zeroes"],["Reverse String","reverse-string"]],
   [["Squares of a Sorted Array","squares-of-a-sorted-array"],["Reverse Vowels of a String","reverse-vowels-of-a-string"],["Is Subsequence","is-subsequence"],["Backspace String Compare","backspace-string-compare"],["Intersection of Two Arrays II","intersection-of-two-arrays-ii"]],
@@ -268,7 +268,7 @@ buildTopic("two-pointers","Two Pointers","#f59e0b",
   [["Trapping Rain Water","trapping-rain-water"],["Minimum Window Substring","minimum-window-substring"],["Longest Mountain in Array","longest-mountain-in-array"],["Subarrays with K Different Integers","subarrays-with-k-different-integers"],["Max Consecutive Ones III","max-consecutive-ones-iii"]],
   [["Minimum Operations to Reduce X to Zero","minimum-operations-to-reduce-x-to-zero"],["Count Pairs Whose Sum is Less than Target","count-pairs-whose-sum-is-less-than-target"],["Find K-Diff Pairs in an Array","find-k-diff-pairs-in-an-array"],["Make Sum Divisible by P","make-sum-divisible-by-p"],["Minimum Size Subarray in Infinite Array","minimum-size-subarray-in-infinite-array"]]
 ),
-// ── SLIDING WINDOW ────────────────────────────────────────────────────────────
+// -- SLIDING WINDOW ------------------------------------------------------------
 buildTopic("sliding-win","Sliding Window","#f59e0b",
   [["Maximum Average Subarray I","maximum-average-subarray-i"],["Maximum Number of Vowels in a Substring","maximum-number-of-vowels-in-a-substring-of-given-length"],["Find the K-Beauty of a Number","find-the-k-beauty-of-a-number"],["Defuse the Bomb","defuse-the-bomb"],["Diet Plan Performance","diet-plan-performance"]],
   [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Contains Duplicate II","contains-duplicate-ii"],["Find Pivot Index","find-pivot-index"],["Number of Sub-arrays of Size K and Average Greater than Threshold","number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold"],["Minimum Difference Between Highest and Lowest of K Scores","minimum-difference-between-highest-and-lowest-of-k-scores"]],
@@ -277,7 +277,7 @@ buildTopic("sliding-win","Sliding Window","#f59e0b",
   [["Minimum Window Substring","minimum-window-substring"],["Sliding Window Maximum","sliding-window-maximum"],["Substrings of Size Three with Distinct Characters","substrings-of-size-three-with-distinct-characters"],["Subarrays with K Different Integers","subarrays-with-k-different-integers"],["Minimum Operations to Reduce X to Zero","minimum-operations-to-reduce-x-to-zero"]],
   [["Longest Continuous Subarray With Absolute Diff","longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit"],["Frequency of the Most Frequent Element","frequency-of-the-most-frequent-element"],["Maximum Erasure Value","maximum-erasure-value"],["K Radius Subarray Averages","k-radius-subarray-averages"],["Number of Equal Count Substrings","number-of-equal-count-substrings"]]
 ),
-// ── PREFIX SUM ────────────────────────────────────────────────────────────────
+// -- PREFIX SUM ----------------------------------------------------------------
 buildTopic("prefix-sum","Prefix Sum","#f59e0b",
   [["Running Sum of 1d Array","running-sum-of-1d-array"],["Find Pivot Index","find-pivot-index"],["Kids With the Greatest Number of Candies","kids-with-the-greatest-number-of-candies"],["Sum of All Odd Length Subarrays","sum-of-all-odd-length-subarrays"],["Left and Right Sum Differences","left-and-right-sum-differences"]],
   [["Range Sum Query - Immutable","range-sum-query-immutable"],["Count Vowels in a String","count-vowels-in-string"],["Minimum Value to Get Positive Step by Step Sum","minimum-value-to-get-positive-step-by-step-sum"],["Find the Highest Altitude","find-the-highest-altitude"],["Maximum Population Year","maximum-population-year"]],

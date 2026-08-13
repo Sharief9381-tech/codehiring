@@ -28,7 +28,7 @@ export interface MatchedJob extends JobDocument {
 export function computeMatchScore(student: StudentMatchProfile, job: JobDocument): number {
   let score = 0
 
-  // ── Skills (50 pts) ──────────────────────────────────────────────────────
+  // -- Skills (50 pts) ------------------------------------------------------
   const studentSkillsLower = student.skills.map((s) => s.toLowerCase())
   const jobSkillsLower = job.skills.map((s) => s.toLowerCase())
 
@@ -39,7 +39,7 @@ export function computeMatchScore(student: StudentMatchProfile, job: JobDocument
 
   score += skillScore
 
-  // ── Problems solved (20 pts) ─────────────────────────────────────────────
+  // -- Problems solved (20 pts) ---------------------------------------------
   const minProblems = job.minProblems ?? 0
   if (minProblems === 0) {
     score += 20
@@ -48,7 +48,7 @@ export function computeMatchScore(student: StudentMatchProfile, job: JobDocument
     score += ratio * 20
   }
 
-  // ── Rating (20 pts) ──────────────────────────────────────────────────────
+  // -- Rating (20 pts) ------------------------------------------------------
   const minRating = job.minRating ?? 0
   if (minRating === 0) {
     score += 20
@@ -57,7 +57,7 @@ export function computeMatchScore(student: StudentMatchProfile, job: JobDocument
     score += ratio * 20
   }
 
-  // ── Profile completeness (10 pts) ────────────────────────────────────────
+  // -- Profile completeness (10 pts) ----------------------------------------
   if (student.isOpenToWork) score += 5
   if (student.platformCount > 0) score += 5
 

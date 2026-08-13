@@ -102,7 +102,7 @@ const ASSESSMENTS = "assessments"
 const ATTEMPTS    = "assessment_attempts"
 
 export const AssessmentModel = {
-  // ── Assessments ──────────────────────────────────────────────
+  // -- Assessments ----------------------------------------------
   async create(data: Omit<AssessmentDocument, "_id" | "createdAt" | "updatedAt">): Promise<AssessmentDocument> {
     const db  = await getDatabase()
     const now = new Date()
@@ -142,7 +142,7 @@ export const AssessmentModel = {
     await db.collection(ASSESSMENTS).deleteOne({ _id: new ObjectId(id) })
   },
 
-  // ── Attempts ─────────────────────────────────────────────────
+  // -- Attempts -------------------------------------------------
   async createAttempt(data: Omit<AssessmentAttempt, "_id" | "createdAt" | "updatedAt">): Promise<AssessmentAttempt> {
     const db  = await getDatabase()
     const now = new Date()
@@ -183,7 +183,7 @@ export const AssessmentModel = {
     )
   },
 
-  // ── Ranking ──────────────────────────────────────────────────
+  // -- Ranking --------------------------------------------------
   async computeRankings(assessmentId: string): Promise<void> {
     const db      = await getDatabase()
     const attempts = await db.collection(ATTEMPTS)

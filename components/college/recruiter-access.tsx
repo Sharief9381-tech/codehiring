@@ -230,7 +230,7 @@ export function RecruiterAccess() {
                       {getStatusBadge(recruiter.status)}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {recruiter.company} • {recruiter.email}
+                      {recruiter.company} . {recruiter.email}
                     </p>
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export function RecruiterAccess() {
                   <div>
                     <h3 className="font-semibold text-foreground">{request.name}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {request.company} • {request.email}
+                      {request.company} . {request.email}
                     </p>
                     <p className="mt-2 text-sm text-muted-foreground">{request.message}</p>
                     <p className="mt-2 text-xs text-muted-foreground">

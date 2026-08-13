@@ -619,7 +619,7 @@ export function AnalyticsDashboard() {
                     <span className="text-sm font-medium">{formatEventType(activity.type)}</span>
                   </div>
                   {activity.page && (
-                    <span className="text-sm text-muted-foreground">-> {activity.page}</span>
+                    <span className="text-sm text-muted-foreground">{"->"} {activity.page}</span>
                   )}
                   {activity.userRole && (
                     <Badge className={getRoleBadgeColor(activity.userRole)} variant="outline">

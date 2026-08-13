@@ -29,12 +29,12 @@ export interface StaticProblem {
   testCases: ProblemTestCase[]
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // PROBLEMS
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export const PROBLEM_BANK: Record<string, StaticProblem> = {
 
-// ── Two Sum ───────────────────────────────────────────────────────────────────
+// -- Two Sum -------------------------------------------------------------------
 "Two Sum": {
   title: "Two Sum",
   difficulty: "Easy",
@@ -64,7 +64,7 @@ export const PROBLEM_BANK: Record<string, StaticProblem> = {
   ],
 },
 
-// ── Count of Smaller Numbers After Self ─────────────────────────────────────────
+// -- Count of Smaller Numbers After Self -----------------------------------------
 "Count of Smaller Numbers After Self": {
   title: "Count of Smaller Numbers After Self",
   difficulty: "Medium",
@@ -6996,9 +6996,9 @@ export const PROBLEM_BANK: Record<string, StaticProblem> = {
 
 } // end PROBLEM_BANK
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // Lookup helper - returns problem by title (case-insensitive)
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export function getProblem(title: string): StaticProblem | null {
   const exact = PROBLEM_BANK[title]
   if (exact) return exact

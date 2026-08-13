@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 import { groqChat } from "@/lib/groq"
 
-// ── helpers ───────────────────────────────────────────────────────────────────
+// -- helpers -------------------------------------------------------------------
 
 /** Very lightweight PDF text extractor - reads raw bytes and pulls ASCII text runs */
 function extractTextFromPDF(buffer: Buffer): string {
@@ -18,7 +18,7 @@ function cleanText(text: string): string {
   return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, " ").replace(/\s{2,}/g, " ").trim()
 }
 
-// ── GET - return saved smart resume ──────────────────────────────────────────
+// -- GET - return saved smart resume ------------------------------------------
 
 export async function GET() {
   try {
@@ -34,7 +34,7 @@ export async function GET() {
   }
 }
 
-// ── POST - upload + analyse ───────────────────────────────────────────────────
+// -- POST - upload + analyse ---------------------------------------------------
 
 export async function POST(request: Request) {
   try {
@@ -169,7 +169,7 @@ Return ONLY valid JSON, no markdown, no explanation.`
   }
 }
 
-// ── PATCH - update sharing settings ──────────────────────────────────────────
+// -- PATCH - update sharing settings ------------------------------------------
 
 export async function PATCH(request: Request) {
   try {

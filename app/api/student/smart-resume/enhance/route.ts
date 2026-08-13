@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 - 3-4 bullet points maximum
 - Each bullet starting with a strong past-tense action verb
 
-Return ONLY the enhanced description as plain text bullet points (using • character), no JSON, no explanation.`
+Return ONLY the enhanced description as plain text bullet points (using . character), no JSON, no explanation.`
 
     const userMsg = `Role: ${title} at ${company}
 Current description: ${description || "Not provided - create from scratch based on the role"}`

@@ -50,7 +50,7 @@ export async function fetchInterviewBitStats(
   username: string
 ): Promise<InterviewBitStats | null> {
   try {
-    // ── 1. Normalise input ────────────────────────────────────────────────
+    // -- 1. Normalise input ------------------------------------------------
     let u = username.trim()
 
     // Accept profile URL or bare username
@@ -67,7 +67,7 @@ export async function fetchInterviewBitStats(
 
     const profileUrl = `https://www.interviewbit.com/profile/${u}/`
 
-    // ── 2. Fetch profile page ─────────────────────────────────────────────
+    // -- 2. Fetch profile page ---------------------------------------------
     const res = await fetch(profileUrl, {
       headers: {
         'User-Agent':
@@ -95,7 +95,7 @@ export async function fetchInterviewBitStats(
     // Too short = CDN error / maintenance page
     if (html.length < 5000) return null
 
-    // ── 3. Verify the profile exists via RSC payload ──────────────────────
+    // -- 3. Verify the profile exists via RSC payload ----------------------
     // The RSC flight data always contains: {\"username\":\"<u>\"} for valid profiles
     // For invalid profiles the fragment is absent or contains a different value
     const rscText = decodeRscPayload(html)
@@ -117,7 +117,7 @@ export async function fetchInterviewBitStats(
       return null
     }
 
-    // ── 4. Return confirmed-but-limited result ────────────────────────────
+    // -- 4. Return confirmed-but-limited result ----------------------------
     // All stat endpoints require an authenticated session - no public data available
 
     return {

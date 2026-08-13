@@ -209,7 +209,7 @@ export class PlatformSyncService {
       }
     }
 
-    // ── Aggregate all platform stats into user.stats ──────────────────────
+    // -- Aggregate all platform stats into user.stats ----------------------
     try {
       await aggregateStudentStats(userId)
     } catch (aggError) {

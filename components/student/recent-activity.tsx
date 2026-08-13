@@ -65,7 +65,7 @@ export function RecentActivity({ student }: RecentActivityProps) {
               <div className="flex-1 space-y-2">
                 <p className="text-sm font-medium text-foreground">{activity.title}</p>
                 <p className="text-xs text-muted-foreground">
-                  <span className="font-medium text-blue-400">{activity.platform}</span> • {activity.time}
+                  <span className="font-medium text-blue-400">{activity.platform}</span> . {activity.time}
                 </p>
               </div>
             </div>

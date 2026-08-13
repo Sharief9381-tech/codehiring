@@ -350,7 +350,7 @@ export function StudentProfileModal({ student, open, onClose }: StudentProfileMo
                     <p className="text-xs font-semibold text-emerald-500">Strengths</p>
                     {aiStrengths.map(s => <p key={s} className="text-xs text-muted-foreground">v {s}</p>)}
                     <p className="text-xs font-semibold text-red-500 mt-2">Improvements</p>
-                    {aiWeaknesses.map(w => <p key={w} className="text-xs text-muted-foreground">-> {w}</p>)}
+                    {aiWeaknesses.map(w => <p key={w} className="text-xs text-muted-foreground">{"->"} {w}</p>)}
                   </div>
                 </CardContent>
               </Card>
@@ -389,11 +389,11 @@ export function StudentProfileModal({ student, open, onClose }: StudentProfileMo
                   </div>
                   <div className="space-y-2 mt-2">
                     <p className="text-xs font-semibold text-blue-500 uppercase tracking-wide">Recommended Actions</p>
-                    {problems < 150 && <p className="text-xs text-muted-foreground">-> Solve at least 150 problems on LeetCode</p>}
-                    {contrib < 50 && <p className="text-xs text-muted-foreground">-> Increase GitHub contributions</p>}
-                    {rating < 1400 && <p className="text-xs text-muted-foreground">-> Participate in more competitive programming contests</p>}
-                    {(student.platformCount ?? 0) < 3 && <p className="text-xs text-muted-foreground">-> Link more coding platforms</p>}
-                    <p className="text-xs text-muted-foreground">-> Build 2-3 portfolio projects</p>
+                    {problems < 150 && <p className="text-xs text-muted-foreground">{"->"} Solve at least 150 problems on LeetCode</p>}
+                    {contrib < 50 && <p className="text-xs text-muted-foreground">{"->"} Increase GitHub contributions</p>}
+                    {rating < 1400 && <p className="text-xs text-muted-foreground">{"->"} Participate in more competitive programming contests</p>}
+                    {(student.platformCount ?? 0) < 3 && <p className="text-xs text-muted-foreground">{"->"} Link more coding platforms</p>}
+                    <p className="text-xs text-muted-foreground">{"->"} Build 2-3 portfolio projects</p>
                   </div>
                 </CardContent>
               </Card>

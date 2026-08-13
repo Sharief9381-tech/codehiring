@@ -7,7 +7,7 @@ await client.connect()
 const db = client.db('codetrack')
 const cols = await db.listCollections().toArray()
 
-console.log(`\n✅ Connected to MongoDB Atlas — database: codetrack`)
+console.log(`\n✅ Connected to MongoDB Atlas - database: codetrack`)
 console.log(`📦 Collections (${cols.length}):\n`)
 
 for (const col of cols) {

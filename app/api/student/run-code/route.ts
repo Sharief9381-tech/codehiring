@@ -15,7 +15,7 @@
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 
-// ── Language-aware time limits (ms) ──────────────────────────────────────────
+// -- Language-aware time limits (ms) ------------------------------------------
 const LANG_TIMEOUT: Record<string, number> = {
   Python:     5000,
   JavaScript: 3000,
@@ -34,7 +34,7 @@ const LANG_KEY: Record<string, string> = {
   Java:"java","C++":"c++",C:"c","C#":"c#",Go:"go",Kotlin:"kotlin",Swift:"swift",
 }
 
-// ── Resolve executor URL (handles localhost -> WSL2 IP fallback) ───────────────
+// -- Resolve executor URL (handles localhost -> WSL2 IP fallback) ---------------
 // On Windows dev, EXECUTOR_URL=localhost:4000 fails because the executor runs in WSL2.
 // We try the configured URL first, then fall back to auto-detecting the WSL2 IP.
 let _resolvedExecutorUrl: string | null = null
@@ -86,7 +86,7 @@ async function resolveExecutorUrl(): Promise<string> {
   throw new Error(`Executor unreachable. Configured: ${configured}. Is the executor running in WSL2? Run: node /path/to/code-executor/server.mjs`)
 }
 
-// ── Execute code ──────────────────────────────────────────────────────────────
+// -- Execute code --------------------------------------------------------------
 async function executeCode(code: string, language: string, stdin: string, timeoutMs: number) {
   const executorUrl    = await resolveExecutorUrl()
   const executorSecret = process.env.EXECUTOR_SECRET ?? "codehiring-executor-secret"
@@ -105,7 +105,7 @@ async function executeCode(code: string, language: string, stdin: string, timeou
   return { output: data.output ?? "", error: data.error ?? "", runtimeMs: data.runtimeMs ?? 0, tle: data.tle ?? false }
 }
 
-// ── Extract actual method name from student's Python code ────────────────────
+// -- Extract actual method name from student's Python code --------------------
 // The AI generates tests calling e.g. sol.containsDuplicate(...)
 // but the student's starter has def solve(self, ...) - we need to patch the call.
 function extractPythonMethodName(code: string): string | null {
@@ -120,7 +120,7 @@ function patchTestScript(script: string, actualMethod: string): string {
   return script.replace(/\bsol\s*\.\s*[a-zA-Z_][a-zA-Z0-9_]*\s*\(/g, `sol.${actualMethod}(`)
 }
 
-// ── Build test cases ───────────────────────────────────────────────────────────
+// -- Build test cases -----------------------------------------------------------
 // Function-style: AI provides complete test scripts (pythonTest1..4) + expected outputs
 // stdin-style: uses input/input2/input3/input4 + output/output2/output3/output4
 function buildTestCases(
@@ -161,7 +161,7 @@ function buildTestCases(
   return cases.slice(0, count).map((c, i) => ({ ...c, isPublic: i < 2 }))
 }
 
-// ── POST handler ──────────────────────────────────────────────────────────────
+// -- POST handler --------------------------------------------------------------
 export async function POST(req: Request) {
   try {
     const user = await getCurrentUser()
@@ -182,7 +182,7 @@ export async function POST(req: Request) {
       try {
         // Script mode: student code + test harness appended
         const codeToRun = (tc as any).isScript
-          ? `${code}\n\n# ── test harness ──\n${tc.input}`
+          ? `${code}\n\n# -- test harness --\n${tc.input}`
           : code
         const stdin = (tc as any).isScript ? "" : tc.input
         console.log("[run-code] codeToRun preview:\n", codeToRun.slice(0, 400))
@@ -232,7 +232,7 @@ export async function POST(req: Request) {
       runtimeMs:    maxRuntime,
       timeLimit:    timeout,
       language,
-      summary:      allPassed ? `${total}/${total} passed ✓` : `${passedCount}/${total} passed`,
+      summary:      allPassed ? `${total}/${total} passed v` : `${passedCount}/${total} passed`,
     })
 
   } catch (err: any) {

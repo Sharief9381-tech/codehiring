@@ -10,7 +10,7 @@ import type {
   AdminProfile,
 } from "./types"
 
-// ── Password hashing ──────────────────────────────────────────────
+// -- Password hashing ----------------------------------------------
 
 export async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder()
@@ -25,7 +25,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return (await hashPassword(password)) === hash
 }
 
-// ── Token generation ──────────────────────────────────────────────
+// -- Token generation ----------------------------------------------
 
 export async function generateToken(): Promise<string> {
   const arr = new Uint8Array(32)
@@ -33,7 +33,7 @@ export async function generateToken(): Promise<string> {
   return Array.from(arr, (b) => b.toString(16).padStart(2, "0")).join("")
 }
 
-// ── Session management ────────────────────────────────────────────
+// -- Session management --------------------------------------------
 
 export async function createSession(userId: string, role: UserRole): Promise<string> {
   const token = await generateToken()
@@ -49,7 +49,7 @@ export async function deleteSession(token: string) {
   await SessionModel.delete(token)
 }
 
-// ── User creation ─────────────────────────────────────────────────
+// -- User creation -------------------------------------------------
 
 export async function createStudent(
   data: Omit<StudentProfile, "_id" | "createdAt" | "updatedAt"> & { password: string }
@@ -72,7 +72,7 @@ export async function createRecruiter(
   return await UserModel.create({ ...data, password: hashedPassword, role: "recruiter" as UserRole })
 }
 
-// ── User helpers ──────────────────────────────────────────────────
+// -- User helpers --------------------------------------------------
 
 export async function findUserByEmail(email: string) {
   return await UserModel.findByEmail(email)
@@ -100,7 +100,7 @@ export async function getUsers() {
   return await UserModel.findAll()
 }
 
-// ── Current user - uses dynamic import to avoid bundling next/headers in route handlers ──
+// -- Current user - uses dynamic import to avoid bundling next/headers in route handlers --
 
 export async function getCurrentUser(): Promise<
   | Omit<StudentProfile, "password">

@@ -133,7 +133,7 @@ export function ResumeBuilder() {
     lines.push(`Competitive Programming: ${generated.technicalSkills.competitiveProgramming}\n`)
     lines.push("CODING ACHIEVEMENTS")
     lines.push("--------------------")
-    generated.codingAchievements.forEach((a) => lines.push(`• ${a}`))
+    generated.codingAchievements.forEach((a) => lines.push(`. ${a}`))
     lines.push("")
     if (experiences.some((e) => e.title)) {
       lines.push("WORK EXPERIENCE")
@@ -157,7 +157,7 @@ export function ResumeBuilder() {
     }
     lines.push("ATS KEYWORDS")
     lines.push("-------------")
-    lines.push(generated.atsKeywords.join(" • "))
+    lines.push(generated.atsKeywords.join(" . "))
     const blob = new Blob([lines.join("\n")], { type: "text/plain" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -341,7 +341,7 @@ export function ResumeBuilder() {
                       <ul className="space-y-1">
                         {p.bullets.map((b, j) => (
                           <li key={j} className="text-xs text-muted-foreground flex items-start gap-1.5">
-                            <span className="text-primary mt-0.5">•</span>{b}
+                            <span className="text-primary mt-0.5">.</span>{b}
                           </li>
                         ))}
                       </ul>

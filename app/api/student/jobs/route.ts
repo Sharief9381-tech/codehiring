@@ -68,7 +68,7 @@ export async function GET(request: Request) {
 
     const allJobs = await JobModel.findAll({ status: "active" })
 
-    // ── Eligibility filter: student must meet ALL recruiter requirements ──────
+    // -- Eligibility filter: student must meet ALL recruiter requirements ------
     const studentBranch = ((student as any)?.branch || "").toUpperCase()
     const studentGradYear = Number((student as any)?.graduationYear) || 0
     const studentDegree = ((student as any)?.degree || "").trim()

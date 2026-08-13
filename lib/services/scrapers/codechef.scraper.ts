@@ -22,7 +22,7 @@ export async function scrapeCodeChef(username: string): Promise<NormalizedPlatfo
   const u = username.trim().replace(/^https?:\/\/(?:www\.)?codechef\.com\/users\//i, "").replace(/\/$/, "")
   if (!u || !/^[a-zA-Z0-9_]+$/.test(u)) return failResult(PLATFORM, username, "Invalid username")
 
-  // ── 1. Community JSON API ──────────────────────────────────────────────
+  // -- 1. Community JSON API ----------------------------------------------
   const api = await fetchJSON<any>(`https://codechef-api.vercel.app/${u}`, { timeoutMs: 10000 })
   if (api && !api.error && (api.currentRating !== undefined || api.rating !== undefined)) {
     const rating   = api.currentRating ?? api.rating ?? 0
@@ -42,7 +42,7 @@ export async function scrapeCodeChef(username: string): Promise<NormalizedPlatfo
     }
   }
 
-  // ── 2. HTML scraping fallback ──────────────────────────────────────────
+  // -- 2. HTML scraping fallback ------------------------------------------
   const html = await fetchHTML(`https://www.codechef.com/users/${u}`, { timeoutMs: 14000 })
   if (!html) return failResult(PLATFORM, u, "Profile not found")
 

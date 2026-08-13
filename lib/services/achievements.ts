@@ -26,7 +26,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
   check: (s: any) => boolean
 }> = [
 
-  // ── LeetCode ────────────────────────────────────────────────────────
+  // -- LeetCode --------------------------------------------------------
   {
     id: "lc_50",    platform: "leetcode",   icon: "⚡",
     title: "LeetCode - 50 Solved",
@@ -56,7 +56,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.leetcode?.stats?.totalSolved ?? 0) >= 500,
   },
 
-  // ── Codeforces ──────────────────────────────────────────────────────
+  // -- Codeforces ------------------------------------------------------
   {
     id: "cf_newbie",  platform: "codeforces", icon: "⬜",
     title: "Codeforces - Newbie",
@@ -100,7 +100,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.codeforces?.stats?.rating ?? 0) >= 2100,
   },
 
-  // ── CodeChef ────────────────────────────────────────────────────────
+  // -- CodeChef --------------------------------------------------------
   {
     id: "cc_1star",  platform: "codechef", icon: "⭐",
     title: "CodeChef - 1 Star",
@@ -137,7 +137,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.codechef?.stats?.currentRating ?? 0) >= 2000,
   },
 
-  // ── GeeksforGeeks ───────────────────────────────────────────────────
+  // -- GeeksforGeeks ---------------------------------------------------
   {
     id: "gfg_50",   platform: "geeksforgeeks", icon: "🌿",
     title: "GFG - 50 Problems",
@@ -160,7 +160,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.geeksforgeeks?.stats?.problemsSolved ?? 0) >= 200,
   },
 
-  // ── HackerRank ──────────────────────────────────────────────────────
+  // -- HackerRank ------------------------------------------------------
   {
     id: "hr_1badge",  platform: "hackerrank", icon: "🥉",
     title: "HackerRank - First Badge",
@@ -183,7 +183,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.hackerrank?.stats?.badges?.length ?? 0) >= 10,
   },
 
-  // ── GitHub ──────────────────────────────────────────────────────────
+  // -- GitHub ----------------------------------------------------------
   {
     id: "gh_50",    platform: "github", icon: "🐙",
     title: "GitHub - 50 Contributions",
@@ -206,7 +206,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.github?.stats?.totalContributions ?? 0) >= 500,
   },
 
-  // ── AtCoder ─────────────────────────────────────────────────────────
+  // -- AtCoder ---------------------------------------------------------
   {
     id: "ac_50",    platform: "atcoder", icon: "🎯",
     title: "AtCoder - 50 Problems",
@@ -222,7 +222,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.atcoder?.stats?.problemsSolved ?? 0) >= 200,
   },
 
-  // ── HackerEarth ─────────────────────────────────────────────────────
+  // -- HackerEarth -----------------------------------------------------
   {
     id: "he_50",    platform: "hackerearth", icon: "🌐",
     title: "HackerEarth - 50 Problems",
@@ -231,7 +231,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.hackerearth?.stats?.problemsSolved ?? 0) >= 50,
   },
 
-  // ── LeetCode Streak ─────────────────────────────────────────────────
+  // -- LeetCode Streak -------------------------------------------------
   {
     id: "str_7",    platform: "leetcode", icon: "🔥",
     title: "LeetCode - 7 Day Streak",
@@ -247,7 +247,7 @@ export const ACHIEVEMENT_DEFINITIONS: Array<{
     check: s => (s?.linkedPlatforms?.leetcode?.stats?.streak ?? 0) >= 30,
   },
 
-  // ── Cross-platform ───────────────────────────────────────────────────
+  // -- Cross-platform ---------------------------------------------------
   {
     id: "plt_3",    platform: "all", icon: "🌐",
     title: "Multi-Platform Coder",

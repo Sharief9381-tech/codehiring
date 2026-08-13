@@ -243,7 +243,7 @@ export function BatchAnalytics({ college }: BatchAnalyticsProps) {
                 <div className="text-right">
                   <p className="font-semibold">{student.totalProblems} problems</p>
                   <p className="text-sm text-muted-foreground">
-                    {student.githubContributions} contributions • {student.contestsAttended} contests
+                    {student.githubContributions} contributions . {student.contestsAttended} contests
                   </p>
                 </div>
               </div>

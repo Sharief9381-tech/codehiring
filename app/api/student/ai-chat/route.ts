@@ -87,7 +87,7 @@ GitHub Contributions: ${githubContributions}
 Total Contests: ${contests}
 
 Per Platform:
-${platformLines.map(l => "  • " + l).join("\n") || "  No platforms connected"}
+${platformLines.map(l => "  . " + l).join("\n") || "  No platforms connected"}
 
 ${achievements.length > 0 ? `=== ACHIEVEMENTS ===\n${achievements.map(a => "  🏆 " + a).join("\n")}` : ""}
 

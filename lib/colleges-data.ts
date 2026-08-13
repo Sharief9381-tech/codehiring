@@ -10,7 +10,7 @@ export interface CollegeEntry {
 }
 
 export const AP_TG_COLLEGES: CollegeEntry[] = [
-  // ── TELANGANA ──────────────────────────────────────────────────────────────
+  // -- TELANGANA --------------------------------------------------------------
   { name: "Indian Institute of Technology Hyderabad", code: "IITH", email: "academics@iith.ac.in", location: "Kandi, Sangareddy, Telangana", state: "TG", type: "Central" },
   { name: "Osmania University", code: "OU", email: "registrar@osmania.ac.in", location: "Hyderabad, Telangana", state: "TG", type: "Arts" },
   { name: "University of Hyderabad", code: "UOH", email: "registrar@uohyd.ac.in", location: "Hyderabad, Telangana", state: "TG", type: "Central" },
@@ -52,7 +52,7 @@ export const AP_TG_COLLEGES: CollegeEntry[] = [
   { name: "Holy Mary Institute of Technology and Science", code: "HMIT", email: "principal@hmit.ac.in", location: "Bogaram, Hyderabad, Telangana", state: "TG", type: "Engineering" },
   { name: "Deccan College of Engineering and Technology", code: "DCET", email: "principal@deccancollege.ac.in", location: "Darussalam, Hyderabad, Telangana", state: "TG", type: "Engineering" },
 
-  // ── ANDHRA PRADESH ─────────────────────────────────────────────────────────
+  // -- ANDHRA PRADESH ---------------------------------------------------------
   { name: "Indian Institute of Technology Tirupati", code: "IITTP", email: "registrar@iittp.ac.in", location: "Tirupati, Andhra Pradesh", state: "AP", type: "Central" },
   { name: "National Institute of Technology Andhra Pradesh", code: "NITAP", email: "registrar@nitandhra.ac.in", location: "Tadepalligudem, Andhra Pradesh", state: "AP", type: "Central" },
   { name: "Andhra University", code: "AU", email: "registrar@andhrauniversity.edu.in", location: "Visakhapatnam, Andhra Pradesh", state: "AP", type: "Arts" },

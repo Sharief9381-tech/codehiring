@@ -33,7 +33,7 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
     if (!u || !/^[a-zA-Z0-9_-]+$/.test(u)) return null
 
 
-    // ── Step 1: Fetch profile via public REST API ─────────────────────────
+    // -- Step 1: Fetch profile via public REST API -------------------------
     // Confirmed working: returns model with id, username, name, level, rank, avatar, etc.
     const profileRes = await fetch(`https://www.hackerrank.com/rest/hackers/${encodeURIComponent(u)}`, {
       headers: {
@@ -64,7 +64,7 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
     }
 
 
-    // ── Step 2: Fetch badges ──────────────────────────────────────────────
+    // -- Step 2: Fetch badges ----------------------------------------------
     // Confirmed working: returns models array with badge_name, stars, total_points, solved, etc.
     const badgesRes = await fetch(`https://www.hackerrank.com/rest/hackers/${encodeURIComponent(u)}/badges`, {
       headers: {
@@ -87,7 +87,7 @@ export async function fetchHackerRankStats(username: string): Promise<HackerRank
       }))
     }
 
-    // ── Step 3: Fetch recent contest submissions for score ────────────────
+    // -- Step 3: Fetch recent contest submissions for score ----------------
     let totalScore = Number(m.score ?? m.total_score ?? 0)
     // If score not in profile, sum badge points
     if (totalScore === 0 && badges.length > 0) {

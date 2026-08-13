@@ -19,7 +19,7 @@ import { failResult, fetchHTML, fetchJSON } from "../scraper-utils"
 const PLATFORM = "geeksforgeeks"
 
 export async function scrapeGeeksforGeeks(username: string): Promise<NormalizedPlatformStats> {
-  // ── Clean username ────────────────────────────────────────────────────
+  // -- Clean username ----------------------------------------------------
   let u = username.trim()
   for (const p of [
     /(?:https?:\/\/)?(?:auth\.)?geeksforgeeks\.org\/user\/([^\/\?\s]+)/i,
@@ -33,7 +33,7 @@ export async function scrapeGeeksforGeeks(username: string): Promise<NormalizedP
 
   const profileUrl = `https://www.geeksforgeeks.org/user/${u}/`
 
-  // ── Primary: unofficial stats API ────────────────────────────────────
+  // -- Primary: unofficial stats API ------------------------------------
   // Returns { info: {...}, solvedStats: {...} } or { error: "..." }
   const api = await fetchJSON<any>(
     `https://geeks-for-geeks-stats-api.vercel.app/?userName=${encodeURIComponent(u)}`,
@@ -74,7 +74,7 @@ export async function scrapeGeeksforGeeks(username: string): Promise<NormalizedP
     }
   }
 
-  // ── Fallback: parse embedded JSON from HTML ───────────────────────────
+  // -- Fallback: parse embedded JSON from HTML ---------------------------
   // GFG embeds stats as an escaped JSON string inside a <script> tag.
   const html = await fetchHTML(profileUrl, { timeoutMs: 15000 })
   if (!html) return failResult(PLATFORM, u, "Profile not found")

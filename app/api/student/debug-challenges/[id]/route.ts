@@ -19,7 +19,7 @@ export async function POST(
     const db  = await getDatabase()
     const uid = user._id?.toString() ?? ""
 
-    // ── Reveal action - just return the answer without marking complete ────────
+    // -- Reveal action - just return the answer without marking complete --------
     const url = new URL(request.url)
     if (url.searchParams.get("action") === "reveal") {
       const cached = await db.collection("debug_challenges").findOne({ userId: uid })
@@ -31,7 +31,7 @@ export async function POST(
       })
     }
 
-    // ── Submit answer ─────────────────────────────────────────────────────────
+    // -- Submit answer ---------------------------------------------------------
     const { answer } = await request.json()
     if (!answer?.trim()) return NextResponse.json({ error: "Answer required" }, { status: 400 })
 
@@ -49,7 +49,7 @@ export async function POST(
       return NextResponse.json({ alreadySolved: true, correct: true, explanation: challenge.explanation })
     }
 
-    // ── Flexible answer matching ──────────────────────────────────────────────
+    // -- Flexible answer matching ----------------------------------------------
     const norm = (s: string) =>
       s.toLowerCase()
         .trim()
@@ -93,7 +93,7 @@ export async function POST(
       })
     }
 
-    // ── Award XP ──────────────────────────────────────────────────────────────
+    // -- Award XP --------------------------------------------------------------
     const xpReward = challenge.xp ?? 25
 
     if (!progress) {
