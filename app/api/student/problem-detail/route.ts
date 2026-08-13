@@ -187,7 +187,7 @@ export async function POST(req: Request) {
       title, difficulty, badge: difficulty,
       desc:          aiData.desc          ?? sp?.desc ?? `Solve the ${title} problem.`,
       inputFormat:   aiData.inputFormat   ?? (aiData.functionSignature ? `Function signature: ${aiData.functionSignature}` : ""),
-      outputFormat:  aiData.outputFormat  ?? "",
+      outputFormat:  aiData.outputFormat  ?? aiData.outputDescription ?? "",
       constraints:   aiData.constraints   ?? sp?.constraints ?? [],
       input:         aiData.examples?.[0]?.input  ?? sp?.examples?.[0]?.input  ?? "",
       output:        aiData.examples?.[0]?.output ?? sp?.examples?.[0]?.output ?? "",
