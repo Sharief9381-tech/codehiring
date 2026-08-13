@@ -673,16 +673,15 @@ export default function ProblemEditor({ problemId }: Props) {
           </button>
         </div>
         <div className="w-px h-4" style={{ background: T.border }} />
-
-        {/* Theme selector */}
-        <div className="flex items-center gap-1 rounded-md border px-2 py-1"
+        {/* Theme selector — dark, light, monokai only */}
+        <div className="flex items-center gap-1.5 rounded-md border px-2 py-1"
           style={{ borderColor: T.border, background: T.bg }}>
-          {(["dark","light","monokai","solarized"] as ThemeKey[]).map(k => (
+          {(["dark","light","monokai"] as ThemeKey[]).map(k => (
             <button key={k} onClick={() => setThemeKey(k)}
               title={k.charAt(0).toUpperCase() + k.slice(1)}
-              className="w-4 h-4 rounded-full border-2 transition-transform hover:scale-110"
+              className="w-3.5 h-3.5 rounded-full border-2 transition-transform hover:scale-110"
               style={{
-                background: k === "dark" ? "#0d1117" : k === "light" ? "#ffffff" : k === "monokai" ? "#272822" : "#002b36",
+                background: k === "dark" ? "#0d1117" : k === "light" ? "#ffffff" : "#272822",
                 borderColor: themeKey === k ? T.text : "transparent",
               }} />
           ))}
