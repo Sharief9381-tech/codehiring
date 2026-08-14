@@ -257,7 +257,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
   useEffect(() => {
     if (!problemId) return
-    const key = `problem_v4_${problemId}`
+    const key = `problem_v5_${problemId}`
 
     // Check sessionStorage first - show immediately even if it's a stub (no testCases yet)
     let cachedStub: any = null
@@ -609,9 +609,11 @@ export default function ProblemEditor({ problemId }: Props) {
   }
 
   const sampleCases = [
-    { input: problem?.input ?? "", output: problem?.output ?? "" },
-    { input: problem?.input2 ?? "", output: problem?.output2 ?? "" },
-  ]
+    { input: problem?.stdin1 ?? problem?.input  ?? "", output: problem?.expected1 ?? problem?.output  ?? "" },
+    { input: problem?.stdin2 ?? problem?.input2 ?? "", output: problem?.expected2 ?? problem?.output2 ?? "" },
+    { input: problem?.stdin3 ?? "", output: problem?.expected3 ?? "" },
+    { input: problem?.stdin4 ?? "", output: problem?.expected4 ?? "" },
+  ].filter(c => c.input.trim() !== "")
 
   const lines = code.split("\n")
   const T = theme
@@ -750,10 +752,10 @@ export default function ProblemEditor({ problemId }: Props) {
                       </div>
                     )}
 
-                    {/* Examples */}
+                    {/* Examples — "Sample Case N" style */}
                     {examples.map((ex: any, i: number) => (
                       <div key={i}>
-                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Example {i + 1}:</p>
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Sample Case {i + 1}</p>
                         <div className="rounded-lg border overflow-hidden"
                           style={{ background: T.panel, borderColor: T.border }}>
                           <div className="grid grid-cols-2 divide-x" style={{ borderColor: T.border }}>

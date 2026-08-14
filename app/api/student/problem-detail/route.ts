@@ -27,31 +27,41 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
   const groqKey   = process.env.GROQ_API_KEY
   const openaiKey = process.env.OPENAI_API_KEY
 
-  const prompt = `Generate a complete LeetCode-style coding problem for "${title}" (${difficulty} difficulty).
+  const prompt = `Generate a complete coding problem for "${title}" (${difficulty} difficulty) that reads from STDIN.
+
+IMPORTANT: The problem must use standard input/output (stdin/stdout), NOT function signatures or classes.
+The student writes a complete program that reads input and prints output.
+
 Return ONLY valid JSON (no markdown):
 {
-  "desc": "2-3 sentence description with backtick inline code",
-  "inputFormat": "A clear 1-2 sentence description of the input format. E.g. 'The first line contains an integer n. The second line contains n space-separated integers representing the array.'",
-  "outputFormat": "A clear 1 sentence description of the output. E.g. 'Print a single integer representing the answer.' or 'Return the indices as a list of two integers.'",
+  "desc": "2-3 sentence description. Use backtick for variable names like \`n\` and \`nums\`.",
+  "inputFormat": "Describe stdin format. E.g. 'The first line contains an integer n. The second line contains n space-separated integers.'",
+  "outputFormat": "Describe stdout format. E.g. 'Print the answer on a single line.' or 'Print n space-separated integers.'",
   "examples": [
-    {"input": "readable input like nums=[1,2,3]", "output": "expected output", "explanation": "brief one sentence"},
-    {"input": "second input", "output": "second output"}
+    {"input": "actual stdin value matching inputFormat, e.g. 7\\n3 5 -1 2 8 -1 7", "output": "actual stdout value matching outputFormat", "explanation": "brief explanation"},
+    {"input": "second stdin", "output": "second stdout", "explanation": "brief"}
   ],
-  "constraints": ["1 <= n <= 10^5", "second constraint", "Time limit: 2s"],
-  "functionSignature": "def methodName(self, param: Type) -> ReturnType:",
-  "pythonStarter": "from typing import List, Optional\\n\\nclass Solution:\\n    def methodName(self, param: Type) -> ReturnType:\\n        pass",
-  "jsStarter": "var methodName = function(param) {\\n    \\n};",
-  "tsStarter": "function methodName(param: Type): ReturnType {\\n    \\n};",
-  "javaStarter": "class Solution {\\n    public ReturnType methodName(Type param) {\\n        \\n    }\\n}",
-  "cppStarter": "class Solution {\\npublic:\\n    ReturnType methodName(Type param) {\\n        \\n    }\\n};",
+  "constraints": ["1 <= n <= 10^5", "other constraint"],
+  "pythonStarter": "n = int(input())\\nnums = list(map(int, input().split()))\\n# Write your solution here\\n",
+  "jsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\nconst n = parseInt(lines[0]);\\nconst nums = lines[1].split(' ').map(Number);\\n// Write your solution here\\n",
+  "tsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\nconst n = parseInt(lines[0]);\\nconst nums = lines[1].split(' ').map(Number);\\n// Write your solution here\\n",
+  "javaStarter": "import java.util.*;\\npublic class Main {\\n    public static void main(String[] args) {\\n        Scanner sc = new Scanner(System.in);\\n        int n = sc.nextInt();\\n        int[] nums = new int[n];\\n        for(int i=0;i<n;i++) nums[i]=sc.nextInt();\\n        // Write your solution here\\n    }\\n}",
+  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    int n; cin>>n;\\n    vector<int> nums(n);\\n    for(int i=0;i<n;i++) cin>>nums[i];\\n    // Write your solution here\\n    return 0;\\n}",
   "testCases": [
-    {"script": "sol = Solution()\\nprint(sol.methodName(arg1))", "expected": "out1", "isPublic": true},
-    {"script": "sol = Solution()\\nprint(sol.methodName(arg2))", "expected": "out2", "isPublic": true},
-    {"script": "sol = Solution()\\nprint(sol.methodName(arg3))", "expected": "out3", "isPublic": false},
-    {"script": "sol = Solution()\\nprint(sol.methodName(arg4))", "expected": "out4", "isPublic": false}
+    {"stdin": "actual stdin for test 1", "expected": "expected stdout for test 1"},
+    {"stdin": "actual stdin for test 2", "expected": "expected stdout for test 2"},
+    {"stdin": "actual stdin for test 3", "expected": "expected stdout for test 3"},
+    {"stdin": "actual stdin for test 4", "expected": "expected stdout for test 4"}
   ]
 }
-Use real concrete values in testCases. No backslashes inside expected strings.`
+
+Rules:
+- testCases must have EXACTLY 4 entries with real concrete values
+- stdin must match the inputFormat exactly
+- expected must match the outputFormat exactly
+- All test cases are visible to the student (no hidden cases)
+- No backslashes inside expected strings
+- Unescape newlines properly: use \\n for newlines in stdin strings`
 
   const call = async (key: string, url: string, model: string) => {
     const r = await fetch(url, {
@@ -71,9 +81,9 @@ Use real concrete values in testCases. No backslashes inside expected strings.`
     }
     if (p.testCases) {
       p.testCases = p.testCases.map((tc: any) => ({
-        ...tc,
-        script: String(tc.script).replace(/\\n/g, "\n"),
-        expected: String(tc.expected),
+        stdin:    String(tc.stdin ?? tc.script ?? "").replace(/\\n/g, "\n"),
+        expected: String(tc.expected ?? ""),
+        isPublic: true,  // all test cases are public — no hidden
       }))
     }
     return p
@@ -91,30 +101,27 @@ Use real concrete values in testCases. No backslashes inside expected strings.`
 
 // -- Convert static bank entry + AI data to wire format -----------------------
 function bankToWire(sp: any, title: string, difficulty: string) {
+  // Support both old pythonTest (script) format and new stdin format
+  const tc = (i: number) => sp.testCases?.[i]
   return {
     title,
     difficulty,
     badge: difficulty,
     desc:          sp.desc          ?? `Solve the ${title} problem.`,
-    inputFormat:   sp.inputFormat   ?? (sp.functionSignature ? `Function signature: ${sp.functionSignature}` : ""),
+    inputFormat:   sp.inputFormat   ?? "",
     outputFormat:  sp.outputFormat  ?? "",
     constraints:   sp.constraints   ?? [],
-    input:         sp.examples?.[0]?.input  ?? "",
-    output:        sp.examples?.[0]?.output ?? "",
-    explain:       sp.examples?.[0]?.explanation ?? "",
-    input2:        sp.examples?.[1]?.input  ?? "",
-    output2:       sp.examples?.[1]?.output ?? "",
     examples:      sp.examples      ?? [],
     starters:      sp.starters      ?? {},
-    // Test cases for run-code
-    pythonTest1:   sp.testCases?.[0]?.script   ?? "",
-    expectedTest1: sp.testCases?.[0]?.expected ?? "",
-    pythonTest2:   sp.testCases?.[1]?.script   ?? "",
-    expectedTest2: sp.testCases?.[1]?.expected ?? "",
-    pythonTest3:   sp.testCases?.[2]?.script   ?? "",
-    expectedTest3: sp.testCases?.[2]?.expected ?? "",
-    pythonTest4:   sp.testCases?.[3]?.script   ?? "",
-    expectedTest4: sp.testCases?.[3]?.expected ?? "",
+    // Stdin-based test cases (new format) — all public
+    stdin1:    tc(0)?.stdin    ?? tc(0)?.script   ?? sp.examples?.[0]?.input  ?? "",
+    expected1: tc(0)?.expected ?? sp.examples?.[0]?.output ?? "",
+    stdin2:    tc(1)?.stdin    ?? tc(1)?.script   ?? sp.examples?.[1]?.input  ?? "",
+    expected2: tc(1)?.expected ?? sp.examples?.[1]?.output ?? "",
+    stdin3:    tc(2)?.stdin    ?? tc(2)?.script   ?? "",
+    expected3: tc(2)?.expected ?? "",
+    stdin4:    tc(3)?.stdin    ?? tc(3)?.script   ?? "",
+    expected4: tc(3)?.expected ?? "",
     static: true,
   }
 }
@@ -157,7 +164,7 @@ export async function POST(req: Request) {
     // -- 2. Check MongoDB cache ------------------------------------------------
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-    const cached = await db.collection("problem_details_v3").findOne({ cacheKey })
+    const cached = await db.collection("problem_details_v4").findOne({ cacheKey })
     if (cached?.problem?.pythonTest1) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
     }
@@ -183,38 +190,35 @@ export async function POST(req: Request) {
     }
 
     // Merge AI data with any existing static data
+    const tc = (i: number) => aiData.testCases?.[i]
     const merged = {
       title, difficulty, badge: difficulty,
       desc:          aiData.desc          ?? sp?.desc ?? `Solve the ${title} problem.`,
-      inputFormat:   aiData.inputFormat   ?? (aiData.functionSignature ? `Function signature: ${aiData.functionSignature}` : ""),
+      inputFormat:   aiData.inputFormat   ?? "",
       outputFormat:  aiData.outputFormat  ?? aiData.outputDescription ?? "",
       constraints:   aiData.constraints   ?? sp?.constraints ?? [],
-      input:         aiData.examples?.[0]?.input  ?? sp?.examples?.[0]?.input  ?? "",
-      output:        aiData.examples?.[0]?.output ?? sp?.examples?.[0]?.output ?? "",
-      explain:       aiData.examples?.[0]?.explanation ?? "",
-      input2:        aiData.examples?.[1]?.input  ?? "",
-      output2:       aiData.examples?.[1]?.output ?? "",
-      examples:      aiData.examples ?? [],
+      examples:      aiData.examples ?? sp?.examples ?? [],
       starters: {
-        Python:     aiData.pythonStarter ?? sp?.starters?.Python     ?? "class Solution:\n    def solve(self):\n        pass\n",
-        JavaScript: aiData.jsStarter     ?? sp?.starters?.JavaScript ?? "var solve = function() {\n    \n};\n",
-        TypeScript: aiData.tsStarter     ?? sp?.starters?.TypeScript ?? "function solve(): void {\n};\n",
-        Java:       aiData.javaStarter   ?? sp?.starters?.Java       ?? "class Solution {\n    public void solve() {}\n}\n",
-        "C++":      aiData.cppStarter    ?? sp?.starters?.["C++"]    ?? "class Solution {\npublic:\n    void solve() {}\n};\n",
+        Python:     aiData.pythonStarter ?? sp?.starters?.Python     ?? "n = int(input())\nnums = list(map(int, input().split()))\n# Write your solution here\n",
+        JavaScript: aiData.jsStarter     ?? sp?.starters?.JavaScript ?? "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\nconst n = parseInt(lines[0]);\nconst nums = lines[1].split(' ').map(Number);\n// Write your solution here\n",
+        TypeScript: aiData.tsStarter     ?? sp?.starters?.TypeScript ?? "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\nconst n = parseInt(lines[0]);\n// Write your solution here\n",
+        Java:       aiData.javaStarter   ?? sp?.starters?.Java       ?? "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        // Write your solution here\n    }\n}",
+        "C++":      aiData.cppStarter    ?? sp?.starters?.["C++"]    ?? "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int n; cin>>n;\n    // Write your solution here\n    return 0;\n}",
       },
-      pythonTest1:   aiData.testCases?.[0]?.script   ?? "",
-      expectedTest1: aiData.testCases?.[0]?.expected ?? "",
-      pythonTest2:   aiData.testCases?.[1]?.script   ?? "",
-      expectedTest2: aiData.testCases?.[1]?.expected ?? "",
-      pythonTest3:   aiData.testCases?.[2]?.script   ?? "",
-      expectedTest3: aiData.testCases?.[2]?.expected ?? "",
-      pythonTest4:   aiData.testCases?.[3]?.script   ?? "",
-      expectedTest4: aiData.testCases?.[3]?.expected ?? "",
+      // Stdin-based test cases — all public
+      stdin1:    tc(0)?.stdin ?? aiData.examples?.[0]?.input ?? "",
+      expected1: tc(0)?.expected ?? aiData.examples?.[0]?.output ?? "",
+      stdin2:    tc(1)?.stdin ?? aiData.examples?.[1]?.input ?? "",
+      expected2: tc(1)?.expected ?? aiData.examples?.[1]?.output ?? "",
+      stdin3:    tc(2)?.stdin ?? "",
+      expected3: tc(2)?.expected ?? "",
+      stdin4:    tc(3)?.stdin ?? "",
+      expected4: tc(3)?.expected ?? "",
       static: false,
     }
 
-    // Cache in MongoDB so next request is instant
-    await db.collection("problem_details_v3").updateOne(
+    // Cache in MongoDB
+    await db.collection("problem_details_v4").updateOne(
       { cacheKey },
       { $set: { cacheKey, problem: merged, generatedAt: new Date() } },
       { upsert: true }

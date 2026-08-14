@@ -94,27 +94,42 @@ function buildTestCases(
   studentCode?: string
 ): Array<{ input: string; expected: string; isPublic: boolean; isScript?: boolean }> {
 
-  // LeetCode-style: AI-generated Python test scripts
+  // New stdin-based format (stdin1..4 / expected1..4) — all public
+  if (problem.stdin1 !== undefined) {
+    const cases = [
+      { input: problem.stdin1 ?? "", expected: problem.expected1 ?? "" },
+      { input: problem.stdin2 ?? "", expected: problem.expected2 ?? "" },
+      { input: problem.stdin3 ?? "", expected: problem.expected3 ?? "" },
+      { input: problem.stdin4 ?? "", expected: problem.expected4 ?? "" },
+    ].filter(c => c.input.trim() !== "")
+
+    return cases.slice(0, count).map(c => ({
+      input:    c.input,
+      expected: c.expected,
+      isPublic: true,   // all test cases visible
+      isScript: false,
+    }))
+  }
+
+  // Legacy LeetCode-style Python test scripts
   if (problem.pythonTest1 && language === "Python") {
     const actualMethod = studentCode ? extractPythonMethodName(studentCode) : null
-
     const tests = [
       { script: problem.pythonTest1, expected: String(problem.expectedTest1 ?? ""), isPublic: true  },
       { script: problem.pythonTest2, expected: String(problem.expectedTest2 ?? ""), isPublic: true  },
-      { script: problem.pythonTest3, expected: String(problem.expectedTest3 ?? ""), isPublic: false },
-      { script: problem.pythonTest4, expected: String(problem.expectedTest4 ?? ""), isPublic: false },
+      { script: problem.pythonTest3, expected: String(problem.expectedTest3 ?? ""), isPublic: true  },
+      { script: problem.pythonTest4, expected: String(problem.expectedTest4 ?? ""), isPublic: true  },
     ].filter(t => t.script?.trim())
-
     return tests.slice(0, count).map(t => {
       const raw    = t.script.replace(/\\n/g, "\n").replace(/\\t/g, "\t")
       const script = actualMethod ? patchTestScript(raw, actualMethod) : raw
-      return { input: script, expected: t.expected, isPublic: t.isPublic, isScript: true }
+      return { input: script, expected: t.expected, isPublic: true, isScript: true }
     })
   }
 
   // stdin-style fallback
   const pub = { input: problem.input ?? "", expected: problem.output ?? "", isPublic: true }
-  return Array.from({ length: count }, (_, i) => ({ ...pub, isPublic: i < 2 }))
+  return Array.from({ length: count }, () => ({ ...pub }))
 }
 
 // ── POST handler ──────────────────────────────────────────────────────────────
@@ -127,7 +142,7 @@ export async function POST(req: Request) {
     if (!code?.trim()) return NextResponse.json({ error: "No code provided" },    { status: 400 })
     if (!problem)      return NextResponse.json({ error: "No problem provided" }, { status: 400 })
 
-    const count     = mode === "run" ? 2 : 4
+    const count     = 4  // always run all 4 test cases
     const testCases = buildTestCases(problem, count, language, code)
     const timeout   = LANG_TIMEOUT[language] ?? 5000
 
@@ -136,6 +151,7 @@ export async function POST(req: Request) {
       let output = "", error = "", runtimeMs = 0, tle = false
 
       try {
+        // Script mode (legacy): student code + test harness appended
         const codeToRun = (tc as any).isScript
           ? `${code}\n\n# -- test harness --\n${tc.input}`
           : code
