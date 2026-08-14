@@ -238,8 +238,6 @@ export async function POST(req: Request) {
       { upsert: true }
     )
 
-    console.log("[problem-detail] generated for:", title, "stdin1:", JSON.stringify(merged.stdin1?.slice(0,30)), "stdin3:", JSON.stringify(merged.stdin3?.slice(0,30)))
-
     return NextResponse.json({ problem: merged, fromCache: false, source: "ai" })
 
   } catch (err: any) {
