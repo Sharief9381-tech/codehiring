@@ -60,7 +60,7 @@ Return ONLY valid JSON (no markdown):
   ]
 }
 
-CRITICAL: stdin in testCases must EXACTLY match the inputFormat described above. If inputFormat says single line, stdin must be single line.``
+CRITICAL: stdin in testCases must EXACTLY match the inputFormat described above. If inputFormat says single line, stdin must be single line.`
 
   const call = async (key: string, url: string, model: string) => {
     const r = await fetch(url, {
