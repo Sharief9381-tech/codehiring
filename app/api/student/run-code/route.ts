@@ -157,7 +157,7 @@ export async function POST(req: Request) {
           ? `${code}\n\n# -- test harness --\n${tc.input}`
           : code
         const stdin = (tc as any).isScript ? "" : tc.input
-
+        console.log("[run-code] tc", testCases.indexOf(tc), "stdin preview:", JSON.stringify(stdin?.slice(0,50)), "lang:", language)
         ;({ output, error, runtimeMs, tle } = await executeCode(codeToRun, language, stdin, timeout))
       } catch (e: any) {
         error = e.message ?? "Execution error"
