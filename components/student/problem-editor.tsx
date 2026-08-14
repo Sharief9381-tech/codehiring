@@ -729,31 +729,25 @@ export default function ProblemEditor({ problemId }: Props) {
                       </div>
                     )}
 
-                    {/* Examples — "Sample Case N" style */}
+                    {/* Examples — LeetCode style */}
                     {examples.map((ex: any, i: number) => (
                       <div key={i}>
-                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Sample Case {i + 1}</p>
-                        <div className="rounded-lg border overflow-hidden"
-                          style={{ background: T.panel, borderColor: T.border }}>
-                          <div className="grid grid-cols-2 divide-x" style={{ borderColor: T.border }}>
-                            <div className="p-3">
-                              <p className="text-[11px] font-semibold mb-1.5" style={{ color: T.muted }}>Input:</p>
-                              <pre className="font-mono text-xs whitespace-pre-wrap leading-relaxed" style={{ color: T.string }}>
-                                {ex.input || "—"}
-                              </pre>
-                            </div>
-                            <div className="p-3">
-                              <p className="text-[11px] font-semibold mb-1.5" style={{ color: T.muted }}>Output:</p>
-                              <pre className="font-mono text-xs whitespace-pre-wrap leading-relaxed" style={{ color: T.function }}>
-                                {ex.output || "—"}
-                              </pre>
-                            </div>
-                          </div>
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Example {i + 1}:</p>
+                        <div className="rounded-lg pl-4 pr-3 py-3 space-y-1 border-l-2"
+                          style={{ background: T.panel, borderLeftColor: T.border }}>
+                          <p className="text-xs font-mono">
+                            <span className="font-bold" style={{ color: T.text }}>Input: </span>
+                            <span style={{ color: T.string }}>{ex.input}</span>
+                          </p>
+                          <p className="text-xs font-mono">
+                            <span className="font-bold" style={{ color: T.text }}>Output: </span>
+                            <span style={{ color: T.string }}>{ex.output}</span>
+                          </p>
                           {ex.explanation && (
-                            <div className="px-3 py-2.5 border-t text-xs" style={{ borderColor: T.border, color: T.muted }}>
-                              <span className="font-semibold" style={{ color: T.text }}>Explanation: </span>
-                              {ex.explanation}
-                            </div>
+                            <p className="text-xs font-mono">
+                              <span className="font-bold" style={{ color: T.text }}>Explanation: </span>
+                              <span style={{ color: T.muted }}>{ex.explanation}</span>
+                            </p>
                           )}
                         </div>
                       </div>
