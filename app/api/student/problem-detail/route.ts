@@ -27,40 +27,42 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
   const groqKey   = process.env.GROQ_API_KEY
   const openaiKey = process.env.OPENAI_API_KEY
 
-  const prompt = `Generate a complete coding problem for "${title}" (${difficulty} difficulty) that reads from STDIN.
-
-IMPORTANT RULES:
-- Use simple stdin format — prefer single-line input where possible
-- For array problems: just one line of space-separated integers (NO separate n on first line)
-- For problems needing n: first line is n, second line is the array — but only if truly necessary
-- The student writes a complete program that reads input and prints output
-- NO classes, NO function signatures in starters
-
-Return ONLY valid JSON (no markdown):
-{
-  "desc": "2-3 sentence description. Use backtick for variable names like \`nums\`.",
-  "inputFormat": "Exact stdin format. E.g. 'A single line of space-separated integers.' or 'First line: integer n. Second line: n space-separated integers.'",
-  "outputFormat": "Exact stdout format. E.g. 'Print a single integer.' or 'Print space-separated integers.'",
-  "examples": [
-    {"input": "actual stdin matching inputFormat exactly", "output": "actual stdout", "explanation": "brief"},
-    {"input": "second stdin", "output": "second stdout", "explanation": "brief"}
-  ],
-  "constraints": ["constraint 1", "constraint 2"],
-  "pythonStarter": "# Read input and print output\\nimport sys\\ninput = sys.stdin.readline\\n\\n# Write your solution here\\n",
-  "jsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\n// Write your solution here\\n",
-  "tsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\n// Write your solution here\\n",
-  "javaStarter": "import java.util.*;\\nimport java.io.*;\\npublic class Main {\\n    public static void main(String[] args) throws Exception {\\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\\n        // Write your solution here\\n    }\\n}",
-  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    // Write your solution here\\n    return 0;\\n}",
-  "testCases": [
-    {"stdin": "stdin matching inputFormat exactly", "expected": "stdout matching outputFormat exactly", "isPublic": true},
-    {"stdin": "second public test stdin", "expected": "second expected", "isPublic": true},
-    {"stdin": "hidden edge case stdin", "expected": "hidden expected", "isPublic": false},
-    {"stdin": "hidden larger input stdin", "expected": "hidden expected", "isPublic": false},
-    {"stdin": "hidden boundary stdin", "expected": "hidden expected", "isPublic": false}
-  ]
-}
-
-CRITICAL: stdin in testCases must EXACTLY match the inputFormat described above. If inputFormat says single line, stdin must be single line.`
+  const prompt = [
+    `Generate a complete coding problem for "${title}" (${difficulty} difficulty) that reads from STDIN.`,
+    "",
+    "IMPORTANT RULES:",
+    "- Use simple stdin format — prefer single-line input where possible",
+    "- For array problems: just one line of space-separated integers (NO separate n on first line)",
+    "- For problems needing n: first line is n, second line is the array — but only if truly necessary",
+    "- The student writes a complete program that reads input and prints output",
+    "- NO classes, NO function signatures in starters",
+    "",
+    "Return ONLY valid JSON (no markdown):",
+    "{",
+    '  "desc": "2-3 sentence description. Use backtick for variable names like `nums`.",',
+    '  "inputFormat": "Exact stdin format. E.g. \'A single line of space-separated integers.\' or \'First line: integer n. Second line: n space-separated integers.\'",',
+    '  "outputFormat": "Exact stdout format. E.g. \'Print a single integer.\' or \'Print space-separated integers.\'",',
+    '  "examples": [',
+    '    {"input": "actual stdin matching inputFormat exactly", "output": "actual stdout", "explanation": "brief"},',
+    '    {"input": "second stdin", "output": "second stdout", "explanation": "brief"}',
+    "  ],",
+    '  "constraints": ["constraint 1", "constraint 2"],',
+    '  "pythonStarter": "# Read input and print output\\nimport sys\\ninput = sys.stdin.readline\\n\\n# Write your solution here\\n",',
+    '  "jsStarter": "const lines = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\'\\\\n\');\\n// Write your solution here\\n",',
+    '  "tsStarter": "const lines = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\'\\\\n\');\\n// Write your solution here\\n",',
+    '  "javaStarter": "import java.util.*;\\nimport java.io.*;\\npublic class Main {\\n    public static void main(String[] args) throws Exception {\\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\\n        // Write your solution here\\n    }\\n}",',
+    '  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    // Write your solution here\\n    return 0;\\n}",',
+    '  "testCases": [',
+    '    {"stdin": "stdin matching inputFormat exactly", "expected": "stdout matching outputFormat exactly", "isPublic": true},',
+    '    {"stdin": "second public test stdin", "expected": "second expected", "isPublic": true},',
+    '    {"stdin": "hidden edge case stdin", "expected": "hidden expected", "isPublic": false},',
+    '    {"stdin": "hidden larger input stdin", "expected": "hidden expected", "isPublic": false},',
+    '    {"stdin": "hidden boundary stdin", "expected": "hidden expected", "isPublic": false}',
+    "  ]",
+    "}",
+    "",
+    "CRITICAL: stdin in testCases must EXACTLY match the inputFormat. If inputFormat says single line, stdin must be single line.",
+  ].join("\n")
 
   const call = async (key: string, url: string, model: string) => {
     const r = await fetch(url, {
