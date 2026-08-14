@@ -94,19 +94,20 @@ function buildTestCases(
   studentCode?: string
 ): Array<{ input: string; expected: string; isPublic: boolean; isScript?: boolean }> {
 
-  // New stdin-based format (stdin1..4 / expected1..4) — all public
+  // New stdin-based format (stdin1..5 / expected1..5) — 2 public + 3 hidden
   if (problem.stdin1 !== undefined) {
     const cases = [
-      { input: problem.stdin1 ?? "", expected: problem.expected1 ?? "" },
-      { input: problem.stdin2 ?? "", expected: problem.expected2 ?? "" },
-      { input: problem.stdin3 ?? "", expected: problem.expected3 ?? "" },
-      { input: problem.stdin4 ?? "", expected: problem.expected4 ?? "" },
+      { input: problem.stdin1 ?? "", expected: problem.expected1 ?? "", isPublic: problem.public1 !== false },
+      { input: problem.stdin2 ?? "", expected: problem.expected2 ?? "", isPublic: problem.public2 !== false },
+      { input: problem.stdin3 ?? "", expected: problem.expected3 ?? "", isPublic: problem.public3 === true },
+      { input: problem.stdin4 ?? "", expected: problem.expected4 ?? "", isPublic: problem.public4 === true },
+      { input: problem.stdin5 ?? "", expected: problem.expected5 ?? "", isPublic: problem.public5 === true },
     ].filter(c => c.input.trim() !== "")
 
     return cases.slice(0, count).map(c => ({
       input:    c.input,
       expected: c.expected,
-      isPublic: true,   // all test cases visible
+      isPublic: c.isPublic,
       isScript: false,
     }))
   }
@@ -142,7 +143,7 @@ export async function POST(req: Request) {
     if (!code?.trim()) return NextResponse.json({ error: "No code provided" },    { status: 400 })
     if (!problem)      return NextResponse.json({ error: "No problem provided" }, { status: 400 })
 
-    const count     = 4  // always run all 4 test cases
+    const count     = 5  // always run all 5 test cases (2 public + 3 hidden)
     const testCases = buildTestCases(problem, count, language, code)
     const timeout   = LANG_TIMEOUT[language] ?? 5000
 

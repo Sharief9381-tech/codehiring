@@ -611,8 +611,6 @@ export default function ProblemEditor({ problemId }: Props) {
   const sampleCases = [
     { input: problem?.stdin1 ?? problem?.input  ?? "", output: problem?.expected1 ?? problem?.output  ?? "" },
     { input: problem?.stdin2 ?? problem?.input2 ?? "", output: problem?.expected2 ?? problem?.output2 ?? "" },
-    { input: problem?.stdin3 ?? "", output: problem?.expected3 ?? "" },
-    { input: problem?.stdin4 ?? "", output: problem?.expected4 ?? "" },
   ].filter(c => c.input.trim() !== "")
 
   const lines = code.split("\n")

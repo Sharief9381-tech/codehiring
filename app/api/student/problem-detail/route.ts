@@ -48,20 +48,23 @@ Return ONLY valid JSON (no markdown):
   "javaStarter": "import java.util.*;\\npublic class Main {\\n    public static void main(String[] args) {\\n        Scanner sc = new Scanner(System.in);\\n        int n = sc.nextInt();\\n        int[] nums = new int[n];\\n        for(int i=0;i<n;i++) nums[i]=sc.nextInt();\\n        // Write your solution here\\n    }\\n}",
   "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    int n; cin>>n;\\n    vector<int> nums(n);\\n    for(int i=0;i<n;i++) cin>>nums[i];\\n    // Write your solution here\\n    return 0;\\n}",
   "testCases": [
-    {"stdin": "actual stdin for test 1", "expected": "expected stdout for test 1"},
-    {"stdin": "actual stdin for test 2", "expected": "expected stdout for test 2"},
-    {"stdin": "actual stdin for test 3", "expected": "expected stdout for test 3"},
-    {"stdin": "actual stdin for test 4", "expected": "expected stdout for test 4"}
+    {"stdin": "actual stdin for test 1", "expected": "expected stdout for test 1", "isPublic": true},
+    {"stdin": "actual stdin for test 2", "expected": "expected stdout for test 2", "isPublic": true},
+    {"stdin": "actual stdin for hidden test 3 (edge case)", "expected": "expected stdout for test 3", "isPublic": false},
+    {"stdin": "actual stdin for hidden test 4 (larger input)", "expected": "expected stdout for test 4", "isPublic": false},
+    {"stdin": "actual stdin for hidden test 5 (boundary/corner case)", "expected": "expected stdout for test 5", "isPublic": false}
   ]
 }
 
 Rules:
-- testCases must have EXACTLY 4 entries with real concrete values
+- testCases must have EXACTLY 5 entries: 2 public + 3 hidden
+- isPublic: true = shown to student; isPublic: false = hidden (student sees pass/fail only)
+- Public tests: simple, match the examples exactly
+- Hidden tests: edge cases, boundary values, larger inputs the student hasn't seen
 - stdin must match the inputFormat exactly
 - expected must match the outputFormat exactly
-- All test cases are visible to the student (no hidden cases)
 - No backslashes inside expected strings
-- Unescape newlines properly: use \\n for newlines in stdin strings`
+- Use \\n for newlines in stdin strings`
 
   const call = async (key: string, url: string, model: string) => {
     const r = await fetch(url, {
@@ -83,7 +86,7 @@ Rules:
       p.testCases = p.testCases.map((tc: any) => ({
         stdin:    String(tc.stdin ?? tc.script ?? "").replace(/\\n/g, "\n"),
         expected: String(tc.expected ?? ""),
-        isPublic: true,  // all test cases are public — no hidden
+        isPublic: tc.isPublic !== false,  // default public unless explicitly false
       }))
     }
     return p
@@ -101,8 +104,8 @@ Rules:
 
 // -- Convert static bank entry + AI data to wire format -----------------------
 function bankToWire(sp: any, title: string, difficulty: string) {
-  // Support both old pythonTest (script) format and new stdin format
-  const tc = (i: number) => sp.testCases?.[i]
+    // Support both old pythonTest (script) format and new stdin format
+    const tc = (i: number) => sp.testCases?.[i]
   return {
     title,
     difficulty,
@@ -113,15 +116,22 @@ function bankToWire(sp: any, title: string, difficulty: string) {
     constraints:   sp.constraints   ?? [],
     examples:      sp.examples      ?? [],
     starters:      sp.starters      ?? {},
-    // Stdin-based test cases (new format) — all public
-    stdin1:    tc(0)?.stdin    ?? tc(0)?.script   ?? sp.examples?.[0]?.input  ?? "",
+    // 2 public + 3 hidden test cases
+    stdin1:    tc(0)?.stdin ?? sp.examples?.[0]?.input ?? "",
     expected1: tc(0)?.expected ?? sp.examples?.[0]?.output ?? "",
-    stdin2:    tc(1)?.stdin    ?? tc(1)?.script   ?? sp.examples?.[1]?.input  ?? "",
+    public1:   tc(0)?.isPublic !== false,
+    stdin2:    tc(1)?.stdin ?? sp.examples?.[1]?.input ?? "",
     expected2: tc(1)?.expected ?? sp.examples?.[1]?.output ?? "",
-    stdin3:    tc(2)?.stdin    ?? tc(2)?.script   ?? "",
+    public2:   tc(1)?.isPublic !== false,
+    stdin3:    tc(2)?.stdin ?? "",
     expected3: tc(2)?.expected ?? "",
-    stdin4:    tc(3)?.stdin    ?? tc(3)?.script   ?? "",
+    public3:   tc(2)?.isPublic === true,   // default hidden
+    stdin4:    tc(3)?.stdin ?? "",
     expected4: tc(3)?.expected ?? "",
+    public4:   tc(3)?.isPublic === true,
+    stdin5:    tc(4)?.stdin ?? "",
+    expected5: tc(4)?.expected ?? "",
+    public5:   tc(4)?.isPublic === true,
     static: true,
   }
 }
@@ -205,15 +215,22 @@ export async function POST(req: Request) {
         Java:       aiData.javaStarter   ?? sp?.starters?.Java       ?? "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        // Write your solution here\n    }\n}",
         "C++":      aiData.cppStarter    ?? sp?.starters?.["C++"]    ?? "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int n; cin>>n;\n    // Write your solution here\n    return 0;\n}",
       },
-      // Stdin-based test cases — all public
+    // Stdin-based test cases — 2 public + 3 hidden
       stdin1:    tc(0)?.stdin ?? aiData.examples?.[0]?.input ?? "",
       expected1: tc(0)?.expected ?? aiData.examples?.[0]?.output ?? "",
+      public1:   tc(0)?.isPublic !== false,
       stdin2:    tc(1)?.stdin ?? aiData.examples?.[1]?.input ?? "",
       expected2: tc(1)?.expected ?? aiData.examples?.[1]?.output ?? "",
+      public2:   tc(1)?.isPublic !== false,
       stdin3:    tc(2)?.stdin ?? "",
       expected3: tc(2)?.expected ?? "",
+      public3:   tc(2)?.isPublic === true,
       stdin4:    tc(3)?.stdin ?? "",
       expected4: tc(3)?.expected ?? "",
+      public4:   tc(3)?.isPublic === true,
+      stdin5:    tc(4)?.stdin ?? "",
+      expected5: tc(4)?.expected ?? "",
+      public5:   tc(4)?.isPublic === true,
       static: false,
     }
 
