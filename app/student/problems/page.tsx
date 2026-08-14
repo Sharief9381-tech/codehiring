@@ -378,7 +378,8 @@ export default function ProblemsPage() {
                 {filtered.map((problem, idx) => {
                   const isSolved = solved.has(problem.id)
                   return (
-                    <button key={problem.id}
+                    <div key={problem.id}>
+                    <button
                       onClick={() => handleProblem(problem.slug)}
                       className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all group hover:scale-[1.005]"
                       style={{
@@ -451,6 +452,7 @@ export default function ProblemsPage() {
                         )}
                       </div>
                     )}
+                    </div>
                   )
                 })}
               </div>
