@@ -3,8 +3,8 @@
 import { useState, useMemo, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import {
-  Search, Code2, Filter, ChevronRight, CheckCircle2,
-  Zap, BookOpen, SlidersHorizontal, X, Trophy,
+  Search, Code2, Filter, ChevronRight,
+  Zap, BookOpen, SlidersHorizontal, X, Trophy, Bookmark, BookmarkCheck,
 } from "lucide-react"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
@@ -41,6 +41,69 @@ const ALL_PROBLEMS = ALL_PROBLEMS_RAW.filter(p => {
 const TOPICS = TOPIC_QUESTIONS.map(t => ({ track: t.track, label: t.label, color: t.color, count: t.questions.length }))
 const DIFFICULTIES = ["Easy", "Medium", "Hard"] as const
 
+// ── Company tags for popular problems ────────────────────────────────────────
+const COMPANY_TAGS: Record<string, string[]> = {
+  "Two Sum": ["Amazon","Google","Apple","Microsoft","Facebook"],
+  "Contains Duplicate": ["Amazon","Apple"],
+  "Best Time to Buy and Sell Stock": ["Amazon","Google","Facebook"],
+  "Valid Anagram": ["Amazon","Facebook"],
+  "Valid Palindrome": ["Facebook","Microsoft"],
+  "Binary Search": ["Google","Amazon"],
+  "Climbing Stairs": ["Amazon","Google","Adobe"],
+  "House Robber": ["Amazon","Google"],
+  "Coin Change": ["Amazon","Google","Microsoft"],
+  "Longest Increasing Subsequence": ["Google","Amazon","Microsoft"],
+  "Merge Two Sorted Lists": ["Amazon","Microsoft","Facebook"],
+  "Linked List Cycle": ["Amazon","Microsoft"],
+  "Maximum Subarray": ["Amazon","Google","Microsoft"],
+  "Product of Array Except Self": ["Amazon","Google","Facebook"],
+  "3Sum": ["Amazon","Google","Microsoft","Facebook"],
+  "Container With Most Water": ["Amazon","Google","Facebook"],
+  "Trapping Rain Water": ["Amazon","Google","Microsoft"],
+  "Longest Substring Without Repeating Characters": ["Amazon","Google","Facebook","Microsoft"],
+  "Minimum Window Substring": ["Amazon","Google","Facebook"],
+  "Search in Rotated Sorted Array": ["Amazon","Google","Microsoft","Facebook"],
+  "Number of Islands": ["Amazon","Google","Facebook","Microsoft"],
+  "Word Break": ["Amazon","Google","Facebook"],
+  "Decode Ways": ["Amazon","Facebook"],
+  "Unique Paths": ["Amazon","Google","Microsoft"],
+  "Jump Game": ["Amazon","Google","Microsoft"],
+  "Reverse Linked List": ["Amazon","Microsoft","Facebook"],
+  "Invert Binary Tree": ["Google","Amazon","Facebook"],
+  "Validate Binary Search Tree": ["Amazon","Google","Microsoft"],
+  "Serialize and Deserialize Binary Tree": ["Google","Facebook","Amazon"],
+  "Find Median from Data Stream": ["Amazon","Google","Microsoft","Apple"],
+  "Implement Trie (Prefix Tree)": ["Amazon","Google","Facebook"],
+  "Course Schedule": ["Amazon","Google","Facebook"],
+  "LRU Cache": ["Amazon","Google","Facebook","Microsoft"],
+  "Missing Number": ["Amazon","Microsoft"],
+  "Single Number": ["Amazon","Google"],
+  "Spiral Matrix": ["Amazon","Microsoft","Apple"],
+  "Rotate Image": ["Amazon","Microsoft","Facebook"],
+  "Group Anagrams": ["Amazon","Google","Facebook"],
+  "Top K Frequent Elements": ["Amazon","Google","Facebook"],
+  "Kth Largest Element in Array": ["Amazon","Google","Facebook","Microsoft"],
+  "Find Minimum in Rotated Sorted Array": ["Amazon","Google","Microsoft"],
+  "Longest Palindromic Substring": ["Amazon","Google","Microsoft"],
+  "Palindromic Substrings": ["Amazon","Facebook"],
+  "Subarray Sum Equals K": ["Amazon","Google","Facebook"],
+  "Merge Intervals": ["Amazon","Google","Facebook","Microsoft"],
+  "Insert Interval": ["Google","Facebook"],
+  "Non-overlapping Intervals": ["Google"],
+  "Task Scheduler": ["Amazon","Google","Facebook"],
+  "Min Stack": ["Amazon","Google","Microsoft"],
+  "Daily Temperatures": ["Amazon","Google"],
+  "Largest Rectangle in Histogram": ["Amazon","Google","Facebook"],
+  "Copy List with Random Pointer": ["Amazon","Microsoft","Facebook"],
+  "Word Search": ["Amazon","Microsoft","Facebook"],
+  "Word Ladder": ["Amazon","Google","Facebook"],
+  "Clone Graph": ["Amazon","Google","Facebook"],
+  "Pacific Atlantic Water Flow": ["Google","Amazon"],
+  "Edit Distance": ["Amazon","Google","Microsoft"],
+  "Distinct Subsequences": ["Amazon","Google"],
+}
+
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ProblemsPage() {
@@ -50,14 +113,39 @@ export default function ProblemsPage() {
   const [topic, setTopic]       = useState<string | null>(null)
   const [diff, setDiff]         = useState<string | null>(null)
   const [solved, setSolved]     = useState<Set<string>>(new Set())
+  const [bookmarks, setBookmarks] = useState<Set<string>>(new Set())
+  const [showBookmarked, setShowBookmarked] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
 
-  // Load solved from localStorage on mount
+  // Load solved + bookmarks from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem("completedChallenges")
       if (stored) setSolved(new Set(JSON.parse(stored)))
     } catch {}
+    try {
+      const bm = localStorage.getItem("bookmarkedProblems")
+      if (bm) setBookmarks(new Set(JSON.parse(bm)))
+    } catch {}
+    const onFocus = () => {
+      try {
+        const stored = localStorage.getItem("completedChallenges")
+        if (stored) setSolved(new Set(JSON.parse(stored)))
+      } catch {}
+    }
+    window.addEventListener("focus", onFocus)
+    return () => window.removeEventListener("focus", onFocus)
+  }, [])
+
+  const toggleBookmark = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setBookmarks(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id); else next.add(id)
+      try { localStorage.setItem("bookmarkedProblems", JSON.stringify([...next])) } catch {}
+      return next
+    })
+  }
     // Re-check whenever we come back to this page (e.g. after solving a problem)
     const onFocus = () => {
       try {
@@ -73,13 +161,14 @@ export default function ProblemsPage() {
     return ALL_PROBLEMS.filter(p => {
       if (topic && p.track !== topic) return false
       if (diff && p.difficulty !== diff) return false
+      if (showBookmarked && !bookmarks.has(p.id)) return false
       if (search) {
         const q = search.toLowerCase()
         if (!p.title.toLowerCase().includes(q) && !p.topic.toLowerCase().includes(q)) return false
       }
       return true
     })
-  }, [search, topic, diff])
+  }, [search, topic, diff, showBookmarked, bookmarks])
 
   const stats = useMemo(() => ({
     total: ALL_PROBLEMS.length,
@@ -174,6 +263,18 @@ export default function ProblemsPage() {
             <SlidersHorizontal className="h-4 w-4" />
             Filters
             {hasFilters && <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />}
+          </button>
+          <button
+            onClick={() => setShowBookmarked(v => !v)}
+            className="flex items-center gap-2 px-4 rounded-xl text-sm font-medium transition-all"
+            style={{
+              background: showBookmarked ? "rgba(234,179,8,0.15)" : "rgba(255,255,255,0.05)",
+              border: `1px solid ${showBookmarked ? "rgba(234,179,8,0.4)" : "rgba(255,255,255,0.1)"}`,
+              color: showBookmarked ? "#facc15" : "#9ca3af",
+            }}>
+            <Bookmark className="h-4 w-4" />
+            Saved
+            {bookmarks.size > 0 && <span className="text-[10px] bg-yellow-500 text-black rounded-full px-1.5 font-bold">{bookmarks.size}</span>}
           </button>
           {hasFilters && (
             <button onClick={clearFilters}
@@ -330,8 +431,36 @@ export default function ProblemsPage() {
                         {problem.difficulty}
                       </span>
 
+                      {/* Bookmark button */}
+                      <button
+                        onClick={e => toggleBookmark(problem.id, e)}
+                        className="shrink-0 p-1 rounded transition-all hover:scale-110"
+                        title={bookmarks.has(problem.id) ? "Remove bookmark" : "Bookmark"}>
+                        {bookmarks.has(problem.id)
+                          ? <BookmarkCheck className="h-3.5 w-3.5 text-yellow-400" />
+                          : <Bookmark className="h-3.5 w-3.5 text-gray-600 group-hover:text-gray-400" />
+                        }
+                      </button>
+
                       <ChevronRight className="shrink-0 h-3.5 w-3.5 text-gray-600 group-hover:text-gray-400 group-hover:translate-x-0.5 transition-all" />
                     </button>
+
+                    {/* Company tags — shown below row when problem has them */}
+                    {COMPANY_TAGS[problem.title] && (
+                      <div className="flex gap-1 flex-wrap px-4 pb-1 ml-[52px]">
+                        {COMPANY_TAGS[problem.title].slice(0, 4).map(c => (
+                          <span key={c} className="text-[10px] px-1.5 py-0.5 rounded font-medium"
+                            style={{ background: "rgba(99,102,241,0.1)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.2)" }}>
+                            {c}
+                          </span>
+                        ))}
+                        {COMPANY_TAGS[problem.title].length > 4 && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded font-medium text-gray-500">
+                            +{COMPANY_TAGS[problem.title].length - 4}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   )
                 })}
               </div>
