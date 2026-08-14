@@ -146,16 +146,6 @@ export default function ProblemsPage() {
       return next
     })
   }
-    // Re-check whenever we come back to this page (e.g. after solving a problem)
-    const onFocus = () => {
-      try {
-        const stored = localStorage.getItem("completedChallenges")
-        if (stored) setSolved(new Set(JSON.parse(stored)))
-      } catch {}
-    }
-    window.addEventListener("focus", onFocus)
-    return () => window.removeEventListener("focus", onFocus)
-  }, [])
 
   const filtered = useMemo(() => {
     return ALL_PROBLEMS.filter(p => {
