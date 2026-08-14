@@ -17,16 +17,16 @@ for (const topic of TOPIC_QUESTIONS) {
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
 const DEFAULT_STARTERS: Record<string, string> = {
-  Python:     "arr = list(map(int, input().split()))\n# Write your solution here\n",
-  JavaScript: "const arr = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
-  TypeScript: "const arr = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
-  Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] arr = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}\n",
-  "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> arr;\n    while(cin>>x) arr.push_back(x);\n    // Write your solution here\n    return 0;\n}\n",
-  C:          "#include<stdio.h>\nint main(){\n    // Write your solution here\n    return 0;\n}\n",
-  "C#":       "using System;\nusing System.Linq;\nclass Program {\n    static void Main() {\n        int[] arr = Console.ReadLine().Split().Select(int.Parse).ToArray();\n        // Write your solution here\n    }\n}\n",
-  Go:         "package main\nimport \"fmt\"\nfunc main() {\n    // Write your solution here\n    _ = fmt.Scan\n}\n",
-  Kotlin:     "fun main() {\n    val arr = readLine()!!.split(\" \").map { it.toInt() }\n    // Write your solution here\n}\n",
-  Swift:      "let arr = readLine()!.split(separator: \" \").map { Int($0)! }\n// Write your solution here\n",
+  Python:     "",
+  JavaScript: "",
+  TypeScript: "",
+  Java:       "",
+  "C++":      "",
+  C:          "",
+  "C#":       "",
+  Go:         "",
+  Kotlin:     "",
+  Swift:      "",
 }
 
 // -- Syntax Highlighting ------------------------------------------------------
@@ -257,36 +257,23 @@ export default function ProblemEditor({ problemId }: Props) {
 
   useEffect(() => {
     if (!problemId) return
-    const key = `problem_v7_${problemId}`
+    const key = `problem_v8_${problemId}`
 
-    // Check sessionStorage first - show immediately even if it's a stub (no testCases yet)
-    let cachedStub: any = null
     try {
       const cached = sessionStorage.getItem(key)
       if (cached) {
         const p = JSON.parse(cached)
-        if (p?.static || p?.pythonTest1) {
-          // Fully cached - use it directly
+        if (p?.stdin1 !== undefined || p?.static) {
           setProblem(p)
           const lang = langRef.current
-          // Load accepted code if exists, else use starter
           const savedCode = localStorage.getItem(`accepted_code_${problemId}_${lang}`)
-          if (savedCode) {
-            setCode(savedCode)
-            setDone(true)
-          } else {
-            const starter = p.starters?.[lang] ?? p.starters?.["Python"]
-            if (starter) setCode(starter)
-          }
+          if (savedCode) { setCode(savedCode); setDone(true) }
+          // else leave editor empty — student writes their own code
           return
         }
-        // Partial stub (daily challenge URL params) - show immediately but still fetch
-        cachedStub = p
-        setProblem(p)
       }
     } catch {}
 
-    // Fetch from API (generates via AI for stubs, returns static for bank problems)
     fetch("/api/student/problem-detail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -295,16 +282,10 @@ export default function ProblemEditor({ problemId }: Props) {
       if (data.problem) {
         setProblem(data.problem)
         try { sessionStorage.setItem(key, JSON.stringify(data.problem)) } catch {}
-        // Set language-specific starter (only if no saved accepted code)
         const lang = langRef.current
         const savedCode = localStorage.getItem(`accepted_code_${problemId}_${lang}`)
-        if (savedCode) {
-          setCode(savedCode)
-          setDone(true)  // mark as completed if we have saved accepted code
-        } else {
-          const starter = data.problem.starters?.[lang] ?? data.problem.starters?.["Python"]
-          if (starter) setCode(starter)
-        }
+        if (savedCode) { setCode(savedCode); setDone(true) }
+        // else leave editor empty
       }
     }).catch(() => {})
   }, [problemId])
@@ -382,13 +363,11 @@ export default function ProblemEditor({ problemId }: Props) {
   // -- Change language ---------------------------------------------------------
   const changeLang = (l: string) => {
     setLang(l); langRef.current = l
-    // Load saved accepted code for this language, else show starter
     const savedCode = localStorage.getItem(`accepted_code_${problemId}_${l}`)
     if (savedCode) {
       setCode(savedCode)
     } else {
-      const starter = problem?.starters?.[l] ?? DEFAULT_STARTERS[l] ?? ""
-      setCode(starter)
+      setCode("")  // empty editor — student writes their own code
     }
     setRes(null); setError("")
   }
@@ -838,7 +817,7 @@ export default function ProblemEditor({ problemId }: Props) {
                 <ChevronDown className="h-3 w-3 absolute right-1.5 top-1 pointer-events-none" style={{ color: T.muted }} />
               </div>
               {/* Reset */}
-              <button onClick={() => { setCode(problem?.starters?.[lang] ?? DEFAULT_STARTERS[lang] ?? ""); setRes(null) }}
+              <button onClick={() => { setCode(""); setRes(null) }}
                 title="Reset code" className="p-1 rounded transition-colors" style={{ color: T.muted }}
                 onMouseEnter={e => (e.currentTarget.style.color = T.text)}
                 onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>

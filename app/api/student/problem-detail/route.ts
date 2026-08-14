@@ -171,8 +171,8 @@ export async function POST(req: Request) {
     // -- 2. Check MongoDB cache ------------------------------------------------
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-    const cached = await db.collection("problem_details_v5").findOne({ cacheKey })
-    if (cached?.problem?.pythonTest1) {
+    const cached = await db.collection("problem_details_v6").findOne({ cacheKey })
+    if (cached?.problem?.stdin1 !== undefined && cached?.problem?.stdin3) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
     }
 
