@@ -711,7 +711,7 @@ export default function ProblemEditor({ problemId }: Props) {
                 insertSpaces: true,
                 wordWrap: "off",
                 automaticLayout: true,
-                readOnly: completed,
+                readOnly: false,
                 padding: { top: 12, bottom: 12 },
                 overviewRulerLanes: 0,
                 hideCursorInOverviewRuler: true,
