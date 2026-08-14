@@ -287,4 +287,44 @@ buildTopic("prefix-sum","Prefix Sum","#f59e0b",
   [["Sum of All Subset XOR Totals","sum-of-all-subset-xor-totals"],["Minimum Cost to Separate Sentence Into Rows","minimum-cost-to-separate-sentence-into-rows"],["Corporate Flight Bookings","corporate-flight-bookings"],["Count of Range Sum","count-of-range-sum"],["Minimum Number of Operations to Make Array Continuous","minimum-number-of-operations-to-make-array-continuous"]]
 ),
 
+// -- MATH: NUMBER THEORY -------------------------------------------------------
+buildTopic("math-number-theory","Math: Number Theory","#a855f7",
+  [["Fizz Buzz","fizz-buzz"],["Count Odd Numbers in an Interval Range","count-odd-numbers-in-an-interval-range"],["Number of Steps to Reduce a Number to Zero","number-of-steps-to-reduce-a-number-to-zero"],["Sum of Digits of String After Convert","sum-of-digits-of-string-after-convert"],["Subtract the Product and Sum of Digits of an Integer","subtract-the-product-and-sum-of-digits-of-an-integer"]],
+  [["Reverse Integer","reverse-integer"],["Palindrome Number","palindrome-number"],["Add Digits","add-digits"],["Happy Number","happy-number"],["Power of Two","power-of-two"]],
+  [["Count Primes","count-primes"],["Ugly Number II","ugly-number-ii"],["Perfect Squares","perfect-squares"],["Integer Break","integer-break"],["GCD of Strings","gcd-of-strings"]],
+  [["Factorial Trailing Zeroes","factorial-trailing-zeroes"],["Excel Sheet Column Number","excel-sheet-column-number"],["Roman to Integer","roman-to-integer"],["Integer to Roman","integer-to-roman"],["Nth Digit","nth-digit"]],
+  [["Super Pow","super-pow"],["Largest Palindrome Product","largest-palindrome-product"],["Reaching Points","reaching-points"],["Nth Magical Number","nth-magical-number"],["Minimum Number of Operations to Make Array Odd","minimum-operations-to-make-array-odd"]],
+  [["Largest Component Size by Common Factor","largest-component-size-by-common-factor"],["Count of Matches in Tournament","count-of-matches-in-tournament"],["Check if Number is a Sum of Powers of Three","check-if-number-is-a-sum-of-powers-of-three"],["Find the Divisibility Array of a String","find-the-divisibility-array-of-a-string"],["Minimum Number of Operations to Make X and Y Equal","minimum-number-of-operations-to-make-x-and-y-equal"]]
+),
+
+// -- MATH: BIT MANIPULATION ----------------------------------------------------
+buildTopic("math-bit-manipulation","Math: Bit Manipulation","#a855f7",
+  [["Single Number","single-number"],["Number of 1 Bits","number-of-1-bits"],["Reverse Bits","reverse-bits"],["Power of Two","power-of-two"],["Counting Bits","counting-bits"]],
+  [["Missing Number","missing-number"],["Find the Difference","find-the-difference"],["Sum of Two Integers","sum-of-two-integers"],["XOR Operation in an Array","xor-operation-in-an-array"],["Decode XORed Array","decode-xored-array"]],
+  [["Single Number II","single-number-ii"],["Single Number III","single-number-iii"],["Bitwise AND of Numbers Range","bitwise-and-of-numbers-range"],["Total Hamming Distance","total-hamming-distance"],["Maximum XOR of Two Numbers in an Array","maximum-xor-of-two-numbers-in-an-array"]],
+  [["Subsets","subsets"],["Gray Code","gray-code"],["Minimum Flips to Make a OR b Equal to c","minimum-flips-to-make-a-or-b-equal-to-c"],["Find XOR Sum of All Pairs Bitwise AND","find-xor-sum-of-all-pairs-bitwise-and"],["Largest Combination With Bitwise AND Greater Than Zero","largest-combination-with-bitwise-and-greater-than-zero"]],
+  [["Maximum Product of Word Lengths","maximum-product-of-word-lengths"],["Count Triplets That Can Form Two Arrays of Equal XOR","count-triplets-that-can-form-two-arrays-of-equal-xor"],["XOR Queries of a Subarray","xor-queries-of-a-subarray"],["Count of Integers","count-of-integers"],["Maximum Rows Covered by Columns","maximum-rows-covered-by-columns"]],
+  [["Number of Excellent Pairs","number-of-excellent-pairs"],["Minimum Number of Flips to Convert Binary Matrix to Zero Matrix","minimum-number-of-flips-to-convert-binary-matrix-to-zero-matrix"],["Find Minimum in Rotated Sorted Array II","find-minimum-in-rotated-sorted-array-ii"],["Longest Subarray With Maximum Bitwise AND","longest-subarray-with-maximum-bitwise-and"],["K-th Largest XOR Coordinate Value","k-th-largest-xor-coordinate-value"]]
+),
+
+// -- MATH: COMBINATORICS & PROBABILITY -----------------------------------------
+buildTopic("math-combinatorics","Math: Combinatorics","#a855f7",
+  [["Pascals Triangle","pascals-triangle"],["Pascals Triangle II","pascals-triangle-ii"],["Unique Paths","unique-paths"],["Climbing Stairs","climbing-stairs"],["Number of Ways to Select Buildings","number-of-ways-to-select-buildings"]],
+  [["Letter Combinations of a Phone Number","letter-combinations-of-a-phone-number"],["Subsets","subsets"],["Permutations","permutations"],["Combinations","combinations"],["Combination Sum III","combination-sum-iii"]],
+  [["Count of Interesting Subarrays","count-of-interesting-subarrays"],["Minimum Number of Lines to Cover Points","minimum-lines-to-represent-a-line-chart"],["Number of Beautiful Subsets","number-of-beautiful-subsets"],["Count Ways to Build Good Strings","count-ways-to-build-good-strings"],["Count of Pairs With Given Sum","count-of-pairs"]],
+  [["Unique Paths II","unique-paths-ii"],["Combination Sum IV","combination-sum-iv"],["Out of Boundary Paths","out-of-boundary-paths"],["Knight Probability in Chessboard","knight-probability-in-chessboard"],["Soup Servings","soup-servings"]],
+  [["Dice Roll Simulation","dice-roll-simulation"],["Number of Ways to Stay in the Same Place After Some Steps","number-of-ways-to-stay-in-the-same-place-after-some-steps"],["Count All Possible Routes","count-all-possible-routes"],["Minimum Cost to Fill Given Weight in a Bag","minimum-cost-to-fill-given-weight-in-a-bag"],["Stone Game IV","stone-game-iv"]],
+  [["Zuma Game","zuma-game"],["Strange Printer","strange-printer"],["Freedom Trail","freedom-trail"],["Count Different Palindromic Subsequences","count-different-palindromic-subsequences"],["Count Palindromic Substrings","palindromic-substrings"]]
+),
+
+// -- MATH: ARITHMETIC & GEOMETRY -----------------------------------------------
+buildTopic("math-arithmetic","Math: Arithmetic & Geometry","#a855f7",
+  [["Greatest Common Divisor of Strings","greatest-common-divisor-of-strings"],["Find Greatest Common Divisor of Array","find-greatest-common-divisor-of-array"],["Check if It Is a Good Array","check-if-it-is-a-good-array"],["Smallest Even Multiple","smallest-even-multiple"],["Number of Arithmetic Triplets","number-of-arithmetic-triplets"]],
+  [["Check if Array Is Sorted and Rotated","check-if-array-is-sorted-and-rotated"],["Find Target Indices After Sorting Array","find-target-indices-after-sorting-array"],["Minimum Moves to Reach Target Score","minimum-moves-to-reach-target-score"],["Maximum Difference Between Increasing Elements","maximum-difference-between-increasing-elements"],["Find the Middle Index in Array","find-the-middle-index-in-array"]],
+  [["Minimum Operations to Reduce X to Zero","minimum-operations-to-reduce-x-to-zero"],["Maximum Average Subarray I","maximum-average-subarray-i"],["Check Whether Two Strings are Almost Equivalent","check-whether-two-strings-are-almost-equivalent"],["Minimum Difference Between Highest and Lowest of K Scores","minimum-difference-between-highest-and-lowest-of-k-scores"],["Average Salary Excluding the Minimum and Maximum Salary","average-salary-excluding-the-minimum-and-maximum-salary"]],
+  [["Minimum Cost to Move Chips to The Same Position","minimum-cost-to-move-chips-to-the-same-position"],["Rectangle Area","rectangle-area"],["Max Points on a Line","max-points-on-a-line"],["Minimum Time Visiting All Points","minimum-time-visiting-all-points"],["Check if Two String Arrays are Equivalent","check-if-two-string-arrays-are-equivalent"]],
+  [["Minimum Number of Moves to Seat Everyone","minimum-number-of-moves-to-seat-everyone"],["Count Lattice Points Inside a Circle","count-lattice-points-inside-a-circle"],["Minimum Lines to Represent a Line Chart","minimum-lines-to-represent-a-line-chart"],["Number of Rectangles That Can Form The Largest Square","number-of-rectangles-that-can-form-the-largest-square"],["Check If Two Rectangle Overlap","check-if-two-rectangle-overlap"]],
+  [["Minimum Number of Operations to Reinitialize a Permutation","minimum-number-of-operations-to-reinitialize-a-permutation"],["Largest Number After Digit Swaps by Parity","largest-number-after-digit-swaps-by-parity"],["Count Integers in Intervals","count-integers-in-intervals"],["Minimize Maximum of Array","minimize-maximum-of-array"],["Kth Largest Sum in a Binary Tree","kth-largest-sum-in-a-binary-tree"]]
+),
+
 ]
