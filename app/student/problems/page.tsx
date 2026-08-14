@@ -321,11 +321,6 @@ export default function ProblemsPage() {
                         {problem.difficulty}
                       </span>
 
-                      {/* XP */}
-                      <span className="shrink-0 flex items-center gap-1 text-xs text-yellow-500 font-bold">
-                        <Zap className="h-3 w-3" />{problem.xp}
-                      </span>
-
                       <ChevronRight className="shrink-0 h-3.5 w-3.5 text-gray-600 group-hover:text-gray-400 group-hover:translate-x-0.5 transition-all" />
                     </button>
                   )
