@@ -1,9 +1,13 @@
 "use client"
 
-import { useState, useRef, useCallback, useEffect, useMemo } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, RotateCcw, Sun, Moon, Maximize2, Minimize2, BookOpen, Clock, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft, RefreshCw, Play, ChevronDown, Trophy, Maximize2, Minimize2, ChevronLeft, ChevronRight } from "lucide-react"
 import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
+import dynamic from "next/dynamic"
+
+// Monaco Editor — loaded dynamically (no SSR)
+const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false })
 
 // -- Problem lookup from topic questions --------------------------------------
 const PROBLEM_LOOKUP: Record<string, { title: string; difficulty: string }> = {}
@@ -229,6 +233,13 @@ function highlight(code: string, lang: string, theme: SyntaxTheme): string {
   }).join("\n")
 }
 
+// -- Monaco language IDs ------------------------------------------------------
+const MONACO_LANG: Record<string, string> = {
+  Python: "python", JavaScript: "javascript", TypeScript: "typescript",
+  Java: "java", "C++": "cpp", C: "c", "C#": "csharp",
+  Go: "go", Kotlin: "kotlin", Swift: "swift",
+}
+
 // -- Flat ordered problem list for Prev/Next navigation ----------------------
 const ALL_PROBLEMS_ORDERED = TOPIC_QUESTIONS.flatMap(t => t.questions.map(q => ({
   id: q.id,
@@ -238,9 +249,6 @@ const ALL_PROBLEMS_ORDERED = TOPIC_QUESTIONS.flatMap(t => t.questions.map(q => (
 interface Props { problemId: string }
 
 export default function ProblemEditor({ problemId }: Props) {
-  const textareaRef  = useRef<HTMLTextAreaElement>(null)
-  const highlightRef = useRef<HTMLDivElement>(null)
-  const editorRef    = useRef<HTMLDivElement>(null)
   const router       = useRouter()
 
   // -- Prev / Next navigation --------------------------------------------------
@@ -315,7 +323,6 @@ export default function ProblemEditor({ problemId }: Props) {
   const [customRunning, setCustomRunning] = useState(false)
   const [leftW, setLeftW]       = useState(420)
   const [bottomH, setBottomH]   = useState(240)
-  const [activeLineY, setActiveLineY] = useState(0)
   const dragH = useRef(false); const dragV = useRef(false)
 
   // -- Tab size per language (spaces) ------------------------------------------
@@ -323,8 +330,6 @@ export default function ProblemEditor({ problemId }: Props) {
     Python: 4, Java: 4, "C++": 4, C: 4, "C#": 4, Go: 4, Kotlin: 4, Swift: 4,
     JavaScript: 2, TypeScript: 2,
   }
-  const tabSize = TAB_SIZE[lang] ?? 4
-  const TAB_STR = " ".repeat(tabSize)
 
   // -- Derived -----------------------------------------------------------------
   const title      = problem?.title      ?? PROBLEM_LOOKUP[problemId]?.title    ?? "Loading…"
@@ -370,135 +375,6 @@ export default function ProblemEditor({ problemId }: Props) {
       setCode("")  // empty editor — student writes their own code
     }
     setRes(null); setError("")
-  }
-
-  // -- Sync highlight scroll with textarea ------------------------------------
-  const syncScroll = () => {
-    if (textareaRef.current && highlightRef.current) {
-      highlightRef.current.scrollTop  = textareaRef.current.scrollTop
-      highlightRef.current.scrollLeft = textareaRef.current.scrollLeft
-    }
-  }
-
-  const highlighted = useMemo(() => highlight(code, lang, theme), [code, lang, theme])
-
-  // -- Smart keyboard handler --------------------------------------------------
-  const BRACE_LANGS = new Set(["JavaScript","TypeScript","Java","C++","C","C#","Go","Kotlin","Swift"])
-
-  const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const ta = textareaRef.current; if (!ta) return
-    const { selectionStart: ss, selectionEnd: se } = ta
-    const before = code.slice(0, ss); const after = code.slice(se)
-    const curLine = before.slice(before.lastIndexOf("\n") + 1)
-
-    // -- Ctrl / Meta shortcuts ------------------------------------------------
-    if (e.ctrlKey || e.metaKey) {
-      // Ctrl+A — select all text in textarea (not the page)
-      if (e.key === "a" || e.key === "A") {
-        e.preventDefault()
-        requestAnimationFrame(() => {
-          ta.selectionStart = 0
-          ta.selectionEnd   = ta.value.length
-        })
-        return
-      }
-      // Ctrl+/ — toggle line comment
-      if (e.key === "/") {
-        e.preventDefault()
-        const commentChar = lang === "Python" ? "#" : "//"
-        const lineStart = before.lastIndexOf("\n") + 1
-        const lineEnd   = code.indexOf("\n", ss) === -1 ? code.length : code.indexOf("\n", ss)
-        const fullLine  = code.slice(lineStart, lineEnd)
-        const trimmed   = fullLine.trimStart()
-        const indent    = fullLine.slice(0, fullLine.length - trimmed.length)
-        let newCode: string
-        if (trimmed.startsWith(commentChar + " ")) {
-          newCode = code.slice(0, lineStart) + indent + trimmed.slice(commentChar.length + 1) + code.slice(lineEnd)
-        } else if (trimmed.startsWith(commentChar)) {
-          newCode = code.slice(0, lineStart) + indent + trimmed.slice(commentChar.length) + code.slice(lineEnd)
-        } else {
-          newCode = code.slice(0, lineStart) + indent + commentChar + " " + trimmed + code.slice(lineEnd)
-        }
-        setCode(newCode)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss })
-        return
-      }
-      // Let browser handle Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+Z, Ctrl+Y etc.
-      return
-    }
-
-    if (e.key === "Enter") {
-      e.preventDefault()
-      if (lang === "Python") {
-        const ind   = curLine.match(/^(\s*)/)?.[1] ?? ""
-        const extra = curLine.trimEnd().endsWith(":") ? TAB_STR : ""
-        const ins   = "\n" + ind + extra
-        const nxt   = before + ins + after; setCode(nxt)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + ins.length })
-        return
-      }
-      if (BRACE_LANGS.has(lang)) {
-        const cb = before.slice(-1); const ca = after.slice(0,1)
-        if (cb === "{" && ca === "}") {
-          const ind   = curLine.match(/^(\s*)/)?.[1] ?? ""
-          const inner = "\n" + ind + TAB_STR
-          const close = "\n" + ind
-          const nxt   = before + inner + close + "}" + after.slice(1); setCode(nxt)
-          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + inner.length })
-          return
-        }
-        const ind = curLine.match(/^(\s*)/)?.[1] ?? ""
-        const ins = "\n" + ind
-        const nxt = before + ins + after; setCode(nxt)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + ins.length })
-        return
-      }
-      return
-    }
-
-    if (e.key === "Tab") {
-      e.preventDefault()
-      if (e.shiftKey) {
-        // Shift+Tab — remove one indent level
-        const ls = before.lastIndexOf("\n") + 1
-        const sp = code.slice(ls).match(new RegExp(`^( {1,${tabSize}})`))?.[1] ?? ""
-        if (sp) {
-          setCode(code.slice(0, ls) + code.slice(ls + sp.length))
-          requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = Math.max(ls, ss - sp.length) })
-        }
-      } else {
-        // Tab — insert language-specific spaces
-        setCode(before + TAB_STR + after)
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + tabSize })
-      }
-      return
-    }
-
-    // Auto-close pairs
-    const PAIRS: Record<string,string> = lang === "Python"
-      ? { "(":")", "[":"]", '"':'"', "'":"'" }
-      : { "{":"}", "(":")", "[":"]", '"':'"', "'":"'" }
-    if (e.key === "Backspace" && ss === se) {
-      const prev = before.slice(-1); const nxt = after.slice(0,1)
-      if (prev && PAIRS[prev] === nxt) {
-        e.preventDefault()
-        setCode(before.slice(0,-1) + after.slice(1))
-        requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss - 1 })
-        return
-      }
-    }
-    if (Object.values(PAIRS).includes(e.key) && after.slice(0,1) === e.key && e.key !== "{") {
-      e.preventDefault()
-      requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
-      return
-    }
-    if (PAIRS[e.key]) {
-      const isQ = e.key === '"' || e.key === "'"
-      if (isQ && /\w/.test(before.slice(-1))) return
-      e.preventDefault()
-      const nxt = before + e.key + PAIRS[e.key] + after; setCode(nxt)
-      requestAnimationFrame(() => { ta.selectionStart = ta.selectionEnd = ss + 1 })
-    }
   }
 
   // -- Run custom input --------------------------------------------------------
@@ -592,7 +468,6 @@ export default function ProblemEditor({ problemId }: Props) {
     { input: problem?.stdin2 ?? problem?.input2 ?? "", output: problem?.expected2 ?? problem?.output2 ?? "" },
   ].filter(c => c.input.trim() !== "")
 
-  const lines = code.split("\n")
   const T = theme
 
 
@@ -813,44 +688,38 @@ export default function ProblemEditor({ problemId }: Props) {
             </div>
           </div>
 
-          {/* -- Code editor (syntax highlighted textarea overlay) ----------- */}
-          <div ref={editorRef} className="flex-1 min-h-0 overflow-hidden flex" style={{ background: T.bg }}>
-            {/* Line numbers */}
-            <div className="shrink-0 pt-4 pb-4 text-right pr-3 select-none overflow-hidden"
-              style={{ width: "44px", color: T.lineNum, fontSize: "12px", fontFamily: "'Fira Code',monospace", lineHeight: "1.5rem", background: T.bg, borderRight: `1px solid ${T.border}22` }}>
-              {lines.map((_, i) => <div key={i}>{i + 1}</div>)}
-            </div>
-            {/* Editor area - highlighted layer + transparent textarea */}
-            <div className="flex-1 relative overflow-auto"
-              style={{ scrollbarColor: `${T.scrollbar} transparent` }}>
-              {/* Syntax highlight layer */}
-              <div ref={highlightRef}
-                aria-hidden="true"
-                className="absolute inset-0 pt-4 pr-4 pb-4 pl-3 overflow-hidden pointer-events-none"
-                style={{
-                  fontFamily: "'Fira Code','Consolas',monospace", fontSize: "13px", lineHeight: "1.5rem",
-                  whiteSpace: "pre", color: T.text, tabSize: 4,
-                }}
-                dangerouslySetInnerHTML={{ __html: highlighted + "\n" }} />
-              {/* Transparent textarea on top */}
-              <textarea
-                ref={textareaRef}
-                value={code}
-                onChange={e => { setCode(e.target.value); setRes(null); syncScroll() }}
-                onScroll={syncScroll}
-                onKeyDown={handleKey}
-                onSelect={syncScroll}
-                spellCheck={false}
-                disabled={completed}
-                tabIndex={0}
-                className="absolute inset-0 resize-none focus:outline-none pt-4 pr-4 pb-4 pl-3 disabled:opacity-60"
-                style={{
-                  background: "transparent", color: "transparent", caretColor: T.text,
-                  fontFamily: "'Fira Code','Consolas',monospace", fontSize: "13px", lineHeight: "1.5rem",
-                  tabSize: 4, whiteSpace: "pre", overflowWrap: "normal",
-                  width: "100%", height: "100%",
-                }} />
-            </div>
+          {/* -- Monaco Code Editor ----------------------------------------- */}
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <MonacoEditor
+              height="100%"
+              language={MONACO_LANG[lang] ?? "python"}
+              value={code}
+              theme={themeKey === "light" ? "vs" : themeKey === "monokai" ? "vs-dark" : "vs-dark"}
+              onChange={v => { setCode(v ?? ""); setRes(null) }}
+              options={{
+                fontSize: 13,
+                fontFamily: "'Fira Code', 'Consolas', monospace",
+                fontLigatures: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                lineNumbers: "on",
+                renderLineHighlight: "line",
+                tabSize: TAB_SIZE[lang] ?? 4,
+                insertSpaces: true,
+                wordWrap: "off",
+                automaticLayout: true,
+                readOnly: completed,
+                padding: { top: 12, bottom: 12 },
+                overviewRulerLanes: 0,
+                hideCursorInOverviewRuler: true,
+                scrollbar: { vertical: "auto", horizontal: "auto", verticalScrollbarSize: 8, horizontalScrollbarSize: 8 },
+                suggest: { showKeywords: true, showSnippets: true },
+                quickSuggestions: true,
+                bracketPairColorization: { enabled: true },
+                formatOnPaste: false,
+                formatOnType: false,
+              }}
+            />
           </div>
 
           {/* -- Console panel ----------------------------------------------- */}
