@@ -163,11 +163,23 @@ export async function POST(req: Request) {
         error = e.message ?? "Execution error"
       }
 
+      // Clean up Python tracebacks — strip file paths, show only the error type + message
+      const cleanError = (err: string) => {
+        if (!err) return err
+        // Extract just the last meaningful line: "EOFError: EOF when reading a line"
+        const lines = err.split("\n").map(l => l.trim()).filter(Boolean)
+        // Find the actual error line (last non-empty line or line with "Error:")
+        const errorLine = lines.findLast(l => /^(\w+Error|Exception|SyntaxError|ValueError|TypeError|NameError|IndexError|KeyError|AttributeError|RuntimeError|RecursionError|ZeroDivisionError|MemoryError|TimeoutError|OverflowError|AssertionError|NotImplementedError|OSError|ImportError)/.test(l))
+        if (errorLine) return errorLine
+        // Fallback: return last line
+        return lines[lines.length - 1] ?? err
+      }
+
       const raw         = output.trim()
       // If stdout contains a Python traceback, treat it as an error
       const hasTraceback = raw.startsWith("Traceback") || raw.startsWith("Error:") || /^\w+Error:/.test(raw)
       const actual      = hasTraceback ? "" : raw
-      const effectiveErr = error || (hasTraceback ? raw : "")
+      const effectiveErr = cleanError(error || (hasTraceback ? raw : ""))
       const expected    = tc.expected.trim()
       const hasExpected = expected !== ""
       const isErr       = (!!effectiveErr) && !tle
