@@ -17,16 +17,16 @@ for (const topic of TOPIC_QUESTIONS) {
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
 const DEFAULT_STARTERS: Record<string, string> = {
-  Python:     "from typing import List, Optional\n\nclass Solution:\n    def solve(self, nums: List[int]) &rarr; int:\n        # Write your solution here\n        pass\n",
-  JavaScript: "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar solve = function(nums) {\n    \n};\n",
-  TypeScript: "function solve(nums: number[]): number {\n    \n};\n",
-  Java:       "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}\n",
-  "C++":      "class Solution {\npublic:\n    int solve(vector<int>& nums) {\n        \n    }\n};\n",
-  C:          "#include <stdio.h>\nint solve(int* nums, int n) {\n    return 0;\n}\n",
-  "C#":       "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}\n",
-  Go:         "func solve(nums []int) int {\n    return 0\n}\n",
-  Kotlin:     "class Solution {\n    fun solve(nums: IntArray): Int {\n        return 0\n    }\n}\n",
-  Swift:      "class Solution {\n    func solve(_ nums: [Int]) &rarr; Int {\n        return 0\n    }\n}\n",
+  Python:     "# Read input from stdin\n# Print output to stdout\n\nimport sys\ninput = sys.stdin.readline\n\n# Write your solution here\n",
+  JavaScript: "const lines = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\\n');\n\n// Write your solution here\n",
+  TypeScript: "const lines = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\\n');\n\n// Write your solution here\n",
+  Java:       "import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n        // Write your solution here\n    }\n}\n",
+  "C++":      "#include<bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    // Write your solution here\n    return 0;\n}\n",
+  C:          "#include<stdio.h>\n\nint main() {\n    // Write your solution here\n    return 0;\n}\n",
+  "C#":       "using System;\n\nclass Program {\n    static void Main() {\n        // Write your solution here\n    }\n}\n",
+  Go:         "package main\n\nimport (\n    \"bufio\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc main() {\n    reader := bufio.NewReader(os.Stdin)\n    _ = reader\n    // Write your solution here\n}\n",
+  Kotlin:     "import java.util.Scanner\n\nfun main() {\n    val sc = Scanner(System.`in`)\n    // Write your solution here\n}\n",
+  Swift:      "import Foundation\n\n// Write your solution here\n",
 }
 
 // -- Syntax Highlighting ------------------------------------------------------
@@ -257,7 +257,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
   useEffect(() => {
     if (!problemId) return
-    const key = `problem_v5_${problemId}`
+    const key = `problem_v6_${problemId}`
 
     // Check sessionStorage first - show immediately even if it's a stub (no testCases yet)
     let cachedStub: any = null

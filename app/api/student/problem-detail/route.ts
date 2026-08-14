@@ -42,11 +42,11 @@ Return ONLY valid JSON (no markdown):
     {"input": "second stdin", "output": "second stdout", "explanation": "brief"}
   ],
   "constraints": ["1 <= n <= 10^5", "other constraint"],
-  "pythonStarter": "n = int(input())\\nnums = list(map(int, input().split()))\\n# Write your solution here\\n",
-  "jsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\nconst n = parseInt(lines[0]);\\nconst nums = lines[1].split(' ').map(Number);\\n// Write your solution here\\n",
-  "tsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\nconst n = parseInt(lines[0]);\\nconst nums = lines[1].split(' ').map(Number);\\n// Write your solution here\\n",
-  "javaStarter": "import java.util.*;\\npublic class Main {\\n    public static void main(String[] args) {\\n        Scanner sc = new Scanner(System.in);\\n        int n = sc.nextInt();\\n        int[] nums = new int[n];\\n        for(int i=0;i<n;i++) nums[i]=sc.nextInt();\\n        // Write your solution here\\n    }\\n}",
-  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    int n; cin>>n;\\n    vector<int> nums(n);\\n    for(int i=0;i<n;i++) cin>>nums[i];\\n    // Write your solution here\\n    return 0;\\n}",
+  "pythonStarter": "# Read input and print output\\nimport sys\\ninput = sys.stdin.readline\\n\\n# Write your solution here\\n",
+  "jsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\n// Write your solution here\\n",
+  "tsStarter": "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\\\n');\\n// Write your solution here\\n",
+  "javaStarter": "import java.util.*;\\nimport java.io.*;\\npublic class Main {\\n    public static void main(String[] args) throws Exception {\\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\\n        // Write your solution here\\n    }\\n}",
+  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    // Write your solution here\\n    return 0;\\n}",
   "testCases": [
     {"stdin": "actual stdin for test 1", "expected": "expected stdout for test 1", "isPublic": true},
     {"stdin": "actual stdin for test 2", "expected": "expected stdout for test 2", "isPublic": true},
@@ -209,11 +209,11 @@ export async function POST(req: Request) {
       constraints:   aiData.constraints   ?? sp?.constraints ?? [],
       examples:      aiData.examples ?? sp?.examples ?? [],
       starters: {
-        Python:     aiData.pythonStarter ?? sp?.starters?.Python     ?? "n = int(input())\nnums = list(map(int, input().split()))\n# Write your solution here\n",
-        JavaScript: aiData.jsStarter     ?? sp?.starters?.JavaScript ?? "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\nconst n = parseInt(lines[0]);\nconst nums = lines[1].split(' ').map(Number);\n// Write your solution here\n",
-        TypeScript: aiData.tsStarter     ?? sp?.starters?.TypeScript ?? "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\nconst n = parseInt(lines[0]);\n// Write your solution here\n",
-        Java:       aiData.javaStarter   ?? sp?.starters?.Java       ?? "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        // Write your solution here\n    }\n}",
-        "C++":      aiData.cppStarter    ?? sp?.starters?.["C++"]    ?? "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int n; cin>>n;\n    // Write your solution here\n    return 0;\n}",
+        Python:     aiData.pythonStarter ?? sp?.starters?.Python     ?? "# Read input and print output\nimport sys\ninput = sys.stdin.readline\n\n# Write your solution here\n",
+        JavaScript: aiData.jsStarter     ?? sp?.starters?.JavaScript ?? "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\n// Write your solution here\n",
+        TypeScript: aiData.tsStarter     ?? sp?.starters?.TypeScript ?? "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\n// Write your solution here\n",
+        Java:       aiData.javaStarter   ?? sp?.starters?.Java       ?? "import java.util.*;\nimport java.io.*;\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n        // Write your solution here\n    }\n}",
+        "C++":      aiData.cppStarter    ?? sp?.starters?.["C++"]    ?? "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    // Write your solution here\n    return 0;\n}",
       },
     // Stdin-based test cases — 2 public + 3 hidden
       stdin1:    tc(0)?.stdin ?? aiData.examples?.[0]?.input ?? "",
