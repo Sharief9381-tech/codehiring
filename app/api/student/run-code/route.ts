@@ -163,10 +163,14 @@ export async function POST(req: Request) {
         error = e.message ?? "Execution error"
       }
 
-      const actual      = output.trim()
+      const raw         = output.trim()
+      // If stdout contains a Python traceback, treat it as an error
+      const hasTraceback = raw.startsWith("Traceback") || raw.startsWith("Error:") || /^\w+Error:/.test(raw)
+      const actual      = hasTraceback ? "" : raw
+      const effectiveErr = error || (hasTraceback ? raw : "")
       const expected    = tc.expected.trim()
       const hasExpected = expected !== ""
-      const isErr       = !!error && !tle
+      const isErr       = (!!effectiveErr) && !tle
       const normalize   = (s: string) =>
         s.replace(/\r\n/g, "\n").toLowerCase().replace(/\s+/g, " ").trim()
 
@@ -179,12 +183,12 @@ export async function POST(req: Request) {
       results.push({
         input:          tc.input,
         expectedOutput: tc.expected || "(hidden)",
-        actualOutput:   tle ? "Time Limit Exceeded" : isErr ? `Error: ${error}` : actual,
+        actualOutput:   tle ? "Time Limit Exceeded" : isErr ? "" : actual,
         passed,
         isPublic:       tc.isPublic,
         runtimeMs,
         tle,
-        error:          error || undefined,
+        error:          effectiveErr || undefined,
       })
     }
 
