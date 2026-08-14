@@ -17,16 +17,16 @@ for (const topic of TOPIC_QUESTIONS) {
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C", "C#", "Go", "Kotlin", "Swift"]
 
 const DEFAULT_STARTERS: Record<string, string> = {
-  Python:     "# Read input from stdin\n# Print output to stdout\n\nimport sys\ninput = sys.stdin.readline\n\n# Write your solution here\n",
-  JavaScript: "const lines = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\\n');\n\n// Write your solution here\n",
-  TypeScript: "const lines = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\\n');\n\n// Write your solution here\n",
-  Java:       "import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n        // Write your solution here\n    }\n}\n",
-  "C++":      "#include<bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    // Write your solution here\n    return 0;\n}\n",
-  C:          "#include<stdio.h>\n\nint main() {\n    // Write your solution here\n    return 0;\n}\n",
-  "C#":       "using System;\n\nclass Program {\n    static void Main() {\n        // Write your solution here\n    }\n}\n",
-  Go:         "package main\n\nimport (\n    \"bufio\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc main() {\n    reader := bufio.NewReader(os.Stdin)\n    _ = reader\n    // Write your solution here\n}\n",
-  Kotlin:     "import java.util.Scanner\n\nfun main() {\n    val sc = Scanner(System.`in`)\n    // Write your solution here\n}\n",
-  Swift:      "import Foundation\n\n// Write your solution here\n",
+  Python:     "arr = list(map(int, input().split()))\n# Write your solution here\n",
+  JavaScript: "const arr = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+  TypeScript: "const arr = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+  Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] arr = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}\n",
+  "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> arr;\n    while(cin>>x) arr.push_back(x);\n    // Write your solution here\n    return 0;\n}\n",
+  C:          "#include<stdio.h>\nint main(){\n    // Write your solution here\n    return 0;\n}\n",
+  "C#":       "using System;\nusing System.Linq;\nclass Program {\n    static void Main() {\n        int[] arr = Console.ReadLine().Split().Select(int.Parse).ToArray();\n        // Write your solution here\n    }\n}\n",
+  Go:         "package main\nimport \"fmt\"\nfunc main() {\n    // Write your solution here\n    _ = fmt.Scan\n}\n",
+  Kotlin:     "fun main() {\n    val arr = readLine()!!.split(\" \").map { it.toInt() }\n    // Write your solution here\n}\n",
+  Swift:      "let arr = readLine()!.split(separator: \" \").map { Int($0)! }\n// Write your solution here\n",
 }
 
 // -- Syntax Highlighting ------------------------------------------------------
@@ -257,7 +257,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
   useEffect(() => {
     if (!problemId) return
-    const key = `problem_v6_${problemId}`
+    const key = `problem_v7_${problemId}`
 
     // Check sessionStorage first - show immediately even if it's a stub (no testCases yet)
     let cachedStub: any = null
