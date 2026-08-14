@@ -287,7 +287,7 @@ export default function ProblemsPage() {
                       }}>
                       {/* Number */}
                       <span className="text-xs text-gray-600 w-6 text-right shrink-0 font-mono">
-                        {(idx + 1).toString().padStart(3, "0")}
+                        {idx + 1}
                       </span>
 
                       {/* Status circle */}
