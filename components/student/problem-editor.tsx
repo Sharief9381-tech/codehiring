@@ -816,13 +816,6 @@ export default function ProblemEditor({ problemId }: Props) {
                 </select>
                 <ChevronDown className="h-3 w-3 absolute right-1.5 top-1 pointer-events-none" style={{ color: T.muted }} />
               </div>
-              {/* Reset */}
-              <button onClick={() => { setCode(""); setRes(null) }}
-                title="Reset code" className="p-1 rounded transition-colors" style={{ color: T.muted }}
-                onMouseEnter={e => (e.currentTarget.style.color = T.text)}
-                onMouseLeave={e => (e.currentTarget.style.color = T.muted)}>
-                <RotateCcw className="h-3.5 w-3.5" />
-              </button>
             </div>
           </div>
 
