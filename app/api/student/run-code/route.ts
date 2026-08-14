@@ -143,7 +143,7 @@ export async function POST(req: Request) {
     if (!code?.trim()) return NextResponse.json({ error: "No code provided" },    { status: 400 })
     if (!problem)      return NextResponse.json({ error: "No problem provided" }, { status: 400 })
 
-    const count     = 5  // always run all 5 test cases (2 public + 3 hidden)
+    const count     = mode === "run" ? 2 : 5  // run=2 public cases, submit=all 5
     const testCases = buildTestCases(problem, count, language, code)
     const timeout   = LANG_TIMEOUT[language] ?? 5000
 

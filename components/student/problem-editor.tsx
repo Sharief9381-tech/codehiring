@@ -434,7 +434,13 @@ export default function ProblemEditor({ problemId }: Props) {
       if (data.results) {
         setRes(data.results); setAllPassed(data.allPassed ?? false)
         if (data.runtimeMs) { setRuntime(data.runtimeMs); setTL(data.timeLimit ?? 5000) }
-        if (mode === "run") { setBot("sample"); setSelCase(0) }
+        if (mode === "run") {
+          setBot("sample"); setSelCase(0)
+          // If all public cases passed, automatically submit to run hidden tests
+          if (data.allPassed) {
+            setTimeout(() => runTests("submit"), 300)
+          }
+        }
         if (mode === "submit") { setBot("results"); setSelCase(0) }
         if (mode === "submit" && data.allPassed) {
           setDone(true)
@@ -743,13 +749,13 @@ export default function ProblemEditor({ problemId }: Props) {
               <div className="flex gap-2">
                 <button onClick={() => runTests("run")} disabled={running || submitting || !code.trim()}
                   className="flex items-center gap-1.5 px-4 py-1 rounded text-xs font-bold disabled:opacity-40 transition-all"
-                  style={{ background: "#238636", color: "#fff", border: "1px solid #2ea043" }}>
-                  {running ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3" />} Run
-                </button>
-                <button onClick={() => runTests("submit")} disabled={submitting || running || !code.trim() || completed}
-                  className="flex items-center gap-1.5 px-4 py-1 rounded text-xs font-bold disabled:opacity-40 transition-all"
-                  style={{ background: completed ? "#238636" : "#fd8c73", color: completed ? "#fff" : "#000", border: `1px solid ${completed ? "#2ea043" : "#e06c75"}` }}>
-                  {submitting ? <><RefreshCw className="h-3 w-3 animate-spin" /> Testing…</> : completed ? "v Accepted" : "Submit"}
+                  style={{ background: completed ? "#238636" : "#238636", color: "#fff", border: "1px solid #2ea043" }}>
+                  {(running || submitting)
+                    ? <><RefreshCw className="h-3 w-3 animate-spin" /> {submitting ? "Testing…" : "Running…"}</>
+                    : completed
+                      ? "✓ Accepted"
+                      : <><Play className="h-3 w-3" /> Run</>
+                  }
                 </button>
               </div>
             </div>
