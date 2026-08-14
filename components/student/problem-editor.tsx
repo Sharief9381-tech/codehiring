@@ -579,8 +579,8 @@ export default function ProblemEditor({ problemId }: Props) {
                         dangerouslySetInnerHTML={{ __html: desc.replace(/`([^`]+)`/g, `<code style="background:${T.panel};color:${T.keyword};padding:1px 5px;border-radius:4px;font-family:monospace">$1</code>`) }} />
                     </div>
 
-                    {/* Input Format — skip only raw function signatures */}
-                    {problem?.inputFormat && !problem.inputFormat.trim().match(/^(def |function |class |public |private )\w/) && (
+                    {/* Input Format — always show, fallback to generic if missing */}
+                    {(problem?.inputFormat && !problem.inputFormat.trim().match(/^(def |function |class |public |private )\w/)) ? (
                       <div>
                         <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Input Format</p>
                         <div className="rounded-lg p-3 text-sm leading-relaxed"
@@ -588,15 +588,31 @@ export default function ProblemEditor({ problemId }: Props) {
                           {problem.inputFormat.replace(/^Function signature:\s*/i, "")}
                         </div>
                       </div>
+                    ) : problem && (
+                      <div>
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Input Format</p>
+                        <div className="rounded-lg p-3 text-sm leading-relaxed"
+                          style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.muted, fontStyle: "italic" }}>
+                          A single line of space-separated integers.
+                        </div>
+                      </div>
                     )}
 
-                    {/* Output Format */}
-                    {problem?.outputFormat && (
+                    {/* Output Format — always show, fallback if missing */}
+                    {(problem?.outputFormat) ? (
                       <div>
                         <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Output Format</p>
                         <div className="rounded-lg p-3 text-sm leading-relaxed"
                           style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.text }}>
                           {problem.outputFormat}
+                        </div>
+                      </div>
+                    ) : problem && (
+                      <div>
+                        <p className="font-bold mb-1.5 text-sm" style={{ color: T.text }}>Output Format</p>
+                        <div className="rounded-lg p-3 text-sm leading-relaxed"
+                          style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.muted, fontStyle: "italic" }}>
+                          Print the answer on a single line.
                         </div>
                       </div>
                     )}

@@ -172,7 +172,8 @@ export async function POST(req: Request) {
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
     const cached = await db.collection("problem_details_v7").findOne({ cacheKey })
-    if (cached?.problem?.stdin1?.trim() && cached?.problem?.stdin3?.trim()) {
+    if (cached?.problem?.stdin1?.trim() && cached?.problem?.stdin3?.trim() &&
+        cached?.problem?.inputFormat?.trim() && cached?.problem?.outputFormat?.trim()) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
     }
 
