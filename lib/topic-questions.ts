@@ -327,4 +327,44 @@ buildTopic("math-arithmetic","Math: Arithmetic & Geometry","#a855f7",
   [["Minimum Number of Operations to Reinitialize a Permutation","minimum-number-of-operations-to-reinitialize-a-permutation"],["Largest Number After Digit Swaps by Parity","largest-number-after-digit-swaps-by-parity"],["Count Integers in Intervals","count-integers-in-intervals"],["Minimize Maximum of Array","minimize-maximum-of-array"],["Kth Largest Sum in a Binary Tree","kth-largest-sum-in-a-binary-tree"]]
 ),
 
+// -- DYNAMIC PROGRAMMING -------------------------------------------------------
+buildTopic("dynamic-programming","Dynamic Programming","#06b6d4",
+  [["Climbing Stairs","climbing-stairs"],["House Robber","house-robber"],["Fibonacci Number","fibonacci-number"],["Min Cost Climbing Stairs","min-cost-climbing-stairs"],["N-th Tribonacci Number","n-th-tribonacci-number"]],
+  [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Maximum Subarray","maximum-subarray"],["Range Sum Query Immutable","range-sum-query-immutable"],["Is Subsequence","is-subsequence"],["Unique Paths","unique-paths"]],
+  [["Coin Change","coin-change"],["Longest Increasing Subsequence","longest-increasing-subsequence"],["Word Break","word-break"],["House Robber II","house-robber-ii"],["Decode Ways","decode-ways"]],
+  [["Unique Paths II","unique-paths-ii"],["Jump Game","jump-game"],["Partition Equal Subset Sum","partition-equal-subset-sum"],["Target Sum","target-sum"],["Longest Common Subsequence","longest-common-subsequence"]],
+  [["Edit Distance","edit-distance"],["Distinct Subsequences","distinct-subsequences"],["Burst Balloons","burst-balloons"],["Regular Expression Matching","regular-expression-matching"],["Maximal Square","maximal-square"]],
+  [["Stone Game","stone-game"],["Freedom Trail","freedom-trail"],["Strange Printer","strange-printer"],["Number of Music Playlists","number-of-music-playlists"],["Count Vowels Permutation","count-vowels-permutation"]]
+),
+
+// -- BINARY SEARCH -------------------------------------------------------------
+buildTopic("binary-search","Binary Search","#06b6d4",
+  [["Binary Search","binary-search"],["Search Insert Position","search-insert-position"],["First Bad Version","first-bad-version"],["Sqrt(x)","sqrtx"],["Guess Number Higher or Lower","guess-number-higher-or-lower"]],
+  [["Count Negative Numbers in Sorted Matrix","count-negative-numbers-in-a-sorted-matrix"],["Find Smallest Letter Greater Than Target","find-smallest-letter-greater-than-target"],["Kth Missing Positive Number","kth-missing-positive-number"],["Check if N and Its Double Exist","check-if-n-and-its-double-exist"],["Two Sum II Input Array is Sorted","two-sum-ii-input-array-is-sorted"]],
+  [["Find Minimum in Rotated Sorted Array","find-minimum-in-rotated-sorted-array"],["Search in Rotated Sorted Array","search-in-rotated-sorted-array"],["Find Peak Element","find-peak-element"],["Search a 2D Matrix","search-a-2d-matrix"],["Kth Smallest Element in Sorted Matrix","kth-smallest-element-in-a-sorted-matrix"]],
+  [["Find Right Interval","find-right-interval"],["Capacity to Ship Packages Within D Days","capacity-to-ship-packages-within-d-days"],["Koko Eating Bananas","koko-eating-bananas"],["Minimum Speed to Arrive on Time","minimum-speed-to-arrive-on-time"],["Divide Chocolate","divide-chocolate"]],
+  [["Find in Mountain Array","find-in-mountain-array"],["Split Array Largest Sum","split-array-largest-sum"],["Count of Smaller Numbers After Self","count-of-smaller-numbers-after-self"],["Find Kth Smallest Pair Distance","find-k-th-smallest-pair-distance"],["Minimize Max Distance to Gas Station","minimize-max-distance-to-gas-station"]],
+  [["Median of Two Sorted Arrays","median-of-two-sorted-arrays"],["Find the Duplicate Number","find-the-duplicate-number"],["Russian Doll Envelopes","russian-doll-envelopes"],["Count of Range Sum","count-of-range-sum"],["Dungeon Game","dungeon-game"]]
+),
+
+// -- TWO POINTERS --------------------------------------------------------------
+buildTopic("two-pointers","Two Pointers","#06b6d4",
+  [["Valid Palindrome","valid-palindrome"],["Reverse String","reverse-string"],["Two Sum II","two-sum-ii-input-array-is-sorted"],["Squares of a Sorted Array","squares-of-a-sorted-array"],["Move Zeroes","move-zeroes"]],
+  [["Remove Element","remove-element"],["Remove Duplicates from Sorted Array","remove-duplicates-from-sorted-array"],["Replace Spaces","reverse-words-in-a-string-iii"],["Merge Sorted Array","merge-sorted-array"],["Intersection of Two Arrays II","intersection-of-two-arrays-ii"]],
+  [["3Sum","3sum"],["Container With Most Water","container-with-most-water"],["3Sum Closest","3sum-closest"],["Sort Colors","sort-colors"],["Longest Mountain in Array","longest-mountain-in-array"]],
+  [["4Sum","4sum"],["Trapping Rain Water","trapping-rain-water"],["Remove Duplicates II","remove-duplicates-from-sorted-array-ii"],["Partition Labels","partition-labels"],["Minimum Size Subarray Sum","minimum-size-subarray-sum"]],
+  [["Subarrays with K Different Integers","subarrays-with-k-different-integers"],["Minimum Window Substring","minimum-window-substring"],["Longest Substring with At Most K Distinct","longest-substring-with-at-most-k-distinct-characters"],["Max Consecutive Ones III","max-consecutive-ones-iii"],["Fruit Into Baskets","fruit-into-baskets"]],
+  [["Count Subarrays With Fixed Bounds","count-subarrays-with-fixed-bounds"],["Find Longest Subarray","find-longest-subarray"],["Number of Subsequences That Satisfy the Given Sum Condition","number-of-subsequences-that-satisfy-the-given-sum-condition"],["Count Pairs Whose Sum is Less than Target","count-pairs-whose-sum-is-less-than-target"],["Boats to Save People","boats-to-save-people"]]
+),
+
+// -- SLIDING WINDOW ------------------------------------------------------------
+buildTopic("sliding-window","Sliding Window","#06b6d4",
+  [["Maximum Average Subarray I","maximum-average-subarray-i"],["Find All Anagrams in a String","find-all-anagrams-in-a-string"],["Permutation in String","permutation-in-string"],["Maximum Number of Vowels in a Substring","maximum-number-of-vowels-in-a-substring-of-given-length"],["K Radius Subarray Averages","k-radius-subarray-averages"]],
+  [["Diet Plan Performance","diet-plan-performance"],["Substrings of Size Three with Distinct Characters","substrings-of-size-three-with-distinct-characters"],["Defuse the Bomb","defuse-the-bomb"],["Maximum Sum of Distinct Subarrays With Length K","maximum-sum-of-distinct-subarrays-with-length-k"],["Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold","number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold"]],
+  [["Longest Substring Without Repeating Characters","longest-substring-without-repeating-characters"],["Minimum Size Subarray Sum","minimum-size-subarray-sum"],["Longest Repeating Character Replacement","longest-repeating-character-replacement"],["Max Consecutive Ones III","max-consecutive-ones-iii"],["Frequency of the Most Frequent Element","frequency-of-the-most-frequent-element"]],
+  [["Minimum Number of Flips to Make the Binary String Alternating","minimum-number-of-flips-to-make-the-binary-string-alternating"],["Maximum Erasure Value","maximum-erasure-value"],["Longest Subarray of 1s After Deleting One Element","longest-subarray-of-1s-after-deleting-one-element"],["Maximum Points You Can Obtain from Cards","maximum-points-you-can-obtain-from-cards"],["Count Number of Nice Subarrays","count-number-of-nice-subarrays"]],
+  [["Minimum Window Substring","minimum-window-substring"],["Sliding Window Maximum","sliding-window-maximum"],["Shortest Subarray with Sum at Least K","shortest-subarray-with-sum-at-least-k"],["Subarrays with K Different Integers","subarrays-with-k-different-integers"],["Minimum Window Subsequence","minimum-window-subsequence"]],
+  [["Substring with Concatenation of All Words","substring-with-concatenation-of-all-words"],["Count Subarrays Where Max Element Appears at Least K Times","count-subarrays-where-max-element-appears-at-least-k-times"],["Maximum Sum of Two Non-Overlapping Subarrays","maximum-sum-of-two-non-overlapping-subarrays"],["Longest Turbulent Subarray","longest-turbulent-subarray"],["Number of Substrings Containing All Three Characters","number-of-substrings-containing-all-three-characters"]]
+),
+
 ]

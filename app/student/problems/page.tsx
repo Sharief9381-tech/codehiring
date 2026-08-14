@@ -19,7 +19,7 @@ const DIFF_BG:    Record<string, string> = { Easy: "rgba(16,185,129,0.12)", Medi
 
 // ── Flat problem list with topic info ────────────────────────────────────────
 
-const ALL_PROBLEMS = TOPIC_QUESTIONS.flatMap(topic =>
+const ALL_PROBLEMS_RAW = TOPIC_QUESTIONS.flatMap(topic =>
   topic.questions.map(q => ({
     ...q,
     topic: topic.label,
@@ -28,6 +28,15 @@ const ALL_PROBLEMS = TOPIC_QUESTIONS.flatMap(topic =>
     slug: toSlug(q.title),
   }))
 )
+
+// Deduplicate by title — same problem may appear in multiple topics, keep first occurrence
+const seen = new Set<string>()
+const ALL_PROBLEMS = ALL_PROBLEMS_RAW.filter(p => {
+  const key = p.title.toLowerCase()
+  if (seen.has(key)) return false
+  seen.add(key)
+  return true
+})
 
 const TOPICS = TOPIC_QUESTIONS.map(t => ({ track: t.track, label: t.label, color: t.color, count: t.questions.length }))
 const DIFFICULTIES = ["Easy", "Medium", "Hard"] as const
