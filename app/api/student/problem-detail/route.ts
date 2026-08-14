@@ -67,13 +67,13 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
   const call = async (key: string, url: string, model: string) => {
     const r = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
       body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], temperature: 0.2, max_tokens: 1000 }),
       signal: AbortSignal.timeout(20000),
     })
-    if (!r.ok) throw new Error(`${r.status}`)
+    if (!r.ok) throw new Error("HTTP " + r.status)
     const d = await r.json()
-    let raw = d.choices?.[0]?.message?.content?.trim() ?? ""
+    let raw: string = d.choices?.[0]?.message?.content?.trim() ?? ""
     raw = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
     const p = JSON.parse(raw)
     // Unescape \\n -> real newlines
@@ -108,7 +108,7 @@ function bankToWire(sp: any, title: string, difficulty: string) {
     title,
     difficulty,
     badge: difficulty,
-    desc:          sp.desc          ?? `Solve the ${title} problem.`,
+    desc:          sp.desc          ?? "Solve the " + title + " problem.",
     inputFormat:   sp.inputFormat   ?? "",
     outputFormat:  sp.outputFormat  ?? "",
     constraints:   sp.constraints   ?? [],
@@ -184,7 +184,7 @@ export async function POST(req: Request) {
       // AI unavailable - return stub with whatever static data we have
       const stubProblem = sp ? bankToWire(sp, title, difficulty) : {
         title, difficulty, badge: difficulty,
-        desc: `Solve the ${title} problem.`,
+        desc: "Solve the " + title + " problem.",
         inputFormat: "", outputFormat: "", constraints: [],
         input: "", output: "", explain: "", input2: "", output2: "",
         examples: [], starters: {},
@@ -201,7 +201,7 @@ export async function POST(req: Request) {
     const tc = (i: number) => aiData.testCases?.[i]
     const merged = {
       title, difficulty, badge: difficulty,
-      desc:          aiData.desc          ?? sp?.desc ?? `Solve the ${title} problem.`,
+      desc:          aiData.desc          ?? sp?.desc ?? "Solve the " + title + " problem.",
       inputFormat:   aiData.inputFormat   ?? "",
       outputFormat:  aiData.outputFormat  ?? aiData.outputDescription ?? "",
       constraints:   aiData.constraints   ?? sp?.constraints ?? [],
