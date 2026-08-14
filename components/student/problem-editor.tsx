@@ -919,7 +919,7 @@ export default function ProblemEditor({ problemId }: Props) {
                               </div>
                               <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
                                 style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.string, minHeight: "32px" }}>
-                                {r.isPublic
+                                {r.isPublic || allPassed
                                   ? (r.input?.replace(/^# -- test harness --\n[\s\S]*/,'').trim() || <span style={{color:T.lineNum}}>—</span>)
                                   : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden test case</span>
                                 }
@@ -934,7 +934,7 @@ export default function ProblemEditor({ problemId }: Props) {
                               </div>
                               <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
                                 style={{ background: T.panel, border: `1px solid ${T.border}`, color: "#3fb950", minHeight: "32px" }}>
-                                {r.isPublic
+                                {r.isPublic || allPassed
                                   ? (r.expectedOutput && r.expectedOutput !== "(hidden)" ? r.expectedOutput : <span style={{color:T.lineNum}}>—</span>)
                                   : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden</span>
                                 }
