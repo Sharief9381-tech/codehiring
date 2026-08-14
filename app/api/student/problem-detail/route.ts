@@ -171,8 +171,8 @@ export async function POST(req: Request) {
     // -- 2. Check MongoDB cache ------------------------------------------------
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-    const cached = await db.collection("problem_details_v6").findOne({ cacheKey })
-    if (cached?.problem?.stdin1 !== undefined && cached?.problem?.stdin3) {
+    const cached = await db.collection("problem_details_v7").findOne({ cacheKey })
+    if (cached?.problem?.stdin1?.trim() && cached?.problem?.stdin3?.trim()) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
     }
 
@@ -232,7 +232,7 @@ export async function POST(req: Request) {
     }
 
     // Cache in MongoDB
-    await db.collection("problem_details_v5").updateOne(
+    await db.collection("problem_details_v7").updateOne(
       { cacheKey },
       { $set: { cacheKey, problem: merged, generatedAt: new Date() } },
       { upsert: true }
