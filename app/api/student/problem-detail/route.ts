@@ -30,37 +30,40 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
   const prompt = [
     "Generate a coding problem for: " + title + " (" + difficulty + " difficulty).",
     "",
-    "STRICT RULES:",
-    "1. Input is ALWAYS a single line of space-separated integers (e.g. '0 1 0 3 12')",
-    "2. NO separate n on first line. The student reads ALL input from ONE line.",
-    "3. Python starter MUST be: arr = list(map(int, input().split()))",
-    "4. The student writes a complete stdin/stdout program",
+    "STRICT RULES FOR STDIN/STDOUT:",
+    "1. Input must be plain numbers only — NO variable names like 'nums =', NO brackets like '[1,2,3]'",
+    "2. Each input value or group goes on its own line as plain space-separated numbers",
+    "3. Example for Two Sum: line 1 = '2 7 11 15' (the array), line 2 = '9' (target)",
+    "4. Example for single array: '0 1 0 3 12' (just the array on one line)",
+    "5. The student writes a complete stdin/stdout program — no class, no function signature",
+    "6. inputFormat MUST describe exactly how to read the stdin (e.g. 'First line: n space-separated integers. Second line: integer target.')",
+    "7. outputFormat MUST describe exactly what to print",
     "",
     "Return ONLY valid JSON:",
     "{",
-    '  "desc": "Problem description.",',
-    '  "inputFormat": "A single line of space-separated integers.",',
-    '  "outputFormat": "What to print.",',
+    '  "desc": "Problem description. Use backtick for `variable` names.",',
+    '  "inputFormat": "Exact description of stdin. E.g. \'First line: n space-separated integers. Second line: integer target.\'",',
+    '  "outputFormat": "Exact description of stdout. E.g. \'Print two space-separated indices.\' or \'Print n space-separated integers.\'",',
     '  "examples": [',
-    '    {"input": "space separated integers on ONE line", "output": "expected output", "explanation": "brief"},',
-    '    {"input": "second test input", "output": "expected output", "explanation": "brief"}',
+    '    {"input": "PLAIN NUMBERS ONLY — e.g. \'2 7 11 15\\n9\' for Two Sum", "output": "0 1", "explanation": "brief"},',
+    '    {"input": "second test PLAIN NUMBERS e.g. \'3 2 4\\n6\'", "output": "1 2", "explanation": "brief"}',
     "  ],",
-    '  "constraints": ["Array length constraint", "Value constraint"],',
-    '  "pythonStarter": "arr = list(map(int, input().split()))\\n# Write your solution here\\n",',
-    '  "jsStarter": "const arr = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\' \').map(Number);\\n// Write your solution here\\n",',
-    '  "tsStarter": "const arr = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\' \').map(Number);\\n// Write your solution here\\n",',
-    '  "javaStarter": "import java.util.*;\\npublic class Main {\\n    public static void main(String[] args) {\\n        Scanner sc = new Scanner(System.in);\\n        String[] parts = sc.nextLine().split(\\" \\");\\n        int[] arr = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();\\n        // Write your solution here\\n    }\\n}",',
-    '  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    int x; vector<int> arr;\\n    while(cin>>x) arr.push_back(x);\\n    // Write your solution here\\n    return 0;\\n}",',
+    '  "constraints": ["constraint 1", "constraint 2"],',
+    '  "pythonStarter": "# Read input according to Input Format above\\n# Write your solution here\\n# Print output according to Output Format above\\n",',
+    '  "jsStarter": "const lines = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\'\\\\n\');\\n// Write your solution here\\n",',
+    '  "tsStarter": "const lines = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\'\\\\n\');\\n// Write your solution here\\n",',
+    '  "javaStarter": "import java.util.*;\\npublic class Main {\\n    public static void main(String[] args) {\\n        Scanner sc = new Scanner(System.in);\\n        // Write your solution here\\n    }\\n}",',
+    '  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    // Write your solution here\\n    return 0;\\n}",',
     '  "testCases": [',
-    '    {"stdin": "space separated integers", "expected": "expected output", "isPublic": true},',
-    '    {"stdin": "another single line", "expected": "expected output", "isPublic": true},',
-    '    {"stdin": "edge case single line", "expected": "expected output", "isPublic": false},',
-    '    {"stdin": "larger input single line", "expected": "expected output", "isPublic": false},',
-    '    {"stdin": "boundary case single line", "expected": "expected output", "isPublic": false}',
+    '    {"stdin": "PLAIN NUMBERS matching inputFormat e.g. \'2 7 11 15\\n9\'", "expected": "0 1", "isPublic": true},',
+    '    {"stdin": "second public test plain numbers", "expected": "expected", "isPublic": true},',
+    '    {"stdin": "edge case plain numbers", "expected": "expected", "isPublic": false},',
+    '    {"stdin": "larger input plain numbers", "expected": "expected", "isPublic": false},',
+    '    {"stdin": "boundary plain numbers", "expected": "expected", "isPublic": false}',
     "  ]",
     "}",
     "",
-    "CRITICAL: ALL stdin values must be a SINGLE LINE of space-separated integers. Never use multiple lines.",
+    "CRITICAL: stdin values must be PLAIN NUMBERS ONLY. Never write 'nums = [...]' or 'target = 9'. Just the numbers.",
   ].join("\n")
 
   const call = async (key: string, url: string, model: string) => {
@@ -171,7 +174,7 @@ export async function POST(req: Request) {
     // -- 2. Check MongoDB cache ------------------------------------------------
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-    const cached = await db.collection("problem_details_v7").findOne({ cacheKey })
+    const cached = await db.collection("problem_details_v8").findOne({ cacheKey })
     if (cached?.problem?.stdin1?.trim() && cached?.problem?.stdin3?.trim() &&
         cached?.problem?.inputFormat?.trim() && cached?.problem?.outputFormat?.trim()) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
@@ -233,7 +236,7 @@ export async function POST(req: Request) {
     }
 
     // Cache in MongoDB
-    await db.collection("problem_details_v7").updateOne(
+    await db.collection("problem_details_v8").updateOne(
       { cacheKey },
       { $set: { cacheKey, problem: merged, generatedAt: new Date() } },
       { upsert: true }

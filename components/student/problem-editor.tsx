@@ -265,7 +265,7 @@ export default function ProblemEditor({ problemId }: Props) {
 
   useEffect(() => {
     if (!problemId) return
-    const key = `problem_v9_${problemId}`
+    const key = `problem_v10_${problemId}`
 
     try {
       const cached = sessionStorage.getItem(key)
