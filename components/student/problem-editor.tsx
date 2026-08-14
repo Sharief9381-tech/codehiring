@@ -386,8 +386,7 @@ export default function ProblemEditor({ problemId }: Props) {
       // Build a minimal problem payload that forces stdin mode (no pythonTest scripts)
       const stdinProblem = {
         title: problem?.title ?? title,
-        desc: "", input: customIn, output: "",
-        // No pythonTest* keys → run-code will use stdin mode
+        stdin1: customIn, expected1: "", public1: true,
       }
       const res = await fetch("/api/student/run-code", {
         method: "POST",
@@ -419,14 +418,12 @@ export default function ProblemEditor({ problemId }: Props) {
       const sp = problemRef.current
       const payload = {
         title: sp.title, desc: sp.desc,
-        input: sp.input, output: sp.output,
-        input2: sp.input2, output2: sp.output2,
-        input3: sp.input3, output3: sp.output3,
-        input4: sp.input4, output4: sp.output4,
-        pythonTest1: sp.pythonTest1, expectedTest1: sp.expectedTest1,
-        pythonTest2: sp.pythonTest2, expectedTest2: sp.expectedTest2,
-        pythonTest3: sp.pythonTest3, expectedTest3: sp.expectedTest3,
-        pythonTest4: sp.pythonTest4, expectedTest4: sp.expectedTest4,
+        // New stdin-based format
+        stdin1: sp.stdin1, expected1: sp.expected1, public1: sp.public1,
+        stdin2: sp.stdin2, expected2: sp.expected2, public2: sp.public2,
+        stdin3: sp.stdin3, expected3: sp.expected3, public3: sp.public3,
+        stdin4: sp.stdin4, expected4: sp.expected4, public4: sp.public4,
+        stdin5: sp.stdin5, expected5: sp.expected5, public5: sp.public5,
       }
       const customRun = mode === "run" && bottomTab === "custom" && customIn.trim()
       const res = await fetch("/api/student/run-code", {
