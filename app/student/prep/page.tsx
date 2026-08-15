@@ -95,6 +95,7 @@ const APT_TOPICS = [
   { id: "averages",        name: "Averages",                   icon: "x̄" },
   { id: "mixture",         name: "Mixture & Alligation",       icon: "⚗" },
   { id: "time-work",       name: "Time & Work",                icon: "⚙" },
+  { id: "pipes-cisterns",  name: "Pipes & Cisterns",           icon: "🚰" },
   { id: "speed-distance",  name: "Speed & Distance",           icon: "🚆" },
   { id: "probability",     name: "Probability",                icon: "🎲" },
   { id: "data-interp",     name: "Data Interpretation",        icon: "📊" },
@@ -1055,6 +1056,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "averages": "Averages",
       "mixture": "Mixture & Alligation",
       "time-work": "Time & Work",
+      "pipes-cisterns": "Pipes & Cisterns",
     }
     if (topic.id in LOCAL_TOPIC_MAP) {
       const topicName = LOCAL_TOPIC_MAP[topic.id]
@@ -1468,6 +1470,7 @@ export default function PrepHubPage() {
                   "percentages": { formula: "Percentage = (Part / Whole) × 100", points: ["Percentage increase = (New − Old)/Old × 100","Successive discounts: a% + b% = (a+b − ab/100)%","Profit% = (Profit/CP) × 100"], example: "If CP=200 and SP=250, Profit% = 50/200×100 = 25%" },
                   "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount &rarr; SP=400" },
                   "time-work": { formula: "Work = Rate × Time &rarr; 1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 &rarr; together = 12×18/30 = 7.2 days" },
+                  "pipes-cisterns": { formula: "Net rate = Σ(fill rates) − Σ(drain rates)", points: ["Fill in x hrs: rate = 1/x per hr","Leak formula: 1/inlet − 1/leak = 1/net","Capacity = flow rate × time","Alternate opening: track work per cycle","Replacement: final = initial × ((V−r)/V)^n"], example: "A fills in 6h, B empties in 8h &rarr; net = 1/6−1/8 = 1/24 &rarr; 24h to fill" },
                   "speed-distance": { formula: "Speed = Distance / Time", points: ["Relative speed (same dir): |S1−S2|","Relative speed (opp dir): S1+S2","Average speed = 2S1×S2/(S1+S2) for equal distances"], example: "Train 300m at 60km/h passes pole in 300/60×3.6 = 18s" },
                   "probability": { formula: "P(E) = Favourable / Total outcomes", points: ["P(A∪B) = P(A)+P(B)−P(A∩B)","P(A') = 1 − P(A)","Independent events: P(A∩B)=P(A)×P(B)"], example: "2 dice: P(sum=7) = 6/36 = 1/6" },
                   "arrays": { points: ["Access O(1), Insert/Delete O(n)","Two-pointer for sorted arrays","Kadane's algorithm for max subarray","Prefix sums for range queries"], formula: "prefix[i] = prefix[i-1] + arr[i]", example: "Max subarray [−2,1,−3,4,−1,2] &rarr; 6 (Kadane)" },
