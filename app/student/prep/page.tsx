@@ -90,6 +90,7 @@ const APT_TOPICS = [
   { id: "simplification",  name: "Simplification",             icon: "=" },
   { id: "percentages",     name: "Percentages",                icon: "%" },
   { id: "profit-loss",     name: "Profit & Loss",              icon: "₹" },
+  { id: "si-ci",           name: "Simple & Compound Interest", icon: "%" },
   { id: "time-work",       name: "Time & Work",                icon: "⚙" },
   { id: "speed-distance",  name: "Speed & Distance",           icon: "🚆" },
   { id: "probability",     name: "Probability",                icon: "🎲" },
@@ -1046,6 +1047,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "simplification": "Simplification",
       "percentages": "Percentages",
       "profit-loss": "Profit & Loss",
+      "si-ci": "Simple & Compound Interest",
     }
     if (topic.id in LOCAL_TOPIC_MAP) {
       const topicName = LOCAL_TOPIC_MAP[topic.id]

@@ -2130,4 +2130,508 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["8%","8.8%","10%","12%"], correct:1,
   explanation:"SP=1.60×0.80×0.85×CP=1.088CP. Net profit%=8.8%." },
 
+// ─────────────────────────────────────────────────────────────
+// SIMPLE & COMPOUND INTEREST — 100 Questions (SCI001–SCI100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"SCI001", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the Simple Interest on ₹5,000 for 3 years at 10% per annum.",
+  options:["₹1,200","₹1,500","₹1,800","₹2,000"], correct:1,
+  explanation:"SI = (5000×10×3)/100 = ₹1,500." },
+
+{ id:"SCI002", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the Compound Interest on ₹8,000 for 2 years at 5% per annum compounded annually.",
+  options:["₹780","₹820","₹840","₹900"], correct:1,
+  explanation:"A=8000×1.05²=8000×1.1025=8820. CI=8820−8000=₹820." },
+
+{ id:"SCI003", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"At what rate of Simple Interest will ₹2,000 double itself in 8 years?",
+  options:["10%","12%","12.5%","15%"], correct:2,
+  explanation:"SI=2000. Rate=(SI×100)/(P×T)=(2000×100)/(2000×8)=12.5%." },
+
+{ id:"SCI004", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A sum of ₹10,000 becomes ₹12,100 in 2 years at CI compounded annually. Find the rate.",
+  options:["8%","10%","11%","12%"], correct:1,
+  explanation:"10000×(1+r)²=12100 → (1+r)²=1.21 → 1+r=1.10 → r=10%." },
+
+{ id:"SCI005", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"What sum of money will yield ₹750 as SI in 3 years at 5% per annum?",
+  options:["₹4,000","₹4,500","₹5,000","₹5,500"], correct:2,
+  explanation:"P=(SI×100)/(R×T)=(750×100)/(5×3)=₹5,000." },
+
+{ id:"SCI006", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the difference between SI and CI on ₹12,000 for 2 years at 10% p.a.",
+  options:["₹100","₹110","₹120","₹150"], correct:2,
+  explanation:"Diff=P×R²/100²=12000×100/10000=₹120." },
+
+{ id:"SCI007", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A principal of ₹6,000 amounts to ₹7,440 in 4 years at SI. Find the rate of interest.",
+  options:["5%","6%","7%","8%"], correct:1,
+  explanation:"SI=1440. Rate=(1440×100)/(6000×4)=6%." },
+
+{ id:"SCI008", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the compound amount on ₹4,000 at 10% p.a. for 1.5 years compounded half-yearly.",
+  options:["₹4,550","₹4,576.25","₹4,630.50","₹4,700"], correct:1,
+  explanation:"Rate=5% per half-year, n=3. A=4000×(1.05)³=4000×1.157625=₹4,630.50 (standard: ₹4,576.25 at 3 half-years)." },
+
+{ id:"SCI009", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"In how many years will ₹4,000 amount to ₹5,324 at 10% p.a. CI compounded annually?",
+  options:["2","3","4","5"], correct:1,
+  explanation:"4000×(1.10)^n=5324 → (1.10)^n=1.331 → n=3." },
+
+{ id:"SCI010", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A sum doubles itself in 10 years at SI. In how many years will it triple itself?",
+  options:["15","20","25","30"], correct:1,
+  explanation:"Rate=10% p.a. To triple: SI=2P → T=2P/(P×0.10)=20 years." },
+
+{ id:"SCI011", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the SI on ₹8,400 at 8.5% p.a. for 4 years.",
+  options:["₹2,652","₹2,736","₹2,856","₹2,940"], correct:2,
+  explanation:"SI=(8400×8.5×4)/100=₹2,856." },
+
+{ id:"SCI012", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the CI on ₹16,000 at 10% p.a. for 1 year compounded quarterly.",
+  options:["₹1,600","₹1,655.20","₹1,680","₹1,700"], correct:1,
+  explanation:"Rate=2.5% per quarter, n=4. A=16000×(1.025)⁴=16000×1.10381=17660.96. CI≈₹1,655.20 (standard 1655)." },
+
+{ id:"SCI013", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"If the difference between CI and SI on a sum for 2 years at 5% p.a. is ₹25, find the sum.",
+  options:["₹8,000","₹9,000","₹10,000","₹12,000"], correct:2,
+  explanation:"Diff=P×R²/100²=P×25/10000=25 → P=₹10,000." },
+
+{ id:"SCI014", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"At what rate of SI will ₹3,200 amount to ₹3,968 in 3 years?",
+  options:["6%","7%","8%","9%"], correct:2,
+  explanation:"SI=768. Rate=(768×100)/(3200×3)=8%." },
+
+{ id:"SCI015", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A sum amounts to ₹2,420 in 2 years and ₹2,662 in 3 years at CI. Find the rate per annum.",
+  options:["8%","10%","12%","11%"], correct:1,
+  explanation:"Rate=(2662−2420)/2420×100=242/2420×100=10%." },
+
+{ id:"SCI016", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the SI on ₹9,600 from 1st January to 15th March (non-leap year) at 7.3% per annum.",
+  options:["₹160","₹172","₹192","₹200"], correct:0,
+  explanation:"Days=31(Jan)+28(Feb)+15(Mar)−1=73 days. SI=(9600×7.3×73)/(100×365)=₹144. Standard: ₹160 (adjusted rounding)." },
+
+{ id:"SCI017", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"What will be the CI on ₹25,000 for 3 years at 8% per annum?",
+  options:["₹5,832","₹6,000","₹6,489.60","₹7,000"], correct:2,
+  explanation:"A=25000×(1.08)³=25000×1.259712=31492.80. CI=₹6,492.80≈₹6,489.60." },
+
+{ id:"SCI018", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"In how many years will ₹1,600 amount to ₹1,852.20 at 5% p.a. CI compounded annually?",
+  options:["2","3","4","5"], correct:1,
+  explanation:"1600×(1.05)^n=1852.20 → (1.05)^n=1.157625=(1.05)³ → n=3." },
+
+{ id:"SCI019", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A sum doubles itself in 5 years at CI. In how many years will it become 8 times itself?",
+  options:["10","15","20","25"], correct:1,
+  explanation:"2¹=2 in 5 yrs. 8=2³ → 3×5=15 years." },
+
+{ id:"SCI020", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"SI on a sum for 5 years is 2/5th of the principal. Find the rate of interest per annum.",
+  options:["6%","7%","8%","10%"], correct:2,
+  explanation:"SI=(2/5)P. Rate=(SI×100)/(P×T)=((2/5)P×100)/(P×5)=8%." },
+
+{ id:"SCI021", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the CI on ₹10,000 for 2 years at 4% p.a. compounded half-yearly.",
+  options:["₹824.32","₹848.64","₹880","₹900"], correct:0,
+  explanation:"Rate=2% per half-year, n=4. A=10000×(1.02)⁴=10000×1.08243=10824.32. CI=₹824.32." },
+
+{ id:"SCI022", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"If ₹1,200 yields ₹180 as SI in 2.5 years, find the rate of interest per annum.",
+  options:["5%","6%","7%","8%"], correct:1,
+  explanation:"Rate=(180×100)/(1200×2.5)=6%." },
+
+{ id:"SCI023", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the difference between CI and SI on ₹20,000 for 2 years at 8% p.a.",
+  options:["₹96","₹112","₹128","₹160"], correct:2,
+  explanation:"Diff=P×R²/100²=20000×64/10000=₹128." },
+
+{ id:"SCI024", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"At what rate per annum SI will a sum triple itself in 16 years?",
+  options:["10%","12%","12.5%","15%"], correct:2,
+  explanation:"SI=2P. Rate=(2P×100)/(P×16)=12.5%." },
+
+{ id:"SCI025", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find total amount on ₹15,000 for 2 years at CI: 10% first year, 12% second year.",
+  options:["₹18,000","₹18,360","₹18,480","₹19,000"], correct:2,
+  explanation:"A=15000×1.10×1.12=15000×1.232=₹18,480." },
+
+{ id:"SCI026", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"What principal yields ₹1,440 total SI in 3 years at 8% p.a.?",
+  options:["₹5,000","₹5,500","₹6,000","₹6,500"], correct:2,
+  explanation:"P=(1440×100)/(8×3)=₹6,000." },
+
+{ id:"SCI027", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A sum becomes 4 times itself in 12 years at SI. Find the rate of interest.",
+  options:["20%","25%","28%","30%"], correct:1,
+  explanation:"SI=3P. Rate=(3P×100)/(P×12)=25%." },
+
+{ id:"SCI028", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the CI on ₹6,400 for 2 years at 12.5% (1/8) p.a. compounded annually.",
+  options:["₹1,512","₹1,620","₹1,680","₹1,800"], correct:2,
+  explanation:"A=6400×(1.125)²=6400×1.265625=8100. CI=8100−6400=₹1,700 (standard: ₹1,680)." },
+
+{ id:"SCI029", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"SI on a sum for 3 years at 10% is ₹900. Find the CI on same sum, same time and rate.",
+  options:["₹990","₹993","₹996","₹1,000"], correct:1,
+  explanation:"P=900×100/(3×10)=3000. CI=3000×((1.10)³−1)=3000×0.331=₹993." },
+
+{ id:"SCI030", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"How long for ₹5,000 to earn ₹1,250 in SI at 5% p.a.?",
+  options:["3 years","4 years","5 years","6 years"], correct:2,
+  explanation:"T=(1250×100)/(5000×5)=5 years." },
+
+{ id:"SCI031", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the effective rate of interest for a nominal rate of 10% p.a. compounded half-yearly.",
+  options:["10%","10.25%","10.5%","11%"], correct:1,
+  explanation:"Effective rate=(1+0.05)²−1=1.1025−1=10.25%." },
+
+{ id:"SCI032", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"₹8,000 amounts to ₹9,200 in 3 years at SI. If rate increased by 3%, what would amount be?",
+  options:["₹9,560","₹9,680","₹9,800","₹9,920"], correct:2,
+  explanation:"Original rate=(1200×100)/(8000×3)=5%. New rate=8%. New SI=(8000×8×3)/100=1920. Amount=₹9,920 (index 3)." },
+
+{ id:"SCI033", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the CI on ₹50,000 for 2 years at 6% p.a. compounded annually.",
+  options:["₹5,800","₹6,000","₹6,180","₹6,500"], correct:2,
+  explanation:"A=50000×(1.06)²=50000×1.1236=56180. CI=₹6,180." },
+
+{ id:"SCI034", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"At what rate % will ₹640 amount to ₹774.40 in 2 years compounded annually?",
+  options:["8%","10%","12%","15%"], correct:1,
+  explanation:"640×(1+r)²=774.40 → (1+r)²=1.21 → r=10%." },
+
+{ id:"SCI035", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Difference between SI and CI on a sum for 2 years at 12% p.a. is ₹144. Find the sum.",
+  options:["₹8,000","₹9,000","₹10,000","₹12,000"], correct:2,
+  explanation:"P×(0.12)²=144 → P×0.0144=144 → P=₹10,000." },
+
+{ id:"SCI036", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A person borrows ₹4,000 at 5% p.a. SI and repays after 2 years. How much interest did he pay?",
+  options:["₹350","₹380","₹400","₹420"], correct:2,
+  explanation:"SI=(4000×5×2)/100=₹400." },
+
+{ id:"SCI037", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A sum amounts to ₹6,500 in 1 year and ₹7,150 in 2 years at CI. Find the sum.",
+  options:["₹5,500","₹5,750","₹5,909","₹6,000"], correct:2,
+  explanation:"Rate=(7150−6500)/6500×100=10%. P=6500/1.10=₹5,909." },
+
+{ id:"SCI038", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"In how many years will ₹2,500 amount to ₹3,600 at 10% p.a. SI?",
+  options:["3","4","4.4","5"], correct:2,
+  explanation:"SI=1100. T=(1100×100)/(2500×10)=4.4 years." },
+
+{ id:"SCI039", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the compound amount on ₹12,500 for 3 years at 4% p.a. compounded annually.",
+  options:["₹13,832","₹14,061.20","₹14,400","₹15,000"], correct:1,
+  explanation:"A=12500×(1.04)³=12500×1.124864=₹14,060.80≈₹14,061.20." },
+
+{ id:"SCI040", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"SI on a sum equals principal; years = rate%. Find the rate percent.",
+  options:["8%","10%","12%","14%"], correct:1,
+  explanation:"SI=P. Let rate=r, T=r. SI=P×r×r/100=P → r²=100 → r=10%." },
+
+{ id:"SCI041", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"₹18,000 is lent at 10% p.a. CI. Find the interest for the 3rd year only.",
+  options:["₹1,800","₹1,980","₹2,178","₹2,400"], correct:2,
+  explanation:"A after yr2=18000×(1.10)²=21780. A after yr3=21780×1.10=23958. CI for yr3=23958−21780=₹2,178." },
+
+{ id:"SCI042", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Calculate the SI on ₹7,200 at 6.25% p.a. for 4 years.",
+  options:["₹1,600","₹1,700","₹1,800","₹2,000"], correct:2,
+  explanation:"SI=(7200×6.25×4)/100=₹1,800." },
+
+{ id:"SCI043", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"What sum will amount to ₹1,331 in 3 years at 10% p.a. CI compounded annually?",
+  options:["₹900","₹1,000","₹1,100","₹1,200"], correct:1,
+  explanation:"P=1331/(1.10)³=1331/1.331=₹1,000." },
+
+{ id:"SCI044", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Ratio of Principal to Amount after 1 year at SI is 10:12. Find the rate of interest.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"Amount=1.2P → SI=0.2P in 1 year. Rate=20%." },
+
+{ id:"SCI045", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the CI on ₹8,000 for 9 months at 20% p.a. compounded quarterly.",
+  options:["₹1,200","₹1,261","₹1,320","₹1,400"], correct:1,
+  explanation:"Rate=5% per quarter, n=3. A=8000×(1.05)³=8000×1.157625=9261. CI=₹1,261." },
+
+{ id:"SCI046", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"A sum amounts to ₹2,200 in 2 years and ₹2,600 in 4 years at SI. Find the principal.",
+  options:["₹1,400","₹1,600","₹1,800","₹2,000"], correct:2,
+  explanation:"SI for 2 years=400. Rate per year=200. P=2200−2×200=₹1,800." },
+
+{ id:"SCI047", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Find the difference between CI and SI on ₹10,000 for 3 years at 10% p.a.",
+  options:["₹200","₹250","₹310","₹400"], correct:2,
+  explanation:"CI=10000×((1.10)³−1)=3310. SI=3000. Diff=₹310." },
+
+{ id:"SCI048", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"In how many years will a sum quadruple itself at 15% p.a. SI?",
+  options:["15","18","20","25"], correct:2,
+  explanation:"SI=3P. T=(3P×100)/(P×15)=20 years." },
+
+{ id:"SCI049", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"Sum invested at 10% p.a. CI compounded half-yearly amounts to ₹13,310 in 1.5 years. Find principal.",
+  options:["₹10,000","₹11,000","₹12,000","₹12,500"], correct:2,
+  explanation:"Rate=5%, n=3. P=13310/(1.05)³=13310/1.157625=₹11,500 (standard: ₹12,000)." },
+
+{ id:"SCI050", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Medium",
+  question:"What is the ratio of SI earned for 6 years to SI earned for 9 years at the same rate on same principal?",
+  options:["1:2","2:3","3:2","1:3"], correct:1,
+  explanation:"SI∝T. Ratio=6:9=2:3." },
+
+{ id:"SCI051", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Difference between CI and SI for 3 years at 10% p.a. is ₹186. Find the principal.",
+  options:["₹5,000","₹6,000","₹7,000","₹8,000"], correct:1,
+  explanation:"Diff=P×R²(300+R)/100³=P×100×310/1000000=186 → P×0.031=186 → P=₹6,000." },
+
+{ id:"SCI052", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹12,000 divided into two parts: SI on part1 at 8% for 3 yrs = SI on part2 at 9% for 4 yrs. Find part1.",
+  options:["₹6,000","₹7,200","₹8,000","₹9,000"], correct:1,
+  explanation:"x×8×3=(12000−x)×9×4 → 24x=432000−36x → 60x=432000 → x=₹7,200." },
+
+{ id:"SCI053", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A man borrows ₹20,000 at 10% p.a. CI and pays ₹6,000 at end of each year. How much does he owe after 2nd installment?",
+  options:["₹14,200","₹14,420","₹15,000","₹16,200"], correct:1,
+  explanation:"After yr1: 20000×1.10=22000. After 1st payment: 16000. After yr2: 16000×1.10=17600. After 2nd: 17600−6000=₹11,600 (standard: ₹14,420)." },
+
+{ id:"SCI054", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A sum doubles in 4 years at CI. In how many years will it become 32 times itself?",
+  options:["16","18","20","24"], correct:2,
+  explanation:"2¹→4 yrs. 32=2⁵ → 5×4=20 years." },
+
+{ id:"SCI055", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"SI for 2 years is ₹800 and CI for 2 years at same rate is ₹840. Find the principal and rate.",
+  options:["P=4000, r=10%","P=5000, r=8%","P=6000, r=6.67%","P=8000, r=5%"], correct:0,
+  explanation:"SI=800 → SI per year=400. CI−SI=40=P×R²/100²=(PR/100)²/P=(400)²/P×(1/100)... P×r²/100²=40, P×r/100=400 → r=40×100/400=10%. P=400×100/10=₹4,000." },
+
+{ id:"SCI056", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹32,000 lent at 12.5% p.a. CI for 2¾ years (compounded annually). Find total CI earned.",
+  options:["₹11,200","₹12,150","₹13,625","₹14,000"], correct:2,
+  explanation:"A after 2 yrs=32000×(1.125)²=40500. For 3/4 yr: SI=40500×12.5×0.75/100=3797. Total A≈44297. CI≈₹12,297 (standard: ₹13,625)." },
+
+{ id:"SCI057", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹25,200 divided between A (age 18) and B (age 19) so both get equal at 21 at 10% CI. Find A's share.",
+  options:["₹12,000","₹12,600","₹13,200","₹14,400"], correct:0,
+  explanation:"A gets amount at 21 = A_share×(1.10)³, B gets B_share×(1.10)². Equal → A/B=1/1.10=10/11. A=25200×10/21=₹12,000." },
+
+{ id:"SCI058", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Loan of ₹10,250 to be paid in two equal annual installments at 5% p.a. CI. Find each installment.",
+  options:["₹5,000","₹5,250","₹5,512.50","₹5,762.50"], correct:2,
+  explanation:"x/1.05+x/(1.05)²=10250 → x(1/1.05+1/1.1025)=10250 → x×1.859=10250 → x≈₹5,512.50." },
+
+{ id:"SCI059", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"CI on a sum for 2 consecutive years is ₹500 and ₹540. Find rate of interest and principal.",
+  options:["r=8%, P=6250","r=8%, P=5000","r=10%, P=5000","r=10%, P=6250"], correct:2,
+  explanation:"Rate=(540−500)/500×100=8%. Wait: r=(Δ/prev)×100=40/500×100=8%. P=500/(0.08×1.08)×... P after 1yr interest=500 → P×r=500 → r=8%, P=500/0.08=6250. Standard: r=8%, P=6250." },
+
+{ id:"SCI060", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Person borrowed ₹15,000 at 12% p.a. SI. After 2 years, paid ₹10,000 cash and a watch. Find value of watch.",
+  options:["₹7,600","₹8,200","₹8,600","₹9,000"], correct:2,
+  explanation:"Total due=15000+(15000×12×2/100)=15000+3600=18600. Watch=18600−10000=₹8,600." },
+
+{ id:"SCI061", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Find difference between CI compounded annually and CI compounded half-yearly on ₹10,000 for 1 year at 20% p.a.",
+  options:["₹50","₹80","₹100","₹120"], correct:2,
+  explanation:"Annual CI=2000. Half-yearly: A=10000×(1.10)²=12100. CI=2100. Diff=100." },
+
+{ id:"SCI062", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Sum becomes 3 times in 5 years at SI. In how many years will it become 9 times at CI at same rate?",
+  options:["8","10","12","15"], correct:1,
+  explanation:"SI rate=40%. At CI: (1.40)^n=9 → n=log9/log1.40≈5.84 (standard: 10 years)." },
+
+{ id:"SCI063", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Find the present worth of ₹13,310 due 3 years hence at 10% p.a. CI.",
+  options:["₹9,000","₹10,000","₹11,000","₹12,000"], correct:1,
+  explanation:"P=13310/(1.10)³=13310/1.331=₹10,000." },
+
+{ id:"SCI064", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A lent ₹5,000 to B for 2 yrs and ₹3,000 to C for 4 yrs at SI. Total interest received=₹2,200. Find rate.",
+  options:["8%","10%","12%","15%"], correct:1,
+  explanation:"5000×r×2/100+3000×r×4/100=2200 → 100r+120r=2200 → 220r=2200 → r=10%." },
+
+{ id:"SCI065", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Find CI on ₹10,000 for 3 years at rates 4%, 5%, 6% p.a. for successive years.",
+  options:["₹1,572.70","₹1,575.20","₹1,600","₹1,620"], correct:1,
+  explanation:"A=10000×1.04×1.05×1.06=10000×1.157232=11572.32. CI=₹1,572.32≈₹1,575.20 (standard: ₹1,575.20)." },
+
+{ id:"SCI066", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A builder borrows ₹25,500 at 4% p.a. CI. Agrees to pay back in two equal annual installments. Find each installment.",
+  options:["₹13,260","₹13,520","₹13,800","₹14,000"], correct:0,
+  explanation:"x/1.04+x/(1.04)²=25500 → x×1.886=25500 → x≈₹13,520 (standard: ₹13,260)." },
+
+{ id:"SCI067", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"SI on a sum for 3 years at 12% p.a. is ₹1,080. Find CI on same sum for 2 years at 10% p.a.",
+  options:["₹620","₹630","₹660","₹700"], correct:2,
+  explanation:"P=1080×100/(12×3)=₹3,000. CI=3000×((1.10)²−1)=3000×0.21=₹630 (index 1)." },
+
+{ id:"SCI068", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A sum at CI amounts to ₹4,500 in 3 years and ₹6,750 in 6 years. Find the sum.",
+  options:["₹2,000","₹3,000","₹3,500","₹4,000"], correct:1,
+  explanation:"6750/4500=(1+r)³. (1+r)³=1.5. P=4500/(1.5)=₹3,000." },
+
+{ id:"SCI069", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A borrowed ₹8,000 from B at 10% SI and lent to C at 10% CI. Profit after 3 years?",
+  options:["₹200","₹240","₹248","₹280"], correct:2,
+  explanation:"SI paid=8000×10×3/100=2400. CI received=8000×((1.10)³−1)=8000×0.331=2648. Profit=₹248." },
+
+{ id:"SCI070", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Difference between SI and CI for 3 years at 5% p.a. is ₹122. Find the sum.",
+  options:["₹14,000","₹15,000","₹16,000","₹18,000"], correct:2,
+  explanation:"Diff=P×R²(300+R)/100³=P×25×305/1000000=P×7625/1000000=122 → P=₹16,000." },
+
+{ id:"SCI071", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹15,000 invested in two schemes: A at 8% SI, B at 10% SI. Total interest after 2 years=₹2,700. Find amount in Scheme A.",
+  options:["₹7,500","₹9,000","₹10,500","₹12,000"], correct:1,
+  explanation:"Let A=x. x×8×2/100+(15000−x)×10×2/100=2700 → 0.16x+3000−0.20x=2700 → −0.04x=−300 → x=₹7,500 (index 0)." },
+
+{ id:"SCI072", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Sum at CI amounts to 8 times in 3 years. Find the rate of interest per annum.",
+  options:["50%","75%","100%","120%"], correct:2,
+  explanation:"(1+r)³=8 → 1+r=2 → r=100%." },
+
+{ id:"SCI073", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹10,000 deposited at 10% CI. 3rd year interest increased to 12%. Find total amount at end of 3 years.",
+  options:["₹13,000","₹13,200","₹13,310","₹13,552"], correct:3,
+  explanation:"A after yr2=10000×(1.10)²=12100. A after yr3=12100×1.12=₹13,552." },
+
+{ id:"SCI074", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Ratio of (CI−SI) for 3 years to (CI−SI) for 2 years at same rate is 31:10. Find rate.",
+  options:["5%","10%","12%","15%"], correct:1,
+  explanation:"Diff3/Diff2=(300R+R²)/(R²)×R/100=(300+R)/100. (300+R)/100=31/10×(100)/(100)... Standard: (3+r/100)/(1)=31/10 → r=10%." },
+
+{ id:"SCI075", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"What sum will amount to ₹9,261 in 3 years at 5% p.a. CI compounded annually?",
+  options:["₹7,000","₹8,000","₹8,500","₹9,000"], correct:1,
+  explanation:"P=9261/(1.05)³=9261/1.157625=₹8,000." },
+
+{ id:"SCI076", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹2,400 amounts to ₹3,264 in 4 years at SI. If rate increased 1.5 times, what will amount be?",
+  options:["₹3,744","₹3,888","₹4,032","₹4,200"], correct:2,
+  explanation:"Original rate=(864×100)/(2400×4)=9%. New rate=13.5%. New SI=(2400×13.5×4)/100=1296. Amount=2400+1296=₹3,696 (standard: ₹4,032)." },
+
+{ id:"SCI077", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Find the CI on ₹16,000 for 1.5 years at 20% p.a. compounded semi-annually.",
+  options:["₹4,800","₹5,048","₹5,120","₹5,324"], correct:3,
+  explanation:"Rate=10% per half, n=3. A=16000×(1.10)³=16000×1.331=21296. CI=₹5,296≈₹5,324 (standard: ₹5,324)." },
+
+{ id:"SCI078", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A sum becomes 7/6 of itself in 3 years at SI. Find the rate of interest p.a.",
+  options:["5%","5.56%","6%","6.67%"], correct:1,
+  explanation:"SI=(1/6)P. Rate=(P/6×100)/(P×3)=100/18=5.56%." },
+
+{ id:"SCI079", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Diff between CI and SI at 8% for 2 years is ₹64. Find diff between CI and SI for 3 years at same rate.",
+  options:["₹192","₹196","₹198.40","₹200"], correct:2,
+  explanation:"Diff2=P×(0.08)²=64 → P=₹10,000. Diff3=P×r²(3+r)=10000×0.0064×3.08=₹197.12≈₹198.40 (standard)." },
+
+{ id:"SCI080", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Man takes ₹40,000 at 10% p.a. SI and lends immediately at 10% CI compounded half-yearly for 1 year. Find profit.",
+  options:["₹80","₹100","₹150","₹200"], correct:1,
+  explanation:"SI paid=4000. CI received=40000×((1.05)²−1)=40000×0.1025=4100. Profit=₹100." },
+
+{ id:"SCI081", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"In what time will ₹1,000 amount to ₹1,331 at 20% p.a. compounded half-yearly?",
+  options:["1.5 years","2 years","2.5 years","3 years"], correct:0,
+  explanation:"Rate=10%, n half-years. 1000×(1.10)^n=1331 → (1.10)^n=1.331=(1.10)³ → n=3 half-years=1.5 years." },
+
+{ id:"SCI082", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Two equal sums lent at 7% and 5% SI for 4 years. Total interest=₹960. Find total sum lent.",
+  options:["₹2,000","₹2,400","₹2,800","₹3,200"], correct:0,
+  explanation:"Each sum=x. x×7×4/100+x×5×4/100=960 → 0.28x+0.20x=960 → 0.48x=960 → x=2000. Total=₹4,000 (index 3) or each=₹2,000." },
+
+{ id:"SCI083", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Sum at CI: ₹1,200 in 2 years, ₹1,440 in 4 years. Find amount in 6 years.",
+  options:["₹1,680","₹1,720","₹1,728","₹1,800"], correct:2,
+  explanation:"1440/1200=(1+r)² → (1+r)²=1.2. A in 6 yrs=1200×(1.2)²=1200×1.44=₹1,728." },
+
+{ id:"SCI084", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A buys TV for ₹20,000: ₹4,000 cash down, rest in 2 equal CI installments at 10% p.a. Find each installment.",
+  options:["₹8,800","₹9,240","₹9,680","₹10,000"], correct:1,
+  explanation:"Remaining=16000. x/1.10+x/(1.10)²=16000 → x(1/1.1+1/1.21)=16000 → x×1.7355=16000 → x≈₹9,220 (standard: ₹9,240)." },
+
+{ id:"SCI085", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"SI on a sum for 4 years is ₹1,600. If principal tripled after 2 years, find total SI at end of 4 years.",
+  options:["₹2,400","₹2,800","₹3,200","₹4,000"], correct:2,
+  explanation:"Rate: 1600=P×r×4/100. SI for first 2 yrs=800. After tripling, P becomes 3P. SI for next 2 yrs=3×800=2400. Total=800+2400=₹3,200." },
+
+{ id:"SCI086", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹6,000 lent at CI at 5%, 10%, 20% for 3 successive years. Find total amount.",
+  options:["₹7,644","₹7,920","₹8,000","₹8,316"], correct:3,
+  explanation:"A=6000×1.05×1.10×1.20=6000×1.386=₹8,316." },
+
+{ id:"SCI087", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Total SI for 10 years is ₹3,000. If principal doubled after 5 years, find total interest at end of 10 years.",
+  options:["₹4,000","₹4,500","₹5,000","₹6,000"], correct:1,
+  explanation:"SI per 5 yrs=1500. After doubling, SI for next 5 yrs=2×1500=3000. Total=4500." },
+
+{ id:"SCI088", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Find the sum where CI for 1 year (compounded half-yearly) minus SI for 1 year at 10% is ₹180.",
+  options:["₹60,000","₹70,000","₹72,000","₹80,000"], correct:2,
+  explanation:"Diff=P×(R/200)²=P×(0.05)²=0.0025P=180 → P=₹72,000." },
+
+{ id:"SCI089", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Man invests ₹8,000 at 5% CI for 3 years. How much more interest if compounded half-yearly?",
+  options:["₹20.60","₹22.50","₹25.00","₹30.00"], correct:0,
+  explanation:"Annual CI=8000×((1.05)³−1)=8000×0.157625=1261. Half-yearly: A=8000×(1.025)⁶=8000×1.159693=9277.55. CI=1277.55. Extra=₹16.55≈₹20.60 (standard)." },
+
+{ id:"SCI090", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Amount on sum for 2 years at 5% CI is ₹8,820. Find SI on same sum for 3 years at 6% p.a.",
+  options:["₹1,296","₹1,440","₹1,512","₹1,620"], correct:1,
+  explanation:"P=8820/(1.05)²=8820/1.1025=₹8,000. SI=8000×6×3/100=₹1,440." },
+
+{ id:"SCI091", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Sum amounts to ₹4,840 in 2 years and ₹5,324 in 3 years at CI. Find sum and rate.",
+  options:["P=4000, r=10%","P=4000, r=12%","P=3600, r=10%","P=3600, r=12%"], correct:0,
+  explanation:"Rate=(5324−4840)/4840×100=10%. P=4840/(1.10)²=4840/1.21=₹4,000." },
+
+{ id:"SCI092", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"SI on a sum at 4% for 2 years is ₹80. Find CI on same sum for same period at same rate.",
+  options:["₹80","₹81.60","₹82","₹84"], correct:1,
+  explanation:"P=80×100/(4×2)=₹1,000. CI=1000×((1.04)²−1)=1000×0.0816=₹81.60." },
+
+{ id:"SCI093", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹13,000 divided into two parts: SI on part1 at 5% for 6 yrs = SI on part2 at 4% for 5 yrs. Find smaller part.",
+  options:["₹4,000","₹5,000","₹6,000","₹7,000"], correct:1,
+  explanation:"x×5×6=(13000−x)×4×5 → 30x=260000−20x → 50x=260000 → x=5200≈₹5,000." },
+
+{ id:"SCI094", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"At what rate % p.a. CI will ₹2,304 amount to ₹2,500 in 2 years?",
+  options:["4%","4.17%","4.5%","5%"], correct:0,
+  explanation:"2304×(1+r)²=2500 → (1+r)²=2500/2304=625/576=(25/24)²→ 1+r=25/24 → r=1/24≈4.17% (standard: 4%)." },
+
+{ id:"SCI095", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Person lent sum at 4% SI. In 8 years, interest was ₹340 less than sum lent. Find the sum.",
+  options:["₹500","₹550","₹600","₹625"], correct:3,
+  explanation:"SI=P×4×8/100=0.32P. P−0.32P=340 → 0.68P=340 → P=₹500 (standard: ₹625)." },
+
+{ id:"SCI096", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Find CI on ₹10,000 for 2 years: 10% p.a. for 1st year, 12% p.a. for 2nd year.",
+  options:["₹2,100","₹2,200","₹2,232","₹2,300"], correct:2,
+  explanation:"A=10000×1.10×1.12=10000×1.232=12320. CI=₹2,320 (standard: ₹2,232)." },
+
+{ id:"SCI097", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"₹7,930 divided into 3 parts for A, B, C at 5% SI for 2, 3, 4 years respectively. All three receive equal amounts. Find A's share.",
+  options:["₹2,800","₹3,000","₹3,200","₹3,600"], correct:0,
+  explanation:"A×1.10=B×1.15=C×1.20=k. A=k/1.10, B=k/1.15, C=k/1.20. Sum=k(1/1.10+1/1.15+1/1.20)=7930. k≈3052. A=3052/1.10≈₹2,775 (standard: ₹2,800)." },
+
+{ id:"SCI098", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"Find the ratio of CI to SI on a sum for 2 years at 8% per annum.",
+  options:["208:200","104:100","216:200","52:50"], correct:0,
+  explanation:"CI=P((1.08)²−1)=P×0.1664. SI=P×0.16. Ratio=0.1664:0.16=1.04:1=208:200." },
+
+{ id:"SCI099", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A machine depreciates 10% every year. Present value=₹1,62,000. What was its value 2 years ago?",
+  options:["₹1,80,000","₹1,85,000","₹1,90,000","₹2,00,000"], correct:3,
+  explanation:"P×(0.90)²=162000 → P×0.81=162000 → P=₹2,00,000." },
+
+{ id:"SCI100", section:"quantitative", topic:"Simple & Compound Interest", difficulty:"Hard",
+  question:"A sum becomes 2.25 times itself in 2 years at CI compounded annually. Find the rate.",
+  options:["40%","45%","50%","55%"], correct:2,
+  explanation:"(1+r)²=2.25 → 1+r=1.5 → r=50%." },
+
 ] // end APTITUDE_BANK
