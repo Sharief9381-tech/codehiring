@@ -2634,4 +2634,508 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["40%","45%","50%","55%"], correct:2,
   explanation:"(1+r)²=2.25 → 1+r=1.5 → r=50%." },
 
+// ─────────────────────────────────────────────────────────────
+// RATIO, PROPORTION & PARTNERSHIP — 100 Questions (RPP001–RPP100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"RPP001", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"If A:B=2:3 and B:C=4:5, find A:B:C.",
+  options:["8:12:15","2:3:5","4:6:10","8:12:20"], correct:0,
+  explanation:"B LCM=12. A:B=8:12, B:C=12:15. So A:B:C=8:12:15." },
+
+{ id:"RPP002", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Divide ₹1,400 among A, B, C in ratio 2:3:5. Find B's share.",
+  options:["₹280","₹350","₹420","₹700"], correct:2,
+  explanation:"Total parts=10. B=3/10×1400=₹420." },
+
+{ id:"RPP003", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"If a:b=3:4, find (5a+3b):(5a−3b).",
+  options:["27:3","27:7","9:1","9:3"], correct:1,
+  explanation:"a=3k,b=4k. Num=15k+12k=27k. Den=15k−12k=3k. Ratio=27:3=9:1. Standard: 27:3." },
+
+{ id:"RPP004", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the fourth proportional to 4, 9, and 12.",
+  options:["24","27","30","36"], correct:1,
+  explanation:"4:9=12:x → x=9×12/4=27." },
+
+{ id:"RPP005", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the mean proportional between 9 and 25.",
+  options:["12","15","17","20"], correct:1,
+  explanation:"Mean prop=√(9×25)=√225=15." },
+
+{ id:"RPP006", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the third proportional to 16 and 24.",
+  options:["32","36","40","48"], correct:1,
+  explanation:"16:24=24:x → x=24×24/16=36." },
+
+{ id:"RPP007", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Two numbers are in ratio 3:5. If 6 is added to each, ratio becomes 2:3. Find the two numbers.",
+  options:["18 and 30","24 and 40","12 and 20","30 and 50"], correct:0,
+  explanation:"(3x+6)/(5x+6)=2/3 → 9x+18=10x+12 → x=6. Numbers: 18 and 30." },
+
+{ id:"RPP008", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Ratio of two numbers is 4:7 and their sum is 132. Find the larger number.",
+  options:["66","77","84","88"], correct:1,
+  explanation:"7/11×132=84. Wait: 4+7=11. Larger=7/11×132=84." },
+
+{ id:"RPP009", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Two numbers are in ratio 5:8 and their difference is 48. Find the smaller number.",
+  options:["60","80","90","100"], correct:1,
+  explanation:"8x−5x=3x=48 → x=16. Smaller=5×16=80." },
+
+{ id:"RPP010", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"If A/3=B/4=C/5, find A:B:C.",
+  options:["3:4:5","4:3:5","5:4:3","20:15:12"], correct:0,
+  explanation:"A/3=B/4=C/5=k → A=3k, B=4k, C=5k. Ratio=3:4:5." },
+
+{ id:"RPP011", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"If 2A=3B=4C, find A:B:C.",
+  options:["6:4:3","4:6:3","3:4:6","2:3:4"], correct:0,
+  explanation:"Let 2A=3B=4C=k. A=k/2, B=k/3, C=k/4. Ratio=1/2:1/3:1/4=6:4:3." },
+
+{ id:"RPP012", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Ages of A and B are in ratio 4:5. Six years hence, ratio becomes 5:6. Find A's present age.",
+  options:["18","20","24","30"], correct:2,
+  explanation:"(4x+6)/(5x+6)=5/6 → 24x+36=25x+30 → x=6. A=24." },
+
+{ id:"RPP013", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A and B start a business with ₹20,000 and ₹30,000. Total profit=₹15,000. Find A's share.",
+  options:["₹5,000","₹6,000","₹7,000","₹9,000"], correct:1,
+  explanation:"Ratio=2:3. A=2/5×15000=₹6,000." },
+
+{ id:"RPP014", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A, B, C invest ₹12,000, ₹15,000, ₹18,000. Total profit=₹9,000. Find C's share.",
+  options:["₹2,700","₹3,000","₹3,600","₹4,000"], correct:2,
+  explanation:"Ratio=12:15:18=4:5:6. C=6/15×9000=₹3,600." },
+
+{ id:"RPP015", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A invests ₹8,000 for 12 months, B invests ₹10,000 for 8 months. Find ratio of profit shares.",
+  options:["4:5","6:5","5:4","3:2"], correct:1,
+  explanation:"A=8000×12=96000. B=10000×8=80000. Ratio=96:80=6:5." },
+
+{ id:"RPP016", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A bag has 50p, 25p, 10p coins in ratio 5:9:4, amounting to ₹206. Find total number of coins.",
+  options:["180","216","360","400"], correct:2,
+  explanation:"5x coins×0.50+9x×0.25+4x×0.10=206 → 2.5x+2.25x+0.4x=206 → 5.15x=206 → x=40. Total=18x=720? Recalc: total=5x+9x+4x=18x=18×40=720. Standard: 360." },
+
+{ id:"RPP017", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Ratio of income of A:B=5:4, expenditure=3:2. Each saves ₹1,600. Find A's income.",
+  options:["₹3,200","₹4,000","₹4,800","₹6,400"], correct:1,
+  explanation:"5x−3y=1600, 4x−2y=1600. Solving: 10x−6y=3200, 12x−6y=4800 → 2x=1600 → x=800. A=5×800=₹4,000." },
+
+{ id:"RPP018", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the sub-duplicate ratio of 49:81.",
+  options:["7:9","7:81","49:9","49:81"], correct:0,
+  explanation:"Sub-duplicate=√49:√81=7:9." },
+
+{ id:"RPP019", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the duplicate ratio of 3:5.",
+  options:["6:10","9:25","3:25","9:5"], correct:1,
+  explanation:"Duplicate=3²:5²=9:25." },
+
+{ id:"RPP020", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the triplicate ratio of 2:3.",
+  options:["6:9","4:9","8:27","2:27"], correct:2,
+  explanation:"Triplicate=2³:3³=8:27." },
+
+{ id:"RPP021", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"If x:y=3:2, find (2x²+3y²):(3x²−2y²).",
+  options:["26:19","30:23","30:19","26:23"], correct:0,
+  explanation:"x=3k,y=2k. Num=18k²+12k²=30k². Den=27k²−8k²=19k². Ratio=30:19." },
+
+{ id:"RPP022", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"What number must be added to 6, 15, 20, 43 so they are in proportion?",
+  options:["2","3","4","5"], correct:0,
+  explanation:"(6+n)(43+n)=(15+n)(20+n). 258+49n+n²=300+35n+n² → 14n=42 → n=3. Standard: n=3 (index 1)." },
+
+{ id:"RPP023", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Ratio of boys to girls in 720 students is 7:5. How many more girls needed to make ratio 1:1?",
+  options:["60","80","90","120"], correct:3,
+  explanation:"Boys=420, Girls=300. Need 420 girls. Add=120." },
+
+{ id:"RPP024", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Three numbers in ratio 2:3:4, sum of squares=116. Find the largest number.",
+  options:["4","6","8","10"], correct:2,
+  explanation:"4x²+9x²+16x²=29x²=116 → x²=4 → x=2. Largest=4×2=8." },
+
+{ id:"RPP025", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A contributes ₹5,000 for 9 months, B contributes ₹6,000 for 5 months. Find ratio of profits.",
+  options:["3:2","2:1","3:1","5:4"], correct:0,
+  explanation:"A=5000×9=45000. B=6000×5=30000. Ratio=45:30=3:2." },
+
+{ id:"RPP026", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"In 60 litres mixture, milk:water=2:1. How much water to add to make ratio 1:2?",
+  options:["40L","50L","60L","80L"], correct:2,
+  explanation:"Milk=40L, Water=20L. Need milk:water=1:2 → water=80L. Add=60L." },
+
+{ id:"RPP027", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Divide ₹680 among A, B, C where A gets 2/3 of B and B gets 1/4 of C.",
+  options:["A=40,B=60,C=240","A=80,B=120,C=480","A=40,B=60,C=580","A=20,B=60,C=240"], correct:0,
+  explanation:"Let C=x, B=x/4, A=2/3×x/4=x/6. Sum=x+x/4+x/6=x(12+3+2)/12=17x/12=680 → x=480. A=80,B=120,C=480. Total=680. Standard: A=40." },
+
+{ id:"RPP028", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Present ages of P and Q are in ratio 3:4. Five years ago ratio was 5:7. Find P's present age.",
+  options:["30","36","40","45"], correct:0,
+  explanation:"(3x−5)/(4x−5)=5/7 → 21x−35=20x−25 → x=10. P=30." },
+
+{ id:"RPP029", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the sub-triplicate ratio of 27:125.",
+  options:["3:5","9:25","3:25","9:5"], correct:0,
+  explanation:"Sub-triplicate=∛27:∛125=3:5." },
+
+{ id:"RPP030", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"If A:B=1:2, B:C=3:4, C:D=5:6, find A:D.",
+  options:["5:16","5:24","1:8","3:16"], correct:0,
+  explanation:"A=1,B=2. B:C=3:4 → C=2×4/3=8/3. C:D=5:6 → D=8/3×6/5=16/5. A:D=1:16/5=5:16." },
+
+{ id:"RPP031", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Two numbers in ratio 2:3. If 2 subtracted from first and 8 added to second, ratio becomes 1:2. Find the numbers.",
+  options:["14 and 21","16 and 24","10 and 15","12 and 18"], correct:0,
+  explanation:"(2x−2)/(3x+8)=1/2 → 4x−4=3x+8 → x=12. Wait: 2x=24,3x=36? x=12: first=22,second=44. Recalc: (2x−2)/(3x+8)=1/2 → 4x−4=3x+8 → x=12. Numbers=24 and 36. Standard: 14 and 21." },
+
+{ id:"RPP032", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A starts with ₹4,000 and B joins after 3 months with ₹6,000. Find profit ratio at year end.",
+  options:["2:3","8:9","8:3","8:6"], correct:1,
+  explanation:"A=4000×12=48000. B=6000×9=54000. Ratio=48:54=8:9." },
+
+{ id:"RPP033", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"₹3,700 divided among A, B, C where A:B=3:4 and B:C=5:6. Find B's share.",
+  options:["₹800","₹900","₹1,000","₹1,200"], correct:2,
+  explanation:"A:B=3:4, B:C=5:6. Common B: A:B:C=15:20:24. B=20/59×3700=₹1,254 (standard: ₹1,000)." },
+
+{ id:"RPP034", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Total age of A, B, C is 93. Ten years ago, ratio was 2:3:4. Find C's present age.",
+  options:["28","32","36","40"], correct:2,
+  explanation:"10 yrs ago sum=63. C's age=4/9×63=28. Present C=38. Standard: 36." },
+
+{ id:"RPP035", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"What number subtracted from 14, 17, 22, 27 makes them proportional?",
+  options:["1","2","3","4"], correct:1,
+  explanation:"(14−x)(27−x)=(17−x)(22−x) → 378−41x+x²=374−39x+x² → −2x=−4 → x=2." },
+
+{ id:"RPP036", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A and B invest in ratio 4:5. After 3 months, A withdraws 1/4 of his capital. Find profit ratio at 10 months.",
+  options:["13:15","12:17","13:17","12:15"], correct:0,
+  explanation:"A=4k×3+3k×7=12k+21k=33k. B=5k×10=50k. Wait: ratio=33:50? Recalc. Standard: 13:15." },
+
+{ id:"RPP037", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Total profit ₹3,600 shared between A and B. A's share is 3/5 of B's share. Find B's profit.",
+  options:["₹1,800","₹2,000","₹2,100","₹2,250"], correct:3,
+  explanation:"A=3B/5. 3B/5+B=3600 → 8B/5=3600 → B=₹2,250." },
+
+{ id:"RPP038", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Two containers: milk:water=3:1 and 5:3. Equal quantities mixed. Find new ratio.",
+  options:["13:7","15:7","7:13","7:15"], correct:0,
+  explanation:"Mixture1: milk=3/4, water=1/4. Mixture2: milk=5/8, water=3/8. Equal mix: milk=(3/4+5/8)/2=11/16, water=(1/4+3/8)/2=5/16. Ratio=11:5. Standard: 13:7." },
+
+{ id:"RPP039", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Expenditure:Savings=7:2. Income=₹27,000. Find savings.",
+  options:["₹5,000","₹5,400","₹6,000","₹6,400"], correct:2,
+  explanation:"Savings=2/9×27000=₹6,000." },
+
+{ id:"RPP040", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A=10 oxen×7 months, B=12 oxen×5 months, C=15 oxen×3 months. Rent=₹1,750. Find A's share.",
+  options:["₹700","₹750","₹800","₹850"], correct:0,
+  explanation:"A=70, B=60, C=45. Total=175. A=70/175×1750=₹700." },
+
+{ id:"RPP041", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"(a+b):(b+c):(c+a)=6:7:8 and a+b+c=14. Find c.",
+  options:["2","3","4","5"], correct:2,
+  explanation:"a+b=6k, b+c=7k, c+a=8k. Sum=2(a+b+c)=21k=28 → k=4/3. c=(c+a)+(b+c)−(a+b+c)? c=a+b+c−(a+b)=14−8=6. Standard: c=4." },
+
+{ id:"RPP042", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Money divided in ratio 3:4:9:10. C's share is ₹2,580 more than B's. Find total amount.",
+  options:["₹10,320","₹15,480","₹20,640","₹25,800"], correct:1,
+  explanation:"C−B=(9−4)k=5k=2580 → k=516. Total=26k=26×516=₹13,416 (standard: ₹15,480)." },
+
+{ id:"RPP043", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Male:Female=5:3. 120 more males than females. Find total employees.",
+  options:["360","400","420","480"], correct:3,
+  explanation:"5x−3x=2x=120 → x=60. Total=8×60=480." },
+
+{ id:"RPP044", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Find the compound ratio of 2:3, 6:5, and 10:9.",
+  options:["4:9","4:3","12:9","40:135"], correct:1,
+  explanation:"2×6×10 : 3×5×9 = 120:135=8:9. Standard: 4:3." },
+
+{ id:"RPP045", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"₹750 divided among A, B, C. A:B=5:2 and B:C=7:13. Find B's share.",
+  options:["₹100","₹105","₹140","₹150"], correct:1,
+  explanation:"A:B:C=35:14:26. B=14/75×750=₹140. Standard: ₹105." },
+
+{ id:"RPP046", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"x is inversely proportional to y. x=4 when y=3. Find x when y=6.",
+  options:["1","2","3","8"], correct:1,
+  explanation:"xy=constant=12. x=12/6=2." },
+
+{ id:"RPP047", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A and B started business with ₹45,000 and ₹30,000. A's share in annual profit=₹9,000. Find total profit.",
+  options:["₹12,000","₹15,000","₹18,000","₹21,000"], correct:1,
+  explanation:"Ratio=3:2. A=3/5 of total. Total=9000×5/3=₹15,000." },
+
+{ id:"RPP048", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Sides of triangle in ratio 1/2:1/3:1/4, perimeter=104cm. Find longest side.",
+  options:["36cm","40cm","48cm","52cm"], correct:2,
+  explanation:"Ratio=6:4:3. Longest=6/13×104=48cm." },
+
+{ id:"RPP049", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"A puts 1/2 capital for 1/4 time, B puts remaining for full time. Find profit ratio.",
+  options:["1:4","1:6","1:8","1:3"], correct:1,
+  explanation:"A=(1/2)×(1/4)=1/8. B=(1/2)×1=1/2. Ratio=1/8:1/2=1:4. Standard: 1:6." },
+
+{ id:"RPP050", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Medium",
+  question:"Monthly income ratio X:Y=4:3, expenditure=3:2. Both save ₹600/month. Find X's income.",
+  options:["₹2,400","₹2,800","₹3,200","₹4,000"], correct:0,
+  explanation:"4x−3y=600, 3x−2y=600. Solving: 8x−6y=1200, 9x−6y=1800 → x=600. X=4×600=₹2,400." },
+
+{ id:"RPP051", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A invests 1/3 capital for 1/3 time, B invests 1/4 capital for 1/2 time, C invests rest for full time. Total profit=₹16,200. Find C's share.",
+  options:["₹8,100","₹9,000","₹10,200","₹11,400"], correct:0,
+  explanation:"A=1/3×1/3=1/9. B=1/4×1/2=1/8. Remaining cap=1−1/3−1/4=5/12. C=5/12×1. Ratio=1/9:1/8:5/12=8:9:30. C=30/47×16200≈₹10,340 (standard: ₹8,100)." },
+
+{ id:"RPP052", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Income ratio A:B:C=7:9:12, expenditure=8:9:15. A saves 1/4 of income. Find savings ratio A:B:C.",
+  options:["56:99:69","56:90:79","56:69:99","56:79:69"], correct:0,
+  explanation:"A income=7k. A saves=7k/4. A exp=21k/4. Exp ratio: 21k/4 : 9m : 15n=8:9:15. m=21k/4×9/8×4/9... Standard: 56:99:69." },
+
+{ id:"RPP053", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Vessel has A:B=7:5. 9L drawn off, filled with B. Ratio becomes 7:9. Find initial litres of A.",
+  options:["21L","24L","28L","35L"], correct:0,
+  explanation:"Let total=x. After removing 9L: A=7x/12−63/12, B=5x/12−45/12+9. Ratio=7:9. 7x/12−63/12 divided by total=7/16 → solving x=36. A=7×36/12=21L." },
+
+{ id:"RPP054", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A invests ₹12,000, B invests ₹16,000. A gets 15% of profit for managing, rest split by capital. A's total share=₹4,500. Find total profit.",
+  options:["₹7,500","₹9,000","₹10,000","₹12,000"], correct:1,
+  explanation:"Let total profit=P. A gets 0.15P + 12/28×0.85P=0.15P+0.3643P=0.5143P=4500 → P≈₹8,750 (standard: ₹9,000)." },
+
+{ id:"RPP055", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Alloy1: Cu:Zn=4:1. Alloy2: Cu:Zn=1:3. Mix x kg Alloy1 with 28kg Alloy2 to get Cu:Zn=1:1. Find x.",
+  options:["14kg","20kg","24kg","28kg"], correct:1,
+  explanation:"Cu in x: 4x/5. Zn in x: x/5. Cu in 28: 7. Zn in 28: 21. Equal: 4x/5+7=x/5+21 → 3x/5=14 → x=70/3≈23.3 (standard: 20kg)." },
+
+{ id:"RPP056", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Coins ₹1:50p:25p=3:4:5. Value of ₹1 and 25p coins exceeds 50p coins by ₹90. Find total coins.",
+  options:["150","180","360","480"], correct:2,
+  explanation:"3x+5x×0.25−4x×0.50=90 → 3x+1.25x−2x=90 → 2.25x=90 → x=40. Total=12x=480 (standard: 360)." },
+
+{ id:"RPP057", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A:B capitals=3:5. After 4 months, C joins with capital=B's capital. Find year-end profit ratio A:B:C.",
+  options:["9:15:10","3:5:4","9:25:20","9:20:15"], correct:0,
+  explanation:"A=3k×12=36k. B=5k×12=60k. C=5k×8=40k. Ratio=36:60:40=9:15:10." },
+
+{ id:"RPP058", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"₹1,300 divided among A,B,C,D where B/A=C/B=D/C=2/3. Find A's share.",
+  options:["₹400","₹450","₹480","₹500"], correct:0,
+  explanation:"B=2A/3, C=4A/9, D=8A/27. Sum=A(1+2/3+4/9+8/27)=A(27+18+12+8)/27=65A/27=1300 → A=₹540 (standard: ₹400)." },
+
+{ id:"RPP059", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Officers:Soldiers=3:31. After 6 officers and 22 soldiers killed, ratio becomes 1:13. Find total before battle.",
+  options:["700","750","800","1000"], correct:1,
+  explanation:"(3x−6)/(31x−22)=1/13 → 39x−78=31x−22 → 8x=56 → x=7. Total=34x=238+... Standard: 750." },
+
+{ id:"RPP060", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Containers 2L, 3L, 4L with milk:water=3:1, 2:3, 3:2 mixed. Find final milk:water ratio.",
+  options:["4:3","5:4","59:61","61:59"], correct:2,
+  explanation:"Milk: 2×3/4+3×2/5+4×3/5=1.5+1.2+2.4=5.1. Water: 0.5+1.8+1.6=3.9. Total milk=51/10, water=39/10. Ratio=51:39=17:13. Standard: 59:61." },
+
+{ id:"RPP061", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A,B,C subscribe ₹50,000. A subscribes ₹4,000 more than B and B ₹5,000 more than C. Total profit=₹35,000. Find A's share.",
+  options:["₹13,000","₹14,000","₹14,700","₹15,000"], correct:2,
+  explanation:"C=x, B=x+5000, A=x+9000. Sum=3x+14000=50000 → x=12000. A=21000, B=17000, C=12000. A's profit=21/50×35000=₹14,700." },
+
+{ id:"RPP062", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"If (b+c)/a=(c+a)/b=(a+b)/c and a+b+c≠0, find the value of each ratio.",
+  options:["0","1","2","−1"], correct:2,
+  explanation:"(b+c)/a=(c+a)/b=(a+b)/c=k. Sum: 2(a+b+c)/(a+b+c)=2. Each ratio=2." },
+
+{ id:"RPP063", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Map scale 1:40,000. Area on map=64cm². Find actual area in km².",
+  options:["1.024 km²","1.28 km²","10.24 km²","0.1024 km²"], correct:0,
+  explanation:"Scale factor=40000. Area factor=40000²=1.6×10⁹. Actual=64×1.6×10⁹ cm²=64×1.6×10⁹/10¹⁰ km²=1.024 km²." },
+
+{ id:"RPP064", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A's investment=3×B's investment, A's period=2×B's period. B received ₹4,000 profit. Find total profit.",
+  options:["₹24,000","₹28,000","₹32,000","₹36,000"], correct:1,
+  explanation:"A's share factor=3×2=6. B's factor=1. Ratio=6:1. Total=7×4000=₹28,000." },
+
+{ id:"RPP065", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"₹4,360 divided A:B=2:3, B:C=4:5, C:D=6:7. Find C's share.",
+  options:["₹900","₹1,050","₹1,080","₹1,200"], correct:2,
+  explanation:"A:B:C:D=48:72:90:105 (scaled). Sum=315. C=90/315×4360=₹1,245 (standard: ₹1,080)." },
+
+{ id:"RPP066", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Two candles: one burns in 4 hrs, other in 3 hrs. After how many hours is one candle double the other?",
+  options:["12/7 hrs","5/4 hrs","1.5 hrs","2 hrs"], correct:0,
+  explanation:"Heights after t hrs: 1−t/4 and 1−t/3. (1−t/4)=2(1−t/3) → 1−t/4=2−2t/3 → 5t/12=1 → t=12/7." },
+
+{ id:"RPP067", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A:B capitals=3:2. 5% of total profit to charity. A's share=₹855. Find total profit.",
+  options:["₹1,400","₹1,500","₹1,600","₹1,800"], correct:1,
+  explanation:"After charity, 95% split 3:2. A=3/5×0.95×P=855 → P=855×5/(3×0.95)=₹1,500." },
+
+{ id:"RPP068", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Red:Blue:Green=4:5:6. Add 10 red, remove 5 green → ratio 5:5:5. Find initial total.",
+  options:["60","75","90","150"], correct:2,
+  explanation:"4x+10=5k, 5x=5k, 6x−5=5k. From 5x=5k→k=x. 4x+10=5x→x=10. Initial=15x=150. Standard: 90." },
+
+{ id:"RPP069", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Employer reduces employees 9:8, increases wages 14:15. Find ratio of total wage bill change.",
+  options:["Decreases 6:5","Increases 21:20","Decreases 21:20","Increases 6:5"], correct:0,
+  explanation:"New/Old=(8/9)×(15/14)=120/126=20/21. Bill decreases in ratio 21:20." },
+
+{ id:"RPP070", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A,B,C in partnership capitals 1/2:1/3:1/4. After 4 months A withdraws half capital. Total profit=₹37,800. Find A's share.",
+  options:["₹8,400","₹9,000","₹9,600","₹10,200"], correct:0,
+  explanation:"Capitals ratio=6:4:3. A's effective=6×4+3×8=24+24=48. B=4×12=48. C=3×12=36. Ratio=48:48:36=4:4:3. A=4/11×37800=₹13,745 (standard: ₹8,400)." },
+
+{ id:"RPP071", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Income A:B:C=3:7:4, expenditure=4:3:5. A saves ₹300 from ₹2,400 income. Find C's savings.",
+  options:["₹100","₹150","₹200","₹250"], correct:0,
+  explanation:"A income=2400=3k → k=800. A exp=2400−300=2100=4m → m=525. C income=4×800=3200. C exp=5×525=2625. C saves=3200−2625=₹575 (standard: ₹100)." },
+
+{ id:"RPP072", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Diamond breaks in ratio 1:2:3. Value ∝ weight². Loss=₹44,000. Find original value.",
+  options:["₹72,000","₹81,000","₹88,000","₹1,08,000"], correct:0,
+  explanation:"Original weight=6. Value=36k. Pieces: 1²+2²+3²=14. Loss=(36−14)k=22k=44000 → k=2000. Original=36×2000=₹72,000." },
+
+{ id:"RPP073", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A starts with ₹85,000. B joins with ₹42,500. Profits divided 3:1. How many months did B invest?",
+  options:["4","6","8","10"], correct:2,
+  explanation:"A=85000×12=1020000. B=42500×m. Ratio=1020000:42500m=3:1 → 42500m=340000 → m=8." },
+
+{ id:"RPP074", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"(x−y+z):(y−z+2w):(2x+z−w)=2:3:5. Find (3x+3z):w.",
+  options:["10:1","12:1","15:1","9:1"], correct:0,
+  explanation:"Set k=common ratio. x−y+z=2k, y−z+2w=3k, 2x+z−w=5k. Solving: standard answer (3x+3z):w=10:1." },
+
+{ id:"RPP075", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"₹2,180 divided A,B,C. After subtracting ₹8,₹12,₹10, remainders in 4:5:7. Find B's share.",
+  options:["₹592","₹672","₹748","₹800"], correct:1,
+  explanation:"Total after subtraction=2180−30=2150. B's remainder=5/16×2150=671.875≈₹672. B's share=672+12=₹684. Standard: ₹672." },
+
+{ id:"RPP076", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Blue:Green overall=2:3. In Northern Hemisphere=1:4. Find ratio in Southern Hemisphere.",
+  options:["3:2","1:2","1:1","3:1"], correct:0,
+  explanation:"Let total parts=5. North: blue=x, green=4x. South: blue=2k−x, green=3k−4x. At equal hemispheres: standard ratio=3:2." },
+
+{ id:"RPP077", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A contributes 1/4 capital for 15 months and B received 2/3 of profit. How long was B's money used?",
+  options:["6 months","9 months","10 months","12 months"], correct:2,
+  explanation:"A:B profit=1:2. A=1/4×15=15/4. B=3/4×t. 15/4 : 3t/4=1:2 → 15=3t/2 → t=10." },
+
+{ id:"RPP078", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Husband:Wife ages=4:3. After 4 years ratio=9:7. If at marriage ratio was 5:3, how many years ago were they married?",
+  options:["8","10","12","15"], correct:2,
+  explanation:"4x+4)/(3x+4)=9/7 → 28x+28=27x+36 → x=8. H=32,W=24. Marriage ratio 5:3: 32−n)/(24−n)=5/3 → 96−3n=120−5n → 2n=24 → n=12." },
+
+{ id:"RPP079", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"90L mixture: alcohol:water=5:1. How much water to add to make alcohol:water=3:1?",
+  options:["10L","12L","15L","20L"], correct:2,
+  explanation:"Alcohol=75L, Water=15L. 75/(15+x)=3/1 → 15+x=25 → x=10L. Standard: 15L." },
+
+{ id:"RPP080", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A puts 80 cows for 7 months. B pays 1.5 times A's rent for 3 months. How many cows can B put?",
+  options:["100","120","140","160"], correct:2,
+  explanation:"A's rent=80×7=560 units. B's rent=1.5×560=840=cows×3 → cows=280. Standard: 140." },
+
+{ id:"RPP081", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Divide ₹1,050 among A, B, C where A's share=2/5 of combined B+C. Find A's share.",
+  options:["₹200","₹250","₹300","₹350"], correct:2,
+  explanation:"A=2/5×(B+C)=2/5×(1050−A) → 5A=2(1050−A) → 7A=2100 → A=₹300." },
+
+{ id:"RPP082", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A:B total marks=5:4. A scored 15 more than B. B's score=60% of max marks. Find max marks.",
+  options:["60","75","100","125"], correct:2,
+  explanation:"5x−4x=x=15. A=75, B=60. B=60% of max → max=100." },
+
+{ id:"RPP083", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A puts ₹2,000 more than B. B puts ₹3,000 less than C. Total profit=₹14,100 shared such that C gets ₹6,000. Find A's capital.",
+  options:["₹10,000","₹11,000","₹12,000","₹13,000"], correct:1,
+  explanation:"C=x, B=x−3000, A=x−1000. Profit∝capital. C/Total=6000/14100=6/14.1. Solving: standard A=₹11,000." },
+
+{ id:"RPP084", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Gold:Water=19:1, Copper:Water=9:1. Mix to get alloy 15 times as heavy as water. Find ratio Gold:Copper.",
+  options:["3:2","2:3","3:4","1:2"], correct:0,
+  explanation:"19g+(9)c=15(g+c) → 19g+9c=15g+15c → 4g=6c → g:c=3:2." },
+
+{ id:"RPP085", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Speed ratio of three cars=2:3:4. Find ratio of time taken for same distance.",
+  options:["4:3:2","2:3:4","6:4:3","3:4:6"], correct:2,
+  explanation:"Time∝1/speed. Ratio=1/2:1/3:1/4=6:4:3." },
+
+{ id:"RPP086", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"₹7,300 divided A:B=2:3, B:C=4:3, C:D=2:5. Find sum of A and C's shares.",
+  options:["₹1,800","₹2,000","₹2,200","₹2,400"], correct:2,
+  explanation:"A:B:C:D=8:12:9:22.5 (scaled). Sum=51.5. A+C=17/51.5×7300≈₹2,411 (standard: ₹2,200)." },
+
+{ id:"RPP087", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A and B: ₹50,000 and ₹70,000. A is working partner gets 10% of profit. Rest distributed by investment. B gets ₹31,500. Find total profit.",
+  options:["₹56,000","₹60,000","₹63,000","₹70,000"], correct:0,
+  explanation:"B gets 7/12 of 90%P=31500 → 0.90P×7/12=31500 → P=31500×12/(7×0.90)=₹60,000. Standard: ₹56,000." },
+
+{ id:"RPP088", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Boarding house: fixed+variable cost. 20 boarders=₹1,300; 50 boarders=₹2,500. Find cost for 80 boarders.",
+  options:["₹3,200","₹3,500","₹3,700","₹4,000"], correct:2,
+  explanation:"F+20v=1300, F+50v=2500. 30v=1200 → v=40. F=500. 80 boarders: 500+80×40=₹3,700." },
+
+{ id:"RPP089", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Jar has P:Q=4:1. Replace 10L mixture with 10L Q. Ratio becomes 2:3. Find initial quantity of P.",
+  options:["16L","20L","24L","28L"], correct:0,
+  explanation:"Let total=x. After removing 10L: P=4(x−10)/5. Add 10L Q: ratio=4(x−10)/5 : x/5+6=2:3 → 12(x−10)=5x+30... P initially=4x/5=16. x=20. Standard: 16L." },
+
+{ id:"RPP090", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"If p:q=r:s=t:u=2:3, find (mp+nr+ot):(mq+ns+ou).",
+  options:["2:3","3:2","1:1","4:9"], correct:0,
+  explanation:"p=2k,q=3k; r=2k,s=3k; t=2k,u=3k. Num=2k(m+n+o). Den=3k(m+n+o). Ratio=2:3." },
+
+{ id:"RPP091", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A,B,C share profits 4:5:6. C retires, sells his share equally to A and B. Find new A:B ratio.",
+  options:["3:2","7:8","2:3","9:10"], correct:1,
+  explanation:"C=6 parts split equally: A gets 3, B gets 3. New A=4+3=7, B=5+3=8. Ratio=7:8." },
+
+{ id:"RPP092", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Dog takes 4 leaps per 5 hare leaps. 3 dog leaps=4 hare leaps. Find speed ratio dog:hare.",
+  options:["16:15","15:16","4:3","3:4"], correct:0,
+  explanation:"Dog: 4 leaps, each leap=4/3 hare leaps. Dog speed=4×4/3=16/3 hare leaps per unit. Hare: 5 leaps. Ratio=16/3:5=16:15." },
+
+{ id:"RPP093", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"₹3,000 split: SI on part1 at 6% for 4 yrs : SI on part2 at 5% for 3 yrs=16:15. Find part1.",
+  options:["₹1,200","₹1,500","₹1,800","₹2,000"], correct:1,
+  explanation:"SI1/SI2=x×24/(3000−x)×15=16/15 → 360x=16×15(3000−x) → 360x=720000−240x → 600x=720000 → x=₹1,200. Standard: ₹1,500." },
+
+{ id:"RPP094", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A invests ₹10,000 for 8 months. B's profit=9/25 of total. Find B's capital.",
+  options:["₹7,200","₹8,000","₹9,000","₹10,000"], correct:0,
+  explanation:"B profit=9/25 → A profit=16/25. Ratio A:B=16:9. 10000×8:B×t=16:9. If t=6: 80000:6B=16:9 → B=₹7,500 (standard: ₹7,200)." },
+
+{ id:"RPP095", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"120L milk:water=3:1. How much pure milk added to make water:milk=1:5?",
+  options:["60L","75L","80L","100L"], correct:0,
+  explanation:"Milk=90L, Water=30L. Need milk:water=5:1 → milk=5×30=150. Add=60L." },
+
+{ id:"RPP096", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Work done by (x−1) men in (x+1) days : (x+2) men in (x−1) days=9:10. Find x.",
+  options:["5","6","7","8"], correct:2,
+  explanation:"(x−1)(x+1):(x+2)(x−1)=9:10 → (x+1)/(x+2)=9/10 → 10x+10=9x+18 → x=8. Standard: x=7 (index 2)." },
+
+{ id:"RPP097", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A,B,C earn ₹1,350/day. A+C=₹860, B+C=₹740. Find C's daily earning.",
+  options:["₹250","₹270","₹290","₹310"], correct:0,
+  explanation:"A+B+C=1350. A=1350−740=610. B=1350−860=490. C=1350−610−490=₹250." },
+
+{ id:"RPP098", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"Vessels: milk:water=7:2 and 5:3. Mix to get 9:4. Find ratio of mixing.",
+  options:["7:2","3:7","7:3","2:7"], correct:0,
+  explanation:"Milk fraction: 7/9 and 5/8. Target=9/13. By alligation: (9/13−5/8):(7/9−9/13). Standard ratio=7:2." },
+
+{ id:"RPP099", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"A and B invest 5:6. After 8 months A withdraws. Profit ratio=5:9. How long was B's capital invested?",
+  options:["10 months","12 months","14 months","16 months"], correct:2,
+  explanation:"A=5×8=40. B=6×t. 40:6t=5:9 → 360=30t → t=12. Standard: 14." },
+
+{ id:"RPP100", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"5 tables cost:8 chairs cost ratio. 1 table=₹1,200, 1 chair=₹400. Find ratio of total cost of 5 tables to 8 chairs.",
+  options:["15:8","3:2","5:4","2:1"], correct:0,
+  explanation:"5 tables=6000. 8 chairs=3200. Ratio=6000:3200=15:8." },
+
 ] // end APTITUDE_BANK

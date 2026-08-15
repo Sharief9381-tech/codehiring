@@ -91,6 +91,7 @@ const APT_TOPICS = [
   { id: "percentages",     name: "Percentages",                icon: "%" },
   { id: "profit-loss",     name: "Profit & Loss",              icon: "₹" },
   { id: "si-ci",           name: "Simple & Compound Interest", icon: "%" },
+  { id: "ratio-prop",      name: "Ratio & Proportion",         icon: "∶" },
   { id: "time-work",       name: "Time & Work",                icon: "⚙" },
   { id: "speed-distance",  name: "Speed & Distance",           icon: "🚆" },
   { id: "probability",     name: "Probability",                icon: "🎲" },
@@ -1048,6 +1049,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "percentages": "Percentages",
       "profit-loss": "Profit & Loss",
       "si-ci": "Simple & Compound Interest",
+      "ratio-prop": "Ratio & Proportion",
     }
     if (topic.id in LOCAL_TOPIC_MAP) {
       const topicName = LOCAL_TOPIC_MAP[topic.id]
@@ -1476,6 +1478,7 @@ export default function PrepHubPage() {
                   "simplification": { formula: "BODMAS: Brackets → Orders → Division → Multiplication → Addition → Subtraction", points: ["Apply BODMAS strictly — brackets first, then powers","Division and multiplication: left to right","Addition and subtraction: left to right","For fractions: find LCM of denominators first","For approximations: round to nearest whole number"], example: "45÷9×3+15−8 = 5×3+15−8 = 15+15−8 = 22" },
                   "number-system": { formula: "HCF × LCM = Product of two numbers", points: ["Unit digits repeat in cycles: 2→4, 3→4, 7→4, 9→2 period","Factors of n=p^a×q^b×r^c → (a+1)(b+1)(c+1)","Sum of factors = (p^(a+1)−1)/(p−1) × ...","Trailing zeros in n! = ⌊n/5⌋+⌊n/25⌋+⌊n/125⌋...","Remainder of a^n mod m: use cyclicity of unit digits"], example: "HCF(48,180)=12; LCM(12,18,24)=72; 7^35 unit digit: 35 mod 4=3 → 3" },
                   "si-ci": { formula: "SI = PRT/100 ; CI = P(1+R/100)^T − P", points: ["CI − SI for 2 yrs = P(R/100)²","If sum doubles in n yrs at SI, rate = 100/n %","If sum doubles in n yrs at CI, it becomes 2^k in k×n yrs","Effective rate for half-yearly = (1+R/200)²−1","Diff(CI,SI) for 3 yrs = PR²(300+R)/100³"], example: "P=10000, R=10%, T=2: SI=2000, CI=2100, Diff=100" },
+                  "ratio-prop": { formula: "a:b = c:d ↔ ad = bc (Product rule)", points: ["Mean prop of a,b = √(ab)","Duplicate ratio of a:b = a²:b²","Sub-duplicate = √a:√b","Compound ratio: multiply ratios","Partnership profit ∝ Capital × Time"], example: "A:B=2:3, B:C=4:5 → A:B:C=8:12:15" },
                 }
                 const note = notes[t.id] || { points: ["Study this topic systematically", "Practice with timed questions", "Review formulas and examples"] }
                 return (
