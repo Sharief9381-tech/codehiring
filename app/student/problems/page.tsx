@@ -406,26 +406,10 @@ export default function ProblemsPage() {
                       </div>
 
                       {/* Title */}
+                      {/* Title */}
                       <span className="flex-1 text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
                         {problem.title}
                       </span>
-
-                      {/* Company tags — pushed to right */}
-                      {COMPANY_TAGS[problem.title] && (
-                        <span className="hidden sm:flex items-center gap-1 ml-auto shrink-0">
-                          {COMPANY_TAGS[problem.title].slice(0, 3).map(c => (
-                            <span key={c} className="text-[10px] px-1.5 py-0.5 rounded font-medium"
-                              style={{ background: "rgba(99,102,241,0.1)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.2)" }}>
-                              {c}
-                            </span>
-                          ))}
-                          {COMPANY_TAGS[problem.title].length > 3 && (
-                            <span className="text-[10px] px-1 py-0.5 rounded font-medium text-gray-500">
-                              +{COMPANY_TAGS[problem.title].length - 3}
-                            </span>
-                          )}
-                        </span>
-                      )}
 
                       {/* Topic badge */}
                       <span className="hidden sm:flex shrink-0 text-[11px] px-2 py-0.5 rounded-full font-medium"
@@ -439,6 +423,22 @@ export default function ProblemsPage() {
                         {problem.difficulty}
                       </span>
 
+                      {/* Company tags — after difficulty */}
+                      {COMPANY_TAGS[problem.title] && (
+                        <span className="hidden sm:flex items-center gap-1 shrink-0">
+                          {COMPANY_TAGS[problem.title].slice(0, 3).map(c => (
+                            <span key={c} className="text-[10px] px-1.5 py-0.5 rounded font-medium"
+                              style={{ background: "rgba(99,102,241,0.1)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.2)" }}>
+                              {c}
+                            </span>
+                          ))}
+                          {COMPANY_TAGS[problem.title].length > 3 && (
+                            <span className="text-[10px] px-1 py-0.5 rounded font-medium text-gray-500">
+                              +{COMPANY_TAGS[problem.title].length - 3}
+                            </span>
+                          )}
+                        </span>
+                      )}
                       {/* Bookmark button */}
                       <button
                         onClick={e => toggleBookmark(problem.id, e)}
