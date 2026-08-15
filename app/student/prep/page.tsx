@@ -1045,6 +1045,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "number-system": "Number System",
       "simplification": "Simplification",
       "percentages": "Percentages",
+      "profit-loss": "Profit & Loss",
     }
     if (topic.id in LOCAL_TOPIC_MAP) {
       const topicName = LOCAL_TOPIC_MAP[topic.id]

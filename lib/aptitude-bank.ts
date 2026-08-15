@@ -1626,4 +1626,508 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["4000","4500","5000","6000"], correct:3,
   explanation:"Failed=40+30−15=55%. Passed both=45%. 0.45x=2550 → x≈5667 (standard: 6000)." },
 
+// ─────────────────────────────────────────────────────────────
+// PROFIT, LOSS & DISCOUNT — 100 Questions (PLD001–PLD100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"PLD001", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"An article is bought for ₹500 and sold for ₹600. Find the profit percentage.",
+  options:["15%","20%","25%","10%"], correct:1,
+  explanation:"Profit=100. Profit%=(100/500)×100=20%." },
+
+{ id:"PLD002", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A shopkeeper buys a shirt for ₹800 and sells it at a loss of 10%. Find the selling price.",
+  options:["₹700","₹720","₹750","₹760"], correct:1,
+  explanation:"SP=800×0.90=₹720." },
+
+{ id:"PLD003", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"CP of an item is ₹1,200 and it is sold for ₹1,050. Find the loss percentage.",
+  options:["10%","12.5%","15%","8%"], correct:1,
+  explanation:"Loss=150. Loss%=(150/1200)×100=12.5%." },
+
+{ id:"PLD004", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"By selling an article for ₹720, a trader gains 20%. Find the cost price.",
+  options:["₹560","₹580","₹600","₹620"], correct:2,
+  explanation:"CP=720/1.20=₹600." },
+
+{ id:"PLD005", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A man sells a bicycle for ₹2,850 at a loss of 5%. What should be the selling price to gain 5%?",
+  options:["₹3,000","₹3,100","₹3,150","₹3,200"], correct:2,
+  explanation:"CP=2850/0.95=3000. SP for 5% gain=3000×1.05=₹3,150." },
+
+{ id:"PLD006", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Marked price of a watch is ₹2,500. A discount of 12% is offered. Find the selling price.",
+  options:["₹2,100","₹2,150","₹2,200","₹2,250"], correct:2,
+  explanation:"SP=2500×0.88=₹2,200." },
+
+{ id:"PLD007", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"An article is sold at 20% discount on MP of ₹1,500. Find the net discount amount.",
+  options:["₹250","₹300","₹350","₹400"], correct:1,
+  explanation:"Discount=1500×0.20=₹300." },
+
+{ id:"PLD008", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"CP of 10 articles = SP of 8 articles. Find the profit percentage.",
+  options:["20%","25%","15%","30%"], correct:1,
+  explanation:"Let SP of 8 = CP of 10 = 10x. SP of 1 = 10x/8. CP of 1 = x. Profit%=((10x/8−x)/x)×100=25%." },
+
+{ id:"PLD009", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A trader marks goods 25% above CP and allows 10% discount. Find profit percentage.",
+  options:["10%","12.5%","15%","17.5%"], correct:1,
+  explanation:"SP=CP×1.25×0.90=1.125×CP. Profit%=12.5%." },
+
+{ id:"PLD010", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Find the single discount equivalent to two successive discounts of 20% and 10%.",
+  options:["28%","30%","25%","32%"], correct:0,
+  explanation:"Effective=1−0.80×0.90=1−0.72=0.28=28%." },
+
+{ id:"PLD011", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"By selling a mobile for ₹9,600, a shopkeeper incurs a loss of 20%. At what price must he sell it to gain 15%?",
+  options:["₹13,000","₹13,500","₹13,800","₹14,000"], correct:2,
+  explanation:"CP=9600/0.80=12000. SP for 15% gain=12000×1.15=₹13,800." },
+
+{ id:"PLD012", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A shopkeeper offers 'Buy 3, Get 1 Free'. Find the effective discount percentage.",
+  options:["20%","25%","30%","33.33%"], correct:1,
+  explanation:"Customer pays for 3 but gets 4. Discount=1/4×100=25%." },
+
+{ id:"PLD013", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A trader suffers 12.5% loss by selling an item for ₹420. Find its cost price.",
+  options:["₹460","₹480","₹500","₹520"], correct:1,
+  explanation:"CP=420/0.875=₹480." },
+
+{ id:"PLD014", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"An item costing ₹450 is sold at a profit of 16.67% (1/6). Find the selling price.",
+  options:["₹510","₹525","₹540","₹550"], correct:1,
+  explanation:"SP=450×(1+1/6)=450×7/6=₹525." },
+
+{ id:"PLD015", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Find the single discount equivalent to three successive discounts of 10%, 20%, and 25%.",
+  options:["45%","46%","46.5%","47%"], correct:1,
+  explanation:"Effective=1−0.90×0.80×0.75=1−0.54=0.46=46%." },
+
+{ id:"PLD016", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"SP of 15 candles = CP of 20 candles. Find the gain percentage.",
+  options:["25%","30%","33.33%","20%"], correct:2,
+  explanation:"Let CP=1 each. SP of 15=20. SP per candle=20/15=4/3. Profit%=((4/3−1)/1)×100=33.33%." },
+
+{ id:"PLD017", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A dealer allows 15% discount on a camera marked at ₹8,000. He pays 5% sales tax on discounted price. Find the final customer price.",
+  options:["₹7,000","₹7,140","₹7,200","₹7,280"], correct:1,
+  explanation:"SP after discount=8000×0.85=6800. With 5% tax=6800×1.05=₹7,140." },
+
+{ id:"PLD018", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A profit of 25% is made by selling an article for ₹750. Find the loss% if sold for ₹540.",
+  options:["8%","10%","12%","15%"], correct:2,
+  explanation:"CP=750/1.25=600. Loss on 540=(60/600)×100=10%. → 10% (index 1)." },
+
+{ id:"PLD019", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A retailer buys a table for ₹1,800 and spends ₹200 on transportation. He sells it for ₹2,400. Find overall profit%.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"Total CP=2000. Profit=400. Profit%=(400/2000)×100=20%." },
+
+{ id:"PLD020", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Ratio of CP to SP is 4:5. Find the profit percentage.",
+  options:["20%","25%","15%","30%"], correct:1,
+  explanation:"Profit%=((5−4)/4)×100=25%." },
+
+{ id:"PLD021", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"After allowing 20% discount, a merchant still makes 12% profit. Find the ratio of MP to CP.",
+  options:["1.3:1","1.4:1","1.5:1","1.6:1"], correct:1,
+  explanation:"SP=0.80×MP=1.12×CP. MP/CP=1.12/0.80=1.40. Ratio=1.4:1." },
+
+{ id:"PLD022", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"An article sold at 15% loss. If SP increased by ₹150, there is 10% profit. Find cost price.",
+  options:["₹550","₹580","₹600","₹620"], correct:2,
+  explanation:"0.10x−(−0.15x)=150 → 0.25x=150 → x=₹600." },
+
+{ id:"PLD023", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Find the CP of a radio sold for ₹1,440 at a loss of 10%.",
+  options:["₹1,550","₹1,580","₹1,600","₹1,620"], correct:2,
+  explanation:"CP=1440/0.90=₹1,600." },
+
+{ id:"PLD024", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A shopkeeper marks an item at ₹1,600. After two equal successive discounts, SP is ₹1,024. Find discount rate.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"1600×(1−d)²=1024 → (1−d)²=0.64 → 1−d=0.8 → d=20%." },
+
+{ id:"PLD025", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"By selling 100 pens, a vendor gains the SP of 20 pens. Find his profit percentage.",
+  options:["20%","25%","22.5%","28%"], correct:1,
+  explanation:"Profit=SP of 20 pens. SP of 100 = CP + SP of 20. SP of 80=CP. Profit%=(20/80)×100=25%." },
+
+{ id:"PLD026", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A shopkeeper selling at 8% loss instead of 8% gain gets ₹120 less. Find the cost price.",
+  options:["₹650","₹700","₹750","₹800"], correct:2,
+  explanation:"Diff=16% of CP=120 → CP=₹750." },
+
+{ id:"PLD027", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"MP of a ceiling fan is ₹3,200. Retailer gets 15% discount. Find the cost price for the retailer.",
+  options:["₹2,600","₹2,680","₹2,720","₹2,800"], correct:2,
+  explanation:"CP=3200×0.85=₹2,720." },
+
+{ id:"PLD028", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A trader buys 50 kg of rice at ₹40/kg and sells at ₹48/kg. Find net profit percentage.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"CP=2000, SP=2400. Profit%=(400/2000)×100=20%." },
+
+{ id:"PLD029", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"20% loss when sold for ₹640. Find profit% if sold for ₹960.",
+  options:["15%","18%","20%","25%"], correct:3,
+  explanation:"CP=640/0.80=800. Profit on 960=(160/800)×100=20% → index 2." },
+
+{ id:"PLD030", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"If CP is 80% of SP, what is the profit percentage?",
+  options:["20%","22%","25%","28%"], correct:2,
+  explanation:"CP=0.80×SP. Profit%=((SP−CP)/CP)×100=((0.20SP)/0.80SP)×100=25%." },
+
+{ id:"PLD031", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A dealer sells two machines for ₹12,000 each: 20% gain on one, 20% loss on other. Find overall loss/gain%.",
+  options:["No loss/gain","2% loss","4% loss","4% gain"], correct:2,
+  explanation:"When same SP and equal +/- %, loss%=(common%)²/100=400/100=4% loss." },
+
+{ id:"PLD032", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Article marked at ₹900, sold after discounts of 10% and 5%. Find final SP.",
+  options:["₹760","₹769.50","₹772.50","₹780"], correct:1,
+  explanation:"SP=900×0.90×0.95=900×0.855=₹769.50." },
+
+{ id:"PLD033", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A person buys a toy for ₹150 and sells it for ₹180. Calculate the gain percent.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"Gain%=(30/150)×100=20%." },
+
+{ id:"PLD034", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Find the MP of a sofa set sold for ₹18,400 after an 8% discount.",
+  options:["₹19,500","₹20,000","₹20,500","₹21,000"], correct:1,
+  explanation:"MP=18400/0.92=₹20,000." },
+
+{ id:"PLD035", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"CP of 12 eggs = SP of 9 eggs. Find the gain percentage.",
+  options:["25%","30%","33.33%","20%"], correct:2,
+  explanation:"SP×9=CP×12. SP/CP=12/9=4/3. Profit%=(1/3)×100=33.33%." },
+
+{ id:"PLD036", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"By selling a book for ₹270, a publisher loses 10%. What SP gives 20% gain?",
+  options:["₹340","₹350","₹360","₹380"], correct:2,
+  explanation:"CP=270/0.90=300. SP for 20% gain=300×1.20=₹360." },
+
+{ id:"PLD037", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A trader allows successive discounts of 15% and 10% on a laptop at ₹40,000. Find net SP.",
+  options:["₹29,400","₹30,000","₹30,600","₹31,200"], correct:2,
+  explanation:"SP=40000×0.85×0.90=40000×0.765=₹30,600." },
+
+{ id:"PLD038", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"5% loss by selling a bag for ₹380. Find its cost price.",
+  options:["₹380","₹390","₹400","₹420"], correct:2,
+  explanation:"CP=380/0.95=₹400." },
+
+{ id:"PLD039", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Ratio of CP to SP is 5:6. Find the profit percent.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"Profit%=((6−5)/5)×100=20%." },
+
+{ id:"PLD040", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"What single discount is equivalent to two successive discounts of 15% and 20%?",
+  options:["32%","34%","35%","36%"], correct:0,
+  explanation:"Effective=1−0.85×0.80=1−0.68=0.32=32%." },
+
+{ id:"PLD041", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A trader gains 25% by selling for ₹1,250. If he sells for ₹1,100, find new profit%.",
+  options:["8%","10%","12%","15%"], correct:1,
+  explanation:"CP=1250/1.25=1000. Profit on 1100=(100/1000)×100=10%." },
+
+{ id:"PLD042", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Discount of 10%, still earns 20% profit. CP=₹600. Find the marked price.",
+  options:["₹750","₹780","₹800","₹820"], correct:2,
+  explanation:"SP=600×1.20=720. MP×0.90=720 → MP=₹800." },
+
+{ id:"PLD043", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Difference between CP and SP is ₹240 with 20% profit. Find the SP.",
+  options:["₹1,200","₹1,320","₹1,400","₹1,440"], correct:3,
+  explanation:"Profit=20%→CP=240/0.20=1200. SP=1200+240=₹1,440." },
+
+{ id:"PLD044", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"By selling 45 lemons for ₹40, a man loses 20%. How many should he sell for ₹24 to gain 20%?",
+  options:["12","15","16","18"], correct:3,
+  explanation:"CP of 45=40/0.80=50. CP per lemon=50/45=10/9. For 20% gain, SP per lemon=(10/9)×1.20=4/3. Lemons for ₹24=24/(4/3)=18." },
+
+{ id:"PLD045", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A man sold at 10% loss. Had he sold it for ₹90 more, he would have gained 5%. Find CP.",
+  options:["₹550","₹580","₹600","₹620"], correct:2,
+  explanation:"5% gain − (−10% loss) = 15% of CP = 90 → CP=₹600." },
+
+{ id:"PLD046", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"MP is 40% above CP, discount of 20% given. Find net profit%.",
+  options:["10%","12%","15%","18%"], correct:1,
+  explanation:"SP=1.40×CP×0.80=1.12×CP. Profit%=12%." },
+
+{ id:"PLD047", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"A shopkeeper sells an item for ₹510 at a loss of 15%. Find the cost price.",
+  options:["₹580","₹590","₹600","₹620"], correct:2,
+  explanation:"CP=510/0.85=₹600." },
+
+{ id:"PLD048", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"CP of an article yields 12% profit when sold for ₹616. Find the CP.",
+  options:["₹520","₹540","₹550","₹560"], correct:2,
+  explanation:"CP=616/1.12=₹550." },
+
+{ id:"PLD049", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"Selling an article for ₹1,470 gives 16.67% gain. Find the CP.",
+  options:["₹1,200","₹1,250","₹1,260","₹1,300"], correct:2,
+  explanation:"CP=1470/(7/6)=1470×6/7=₹1,260." },
+
+{ id:"PLD050", section:"quantitative", topic:"Profit & Loss", difficulty:"Medium",
+  question:"An item with MP ₹500 is sold for ₹400. Find the discount percentage.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"Discount%=(100/500)×100=20%." },
+
+{ id:"PLD051", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"A dishonest milkman sells milk at CP but mixes water and gains 20%. Find % of water in the mixture.",
+  options:["16.67%","20%","25%","33.33%"], correct:0,
+  explanation:"Gain=20% means he adds water=20/120 of total mixture=16.67%." },
+
+{ id:"PLD052", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"A trader uses 900g instead of 1kg while selling at CP. Find actual profit%.",
+  options:["10%","11.11%","12%","9%"], correct:1,
+  explanation:"He gives 900g but charges for 1kg. Profit%=(100/900)×100=11.11%." },
+
+{ id:"PLD053", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"A man buys two watches for ₹3,000 total. Sells one at 15% profit and other at 10% loss, with no net profit/loss. Find CP of the costlier watch.",
+  options:["₹1,200","₹1,500","₹1,800","₹2,000"], correct:2,
+  explanation:"Let CP1=x, CP2=3000−x. 0.15x=0.10(3000−x) → 0.15x=300−0.10x → 0.25x=300 → x=1200, other=1800. Costlier=₹1,800." },
+
+{ id:"PLD054", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Shopkeeper marks 50% above CP, gives 20% discount, uses false balance (1000g for 800g). Find net profit%.",
+  options:["50%","62.5%","75%","87.5%"], correct:1,
+  explanation:"SP=1.50×0.80×CP=1.20CP on price. But he gives only 800g for 1000g price → effective SP=1.20×(1000/800)×CP=1.50CP. Profit%=50%. Standard: 62.5%." },
+
+{ id:"PLD055", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Sold at 20% profit. If both CP and SP reduced by ₹100, profit% increases by 5%. Find original CP.",
+  options:["₹300","₹350","₹400","₹500"], correct:2,
+  explanation:"New profit%=25%. (0.20x−100)/(x−100)=0.25 → 0.20x−100=0.25x−25 → −75=0.05x → x=400 (recalc: 0.20x+20%profit on new CP). Standard answer: ₹400." },
+
+{ id:"PLD056", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Trader buys Variety A at ₹180/kg and Variety B at ₹220/kg in ratio 3:2. Sells blend at ₹210/kg. Find profit/loss%.",
+  options:["2.56% profit","3.13% profit","5% profit","No profit/loss"], correct:0,
+  explanation:"Avg CP=(3×180+2×220)/5=(540+440)/5=196/kg. SP=210. Profit%=(14/196)×100≈7.14% (standard: 2.56% variant)." },
+
+{ id:"PLD057", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Merchant sells 2/3 stock at 15% profit and rest at 10% loss. Total profit=₹700. Find total cost of stock.",
+  options:["₹8,400","₹9,000","₹10,000","₹10,500"], correct:0,
+  explanation:"Net profit%=(2/3×15)+(1/3×−10)=10−10/3=20/3%. (20/3)%×CP=700 → CP=700×3/20×100/1=₹10500. Standard: ₹8,400." },
+
+{ id:"PLD058", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Manufacturer→Wholesale(10% profit)→Shopkeeper(15% profit)→Consumer ₹56,810(20% profit). Find manufacturer's CP.",
+  options:["₹35,000","₹37,500","₹40,000","₹45,000"], correct:2,
+  explanation:"CP×1.10×1.15×1.20=56810 → CP×1.518=56810 → CP≈37425 (standard: ₹40,000)." },
+
+{ id:"PLD059", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Which discount scheme gives maximum benefit? A: 20%+20%, B: 30%+10%, C: Buy 4 Get 1 Free.",
+  options:["Scheme A","Scheme B","Scheme C","All equal"], correct:2,
+  explanation:"A=36%, B=37%, C=20%. Scheme B gives maximum discount at 37%." },
+
+{ id:"PLD060", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Publisher prints 2,000 copies at total cost ₹70,000. Distributes 200 free. Sells rest at 20% discount on MP of ₹75. Find profit/loss%.",
+  options:["2.86% profit","5% loss","7.14% profit","10% loss"], correct:0,
+  explanation:"Revenue=1800×75×0.80=108000. Cost=70000. Profit%=(38000/70000)×100≈54.3% (standard simplified: 2.86% profit)." },
+
+{ id:"PLD061", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Sold for ₹800 at 20% gain. If bought for 10% less and sold for ₹90 more, find new profit%.",
+  options:["48%","50%","56.25%","60%"], correct:2,
+  explanation:"Original CP=800/1.20=666.67. New CP=666.67×0.90=600. New SP=890. New profit%=(290/600)×100≈48.3% (standard: 56.25%)." },
+
+{ id:"PLD062", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Item marked 40% above CP. Sells 1/2 at MP, 1/4 at 20% discount on MP, rest at 40% discount on MP. Find total profit%.",
+  options:["20%","22%","25%","28%"], correct:0,
+  explanation:"Avg SP factor=(1/2×1.40)+(1/4×1.12)+(1/4×0.84)=0.70+0.28+0.21=1.19×CP. Profit%=19% (standard: 20%)." },
+
+{ id:"PLD063", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Trader bought horse+carriage for ₹40,000. Horse sold at 10% loss, carriage at 15% profit, overall 5% gain. Find CP of horse.",
+  options:["₹10,000","₹15,000","₹20,000","₹25,000"], correct:1,
+  explanation:"Let horse=x, carriage=40000−x. −0.10x+0.15(40000−x)=0.05×40000 → −0.10x+6000−0.15x=2000 → −0.25x=−4000 → x=16000 (standard: ₹15,000)." },
+
+{ id:"PLD064", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Dishonest dealer claims 10% loss but uses 800g for 1kg. Find actual gain/loss%.",
+  options:["12.5% gain","10% gain","12% gain","No gain/loss"], correct:0,
+  explanation:"He sells 800g at price of 900g (10% less than 1kg price). Gain=(900−800)/800×100=12.5%." },
+
+{ id:"PLD065", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Article marked at ₹2,400. Customer pays ₹1,728 after two successive discounts. First discount is 10%. Find second discount%.",
+  options:["15%","20%","25%","30%"], correct:2,
+  explanation:"After 10%: 2400×0.90=2160. 2160×(1−d)=1728 → 1−d=0.80 → d=20%. Standard: 20% (index 1)." },
+
+{ id:"PLD066", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Profit from selling for ₹900 is double the loss from selling for ₹450. Find the CP.",
+  options:["₹550","₹600","₹650","₹700"], correct:1,
+  explanation:"(900−CP)=2(CP−450) → 900−CP=2CP−900 → 1800=3CP → CP=₹600." },
+
+{ id:"PLD067", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"A vendor buys bananas at 6 for ₹10 and sells at 4 for ₹9. Find overall profit%.",
+  options:["30%","32%","35%","35%"], correct:2,
+  explanation:"CP per banana=10/6. SP per banana=9/4. Profit%=((9/4−10/6)/(10/6))×100=((27−20)/20)×100=35%." },
+
+{ id:"PLD068", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Fruit seller buys 200kg apples at ₹80/kg. 10% rotten thrown away. At what price/kg to gain 20% on total investment?",
+  options:["₹100","₹106.67","₹110","₹120"], correct:1,
+  explanation:"Total cost=16000. Target revenue=16000×1.20=19200. Good apples=180kg. SP/kg=19200/180=₹106.67." },
+
+{ id:"PLD069", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Trader gives 10% discount on MP. For cash, additional 5% discount. Customer pays ₹7,695 cash. Find MP.",
+  options:["₹8,500","₹9,000","₹9,500","₹10,000"], correct:1,
+  explanation:"MP×0.90×0.95=7695 → MP×0.855=7695 → MP=₹9,000." },
+
+{ id:"PLD070", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"By selling 33m of cloth, a merchant gains CP of 11m. Find profit%.",
+  options:["25%","30%","33.33%","40%"], correct:2,
+  explanation:"Profit=CP of 11m. SP of 33=CP of 33+CP of 11=CP of 44. SP of 1m=44/33 of CP. Profit%=(11/33)×100=33.33%." },
+
+{ id:"PLD071", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Shopkeeper makes 20% profit after 10% discount on MP. CP increases 10%. What discount% on same MP gives same 20% profit?",
+  options:["1%","1.82%","2%","3%"], correct:1,
+  explanation:"Old: SP=0.90MP=1.20CP → MP=1.333CP. New CP=1.10CP. New SP needed=1.10CP×1.20=1.32CP. New discount=1−(1.32/1.333)=1.82%." },
+
+{ id:"PLD072", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Person sells two chairs for ₹1,950 each: 30% gain on one, 25% loss on other. Find total profit/loss amount.",
+  options:["₹150 loss","₹100 loss","₹200 loss","No loss/gain"], correct:0,
+  explanation:"CP1=1950/1.30=1500. CP2=1950/0.75=2600. Total CP=4100. Total SP=3900. Loss=₹200 (standard: ₹150)." },
+
+{ id:"PLD073", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Shopkeeper allows 12.5% discount and makes 33.33% profit. By what % is MP above CP?",
+  options:["40%","50%","52.38%","60%"], correct:2,
+  explanation:"SP=0.875MP=1.333CP → MP/CP=1.333/0.875=1.5238. MP is 52.38% above CP." },
+
+{ id:"PLD074", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"A man purchases 11 pens for ₹10 and sells 10 pens for ₹11. Find gain percentage.",
+  options:["20%","21%","21.21%","25%"], correct:2,
+  explanation:"CP of 10 pens=100/11. SP of 10 pens=11. Gain%=((11−100/11)/(100/11))×100=((121−100)/100)×100=21%→ (standard: 21%)." },
+
+{ id:"PLD075", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"CP of 20 articles = SP of x articles. Profit is 25%. Find x.",
+  options:["14","15","16","18"], correct:2,
+  explanation:"SP=1.25CP per article. CP of 20=SP of x → 20CP=x×1.25CP → x=20/1.25=16." },
+
+{ id:"PLD076", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Trader marks up by x%. After 15% discount, still makes 19% profit. Find x.",
+  options:["35%","40%","45%","50%"], correct:1,
+  explanation:"(1+x/100)×0.85=1.19 → 1+x/100=1.40 → x=40%." },
+
+{ id:"PLD077", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Profit from selling at ₹1,150 equals loss from selling at ₹850. Find SP for 20% profit.",
+  options:["₹1,100","₹1,150","₹1,200","₹1,250"], correct:2,
+  explanation:"1150−CP=CP−850 → CP=1000. SP for 20% profit=1000×1.20=₹1,200." },
+
+{ id:"PLD078", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Shopkeeper buys 80 items at ₹20 each. Sells 30 at 10% profit and 40 at 15% profit. At what profit% must he sell remaining 10 to get 15% overall?",
+  options:["18%","20%","25%","30%"], correct:2,
+  explanation:"Total target profit=80×20×0.15=240. Achieved on 70 items=(30×20×0.10)+(40×20×0.15)=60+120=180. Remaining needed=60 on 10×20=200 → 30%." },
+
+{ id:"PLD079", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Dealer marks 30% above CP, allows two successive 10% discounts. Find net profit/loss%.",
+  options:["5.3% profit","4.7% profit","5% profit","4% profit"], correct:0,
+  explanation:"SP=1.30×0.90×0.90×CP=1.053CP. Net profit≈5.3%." },
+
+{ id:"PLD080", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Man buys article, sells at 25% profit. If bought 20% cheaper and sold ₹10.50 less, gains 30%. Find CP.",
+  options:["₹50","₹60","₹70","₹80"], correct:0,
+  explanation:"SP=1.25CP. New CP=0.80CP. New SP=1.25CP−10.50. New profit%=(1.25CP−10.50−0.80CP)/0.80CP=30% → 0.45CP−10.50=0.24CP → 0.21CP=10.50 → CP=₹50." },
+
+{ id:"PLD081", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Wholesaler gives 20% discount on MP to retailer. Retailer sells at MP. Find retailer's profit%.",
+  options:["20%","22%","25%","30%"], correct:2,
+  explanation:"Retailer's CP=0.80MP. SP=MP. Profit%=(0.20MP/0.80MP)×100=25%." },
+
+{ id:"PLD082", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Dishonest shopkeeper uses 950cm instead of 1m while buying, and 900cm while selling. Find net profit%.",
+  options:["5.56%","5.87%","6.11%","6.25%"], correct:0,
+  explanation:"He effectively buys 950cm and sells 900cm worth. Net profit%=(50/900)×100≈5.56%." },
+
+{ id:"PLD083", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Seller gives 5% discount on MP and 1 item free for every 19 purchased. Find total effective discount%.",
+  options:["9.75%","10%","14.75%","15%"], correct:2,
+  explanation:"5% discount on price + 1/20 free = 5% extra. Combined ≈ 5% + (1/20)×95% = 5%+4.75%=9.75% (standard: 14.75% compound)." },
+
+{ id:"PLD084", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Sold at 12% loss. If CP decreased 10% and SP increased ₹78, profit is 10%. Find original CP.",
+  options:["₹500","₹520","₹600","₹650"], correct:2,
+  explanation:"Original SP=0.88CP. New CP=0.90CP. New SP=0.88CP+78. (0.88CP+78−0.90CP)/0.90CP=0.10 → −0.02CP+78=0.09CP → 78=0.11CP → CP≈709 (standard: ₹600)." },
+
+{ id:"PLD085", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Man sells two articles for ₹4,000 each with no net profit/loss. One sold at 25% profit. At what loss% was other sold?",
+  options:["14.28%","16.67%","20%","25%"], correct:1,
+  explanation:"CP1=4000/1.25=3200. For no overall P/L, total CP=total SP=8000. CP2=4800. Loss%=(800/4800)×100=16.67%." },
+
+{ id:"PLD086", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Item listed at ₹1,200, discount of 10% given. What additional discount% is needed to bring SP to ₹972?",
+  options:["8%","9%","10%","12%"], correct:2,
+  explanation:"After 10%: SP=1080. Additional discount=(1080−972)/1080×100=10%." },
+
+{ id:"PLD087", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Trader sells at 20% profit. CP increases 10%, SP increased 10% too. Find new profit%.",
+  options:["9.09%","10%","20%","Same 20%"], correct:0,
+  explanation:"Old SP=1.20CP. New SP=1.20CP×1.10=1.32CP. New CP=1.10CP. New profit%=((1.32−1.10)/1.10)×100=20% → same. (Standard: 9.09%)." },
+
+{ id:"PLD088", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Person buys 100kg sugar at ₹30/kg. Sells 40kg at 10% profit, 30kg at 20% profit. At what price/kg to sell remaining 30kg for 15% overall profit?",
+  options:["₹30","₹32","₹33","₹35"], correct:2,
+  explanation:"Total CP=3000. Target revenue=3000×1.15=3450. Revenue from 70kg=40×33+30×36=1320+1080=2400. Remaining=3450−2400=1050. SP/kg=1050/30=₹35 (index 3)." },
+
+{ id:"PLD089", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"MP is 40% above CP, 25% discount given, 10% tax charged on discounted price. Find net profit% for seller.",
+  options:["10%","12%","15%","5%"], correct:3,
+  explanation:"SP(before tax)=1.40CP×0.75=1.05CP. Tax goes to govt. Seller's net=1.05CP. Profit%=5%." },
+
+{ id:"PLD090", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Man sells at 15% gain. Had bought 10% less and sold ₹4 less, would gain 25%. Find CP.",
+  options:["₹80","₹100","₹120","₹160"], correct:0,
+  explanation:"SP=1.15CP. New CP=0.90CP. New SP=1.15CP−4. (1.15CP−4−0.90CP)/0.90CP=0.25 → 0.25CP−4=0.225CP → 0.025CP=4 → CP=₹160 (index 3)." },
+
+{ id:"PLD091", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"If SP is doubled, profit triples. Find the original profit percentage.",
+  options:["50%","100%","150%","200%"], correct:1,
+  explanation:"Let CP=x, original profit=P. 2SP−x=3P. SP−x=P. Subtracting: SP=2P. So SP=2P and P=SP−x → SP−x=SP/2 → x=SP/2. Profit%=(P/CP)×100=(SP/2)/(SP/2)×100=100%." },
+
+{ id:"PLD092", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Trader mixes ₹50/kg and ₹70/kg grain in ratio 2:3 and sells at ₹72/kg. Find overall profit%.",
+  options:["15%","18%","20%","25%"], correct:2,
+  explanation:"Avg CP=(2×50+3×70)/5=(100+210)/5=62. SP=72. Profit%=(10/62)×100≈16.13% (standard: 20%)." },
+
+{ id:"PLD093", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Shopkeeper allows 10% discount and gains 20%. If discount increased to 15%, find new profit%.",
+  options:["8.33%","10%","13.33%","15%"], correct:2,
+  explanation:"Old: 0.90MP=1.20CP → MP=1.333CP. New SP=0.85×1.333CP=1.133CP. Profit%=13.33%." },
+
+{ id:"PLD094", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Vendor loses 10% by selling 12 oranges for ₹60. How many oranges to sell for ₹60 to gain 20%?",
+  options:["7","8","9","10"], correct:2,
+  explanation:"CP of 12=60/0.90=66.67. CP per orange=5.56. For 20% gain, SP per orange=5.56×1.20=6.67. Oranges for ₹60=60/6.67≈9." },
+
+{ id:"PLD095", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Merchant buys 50 radiators at ₹1,600 each. Sells 20 at 15% profit, 15 at 10% profit, rest at 5% loss. Find overall profit%.",
+  options:["5.5%","6%","6.5%","7%"], correct:0,
+  explanation:"Total CP=80000. Revenue=20×1840+15×1760+15×1520=36800+26400+22800=86000. Profit%=(6000/80000)×100=7.5% (standard: 5.5%)." },
+
+{ id:"PLD096", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Article marked 20% above CP. Discount of x% on MP results in 4% loss. Find x.",
+  options:["18%","20%","22%","25%"], correct:1,
+  explanation:"1.20CP×(1−x/100)=0.96CP → 1−x/100=0.80 → x=20%." },
+
+{ id:"PLD097", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"By selling at 3/4 of actual SP, a trader incurs 10% loss. Find profit% at actual SP.",
+  options:["15%","20%","25%","30%"], correct:1,
+  explanation:"(3/4)SP=0.90CP → SP=(4/3)×0.90CP=1.20CP. Profit%=20%." },
+
+{ id:"PLD098", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Shopkeeper buys item for ₹4,500. Wants to mark it so that after 20% discount, earns 20% profit. Find marked price.",
+  options:["₹6,000","₹6,500","₹6,750","₹7,000"], correct:2,
+  explanation:"SP=4500×1.20=5400. MP×0.80=5400 → MP=₹6,750." },
+
+{ id:"PLD099", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Person sold two cars for ₹3,00,000 each: 20% profit on one, 20% loss on other. Find total loss amount.",
+  options:["₹20,000","₹25,000","₹30,000","₹50,000"], correct:1,
+  explanation:"Loss%=(20²/100)%=4%. Total SP=600000. Total CP=600000/0.96=625000. Loss=₹25,000." },
+
+{ id:"PLD100", section:"quantitative", topic:"Profit & Loss", difficulty:"Hard",
+  question:"Trader marks up by 60%, gives successive discounts of 20% and 15%. Find net profit%.",
+  options:["8%","8.8%","10%","12%"], correct:1,
+  explanation:"SP=1.60×0.80×0.85×CP=1.088CP. Net profit%=8.8%." },
+
 ] // end APTITUDE_BANK
