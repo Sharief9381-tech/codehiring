@@ -439,6 +439,7 @@ export default function ProblemsPage() {
                           )}
                         </span>
                       )}
+
                       {/* Bookmark button */}
                       <button
                         onClick={e => toggleBookmark(problem.id, e)}
