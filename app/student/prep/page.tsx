@@ -15,6 +15,7 @@ import { ProctoredShell, type ViolationLog } from "@/components/student/proctor"
 import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/student/assessment-history"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
+import { APTITUDE_BANK } from "@/lib/aptitude-bank"
 
 // Full problem editor — loaded dynamically to avoid SSR issues
 const ProblemEditor = dynamic(
@@ -85,6 +86,7 @@ function isCodingSection(sectionKey: string): boolean {
 
 // --- Aptitude topics ----------------------------------------------------------
 const APT_TOPICS = [
+  { id: "number-system",  name: "Number System",     icon: "#" },
   { id: "percentages",    name: "Percentages",       icon: "%" },
   { id: "profit-loss",    name: "Profit & Loss",     icon: "₹" },
   { id: "time-work",      name: "Time & Work",       icon: "⚙" },
@@ -1037,6 +1039,26 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
   }
 
   useEffect(() => {
+    // Use local aptitude bank for number-system topic
+    if (topic.id === "number-system") {
+      const qs = APTITUDE_BANK
+        .filter(q => q.topic === "Number System")
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 10)
+        .map((q, i) => ({
+          id: i + 1,
+          question: q.question,
+          options: q.options,
+          correct: q.correct,
+          explanation: q.explanation,
+          topic: q.topic,
+          difficulty: q.difficulty,
+        }))
+      setQuestions(qs)
+      setStage("quiz")
+      return
+    }
+
     fetch("/api/student/generate-assessment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1441,7 +1463,7 @@ export default function PrepHubPage() {
                   "cn": { points: ["OSI 7 layers: Physical->Data Link->Network->Transport->Session->Presentation->Application","TCP: reliable, connection-oriented; UDP: fast, connectionless","IP classes: A(0−127) B(128−191) C(192−223)","Subnetting: borrow bits from host portion"], formula: "Subnet mask /24 = 255.255.255.0 &rarr; 254 hosts", example: "HTTP=80, HTTPS=443, FTP=21, SSH=22, DNS=53" },
                   "oops": { points: ["4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism","Overloading: same name, different params (compile-time)","Overriding: same signature, different class (runtime)","Interface vs Abstract: interface = pure contract"], example: "Animal->speak() overridden by Dog->speak() 'Woof'" },
                   "java": { points: ["JVM: bytecode &rarr; machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
-                  "sql": { points: ["DDL: CREATE, ALTER, DROP; DML: INSERT, UPDATE, DELETE, SELECT","GROUP BY + HAVING for aggregates","Subquery vs JOIN: JOIN faster on indexed columns","RANK(), ROW_NUMBER(), DENSE_RANK() for window functions"], formula: "SELECT dept, COUNT(*) FROM emp GROUP BY dept HAVING COUNT(*)>5", example: "INNER JOIN: only matching rows; LEFT JOIN: all left rows + matched right" },
+                  "number-system": { formula: "HCF × LCM = Product of two numbers", points: ["Unit digits repeat in cycles: 2→4, 3→4, 7→4, 9→2 period","Factors of n=p^a×q^b×r^c → (a+1)(b+1)(c+1)","Sum of factors = (p^(a+1)−1)/(p−1) × (q^(b+1)−1)/(q−1)","Trailing zeros in n! = ⌊n/5⌋+⌊n/25⌋+⌊n/125⌋...","Remainder of a^n mod m: use cyclicity of unit digits"], example: "HCF(48,180)=12; LCM(12,18,24)=72; 7^35 unit digit: 35 mod 4=3 → 3" },
                 }
                 const note = notes[t.id] || { points: ["Study this topic systematically", "Practice with timed questions", "Review formulas and examples"] }
                 return (
