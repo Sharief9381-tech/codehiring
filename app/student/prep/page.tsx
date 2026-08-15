@@ -1071,8 +1071,50 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "time-work": "Time & Work",
       "pipes-cisterns": "Pipes & Cisterns",
     }
-    if (topic.id in LOCAL_TOPIC_MAP) {
-      const topicName = LOCAL_TOPIC_MAP[topic.id]
+    // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
+    if (topic.id === "mock-aptitude") {
+      const seenKey = "aptitude_mock_seen"
+      let seenIds: string[] = []
+      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
+
+      const allTopics = Object.values(LOCAL_TOPIC_MAP)
+      const picked: typeof APTITUDE_BANK = []
+
+      for (const topicName of allTopics) {
+        // Prefer Hard, then Medium, exclude seen
+        const pool = APTITUDE_BANK.filter(q =>
+          q.topic === topicName &&
+          (q.difficulty === "Hard" || q.difficulty === "Medium") &&
+          !seenIds.includes(q.id)
+        )
+        // Reset seen for this topic if exhausted
+        const available = pool.length > 0
+          ? pool
+          : APTITUDE_BANK.filter(q => q.topic === topicName && (q.difficulty === "Hard" || q.difficulty === "Medium"))
+
+        // Shuffle and pick 1
+        const shuffled = available.sort(() => Math.random() - 0.5)
+        if (shuffled[0]) picked.push(shuffled[0])
+      }
+
+      const newSeen = [...seenIds, ...picked.map(q => q.id)]
+      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
+
+      const qs = picked.map((q, i) => ({
+        id: i + 1,
+        question: q.question,
+        options: q.options,
+        correct: q.correct,
+        explanation: q.explanation,
+        topic: q.topic,
+        difficulty: q.difficulty,
+      }))
+      setQuestions(qs)
+      setStage("quiz")
+      return
+    }
+
+    if (topic.id in LOCAL_TOPIC_MAP) {      const topicName = LOCAL_TOPIC_MAP[topic.id]
       const seenKey = `aptitude_seen_${topic.id}`
       let seenIds: string[] = []
       try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
@@ -1616,7 +1658,11 @@ export default function PrepHubPage() {
             </div>
             <div>
               <h3 className="text-xl font-bold text-foreground">Full {pathMeta.label} Mock</h3>
-              <p className="text-sm text-muted-foreground mt-2">30 questions across all topics . 30 minutes . AI-generated</p>
+              <p className="text-sm text-muted-foreground mt-2">1 Medium/Hard question from each topic · {Object.keys({
+                "Number System": 1, "Simplification": 1, "Percentages": 1, "Profit & Loss": 1,
+                "Simple & Compound Interest": 1, "Ratio & Proportion": 1, "Averages": 1,
+                "Mixture & Alligation": 1, "Time & Work": 1, "Pipes & Cisterns": 1
+              }).length} questions · No repeats</p>
             </div>
             <button onClick={() => {
               const firstTopic = pathMeta.topics[0]
