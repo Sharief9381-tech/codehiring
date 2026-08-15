@@ -1122,4 +1122,58 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["157","159","161","163"], correct:2,
   explanation:"√20164≈142; 142×0.98=139.16; +22.03≈161." },
 
+// ─────────────────────────────────────────────────────────────
+// PERCENTAGES — 10 Questions
+// ─────────────────────────────────────────────────────────────
+
+{ id:"PCT001", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"A number is increased by 25% and then decreased by 20%. The final value is 480. Find the original number.",
+  options:["480","500","510","520"], correct:0,
+  explanation:"Net multiplier = 1.25×0.80=1. Final = Original×1 → Original = 480." },
+
+{ id:"PCT002", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"35% of a number is 140 more than 20% of the same number. Find the number.",
+  options:["800","900","933.33","1000"], correct:2,
+  explanation:"0.35x−0.20x=140 → 0.15x=140 → x=140÷0.15=933.33." },
+
+{ id:"PCT003", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"The difference between 45% and 25% of a number is 80. Find 60% of that number.",
+  options:["200","240","300","320"], correct:1,
+  explanation:"0.45x−0.25x=80 → 0.20x=80 → x=400. 60% of 400=240." },
+
+{ id:"PCT004", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"A's salary is 30% more than B's salary. By what percent is B's salary less than A's salary?",
+  options:["23.07%","25%","30%","23.08%"], correct:0,
+  explanation:"Let B=100 → A=130. B is less by 30. Required %=(30/130)×100=23.07%." },
+
+{ id:"PCT005", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"The price of an article is increased by 25%. By what percent must it be reduced to bring it back to the original price?",
+  options:["20%","25%","30%","16.67%"], correct:0,
+  explanation:"Let original=100 → new=125. Required reduction=(25/125)×100=20%." },
+
+{ id:"PCT006", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A student scored 28% marks and failed by 36 marks. Another student scored 42% marks and got 24 marks more than the passing marks. Find the maximum marks.",
+  options:["400","500","600","700"], correct:2,
+  explanation:"0.28x=p−36 and 0.42x=p+24. Subtracting: 0.14x=60 → x=600." },
+
+{ id:"PCT007", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"18% of a number is 72. What is 62.5% of the same number?",
+  options:["200","225","250","280"], correct:2,
+  explanation:"0.18x=72 → x=400. 62.5% of 400=250." },
+
+{ id:"PCT008", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"The population of a town increases by 12% annually. If the present population is 31,360, what was the population 2 years ago?",
+  options:["25000","26000","27000","28000"], correct:0,
+  explanation:"x×1.12×1.12=31360 → x×1.2544=31360 → x=25000." },
+
+{ id:"PCT009", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"A number is first increased by 20% and then decreased by 15%. The final result is 612. Find the original number.",
+  options:["600","620","640","650"], correct:0,
+  explanation:"Multiplier=1.20×0.85=1.02. 1.02x=612 → x=600." },
+
+{ id:"PCT010", section:"quantitative", topic:"Percentages", difficulty:"Medium",
+  question:"40% of A is equal to 50% of B. If the sum of A and B is 360, find A.",
+  options:["200","160","180","220"], correct:0,
+  explanation:"0.4A=0.5B → A=1.25B. 1.25B+B=360 → B=160, A=200." },
+
 ] // end APTITUDE_BANK

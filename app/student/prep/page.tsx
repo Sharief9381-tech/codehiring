@@ -86,15 +86,16 @@ function isCodingSection(sectionKey: string): boolean {
 
 // --- Aptitude topics ----------------------------------------------------------
 const APT_TOPICS = [
-  { id: "number-system",  name: "Number System",     icon: "#" },
-  { id: "percentages",    name: "Percentages",       icon: "%" },
-  { id: "profit-loss",    name: "Profit & Loss",     icon: "₹" },
-  { id: "time-work",      name: "Time & Work",       icon: "⚙" },
-  { id: "speed-distance", name: "Speed & Distance",  icon: "🚆" },
-  { id: "probability",    name: "Probability",       icon: "🎲" },
-  { id: "data-interp",    name: "Data Interpretation", icon: "📊" },
-  { id: "series",         name: "Number Series",     icon: "🔢" },
-  { id: "permcomb",       name: "Permutation & Combination", icon: "∑" },
+  { id: "number-system",   name: "Number System",              icon: "#" },
+  { id: "simplification",  name: "Simplification",             icon: "=" },
+  { id: "percentages",     name: "Percentages",                icon: "%" },
+  { id: "profit-loss",     name: "Profit & Loss",              icon: "₹" },
+  { id: "time-work",       name: "Time & Work",                icon: "⚙" },
+  { id: "speed-distance",  name: "Speed & Distance",           icon: "🚆" },
+  { id: "probability",     name: "Probability",                icon: "🎲" },
+  { id: "data-interp",     name: "Data Interpretation",        icon: "📊" },
+  { id: "series",          name: "Number Series",              icon: "🔢" },
+  { id: "permcomb",        name: "Permutation & Combination",  icon: "∑" },
 ]
 
 // --- CS topics ----------------------------------------------------------------
@@ -1039,10 +1040,16 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
   }
 
   useEffect(() => {
-    // Use local aptitude bank for number-system topic
-    if (topic.id === "number-system") {
+    // Use local aptitude bank for number-system, simplification and percentages topics
+    const LOCAL_TOPIC_MAP: Record<string, string> = {
+      "number-system": "Number System",
+      "simplification": "Simplification",
+      "percentages": "Percentages",
+    }
+    if (topic.id in LOCAL_TOPIC_MAP) {
+      const topicName = LOCAL_TOPIC_MAP[topic.id]
       const qs = APTITUDE_BANK
-        .filter(q => q.topic === "Number System")
+        .filter(q => q.topic === topicName)
         .sort(() => Math.random() - 0.5)
         .slice(0, 10)
         .map((q, i) => ({
@@ -1463,7 +1470,7 @@ export default function PrepHubPage() {
                   "cn": { points: ["OSI 7 layers: Physical->Data Link->Network->Transport->Session->Presentation->Application","TCP: reliable, connection-oriented; UDP: fast, connectionless","IP classes: A(0−127) B(128−191) C(192−223)","Subnetting: borrow bits from host portion"], formula: "Subnet mask /24 = 255.255.255.0 &rarr; 254 hosts", example: "HTTP=80, HTTPS=443, FTP=21, SSH=22, DNS=53" },
                   "oops": { points: ["4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism","Overloading: same name, different params (compile-time)","Overriding: same signature, different class (runtime)","Interface vs Abstract: interface = pure contract"], example: "Animal->speak() overridden by Dog->speak() 'Woof'" },
                   "java": { points: ["JVM: bytecode &rarr; machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
-                  "number-system": { formula: "HCF × LCM = Product of two numbers", points: ["Unit digits repeat in cycles: 2→4, 3→4, 7→4, 9→2 period","Factors of n=p^a×q^b×r^c → (a+1)(b+1)(c+1)","Sum of factors = (p^(a+1)−1)/(p−1) × (q^(b+1)−1)/(q−1)","Trailing zeros in n! = ⌊n/5⌋+⌊n/25⌋+⌊n/125⌋...","Remainder of a^n mod m: use cyclicity of unit digits"], example: "HCF(48,180)=12; LCM(12,18,24)=72; 7^35 unit digit: 35 mod 4=3 → 3" },
+                  "simplification": { formula: "BODMAS: Brackets → Orders → Division → Multiplication → Addition → Subtraction", points: ["Apply BODMAS strictly — brackets first, then powers","Division and multiplication: left to right","Addition and subtraction: left to right","For fractions: find LCM of denominators first","For approximations: round to nearest whole number"], example: "45÷9×3+15−8 = 5×3+15−8 = 15+15−8 = 22" }, points: ["Unit digits repeat in cycles: 2→4, 3→4, 7→4, 9→2 period","Factors of n=p^a×q^b×r^c → (a+1)(b+1)(c+1)","Sum of factors = (p^(a+1)−1)/(p−1) × (q^(b+1)−1)/(q−1)","Trailing zeros in n! = ⌊n/5⌋+⌊n/25⌋+⌊n/125⌋...","Remainder of a^n mod m: use cyclicity of unit digits"], example: "HCF(48,180)=12; LCM(12,18,24)=72; 7^35 unit digit: 35 mod 4=3 → 3" },
                 }
                 const note = notes[t.id] || { points: ["Study this topic systematically", "Practice with timed questions", "Review formulas and examples"] }
                 return (
