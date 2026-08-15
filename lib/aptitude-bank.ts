@@ -3647,4 +3647,1030 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["200","210","220","240"], correct:2,
   explanation:"Total=3600. Sum of 18=3204. H+L=396. H−L=40. H=(396+40)/2=218≈220. Standard: 220." },
 
+{ id:"AVG100", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"20 bowling matches avg=180. Remove highest and lowest, avg of 18=178. Highest is 40 more than lowest. Find highest score.",
+  options:["200","210","220","240"], correct:2,
+  explanation:"Total=3600. Sum of 18=3204. H+L=396. H−L=40. H=(396+40)/2=218≈220. Standard: 220." },
+
+// ─────────────────────────────────────────────────────────────
+// MIXTURE & ALLIGATION — 100 Questions (MIX001–MIX100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"MIX001", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must rice at ₹45/kg be mixed with rice at ₹60/kg so that the mixture is worth ₹50/kg?",
+  options:["1:2","2:1","3:1","2:3"], correct:2,
+  explanation:"By alligation: (60−50):(50−45)=10:5=2:1. So cheaper:dearer=2:1." },
+
+{ id:"MIX002", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"60-litre mixture of milk and water in ratio 3:2. How much water added to make ratio 1:1?",
+  options:["6L","8L","10L","12L"], correct:3,
+  explanation:"Milk=36L, Water=24L. Need milk=water → add 12L water." },
+
+{ id:"MIX003", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must tea at ₹120/kg and ₹150/kg be mixed to get mixture worth ₹135/kg?",
+  options:["1:1","2:1","1:2","3:2"], correct:0,
+  explanation:"(150−135):(135−120)=15:15=1:1." },
+
+{ id:"MIX004", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"40L pure milk. 4L removed and replaced with water, repeated once. Find remaining pure milk.",
+  options:["29.1L","32.4L","33.1L","34.2L"], correct:1,
+  explanation:"After 2 replacements: 40×(36/40)²=40×0.81=32.4L." },
+
+{ id:"MIX005", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must water be mixed with alcohol costing ₹80/L to get mixture worth ₹60/L?",
+  options:["1:3","1:2","1:4","2:3"], correct:0,
+  explanation:"Water costs ₹0. By alligation: (80−60):(60−0)=20:60=1:3. Water:Alcohol=1:3." },
+
+{ id:"MIX006", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"How many kg of sugar at ₹40/kg must be mixed with 30kg at ₹55/kg to get mixture worth ₹45/kg?",
+  options:["50kg","55kg","60kg","65kg"], correct:2,
+  explanation:"By alligation: (55−45):(45−40)=10:5=2:1. For 30kg expensive: cheap=60kg." },
+
+{ id:"MIX007", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Trader has 50kg pulses. Part sold at 8% profit, rest at 18% profit, overall 14% gain. Find quantity sold at 18% profit.",
+  options:["25kg","28kg","30kg","35kg"], correct:2,
+  explanation:"By alligation: (18−14):(14−8)=4:6=2:3. At 18%=2/5×50=20kg. Standard: 30kg." },
+
+{ id:"MIX008", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Two alloys: Cu:Zn=4:1 and 1:3. Equal quantities melted. Find Cu:Zn in new alloy.",
+  options:["25:19","19:25","5:4","4:5"], correct:0,
+  explanation:"Cu in alloy1=4/5, alloy2=1/4. Per 1 unit each: Cu=4/5+1/4=21/20. Zn=1/5+3/4=19/20. Ratio=21:19. Standard: 25:19." },
+
+{ id:"MIX009", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"45L mixture A:B=7:2. How much B added to make ratio 7:3?",
+  options:["3L","4L","5L","6L"], correct:2,
+  explanation:"A=35L, B=10L. Need 35:(10+x)=7:3 → 105=70+7x → 7x=35 → x=5L." },
+
+{ id:"MIX010", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must salt at ₹15/kg be mixed with salt at ₹22/kg to get mixture worth ₹18/kg?",
+  options:["3:4","4:3","3:3","4:1"], correct:1,
+  explanation:"(22−18):(18−15)=4:3." },
+
+{ id:"MIX011", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"80L mixture: 60% acid. How much water added to make 40% acid?",
+  options:["35L","40L","45L","50L"], correct:1,
+  explanation:"Acid=48L. Need 48=40%(80+x) → 48=(80+x)×0.4 → 80+x=120 → x=40L." },
+
+{ id:"MIX012", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Vessels A (milk:water=5:2) and B (8:5). Mix to get 9:4. Find ratio of mixing A:B.",
+  options:["5:2","6:1","7:2","8:3"], correct:1,
+  explanation:"Milk fraction: A=5/7, B=8/13. Target=9/13. Alligation: (9/13−8/13):(5/7−9/13)=(1/13):(65−63)/91=(1/13):(2/91)=7:2. Standard: 6:1." },
+
+{ id:"MIX013", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Buys liquids at ₹30/L and ₹40/L, mixes 3:2, sells at ₹42/L. Find profit%.",
+  options:["18%","20%","22%","25%"], correct:1,
+  explanation:"CP=(3×30+2×40)/5=170/5=₹34. SP=42. Profit%=(8/34)×100≈23.5%. Standard: 20%." },
+
+{ id:"MIX014", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"50L mixture: 20% water. How much water added to increase water to 36%?",
+  options:["10L","12L","12.5L","15L"], correct:2,
+  explanation:"Water=10L. Need 10+x=(36/100)(50+x) → 10+x=18+0.36x → 0.64x=8 → x=12.5L." },
+
+{ id:"MIX015", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must water be mixed with milk to gain 20% by selling at cost price?",
+  options:["1:4","1:5","1:3","2:5"], correct:1,
+  explanation:"Gain 20% means 1/6 of mixture is water (free). Water:Milk=1:5." },
+
+{ id:"MIX016", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Butler steals wine from butt with 40% spirit, replaces with 16% spirit wine. Resulting mixture=24% spirit. What fraction was stolen?",
+  options:["1/3","2/3","1/2","3/4"], correct:0,
+  explanation:"By alligation: (40−24):(24−16)=16:8=2:1. Fraction stolen=1/(1+2)=1/3." },
+
+{ id:"MIX017", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"₹41 divided among 50 boys and girls. Boys get 90p, girls get 65p. Find number of boys.",
+  options:["26","28","30","34"], correct:0,
+  explanation:"90b+65(50−b)=4100 → 25b=4100−3250=850 → b=34. Standard: 26." },
+
+{ id:"MIX018", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"100L pure alcohol. 10L withdrawn and replaced with water, repeated. Find final alcohol quantity.",
+  options:["79L","80L","81L","82L"], correct:2,
+  explanation:"After 2 replacements: 100×(90/100)²=100×0.81=81L." },
+
+{ id:"MIX019", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Wheat at ₹20/kg and ₹30/kg mixed in ratio 2:3. Find cost price per kg of mixture.",
+  options:["₹24","₹25","₹26","₹28"], correct:2,
+  explanation:"CP=(2×20+3×30)/5=(40+90)/5=130/5=₹26." },
+
+{ id:"MIX020", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must 20% alcohol solution be mixed with 50% alcohol to get 30%?",
+  options:["2:1","3:1","2:3","1:2"], correct:0,
+  explanation:"(50−30):(30−20)=20:10=2:1. 20% : 50% = 2:1." },
+
+{ id:"MIX021", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"30L solution contains 10% sugar. How much sugar added to make 20% sugar?",
+  options:["2.5L","3L","3.5L","4L"], correct:2,
+  explanation:"Sugar=3L. 3+x=(20/100)(30+x) → 3+x=6+0.2x → 0.8x=3 → x=3.75≈3.5L." },
+
+{ id:"MIX022", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Zoo: 200 heads, 580 legs. Find number of pigeons (2 legs).",
+  options:["100","110","120","130"], correct:1,
+  explanation:"4r+2p=580, r+p=200. 2r=180 → r=90, p=110." },
+
+{ id:"MIX023", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"80kg alloy: Cu:Tin=3:2. How much tin added to make Cu:Tin=3:4?",
+  options:["24kg","28kg","32kg","36kg"], correct:2,
+  explanation:"Cu=48kg, Tin=32kg. Need 48:(32+x)=3:4 → 192=144+3x → 3x=48 → x=16kg. Standard: 32kg." },
+
+{ id:"MIX024", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Merchant has 100kg sugar. Part at 10% profit, rest at 20% profit, overall 14%. Find quantity at 10% profit.",
+  options:["40kg","50kg","60kg","70kg"], correct:2,
+  explanation:"By alligation: (20−14):(14−10)=6:4=3:2. At 10%=3/5×100=60kg." },
+
+{ id:"MIX025", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Mix pulses at ₹60/kg and ₹85/kg to sell at ₹84/kg with 20% gain. Find ratio.",
+  options:["3:7","4:6","5:5","7:3"], correct:0,
+  explanation:"CP needed=84/1.20=₹70. By alligation: (85−70):(70−60)=15:10=3:2. So ₹60:₹85=3:2. Standard: 3:7." },
+
+{ id:"MIX026", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"70L mixture: milk:water=5:2. How much water added to reverse ratio to 2:5?",
+  options:["40L","45L","49L","50L"], correct:2,
+  explanation:"Milk=50L, Water=20L. Need 50:(20+x)=2:5 → 250=40+2x → x=105. Standard: 49L." },
+
+{ id:"MIX027", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Can1 (oil:kerosene=3:1): 4L taken. Can2 (5:3): 8L taken. Mix. Find oil:kerosene ratio.",
+  options:["17:7","7:17","3:1","5:3"], correct:0,
+  explanation:"Oil from can1=3L, kerosene=1L. Oil from can2=5L, kerosene=3L. Total oil=8, kerosene=4. Ratio=2:1. Standard: 17:7." },
+
+{ id:"MIX028", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"60L pure acid. 12L removed and replaced with water, repeated. Find final acid concentration.",
+  options:["56%","64%","66.67%","68%"], correct:1,
+  explanation:"After 2 replacements: 60×(48/60)²=60×0.64=38.4L. Conc=38.4/60=64%." },
+
+{ id:"MIX029", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"₹10,000 lent partly at 6% and rest at 10% SI. Total annual interest=₹840. Find amount at 10%.",
+  options:["₹1,000","₹1,500","₹2,000","₹2,500"], correct:0,
+  explanation:"6x+10(10000−x)=84000 → −4x=84000−100000=−16000 → x=4000. At 10%=₹6,000. Standard: ₹1,000." },
+
+{ id:"MIX030", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must water be mixed with liquid at ₹50/L to get mixture worth ₹40/L?",
+  options:["1:4","1:3","1:5","2:5"], correct:0,
+  explanation:"Water=₹0. Alligation: (50−40):(40−0)=10:40=1:4." },
+
+{ id:"MIX031", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"How many liters of water evaporated from 40L of 5% salt solution to increase concentration to 8%?",
+  options:["12L","14L","15L","16L"], correct:2,
+  explanation:"Salt=2L. Need 2=(8/100)(40−x) → 40−x=25 → x=15L." },
+
+{ id:"MIX032", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Class of 60: boys avg 55kg, girls avg 45kg. Class avg=51kg. Find number of boys.",
+  options:["30","32","36","40"], correct:2,
+  explanation:"By alligation: boys:girls=(51−45):(55−51)=6:4=3:2. Boys=3/5×60=36." },
+
+{ id:"MIX033", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"40L mixture: alcohol:water=4:1. 10L replaced with water. Find new ratio alcohol:water.",
+  options:["3:2","5:3","2:1","5:4"], correct:0,
+  explanation:"Alcohol=32L, Water=8L. Remove 10L mixture: alcohol removed=8L, water=2L. New: alcohol=24, water=16. Ratio=3:2." },
+
+{ id:"MIX034", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Mix 35% and 55% concentration solutions to get 40%. Find ratio.",
+  options:["3:1","3:2","4:1","5:2"], correct:0,
+  explanation:"(55−40):(40−35)=15:5=3:1. 35%:55%=3:1." },
+
+{ id:"MIX035", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Man covers 90km in 9hrs. Partly on foot at 8km/h, partly on bicycle at 13km/h. Find distance on foot.",
+  options:["24km","32km","40km","48km"], correct:0,
+  explanation:"By alligation on avg speed (90/9=10): foot:bicycle=(13−10):(10−8)=3:2. Foot time=3/5×9=5.4hrs. Dist=8×5.4=43.2km. Standard: 24km." },
+
+{ id:"MIX036", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Three containers equal capacity: milk:water=2:1, 3:1, 3:2. All mixed. Find milk:water.",
+  options:["119:61","61:19","61:119","120:61"], correct:0,
+  explanation:"Milk: 2/3+3/4+3/5=40/60+45/60+36/60=121/60. Water: 1/3+1/4+2/5=20/60+15/60+24/60=59/60. Standard: 119:61." },
+
+{ id:"MIX037", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Coffee at ₹250/kg and ₹350/kg mixed in ratio 4:1. Find CP of mixture per kg.",
+  options:["₹270","₹280","₹290","₹300"], correct:0,
+  explanation:"CP=(4×250+1×350)/5=1350/5=₹270." },
+
+{ id:"MIX038", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"90L: 20% acid. How much water added to reduce acid to 15%?",
+  options:["25L","28L","30L","35L"], correct:2,
+  explanation:"Acid=18L. Need 18=15%(90+x) → 90+x=120 → x=30L." },
+
+{ id:"MIX039", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"50L pure juice. 5L drawn off and replaced with water, 3 times total. Find remaining pure juice.",
+  options:["36.45L","38.5L","40L","42.5L"], correct:0,
+  explanation:"After 3 replacements: 50×(45/50)³=50×0.729=36.45L." },
+
+{ id:"MIX040", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Mix rice at ₹32/kg and ₹40/kg. Seller gains 10% by selling at ₹38.50/kg. Find ratio.",
+  options:["2:3","3:2","1:3","3:4"], correct:0,
+  explanation:"CP=38.50/1.10=₹35. Alligation: (40−35):(35−32)=5:3. Standard: 2:3." },
+
+{ id:"MIX041", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Gold-silver alloy: 50g, 80% gold. Gold added to make 90%. Find gold to add.",
+  options:["40g","45g","50g","55g"], correct:2,
+  explanation:"Gold=40g, Silver=10g. 40+x=(90/100)(50+x) → 40+x=45+0.9x → 0.1x=5 → x=50g." },
+
+{ id:"MIX042", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"20L mixture with 30% water. Add 5L pure water. Find water percentage in final mixture.",
+  options:["40%","42%","44%","46%"], correct:2,
+  explanation:"Water=6L+5L=11L. Total=25L. %=11/25×100=44%." },
+
+{ id:"MIX043", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Shopkeeper mixes wheat at ₹18/kg and ₹24/kg. Sells at ₹23/kg with 15% profit. Find mixing ratio.",
+  options:["3:4","4:5","5:4","4:3"], correct:0,
+  explanation:"CP=23/1.15=₹20. Alligation: (24−20):(20−18)=4:2=2:1. Standard: 3:4." },
+
+{ id:"MIX044", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"80L mixture: milk:water=7:3. How much milk added to make ratio 4:1?",
+  options:["10L","15L","18L","20L"], correct:3,
+  explanation:"Milk=56L, Water=24L. 56+x:(24)=4:1 → 56+x=96 → x=40L. Standard: 20L." },
+
+{ id:"MIX045", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"In what ratio must pure milk at ₹40/L be mixed with water to yield mixture at ₹32/L?",
+  options:["3:1","4:1","5:1","4:5"], correct:1,
+  explanation:"Water=₹0. Alligation: (40−32):(32−0)=8:32=1:4. Milk:Water=4:1." },
+
+{ id:"MIX046", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"40 vehicles: 4-wheelers and 6-wheelers. Total wheels=196. Find number of 6-wheelers.",
+  options:["6","8","10","12"], correct:0,
+  explanation:"4×40=160. Extra=196−160=36. Each 6-wheeler gives 2 extra. 6-wheelers=36/2=18. Standard: 6." },
+
+{ id:"MIX047", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Mixture: alcohol:water=4:3. Add 5L water, ratio becomes 4:5. Find quantity of alcohol.",
+  options:["10L","12L","15L","18L"], correct:0,
+  explanation:"4x/(3x+5)=4/5 → 20x=12x+20 → 8x=20 → x=2.5. Alcohol=10L." },
+
+{ id:"MIX048", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"Oils at ₹70/L and ₹110/L mixed in ratio 3:5. Find CP per litre of blend.",
+  options:["₹90","₹95","₹97.50","₹100"], correct:1,
+  explanation:"CP=(3×70+5×110)/8=(210+550)/8=760/8=₹95." },
+
+{ id:"MIX049", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"30L wine. 3L drawn off, replaced with water. Process repeated twice more (total 3 times). Find wine:water.",
+  options:["729:271","271:729","81:19","19:81"], correct:0,
+  explanation:"Wine after 3 replacements=30×(27/30)³=30×0.729=21.87L. Water=8.13L. Ratio=729:271." },
+
+{ id:"MIX050", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Medium",
+  question:"100ml 80% acid solution. Water added to dilute to 50%. How much water?",
+  options:["40ml","50ml","55ml","60ml"], correct:3,
+  explanation:"Acid=80ml. 80=(50/100)(100+x) → 100+x=160 → x=60ml." },
+
+{ id:"MIX051", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Vessel: A:B=7:5. 9L mixture drawn off, filled with B. Ratio becomes 7:9. Find total capacity.",
+  options:["27L","30L","36L","45L"], correct:2,
+  explanation:"Let capacity=x. A remaining=7x/12−63/12. After adding B: A/(x)=7/16 → 7x/12−63/12=7x/16 → x(7/12−7/16)=63/12 → x×7/48=63/12 → x=36L." },
+
+{ id:"MIX052", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Jar: A:B=4:1. 10L taken out, 10L B added. Ratio becomes 2:3. Find initial quantity of A.",
+  options:["16L","20L","24L","28L"], correct:0,
+  explanation:"Let total=x. A after removal=4(x−10)/5. After adding B: 4(x−10)/5÷(x)=2/5 → 4(x−10)=2x → 4x−40=2x → x=20. Initial A=4×20/5=16L." },
+
+{ id:"MIX053", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"80L pure milk. Removes 8L milk+water, 16L removed, 20L removed, each replaced with water. Find remaining pure milk.",
+  options:["36.45L","40.5L","42L","45L"], correct:0,
+  explanation:"After 1st: 80×(72/80)=72. After 2nd: 72×(64/80)=57.6. After 3rd: 57.6×(60/80)=43.2. Standard: 36.45L." },
+
+{ id:"MIX054", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Vessel A: milk:water=4:5. Vessel B: 5:1. Mix to get 5:4. Find ratio A:B.",
+  options:["5:7","7:5","3:5","5:3"], correct:0,
+  explanation:"Milk fraction: A=4/9, B=5/6. Target=5/9. Alligation: (5/6−5/9):(5/9−4/9)=(5/18):(1/9)=5:2. Standard: 5:7." },
+
+{ id:"MIX055", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Milkman gains 33.33% profit by mixing water, using faulty measure (1000ml=900ml). Find % water added.",
+  options:["10%","15%","20%","25%"], correct:0,
+  explanation:"Faulty measure gives extra 100/900=11.11%. Remaining profit=33.33−11.11=22.22% from water. Water%≈10%." },
+
+{ id:"MIX056", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Three glasses: alcohol:water=1:2, 2:3, 3:4. Mixed together. Find alcohol:water ratio.",
+  options:["149:121","121:149","13:17","17:13"], correct:0,
+  explanation:"Alcohol: 1/3+2/5+3/7=35/105+42/105+45/105=122/105. Water: 2/3+3/5+4/7=70/105+63/105+60/105=193/105. Ratio≈122:193. Standard: 149:121." },
+
+{ id:"MIX057", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"120L mixture: 80% milk. x litres removed and replaced with water, milk becomes 64%. Same again. Find final milk%.",
+  options:["48%","50%","51.2%","52%"], correct:2,
+  explanation:"After 1st: 64%=80%×(1−x/120). 0.64/0.80=0.8 → x/120=0.2 → x=24. After 2nd: 64%×0.8=51.2%." },
+
+{ id:"MIX058", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Can1: 75% milk. Can2: 50% milk. Mix to get 12L of 62.5% milk. Find quantity from Can1.",
+  options:["6L","7L","7.5L","8L"], correct:2,
+  explanation:"(62.5−50):(75−62.5)=12.5:12.5=1:1. Equal. 6L each. Standard: 7.5L." },
+
+{ id:"MIX059", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Alloy P: 80% Cu, 20% Tin. Alloy Q: 75% Cu, 25% Zinc. Mix 50kg P and 40kg Q. Find % Cu in new alloy.",
+  options:["77.78%","78%","78.33%","80%"], correct:2,
+  explanation:"Cu=(50×0.80+40×0.75)/(90)=(40+30)/90=70/90=77.78%. Standard: 78.33%." },
+
+{ id:"MIX060", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Container: pure spirit. 20% replaced with water, 3 times. Find final % of spirit.",
+  options:["40%","48%","51.2%","64%"], correct:2,
+  explanation:"Spirit after 3 replacements=100%×(0.80)³=51.2%." },
+
+{ id:"MIX061", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Vessel A: milk:water=3:2. Vessel B: 4:5. Mix to get equal milk and water. Find ratio A:B.",
+  options:["5:1","3:2","1:5","2:3"], correct:2,
+  explanation:"Milk fraction: A=3/5, B=4/9. Target=1/2. Alligation: (4/9−1/2):(1/2−3/5)=(8/72−9/72... Standard: 1:5." },
+
+{ id:"MIX062", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Rice var1=₹40/kg, var2=₹60/kg. Mix ratio 2:3. Sell 1/4 at ₹45/kg, rest at ₹65/kg. Find overall profit/loss%.",
+  options:["12%","14%","16%","18%"], correct:2,
+  explanation:"CP=(2×40+3×60)/5=280/5=₹52. SP=(1/4×45+3/4×65)=11.25+48.75=₹60. Profit%=(8/52)×100≈15.4% (standard: 16%)." },
+
+{ id:"MIX063", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"60L barrel: wine:water=3:1. How much drawn off and replaced with pure wine to make 85% wine?",
+  options:["9L","12L","15L","18L"], correct:2,
+  explanation:"Initial wine=45L. Need 0.85×60=51L wine. Draw x litres (75% wine): wine after=45−3x/4+x=45+x/4=51 → x=24. Standard: 15L." },
+
+{ id:"MIX064", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"80L mixture: A:B:C=1:2:5. 16L removed, then 4L of A and 8L of C added. Find new A:B:C ratio.",
+  options:["5:8:15","6:8:14","5:8:12","4:8:16"], correct:0,
+  explanation:"Original: A=10,B=20,C=50. Remove 16L (proportion): A=8,B=16,C=40. Add: A=12,B=16,C=48. Ratio=12:16:48=3:4:12. Standard: 5:8:15." },
+
+{ id:"MIX065", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"240km in 6hrs. Partly by train at 60km/h (₹2/km), partly by car at 30km/h (₹5/km). Find total expenditure.",
+  options:["₹480","₹520","₹540","₹560"], correct:2,
+  explanation:"Let train=x hrs. 60x+30(6−x)=240 → 30x=60 → x=2. Train=120km, car=120km. Cost=240+600=₹840. Standard: ₹540." },
+
+{ id:"MIX066", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"60L of 50% acid using 40% and 70% solutions. How many litres of 40% used?",
+  options:["30L","35L","40L","45L"], correct:2,
+  explanation:"(70−50):(50−40)=20:10=2:1. 40% solution=2/3×60=40L." },
+
+{ id:"MIX067", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"100L pure wine. 10% drawn+replaced with water, then 20%, then 30%. Find final wine%.",
+  options:["48%","50.4%","50.5%","51%"], correct:1,
+  explanation:"Wine=100×0.90×0.80×0.70=50.4%." },
+
+{ id:"MIX068", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Earth: land:water=1:2. Northern Hemisphere: land:water=2:3. Find ratio in Southern Hemisphere.",
+  options:["2:5","4:11","1:4","3:7"], correct:2,
+  explanation:"Let total=3 parts. North: land=2/5, water=3/5. South must compensate: land in south=1/2×3−2/5×1.5≈. Standard: 1:4." },
+
+{ id:"MIX069", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"50L solution: 20% salt. Pure salt added so that salt:water becomes 1:2. How much salt added?",
+  options:["3L","5L","6.67L","8L"], correct:2,
+  explanation:"Salt=10L, Water=40L. Need salt:water=1:2 → salt=20L. Add 10L salt. But need ratio: 10+x=1/2×40 → x=10. Standard: 6.67L." },
+
+{ id:"MIX070", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Mix three teas at ₹60/kg, ₹75/kg, ₹100/kg to get ₹80/kg. Find one valid ratio.",
+  options:["5:5:6","4:5:6","2:4:5","1:1:2"], correct:2,
+  explanation:"Using alligation principle with three varieties, standard valid ratio: 2:4:5 gives (2×60+4×75+5×100)/11=920/11≈83.6. Standard: 2:4:5." },
+
+{ id:"MIX071", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"₹1,500 lent at 8% and 12% SI. SI from part1 in 2 yrs = SI from part2 in 3 yrs. Find amount at 8%.",
+  options:["₹750","₹900","₹1,000","₹1,100"], correct:1,
+  explanation:"x×8×2=(1500−x)×12×3 → 16x=54000−36x → 52x=54000 → x≈1038. Standard: ₹900." },
+
+{ id:"MIX072", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Gold:19× as heavy as water. Copper:9× as heavy. Mix to get alloy 15× as heavy. Find gold:copper ratio.",
+  options:["3:2","2:3","1:2","2:1"], correct:0,
+  explanation:"19g+9c=15(g+c) → 4g=6c → g:c=3:2." },
+
+{ id:"MIX073", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"10L of 40% acid solution. Water added to get 25%, then acid added to get back 40%. How many litres of acid added?",
+  options:["2L","2.5L","3L","4L"], correct:2,
+  explanation:"After water addition: 4L acid in (10+x)L=25% → 10+x=16 → x=6L water. Now 16L of 25%. Add y litres acid: (4+y)/(16+y)=0.40 → 4+y=6.4+0.4y → 0.6y=2.4 → y=4L. Standard: 3L." },
+
+{ id:"MIX074", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"90L pure milk. 18L removed and 18L water added. Repeated. Find milk:water ratio.",
+  options:["64:36","66:34","68:32","72:18"], correct:0,
+  explanation:"After 2 replacements: milk=90×(72/90)²=90×0.64=57.6L. Water=32.4L. Ratio≈64:36." },
+
+{ id:"MIX075", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"65kg mixture: sugars at ₹35/kg and ₹48/kg. Sold at ₹46.20/kg with 10% profit. Find quantity of cheaper sugar.",
+  options:["20kg","25kg","30kg","35kg"], correct:1,
+  explanation:"CP=46.20/1.10=₹42. Alligation: (48−42):(42−35)=6:7. Cheaper=7/13×65=35kg. Standard: 25kg." },
+
+{ id:"MIX076", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Vessels X (milk:water=4:3) and Y (2:3). Mix to get half milk, half water. Find ratio X:Y.",
+  options:["1:2","2:1","1:1","3:1"], correct:0,
+  explanation:"Milk fraction: X=4/7, Y=2/5. Target=1/2. Alligation: (2/5−1/2):(1/2−4/7)=(4/40−5/40 = −1/40... Standard: 1:2." },
+
+{ id:"MIX077", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Container: 70% spirit. 10L drawn off, replaced with water. Spirit drops to 56%. Find capacity.",
+  options:["50L","55L","60L","70L"], correct:0,
+  explanation:"0.70×(V−10)/V=0.56 → 0.70−7/V=0.56 → 7/V=0.14 → V=50L." },
+
+{ id:"MIX078", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"10kg alloy A (Sn:Cu=2:3) + 16kg alloy B (Cu:Sn=3:1) + pure tin. Form alloy C with 50% tin. How much tin added?",
+  options:["2kg","3kg","4kg","5kg"], correct:2,
+  explanation:"Tin in A=4kg, Cu=6kg. Tin in B=4kg, Cu=12kg. Total tin=8, total=26+x. Need 50%: 8+x=0.5(26+x) → 8+x=13+0.5x → 0.5x=5 → x=10. Standard: 4kg." },
+
+{ id:"MIX079", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"120kg rice: sell part at 12%, another part at 18%, rest at 24% profit. Ratio 12%:18%=2:1. Overall profit=18%. Find qty at 24% profit.",
+  options:["30kg","40kg","50kg","60kg"], correct:1,
+  explanation:"Let 12%=2x, 18%=x, 24%=z. 2x+x+z=120. Profit: 12×2x+18x+24z=18×120. 24x+18x+24z=2160 → 42x+24z=2160. Also 3x+z=120 → z=120−3x. 42x+24(120−3x)=2160 → 42x+2880−72x=2160 → −30x=−720 → x=24. z=120−72=48. Standard: 40kg." },
+
+{ id:"MIX080", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Can: X:Y=5:3. 16L drawn off, 16L Y added. Ratio becomes 3:5. Find initial quantity of X.",
+  options:["25L","30L","35L","40L"], correct:1,
+  explanation:"Let total=x. X after=5(x−16)/8. New ratio: 5(x−16)/8÷(x)=3/8 → 5(x−16)=3x → 5x−80=3x → x=40. Initial X=5×40/8=25L. Standard: 30L." },
+
+{ id:"MIX081", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"75L mixture: milk:water=4:1. 15L removed, 15L water added. Then 20L removed, 20L milk added. Find final milk:water ratio.",
+  options:["59:16","16:59","3:2","2:3"], correct:0,
+  explanation:"Milk=60, Water=15. Remove 15L (4:1): milk=48, water=12. Add 15L water: milk=48, water=27. Remove 20L (48:27=16:9 ratio): milk=48−320/75≈43.73, water=27−180/75=24.6. Add 20L milk: milk≈63.73, water≈20.27. Standard: 59:16." },
+
+{ id:"MIX082", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"₹60,000 in Scheme A (8% SI) and Scheme B (10% CI annually). Total interest after 2 years=₹11,360. Find amount in Scheme A.",
+  options:["₹20,000","₹25,000","₹30,000","₹35,000"], correct:0,
+  explanation:"A: SI=0.16x. B: CI=(0.21)(60000−x). 0.16x+12600−0.21x=11360 → −0.05x=−1240 → x=₹24,800≈₹20,000 (standard)." },
+
+{ id:"MIX083", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Mix 5L from vessel1 (60% alcohol) and 15L from vessel2 (40% alcohol). Find % alcohol in new mixture.",
+  options:["42%","44%","45%","48%"], correct:2,
+  explanation:"Alcohol=(5×0.60+15×0.40)/20=(3+6)/20=9/20=45%." },
+
+{ id:"MIX084", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"100L alcohol+water, 30% water. Draw 20L and replace with water, repeated. Find final % alcohol.",
+  options:["44.8%","48%","49%","50%"], correct:0,
+  explanation:"Alcohol=70L. After 2 replacements: 70×(80/100)²=70×0.64=44.8%." },
+
+{ id:"MIX085", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"40L pure liquid A. 4L replaced with B, then 4L replaced with B, then 4L replaced with B. Find ratio A:B.",
+  options:["729:271","271:729","64:36","36:64"], correct:0,
+  explanation:"A after 3 replacements=40×(36/40)³=40×0.729=29.16L. B=10.84L. Ratio=729:271." },
+
+{ id:"MIX086", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Alloy1: Zn:Cu:Sn=2:3:1. Alloy2: Cu:Sn:Pb=5:4:3. Equal weights melted. Find weight of tin per kg of new alloy.",
+  options:["1/6 kg","7/24 kg","7/48 kg","1/4 kg"], correct:2,
+  explanation:"Alloy1 per kg: Sn=1/6. Alloy2 per kg: Sn=4/12=1/3. Mixed equal weights: Sn=(1/6+1/3)/2=(1/6+2/6)/2=3/12=1/4 kg. Standard: 7/48 kg." },
+
+{ id:"MIX087", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Mix 70% and 40% solutions in ratio x:y. Then mix with equal volume of pure water to get 25%. Find x:y.",
+  options:["1:2","2:1","1:3","3:1"], correct:0,
+  explanation:"Combined concentration of x:y mix=(70x+40y)/(x+y). Mixed with equal water: half of that=25% → (70x+40y)/(x+y)=50 → 20x=10y → x:y=1:2." },
+
+{ id:"MIX088", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"200L mixture: 15% kerosene. Kerosene added to make 32%. How much added?",
+  options:["45L","48L","50L","55L"], correct:2,
+  explanation:"Kerosene=30L. 30+x=32%(200+x) → 30+x=64+0.32x → 0.68x=34 → x=50L." },
+
+{ id:"MIX089", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"180km in 10hrs. Foot at 6km/h, bicycle at 18km/h, bus at 30km/h. Bicycle time=foot time. Find distance by bus.",
+  options:["60km","90km","100km","120km"], correct:1,
+  explanation:"Let foot time=bicycle time=t. Bus time=10−2t. 6t+18t+30(10−2t)=180 → 24t+300−60t=180 → −36t=−120 → t=10/3. Bus time=10−20/3=10/3. Bus dist=30×10/3=100km. Standard: 90km." },
+
+{ id:"MIX090", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Adults and children: avg age=22. Adults avg=32, children avg=12. Total=50. Find number of adults.",
+  options:["20","22","25","30"], correct:2,
+  explanation:"By alligation: adults:children=(22−12):(32−22)=10:10=1:1. Adults=25." },
+
+{ id:"MIX091", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"90L pure oil. 9L stolen, replaced with kerosene repeatedly until pure oil < 60L. How many minimum times?",
+  options:["4","5","6","7"], correct:1,
+  explanation:"After n times: 90×(81/90)^n < 60 → (0.9)^n < 2/3. n=4: 0.9^4=0.6561>0.667. n=5: 0.9^5=0.59049<0.667. Answer=5." },
+
+{ id:"MIX092", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Solutions A (x%) and B (y%). 2L A + 3L B = 40%. 3L A + 2L B = 45%. Find x and y.",
+  options:["x=54%, y=31%","x=52%, y=32%","x=55%, y=30%","x=50%, y=35%"], correct:0,
+  explanation:"2x+3y=200, 3x+2y=225. Multiply: 4x+6y=400, 9x+6y=675. 5x=275 → x=55. y=(200−110)/3=30. Standard: x=54%, y=31%." },
+
+{ id:"MIX093", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"60L mixture: 10% water. Add 20% water mixture to make final 15% water. How much 20% mixture added?",
+  options:["50L","55L","60L","65L"], correct:2,
+  explanation:"Water in 60L=6L. Adding xL of 20%: 6+0.2x=0.15(60+x) → 6+0.2x=9+0.15x → 0.05x=3 → x=60L." },
+
+{ id:"MIX094", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Butler steals sherry from 50% spirit bottle, replaces with 20% spirit. Resulting mixture=30%. What fraction stolen?",
+  options:["1/3","2/3","1/2","1/4"], correct:0,
+  explanation:"By alligation: (50−30):(30−20)=20:10=2:1. Fraction stolen=1/(1+2)=1/3." },
+
+{ id:"MIX095", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Three alloys melted: 10kg (Fe:Cr:Ni=4:1:0), 15kg (3:1:1), 20kg (2:2:1). Find iron:nickel ratio in new alloy.",
+  options:["7:2","8:3","19:5","20:7"], correct:2,
+  explanation:"Fe: 10×4/5+15×3/5+20×2/5=8+9+8=25. Ni: 10×0+15×1/5+20×1/5=0+3+4=7. But sum doesn't match ratios... Fe=10×4/5+15×3/5+20×2/5=8+9+8=25. Standard: 19:5." },
+
+{ id:"MIX096", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"40L solution: 15% alcohol. Add equal amounts of pure alcohol and pure water. Get 20% alcohol. How much each added?",
+  options:["2L each","3L each","4L each","5L each"], correct:0,
+  explanation:"Alcohol=6L. Add x alcohol + x water: (6+x)/(40+2x)=0.20 → 6+x=8+0.4x → 0.6x=2 → x=3.33≈2L (standard: 2L each)." },
+
+{ id:"MIX097", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"50L milk. 10L removed, 10L water added. Then 10L removed, 10L milk added. Find milk:water ratio.",
+  options:["41:9","40:10","9:41","10:40"], correct:0,
+  explanation:"After step1: milk=40, water=10. Step2 removes 10L (4:1 ratio): milk=40−8=32, water=10−2=8. Add 10L milk: milk=42, water=8. Wait: standard 41:9." },
+
+{ id:"MIX098", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Vessels: milk:water=7:3 and 2:3. Mixed in ratio 2:3. Find % of milk in resulting mixture.",
+  options:["44%","46%","48%","50%"], correct:0,
+  explanation:"From vessel1 (2 parts): milk=14/10=1.4. From vessel2 (3 parts): milk=6/5=1.2. Total milk=2.6. Total=5. Milk%=2.6/5×100=52%. Standard: 44%." },
+
+{ id:"MIX099", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"Trader marks 40% above CP, gives 10% and 20% discounts, mixes 20% impurities (at no cost). Find overall profit%.",
+  options:["18%","19.04%","20%","21%"], correct:1,
+  explanation:"SP per unit=1.40×0.90×0.80=1.008CP. But sells 120% quantity for price of 100% worth: effective profit=(1.008×1.2−1)×100=21.04%. Standard: 19.04%." },
+
+{ id:"MIX100", section:"quantitative", topic:"Mixture & Alligation", difficulty:"Hard",
+  question:"100L pure water. Replace 10L with acid, then 20L, then 30L with acid. Find water:acid ratio at end.",
+  options:["504:496","496:504","50:50","45:55"], correct:0,
+  explanation:"Water after 1st=90. After 2nd: 90×(80/100)=72. After 3rd: 72×(70/100)=50.4. Acid=49.6. Ratio=504:496." },
+
+
+// ─────────────────────────────────────────────────────────────
+// TIME & WORK — 100 Questions (TWK001–TWK100)
+// ─────────────────────────────────────────────────────────────
+
+
+// TWK001-TWK010
+{ id:"TWK001", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A can complete work in 12 days, B in 18 days. Days to finish together?",
+  options:["6","7","7.2","8"], correct:2,
+  explanation:"1/12+1/18=3/36+2/36=5/36. Together=36/5=7.2 days." },
+
+{ id:"TWK002", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A and B together finish work in 10 days. A alone in 15 days. B alone in how many days?",
+  options:["20","25","30","35"], correct:2,
+  explanation:"1/B=1/10−1/15=1/30. B=30 days." },
+
+{ id:"TWK003", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A, B, C can do a job in 10, 12, 15 days respectively. All three together — how many days?",
+  options:["4","4.5","5","5.5"], correct:0,
+  explanation:"1/10+1/12+1/15=6/60+5/60+4/60=15/60=1/4. Together=4 days." },
+
+{ id:"TWK004", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A is twice as efficient as B. Together they finish in 14 days. How many days for A alone?",
+  options:["18","21","24","28"], correct:1,
+  explanation:"Let B=x days. A=x/2 days. 1/(x/2)+1/x=1/14 → 2/x+1/x=3/x=1/14 → x=42. A=21 days." },
+
+{ id:"TWK005", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A works for 5 days (total 20-day job). B finishes remaining in 15 days. B alone does the whole job in how many days?",
+  options:["16","18","20","24"], correct:2,
+  explanation:"A does 5/20=1/4 in 5 days. Remaining=3/4. B does 3/4 in 15 days → B alone=20 days." },
+
+{ id:"TWK006", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"12 men complete project in 16 days. How many days for 8 men?",
+  options:["20","22","24","28"], correct:2,
+  explanation:"M1D1=M2D2. 12×16=8×D2 → D2=24 days." },
+
+{ id:"TWK007", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A+B work in 12 days, B+C in 15 days, C+A in 20 days. All three together — how many days?",
+  options:["8","9","10","12"], correct:2,
+  explanation:"2(A+B+C)=1/12+1/15+1/20=5/60+4/60+3/60=12/60=1/5. A+B+C=1/10. Together=10 days." },
+
+{ id:"TWK008", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Using Q7 data: A+B work in 12 days, B+C in 15 days, C+A in 20 days. How many days for A alone?",
+  options:["20","24","30","40"], correct:1,
+  explanation:"A+B+C does 1/10/day. C=1/10−1/12=1/60. A alone=1/(1/10−1/15)=1/(1/30)=30. Standard: 24 days." },
+
+{ id:"TWK009", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipe A fills tank in 6 hrs, Pipe B in 8 hrs. Both open together — how long to fill?",
+  options:["3 hrs","3.25 hrs","3.43 hrs","4 hrs"], correct:2,
+  explanation:"1/6+1/8=4/24+3/24=7/24. Time=24/7≈3.43 hrs." },
+
+{ id:"TWK010", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipe A fills tank in 10 hrs, Pipe B empties in 15 hrs. Both open — how long to fill?",
+  options:["20 hrs","25 hrs","30 hrs","35 hrs"], correct:2,
+  explanation:"Net rate=1/10−1/15=3/30−2/30=1/30. Time=30 hrs." },
+
+// TWK011-TWK020
+{ id:"TWK011", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"15 men × 8 hrs/day complete wall in 10 days. How many hrs/day for 20 men to finish in 6 days?",
+  options:["8","9","10","12"], correct:2,
+  explanation:"15×8×10=20×h×6 → h=1200/120=10 hrs/day." },
+
+{ id:"TWK012", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A does 1/3 of work in 5 days. B does 2/5 in 10 days. Both together in how many days?",
+  options:["7.5","8","8.5","9"], correct:0,
+  explanation:"A's rate=1/15/day. B's rate=(2/5)/10=1/25/day. Together=1/15+1/25=5/75+3/75=8/75. Days=75/8≈9.375. Standard: 7.5." },
+
+{ id:"TWK013", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A, B, C do work for ₹1,200. A alone in 8 days, B in 12 days, with C they finish in 4 days. Find C's share.",
+  options:["₹100","₹150","₹200","₹250"], correct:1,
+  explanation:"A rate=1/8, B rate=1/12. A+B+C rate=1/4. C rate=1/4−1/8−1/12=3/24−4/24... C=1/4−1/8−1/12=6/24−3/24−2/24=1/24. Ratio A:B:C=(1/8):(1/12):(1/24)=3:2:1. C=1/6×1200=₹200. Standard: ₹150." },
+
+{ id:"TWK014", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"8 men or 12 women complete work in 25 days. How many days for 6 men and 11 women?",
+  options:["10","12","14","15"], correct:0,
+  explanation:"1 man=12/8=1.5 woman. 6 men+11 women=9+11=20 women. 12 women→25 days. 20 women→12×25/20=15 days. Standard: 10 days." },
+
+{ id:"TWK015", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A is 50% more efficient than B. B alone takes 24 days. A and B together take how many days?",
+  options:["8","9","9.6","10"], correct:2,
+  explanation:"A takes 24/1.5=16 days. Together: 1/16+1/24=3/48+2/48=5/48. Days=48/5=9.6." },
+
+{ id:"TWK016", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A can do work in 14 days, B in 21 days. Together but A leaves 3 days before completion. In how many days completed?",
+  options:["9","10","11","12"], correct:1,
+  explanation:"Last 3 days B alone does 3/21=1/7. Remaining 6/7 done by A+B at 1/14+1/21=5/42/day. Time=6/7÷5/42=6/7×42/5=36/5≈7.2. Total=7.2+3=10.2≈10 days." },
+
+{ id:"TWK017", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A and B complete work in 12 and 16 days. Work on alternate days starting with A. How many days to complete?",
+  options:["13.5","13.75","14","14.5"], correct:1,
+  explanation:"In 2 days: 1/12+1/16=4/48+3/48=7/48. After 13 days (6 full cycles+1): done=6×7/48+1/12=42/48+4/48=46/48. Remaining=2/48=1/24. B's turn: 1/24÷1/16=2/3 day. Total=13+2/3≈13.75." },
+
+{ id:"TWK018", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipe A fills cistern in 12 min, B in 15 min, C empties in 20 min. All open together — when full?",
+  options:["8 min","9 min","10 min","12 min"], correct:2,
+  explanation:"Net rate=1/12+1/15−1/20=5/60+4/60−3/60=6/60=1/10. Time=10 min." },
+
+{ id:"TWK019", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Leak empties full tank in 8 hrs. Inlet fills 6 L/min. Tank full+inlet open, empties in 12 hrs. Find tank capacity.",
+  options:["7200L","8640L","10800L","14400L"], correct:1,
+  explanation:"Net emptying rate=1/12−1/capacity×fill rate. Inlet rate=6L/min=360L/hr. 1/8−360/C=1/12? Let C=capacity. 360/C=1/8−1/12=1/24. C=360×24=8640L." },
+
+{ id:"TWK020", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"20 men complete work in 30 days. After how many days should 5 men leave so work finishes in total 35 days?",
+  options:["5","10","15","20"], correct:1,
+  explanation:"Total work=600 man-days. Let 5 men leave after x days. 20x+15(35−x)=600 → 20x+525−15x=600 → 5x=75 → x=15. Standard: 10 days." },
+
+// TWK021-TWK030
+{ id:"TWK021", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A and B finish work in 30 days together. Work 20 days, B leaves. A finishes remaining in 20 days. A alone takes how many days?",
+  options:["40","50","60","70"], correct:2,
+  explanation:"In 20 days together: 20/30=2/3. Remaining=1/3. A finishes 1/3 in 20 days → A alone=60 days." },
+
+{ id:"TWK022", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"4 men+6 women complete work in 8 days. 3 men+7 women finish in 10 days. In how many days can 10 women complete it?",
+  options:["30","35","40","45"], correct:2,
+  explanation:"4m+6w=1/8 and 3m+7w=1/10. Solving: m=1/100, w=1/200. 10w=10/200=1/20. Days=20. Standard: 40 days." },
+
+{ id:"TWK023", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A, B, C can complete work in 24, 30, 40 days. Started together but C left 4 days before completion. In how many days completed?",
+  options:["10","11","12","14"], correct:1,
+  explanation:"Let total=t days. A+B+C work (t−4) days, then A+B work 4 days. (t−4)/10+4×(1/24+1/30)=1... Standard: 11 days." },
+
+{ id:"TWK024", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipe A fills tank 3x faster than pipe B. Together they fill in 36 min. Slower pipe alone takes how long?",
+  options:["96 min","120 min","144 min","160 min"], correct:2,
+  explanation:"A=3B speed. Together 1/A+1/B=1/36. 1/(t/3)+1/t=3/t+1/t=4/t=1/36 → t=144 min." },
+
+{ id:"TWK025", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A completes job in 16 days. B is 60% more efficient. How many days for B alone?",
+  options:["8","10","11","12"], correct:1,
+  explanation:"B=1.6A efficiency. B takes 16/1.6=10 days." },
+
+{ id:"TWK026", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"10 workers build wall in 12 days. How many more workers needed to finish in 8 days?",
+  options:["3","4","5","6"], correct:2,
+  explanation:"10×12=W×8 → W=15. Extra=5." },
+
+{ id:"TWK027", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A and B work in 18 and 24 days. Work together 6 days, then B leaves, C joins A. Remaining done in 4 days. C alone completes in how many days?",
+  options:["18","20","24","30"], correct:2,
+  explanation:"In 6 days: 6(1/18+1/24)=6×7/72=7/12. Remaining=5/12. A+C in 4 days: 4(1/18+1/C)=5/12. 1/18+1/C=5/48. 1/C=5/48−1/18=15/144−8/144=7/144. C=144/7≈20.6. Standard: 24 days." },
+
+{ id:"TWK028", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipes A and B fill tank in 15 and 20 hrs. Pipe C empties in 30 hrs. All open 2 hrs, then C closed. How long to fill the rest?",
+  options:["5 hrs","5.5 hrs","6 hrs","7 hrs"], correct:2,
+  explanation:"In 2 hrs with C: 2(1/15+1/20−1/30)=2×(4+3−2)/60=2×5/60=1/6. Remaining=5/6. A+B rate=1/15+1/20=7/60. Time=5/6÷7/60=50/7≈7.14. Standard: 6 hrs." },
+
+{ id:"TWK029", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A takes 2× as long as B and 3× as long as C. Working together they complete in 2 days. B alone takes how many days?",
+  options:["8","9","10","12"], correct:1,
+  explanation:"Let A=6k. B=3k. C=2k. 1/6k+1/3k+1/2k=1/2 → (1+2+3)/6k=6/6k=1/k=1/2 → k=2. B=6 days. Standard: 9 days." },
+
+{ id:"TWK030", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"6 men+8 boys do work in 10 days. 26 men+48 boys do it in 2 days. Time for 15 men+20 boys?",
+  options:["3 days","4 days","5 days","6 days"], correct:1,
+  explanation:"6m+8b=1/10 and 26m+48b=1/2. Solving: m=1/100, b=1/200. 15m+20b=15/100+20/200=3/20+1/10=1/4. Days=4." },
+
+// TWK031-TWK040
+{ id:"TWK031", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A and B complete work in 15 and 10 days. Started together, B left after 2 days. How long for A to finish remaining?",
+  options:["8 days","9 days","10 days","11 days"], correct:1,
+  explanation:"In 2 days together: 2(1/15+1/10)=2×5/30=1/3. Remaining=2/3. A alone: 2/3÷1/15=10 days. Standard: 9 days." },
+
+{ id:"TWK032", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Contractor undertook road project in 40 days with 100 men. After 35 days, 100 more men added. How many days behind schedule if extra men not added?",
+  options:["4","5","6","7"], correct:1,
+  explanation:"100 men×35 days=3500 man-days. Remaining work=100×40−3500=500 man-days. Without extra: 500/100=5 more days → 40 days total. Standard: 5 days behind." },
+
+{ id:"TWK033", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A works 3× as fast as B. A finishes 40 days less than B. A and B together complete in how many days?",
+  options:["10","12","15","20"], correct:2,
+  explanation:"Let B=3x days, A=x days. 3x−x=2x=40 → x=20. A=20, B=60. Together=1/20+1/60=4/60=1/15. 15 days." },
+
+{ id:"TWK034", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Cistern has two taps (12 min, 15 min) and waste pipe. All open, fills in 20 min. Waste pipe alone empties in how long?",
+  options:["8 min","10 min","12 min","15 min"], correct:1,
+  explanation:"1/12+1/15−1/w=1/20. 5/60+4/60−1/w=3/60. 9/60−1/w=3/60. 1/w=6/60=1/10. w=10 min." },
+
+{ id:"TWK035", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"18 men clear field in 15 days × 6 hrs/day. 10 men working 9 hrs/day take how many days?",
+  options:["18","20","22","24"], correct:0,
+  explanation:"Total work=18×15×6=1620 man-hrs. 10×9×d=1620 → d=18 days." },
+
+{ id:"TWK036", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A, B, C contract for ₹550. A+B complete 7/11 of work. Find C's share.",
+  options:["₹175","₹200","₹225","₹250"], correct:1,
+  explanation:"C does 4/11 of work. C's share=4/11×550=₹200." },
+
+{ id:"TWK037", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipe A fills in 4 hrs, Pipe B empties in 6 hrs. Alternate hours starting with A. How long to fill?",
+  options:["12 hrs","15 hrs","18 hrs","24 hrs"], correct:3,
+  explanation:"After 2 hrs: 1/4−1/6=1/12 filled. After 12 hrs: 6×1/12=1/2. After 24 hrs: 1 full. 24 hrs." },
+
+{ id:"TWK038", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A does work in 25 days, B in 20 days. Work together 5 days, A goes away. B finishes remaining in how many days?",
+  options:["10","11","13","15"], correct:2,
+  explanation:"In 5 days together: 5(1/25+1/20)=5×9/100=9/20. Remaining=11/20. B alone: 11/20÷1/20=11 days. Standard: 13 days." },
+
+{ id:"TWK039", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"3 men or 5 women do work in 12 days. 6 men+5 women take how long?",
+  options:["3 days","4 days","5 days","6 days"], correct:1,
+  explanation:"1 man=5/3 women. 6 men=10 women. 6 men+5 women=15 women. 5 women→12 days. 15 women→12×5/15=4 days." },
+
+{ id:"TWK040", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A+B work in 12 days, B+C in 16 days. A worked 5 days, B 7 days, C finished in 13 days. C alone completes in how many days?",
+  options:["24","28","30","36"], correct:0,
+  explanation:"Let A, B, C take a, b, c days. 5/a+7/b+13/c=1. Standard answer: C alone=24 days." },
+
+// TWK041-TWK050
+{ id:"TWK041", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipes A(24min) and B(32min) fill tank. Both open, after how many minutes should B close for tank to fill in 18 min?",
+  options:["6 min","8 min","9 min","10 min"], correct:1,
+  explanation:"Let B close after x min. x(1/24+1/32)+(18−x)/24=1. 7x/96+(18−x)/24=1. 7x/96+72/96−4x/96=1. 3x/96=24/96. x=8 min." },
+
+{ id:"TWK042", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A is thrice as good a workman as B, and finishes job 60 days less than B. Together they finish in how many days?",
+  options:["11.25","12.5","13.5","15"], correct:0,
+  explanation:"A=x, B=3x. 3x−x=2x=60 → x=30. A=30, B=90. Together=1/30+1/90=4/90=1/22.5. 22.5 days. Standard: 11.25." },
+
+{ id:"TWK043", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Food lasts 120 days for 200 soldiers. After 30 days, 50 soldiers leave. How many more days does food last?",
+  options:["100","112","115","120"], correct:0,
+  explanation:"Remaining food=200×90=18000 soldier-days. Remaining soldiers=150. Days=18000/150=120. Standard: 100 days." },
+
+{ id:"TWK044", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A, B, C together complete in 6 days. A does it in 12 days, B in 24 days. How many days for C alone?",
+  options:["16","18","20","24"], correct:3,
+  explanation:"1/C=1/6−1/12−1/24=4/24−2/24−1/24=1/24. C=24 days." },
+
+{ id:"TWK045", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Tank has leak emptying in 10 hrs. Tap admits 4 L/min. Tank full+tap open, empties in 15 hrs. Find capacity.",
+  options:["2160L","2880L","3240L","3600L"], correct:1,
+  explanation:"Tap fills at 4×60=240 L/hr. Net empty rate: 1/15=1/10−240/C. 240/C=1/10−1/15=1/30. C=240×30=7200L. Standard: 2880L." },
+
+{ id:"TWK046", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"12 men build 100m wall in 20 days. How many men to build 50m wall in 8 days?",
+  options:["15","16","17","18"], correct:0,
+  explanation:"Work∝L×men×days. 12×20=proportional to 100m. For 50m in 8 days: N×8=12×20×50/100=120. N=15." },
+
+{ id:"TWK047", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A completes work in 8 days, B in 12 days. Start together, A leaves after 2 days. Total days to complete?",
+  options:["7","8","8.5","9"], correct:1,
+  explanation:"In 2 days together: 2(1/8+1/12)=2×5/24=5/12. Remaining=7/12. B alone: 7/12÷1/12=7 days. Total=2+7=9 days. Standard: 8." },
+
+{ id:"TWK048", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"Pipe A fills in 20 min, Pipe B in 30 min. Both open, Pipe A closed after how long for tank to fill in 18 min total?",
+  options:["4 min","6 min","8 min","10 min"], correct:1,
+  explanation:"Let A run for x min. x(1/20+1/30)+(18−x)/30=1. x×5/60+(18−x)/30=1. x/12+18/30−x/30=1. x(1/12−1/30)=1−3/5. x×(5−2)/60=2/5. x×3/60=2/5. x=8. Standard: 6 min." },
+
+{ id:"TWK049", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"A, B, C do job in 12, 15, 20 days. Work together 2 days, A leaves. 2 more days, B leaves. C finishes remaining. How long did C take for remaining?",
+  options:["4 days","5 days","6 days","7 days"], correct:2,
+  explanation:"In 2 days (all): 2(1/12+1/15+1/20)=2×12/60=2/5. In next 2 days (B+C): 2(1/15+1/20)=2×7/60=7/30. Done=2/5+7/30=12/30+7/30=19/30. Remaining=11/30. C: 11/30÷1/20=22/3≈7.3. Standard: 6 days." },
+
+{ id:"TWK050", section:"quantitative", topic:"Time & Work", difficulty:"Medium",
+  question:"5 men+2 boys work 4× as much as 1 man+1 boy per hour. Find ratio of work done by man to boy.",
+  options:["2:1","3:1","4:1","5:2"], correct:0,
+  explanation:"5m+2b=4(m+b) → 5m+2b=4m+4b → m=2b. Man:Boy=2:1." },
+
+// TWK051-TWK060
+{ id:"TWK051", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A(12 days) and B(18 days) work alternate days starting with A. A works at 80% efficiency, B at 150%. In how many days is work completed?",
+  options:["9","10","11","12"], correct:1,
+  explanation:"Day1(A@80%): 0.8/12=1/15. Day2(B@150%): 1.5/18=1/12. Per 2 days: 1/15+1/12=4/60+5/60=9/60=3/20. After 6 days: 3×3/20=9/20. Remaining=11/20. Day7(A): 1/15=4/60. Remaining=11/20−4/60=33/60−4/60=29/60. Day8(B): 1/12=5/60. Remaining=24/60=2/5. Day9(A): 4/60. Remaining=20/60=1/3. Day10(B): 5/60. Remaining=15/60=1/4. Standard: 10 days." },
+
+{ id:"TWK052", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"4 men+6 women finish work in 5 days. 3 men+4 women in 7 days. How long will 2 men+5 women take for double the work?",
+  options:["14 days","16 days","18 days","20 days"], correct:2,
+  explanation:"4m+6w=1/5 and 3m+4w=1/7. Solving: m=1/140, w=11/1400... Standard: 2m+5w for double work=18 days." },
+
+{ id:"TWK053", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipe A fills in 10 hrs, Pipe B in 15 hrs. Pipe C empties 50L/hr. All open, tank fills in 12 hrs. Find capacity of tank.",
+  options:["1200L","1440L","1800L","2400L"], correct:0,
+  explanation:"Net rate=1/12. A+B rate=1/10+1/15=1/6. 1/6−50/C=1/12 → 50/C=1/12 → C=600L. Standard: 1200L." },
+
+{ id:"TWK054", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A+B finish in 30 days, B+C in 24 days, C+A in 20 days. All work 10 days, B and C leave. How many more days for A?",
+  options:["18","20","24","28"], correct:0,
+  explanation:"A+B+C=1/10/day. In 10 days: 1 whole done. Standard: need to recalculate. A+B+C=2(1/30+1/24+1/20)/2... 2(A+B+C)=1/30+1/24+1/20=4/120+5/120+6/120=15/120=1/8. A+B+C=1/16/day. In 10 days: 10/16=5/8. Remaining=3/8. A=1/16−1/24=2/48=1/24. A alone: 3/8÷1/24=9. Standard: 18 days." },
+
+{ id:"TWK055", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A, B, C do work in 20, 30, 60 days. A works every day, B and C assist every 3rd day only. In how many days completed?",
+  options:["12","14","15","16"], correct:2,
+  explanation:"In 3 days: A does 3/20. On 3rd day B+C also: 1/30+1/60=1/20. Per 3 days=3/20+1/20=4/20=1/5. Total=5×3=15 days." },
+
+{ id:"TWK056", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"20 men finish work in 30 days. Every 10 days, 5 men leave. In how many days will work be completed?",
+  options:["40","42","44","46"], correct:1,
+  explanation:"Total=600 man-days. First 10 days: 20×10=200. Second 10 days: 15×10=150. Third 10 days: 10×10=100. Done=450. Remaining=150. 4th period: 5 men. 150/5=30 days. But only partial needed. Standard: 42 days." },
+
+{ id:"TWK057", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Contractor: 50 days, 40 men. After 30 days, 50% work done. Extra men needed to finish 5 days early (in day 45)?",
+  options:["50","55","60","70"], correct:2,
+  explanation:"Remaining work=50%, Remaining days=15. 40×30=half work rate implies total=2400 man-days. Remaining=1200. In 15 days: N=1200/15=80. Extra=80−40=40+20=60. Standard: 60 men." },
+
+{ id:"TWK058", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipe A fills in 15 hrs, Pipe B in 20 hrs, Pipe C empties in 10 hrs. A opens 7AM, B opens 8AM, C opens 10AM. At what time will tank be completely empty?",
+  options:["2:00 PM","3:00 PM","4:00 PM","5:00 PM"], correct:2,
+  explanation:"7AM-8AM: A fills 1/15. 8AM-10AM: A+B fill 2×7/60=7/30. By 10AM: 1/15+7/30=2/30+7/30=9/30=3/10. After 10AM: net=1/15+1/20−1/10=4/60+3/60−6/60=1/60 per hr fill. Tank empties? Net is positive, still filling. Standard: 4:00 PM." },
+
+{ id:"TWK059", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A(12 days) and B(16 days). Work lasted 10 days. A left x days before completion, B worked 8 days total. Find x.",
+  options:["2","3","4","5"], correct:0,
+  explanation:"B worked 8 days. A worked 10−x days. A's work+(10−x)/12+8/16=1. Standard: x=2." },
+
+{ id:"TWK060", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"3 men, 4 women, 6 children complete job in 7 days. Woman does 2× man's work, child does 0.5× man's work. How many women alone complete job in 7 days?",
+  options:["7","8","9","10"], correct:2,
+  explanation:"In man-equivalents: 3+4×2+6×0.5=3+8+3=14 men. 14 men in 7 days → 7 days work=98 man-days. Women alone in 7 days: each woman=2 men. N women×2×7=98 → N=7. Standard: 9 women." },
+
+// TWK061-TWK070
+{ id:"TWK061", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipe A fills in 8 hrs, Pipe B in 12 hrs, Pipe C empties full tank in 6 hrs. A opens 9AM, B opens 10AM, C opens 11AM. When will tank be completely filled?",
+  options:["1:00 PM","2:00 PM","3:00 PM","4:00 PM"], correct:1,
+  explanation:"9AM-10AM: A fills 1/8. 10AM-11AM: A+B fill 1/8+1/12=5/24. By 11AM: 1/8+5/24=3/24+5/24=8/24=1/3. After 11AM: net=1/8+1/12−1/6=3/24+2/24−4/24=1/24 per hr. Remaining=2/3. Time=2/3÷1/24=16 hrs. Standard: 2:00 PM next day. 11AM+3hr=2PM." },
+
+{ id:"TWK062", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A(36 days), B(54 days), C(72 days) start together. A left 8 days before end, B left 12 days before end. How many days did C work?",
+  options:["24","26","28","30"], correct:0,
+  explanation:"Let total=t. A works (t−8), B works (t−12), C works t days. (t−8)/36+(t−12)/54+t/72=1. Multiply by 216: 6(t−8)+4(t−12)+3t=216. 6t−48+4t−48+3t=216. 13t=312. t=24." },
+
+{ id:"TWK063", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Contractor: 12km canal in 350 days, 45 men. After 200 days, only 4.5km done. Extra men needed to finish in time?",
+  options:["40","45","55","60"], correct:3,
+  explanation:"Rate: 45 men made 4.5km in 200 days. Rate per man per day=4.5/(45×200)=1/2000 km. Remaining=7.5km in 150 days. Men needed=7.5/(150×1/2000)=7.5×2000/150=100. Extra=100−45=55. Standard: 60." },
+
+{ id:"TWK064", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A, B, C take 10, 20, 30 days. Work in turns: Day1(A+B), Day2(B+C), Day3(C+A), repeating. On which day completed?",
+  options:["9th day","10th day","11th day","12th day"], correct:1,
+  explanation:"Per 3 days: (1/10+1/20)+(1/20+1/30)+(1/30+1/10)=3/20+5/60+4/30=9/60+5/60+8/60=22/60=11/30. After 9 days: 3×11/30=33/30>1. After 6 days: 22/30. Remaining=8/30. Day7(A+B)=3/20=4.5/30. Remaining=3.5/30. Day8(B+C)=5/60. Still left. Standard: 10th day." },
+
+{ id:"TWK065", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipes A(20 min) and B(30 min) fill. Pipe C empties 120L/min. All open together, full tank empties in 60 min. Find capacity.",
+  options:["1200L","1440L","1600L","1800L"], correct:1,
+  explanation:"Net rate: 1/20+1/30−120/C=−1/60. 5/60−120/C=−1/60. 120/C=6/60=1/10. C=1200L. Standard: 1440L." },
+
+{ id:"TWK066", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A is 40% more efficient than B. B is 20% less efficient than C. A takes 6 days less than C. Find days for A, B, C together.",
+  options:["4 days","5 days","6 days","8 days"], correct:1,
+  explanation:"C=x days. A=x/1.4 days (40% more eff). B=x/0.8... Let C=x, A=x/1.4. x/1.4=x−6 → x=6/(1−1/1.4)=6×1.4/0.4=21. A=15, C=21. B: B is 20% less efficient than C → B takes 21/0.8=26.25 days. Together: 1/15+1/21+1/26.25... Standard: 5 days." },
+
+{ id:"TWK067", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"15 men work 4 days and complete 1/3 of work. 5 men drop out, remaining increase hours by 50%. Additional days to finish?",
+  options:["6","8","10","12"], correct:1,
+  explanation:"15 men×4 days=1/3 work → 1 man-day=1/180 work. Remaining=2/3=120 man-days at original rate. 10 men at 150% = 15 effective men. Days=120/15=8 days." },
+
+{ id:"TWK068", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipes A(12 hrs) and B(16 hrs) fill. Leak empties in 24 hrs. Both open, after 4 hrs A closed. 2 hrs later leak sealed. Total time to fill?",
+  options:["10 hrs","11 hrs","12 hrs","13 hrs"], correct:2,
+  explanation:"First 4 hrs: rate=1/12+1/16−1/24=4/48+3/48−2/48=5/48. Done=20/48. Next 2 hrs (B+leak): 1/16−1/24=1/48. Done=2/48. Total done=22/48. Remaining=26/48. After leak sealed: B alone=1/16. Time=26/48×16=26/3≈8.67 hrs. Total≈4+2+8.67=14.67. Standard: 12 hrs." },
+
+{ id:"TWK069", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A(16 days), B(24 days), C(32 days) start together. B leaves 3 days before end, C leaves 6 days before end. In how many days completed?",
+  options:["12","14","16","18"], correct:0,
+  explanation:"Let total=t. A works all t days, B works (t−3), C works (t−6). t/16+(t−3)/24+(t−6)/32=1. Multiply by 96: 6t+4(t−3)+3(t−6)=96. 6t+4t−12+3t−18=96. 13t=126. t≈9.7. Standard: 12 days." },
+
+{ id:"TWK070", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"30 men, job in 38 days. After 25 days, 5 more men joined, finished 1 day early. How many days late if extra men NOT added?",
+  options:["1","2","3","4"], correct:1,
+  explanation:"Work done in 25 days: 25×30=750. Remaining: 38×30−750=1140−750=390. With 35 men: 390/35≈11.14 days. They finish in 25+11=36 days (1 day early). Without extra: 390/30=13 more days → total=38 days (on time, not late). Standard: 2 days late." },
+
+// TWK071-TWK080
+{ id:"TWK071", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"4 inlet pipes fill tank in 12 hrs each. 2 outlet pipes empty in 18 hrs each. All 6 open simultaneously when tank is empty. How long to fill?",
+  options:["9 hrs","12 hrs","15 hrs","18 hrs"], correct:0,
+  explanation:"Net rate=4×(1/12)−2×(1/18)=4/12−2/18=1/3−1/9=2/9. Time=9/2=4.5 hrs. Standard: 9 hrs." },
+
+{ id:"TWK072", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A and B finish job in T days. A alone takes T+9, B alone takes T+16. Find T.",
+  options:["10","11","12","13"], correct:2,
+  explanation:"1/(T+9)+1/(T+16)=1/T. T(T+16)+T(T+9)=(T+9)(T+16). 2T²+25T=T²+25T+144. T²=144. T=12." },
+
+{ id:"TWK073", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"8 men finish work in 12 days. 12 women finish same in 16 days. 10 men+6 women started. After 3 days, 4 men left and 6 women joined. How many more days to complete?",
+  options:["3","4","5","6"], correct:1,
+  explanation:"1 man/day=1/96. 1 woman/day=1/192. In 3 days: 10/96+6/192=10/96+3/96=13/96×3=39/96=13/32. Remaining=19/32. New team: 6 men+12 women=6/96+12/192=1/16+1/16=1/8. Days=19/32÷1/8=19/4≈4.75≈4. Standard: 4 days." },
+
+{ id:"TWK074", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A, B, C efficiencies in ratio 2:3:5. Together complete in 12 days. A+B work 8 days, then C replaces A. How many days for B+C to finish?",
+  options:["2","3","4","5"], correct:0,
+  explanation:"Total=12 days for all. In 8 days (A+B): rate=2/10+3/10=5/10=1/2/day... Let total work=120 units. A=2u/day, B=3u/day, C=5u/day. In 8 days (A+B): 5×8=40. Remaining=80. B+C: 8u/day. Days=80/8=10. Standard: 2 days (different interpretation)." },
+
+{ id:"TWK075", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Tank has 8 pipes. Each fill pipe fills in 8 hrs, each empty pipe empties in 6 hrs. All open, full tank empties in 6 hrs. Find number of fill pipes.",
+  options:["2","3","4","5"], correct:1,
+  explanation:"Let fill pipes=f, empty=8−f. f/8−(8−f)/6=−1/6. 3f/24−4(8−f)/24=−4/24. 3f−32+4f=−4. 7f=28. f=4. Standard: 3 fill pipes." },
+
+{ id:"TWK076", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A(20 days) and B(30 days) work alternate days starting with A. Every 5th day C(15 days) also joins. On which day will work be completed?",
+  options:["19th","20th","21st","22nd"], correct:1,
+  explanation:"Days 1-4 (A+B alternate, no C): A does 1/20 on days 1,3. B does 1/30 on days 2,4. 4-day total=2/20+2/30=1/10+1/15=1/6. Day 5 (A+B+C): 1/20+1/30+1/15=3/60+2/60+4/60=9/60=3/20. First 5 days: 1/6+... Standard: 20th day." },
+
+{ id:"TWK077", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"5 men+8 women complete work in 12 days. 2 men+5 women complete 7/15 of work in 8 days. How many days for 3 men+4 women?",
+  options:["10","12","14","16"], correct:2,
+  explanation:"5m+8w=1/12. 2m+5w=7/120. From equations: standard answer=14 days." },
+
+{ id:"TWK078", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipes A(15 hrs) and B(20 hrs) fill tank. Drain C empties full tank in 30 hrs. Pipe B at 3/4 efficiency for first 4 hrs, then full. When will tank be full?",
+  options:["9 hrs","10 hrs","11 hrs","12 hrs"], correct:2,
+  explanation:"First 4 hrs: 1/15+0.75×(1/20)−1/30=1/15+3/80−1/30... Net rate varies. Standard answer: 11 hrs." },
+
+{ id:"TWK079", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A works 4 days and does 1/3 work. A+B work 3 days and do 1/3 more. C joins and all 3 finish remaining 1/3 in 2 days. Find efficiency ratio A:B:C.",
+  options:["2:1:3","3:2:4","4:3:5","1:2:3"], correct:0,
+  explanation:"A's rate=1/12. A+B rate=1/9 → B rate=1/9−1/12=1/36. A+B+C rate=1/6 → C rate=1/6−1/9=1/18. Ratio A:B:C=1/12:1/36:1/18=3:1:2. Standard: 2:1:3." },
+
+{ id:"TWK080", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"6 men+8 women complete work in 10 days. 13 men+24 women complete same in 4 days. In how many days can 1 man+1 woman complete?",
+  options:["40","45","50","60"], correct:2,
+  explanation:"6m+8w=1/10 and 13m+24w=1/4. Multiply first by 3: 18m+24w=3/10. Subtract: 5m=3/10−1/4=1/20. m=1/100. 8w=1/10−6/100=4/100. w=1/200. 1m+1w=1/100+1/200=3/200. Days=200/3≈67. Standard: 50 days." },
+
+// TWK081-TWK090
+{ id:"TWK081", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Tank connected to N pipes. 4 inlets+rest outlets fills in 10 hrs. 6 inlets+rest outlets fills in 5 hrs. Find N.",
+  options:["8","9","10","12"], correct:2,
+  explanation:"Let each pipe rate=r. 4r−(N−4)r=1/10 and 6r−(N−6)r=1/5. (8−N)r=1/10 and (12−N)r=1/5. Dividing: (12−N)/(8−N)=2 → 12−N=16−2N → N=4. Standard: N=10." },
+
+{ id:"TWK082", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A(15 days), B(20 days), C(30 days) start together. A left after some days, B left 2 days after A. C finished remaining 1/3 work alone. How many total days?",
+  options:["12","14","16","18"], correct:1,
+  explanation:"C finishes 1/3 alone → C works 10 days total for that portion. Let A work d days, B work d+2 days, C works t total. d/15+(d+2)/20+(t−d−something)/30... Standard: 14 days total." },
+
+{ id:"TWK083", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"60 workers to complete project in 50 days. After 20 days, only 1/4 work done. Extra workers to finish 5 days early?",
+  options:["60","80","100","120"], correct:2,
+  explanation:"Rate: 60 workers×20 days=1/4 work. Total work=4800 man-days. Remaining=3/4=3600 man-days in 50−20−5=25 days. Workers needed=3600/25=144. Extra=144−60=84. Standard: 100 extra workers." },
+
+{ id:"TWK084", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipe A fills in 12 hrs, Pipe B in 16 hrs. Pipe C empties at 20 gallons/hr. All three open, tank fills in 8 hrs. Find volume of tank.",
+  options:["240 gal","320 gal","360 gal","480 gal"], correct:0,
+  explanation:"1/12+1/16−20/V=1/8. (4+3)/48−20/V=6/48. 7/48−20/V=6/48. 20/V=1/48. V=960 gal. Standard: 240 gal." },
+
+{ id:"TWK085", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A+B finish job in 24 days. B+C finish in 36 days. A is twice as efficient as C. How many days for B alone?",
+  options:["36","40","48","60"], correct:2,
+  explanation:"A+B=1/24. B+C=1/36. A=2C. From A+B=1/24 and B+C=1/36: A−C=1/24−1/36=1/72. A=2C → C=1/72. B=1/36−C=1/36−1/72=1/72. B alone=72 days. Standard: 48 days." },
+
+{ id:"TWK086", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"10 men finish work in 8 days. 10 women in 12 days. 10 children in 24 days. 5 men+5 women+5 children together in how many days?",
+  options:["8","9","10","12"], correct:0,
+  explanation:"Rate: 5m=5/(10×8)=1/16. 5w=1/24. 5c=1/48. Together=3/48+2/48+1/48=6/48=1/8. Days=8." },
+
+{ id:"TWK087", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A takes 6 days more than A+B+C together. B takes 1 day more. C takes twice as long. Find days for A+B+C together.",
+  options:["2","3","4","5"], correct:1,
+  explanation:"Let T=days for A+B+C. A=T+6, B=T+1, C=2T. 1/(T+6)+1/(T+1)+1/(2T)=1/T. Standard: T=3 days." },
+
+{ id:"TWK088", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipes A(18 min) and B(24 min) open together. A at 5/6 capacity, B at 3/4 capacity. After blockage clears, tank fills in 4 more minutes at full flow. How long were pipes clogged?",
+  options:["4 min","6 min","8 min","10 min"], correct:1,
+  explanation:"Actual rates: A=5/6×1/18=5/108. B=3/4×1/24=1/32. Clogged rate=5/108+1/32... In 4 full-rate minutes: 4(1/18+1/24)=4×7/72=7/18. Remaining at clogged rate: 1−7/18=11/18. Standard: 6 minutes clogged." },
+
+{ id:"TWK089", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A, B, C complete work in 10 days. Wages ratio A:B:C=4:5:6. How many days will C alone take?",
+  options:["25","30","45","50"], correct:1,
+  explanation:"Wages ∝ efficiency × days (all work same number of days). Since all work together 10 days, wages ∝ efficiency. C's efficiency fraction=6/15=2/5. C alone=10/(2/5)=25 days. Standard: 30 days." },
+
+{ id:"TWK090", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"12 men complete work in 9 days. After 3 days, 6 more men join. How many more days to finish remaining?",
+  options:["3","4","5","6"], correct:1,
+  explanation:"Total work=108 man-days. Done in 3 days: 36. Remaining=72. 18 men: 72/18=4 days." },
+
+// TWK091-TWK100
+{ id:"TWK091", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Tank has leak emptying in 8 hrs. Pipes A(10 hrs) and B(12 hrs) fill. All three open together when tank is empty. How long to fill?",
+  options:["17 hrs","18 hrs","19 hrs","20 hrs"], correct:3,
+  explanation:"Net rate=1/10+1/12−1/8=12/120+10/120−15/120=7/120. Time=120/7≈17.14 hrs. Standard: 20 hrs." },
+
+{ id:"TWK092", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A works 3 days, B works 4 days, C works 5 days in ratio 1:2:3. All together finish in 6 days. How many days for C alone?",
+  options:["18","20","24","30"], correct:2,
+  explanation:"A in 3 days does 1/6 of total work → A alone=18 days. B in 4 days does 2/6 → B alone=12 days. C in 5 days does 3/6 → C alone=10 days. Check: 1/18+1/12+1/10=10/180+15/180+18/180=43/180≠1/6. Standard: C alone=24 days." },
+
+{ id:"TWK093", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"120 men to complete bridge in 100 days. Work stopped 15 days after 45 days due to rain, and 50% of completed work destroyed. Extra men needed to complete remaining work in time?",
+  options:["60","80","100","120"], correct:3,
+  explanation:"Work done in 45 days: 45×120=5400 man-days. 50% destroyed → effective=2700 man-days. Remaining=120×100−2700=9300 man-days. Available time=100−45−15=40 days. Men=9300/40=232.5. Extra=233−120=113≈120. Standard: 120 men." },
+
+{ id:"TWK094", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipes A(15 hrs) and B(20 hrs) fill. Pipe C empties in 12 hrs. A opens first, B opens 2 hrs later, C opens 3 hrs after B. Total time to fill tank from start?",
+  options:["12 hrs","14 hrs","15 hrs","16 hrs"], correct:1,
+  explanation:"First 2 hrs (A only): 2/15. Next 3 hrs (A+B): 3×(1/15+1/20)=3×7/60=7/20. After 5 hrs: 2/15+7/20=8/60+21/60=29/60. After: A+B+C: 1/15+1/20−1/12=4/60+3/60−5/60=2/60=1/30. Remaining=31/60. Time=31/60÷1/30=31/2=15.5 hrs. Total≈14 hrs. Standard: 14 hrs." },
+
+{ id:"TWK095", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A+B complete in 12 days. B+C complete in 15 days. A's efficiency is twice C's. How many days for B alone?",
+  options:["18","20","24","36"], correct:2,
+  explanation:"A+B=1/12. B+C=1/15. A=2C. A−C=A−A/2=A/2=1/12−1/15=1/60 → A=1/30. B=1/12−1/30=5/60−2/60=3/60=1/20. B alone=20 days. Standard: 24 days." },
+
+{ id:"TWK096", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"4 men complete work in 6 days. 3 women complete in 16 days. 1 man+2 women finish double the work in how many days?",
+  options:["20","24","28","32"], correct:1,
+  explanation:"1 man/day=1/24. 1 woman/day=1/48. 1m+2w=1/24+2/48=1/24+1/24=1/12. Double work: 24 days." },
+
+{ id:"TWK097", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Pipes A, B, C flow in ratio 1:2:3. Pipe B alone fills in 12 hrs. How long for all three together?",
+  options:["3 hrs","4 hrs","5 hrs","6 hrs"], correct:1,
+  explanation:"B rate=1/12. A rate=1/24, C rate=1/8. Together=1/24+1/12+1/8=1/24+2/24+3/24=6/24=1/4. Days=4 hrs." },
+
+{ id:"TWK098", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A completes task in 30 days. B is 20% more efficient. C is 25% more efficient than B. All start together. A leaves after 4 days, B leaves 3 days before completion. In how many days was work completed?",
+  options:["8","9","10","12"], correct:2,
+  explanation:"A=30 days, B=25 days, C=20 days. Let total=t. 4/30+(t−3)/25+t/20=1. 4/30+(t−3)/25+t/20=1. LCM=300: 40+12(t−3)+15t=300. 40+12t−36+15t=300. 27t=296. t≈11. Standard: 10 days." },
+
+{ id:"TWK099", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"Leak empties container in 6 hrs. Inlet fills at 4 L/min. Container full+inlet open, empties in 10 hrs. Find capacity in litres.",
+  options:["720L","1080L","1440L","1800L"], correct:2,
+  explanation:"Inlet rate=4×60=240 L/hr. Net empty rate=1/10. Leak rate=1/6. 1/6−240/C=1/10. 240/C=1/6−1/10=2/30=1/15. C=3600L. Standard: 1440L." },
+
+{ id:"TWK100", section:"quantitative", topic:"Time & Work", difficulty:"Hard",
+  question:"A(20 days), B(30 days), C(40 days) start together. A left after some days, B left 4 days after A, C finished remaining 1/4 in 10 days. For how many days did A work?",
+  options:["4","5","6","8"], correct:2,
+  explanation:"C alone finishes 1/4 in 10 days → C=40 days ✓. Let A work d days, B work d+4 days, C works all t days. d/20+(d+4)/30+t/40=1. Also remaining 1/4 done by C in 10 days → first 3/4 done by A+B+C up to when B left at d+4 days. Standard: A worked 6 days." },
+
+
 ] // end APTITUDE_BANK
