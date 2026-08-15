@@ -305,7 +305,7 @@ export default function ProblemsPage() {
                       border: `1px solid ${topic === t.track ? t.color + "50" : "rgba(255,255,255,0.1)"}`,
                       color: topic === t.track ? t.color : "#9ca3af",
                     }}>
-                    {t.label} ({t.count})
+                    {t.label}
                   </button>
                 ))}
               </div>
