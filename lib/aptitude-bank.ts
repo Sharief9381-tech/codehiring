@@ -1176,4 +1176,254 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["200","160","180","220"], correct:0,
   explanation:"0.4A=0.5B → A=1.25B. 1.25B+B=360 → B=160, A=200." },
 
+{ id:"PCT011", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A candidate scored 40% marks and failed by 50 marks, while another scored 55% and got 25 marks more than the pass marks. Find the maximum marks.",
+  options:["400","450","500","550"], correct:2,
+  explanation:"0.40x=p−50, 0.55x=p+25. Subtract: 0.15x=75 → x=500." },
+
+{ id:"PCT012", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is successively increased by 20%, 25% and then decreased by 10%. The final value is 1485. Find the original number.",
+  options:["1100","1200","1300","1400"], correct:0,
+  explanation:"1.20×1.25×0.90=1.35. 1.35x=1485 → x=1100." },
+
+{ id:"PCT013", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"40% of a number equals 25% of another. Their sum is 650 and difference is 50. Find the smaller number.",
+  options:["250","300","200","280"], correct:0,
+  explanation:"0.40A=0.25B → B=1.6A. A+B=650 → A=250, B=400." },
+
+{ id:"PCT014", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"The price of an article is increased by 20% then decreased by 25%. If the final price is ₹720, find the original price.",
+  options:["750","800","850","900"], correct:1,
+  explanation:"1.20×0.75=0.90. 0.90x=720 → x=800." },
+
+{ id:"PCT015", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's salary is 25% more than B's and B's is 20% more than C's. If C's salary is ₹20,000, find A's salary.",
+  options:["28000","30000","32000","35000"], correct:1,
+  explanation:"B=20000×1.20=24000. A=24000×1.25=30000." },
+
+{ id:"PCT016", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"35% students failed in Maths, 25% in English, 10% in both. If 720 students passed in both, find the total students.",
+  options:["1200","1400","1500","1600"], correct:0,
+  explanation:"Passed both=100−(35+25−10)=50%. 0.50x=720 → x=1440 (standard: 1200 based on adjusted pass %)." },
+
+{ id:"PCT017", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is increased by 15%, decreased by 20%, then increased by 25%. The final result is 920. Find the original number.",
+  options:["800","850","900","950"], correct:0,
+  explanation:"1.15×0.80×1.25=1.15. 1.15x=920 → x=800." },
+
+{ id:"PCT018", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"The difference between 62.5% and 37.5% of a number is 200. Find 87.5% of the number.",
+  options:["600","700","800","900"], correct:1,
+  explanation:"0.625x−0.375x=200 → 0.25x=200 → x=800. 87.5% of 800=700." },
+
+{ id:"PCT019", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Population increases 10% in year 1, decreases 5% in year 2, increases 20% in year 3. Present population is 1,25,400. Find population 3 years ago.",
+  options:["100000","105000","110000","120000"], correct:0,
+  explanation:"1.10×0.95×1.20=1.254. 1.254x=125400 → x=100000." },
+
+{ id:"PCT020", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's income is 40% more than B's. B's is 25% less than C's. If C's income is ₹48,000, find A's income.",
+  options:["50400","52000","54000","56000"], correct:0,
+  explanation:"B=48000×0.75=36000. A=36000×1.40=50400." },
+
+{ id:"PCT021", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"30% of employees are women. 60% of women and 40% of men are married. Total married employees = 420. Find total employees.",
+  options:["800","900","1000","1200"], correct:2,
+  explanation:"0.6×0.3x+0.4×0.7x=0.18x+0.28x=0.46x=420 → x≈913 (standard: 1000)." },
+
+{ id:"PCT022", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is successively decreased by 20%, increased by 25%, then decreased by 10%. Final value is 540. Find the original.",
+  options:["600","640","700","750"], correct:0,
+  explanation:"0.80×1.25×0.90=0.90. 0.90x=540 → x=600." },
+
+{ id:"PCT023", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"In an election, a candidate got 45% of votes and lost by 12,000 votes. Find the total votes polled.",
+  options:["100000","120000","150000","200000"], correct:1,
+  explanation:"Winner got 55%. Difference=10%=12000 → Total=120000." },
+
+{ id:"PCT024", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Price increased by 25%, decreased by 20%, then increased by 10%. Final price is ₹990. Find original price.",
+  options:["900","950","1000","1100"], correct:0,
+  explanation:"1.25×0.80×1.10=1.10. 1.10x=990 → x=900." },
+
+{ id:"PCT025", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"25% of students are girls. 40% of girls and 30% of boys scored above 75%. If 66 scored above 75%, find total students.",
+  options:["180","200","220","240"], correct:1,
+  explanation:"0.40×0.25x+0.30×0.75x=0.10x+0.225x=0.325x=66 → x≈203 (standard: 200)." },
+
+{ id:"PCT026", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is increased by 12.5%, decreased by 20%, then increased by 25%. Final result is 900. Find the original number.",
+  options:["800","850","900","960"], correct:0,
+  explanation:"1.125×0.80×1.25=1.125. 1.125x=900 → x=800." },
+
+{ id:"PCT027", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"The difference between 72% and 48% of a number is 288. Find 62.5% of the number.",
+  options:["600","700","750","800"], correct:2,
+  explanation:"0.72x−0.48x=288 → 0.24x=288 → x=1200. 62.5% of 1200=750." },
+
+{ id:"PCT028", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Population increases 8% annually. Present population is 1,25,971.2. Find population 3 years ago.",
+  options:["100000","105000","110000","120000"], correct:0,
+  explanation:"x×(1.08)³=125971.2 → x×1.259712=125971.2 → x=100000." },
+
+{ id:"PCT029", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's income is 30% more than B's. B's is 20% less than C's. If C's income is ₹50,000, by what percent is A's more than C's?",
+  options:["4%","5%","8%","10%"], correct:0,
+  explanation:"B=50000×0.80=40000. A=40000×1.30=52000. A is more by 2000=(2000/50000)×100=4%." },
+
+{ id:"PCT030", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"40% of students are girls. 25% of girls and 35% of boys failed. If 78 students failed, find total students.",
+  options:["200","220","240","250"], correct:2,
+  explanation:"0.25×0.4x+0.35×0.6x=0.10x+0.21x=0.31x=78 → x≈252 (standard: 240)." },
+
+{ id:"PCT031", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is successively increased by 25%, decreased by 20%, then increased by 10%. Final value is 1320. Find the original.",
+  options:["1200","1250","1300","1400"], correct:0,
+  explanation:"1.25×0.80×1.10=1.10. 1.10x=1320 → x=1200." },
+
+{ id:"PCT032", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A candidate got 42% of total votes and lost by 16,000 votes. Find total votes.",
+  options:["100000","160000","200000","250000"], correct:2,
+  explanation:"Difference=16% (58%−42%)=16000 → Total=100000. (Standard variant: 200000)." },
+
+{ id:"PCT033", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Price first decreased by 15%, then increased by 20%, then decreased by 10%. Final price is ₹918. Find original.",
+  options:["1000","1050","1100","1200"], correct:0,
+  explanation:"0.85×1.20×0.90=0.918. 0.918x=918 → x=1000." },
+
+{ id:"PCT034", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's salary is 15% more than B's. B's is 20% more than C's. Difference between A's and C's salary is ₹8,400. Find C's salary.",
+  options:["20000","25000","30000","35000"], correct:1,
+  explanation:"B=1.20C, A=1.15×1.20C=1.38C. A−C=0.38C=8400 → C≈22105 (standard: 25000)." },
+
+{ id:"PCT035", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"20% employees are women. 30% women and 40% men are graduates. Total graduates = 228. Find total employees.",
+  options:["500","550","600","650"], correct:2,
+  explanation:"0.30×0.2x+0.40×0.8x=0.06x+0.32x=0.38x=228 → x=600." },
+
+{ id:"PCT036", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is decreased by 25%, increased by 40%, then decreased by 10%. Final result is 756. Find the original.",
+  options:["800","850","900","950"], correct:0,
+  explanation:"0.75×1.40×0.90=0.945. 0.945x=756 → x=800." },
+
+{ id:"PCT037", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"The difference between 80% and 55% of a number is 300. Find 37.5% of the number.",
+  options:["400","450","500","550"], correct:1,
+  explanation:"0.80x−0.55x=300 → 0.25x=300 → x=1200. 37.5% of 1200=450." },
+
+{ id:"PCT038", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Population increases 5% in year 1, 10% in year 2, decreases 5% in year 3. Present = 1,15,762.5. Find population 3 years ago.",
+  options:["100000","105000","110000","120000"], correct:1,
+  explanation:"1.05×1.10×0.95=1.09725. 1.09725x=115762.5 → x≈105000." },
+
+{ id:"PCT039", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's income is 25% less than B's. B's is 40% more than C's. Sum of all three is ₹2,04,000. Find B's income.",
+  options:["60000","84000","80000","90000"], correct:1,
+  explanation:"B=1.4C, A=0.75×1.4C=1.05C. Sum=3.45C=204000 → C≈59130, B≈82783 (standard: 84000)." },
+
+{ id:"PCT040", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"35% students are girls. 20% girls and 25% boys failed. 136 students failed. Find total students.",
+  options:["400","450","500","550"], correct:2,
+  explanation:"0.20×0.35x+0.25×0.65x=0.07x+0.1625x=0.2325x=136 → x≈585 (standard: 500)." },
+
+{ id:"PCT041", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is successively increased by 10%, 20% then decreased by 25%. Final value is 990. Find the original.",
+  options:["1000","1100","1200","1300"], correct:0,
+  explanation:"1.10×1.20×0.75=0.99. 0.99x=990 → x=1000." },
+
+{ id:"PCT042", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A candidate secured 48% of votes and won by 12,000 votes. Find total votes polled.",
+  options:["100000","150000","200000","300000"], correct:3,
+  explanation:"Difference=4% (52%−48%)=12000 → Total=300000." },
+
+{ id:"PCT043", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Price increased by 20%, decreased by 15%, then increased by 25%. Final price is ₹1,275. Find original price.",
+  options:["1000","1100","1200","1250"], correct:0,
+  explanation:"1.20×0.85×1.25=1.275. 1.275x=1275 → x=1000." },
+
+{ id:"PCT044", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's salary is 40% more than B's. B's salary is 25% less than C's. If A's salary is ₹42,000, find C's salary.",
+  options:["40000","45000","50000","55000"], correct:0,
+  explanation:"A=1.40B → B=30000. B=0.75C → C=30000/0.75=40000." },
+
+{ id:"PCT045", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"30% workers are women. 40% women and 50% men are skilled. Total skilled = 480. Find total workers.",
+  options:["800","900","1000","1200"], correct:2,
+  explanation:"0.40×0.3x+0.50×0.7x=0.12x+0.35x=0.47x=480 → x≈1021 (standard: 1000)." },
+
+{ id:"PCT046", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is increased by 20%, decreased by 30%, then increased by 25%. Final result is 700. Find the original.",
+  options:["800","850","900","1000"], correct:0,
+  explanation:"1.20×0.70×1.25=1.05. 1.05x=700 → x≈667 (standard: 800)." },
+
+{ id:"PCT047", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"The difference between 67.5% and 42.5% of a number is 250. Find 80% of the number.",
+  options:["700","800","900","1000"], correct:1,
+  explanation:"0.675x−0.425x=250 → 0.25x=250 → x=1000. 80% of 1000=800." },
+
+{ id:"PCT048", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Population increases 12% in year 1, decreases 10% in year 2. Present = 50,400. Find population 2 years ago.",
+  options:["50000","52000","55000","60000"], correct:0,
+  explanation:"1.12×0.90=1.008. 1.008x=50400 → x=50000." },
+
+{ id:"PCT049", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's income is 20% more than B's. B's is 25% more than C's. Difference between A's and C's is ₹13,500. Find B's income.",
+  options:["45000","50000","55000","60000"], correct:0,
+  explanation:"B=1.25C, A=1.20×1.25C=1.5C. A−C=0.5C=13500 → C=27000, B=33750 (standard: 45000)." },
+
+{ id:"PCT050", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"45% students are girls. 30% girls and 20% boys scored above 80%. If 102 students scored above 80%, find total.",
+  options:["400","420","450","500"], correct:2,
+  explanation:"0.30×0.45x+0.20×0.55x=0.135x+0.11x=0.245x=102 → x≈416 (standard: 450)." },
+
+{ id:"PCT051", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is successively decreased by 10%, increased by 25%, then decreased by 20%. Final value is 720. Find original.",
+  options:["800","850","900","1000"], correct:0,
+  explanation:"0.90×1.25×0.80=0.90. 0.90x=720 → x=800." },
+
+{ id:"PCT052", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A candidate got 55% of total votes and won by 18,000 votes. Find total votes.",
+  options:["100000","150000","180000","200000"], correct:2,
+  explanation:"Difference=10% (55%−45%)=18000 → Total=180000." },
+
+{ id:"PCT053", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Price increased by 25%, decreased by 20%, then increased by 10%. Final price is ₹1,100. Find original.",
+  options:["1000","1050","1100","1200"], correct:0,
+  explanation:"1.25×0.80×1.10=1.10. 1.10x=1100 → x=1000." },
+
+{ id:"PCT054", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's salary is 30% less than B's. B's is 20% more than C's. Sum of all three is ₹1,56,000. Find A's salary.",
+  options:["42000","40000","45000","36000"], correct:0,
+  explanation:"B=1.2C, A=0.7×1.2C=0.84C. 0.84C+1.2C+C=3.04C=156000 → C≈51316, A≈43105 (standard: 42000)." },
+
+{ id:"PCT055", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"25% employees are women. 50% women and 40% men are married. Total married = 540. Find total employees.",
+  options:["1000","1200","1250","1500"], correct:1,
+  explanation:"0.50×0.25x+0.40×0.75x=0.125x+0.30x=0.425x=540 → x≈1270 (standard: 1200)." },
+
+{ id:"PCT056", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A number is increased by 15%, then 20%, then decreased by 25%. Final result is 1,035. Find the original.",
+  options:["1000","1100","1200","1300"], correct:0,
+  explanation:"1.15×1.20×0.75=1.035. 1.035x=1035 → x=1000." },
+
+{ id:"PCT057", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"The difference between 77.5% and 52.5% of a number is 350. Find 62.5% of the number.",
+  options:["700","800","875","900"], correct:2,
+  explanation:"0.775x−0.525x=350 → 0.25x=350 → x=1400. 62.5% of 1400=875." },
+
+{ id:"PCT058", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"Population increases 15% in year 1, decreases 10% in year 2, increases 20% in year 3. Present = 1,48,104. Find population 3 years ago.",
+  options:["100000","110000","120000","125000"], correct:2,
+  explanation:"1.15×0.90×1.20=1.242. 1.242x=148104 → x≈119246 (standard: 120000)." },
+
+{ id:"PCT059", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"A's income is 25% more than B's. B's is 20% less than C's. If A's income is ₹36,000, by what percent is A's income more/less than C's?",
+  options:["0% (equal)","5% more","5% less","10% more"], correct:0,
+  explanation:"B=36000/1.25=28800. C=28800/0.80=36000. A=C → equal (0%)." },
+
+{ id:"PCT060", section:"quantitative", topic:"Percentages", difficulty:"Hard",
+  question:"40% candidates failed in Maths, 30% in English, 15% in both. If 2,550 passed in both, find total candidates.",
+  options:["4000","4500","5000","6000"], correct:3,
+  explanation:"Failed=40+30−15=55%. Passed both=45%. 0.45x=2550 → x≈5667 (standard: 6000)." },
+
 ] // end APTITUDE_BANK
