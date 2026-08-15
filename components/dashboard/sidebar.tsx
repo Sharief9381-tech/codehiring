@@ -173,28 +173,17 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
               if (isPractice) {
                 return (
-                  <div key={link.href} className="relative flex items-center gap-0.5">
-                    <Link
-                      href="/student/practice"
-                      className={cn(
-                        "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
-                        isPracticeActive
-                          ? "text-primary bg-primary/8"
-                          : "text-muted-foreground hover:text-foreground hover:bg-secondary/80"
-                      )}
-                    >
-                      <Target className="h-4 w-4 shrink-0" />
-                      <span>Practice</span>
-                    </Link>
-                    <Link href="/student/prep?track=aptitude"
-                      className="text-xs px-2 py-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors">
-                      Aptitude
-                    </Link>
-                    <Link href="/student/problems"
-                      className="text-xs px-2 py-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors">
-                      Coding
-                    </Link>
-                  </div>
+                  <Link key={link.href} href="/student/practice"
+                    className={cn(
+                      "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
+                      isPracticeActive
+                        ? "text-primary bg-primary/8"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/80"
+                    )}
+                  >
+                    <Target className="h-4 w-4 shrink-0" />
+                    <span>Practice</span>
+                  </Link>
                 )
               }
 
