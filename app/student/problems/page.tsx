@@ -405,9 +405,26 @@ export default function ProblemsPage() {
                         )}
                       </div>
 
-                      {/* Title */}
-                      <span className="flex-1 text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
-                        {problem.title}
+                      {/* Title + Company tags inline */}
+                      <span className="flex-1 flex items-center gap-1.5 min-w-0">
+                        <span className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate shrink-0 max-w-[200px] sm:max-w-none">
+                          {problem.title}
+                        </span>
+                        {COMPANY_TAGS[problem.title] && (
+                          <span className="hidden sm:flex items-center gap-1 flex-wrap shrink-0">
+                            {COMPANY_TAGS[problem.title].slice(0, 3).map(c => (
+                              <span key={c} className="text-[10px] px-1.5 py-0.5 rounded font-medium"
+                                style={{ background: "rgba(99,102,241,0.1)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.2)" }}>
+                                {c}
+                              </span>
+                            ))}
+                            {COMPANY_TAGS[problem.title].length > 3 && (
+                              <span className="text-[10px] px-1 py-0.5 rounded font-medium text-gray-500">
+                                +{COMPANY_TAGS[problem.title].length - 3}
+                              </span>
+                            )}
+                          </span>
+                        )}
                       </span>
 
                       {/* Topic badge */}
@@ -436,22 +453,6 @@ export default function ProblemsPage() {
                       <ChevronRight className="shrink-0 h-3.5 w-3.5 text-gray-600 group-hover:text-gray-400 group-hover:translate-x-0.5 transition-all" />
                     </button>
 
-                    {/* Company tags — shown below row when problem has them */}
-                    {COMPANY_TAGS[problem.title] && (
-                      <div className="flex gap-1 flex-wrap px-4 pb-1 ml-[52px]">
-                        {COMPANY_TAGS[problem.title].slice(0, 4).map(c => (
-                          <span key={c} className="text-[10px] px-1.5 py-0.5 rounded font-medium"
-                            style={{ background: "rgba(99,102,241,0.1)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.2)" }}>
-                            {c}
-                          </span>
-                        ))}
-                        {COMPANY_TAGS[problem.title].length > 4 && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded font-medium text-gray-500">
-                            +{COMPANY_TAGS[problem.title].length - 4}
-                          </span>
-                        )}
-                      </div>
-                    )}
                     </div>
                   )
                 })}
