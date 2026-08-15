@@ -173,46 +173,27 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
               if (isPractice) {
                 return (
-                  <div key={link.href} className="relative">
-                    <button
-                      onClick={() => setPracticeOpen(v => !v)}
+                  <div key={link.href} className="relative flex items-center gap-0.5">
+                    <Link
+                      href="/student/practice"
                       className={cn(
-                        "relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
-                        isPracticeActive || practiceOpen
+                        "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
+                        isPracticeActive
                           ? "text-primary bg-primary/8"
                           : "text-muted-foreground hover:text-foreground hover:bg-secondary/80"
                       )}
                     >
                       <Target className="h-4 w-4 shrink-0" />
                       <span>Practice</span>
-                    </button>
-                    {/* Click-to-toggle dropdown — stays open until dismissed */}
-                    {practiceOpen && (
-                      <>
-                        {/* Backdrop to close on outside click */}
-                        <div className="fixed inset-0 z-40" onClick={() => setPracticeOpen(false)} />
-                        <div className="absolute top-full left-0 mt-2 w-60 rounded-2xl shadow-2xl border border-border/60 overflow-hidden z-50"
-                          style={{ background: "var(--background)", boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}>
-                          {[
-                            { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", icon: "A", color: "#f59e0b", href: "/student/prep?track=aptitude" },
-                            { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   icon: "C", color: "#6366f1", href: "/student/problems" },
-                          ].map((item, i) => (
-                            <Link key={item.label} href={item.href}
-                              onClick={() => setPracticeOpen(false)}
-                              className={cn("flex items-center gap-3 px-4 py-3.5 hover:bg-secondary/60 transition-colors", i > 0 && "border-t border-border/40")}>
-                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-black text-white"
-                                style={{ background: item.color }}>
-                                {item.icon}
-                              </div>
-                              <div className="min-w-0">
-                                <p className="text-sm font-semibold text-foreground">{item.label}</p>
-                                <p className="text-[11px] text-muted-foreground truncate">{item.sub}</p>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      </>
-                    )}
+                    </Link>
+                    <Link href="/student/prep?track=aptitude"
+                      className="text-xs px-2 py-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors">
+                      Aptitude
+                    </Link>
+                    <Link href="/student/problems"
+                      className="text-xs px-2 py-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors">
+                      Coding
+                    </Link>
                   </div>
                 )
               }
