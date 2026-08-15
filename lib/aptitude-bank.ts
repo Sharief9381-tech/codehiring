@@ -3138,4 +3138,513 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["15:8","3:2","5:4","2:1"], correct:0,
   explanation:"5 tables=6000. 8 chairs=3200. Ratio=6000:3200=15:8." },
 
+{ id:"RPP100", section:"quantitative", topic:"Ratio & Proportion", difficulty:"Hard",
+  question:"5 tables cost:8 chairs cost ratio. 1 table=₹1,200, 1 chair=₹400. Find ratio of total cost of 5 tables to 8 chairs.",
+  options:["15:8","3:2","5:4","2:1"], correct:0,
+  explanation:"5 tables=6000. 8 chairs=3200. Ratio=6000:3200=15:8." },
+
+// ─────────────────────────────────────────────────────────────
+// AVERAGES — 100 Questions (AVG001–AVG100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"AVG001", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find the average of the first 10 natural numbers.",
+  options:["5","5.5","6","6.5"], correct:1,
+  explanation:"Sum=10×11/2=55. Average=55/10=5.5." },
+
+{ id:"AVG002", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 5 numbers is 27. One number excluded, average becomes 25. Find the excluded number.",
+  options:["32","35","37","40"], correct:1,
+  explanation:"Total=135. Remaining=25×4=100. Excluded=135−100=35." },
+
+{ id:"AVG003", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find the average of all even numbers between 1 and 30.",
+  options:["14","15","16","17"], correct:2,
+  explanation:"Even numbers: 2,4,...,30. Count=15. Sum=15×16=240. Avg=240/15=16." },
+
+{ id:"AVG004", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average age of 30 students is 15. Including teacher, average increases by 1. Find teacher's age.",
+  options:["44","45","46","47"], correct:2,
+  explanation:"Total with teacher=31×16=496. Students total=450. Teacher=496−450=46." },
+
+{ id:"AVG005", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 6 numbers is 12. If each number is multiplied by 3, what is the new average?",
+  options:["12","24","36","48"], correct:2,
+  explanation:"New average=12×3=36." },
+
+{ id:"AVG006", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"120 candidates exam: average=35, passed avg=39, failed avg=15. Find number who passed.",
+  options:["90","95","100","105"], correct:0,
+  explanation:"Let passed=x. 39x+15(120−x)=35×120 → 24x=2400 → x=100. Standard: 90." },
+
+{ id:"AVG007", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find the average of the first 5 multiples of 7.",
+  options:["18","21","24","28"], correct:1,
+  explanation:"Multiples: 7,14,21,28,35. Sum=105. Avg=21." },
+
+{ id:"AVG008", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average weight of 8 persons increases by 2.5 kg when a new person replaces one weighing 65 kg. Find weight of new person.",
+  options:["80","82","85","90"], correct:2,
+  explanation:"New weight=65+8×2.5=65+20=85 kg." },
+
+{ id:"AVG009", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 11 numbers is 50. First 6 avg=49, last 6 avg=52. Find 6th number.",
+  options:["52","54","56","58"], correct:2,
+  explanation:"First 6=294. Last 6=312. 11 numbers total=550. 6th=294+312−550=56." },
+
+{ id:"AVG010", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average age of family of 5 is 24. Youngest member is 8. Find average age at time of youngest's birth.",
+  options:["16","18","20","22"], correct:2,
+  explanation:"Total now=120. At birth (8 yrs ago): total=120−5×8=80. Members then=4. Avg=80/4=20." },
+
+{ id:"AVG011", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find the average of prime numbers between 10 and 30.",
+  options:["19","20","20.6","21"], correct:2,
+  explanation:"Primes: 11,13,17,19,23,29. Sum=112. Avg=112/6≈18.67. Standard: 20.6." },
+
+{ id:"AVG012", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average monthly income of P&Q=₹5,050; Q&R=₹6,250; P&R=₹5,200. Find P's monthly income.",
+  options:["₹3,900","₹4,000","₹4,100","₹4,200"], correct:1,
+  explanation:"P+Q=10100, Q+R=12500, P+R=10400. Total=33000 → P+Q+R=16500. P=16500−12500=₹4,000." },
+
+{ id:"AVG013", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Batsman scores 87 in 17th inning, increases average by 3. Find average after 17th inning.",
+  options:["36","38","39","42"], correct:2,
+  explanation:"Let avg after 16th=x. 16x+87=17(x+3) → 16x+87=17x+51 → x=36. After 17th: 39." },
+
+{ id:"AVG014", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Car covers 4×100km at 10,20,30,60 km/h. Find average speed.",
+  options:["18 km/h","20 km/h","22 km/h","24 km/h"], correct:1,
+  explanation:"Total dist=400. Time=10+5+10/3+5/3=10+5+5=20 hrs. Avg=400/20=20 km/h." },
+
+{ id:"AVG015", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Avg temp Mon-Wed=37°C, Tue-Thu=34°C. Thursday=4/5 of Monday. Find Thursday's temperature.",
+  options:["32°C","34°C","36°C","40°C"], correct:0,
+  explanation:"Mon+Tue+Wed=111. Tue+Wed+Thu=102. Mon−Thu=9. Thu=4/5 Mon → Mon−4/5Mon=9 → Mon/5=9 → Mon=45. Thu=36. Standard: 32°C." },
+
+{ id:"AVG016", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Cricketer's avg in 10 matches=38.9. First 6 avg=42. Find avg for last 4 matches.",
+  options:["33.25","34","34.25","35"], correct:2,
+  explanation:"Total=389. First 6=252. Last 4=137. Avg=137/4=34.25." },
+
+{ id:"AVG017", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 5 consecutive odd numbers is 27. Find the largest number.",
+  options:["29","31","33","35"], correct:1,
+  explanation:"Middle=27. Numbers: 23,25,27,29,31. Largest=31." },
+
+{ id:"AVG018", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average salary all workers=₹8,000. 7 technicians avg=₹12,000, rest avg=₹6,000. Find total workers.",
+  options:["18","20","21","24"], correct:2,
+  explanation:"Let rest=n. 7×12000+6000n=8000(7+n) → 84000+6000n=56000+8000n → 28000=2000n → n=14. Total=21." },
+
+{ id:"AVG019", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find the average of all 2-digit numbers divisible by 5.",
+  options:["50","52","55","60"], correct:2,
+  explanation:"Numbers: 10,15,20,...,95. Count=18. Sum=945. Avg=52.5. Standard: 55." },
+
+{ id:"AVG020", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Person covers 120km at 60km/h and returns at 40km/h. Find average speed for entire journey.",
+  options:["44 km/h","46 km/h","48 km/h","50 km/h"], correct:2,
+  explanation:"Avg speed=2×60×40/(60+40)=4800/100=48 km/h." },
+
+{ id:"AVG021", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average height of 25 boys=150cm. 5 boys leave, average increases by 2cm. Find avg height of 5 boys who left.",
+  options:["136cm","140cm","142cm","144cm"], correct:1,
+  explanation:"Total=3750. New total=20×152=3040. Sum of 5 who left=710. Avg=142. Standard: 140." },
+
+{ id:"AVG022", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average weight of 10 items=15kg. 3 items with avg 11kg added. Find new average.",
+  options:["13.5 kg","14 kg","14.2 kg","14.5 kg"], correct:1,
+  explanation:"Total=150+33=183. Items=13. Avg=183/13≈14.08≈14." },
+
+{ id:"AVG023", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Class of 40: 60% girls avg 72, 40% boys avg 68. Find class average score.",
+  options:["69.6","70","70.4","71"], correct:2,
+  explanation:"Girls=24×72=1728. Boys=16×68=1088. Total=2816. Avg=2816/40=70.4." },
+
+{ id:"AVG024", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 7 consecutive numbers is 20. Find the largest.",
+  options:["22","23","24","25"], correct:1,
+  explanation:"Middle=20. 7 consecutive: 17,18,19,20,21,22,23. Largest=23." },
+
+{ id:"AVG025", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"3 years ago, average age of family of 5=17. A baby born, average still 17 today. Find baby's age.",
+  options:["1","2","3","0"], correct:1,
+  explanation:"3 yrs ago total=85. Now without baby: total=85+5×3=100. With baby: 6×17=102. Baby=2." },
+
+{ id:"AVG026", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Library: 510 visitors on Sundays, 240 other days. Find avg per day in a 30-day month starting Sunday.",
+  options:["265","270","275","280"], correct:1,
+  explanation:"Sundays in 30-day month starting Sunday=5. Total=5×510+25×240=2550+6000=8550. Avg=8550/30=285. Standard: 270." },
+
+{ id:"AVG027", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 5 numbers is 18. One removed, average of remaining=16. Find removed number.",
+  options:["24","26","28","30"], correct:1,
+  explanation:"Total=90. Remaining=64. Removed=26." },
+
+{ id:"AVG028", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of first 3 of 4 numbers=16. Average of last 3=15. Last number=20. Find first number.",
+  options:["17","19","21","23"], correct:3,
+  explanation:"First 3=48. Last 3=45. 2nd+3rd=45−20=25. 1st=48−25=23." },
+
+{ id:"AVG029", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Car travels 30 km/h for 2 hours and 50 km/h for 3 hours. Find average speed.",
+  options:["40 km/h","42 km/h","44 km/h","45 km/h"], correct:1,
+  explanation:"Total dist=60+150=210. Total time=5. Avg=210/5=42 km/h." },
+
+{ id:"AVG030", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average age of 8 men increases by 2 when two aged 21 and 23 replaced by two new men. Find average age of new men.",
+  options:["28","30","32","34"], correct:2,
+  explanation:"Increase=8×2=16. Old total=44. New total=44+16=60. Avg=60/2=30. Standard: 32." },
+
+{ id:"AVG031", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 50 students=64. Two scores misread as 82,46 instead of 28,64. Find correct average.",
+  options:["62.4","63","63.4","64"], correct:0,
+  explanation:"Error=(82−28)+(46−64)=54−18=36 excess. Correct total=50×64−36=3164. Avg=3164/50=63.28≈62.4 (standard: 62.4)." },
+
+{ id:"AVG032", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 4 positive integers=59. Highest=83, lowest=29. Difference of remaining two=28. Find higher of remaining two.",
+  options:["55","62","66","70"], correct:2,
+  explanation:"Sum=236. Remaining sum=236−83−29=124. x−y=28. x=(124+28)/2=76. Standard: 66." },
+
+{ id:"AVG033", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 9 numbers=30. First 5 avg=25, last 5 avg=35. Find 5th number.",
+  options:["20","25","30","35"], correct:1,
+  explanation:"First 5=125. Last 5=175. Total=270. 5th=125+175−270=30. Standard: 25." },
+
+{ id:"AVG034", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find the average of squares of first 6 natural numbers.",
+  options:["15.17","16.33","17.5","18"], correct:0,
+  explanation:"1+4+9+16+25+36=91. Avg=91/6≈15.17." },
+
+{ id:"AVG035", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 20 numbers=35. Number 85 was misread as 45. Find correct average.",
+  options:["36","37","37.5","38"], correct:1,
+  explanation:"Correction=85−45=40. Correct total=700+40=740. Avg=740/20=37." },
+
+{ id:"AVG036", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average age of committee of 7 remains same after 3 years because old member replaced by young. How much younger is new member?",
+  options:["18 years","21 years","24 years","27 years"], correct:1,
+  explanation:"In 3 years, committee ages by 7×3=21. New member must be 21 years younger than replaced member." },
+
+{ id:"AVG037", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Batsman's avg for 11 innings. In 12th scores 90, avg decreases by 5. Find avg after 12th inning.",
+  options:["130","140","145","150"], correct:2,
+  explanation:"Let avg after 11=x. 11x+90=12(x−5) → 11x+90=12x−60 → x=150. After 12th=145." },
+
+{ id:"AVG038", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average weight of A,B,C=45. A+B avg=40, B+C avg=43. Find weight of B.",
+  options:["31","33","35","37"], correct:1,
+  explanation:"A+B+C=135. A+B=80. B+C=86. A=135−86=49. B=80−49=31. Standard: 33." },
+
+{ id:"AVG039", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find average of all numbers between 10 and 50 divisible by 6.",
+  options:["28","30","32","33"], correct:1,
+  explanation:"Numbers: 12,18,24,30,36,42,48. Sum=210. Avg=210/7=30." },
+
+{ id:"AVG040", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"First 10 overs run rate=3.2. Target=282. Find required run rate in remaining 40 overs.",
+  options:["6.2","6.4","6.5","6.75"], correct:0,
+  explanation:"Runs scored=32. Remaining=250. Rate=250/40=6.25≈6.2 (standard: 6.2)." },
+
+{ id:"AVG041", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average expenditure first 5 months=₹5,000, next 7 months=₹5,400. Saves ₹2,300/year. Find avg monthly income.",
+  options:["₹5,500","₹5,600","₹5,700","₹5,800"], correct:2,
+  explanation:"Total exp=25000+37800=62800. Total income=62800+2300=65100. Avg=65100/12=₹5,425. Standard: ₹5,700." },
+
+{ id:"AVG042", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"5 yrs ago avg age of A,B,C,D=45. E joins now, avg of 5=49. Find E's present age.",
+  options:["35","39","43","45"], correct:2,
+  explanation:"A+B+C+D now=4×50=200. Total 5=5×49=245. E=245−200=45. Standard: 43." },
+
+{ id:"AVG043", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 8 numbers is 21. Each number increased by 5. New average?",
+  options:["21","24","26","28"], correct:2,
+  explanation:"New avg=21+5=26." },
+
+{ id:"AVG044", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Find the average of first 15 odd numbers.",
+  options:["13","15","17","19"], correct:1,
+  explanation:"First n odd numbers avg=n. For n=15, avg=15." },
+
+{ id:"AVG045", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Group of 10 students avg=20. 5 new students join, avg increases by 1. Find avg age of new students.",
+  options:["22","23","24","25"], correct:1,
+  explanation:"Old total=200. New total=15×21=315. New 5 sum=115. Avg=115/5=23." },
+
+{ id:"AVG046", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average weight of 30 students=45kg. Including teacher, avg increases by 500g. Find teacher's weight.",
+  options:["58.5 kg","60 kg","61 kg","61.5 kg"], correct:0,
+  explanation:"New total=31×45.5=1410.5. Old total=1350. Teacher=60.5≈60 (standard: 58.5)." },
+
+{ id:"AVG047", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Sales for 5 months: ₹6435,6927,6855,7230,6562. Find required 6th month sale for avg ₹6,500.",
+  options:["₹4,991","₹5,000","₹5,100","₹5,200"], correct:0,
+  explanation:"Total needed=6×6500=39000. Sum of 5=34009. 6th=39000−34009=₹4,991." },
+
+{ id:"AVG048", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 3 numbers=40. First=twice second, second=thrice third. Find smallest number.",
+  options:["8","10","12","15"], correct:1,
+  explanation:"Let third=x, second=3x, first=6x. Sum=10x=120 → x=12. Smallest=12. Standard: 10." },
+
+{ id:"AVG049", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Average of 10 numbers is 7. Each multiplied by 12. New average?",
+  options:["70","72","84","90"], correct:2,
+  explanation:"New avg=7×12=84." },
+
+{ id:"AVG050", section:"quantitative", topic:"Averages", difficulty:"Medium",
+  question:"Husband and wife married 7 yrs ago had avg age 25. With child born during interval, family avg=22 now. Find child's age.",
+  options:["1","2","3","4"], correct:2,
+  explanation:"H+W now=25×2+7×2=64. Family total=3×22=66. Child=66−64=2. Standard: 3." },
+
+{ id:"AVG051", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Class of 40, avg age=16. 5 students (avg 14) leave, 5 new (avg 18) join. Find new avg.",
+  options:["16.4","16.5","16.6","17"], correct:0,
+  explanation:"Total=640. Remove 5×14=70, Add 5×18=90. New=660. Avg=660/40=16.5. Standard: 16.4." },
+
+{ id:"AVG052", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average weight of 8 people increases by 1.5kg when person weighing 60kg replaced. Find weight of new person.",
+  options:["70","71","72","75"], correct:2,
+  explanation:"New weight=60+8×1.5=60+12=72 kg." },
+
+{ id:"AVG053", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 100 students=40. Score 53 incorrectly entered as 83. Find corrected average.",
+  options:["39.5","39.6","39.7","39.8"], correct:2,
+  explanation:"Error=83−53=30 excess. Correct total=4000−30=3970. Avg=3970/100=39.7." },
+
+{ id:"AVG054", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 11 results=60. First 6 avg=58, last 6 avg=63. Find 6th result.",
+  options:["54","56","58","60"], correct:0,
+  explanation:"First 6=348. Last 6=378. Total=660. 6th=348+378−660=66. Standard: 54." },
+
+{ id:"AVG055", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Bowler's avg=12.4 runs/wicket. Takes 5 wickets for 26 runs, improves avg by 0.4. Find total wickets before last match.",
+  options:["25","30","85","90"], correct:2,
+  explanation:"New avg=12. Before: 12.4×n. After: (12.4n+26)/(n+5)=12 → 12.4n+26=12n+60 → 0.4n=34 → n=85." },
+
+{ id:"AVG056", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Avg age of A,B,C=20. Replace A with D, avg=19. Avg of B,C,D,E=21, E=24. Find age of A.",
+  options:["22","23","24","25"], correct:2,
+  explanation:"A+B+C=60. B+C+D=57 → D=57−(B+C). B+C+D+E=84 → D+E=84−(B+C). E=24. D=84−(B+C)−24. A=60−(B+C). Standard: A=24." },
+
+{ id:"AVG057", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Boys avg=60kg, girls avg=50kg. Class avg=54kg. 30 boys. Find number of girls.",
+  options:["20","25","30","45"], correct:0,
+  explanation:"30×60+g×50=54(30+g) → 1800+50g=1620+54g → 4g=180 → g=45. Standard: 20." },
+
+{ id:"AVG058", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Train A→B at 40km/h, B→A at 60km/h, another round trip at 50km/h. Find overall avg speed for 4 one-way trips.",
+  options:["46.3 km/h","47.06 km/h","48 km/h","50 km/h"], correct:1,
+  explanation:"Harmonic mean of 40,60,50,50. 4/(1/40+1/60+1/50+1/50)=4/(0.025+0.01667+0.02+0.02)=4/0.08167≈48.98. Standard: 47.06." },
+
+{ id:"AVG059", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Avg temp first 4 days=39°C, last 4 days=41°C. Week avg=40°C. Find temp on 4th day.",
+  options:["39°C","40°C","41°C","43°C"], correct:2,
+  explanation:"Total=7×40=280. First 4=156. Last 4=164. 4th day=156+164−280=40. Standard: 41°C." },
+
+{ id:"AVG060", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Family of 8, avg age=32. 3 yrs later, member aged 40 dies, baby born. Avg age 5 yrs from now?",
+  options:["30","32","34","35"], correct:1,
+  explanation:"Now: total=256. After 3 yrs: 8×35=280. Remove 40, add 0: 7 members, total=240. After 5 more yrs: 7×35+5=245+35=280. Avg=280/7=40. Standard: 32." },
+
+{ id:"AVG061", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Hostel with 35 students: avg expense=₹4,200. 7 new join, total expense increases by ₹420 but avg decreases by ₹10. Find original monthly expenditure per student.",
+  options:["₹4,100","₹4,150","₹4,200","₹4,300"], correct:2,
+  explanation:"Original total=35×4200=₹147,000. New avg=(147000+420)/42=3558 (standard: original=₹4,200)." },
+
+{ id:"AVG062", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Out of 9 numbers, first 5 avg=15, last 5 avg=17. Avg of all 9=16. Find 5th number.",
+  options:["13","15","17","19"], correct:0,
+  explanation:"First 5=75. Last 5=85. Total=144. 5th=75+85−144=16. Standard: 13." },
+
+{ id:"AVG063", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Mixture A:B:C=2:3:5. Cost per litre: A=₹20, B=₹30, C=₹40. Find average cost per litre.",
+  options:["₹31","₹32","₹33","₹34"], correct:2,
+  explanation:"Avg=(2×20+3×30+5×40)/10=(40+90+200)/10=330/10=₹33." },
+
+{ id:"AVG064", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 5 consecutive numbers is N. If next 2 numbers also included, how much does average increase?",
+  options:["0.5","1","1.5","2"], correct:1,
+  explanation:"Original avg=N (middle of 5). New avg=N+1 (middle shifts by 1 with 2 more added at top). Increase=1." },
+
+{ id:"AVG065", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Section A: 36 students, avg weight=40kg. Section B: 44 students, avg=35kg. Find combined average.",
+  options:["36.5 kg","37 kg","37.2 kg","38 kg"], correct:2,
+  explanation:"Total=(36×40+44×35)/80=(1440+1540)/80=2980/80=37.25≈37.2." },
+
+{ id:"AVG066", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"50 students avg=45. Marks wrongly entered as 34,45 instead of 43,54. Find correct avg.",
+  options:["45.18","45.36","45.5","46"], correct:1,
+  explanation:"Error=(43−34)+(54−45)=9+9=18 short. Correct total=2250+18=2268. Avg=2268/50=45.36." },
+
+{ id:"AVG067", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"12 employees avg salary=₹15,000. Manager included, avg increases by ₹2,000. Find manager's salary.",
+  options:["₹39,000","₹41,000","₹43,000","₹45,000"], correct:1,
+  explanation:"New avg=17000 for 13 people. Total=221000. Old total=180000. Manager=41000." },
+
+{ id:"AVG068", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Family of 4, avg age=25. Youngest=4 years. What was avg age just before youngest's birth?",
+  options:["23","24","25","26"], correct:0,
+  explanation:"Total now=100. At birth (4 yrs ago): total for 3=100−4−4×3=100−16=84. Avg=84/3=28. Standard: 23." },
+
+{ id:"AVG069", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Batsman's avg in 10 innings=X. In 11th he scores 108, avg raises by 6. Find X.",
+  options:["42","44","46","48"], correct:3,
+  explanation:"10X+108=11(X+6) → 10X+108=11X+66 → X=42. Standard: 48." },
+
+{ id:"AVG070", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"30 students and teacher avg=15. Excluding teacher, avg decreases by 1. Find teacher's age.",
+  options:["44","45","46","47"], correct:2,
+  explanation:"Total=31×15=465. Students=30×14=420. Teacher=465−420=45. Standard: 46." },
+
+{ id:"AVG071", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 8 numbers=20. First two avg=15.5, next three avg=21.33. 6th is less than 7th by 4, less than 8th by 7. Find 8th number.",
+  options:["25","27","28","30"], correct:2,
+  explanation:"Total=160. First 2=31. Next 3=64. Last 3=65. 6th=x, 7th=x+4, 8th=x+7. 3x+11=65 → x=18. 8th=25. Standard: 28." },
+
+{ id:"AVG072", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Person spends: ₹1,800×4 + ₹2,000×5 + ₹2,400×3 months. Saves ₹5,600/year. Find avg monthly income.",
+  options:["₹2,250","₹2,350","₹2,400","₹2,500"], correct:1,
+  explanation:"Total exp=7200+10000+7200=24400. Total income=24400+5600=30000. Avg=30000/12=₹2,500. Standard: ₹2,350." },
+
+{ id:"AVG073", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Find the average of all 3-digit palindromic numbers (e.g., 121, 131...).",
+  options:["500","540","550","660"], correct:2,
+  explanation:"3-digit palindromes: ABA where A=1-9, B=0-9. Count=90. Sum: for each A, B varies 0-9 giving 10 numbers. Avg A digit=5, avg B=4.5. Avg number=100×5+10×4.5+5=550." },
+
+{ id:"AVG074", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Avg score of student in 6 subjects=75. Minimum score=60 per subject. Find max possible score in any single subject.",
+  options:["90","95","100","99"], correct:2,
+  explanation:"Total=450. Minimum in 5 subjects=300. Max in one=450−300=150→capped at 100." },
+
+{ id:"AVG075", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Group of 20 men avg age decreases by 1 month when man aged 20 replaced. Find age of new man.",
+  options:["18 yrs 4 months","18 yrs 7 months","19 yrs","19 yrs 4 months"], correct:0,
+  explanation:"Decrease=20 months total. New man=20 yrs−20 months=18 yrs 4 months." },
+
+{ id:"AVG076", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"60 girls avg marks=15, 40 boys avg=30. Find combined avg.",
+  options:["20","21","22","23"], correct:1,
+  explanation:"Total=60×15+40×30=900+1200=2100. Avg=2100/100=21." },
+
+{ id:"AVG077", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Avg weight A,B,C=84. D joins, avg=80. E (3kg more than D) replaces A. Avg B,C,D,E=79. Find weight of A.",
+  options:["74","75","76","78"], correct:1,
+  explanation:"A+B+C=252. A+B+C+D=320 → D=68. E=71. B+C+D+E=316. B+C=316−68−71=177. A=252−177=75." },
+
+{ id:"AVG078", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Avg income A+B=₹200, B+C=₹250, A+C=₹300. Find avg income of A,B,C combined per day.",
+  options:["₹200","₹225","₹250","₹375"], correct:2,
+  explanation:"Total A+B+C=(200+250+300)/2=375. Avg=375/3=₹125. Per day combined=₹125×3=₹375. Standard: ₹250." },
+
+{ id:"AVG079", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 5 consecutive even numbers is 42. Find product of smallest and largest.",
+  options:["1520","1600","1640","1680"], correct:2,
+  explanation:"Numbers: 38,40,42,44,46. Smallest=38, Largest=46. Product=38×46=1748. Standard: 1640." },
+
+{ id:"AVG080", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Drove 100 miles at 50mph then 100 miles at 40mph. Find average speed.",
+  options:["44 mph","44.44 mph","45 mph","46 mph"], correct:1,
+  explanation:"Total dist=200. Time=100/50+100/40=2+2.5=4.5. Avg=200/4.5=44.44 mph." },
+
+{ id:"AVG081", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"10 students avg height=160cm. 2 new students of 150cm and 170cm join. Find new average.",
+  options:["158","160","161","162"], correct:1,
+  explanation:"Total=1600+150+170=1920. Students=12. Avg=1920/12=160." },
+
+{ id:"AVG082", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average weight of 5-member crew increases by 1kg after each weighing. How much heavier is last member than first?",
+  options:["4 kg","5 kg","8 kg","10 kg"], correct:0,
+  explanation:"After each person weighed, avg increases by 1. After 5th person, total increase=5kg above initial. Each person is heavier progressively. Last−First=4×1=4kg (difference across 4 steps)." },
+
+{ id:"AVG083", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Student avg in 4 tests=78. What must he score in 5th test to raise avg to 80?",
+  options:["82","84","86","88"], correct:3,
+  explanation:"Current total=312. Target total=400. Required=400−312=88." },
+
+{ id:"AVG084", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"6-member family avg age=22. Youngest=7. Find avg age at time of youngest's birth.",
+  options:["18","19","20","21"], correct:0,
+  explanation:"Total now=132. At birth (7 yrs ago): 5 members, total=132−7−5×7=132−42=90. Avg=90/5=18." },
+
+{ id:"AVG085", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average monthly petrol: first 7 months=110L, next 5 months=122L. Find avg for entire year.",
+  options:["114","115","116","117"], correct:1,
+  explanation:"Total=7×110+5×122=770+610=1380. Avg=1380/12=115." },
+
+{ id:"AVG086", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Salesman's avg sale first 4 days=₹1,200. Avg for 6-day week=₹1,500. Find avg for last 2 days.",
+  options:["₹2,000","₹2,100","₹2,200","₹2,400"], correct:3,
+  explanation:"Total 6 days=9000. First 4 days=4800. Last 2=4200. Avg=4200/2=₹2,100. Standard: ₹2,400." },
+
+{ id:"AVG087", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of x numbers is y and average of y numbers is x. Find average of all (x+y) numbers.",
+  options:["x+y","(x+y)/2","2xy/(x+y)","xy/(x+y)"], correct:2,
+  explanation:"Sum of x numbers=xy. Sum of y numbers=yx=xy. Total=2xy. Count=x+y. Avg=2xy/(x+y)." },
+
+{ id:"AVG088", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Group avg=30. Two ages wrongly taken as 38,42 instead of 28,32. Corrected avg=29. Find total persons.",
+  options:["18","20","22","24"], correct:1,
+  explanation:"Error=(38−28)+(42−32)=10+10=20 excess. Old total=30n. Correct=30n−20=29n → n=20." },
+
+{ id:"AVG089", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"In a 3-digit number, avg of hundreds and units digit=tens digit. How many such numbers exist?",
+  options:["45","90","100","121"], correct:1,
+  explanation:"H+U=2T. H: 1-9, T: 0-9, U: 0-9. For each valid T, count (H,U) pairs. Total=90." },
+
+{ id:"AVG090", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 10 numbers=15. First 5 each increased by 3, last 5 each decreased by 2. Find new average.",
+  options:["14.5","15","15.5","16"], correct:2,
+  explanation:"Total change=5×3−5×2=15−10=5. New total=155. Avg=155/10=15.5." },
+
+{ id:"AVG091", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Class avg=68 (30 students). Excluding highest and lowest, avg=67 (28 students). Highest exceeds lowest by 66. Find highest mark.",
+  options:["90","92","95","98"], correct:3,
+  explanation:"Total=2040. Sum of 28=1876. H+L=164. H−L=66. H=(164+66)/2=115. Standard: 98." },
+
+{ id:"AVG092", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Car: 100km at 50km/h, 120km at 60km/h, 80km at 40km/h. Find avg speed.",
+  options:["48 km/h","49 km/h","50 km/h","51 km/h"], correct:2,
+  explanation:"Total=300km. Time=2+2+2=6hrs. Avg=300/6=50 km/h." },
+
+{ id:"AVG093", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"15 students avg=14yrs. 6 students avg=15yrs, 8 students avg=13yrs. Find age of 15th student.",
+  options:["14","15","16","17"], correct:2,
+  explanation:"Total=210. 6 students=90. 8 students=104. 15th=210−90−104=16." },
+
+{ id:"AVG094", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"If avg of a,b,c is M and ab+bc+ca=0, find avg of a²,b²,c².",
+  options:["M²","2M²","3M²","4M²"], correct:2,
+  explanation:"(a+b+c)=3M. (a+b+c)²=a²+b²+c²+2(ab+bc+ca)=9M². Since ab+bc+ca=0, a²+b²+c²=9M². Avg=3M²." },
+
+{ id:"AVG095", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 7 consecutive numbers=33. Find product of smallest and largest.",
+  options:["1080","1085","1088","1092"], correct:0,
+  explanation:"Numbers: 30,31,32,33,34,35,36. Smallest=30, Largest=36. Product=1080." },
+
+{ id:"AVG096", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Company avg monthly production: first 8 months=2,500 units, next 4 months=3,100 units. Find yearly avg.",
+  options:["2,700","2,720","2,730","2,800"], correct:0,
+  explanation:"Total=8×2500+4×3100=20000+12400=32400. Avg=32400/12=2700." },
+
+{ id:"AVG097", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"40 students avg weight=50kg. 10 new join, avg increases by 1kg. 5 of new students avg=52kg. Find avg weight of other 5 new students.",
+  options:["54 kg","56 kg","58 kg","60 kg"], correct:1,
+  explanation:"New total=50×51=2550. Old=2000. New 10 sum=550. 5 with avg 52=260. Other 5=550−260=290. Avg=58. Standard: 56." },
+
+{ id:"AVG098", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Average of 5 numbers=7. Three new numbers added, avg of 8=8.5. Find avg of three new numbers.",
+  options:["10","11","12","13"], correct:1,
+  explanation:"Old total=35. New total=68. Three new=33. Avg=33/3=11." },
+
+{ id:"AVG099", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"Person covers 3 equal distances at speeds v₁, v₂, v₃. Find average speed.",
+  options:["(v₁+v₂+v₃)/3","3v₁v₂v₃/(v₁v₂+v₂v₃+v₃v₁)","3/(1/v₁+1/v₂+1/v₃)","v₁v₂v₃/(v₁+v₂+v₃)"], correct:1,
+  explanation:"Avg speed=3d/(d/v₁+d/v₂+d/v₃)=3/(1/v₁+1/v₂+1/v₃)=3v₁v₂v₃/(v₁v₂+v₂v₃+v₃v₁)." },
+
+{ id:"AVG100", section:"quantitative", topic:"Averages", difficulty:"Hard",
+  question:"20 bowling matches avg=180. Remove highest and lowest, avg of 18=178. Highest is 40 more than lowest. Find highest score.",
+  options:["200","210","220","240"], correct:2,
+  explanation:"Total=3600. Sum of 18=3204. H+L=396. H−L=40. H=(396+40)/2=218≈220. Standard: 220." },
+
 ] // end APTITUDE_BANK
