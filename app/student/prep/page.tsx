@@ -186,15 +186,19 @@ function ScoreBadge({ score }: { score: number }) {
 function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (score: number, answers: number[], qs: MCQ[]) => void }) {
   const [cur, setCur] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
-  const [answered, setAnswered] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const [answers, setAnswers] = useState<number[]>([])
 
   const q = questions[cur]
 
   const choose = (i: number) => {
-    if (answered) return
+    if (submitted) return
     setSelected(i)
-    setAnswered(true)
+  }
+
+  const submit = () => {
+    if (selected === null) return
+    setSubmitted(true)
   }
 
   const next = () => {
@@ -203,7 +207,7 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
       setAnswers(newAnswers)
       setCur(c => c + 1)
       setSelected(null)
-      setAnswered(false)
+      setSubmitted(false)
     } else {
       const correct = newAnswers.filter((a, i) => a === questions[i].correct).length
       const score = Math.round((correct / questions.length) * 100)
@@ -233,7 +237,7 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
       <div className="space-y-2.5">
         {q.options.map((opt, i) => {
           let style: React.CSSProperties = { border: "1px solid rgba(255,255,255,0.08)", background: "rgba(24,24,27,0.5)", cursor: "pointer" }
-          if (answered) {
+          if (submitted) {
             if (i === q.correct) style = { border: "1px solid #10b981", background: "rgba(16,185,129,0.10)", cursor: "default" }
             else if (i === selected && i !== q.correct) style = { border: "1px solid #ef4444", background: "rgba(239,68,68,0.10)", cursor: "default", opacity: 0.8 }
             else style = { border: "1px solid rgba(255,255,255,0.05)", background: "rgba(24,24,27,0.3)", cursor: "default", opacity: 0.45 }
@@ -244,34 +248,43 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
             <button key={i} onClick={() => choose(i)}
               className="w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left"
               style={style}
-              onMouseEnter={e => { if (!answered && selected !== i) e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)" }}
-              onMouseLeave={e => { if (!answered && selected !== i) e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)" }}>
+              onMouseEnter={e => { if (!submitted && selected !== i) e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)" }}
+              onMouseLeave={e => { if (!submitted && selected !== i) e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)" }}>
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
                 style={{ background: "rgba(255,255,255,0.06)", color: "#A1A1AA" }}>
                 {["A", "B", "C", "D"][i]}
               </span>
               <span className="text-sm" style={{ color: "#FAFAFA" }}>{opt}</span>
-              {answered && i === q.correct && <CheckCircle2 className="h-4 w-4 text-emerald-500 ml-auto shrink-0" />}
-              {answered && i === selected && i !== q.correct && <XCircle className="h-4 w-4 text-red-500 ml-auto shrink-0" />}
+              {submitted && i === q.correct && <CheckCircle2 className="h-4 w-4 text-emerald-500 ml-auto shrink-0" />}
+              {submitted && i === selected && i !== q.correct && <XCircle className="h-4 w-4 text-red-500 ml-auto shrink-0" />}
             </button>
           )
         })}
       </div>
 
-      {/* Explanation */}
-      {answered && (
+      {/* Explanation — only after submission */}
+      {submitted && (
         <div className="rounded-xl p-4" style={{ border: "1px solid rgba(59,130,246,0.25)", background: "rgba(59,130,246,0.07)" }}>
           <p className="text-xs font-semibold mb-1" style={{ color: "#60a5fa" }}>Explanation</p>
           <p className="text-sm" style={{ color: "#A1A1AA" }}>{q.explanation}</p>
         </div>
       )}
 
-      <button onClick={next} disabled={!answered}
-        className="w-full h-11 rounded-xl font-semibold text-white disabled:opacity-40 transition-all flex items-center justify-center gap-2"
-        style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-        {cur + 1 === questions.length ? "Finish & See Results" : "Next Question"}
-        <ChevronRight className="h-4 w-4" />
-      </button>
+      {/* Submit or Next */}
+      {!submitted ? (
+        <button onClick={submit} disabled={selected === null}
+          className="w-full h-11 rounded-xl font-semibold text-white disabled:opacity-40 transition-all flex items-center justify-center gap-2"
+          style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+          Submit Answer
+        </button>
+      ) : (
+        <button onClick={next}
+          className="w-full h-11 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2"
+          style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+          {cur + 1 === questions.length ? "Finish & See Results" : "Next Question"}
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      )}
     </div>
   )
 }
@@ -1060,19 +1073,33 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
     }
     if (topic.id in LOCAL_TOPIC_MAP) {
       const topicName = LOCAL_TOPIC_MAP[topic.id]
-      const qs = APTITUDE_BANK
-        .filter(q => q.topic === topicName)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 10)
-        .map((q, i) => ({
-          id: i + 1,
-          question: q.question,
-          options: q.options,
-          correct: q.correct,
-          explanation: q.explanation,
-          topic: q.topic,
-          difficulty: q.difficulty,
-        }))
+      const seenKey = `aptitude_seen_${topic.id}`
+      let seenIds: string[] = []
+      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
+
+      const allForTopic = APTITUDE_BANK.filter(q => q.topic === topicName)
+      let pool = allForTopic.filter(q => !seenIds.includes(q.id))
+
+      // Reset if not enough unseen questions
+      if (pool.length < 20) {
+        seenIds = []
+        localStorage.removeItem(seenKey)
+        pool = allForTopic
+      }
+
+      const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 20)
+      const newSeen = [...seenIds, ...shuffled.map(q => q.id)]
+      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
+
+      const qs = shuffled.map((q, i) => ({
+        id: i + 1,
+        question: q.question,
+        options: q.options,
+        correct: q.correct,
+        explanation: q.explanation,
+        topic: q.topic,
+        difficulty: q.difficulty,
+      }))
       setQuestions(qs)
       setStage("quiz")
       return
