@@ -406,24 +406,11 @@ export default function ProblemsPage() {
                       </div>
 
                       {/* Title */}
-                      {/* Title */}
                       <span className="flex-1 text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
                         {problem.title}
                       </span>
 
-                      {/* Topic badge */}
-                      <span className="hidden sm:flex shrink-0 text-[11px] px-2 py-0.5 rounded-full font-medium"
-                        style={{ background: `${problem.color}12`, color: problem.color }}>
-                        {problem.topic}
-                      </span>
-
-                      {/* Difficulty */}
-                      <span className="shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-full"
-                        style={{ background: DIFF_BG[problem.difficulty], color: DIFF_COLOR[problem.difficulty] }}>
-                        {problem.difficulty}
-                      </span>
-
-                      {/* Company tags — after difficulty */}
+                      {/* Company tags */}
                       {COMPANY_TAGS[problem.title] && (
                         <span className="hidden sm:flex items-center gap-1 shrink-0">
                           {COMPANY_TAGS[problem.title].slice(0, 3).map(c => (
@@ -439,6 +426,18 @@ export default function ProblemsPage() {
                           )}
                         </span>
                       )}
+
+                      {/* Topic badge */}
+                      <span className="hidden sm:flex shrink-0 text-[11px] px-2 py-0.5 rounded-full font-medium"
+                        style={{ background: `${problem.color}12`, color: problem.color }}>
+                        {problem.topic}
+                      </span>
+
+                      {/* Difficulty */}
+                      <span className="shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-full"
+                        style={{ background: DIFF_BG[problem.difficulty], color: DIFF_COLOR[problem.difficulty] }}>
+                        {problem.difficulty}
+                      </span>
 
                       {/* Bookmark button */}
                       <button

@@ -196,7 +196,6 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
                           {[
                             { label: "Aptitude",      sub: "Quant · Logical · Data Interp.", icon: "A", color: "#f59e0b", href: "/student/prep?track=aptitude" },
                             { label: "Coding / DSA",  sub: "Arrays · Trees · DP · Graphs",   icon: "C", color: "#6366f1", href: "/student/problems" },
-                            { label: "Communication", sub: "Grammar · Vocab · Reading",       icon: "C", color: "#10b981", href: "/student/prep?track=communication" },
                           ].map((item, i) => (
                             <Link key={item.label} href={item.href}
                               onClick={() => setPracticeOpen(false)}
