@@ -37,7 +37,7 @@ const PRACTICE_MODES = [
     icon: "C",
     iconBg: "#10b981",
     color: "#10b981",
-    href: "/student/prep?track=communication",
+    href: "/student/practice/communication",
     topics: ["Grammar & Sentence Correction", "Vocabulary & Word Meaning", "Reading Comprehension", "Para Jumbles", "Email Writing", "Verbal Reasoning"],
     count: "150+ exercises",
   },

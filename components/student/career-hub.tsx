@@ -703,7 +703,7 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
               {[
                 { label: "Aptitude",      sub: "Quant . Logical . Data Interp.", color: "#f59e0b", href: "/student/practice/aptitude" },
                 { label: "Coding / DSA",  sub: "Arrays . Trees . DP . Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
-                { label: "Communication", sub: "Grammar . Vocab . Reading",       color: "#10b981", href: "/student/prep?track=communication" },
+                { label: "Communication", sub: "Grammar . Vocab . Reading",       color: "#10b981", href: "/student/practice/communication" },
               ].map(opt => (
                 <a key={opt.label} href={opt.href}
                   className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors border-b border-border/50 last:border-0">

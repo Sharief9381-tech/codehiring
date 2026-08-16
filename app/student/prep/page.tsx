@@ -1427,14 +1427,19 @@ export default function PrepHubPage() {
       setShowSmartResume(true)
       window.history.replaceState(null, "", window.location.pathname)
     }
-    // Auto-open track if ?track= param is present (came from Practice flyout)
+    // Auto-open track if ?track= param is present OR if navigated to /student/practice/{track}
     const urlParams = new URLSearchParams(window.location.search)
-    const track = urlParams.get("track")
+    const trackFromParam = urlParams.get("track")
+    const pathnameTrack = window.location.pathname.match(/\/student\/practice\/(aptitude|coding|communication)/)?.[1]
+    const track = pathnameTrack || trackFromParam
     if (track === "aptitude" || track === "coding" || track === "communication") {
       setActivePath(track as Path)
       setSubView("home")
       setFromPractice(true)
-      window.history.replaceState(null, "", window.location.pathname)
+      // Only strip query param if it came from ?track=, not from pathname
+      if (trackFromParam && !pathnameTrack) {
+        window.history.replaceState(null, "", window.location.pathname)
+      }
     }
   }, [])
 
