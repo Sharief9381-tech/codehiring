@@ -102,7 +102,6 @@ const APT_TOPICS = [
   { id: "speed-distance",  name: "Speed & Distance",           icon: "🚆" },
   { id: "probability",     name: "Probability",                icon: "🎲" },
   { id: "data-interp",     name: "Data Interpretation",        icon: "📊" },
-  { id: "series",          name: "Number Series",              icon: "🔢" },
   { id: "permcomb",        name: "Permutation & Combination",  icon: "∑" },
 ]
 
@@ -1564,6 +1563,12 @@ export default function PrepHubPage() {
                     trick: "🧠 Trick: Unit digit cycles — 2(4), 3(4), 7(4), 9(2). Trailing zeros = ⌊n/5⌋+⌊n/25⌋+…",
                     points: ["Factors of p^a×q^b → (a+1)(b+1) total","Sum of factors = (p^(a+1)−1)/(p−1)×…","Remainder shortcut: a^n mod m = cycle"],
                     example: "HCF(48,180)=12; 7^35 unit digit: 35 mod 4=3 → unit=3"
+                  },
+                  "series": {
+                    emoji: "🔢", formula: "AP: aₙ = a+(n−1)d ; GP: aₙ = arⁿ⁻¹",
+                    trick: "🧠 Trick: Find the difference between consecutive terms. If 2nd diff is constant → AP of differences. If ratio is constant → GP.",
+                    points: ["AP sum = n/2×(2a+(n−1)d)","GP sum = a(rⁿ−1)/(r−1)","Perfect squares/cubes: 1,4,9,16… or 1,8,27,64…"],
+                    example: "2,6,12,20,30… differences: 4,6,8,10 (AP with d=2) → next diff=12, next term=42"
                   },
                   "simplification": {
                     emoji: "=", formula: "BODMAS: B → O → D → M → A → S",
