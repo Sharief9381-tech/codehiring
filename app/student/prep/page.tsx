@@ -1542,67 +1542,184 @@ export default function PrepHubPage() {
 
         {/* Learn */}
         {subView === "learn" && (
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">Tap a topic to study key concepts, formulas, and examples.</p>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-base font-semibold text-foreground">Formula Cards</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Click any card to expand · memorize the highlighted formula first</p>
+              </div>
+              <span className="text-xs px-3 py-1 rounded-full font-semibold"
+                style={{ background: `${pathMeta.color}15`, color: pathMeta.color }}>
+                {pathMeta.topics.length} topics
+              </span>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {pathMeta.topics.map((t: any) => {
-                const notes: Record<string, { formula?: string; points: string[]; example?: string }> = {
-                  "percentages": { formula: "Percentage = (Part / Whole) × 100", points: ["Percentage increase = (New − Old)/Old × 100","Successive discounts: a% + b% = (a+b − ab/100)%","Profit% = (Profit/CP) × 100"], example: "If CP=200 and SP=250, Profit% = 50/200×100 = 25%" },
-                  "profit-loss": { formula: "Profit = SP − CP;  Loss = CP − SP", points: ["SP = CP × (1 + Profit%/100)","Discount = MP − SP","True discount: TD = PW × r × t / 100"], example: "MP=500, 20% discount &rarr; SP=400" },
-                  "time-work": { formula: "Work = Rate × Time &rarr; 1/A + 1/B = 1/T", points: ["A+B together: T = AB/(A+B)","Pipes: filling rate − draining rate = net rate","If A is twice as fast as B, ratio of time = 1:2"], example: "A=12 days, B=18 &rarr; together = 12×18/30 = 7.2 days" },
-                  "pipes-cisterns": { formula: "Net rate = Σ(fill rates) − Σ(drain rates)", points: ["Fill in x hrs: rate = 1/x per hr","Leak formula: 1/inlet − 1/leak = 1/net","Capacity = flow rate × time","Alternate opening: track work per cycle","Replacement: final = initial × ((V−r)/V)^n"], example: "A fills in 6h, B empties in 8h &rarr; net = 1/6−1/8 = 1/24 &rarr; 24h to fill" },
-                  "speed-distance": { formula: "Speed = Distance / Time", points: ["Relative speed (same dir): |S1−S2|","Relative speed (opp dir): S1+S2","Average speed = 2S1×S2/(S1+S2) for equal distances"], example: "Train 300m at 60km/h passes pole in 300/60×3.6 = 18s" },
-                  "probability": { formula: "P(E) = Favourable / Total outcomes", points: ["P(A∪B) = P(A)+P(B)−P(A∩B)","P(A') = 1 − P(A)","Independent events: P(A∩B)=P(A)×P(B)"], example: "2 dice: P(sum=7) = 6/36 = 1/6" },
-                  "arrays": { points: ["Access O(1), Insert/Delete O(n)","Two-pointer for sorted arrays","Kadane's algorithm for max subarray","Prefix sums for range queries"], formula: "prefix[i] = prefix[i-1] + arr[i]", example: "Max subarray [−2,1,−3,4,−1,2] &rarr; 6 (Kadane)" },
-                  "strings": { points: ["Sliding window for substring problems","KMP for pattern matching O(n+m)","Palindrome check: two pointers from ends","Anagram: sort or frequency map"], formula: "Window expand/shrink for substring problems", example: "Longest substring without repeat: sliding window" },
-                  "linked-lists": { points: ["Fast/slow pointer for cycle detection","Reverse: prev->cur->next iteration","Merge sorted lists: dummy head pattern","Find middle: slow+fast pointers"], example: "Floyd's cycle: slow moves 1, fast moves 2" },
-                  "trees": { points: ["DFS: preorder, inorder, postorder","BFS: level-order with queue","BST: left < root < right","Height = 1 + max(left, right)"], formula: "nodes in complete tree = 2^h − 1", example: "Inorder of BST gives sorted array" },
-                  "graphs": { points: ["BFS: shortest path (unweighted)","DFS: cycle detection, topological sort","Dijkstra: shortest path (weighted)","Union-Find: connected components"], formula: "Dijkstra: O((V+E) log V)", example: "BFS from source, dist[] updated per level" },
-                  "dbms": { points: ["ACID: Atomicity, Consistency, Isolation, Durability","Normalization: 1NF->2NF->3NF->BCNF","Indexing: B-tree, Hash","JOIN types: INNER, LEFT, RIGHT, FULL OUTER"], formula: "SELECT col FROM table WHERE condition GROUP BY col HAVING agg", example: "1NF: no repeating groups; 2NF: no partial dependency" },
-                  "os": { points: ["Scheduling: FCFS, SJF, Round Robin, Priority","Deadlock: Mutual exclusion, Hold & Wait, No preemption, Circular wait","Paging: page table maps virtual->physical","Semaphore: binary (mutex) and counting"], formula: "Turnaround = Completion − Arrival; Waiting = Turnaround − Burst", example: "Round Robin Q=3: P1(10),P2(5),P3(8) &rarr; context switch every 3ms" },
-                  "cn": { points: ["OSI 7 layers: Physical->Data Link->Network->Transport->Session->Presentation->Application","TCP: reliable, connection-oriented; UDP: fast, connectionless","IP classes: A(0−127) B(128−191) C(192−223)","Subnetting: borrow bits from host portion"], formula: "Subnet mask /24 = 255.255.255.0 &rarr; 254 hosts", example: "HTTP=80, HTTPS=443, FTP=21, SSH=22, DNS=53" },
-                  "oops": { points: ["4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism","Overloading: same name, different params (compile-time)","Overriding: same signature, different class (runtime)","Interface vs Abstract: interface = pure contract"], example: "Animal->speak() overridden by Dog->speak() 'Woof'" },
-                  "java": { points: ["JVM: bytecode &rarr; machine code (platform independent)","Collections: List, Set, Map, Queue","Exception hierarchy: Throwable->Error/Exception","String is immutable; StringBuilder is mutable"], formula: "HashMap get/put: O(1) average", example: "ArrayList vs LinkedList: AL faster random access, LL faster insert/delete" },
-                  "simplification": { formula: "BODMAS: Brackets → Orders → Division → Multiplication → Addition → Subtraction", points: ["Apply BODMAS strictly — brackets first, then powers","Division and multiplication: left to right","Addition and subtraction: left to right","For fractions: find LCM of denominators first","For approximations: round to nearest whole number"], example: "45÷9×3+15−8 = 5×3+15−8 = 15+15−8 = 22" },
-                  "number-system": { formula: "HCF × LCM = Product of two numbers", points: ["Unit digits repeat in cycles: 2→4, 3→4, 7→4, 9→2 period","Factors of n=p^a×q^b×r^c → (a+1)(b+1)(c+1)","Sum of factors = (p^(a+1)−1)/(p−1) × ...","Trailing zeros in n! = ⌊n/5⌋+⌊n/25⌋+⌊n/125⌋...","Remainder of a^n mod m: use cyclicity of unit digits"], example: "HCF(48,180)=12; LCM(12,18,24)=72; 7^35 unit digit: 35 mod 4=3 → 3" },
-                  "si-ci": { formula: "SI = PRT/100 ; CI = P(1+R/100)^T − P", points: ["CI − SI for 2 yrs = P(R/100)²","If sum doubles in n yrs at SI, rate = 100/n %","If sum doubles in n yrs at CI, it becomes 2^k in k×n yrs","Effective rate for half-yearly = (1+R/200)²−1","Diff(CI,SI) for 3 yrs = PR²(300+R)/100³"], example: "P=10000, R=10%, T=2: SI=2000, CI=2100, Diff=100" },
-                  "ratio-prop": { formula: "a:b = c:d ↔ ad = bc (Product rule)", points: ["Mean prop of a,b = √(ab)","Duplicate ratio of a:b = a²:b²","Sub-duplicate = √a:√b","Compound ratio: multiply ratios","Partnership profit ∝ Capital × Time"], example: "A:B=2:3, B:C=4:5 → A:B:C=8:12:15" },
-                  "averages": { formula: "Average = Sum of all values / Number of values", points: ["New avg when value replaced: new = old ± (change/n)","Weighted avg = Σ(value × weight) / Σweight","If each value changes by k, avg changes by k","Average speed (equal dist) = 2v₁v₂/(v₁+v₂)","Age problems: total = avg × count"], example: "8 persons, avg increases by 2.5 when 65kg replaced: new = 65+8×2.5 = 85kg" },
-                  "mixture": { formula: "Alligation: cheaper qty : dearer qty = (dearer − mean) : (mean − cheaper)", points: ["Replacement formula: final = initial × ((V−r)/V)^n","If water added to milk for profit: water/milk = profit%/(100+profit%)","Three-component: use weighted average","Successive dilution: final conc = initial × Π(1 − xi/Vi)","Always check if mean is between the two values"], example: "₹45 and ₹60 to get ₹50: ratio = (60−50):(50−45) = 2:1" },
+                const noteMap: Record<string, {
+                  formula: string; trick: string; points: string[]; example: string; emoji: string
+                }> = {
+                  "number-system": {
+                    emoji: "🔢", formula: "HCF × LCM = P₁ × P₂",
+                    trick: "🧠 Trick: Unit digit cycles — 2(4), 3(4), 7(4), 9(2). Trailing zeros = ⌊n/5⌋+⌊n/25⌋+…",
+                    points: ["Factors of p^a×q^b → (a+1)(b+1) total","Sum of factors = (p^(a+1)−1)/(p−1)×…","Remainder shortcut: a^n mod m = cycle"],
+                    example: "HCF(48,180)=12; 7^35 unit digit: 35 mod 4=3 → unit=3"
+                  },
+                  "simplification": {
+                    emoji: "=", formula: "BODMAS: B → O → D → M → A → S",
+                    trick: "🧠 Trick: Never skip order! Always brackets first. Left-to-right for ×÷ and +−.",
+                    points: ["Brackets → Orders (powers) → ÷ → × → + → −","For fractions: find LCM of denominators first","Approximation: round to nearest whole"],
+                    example: "45÷9×3+15−8 = 5×3+15−8 = 15+7 = 22"
+                  },
+                  "percentages": {
+                    emoji: "%", formula: "% = (Part / Whole) × 100",
+                    trick: "🧠 Trick: Successive discounts a% + b% ≠ (a+b)%. Use: a+b−ab/100",
+                    points: ["Increase: (New−Old)/Old × 100","Profit% = (SP−CP)/CP × 100","x% of y = y% of x (swap trick!)"],
+                    example: "CP=200, SP=250 → Profit% = 50/200×100 = 25%"
+                  },
+                  "profit-loss": {
+                    emoji: "₹", formula: "Profit = SP − CP ; SP = CP(1 + P%/100)",
+                    trick: "🧠 Trick: Two items same SP, one profit x%, other loss x% → always net LOSS of x²/100 %",
+                    points: ["Discount = MP − SP","Marked price MP = SP/(1 − D%/100)","False weight gain% = (true−false)/false × 100"],
+                    example: "MP=500, 20% disc → SP=400; CP=320 → Profit=80 (25%)"
+                  },
+                  "si-ci": {
+                    emoji: "🏦", formula: "SI = PRT/100 ; CI = P[(1+R/100)^T − 1]",
+                    trick: "🧠 Trick: CI−SI for 2 yrs = P(R/100)². If sum doubles in n yrs at SI, Rate = 100/n",
+                    points: ["Half-yearly: rate÷2, time×2","CI for 3 yrs−SI for 3 yrs = PR²(300+R)/10⁶","Effective annual rate (half-yearly) = (1+R/200)²−1"],
+                    example: "P=10000, R=10%, T=2: SI=2000, CI=2100, Diff=100"
+                  },
+                  "ratio-prop": {
+                    emoji: "∶", formula: "a:b = c:d ↔ ad = bc (Cross multiply)",
+                    trick: "🧠 Trick: To combine A:B and B:C → make B common by LCM",
+                    points: ["Mean proportional of a,b = √(ab)","Duplicate ratio a:b = a²:b²","Partnership profit ∝ Capital × Time"],
+                    example: "A:B=2:3, B:C=4:5 → B LCM=12 → A:B:C=8:12:15"
+                  },
+                  "averages": {
+                    emoji: "x̄", formula: "Average = Sum / Count",
+                    trick: "🧠 Trick: When a value is replaced: new avg = old avg ± (difference/n)",
+                    points: ["Avg speed (equal dist) = 2v₁v₂/(v₁+v₂)","All values +k → avg +k","Age: if avg stays same after replacement, difference = years × count"],
+                    example: "8 persons avg +2.5 when 65kg replaced: new person = 65+8×2.5 = 85kg"
+                  },
+                  "mixture": {
+                    emoji: "⚗", formula: "Cheaper qty : Dearer qty = (D−Mean) : (Mean−C)",
+                    trick: "🧠 Trick: Draw a cross (alligation cross). Mean must be BETWEEN the two values.",
+                    points: ["Replacement: final = V×((V−r)/V)^n","Profit by water: water% = profit/(100+profit)","Three-component: use weighted average"],
+                    example: "₹45 & ₹60 to get ₹50: ratio=(60−50):(50−45)=2:1"
+                  },
+                  "time-work": {
+                    emoji: "⚙", formula: "Work = Rate × Time ; 1/A + 1/B = 1/T",
+                    trick: "🧠 Trick: Use LCM of all days as total work. Then daily work = LCM/days.",
+                    points: ["A+B together: T = AB/(A+B)","Efficiency ∝ 1/time (more efficient = fewer days)","M×D = work; M1D1 = M2D2 (men-days formula)"],
+                    example: "A=12d, B=18d → LCM=36; A does 3/day, B does 2/day → together 5/day → 36/5=7.2d"
+                  },
+                  "pipes-cisterns": {
+                    emoji: "🚰", formula: "Net rate = Σfill − Σdrain ; Capacity = rate × time",
+                    trick: "🧠 Trick: Treat fill pipe as +ve, drain as −ve. Same as time-work!",
+                    points: ["Leak: 1/fill − 1/leak = 1/net fill time","Alternate pipes: track per cycle","Replacement: P(1−r/V)^n"],
+                    example: "A fills in 6h, B empties in 8h → net=1/6−1/8=1/24 → fills in 24h"
+                  },
+                  "boats-streams": {
+                    emoji: "⛵", formula: "DS = B+S ; US = B−S ; B = (DS+US)/2",
+                    trick: "🧠 Trick: DS+US=2×Boat speed; DS−US=2×Stream speed. Always remember!",
+                    points: ["Round trip time = 2D×B/(B²−S²)","If upstream time = k × downstream, then (B−S)/(B+S)=1/k","Distance = Speed × Time"],
+                    example: "DS=12, US=4 → Boat=8, Stream=4"
+                  },
+                  "ages": {
+                    emoji: "🎂", formula: "Present Age = Past Age + Years elapsed",
+                    trick: "🧠 Trick: Set up 2 equations from 2 conditions. Ratio problems: assign variables as multiples.",
+                    points: ["n years ago: subtract n from both","n years hence: add n to both","Sum/ratio: solve simultaneous equations"],
+                    example: "A:B=3:1 now; 4 yrs ago ratio=4:1 → (3x−4)/(x−4)=4 → x=12, A=36, B=12"
+                  },
+                  "mensuration": {
+                    emoji: "📐", formula: "Area of circle = πr² ; TSA cube = 6a²",
+                    trick: "🧠 Trick: When sphere melts into cylinder/cone, volumes are equal. Volume = πr²h for cylinder.",
+                    points: ["Heron's formula: s=(a+b+c)/2; A=√(s(s−a)(s−b)(s−c))","Frustum V = πh/3(R²+Rr+r²)","Diagonal of cuboid = √(l²+b²+h²)"],
+                    example: "Sphere r=3 → V=4/3π×27=36π melted into wire of d=0.4 → L=900cm"
+                  },
+                  "speed-distance": {
+                    emoji: "🚆", formula: "Speed = Distance / Time ; Relative speed",
+                    trick: "🧠 Trick: Same direction: |S1−S2|. Opposite: S1+S2. Train passes pole in length/speed.",
+                    points: ["Avg speed (equal dist) = 2S1×S2/(S1+S2)","Train crosses platform: dist = train length + platform length","Boats: same as streams formula"],
+                    example: "Train 300m at 60km/h passes pole: time=300/60×3.6=18s"
+                  },
+                  "probability": {
+                    emoji: "🎲", formula: "P(E) = Favourable outcomes / Total outcomes",
+                    trick: "🧠 Trick: P(A∪B) = P(A)+P(B)−P(A∩B). Complement: P(not A) = 1−P(A).",
+                    points: ["Independent: P(A∩B)=P(A)×P(B)","Mutually exclusive: P(A∩B)=0","Cards: 52 total, 4 suits×13 cards"],
+                    example: "2 dice, P(sum=7) = 6/36 = 1/6"
+                  },
                 }
-                const note = notes[t.id] || { points: ["Study this topic systematically", "Practice with timed questions", "Review formulas and examples"] }
+
+                const note = noteMap[t.id] || {
+                  emoji: t.icon || "📖",
+                  formula: "Practice regularly to master this topic",
+                  trick: "🧠 Tip: Study formulas first, then solve examples",
+                  points: ["Review key concepts","Solve variety of problems","Time yourself"],
+                  example: "Click Practice to start solving questions"
+                }
+
                 return (
-                  <div key={t.id} className="rounded-xl border border-border bg-card/40 p-5 space-y-3">
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg text-base"
-                        style={{ background: `${t.color || pathMeta.color}15` }}>
-                        {t.icon}
+                  <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20"
+                    style={{ borderColor: `${t.color || pathMeta.color}25`, background: "rgba(15,15,20,0.6)" }}>
+
+                    {/* Card header */}
+                    <div className="p-4 pb-3" style={{ background: `${t.color || pathMeta.color}08` }}>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-xl text-lg font-bold"
+                            style={{ background: `${t.color || pathMeta.color}20`, color: t.color || pathMeta.color }}>
+                            {note.emoji}
+                          </div>
+                          <div>
+                            <p className="font-bold text-sm text-foreground">{t.name}</p>
+                            <p className="text-[10px] text-muted-foreground">{note.points.length} key formulas</p>
+                          </div>
+                        </div>
                       </div>
-                      <p className="font-semibold text-foreground">{t.name}</p>
+
+                      {/* THE MAIN FORMULA — big and prominent */}
+                      <div className="rounded-xl px-3 py-2.5 mt-1"
+                        style={{ background: `${t.color || pathMeta.color}15`, border: `1px solid ${t.color || pathMeta.color}30` }}>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider mb-1"
+                          style={{ color: `${t.color || pathMeta.color}cc` }}>⚡ Core Formula</p>
+                        <p className="text-xs font-mono font-bold text-foreground leading-relaxed">{note.formula}</p>
+                      </div>
                     </div>
-                    {note.formula && (
-                      <div className="rounded-lg bg-primary/5 border border-primary/20 px-3 py-2">
-                        <p className="text-xs font-mono text-primary">{note.formula}</p>
-                      </div>
-                    )}
-                    <ul className="space-y-1">
+
+                    {/* Trick / Mnemonic */}
+                    <div className="px-4 py-2.5 border-b" style={{ borderColor: `${t.color || pathMeta.color}15` }}>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{note.trick}</p>
+                    </div>
+
+                    {/* Key points */}
+                    <div className="px-4 py-3 space-y-1.5">
                       {note.points.map((p, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                          <span className="text-primary mt-0.5 shrink-0">.</span>{p}
-                        </li>
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="text-[10px] rounded px-1 py-0.5 font-bold shrink-0 mt-0.5"
+                            style={{ background: `${t.color || pathMeta.color}20`, color: t.color || pathMeta.color }}>
+                            {i + 1}
+                          </span>
+                          <p className="text-xs text-muted-foreground leading-relaxed">{p}</p>
+                        </div>
                       ))}
-                    </ul>
-                    {note.example && (
-                      <div className="rounded-lg bg-amber-500/5 border border-amber-500/20 px-3 py-2">
-                        <p className="text-[10px] font-semibold text-amber-400 mb-0.5">Example</p>
-                        <p className="text-xs text-muted-foreground">{note.example}</p>
-                      </div>
-                    )}
-                    <button onClick={() => setActiveTopic({ id: t.id, name: t.name })}
-                      className="w-full h-8 rounded-lg text-xs font-semibold text-white mt-1"
-                      style={{ background: `linear-gradient(135deg,${t.color || pathMeta.color},${t.color || pathMeta.color}cc)` }}>
-                      Practice {t.name} &rarr;
-                    </button>
+                    </div>
+
+                    {/* Example */}
+                    <div className="mx-4 mb-3 rounded-xl px-3 py-2"
+                      style={{ background: "rgba(245,158,11,0.06)", border: "1px solid rgba(245,158,11,0.2)" }}>
+                      <p className="text-[9px] font-bold text-amber-400 uppercase tracking-wider mb-0.5">Solved Example</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{note.example}</p>
+                    </div>
+
+                    {/* Practice button */}
+                    <div className="px-4 pb-4">
+                      <button onClick={() => setActiveTopic({ id: t.id, name: t.name })}
+                        className="w-full h-9 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-1.5"
+                        style={{ background: `linear-gradient(135deg,${t.color || pathMeta.color},${t.color || pathMeta.color}bb)` }}>
+                        Practice {t.name} →
+                      </button>
+                    </div>
                   </div>
                 )
               })}
