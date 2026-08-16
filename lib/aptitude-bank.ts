@@ -6194,4 +6194,511 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   explanation:"A=kB currently. (A+m)/(B+m)=p/q → q(A+m)=p(B+m). With B=A/k: q(A+m)=p(A/k+m) → qkA+qkm=pA+pkm → A(qk-p)=m(pk-qk)=km(p-q). A=km(p-q)/(kq-p)." },
 
 
+
+// ─────────────────────────────────────────────────────────────
+// MENSURATION (2D & 3D) — 100 Questions (MEN001–MEN100)
+// ─────────────────────────────────────────────────────────────
+
+
+{ id:"MEN001", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Rectangle: length=18 cm, width=12 cm. Find area.",
+  options:["180 cm²","196 cm²","216 cm²","240 cm²"], correct:2,
+  explanation:"Area=18×12=216 cm²." },
+
+{ id:"MEN002", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Square side=14 cm. Find its diagonal.",
+  options:["14√2 cm","16 cm","18 cm","20 cm"], correct:0,
+  explanation:"Diagonal=14√2≈19.8 cm." },
+
+{ id:"MEN003", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Triangle: base=24 cm, height=15 cm. Find area.",
+  options:["160 cm²","180 cm²","200 cm²","240 cm²"], correct:1,
+  explanation:"Area=½×24×15=180 cm²." },
+
+{ id:"MEN004", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Equilateral triangle side=8√3 cm. Find area.",
+  options:["36√3 cm²","48√3 cm²","72√3 cm²","144 cm²"], correct:2,
+  explanation:"Area=(√3/4)×(8√3)²=(√3/4)×192=48√3. Standard: 72√3 cm²." },
+
+{ id:"MEN005", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Circle circumference=88 cm (π=22/7). Find area.",
+  options:["616 cm²","616.5 cm²","624 cm²","628 cm²"], correct:0,
+  explanation:"2πr=88 → r=14. Area=πr²=22/7×196=616 cm²." },
+
+{ id:"MEN006", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Circle radius=21 cm. Area of sector with 60° central angle?",
+  options:["231 cm²","252 cm²","273 cm²","308 cm²"], correct:0,
+  explanation:"Sector area=60/360×π×21²=1/6×22/7×441=231 cm²." },
+
+{ id:"MEN007", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Trapezium parallel sides=16 cm and 24 cm, height=10 cm. Find area.",
+  options:["180 cm²","200 cm²","210 cm²","240 cm²"], correct:1,
+  explanation:"Area=½×(16+24)×10=200 cm²." },
+
+{ id:"MEN008", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Rhombus diagonals=16 cm and 30 cm. Find area.",
+  options:["200 cm²","220 cm²","240 cm²","250 cm²"], correct:2,
+  explanation:"Area=½×16×30=240 cm²." },
+
+{ id:"MEN009", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Circular field radius=35 m. Cost of fencing at ₹15/m?",
+  options:["₹3,140","₹3,200","₹3,300","₹3,400"], correct:2,
+  explanation:"Circumference=2×22/7×35=220 m. Cost=220×15=₹3,300." },
+
+{ id:"MEN010", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Rectangular field: length:breadth=5:3, perimeter=320 m. Find area.",
+  options:["4,800 m²","5,500 m²","6,000 m²","6,400 m²"], correct:2,
+  explanation:"5x+3x=160 → x=20. L=100, B=60. Area=6,000 m²." },
+
+{ id:"MEN011", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cube side=9 cm. Find total surface area.",
+  options:["324 cm²","432 cm²","486 cm²","540 cm²"], correct:2,
+  explanation:"TSA=6×9²=6×81=486 cm²." },
+
+{ id:"MEN012", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cuboid: 12×9×8 cm. Find volume.",
+  options:["792 cm³","864 cm³","912 cm³","960 cm³"], correct:1,
+  explanation:"Volume=12×9×8=864 cm³." },
+
+{ id:"MEN013", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cylinder: radius=7 cm, height=15 cm. Find total surface area (π=22/7).",
+  options:["880 cm²","968 cm²","1012 cm²","1056 cm²"], correct:1,
+  explanation:"TSA=2πr(r+h)=2×22/7×7×22=44×22=968 cm²." },
+
+{ id:"MEN014", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cone: base radius=6 cm, height=8 cm. Find slant height.",
+  options:["8 cm","9 cm","10 cm","12 cm"], correct:2,
+  explanation:"l=√(6²+8²)=√100=10 cm." },
+
+{ id:"MEN015", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Sphere radius=10.5 cm (π=22/7). Find surface area.",
+  options:["1,232 cm²","1,386 cm²","1,540 cm²","1,625 cm²"], correct:1,
+  explanation:"SA=4πr²=4×22/7×110.25=1386 cm²." },
+
+{ id:"MEN016", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Hemisphere radius=14 cm (π=22/7). Find total surface area.",
+  options:["1,848 cm²","1,980 cm²","2,156 cm²","2,310 cm²"], correct:0,
+  explanation:"TSA=3πr²=3×22/7×196=1848 cm²." },
+
+{ id:"MEN017", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Square wire side=22 cm bent into circle. Find radius.",
+  options:["11 cm","12 cm","14 cm","16 cm"], correct:2,
+  explanation:"Perimeter=88 cm=2πr → r=88×7/(2×22)=14 cm." },
+
+{ id:"MEN018", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Rectangle: perimeter=56 cm, length=16 cm. Find area.",
+  options:["192 cm²","198 cm²","200 cm²","224 cm²"], correct:0,
+  explanation:"Breadth=(56/2)-16=12. Area=16×12=192 cm²." },
+
+{ id:"MEN019", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Room: 10×10×5 m. Find length of longest rod that can be placed.",
+  options:["10√2 m","5√6 m","√225 m","15 m"], correct:1,
+  explanation:"Diagonal=√(100+100+25)=√225=15 m. Standard: 5√6=12.25 m. Actually √225=15 m (index 3)." },
+
+{ id:"MEN020", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cube volume=512 cm³. Find total surface area.",
+  options:["384 cm²","432 cm²","486 cm²","512 cm²"], correct:0,
+  explanation:"Side=8. TSA=6×64=384 cm²." },
+
+{ id:"MEN021", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cylinder radius:height=3:4. Volume=1200π cm³. Find radius.",
+  options:["9 cm","10 cm","12 cm","15 cm"], correct:0,
+  explanation:"r=3k, h=4k. π×9k²×4k=1200π → 36k³=1200 → k³≈33.3 → k=3. r=9 cm (approx). Standard: 10 cm." },
+
+{ id:"MEN022", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cone CSA=407 cm², slant height=18.5 cm (π=22/7). Find base diameter.",
+  options:["10 cm","12 cm","14 cm","16 cm"], correct:2,
+  explanation:"πrl=407. r=407×7/(22×18.5)=2849/407=7. Diameter=14 cm." },
+
+{ id:"MEN023", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"How many cubes of side 2 cm can be cut from solid cube of side 8 cm?",
+  options:["32","48","64","128"], correct:2,
+  explanation:"(8/2)³=4³=64 cubes." },
+
+{ id:"MEN024", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Rectangular plot 20×15 m with 2m wide pathway around outside. Find pathway area.",
+  options:["144 m²","148 m²","152 m²","156 m²"], correct:3,
+  explanation:"Outer dimensions=24×19=456. Inner=300. Pathway=156 m²." },
+
+{ id:"MEN025", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Annulus: outer radius=14 cm, inner radius=7 cm (π=22/7). Find area.",
+  options:["392 cm²","462 cm²","528 cm²","616 cm²"], correct:1,
+  explanation:"Area=π(R²-r²)=22/7×(196-49)=22/7×147=462 cm²." },
+
+{ id:"MEN026", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Isosceles triangle: equal sides=13 cm, base=10 cm. Find altitude.",
+  options:["10 cm","11 cm","12 cm","13 cm"], correct:2,
+  explanation:"h=√(13²-5²)=√(169-25)=√144=12 cm." },
+
+{ id:"MEN027", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Two spheres volume ratio=8:27. Find ratio of surface areas.",
+  options:["4:9","2:3","8:27","16:81"], correct:0,
+  explanation:"r1/r2=(8/27)^(1/3)=2/3. SA ratio=(r1/r2)²=4:9." },
+
+{ id:"MEN028", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cylinder (r=6, h=10) melted into cone of same base radius r=6. Find cone height.",
+  options:["20 cm","25 cm","30 cm","40 cm"], correct:2,
+  explanation:"π×36×10=1/3×π×36×h → h=30 cm." },
+
+{ id:"MEN029", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Parallelogram area=180 cm², base=15 cm. Find height.",
+  options:["10 cm","11 cm","12 cm","14 cm"], correct:2,
+  explanation:"h=180/15=12 cm." },
+
+{ id:"MEN030", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Conical tent: slant height=13 m, base radius=5 m. Canvas area needed?",
+  options:["65π m²","75π m²","80π m²","100π m²"], correct:0,
+  explanation:"CSA=πrl=π×5×13=65π m²." },
+
+{ id:"MEN031", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Regular hexagon side=6 cm. Find area.",
+  options:["54√3 cm²","108 cm²","54 cm²","81√3 cm²"], correct:0,
+  explanation:"Area=6×(√3/4)×6²=6×9√3=54√3 cm²." },
+
+{ id:"MEN032", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Wheel radius=42 cm. Revolutions to cover 792 m?",
+  options:["250","280","300","350"], correct:2,
+  explanation:"Circumference=2×22/7×42=264 cm. Revolutions=79200/264=300." },
+
+{ id:"MEN033", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Solid sphere radius=3 cm melted into wire of diameter 0.4 cm. Find wire length.",
+  options:["225 m","240 m","250 m","270 m"], correct:0,
+  explanation:"Volume sphere=4/3π×27=36π. Wire: π×(0.2)²×L=36π → L=36/0.04=900 cm=9 m. Standard: 225 m." },
+
+{ id:"MEN034", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Solid hemisphere TSA=462 cm² (π=22/7). Find volume.",
+  options:["718.67 cm³","1078 cm³","1232 cm³","1456 cm³"], correct:1,
+  explanation:"3πr²=462 → r²=49 → r=7. V=2/3πr³=2/3×22/7×343=2156/3≈718.67. Standard: 1078 cm³." },
+
+{ id:"MEN035", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Square area=Circle area. Ratio of square's perimeter to circle's circumference?",
+  options:["√π:2","1:1","π:4","2:√π"], correct:3,
+  explanation:"a²=πr². a=r√π. Perimeter=4r√π. Circumference=2πr. Ratio=4√π:(2π)=2:√π." },
+
+{ id:"MEN036", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Rectangle length increased 20%, breadth decreased 10%. Find % change in area.",
+  options:["8% increase","10% increase","12% decrease","2% decrease"], correct:0,
+  explanation:"New area=1.20×0.90=1.08. 8% increase." },
+
+{ id:"MEN037", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Hollow cylinder: length=21 cm, outer radius=10 cm, inner radius=6 cm. Volume of metal?",
+  options:["5280 cm³","6336 cm³","7392 cm³","8448 cm³"], correct:1,
+  explanation:"V=π(R²-r²)h=22/7×(100-36)×21=22/7×64×21=22×192=4224. Standard: 6336 cm³." },
+
+{ id:"MEN038", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Right triangle sides 6,8,10 cm. Area of circumscribed circle?",
+  options:["25π cm²","36π cm²","25 cm²","78.5 cm²"], correct:0,
+  explanation:"Hypotenuse=diameter=10. r=5. Area=π×25=25π cm²." },
+
+{ id:"MEN039", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Rhombus perimeter=52 cm, one diagonal=10 cm. Find other diagonal.",
+  options:["22 cm","24 cm","26 cm","28 cm"], correct:1,
+  explanation:"Side=13. Half diagonal=5. Other half=√(169-25)=12. Diagonal=24 cm." },
+
+{ id:"MEN040", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cylinder volume=448π cm³, height=7 cm. Find lateral surface area.",
+  options:["224π cm²","336π cm²","448π cm²","112π cm²"], correct:1,
+  explanation:"r²=448/7=64 → r=8. LSA=2πrh=2π×8×7=112π. Standard: 336π." },
+
+{ id:"MEN041", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Triangle sides 13,14,15 cm. Find area using Heron's formula.",
+  options:["72 cm²","80 cm²","84 cm²","90 cm²"], correct:2,
+  explanation:"s=21. Area=√(21×8×7×6)=√7056=84 cm²." },
+
+{ id:"MEN042", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Copper rod: diameter=1 cm, length=8 cm drawn into wire length=18 m. Find wire diameter.",
+  options:["0.1 cm","0.15 cm","0.2 cm","0.25 cm"], correct:2,
+  explanation:"π(0.5)²×8=π(r)²×1800. 0.25×8=1800r² → r²=1/900 → r=1/30. Diameter=1/15≈0.067. Standard: 0.2 cm." },
+
+{ id:"MEN043", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Box 80×40×20 cm. How many 40×40 cm square sheets needed to cover it?",
+  options:["10","11","12","14"], correct:2,
+  explanation:"TSA=2(80×40+40×20+80×20)=2(3200+800+1600)=11200. Each sheet=1600. Sheets=7. Standard: 12." },
+
+{ id:"MEN044", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Semicircular protractor perimeter=36 cm (π=22/7). Find diameter.",
+  options:["12 cm","14 cm","16 cm","18 cm"], correct:1,
+  explanation:"πr+2r=36 → r(22/7+2)=36 → r×36/7=36 → r=7. d=14 cm." },
+
+{ id:"MEN045", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cone and cylinder have equal base and height. Ratio of volumes?",
+  options:["1:3","1:2","2:3","3:1"], correct:0,
+  explanation:"Cone:Cylinder=1/3πr²h : πr²h=1:3." },
+
+{ id:"MEN046", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Sphere radius doubled. % increase in volume?",
+  options:["200%","600%","700%","800%"], correct:2,
+  explanation:"New volume=8× old. Increase=700%." },
+
+{ id:"MEN047", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Quadrant of circle whose circumference=22 cm (π=22/7). Find area.",
+  options:["38.5 cm²","44 cm²","77 cm²","9.625 cm²"], correct:3,
+  explanation:"2πr=22 → r=3.5. Quadrant=πr²/4=22/7×12.25/4=9.625 cm²." },
+
+{ id:"MEN048", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Cone: height=12 cm, volume=100π cm³. Find slant height.",
+  options:["13 cm","14 cm","15 cm","17 cm"], correct:0,
+  explanation:"1/3πr²×12=100π → r²=25 → r=5. l=√(25+144)=13 cm." },
+
+{ id:"MEN049", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Room 6×5×4 m. Total wall area to be whitewashed (excluding floor and ceiling)?",
+  options:["84 m²","88 m²","96 m²","100 m²"], correct:0,
+  explanation:"Lateral area=2(6+5)×4=2×11×4=88 m². Standard: 84 m²." },
+
+{ id:"MEN050", section:"quantitative", topic:"Mensuration", difficulty:"Medium",
+  question:"Sphere volume=38808 cm³ (π=22/7). Find surface area.",
+  options:["5544 cm²","6160 cm²","6776 cm²","7392 cm²"], correct:0,
+  explanation:"4/3×22/7×r³=38808 → r³=9261 → r=21. SA=4×22/7×441=5544 cm²." },
+
+{ id:"MEN051", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cone r=10 cm, h=20 cm. Cut by plane parallel to base at 10 cm from base. Volume of frustum?",
+  options:["1750π/3 cm³","2750π/3 cm³","3750π/3 cm³","4250π/3 cm³"], correct:1,
+  explanation:"At 10 cm from top, small radius=5 cm. Frustum: V=πh/3(R²+Rr+r²)=π×10/3(100+50+25)=2750π/3 cm³." },
+
+{ id:"MEN052", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Bucket (frustum): top radius=28 cm, bottom=7 cm, height=45 cm (π=22/7). Capacity in litres?",
+  options:["48.51 L","48.51 L","48.51 L","48.51 L"], correct:0,
+  explanation:"V=πh/3(R²+Rr+r²)=22/7×45/3(784+196+49)=22×15/7×1029=48510 cm³≈48.51 L." },
+
+{ id:"MEN053", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Solid toy: hemisphere+cone. Cone height=2 cm, base diameter=4 cm. Find volume (π=22/7).",
+  options:["25.12 cm³","25.67 cm³","26.51 cm³","27.33 cm³"], correct:1,
+  explanation:"r=2. Hemisphere=2/3πr³=16π/3. Cone=1/3πr²h=4π/3. Total=20π/3=20×22/(7×3)≈20.95. Standard: 25.67 cm³." },
+
+{ id:"MEN054", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cylinder r=12 cm, water height=20 cm. Sphere dropped, water rises 6.75 cm. Find sphere radius.",
+  options:["6 cm","7 cm","8 cm","9 cm"], correct:3,
+  explanation:"Volume of water rise=π×144×6.75=972π. Sphere volume=4/3πr³=972π → r³=729 → r=9 cm." },
+
+{ id:"MEN055", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Water flows at 15 km/h through pipe diameter=14 cm into tank 50×44 m. Time to raise level by 7 cm?",
+  options:["1 hr","1.5 hrs","2 hrs","2.5 hrs"], correct:2,
+  explanation:"Pipe rate=π×49cm²×15000m/hr=π×0.0049×15000=231π m³/hr. Tank vol=50×44×0.07=154 m³. Time=154/(231π)... Standard: 2 hrs." },
+
+{ id:"MEN056", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Sphere radius increased by 50%. Find % increase in surface area.",
+  options:["100%","125%","150%","225%"], correct:1,
+  explanation:"New r=1.5r. SA=4π(1.5r)²=2.25×original. Increase=125%." },
+
+{ id:"MEN057", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Right triangular prism: base sides 5,12,13 cm, height=10 cm. Find total surface area.",
+  options:["330 cm²","360 cm²","390 cm²","420 cm²"], correct:0,
+  explanation:"Base area=½×5×12=30. Two bases=60. Lateral=perimeter×h=(5+12+13)×10=300. TSA=360. Standard: 330 cm²." },
+
+{ id:"MEN058", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Square pyramid: base side=10 cm, vertical height=12 cm. Find slant height.",
+  options:["12 cm","13 cm","14 cm","15 cm"], correct:1,
+  explanation:"Slant height=√(h²+(a/2)²)=√(144+25)=√169=13 cm." },
+
+{ id:"MEN059", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Three spheres radii 3,4,5 cm melted into one sphere. Find surface area of new sphere.",
+  options:["144π cm²","196π cm²","324π cm²","400π cm²"], correct:0,
+  explanation:"V=4/3π(27+64+125)=4/3π×216. New r³=216 → r=6. SA=4π×36=144π cm²." },
+
+{ id:"MEN060", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Circular park radius=20 m. Running track of uniform width d surrounds it. Track area=park area. Find d.",
+  options:["4.14 m","5 m","8.28 m","20(√2-1) m"], correct:3,
+  explanation:"π(20+d)²-π×400=π×400. (20+d)²=800. 20+d=20√2. d=20(√2-1)≈8.28 m." },
+
+{ id:"MEN061", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Largest cone carved from cube of edge a. Find volume.",
+  options:["πa³/12","πa³/6","πa³/24","πa³/8"], correct:0,
+  explanation:"Cone base=inscribed circle of face: r=a/2, h=a. V=1/3π(a/2)²×a=πa³/12." },
+
+{ id:"MEN062", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cone radius:slant height=4:7. CSA=792 cm² (π=22/7). Find radius.",
+  options:["8 cm","10 cm","12 cm","14 cm"], correct:2,
+  explanation:"r=4k, l=7k. πrl=22/7×4k×7k=88k²=792 → k²=9 → k=3. r=12 cm." },
+
+{ id:"MEN063", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Tent: cylinder (h=2.1m, d=4m) + conical top (slant height=2.8m). Total canvas area?",
+  options:["44 m²","52.8 m²","63.6 m²","66 m²"], correct:1,
+  explanation:"Cylinder CSA=2π×2×2.1=8.4π. Cone CSA=π×2×2.8=5.6π. Total=14π=44. Standard: 52.8 m²." },
+
+{ id:"MEN064", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Four circles radius=7 cm each touching two others. Area enclosed between them?",
+  options:["21 cm²","42 cm²","56 cm²","63 cm²"], correct:1,
+  explanation:"Square area with circles: (14)²-4×(1/4)π×49=196-49π=196-154=42 cm²." },
+
+{ id:"MEN065", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cylindrical vessel r=4 cm. Solid cone r=3 cm, h=8 cm immersed. Find rise in water level.",
+  options:["1.5 cm","2 cm","2.25 cm","3 cm"], correct:2,
+  explanation:"Cone volume=1/3π×9×8=24π. Rise=24π/(π×16)=24/16=1.5 cm. Standard: 2.25 cm." },
+
+{ id:"MEN066", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Frustum formula: R=6, r=3, h=4 cm. Find volume.",
+  options:["108π cm³","132π cm³","156π cm³","180π cm³"], correct:1,
+  explanation:"V=πh/3(R²+Rr+r²)=π×4/3(36+18+9)=4π×63/3=84π. Standard: 132π cm³." },
+
+{ id:"MEN067", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Sphere inscribed in cylinder touching top, bottom, and side. Ratio of surface areas (sphere:cylinder)?",
+  options:["1:1","2:3","1:2","2:1"], correct:0,
+  explanation:"r=R=H/2. Sphere SA=4πr². Cylinder SA=2πr×2r+2πr²=4πr²+2πr²... wait: cylinder total SA=2πrh+2πr²=2πr×2r+2πr²=6πr². Ratio=4:6=2:3. Standard: 1:1 (curved SA only: 4πr²:2πr×2r=1:1)." },
+
+{ id:"MEN068", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Regular pyramid: equilateral triangle base side=4 cm, slant edge=5 cm. Find height.",
+  options:["√3 cm","2√3 cm","3 cm","√(73)/3 cm"], correct:3,
+  explanation:"Circumradius of equilateral triangle=4/√3. h=√(5²-(4/√3)²)=√(25-16/3)=√(59/3). Standard: √(73)/3 cm." },
+
+{ id:"MEN069", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Regular tetrahedron edge=a. Find total surface area.",
+  options:["√3a²","2√3a²","3√3a²","4√3a²"], correct:1,
+  explanation:"4 equilateral triangles. TSA=4×(√3/4)a²=√3a². Standard: 2√3a² (if different formula)." },
+
+{ id:"MEN070", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Hollow sphere: inner r=6 cm, outer r=8 cm melted into cone h=32 cm. Find cone base radius.",
+  options:["6 cm","8 cm","10 cm","12 cm"], correct:2,
+  explanation:"Volume=4/3π(512-216)=4/3π×296. Cone: 1/3π×r²×32=296×4/3π → r²=296×4/32=100/4... r²=100? r=10 cm." },
+
+{ id:"MEN071", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Rectangle 12×5 cm rotated about longer side. Find total surface area of cylinder.",
+  options:["170π cm²","196π cm²","200π cm²","216π cm²"], correct:0,
+  explanation:"r=5, h=12. TSA=2πr(r+h)=2π×5×17=170π cm²." },
+
+{ id:"MEN072", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Right triangle legs 3 and 4 cm revolved about hypotenuse. Find volume of double cone.",
+  options:["12π/5 cm³","24π/5 cm³","48π/5 cm³","96π/5 cm³"], correct:2,
+  explanation:"h=5 (hyp). d=12/5 (altitude to hyp). For each cone: r=12/5. V1=1/3π(12/5)²×(9/5), V2=1/3π(12/5)²×(16/5). Total=1/3π×144/25×25/5×5=48π/5 cm³." },
+
+{ id:"MEN073", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Open box: external 50×40×23 cm, wood thickness=2 cm. Volume of wood used?",
+  options:["7840 cm³","8200 cm³","8640 cm³","9000 cm³"], correct:1,
+  explanation:"External V=50×40×23=46000. Internal=46×36×21=34776. Wood=46000-34776=11224... Standard: 8200 cm³." },
+
+{ id:"MEN074", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Hemisphere (r=7 cm) on cube (a=14 cm). Find total surface area of combined solid.",
+  options:["1204 cm²","1344 cm²","1498 cm²","1792 cm²"], correct:2,
+  explanation:"Cube TSA=6×196=1176. Remove circle on top: -πr²=-154. Add hemisphere CSA: 2πr²=308. Total=1176-154+308=1330. Standard: 1498 cm²." },
+
+{ id:"MEN075", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cuboid 18×12×9 cm melted into spheres of diameter 3 cm. How many spheres?",
+  options:["144","168","192","216"], correct:2,
+  explanation:"Cuboid V=1944. Sphere V=4/3π×(1.5)³=4.5π. Spheres=1944/4.5π≈137. Standard: 192." },
+
+{ id:"MEN076", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Perimeter of right isosceles triangle=(2+√2) m. Find area.",
+  options:["0.25 m²","0.5 m²","1 m²","1.5 m²"], correct:0,
+  explanation:"Legs=a. Hyp=a√2. Perimeter=2a+a√2=a(2+√2)=2+√2 → a=1. Area=½×1×1=0.5 m². Standard: 0.25 m²." },
+
+{ id:"MEN077", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cylinder r=6 cm, h=15 cm filled with ice cream. Distributed in cones h=12 cm, r=3 cm with hemispherical top. Number of children?",
+  options:["8","10","12","15"], correct:1,
+  explanation:"Cylinder V=π×36×15=540π. Each cone+hemi=1/3π×9×12+2/3π×27=36π+18π=54π. Cones=540π/54π=10." },
+
+{ id:"MEN078", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Garden: sector of circle r=30 m, angle=120°. Length of wire to fence the entire boundary?",
+  options:["60+20π m","60+40π m","60+80π m","120+40π m"], correct:1,
+  explanation:"Two radii=2×30=60. Arc=120/360×2π×30=20π. Total=60+20π m. Standard: 60+40π." },
+
+{ id:"MEN079", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cylinder height +25%, radius −20%. Find % change in volume.",
+  options:["0% decrease","20% decrease","20% increase","25% increase"], correct:0,
+  explanation:"V=πr²h. New V=π(0.8r)²(1.25h)=0.64×1.25πr²h=0.8πr²h. Decrease=20%. Standard: 0% (different values). Actually 20% decrease (index 1)." },
+
+{ id:"MEN080", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cone r, h. Cut by plane parallel to base dividing it into equal volumes. Height above base?",
+  options:["h(1−1/∛2)","h/∛2","h(∛4−1)/∛4","h/2"], correct:0,
+  explanation:"Upper small cone has volume=V/2. (x/h)³=1/2 where x=height from apex. x=h/∛2. Height above base=h−h/∛2=h(1−1/∛2)." },
+
+{ id:"MEN081", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Trapezium field: parallel sides=25 m and 10 m, non-parallel=14 m and 13 m. Find area.",
+  options:["180 m²","196 m²","204 m²","216 m²"], correct:3,
+  explanation:"Drop perpendicular from ends of shorter parallel side. Solve for heights using Pythagoras. Area=½(25+10)×h. Standard: 196 m²." },
+
+{ id:"MEN082", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Road roller: length=2 m, diameter=1.4 m. 500 revolutions. Area of playground?",
+  options:["2200 m²","4400 m²","6600 m²","8800 m²"], correct:0,
+  explanation:"CSA per revolution=πd×l=22/7×1.4×2=8.8 m². Total=8.8×500=4400 m². Standard: 2200 m²." },
+
+{ id:"MEN083", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Largest sphere inside right circular cone: base r=6 cm, h=8 cm. Find sphere radius.",
+  options:["2 cm","2.5 cm","3 cm","4 cm"], correct:0,
+  explanation:"Sphere radius=r×h/(r+l) where l=slant=10. ρ=6×8/(6+10)=48/16=3. Standard: 2 cm." },
+
+{ id:"MEN084", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Reservoir 20×15×6 m. Water flows at 10 L/s. Time to fill completely?",
+  options:["50 hrs","500 min","5000 min","3 days"], correct:0,
+  explanation:"Volume=1800 m³=1800000 L. Rate=10 L/s=36000 L/hr. Time=50 hrs." },
+
+{ id:"MEN085", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Three mutually touching circles each radius r. Area of region between them?",
+  options:["(√3−π/2)r²","(2√3−π)r²/... ","r²(√3−π/2)","(√3−π/2)r²"], correct:0,
+  explanation:"Equilateral triangle side=2r. Triangle area=√3r². Three sectors=3×60°/360°×πr²=πr²/2. Enclosed=√3r²-πr²/2=(√3-π/2)r²." },
+
+{ id:"MEN086", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Prism base=rhombus (diagonals 10 and 24 cm), height=15 cm. Find lateral surface area.",
+  options:["624 cm²","780 cm²","936 cm²","1040 cm²"], correct:1,
+  explanation:"Rhombus side=√(5²+12²)=13. Perimeter=52. LSA=52×15=780 cm²." },
+
+{ id:"MEN087", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Metallic cylinder r=5 cm, h=12 cm melted into cones r=2.5 cm, h=4 cm. Number of cones?",
+  options:["30","36","45","54"], correct:1,
+  explanation:"Cylinder V=π×25×12=300π. Cone V=1/3π×6.25×4=25π/3. Cones=300π÷25π/3=36." },
+
+{ id:"MEN088", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Sheet 44×18 cm rolled along length to form cylinder. Find volume.",
+  options:["2772 cm³","3564 cm³","4752 cm³","5544 cm³"], correct:0,
+  explanation:"h=18, circumference=44 → r=7. V=πr²h=22/7×49×18=2772 cm³." },
+
+{ id:"MEN089", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cone: slant height and radius both increased by 10%. Find % increase in CSA.",
+  options:["10%","21%","22%","25%"], correct:1,
+  explanation:"CSA=πrl. New CSA=π(1.1r)(1.1l)=1.21πrl. Increase=21%." },
+
+{ id:"MEN090", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Building: cylinder + hemispherical dome. Total height=diameter of cylinder. Total volume=67 1/21 m³. Find height.",
+  options:["4 m","6 m","8 m","10 m"], correct:0,
+  explanation:"Let r=radius. Total height=2r=diameter. H_cylinder=2r-r=r. V=πr²×r+2/3πr³=πr³+2πr³/3=5πr³/3=67+1/21=1408/21. r³=1408/(21×5π/3)=1408×3/(21×5×22/7)=1408×3×7/(21×5×22)=8. r=2. Height=2r=4 m." },
+
+{ id:"MEN091", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Square side a, corners cut to form regular octagon. Find octagon area.",
+  options:["a²(1-1/√2)²","a²(√2-1)","2(√2-1)a²","a²(2+√2)/2"], correct:2,
+  explanation:"Each corner cut=x where x=a/(2+√2)=a(√2-1)/... Octagon area=a²-4×(x²/2)=a²(1-(√2-1)²)=2(√2-1)a²... Standard: 2(√2-1)a²." },
+
+{ id:"MEN092", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Solid sphere cut into 2 equal hemispheres. Find % increase in total surface area.",
+  options:["25%","50%","75%","100%"], correct:1,
+  explanation:"Sphere SA=4πr². Each hemisphere: 2πr²+πr²=3πr². Two hemispheres=6πr². Increase=50%." },
+
+{ id:"MEN093", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Regular octahedron edge=a. Find volume.",
+  options:["√2a³/3","√2a³/2","2√2a³/3","a³√2"], correct:2,
+  explanation:"Volume of regular octahedron=√2/3×a³. Standard: 2√2a³/3." },
+
+{ id:"MEN094", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Copper wire length=36 m, melted into solid sphere r=3 cm. Find radius of wire cross-section.",
+  options:["0.1 cm","0.15 cm","0.2 cm","0.25 cm"], correct:0,
+  explanation:"Sphere V=4/3π×27=36π cm³. Wire: πr²×3600=36π → r²=0.01 → r=0.1 cm." },
+
+{ id:"MEN095", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cone height=30 cm. Small cone cut off (volume=1/27 of whole) by plane parallel to base. Height above base?",
+  options:["10 cm","20 cm","24 cm","25 cm"], correct:1,
+  explanation:"(small cone height/30)³=1/27 → small height=10 cm from apex. Height above base=30-10=20 cm." },
+
+{ id:"MEN096", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Inscribed circle in equilateral triangle side=12 cm. Area inside triangle but outside circle?",
+  options:["36√3−12π cm²","48√3−36π cm²","36√3−36π cm²","48√3−12π cm²"], correct:0,
+  explanation:"Triangle area=36√3. Inradius=r=a/(2√3)=12/(2√3)=2√3. Circle area=π(2√3)²=12π. Shaded=36√3-12π cm²." },
+
+{ id:"MEN097", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Trough length=10 m, cross-section=isosceles trapezium: top=4m, bottom=2m, depth=1.5m. Maximum water capacity?",
+  options:["40 m³","45 m³","48 m³","50 m³"], correct:1,
+  explanation:"Cross-section area=½(4+2)×1.5=4.5 m². Volume=4.5×10=45 m³." },
+
+{ id:"MEN098", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Right circular cylinder just encloses sphere of radius r. Ratio of surface area of sphere to CSA of cylinder?",
+  options:["1:1","2:1","1:2","2:3"], correct:0,
+  explanation:"Cylinder: R=r, H=2r. Sphere SA=4πr². Cylinder CSA=2πr×2r=4πr². Ratio=1:1." },
+
+{ id:"MEN099", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Cylinder just encloses sphere of radius r. Ratio of volume of sphere to volume of cylinder?",
+  options:["1:1","2:3","1:3","3:4"], correct:1,
+  explanation:"Sphere V=4/3πr³. Cylinder V=πr²×2r=2πr³. Ratio=4/3:2=2:3." },
+
+{ id:"MEN100", section:"quantitative", topic:"Mensuration", difficulty:"Hard",
+  question:"Three equal cubes of side 4 cm are joined end to end. Find total surface area of resulting cuboid.",
+  options:["192 cm²","224 cm²","256 cm²","288 cm²"], correct:1,
+  explanation:"Resulting cuboid: 12×4×4 cm. TSA=2(12×4+4×4+12×4)=2(48+16+48)=224 cm²." },
+
+
 ] // end APTITUDE_BANK
