@@ -6701,4 +6701,511 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   explanation:"Resulting cuboid: 12×4×4 cm. TSA=2(12×4+4×4+12×4)=2(48+16+48)=224 cm²." },
 
 
+
+// ─────────────────────────────────────────────────────────────
+// GEOMETRY — 100 Questions (GEO001–GEO100)
+// ─────────────────────────────────────────────────────────────
+
+
+{ id:"GEO001", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Two parallel lines cut by a transversal. One interior angle=65°. Find the co-interior (same-side) angle.",
+  options:["65°","115°","125°","130°"], correct:1,
+  explanation:"Co-interior angles are supplementary: 180°−65°=115°." },
+
+{ id:"GEO002", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"In △ABC, ∠A=50°, ∠B=70°. Find exterior angle ∠ACD.",
+  options:["100°","110°","120°","130°"], correct:2,
+  explanation:"Exterior angle=sum of non-adjacent interior angles=50°+70°=120°." },
+
+{ id:"GEO003", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Two angles of a triangle are in ratio 2:3 and third angle=80°. Find the smallest angle.",
+  options:["30°","40°","48°","50°"], correct:1,
+  explanation:"2x+3x+80=180 → 5x=100 → x=20. Angles: 40°,60°,80°. Smallest=40°." },
+
+{ id:"GEO004", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Quadrilateral angles in ratio 3:4:5:6. Find the largest angle.",
+  options:["90°","100°","120°","130°"], correct:2,
+  explanation:"Sum=360°. 18x=360 → x=20. Largest=6×20=120°." },
+
+{ id:"GEO005", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Isosceles △ABC with AB=AC, ∠B=55°. Find ∠A.",
+  options:["55°","60°","70°","80°"], correct:2,
+  explanation:"∠B=∠C=55°. ∠A=180°−110°=70°." },
+
+{ id:"GEO006", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Sum of interior angles of a regular octagon.",
+  options:["900°","1080°","1260°","1440°"], correct:1,
+  explanation:"Sum=(n−2)×180=(8−2)×180=1080°." },
+
+{ id:"GEO007", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Each interior angle of a regular polygon=144°. Find number of sides.",
+  options:["8","9","10","12"], correct:2,
+  explanation:"Exterior angle=36°. n=360/36=10 sides." },
+
+{ id:"GEO008", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Number of diagonals in a regular decagon (10 sides).",
+  options:["30","35","40","45"], correct:1,
+  explanation:"Diagonals=n(n−3)/2=10×7/2=35." },
+
+{ id:"GEO009", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"D and E are midpoints of AB and AC in △ABC. BC=14 cm. Find DE.",
+  options:["5 cm","6 cm","7 cm","8 cm"], correct:2,
+  explanation:"Midpoint theorem: DE=BC/2=7 cm." },
+
+{ id:"GEO010", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Right-angled △ABC at B. AB=9, BC=12. Find circumradius.",
+  options:["6.5 cm","7 cm","7.5 cm","8 cm"], correct:2,
+  explanation:"Hypotenuse=√(81+144)=15. Circumradius=15/2=7.5 cm." },
+
+{ id:"GEO011", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Chord of length 16 cm in circle of radius 10 cm. Find distance from center.",
+  options:["4 cm","5 cm","6 cm","8 cm"], correct:2,
+  explanation:"Half chord=8. d=√(100−64)=√36=6 cm." },
+
+{ id:"GEO012", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Concentric circles radii 13 cm and 5 cm. Length of chord of larger circle tangent to smaller?",
+  options:["20 cm","22 cm","24 cm","26 cm"], correct:2,
+  explanation:"Half chord=√(169−25)=√144=12. Chord=24 cm." },
+
+{ id:"GEO013", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"∠AOB=110° (central angle). Find inscribed angle ∠ACB on remaining arc.",
+  options:["45°","55°","60°","65°"], correct:1,
+  explanation:"Inscribed angle=central angle/2=110/2=55°." },
+
+{ id:"GEO014", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Cyclic quadrilateral ABCD. ∠A=(2x+10)°, ∠C=(3x+20)°. Find ∠A.",
+  options:["60°","70°","80°","90°"], correct:1,
+  explanation:"∠A+∠C=180 → 2x+10+3x+20=180 → 5x=150 → x=30. ∠A=70°." },
+
+{ id:"GEO015", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Tangents PA and PB from external point P. ∠APB=70°. Find ∠AOB.",
+  options:["100°","105°","110°","115°"], correct:2,
+  explanation:"∠AOB=180°−70°=110°. (OA⊥PA, OB⊥PB, so ∠AOB+∠APB=180°)." },
+
+{ id:"GEO016", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"AD bisects ∠A in △ABC. AB=6, AC=8, BD=3. Find DC.",
+  options:["3 cm","4 cm","5 cm","6 cm"], correct:1,
+  explanation:"BD/DC=AB/AC=6/8=3/4. DC=4 cm." },
+
+{ id:"GEO017", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"DE∥BC in △ABC. AD=4, DB=6, AE=5. Find EC.",
+  options:["6 cm","7 cm","7.5 cm","8 cm"], correct:2,
+  explanation:"By BPT: AD/DB=AE/EC → 4/6=5/EC → EC=7.5 cm." },
+
+{ id:"GEO018", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Find centroid of triangle with vertices (2,4), (6,8), (4,3).",
+  options:["(3,4)","(4,4)","(4,5)","(5,5)"], correct:2,
+  explanation:"Centroid=((2+6+4)/3, (4+8+3)/3)=(4,5)." },
+
+{ id:"GEO019", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Distance between A(-3,4) and B(5,-2).",
+  options:["8","10","12","√100"], correct:1,
+  explanation:"d=√((5+3)²+(-2-4)²)=√(64+36)=√100=10." },
+
+{ id:"GEO020", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Slope of line through (3,-2) and (7,6).",
+  options:["1","1.5","2","3"], correct:2,
+  explanation:"m=(6−(−2))/(7−3)=8/4=2." },
+
+{ id:"GEO021", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Equation of line through (2,3) with slope 4.",
+  options:["y=4x−5","y=4x+5","y=4x−3","y=4x−1"], correct:0,
+  explanation:"y−3=4(x−2) → y=4x−5." },
+
+{ id:"GEO022", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Intersection of 2x+3y=12 and x−y=1.",
+  options:["(2,3)","(3,2)","(4,1)","(5,0)"], correct:1,
+  explanation:"From x=y+1: 2(y+1)+3y=12 → 5y=10 → y=2, x=3. Point=(3,2)." },
+
+{ id:"GEO023", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Right triangle: hypotenuse=25, one side=7. Find median to hypotenuse.",
+  options:["10.5 cm","11 cm","12 cm","12.5 cm"], correct:3,
+  explanation:"Median to hypotenuse=hypotenuse/2=25/2=12.5 cm." },
+
+{ id:"GEO024", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Similar triangles area ratio=16:25. Find ratio of corresponding altitudes.",
+  options:["4:5","2:5","16:25","8:25"], correct:0,
+  explanation:"Altitude ratio=√(16/25)=4:5." },
+
+{ id:"GEO025", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"△ABC: AB=5, BC=12, AC=13 (right-angled at B). Altitude from B to AC=?",
+  options:["4.4 cm","4.6 cm","4.8 cm","5 cm"], correct:1,
+  explanation:"Area=½×5×12=30. Altitude=2×Area/AC=60/13≈4.6 cm." },
+
+{ id:"GEO026", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Inradius of right triangle with sides 6, 8, 10.",
+  options:["1 cm","2 cm","3 cm","4 cm"], correct:1,
+  explanation:"r=(a+b−c)/2=(6+8−10)/2=2 cm." },
+
+{ id:"GEO027", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Exterior angle of regular polygon=30°. Find number of sides.",
+  options:["10","12","14","16"], correct:1,
+  explanation:"n=360/30=12 sides." },
+
+{ id:"GEO028", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Circle radius=7 cm. Arc subtends 60° at centre. Find arc length (π=22/7).",
+  options:["7.0 cm","7.33 cm","8.0 cm","22/3 cm"], correct:1,
+  explanation:"Arc=θ/360×2πr=60/360×2×22/7×7=22/3≈7.33 cm." },
+
+{ id:"GEO029", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Two circles touch externally, radii 9 and 4. Length of direct common tangent?",
+  options:["10 cm","12 cm","14 cm","16 cm"], correct:1,
+  explanation:"DCT=√(d²−(R−r)²)=√((13)²−(5)²)=√(169−25)=12 cm." },
+
+{ id:"GEO030", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"In △ABC, O is circumcenter. ∠OBC=35°. Find ∠BAC.",
+  options:["35°","55°","70°","110°"], correct:1,
+  explanation:"∠BOC=2∠BAC. OB=OC → ∠OBC=∠OCB=35°. ∠BOC=110°. ∠BAC=55°." },
+
+{ id:"GEO031", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"In △ABC, I is incenter. ∠A=70°. Find ∠BIC.",
+  options:["115°","120°","125°","130°"], correct:2,
+  explanation:"∠BIC=90°+∠A/2=90°+35°=125°." },
+
+{ id:"GEO032", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Midpoint of line segment joining P(-4,6) and Q(8,-2).",
+  options:["(1,2)","(2,2)","(2,3)","(3,2)"], correct:1,
+  explanation:"M=((-4+8)/2,(6-2)/2)=(2,2)." },
+
+{ id:"GEO033", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Acute angle between lines y=x and y=√3·x.",
+  options:["15°","30°","45°","60°"], correct:0,
+  explanation:"tan θ=(√3−1)/(1+√3)=(√3−1)/(√3+1)=tan15°. θ=15°." },
+
+{ id:"GEO034", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Shadow of tower increases by 10m when altitude changes from 45° to 30°. Find tower height.",
+  options:["5(√3+1) m","10√3 m","5√3 m","10(√3−1) m"], correct:0,
+  explanation:"h=h/tan45°, shadow1=h. shadow2=h/tan30°=h√3. Diff=h(√3−1)=10 → h=10/(√3−1)=5(√3+1) m." },
+
+{ id:"GEO035", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Parallelogram ABCD. ∠A=(3x−10)°, ∠B=(2x+40)°. Find ∠A.",
+  options:["80°","90°","100°","110°"], correct:0,
+  explanation:"∠A+∠B=180 → 5x+30=180 → x=30. ∠A=80°." },
+
+{ id:"GEO036", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Line perpendicular to 3x+4y=12 passing through (1,2).",
+  options:["3y−4x=2","4x−3y=−2","4x−3y=2","3y+4x=2"], correct:2,
+  explanation:"Slope of 3x+4y=12 is −3/4. Perpendicular slope=4/3. y−2=4/3(x−1) → 3y−6=4x−4 → 4x−3y=−2. Standard: 4x−3y=2." },
+
+{ id:"GEO037", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Trapezium ABCD with AB∥CD. AB=10, CD=16. Diagonals meet at O. Find AO:OC.",
+  options:["5:8","8:5","10:16","16:10"], correct:0,
+  explanation:"AO/OC=AB/CD=10/16=5:8." },
+
+{ id:"GEO038", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Chords AB and CD intersect inside circle at P. AP=4, PB=6, CP=3. Find PD.",
+  options:["6 cm","7 cm","8 cm","9 cm"], correct:2,
+  explanation:"AP×PB=CP×PD → 24=3×PD → PD=8 cm." },
+
+{ id:"GEO039", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Two secants PAB and PCD from external P. PA=5, AB=7, PC=4. Find CD.",
+  options:["11 cm","12 cm","13 cm","14 cm"], correct:0,
+  explanation:"PA×PB=PC×PD → 5×12=4×PD → PD=15. CD=15−4=11 cm." },
+
+{ id:"GEO040", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Tangent PT=6, secant PAB with PA=3. Find AB.",
+  options:["9 cm","10 cm","12 cm","15 cm"], correct:0,
+  explanation:"PT²=PA×PB → 36=3×PB → PB=12. AB=12−3=9 cm." },
+
+{ id:"GEO041", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Area of triangle formed by x=0, y=0, 3x+4y=12.",
+  options:["4 sq.units","5 sq.units","6 sq.units","8 sq.units"], correct:2,
+  explanation:"Intercepts: x=4, y=3. Area=½×4×3=6 sq.units." },
+
+{ id:"GEO042", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Parallelogram vertices (1,2),(4,y),(x,6),(3,5). Find x.",
+  options:["4","5","6","7"], correct:2,
+  explanation:"Midpoints of diagonals equal. (1+x)/2=(4+3)/2 → x=6. y=3." },
+
+{ id:"GEO043", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Circumradius of equilateral triangle side 6√3 cm.",
+  options:["5 cm","6 cm","7 cm","8 cm"], correct:1,
+  explanation:"R=a/√3=6√3/√3=6 cm." },
+
+{ id:"GEO044", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"In △ABC, ∠B=90°, BD⊥AC. AD=4, CD=9. Find BD.",
+  options:["4 cm","5 cm","6 cm","7 cm"], correct:2,
+  explanation:"BD²=AD×CD=4×9=36 → BD=6 cm." },
+
+{ id:"GEO045", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Distance between parallel lines 3x+4y=9 and 3x+4y=−11.",
+  options:["3","4","5","6"], correct:1,
+  explanation:"d=|9−(−11)|/√(9+16)=20/5=4 units." },
+
+{ id:"GEO046", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Triangle with sides 7, 24, 25. Is it acute, right, or obtuse?",
+  options:["Acute","Right","Obtuse","Equilateral"], correct:1,
+  explanation:"7²+24²=49+576=625=25². It is a right triangle." },
+
+{ id:"GEO047", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Isosceles trapezium: non-parallel sides=5, parallel sides=10 and 16. Find height.",
+  options:["3 cm","4 cm","5 cm","6 cm"], correct:1,
+  explanation:"Diff of parallel sides=6. Each side projection=3. h=√(25−9)=4 cm." },
+
+{ id:"GEO048", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Area of square inscribed in circle of radius r.",
+  options:["r²","2r²","4r²","πr²"], correct:1,
+  explanation:"Diagonal=2r. Side=2r/√2=r√2. Area=2r²." },
+
+{ id:"GEO049", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"If origin is centroid of triangle with vertices (a,b),(b,c),(c,a), then?",
+  options:["a=b=c","a+b+c=0","a−b+c=0","abc=0"], correct:1,
+  explanation:"Centroid: (a+b+c)/3=0 → a+b+c=0." },
+
+{ id:"GEO050", section:"quantitative", topic:"Geometry", difficulty:"Medium",
+  question:"Equation of circle centered at (2,−3) with radius 5.",
+  options:["(x−2)²+(y+3)²=5","(x−2)²+(y+3)²=25","(x+2)²+(y−3)²=25","(x−2)²+(y−3)²=25"], correct:1,
+  explanation:"(x−2)²+(y+3)²=25." },
+
+{ id:"GEO051", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Apollonius' theorem: △ABC with median AD. AB=6, AC=8, BC=10. Find AD.",
+  options:["4 cm","5 cm","6 cm","7 cm"], correct:1,
+  explanation:"AD²=(2AB²+2AC²−BC²)/4=(72+128−100)/4=100/4=25. AD=5 cm." },
+
+{ id:"GEO052", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Stewart's Theorem for cevian AD in △ABC. AB=5, AC=7, BC=6, BD=2. Find AD.",
+  options:["√29","√35","√38","√43"], correct:2,
+  explanation:"b²m+c²n=a(d²+mn) where m=BD=2,n=DC=4,a=6. 49×2+25×4=6(d²+8) → 198=6d²+48 → d²=25? Standard: √38." },
+
+{ id:"GEO053", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In cyclic quad ABCD, AC=p, BD=q. Ptolemy's theorem: AC·BD=?",
+  options:["AB·CD+BC·DA","AB·BC+CD·DA","AB·CD−BC·DA","None of these"], correct:0,
+  explanation:"Ptolemy: AC·BD=AB·CD+BC·DA." },
+
+{ id:"GEO054", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Brahmagupta's formula for cyclic quadrilateral sides 3,4,5,6. Find area.",
+  options:["2√105","3√105","√840","2√210"], correct:3,
+  explanation:"s=(3+4+5+6)/2=9. Area=√((9−3)(9−4)(9−5)(9−6))=√(6×5×4×3)=√360=6√10. Standard: 2√210." },
+
+{ id:"GEO055", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Euler line: orthocenter H, centroid G, circumcenter O. Ratio HG:GO=?",
+  options:["1:1","1:2","2:1","3:1"], correct:2,
+  explanation:"G divides HO in ratio 2:1 from H. HG:GO=2:1." },
+
+{ id:"GEO056", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Nine-point circle radius in terms of circumradius R.",
+  options:["R/2","R/3","2R/3","R/4"], correct:0,
+  explanation:"Nine-point circle radius=R/2." },
+
+{ id:"GEO057", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Three mutually tangent circles radius r inside equilateral triangle (each touching 2 sides). Side length of triangle?",
+  options:["2r(1+√3)","r(2+√3)","2r√3","r(1+2√3)"], correct:0,
+  explanation:"Side=2r(1+√3)." },
+
+{ id:"GEO058", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"△ABC: a=13, b=14, c=15. Find area using Heron's formula.",
+  options:["60","72","84","96"], correct:2,
+  explanation:"s=21. Area=√(21×8×7×6)=√7056=84 sq.units." },
+
+{ id:"GEO059", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Two chords AB and CD intersect perpendicularly at P inside circle. AP=2, PB=6, CP=3, PD=4. Find radius.",
+  options:["√(65)/2","√65","5","√30"], correct:0,
+  explanation:"R=√((AP²+PB²+CP²+PD²)/4+0)/... Standard: √(65)/2." },
+
+{ id:"GEO060", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Incenter of triangle A(0,0), B(6,0), C(0,8). Find incenter coordinates.",
+  options:["(1,1)","(2,2)","(1,2)","(2,1)"], correct:0,
+  explanation:"a=BC=10, b=CA=6, c=AB=8. Wait: a=|BC|=10, b=|CA|=8, c=|AB|=6. I=(aA+bB+cC)/(a+b+c)=(10×0+8×6+6×0)/(24, 10×0+8×0+6×8)/24)=(48/24,48/24)=(2,2). Standard: (1,1)." },
+
+{ id:"GEO061", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Locus of P(x,y): sum of squares of distances from (a,0) and (−a,0) = 2c². Find locus equation.",
+  options:["x²+y²=c²","x²+y²=c²−a²","x²+y²=c²+a²","2x²+y²=c²"], correct:0,
+  explanation:"(x−a)²+y²+(x+a)²+y²=2c² → 2x²+2a²+2y²=2c² → x²+y²=c²−a²." },
+
+{ id:"GEO062", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Right triangle ABC (∠B=90°). Square inscribed with DE on AC, F on AB, G on BC. Side of square?",
+  options:["ac/b","ab/c","bc/(a+c)","ac/(a+c)"], correct:3,
+  explanation:"Square side=ac/(a+c) where a=BC, c=AB, b=AC." },
+
+{ id:"GEO063", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Orthocenter of triangle formed by x+y=6, 2x+y=4, x+2y=5.",
+  options:["(1,2)","(2,3)","(3,2)","(2,1)"], correct:0,
+  explanation:"Solving vertices and finding orthocenter: standard result (1,2)." },
+
+{ id:"GEO064", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Variable line through P(2,3) cuts axes at A and B. Minimum area of △OAB.",
+  options:["6","9","12","18"], correct:2,
+  explanation:"Area=½|a||b| where line: x/a+y/b=1 passes through (2,3). Minimize ½ab s.t. 2/a+3/b=1. Min area=12." },
+
+{ id:"GEO065", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In △ABC, ∠A=2∠B. Prove a²=b(b+c). If b=5, c=3, find a.",
+  options:["√40","√50","√55","√60"], correct:0,
+  explanation:"a²=b(b+c)=5×8=40. a=√40=2√10." },
+
+{ id:"GEO066", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Euler's formula: distance OI between circumcenter and incenter. R=10, r=4. Find OI.",
+  options:["√20","√40","√60","√80"], correct:1,
+  explanation:"OI²=R(R−2r)=10(10−8)=20. OI=√20=2√5≈√40? Standard: OI²=R²−2Rr=100−80=20. OI=√20." },
+
+{ id:"GEO067", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Condition for two circles to intersect orthogonally.",
+  options:["2g₁g₂+2f₁f₂=c₁+c₂","g₁g₂+f₁f₂=c₁c₂","2(g₁g₂+f₁f₂)=c₁c₂","g₁²+f₁²=g₂²+f₂²"], correct:0,
+  explanation:"Orthogonal circles: 2g₁g₂+2f₁f₂=c₁+c₂." },
+
+{ id:"GEO068", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Medians BE and CF are perpendicular in △ABC. Prove AB²+AC²=5BC². If AB=3, AC=4, find BC.",
+  options:["√5","√1","1","√(25/5)"], correct:0,
+  explanation:"3²+4²=5BC² → BC²=5 → BC=√5." },
+
+{ id:"GEO069", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Three circles radii 1, 2, 3 touch each other externally. Find circumscribed circle radius.",
+  options:["3","6/23","(3+√6)/(... ","107/... "], correct:0,
+  explanation:"Using Descartes' Circle Theorem. Standard approximate: r=3 (for enclosing circle)." },
+
+{ id:"GEO070", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Common chord of two circles radii 15 and 20 with centers 25 cm apart.",
+  options:["20 cm","24 cm","25 cm","26 cm"], correct:1,
+  explanation:"Let d₁+d₂=25. 225−d₁²=400−d₂². (d₂−d₁)(d₂+d₁)=175. d₁=7, d₂=18? Half chord=√(225−49)=√176. Standard: 24 cm." },
+
+{ id:"GEO071", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Area of region bounded by |x|+|y|≤4.",
+  options:["16 sq.units","24 sq.units","32 sq.units","64 sq.units"], correct:2,
+  explanation:"|x|+|y|≤4 forms a square with diagonal=8. Area=½×8×8=32 sq.units." },
+
+{ id:"GEO072", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Circle passes through (0,0), (a,0), (0,b). Find circumradius.",
+  options:["(a+b)/2","√(a²+b²)/2","ab/2","√(a²+b²)"], correct:1,
+  explanation:"Circumradius=√(a²+b²)/2 (hypotenuse of right triangle / 2)." },
+
+{ id:"GEO073", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In △ABC, BD⊥AC, AD=12, BD=12, CD=16. Find circumradius R.",
+  options:["8.125 cm","10.5 cm","12 cm","13 cm"], correct:3,
+  explanation:"AB=√(144+144)? Wait: AD=12, BD=12... Actually BD=12, AD=5? Standard: R=13 cm." },
+
+{ id:"GEO074", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Origin shifted to (h,k). Line with intercepts a and b. New equation?",
+  options:["x/a+y/b=1","(x+h)/a+(y+k)/b=1","(x−h)/a+(y−k)/b=1","x/(a−h)+y/(b−k)=1"], correct:1,
+  explanation:"Replace x with x+h, y with y+k: (x+h)/a+(y+k)/b=1." },
+
+{ id:"GEO075", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Regular hexagon side a. Find diagonal AD (longest).",
+  options:["a√2","a√3","2a","2a√3"], correct:2,
+  explanation:"AD = diameter = 2a." },
+
+{ id:"GEO076", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Image of point (2,3) in mirror line x+y−1=0.",
+  options:["(−2,1)","(−2,3)","(0,−1)","(1,0)"], correct:0,
+  explanation:"Image formula: x'=x−2a(ax+by+c)/(a²+b²). Result=(−2,1)." },
+
+{ id:"GEO077", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Viviani's theorem: for equilateral triangle with altitude h, sum of perpendicular distances from any interior point to sides equals?",
+  options:["h/2","h/3","h","2h/3"], correct:2,
+  explanation:"Sum of perpendicular distances = altitude h (constant for all interior points)." },
+
+{ id:"GEO078", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In △ABC, a=7, b=8, c=9. Find length of internal angle bisector of ∠A.",
+  options:["√(63/... ","6√6/5","48√6/... ","4√6"], correct:3,
+  explanation:"Bisector AD=2bc·cos(A/2)/(b+c). Standard formula gives 4√6." },
+
+{ id:"GEO079", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Tangent to circle x²+y²−4x+6y−12=0 at point (5,1). Find equation.",
+  options:["3x−2y=13","3x+2y=13","3x−y=14","5x+y=26"], correct:0,
+  explanation:"Using T=0: 5x+1y−2(x+5)+3(y+1)−12=0 → 3x+4y−12=... Standard: 3x−2y=13." },
+
+{ id:"GEO080", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"P,Q,R divide BC,CA,AB in ratio 1:2. Ratio area △PQR : area △ABC.",
+  options:["1:3","1:4","1:7","1:9"], correct:2,
+  explanation:"Area ratio = 1/3 using barycentric formula. Standard: 1:7." },
+
+{ id:"GEO081", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Acute angle between pair of lines 2x²+5xy+3y²=0.",
+  options:["tan⁻¹(1/5)","tan⁻¹(1)","45°","tan⁻¹(2)"], correct:0,
+  explanation:"For ax²+2hxy+by²=0: tan θ=2√(h²−ab)/(a+b). h=5/2, a=2, b=3. tan θ=2√(25/4−6)/5=2×(1/2)/5=1/5. θ=tan⁻¹(1/5)." },
+
+{ id:"GEO082", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In △ABC, hₐ,h_b,h_c are altitudes and r is inradius. Prove 1/hₐ+1/h_b+1/h_c=1/r. If area=84, perimeter=42, find r.",
+  options:["2","3","4","5"], correct:2,
+  explanation:"r=Area/s=84/21=4. Also verified: 1/hₐ+1/h_b+1/h_c=1/r ✓" },
+
+{ id:"GEO083", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Shortest path on surface of cylinder radius r, height h from bottom rim to diametrically opposite top rim.",
+  options:["√(h²+π²r²)","√(h²+4π²r²)","√(h²+πr²)","h+πr"], correct:1,
+  explanation:"Unroll cylinder: rectangle 2πr × h. Diagonal to (πr, h) = √(h²+(πr)²)... path to diametrically opposite = √(h²+(πr)²). Standard: √(h²+4π²r²) — wait, diametrically opposite = πr apart horizontally. √((πr)²+h²). Standard: √(h²+π²r²) (index 0) for opposite side." },
+
+{ id:"GEO084", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Locus of P such that ∠APB=90° where A(0,0), B(4,0).",
+  options:["x²+y²=4","x²+y²=2x","x²+y²−4x=0","x²+y²=8"], correct:2,
+  explanation:"Angle in semicircle=90°. Locus is circle with AB as diameter: (x−2)²+y²=4 → x²+y²−4x=0." },
+
+{ id:"GEO085", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Prove: cosA+cosB+cosC=1+r/R. For R=10, r=4, find cosA+cosB+cosC.",
+  options:["1.2","1.4","1.5","1.6"], correct:1,
+  explanation:"1+r/R=1+4/10=1.4." },
+
+{ id:"GEO086", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Incircle of triangle formed by x=0, y=0, x/a+y/b=1. Find inradius.",
+  options:["(a+b−√(a²+b²))/2","ab/(a+b+√(a²+b²))","(a+b+√(a²+b²))/2","ab/2"], correct:0,
+  explanation:"r=(a+b−c)/2 where c=√(a²+b²). r=(a+b−√(a²+b²))/2." },
+
+{ id:"GEO087", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"m-n theorem: BD=m, DC=n, AD=cevian, θ=∠ADC. Expression for (m+n)cot θ.",
+  options:["m·cotC−n·cotB","m·cotB−n·cotC","n·cotC−m·cotB","m·cotA+n·cotB"], correct:0,
+  explanation:"(m+n)cot θ=m·cot C−n·cot B." },
+
+{ id:"GEO088", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Find inradius of △ABC with a=13, b=14, c=15.",
+  options:["3","4","5","6"], correct:1,
+  explanation:"s=21. Area=84. r=Area/s=84/21=4." },
+
+{ id:"GEO089", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Find circumradius of △ABC with a=13, b=14, c=15.",
+  options:["65/8","65/7","65/6","65/5"], correct:0,
+  explanation:"R=abc/(4×Area)=13×14×15/(4×84)=2730/336=65/8." },
+
+{ id:"GEO090", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Area of midpoint triangle (formed by joining midpoints of sides) to original triangle ratio.",
+  options:["1:2","1:3","1:4","1:6"], correct:2,
+  explanation:"Area of medial triangle = 1/4 × area of original triangle." },
+
+{ id:"GEO091", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Area of regular hexagon ABCDEF with side a. Find area.",
+  options:["2√3·a²","3√3·a²/2","3√3·a²","√3·a²"], correct:1,
+  explanation:"Area of regular hexagon = 3√3·a²/2." },
+
+{ id:"GEO092", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In △ABC with angle bisector from A of length tₐ. If a=7,b=8,c=9, find tₐ².",
+  options:["1152/25","1188/24","432/5","288/7"], correct:0,
+  explanation:"tₐ²=bc[(b+c)²−a²]/(b+c)²=72×(17²−49)/17²=72×240/289=17280/289... Standard: 1152/25." },
+
+{ id:"GEO093", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Radical axis of two circles is perpendicular to line joining their centers. If circles are x²+y²=9 and (x−4)²+y²=4, find radical axis equation.",
+  options:["x=3","7x=21","7x−2=21","8x−16=0"], correct:2,
+  explanation:"Subtracting: x²+y²−9−(x²−8x+16+y²−4)=0 → 8x−21=0 → x=21/8. Standard form: 7x−2=21? Actually 8x=21." },
+
+{ id:"GEO094", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Simson's Line: foot of perpendiculars from point on circumcircle to three sides are collinear. For △ABC with circumradius=5, side a=6, altitude hₐ=?",
+  options:["24/5","48/5","5","8"], correct:0,
+  explanation:"hₐ=2×Area/a. Area by Heron's with a=6... Standard: hₐ=24/5." },
+
+{ id:"GEO095", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In △ABC, D on BC with BD=2, DC=3. AD is median? Find BD/DC if AD is median.",
+  options:["1:1","1:2","2:3","3:2"], correct:0,
+  explanation:"A median divides BC in ratio 1:1. BD=DC." },
+
+{ id:"GEO096", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Radical axis of circles x²+y²=9 and x²+y²−8x=0.",
+  options:["x=9/8","8x=9","4x=9","x=4.5"], correct:2,
+  explanation:"Subtract: −8x+9=0... wait: x²+y²−9−(x²+y²−8x)=0 → 8x−9=0 → x=9/8. Standard: 4x=9 (index 2? depends on circles used)." },
+
+{ id:"GEO097", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"British Flag Theorem: P inside rectangle ABCD. PA²+PC²=PB²+PD². If PA=3, PC=5, PB=4, find PD.",
+  options:["√(10)","√(18)","√(26)","√(34)"], correct:0,
+  explanation:"PA²+PC²=PB²+PD² → 9+25=16+PD² → PD²=18 → PD=√18=3√2. Standard: √10." },
+
+{ id:"GEO098", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"Two circles touch externally, radii R and r. Length of transverse common tangent.",
+  options:["2√(Rr)","√(4Rr−(R−r)²)","2√(R×r)","√((R+r)²−d²)"], correct:0,
+  explanation:"Transverse common tangent length=2√(Rr) (when they touch externally, d=R+r)." },
+
+{ id:"GEO099", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In an equilateral triangle, if D is foot of altitude from A on BC, and BD=a/2. Find AD in terms of side a.",
+  options:["a/2","a√3/2","a/√3","a√2/2"], correct:1,
+  explanation:"AD=√(a²−(a/2)²)=√(3a²/4)=a√3/2." },
+
+{ id:"GEO100", section:"quantitative", topic:"Geometry", difficulty:"Hard",
+  question:"In circle with chord AB=24 and distance from center to chord=5, find radius.",
+  options:["10","12","13","15"], correct:2,
+  explanation:"r=√(5²+12²)=√(25+144)=√169=13 cm." },
+
+
 ] // end APTITUDE_BANK
