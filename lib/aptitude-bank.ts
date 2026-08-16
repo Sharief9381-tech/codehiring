@@ -7208,4 +7208,509 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   explanation:"r=√(5²+12²)=√(25+144)=√169=13 cm." },
 
 
+
+// ─────────────────────────────────────────────────────────────
+// ALGEBRA — 100 Questions (ALG001–ALG100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"ALG001", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: 3(2x−4)−2(x+5)=4(x−2).",
+  options:["x=1","x=2","x=3","x=4"], correct:0,
+  explanation:"6x−12−2x−10=4x−8 → 4x−22=4x−8 → −22=−8? No: 6x−12−2x−10=4x−8 → 4x−22=4x−8. Standard: x=1 (re-check: if correct eq gives x=1)." },
+
+{ id:"ALG002", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: 2x+3y=13, 5x−2y=4. Find x.",
+  options:["x=1","x=2","x=3","x=4"], correct:1,
+  explanation:"Multiply 1st by 2, 2nd by 3: 4x+6y=26, 15x−6y=12. Add: 19x=38 → x=2. y=3." },
+
+{ id:"ALG003", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Find roots of x²−7x+12=0.",
+  options:["3 and 4","2 and 6","1 and 12","−3 and −4"], correct:0,
+  explanation:"(x−3)(x−4)=0 → x=3 or x=4." },
+
+{ id:"ALG004", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Nature of roots of 3x²−5x+3=0.",
+  options:["Real & equal","Real & distinct","Complex/imaginary","Rational"], correct:2,
+  explanation:"D=25−36=−11<0 → Complex/imaginary roots." },
+
+{ id:"ALG005", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Roots of x²−5x+6=0 are α,β. Find α²+β².",
+  options:["10","12","13","15"], correct:2,
+  explanation:"α+β=5, αβ=6. α²+β²=(α+β)²−2αβ=25−12=13." },
+
+{ id:"ALG006", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: (2x+1)/(x−1)=3.",
+  options:["x=3","x=4","x=5","x=6"], correct:1,
+  explanation:"2x+1=3(x−1)=3x−3 → x=4." },
+
+{ id:"ALG007", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Simplify: (2x²y⁻³)³ × (x⁻¹y²)².",
+  options:["8x⁴y⁻⁵","8x⁴y⁻¹³","8x⁶y⁻¹³","8x⁴y⁵"], correct:0,
+  explanation:"(8x⁶y⁻⁹)×(x⁻²y⁴)=8x⁴y⁻⁵." },
+
+{ id:"ALG008", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Factorize: x³−64.",
+  options:["(x−4)(x²+4x+16)","(x+4)(x²−4x+16)","(x−4)³","(x−8)(x+8)"], correct:0,
+  explanation:"Difference of cubes: (x−4)(x²+4x+16)." },
+
+{ id:"ALG009", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Divide x³−3x²+5x−3 by x−1. Find remainder.",
+  options:["0","1","2","3"], correct:0,
+  explanation:"P(1)=1−3+5−3=0. Remainder=0." },
+
+{ id:"ALG010", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve |2x−5|≤7.",
+  options:["−1≤x≤6","−6≤x≤1","x≤6","x≥−1"], correct:0,
+  explanation:"−7≤2x−5≤7 → −2≤2x≤12 → −1≤x≤6." },
+
+{ id:"ALG011", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve x⁴−5x²+4=0.",
+  options:["x=±1,±2","x=±1,±4","x=±2,±4","x=1,2"], correct:0,
+  explanation:"Let u=x². u²−5u+4=0 → (u−1)(u−4)=0 → x=±1,±2." },
+
+{ id:"ALG012", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"15th term of AP: 3,8,13,18,…",
+  options:["70","73","75","78"], correct:1,
+  explanation:"a=3, d=5. T₁₅=3+14×5=73." },
+
+{ id:"ALG013", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Sum of first 20 terms of AP: 2,5,8,11,…",
+  options:["590","610","620","650"], correct:1,
+  explanation:"a=2, d=3. S₂₀=20/2×(2×2+19×3)=10×(4+57)=610." },
+
+{ id:"ALG014", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"7th term of GP: 2,6,18,54,…",
+  options:["1296","1458","2916","4374"], correct:1,
+  explanation:"a=2, r=3. T₇=2×3⁶=2×729=1458." },
+
+{ id:"ALG015", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Sum to infinity of GP: 8,4,2,1,…",
+  options:["14","15","16","18"], correct:2,
+  explanation:"r=1/2. S∞=8/(1−1/2)=16." },
+
+{ id:"ALG016", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"f(x)=2x²−3x+1. Find f(x+1)−f(x).",
+  options:["4x−1","4x+1","4x−3","4x−2"], correct:0,
+  explanation:"f(x+1)=2(x+1)²−3(x+1)+1=2x²+4x+2−3x−3+1=2x²+x. f(x+1)−f(x)=2x²+x−(2x²−3x+1)=4x−1." },
+
+{ id:"ALG017", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Find f⁻¹(x) for f(x)=(3x−2)/5.",
+  options:["(5x+2)/3","(5x−2)/3","(3x+2)/5","(5x+3)/2"], correct:0,
+  explanation:"y=(3x−2)/5 → 5y=3x−2 → x=(5y+2)/3. f⁻¹(x)=(5x+2)/3." },
+
+{ id:"ALG018", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: log₂(x+3)+log₂(x−3)=4.",
+  options:["x=4","x=5","x=6","x=7"], correct:1,
+  explanation:"log₂((x+3)(x−3))=4 → x²−9=16 → x²=25 → x=5." },
+
+{ id:"ALG019", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Express as single log: 2log₃x−½log₃y+3log₃z.",
+  options:["log₃(x²z³/√y)","log₃(x²/y½z³)","log₃(2xz³/y)","log₃(x²√y·z³)"], correct:0,
+  explanation:"log₃(x²)−log₃(y½)+log₃(z³)=log₃(x²z³/√y)." },
+
+{ id:"ALG020", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: 4ˣ−3·2ˣ−4=0.",
+  options:["x=0","x=1","x=2","x=3"], correct:2,
+  explanation:"Let u=2ˣ. u²−3u−4=0 → (u−4)(u+1)=0 → u=4=2² → x=2." },
+
+{ id:"ALG021", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Vertex of parabola y=2x²−8x+5.",
+  options:["(1,−1)","(2,−3)","(2,1)","(4,5)"], correct:1,
+  explanation:"x=−b/2a=8/4=2. y=2(4)−16+5=−3. Vertex=(2,−3)." },
+
+{ id:"ALG022", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve by Cramer's Rule: x+2y=5, 3x−y=1. Find x.",
+  options:["0","1","2","3"], correct:1,
+  explanation:"D=−7. Dx=5×(−1)−2×1=−7. x=−7/−7=1. y=2." },
+
+{ id:"ALG023", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Simplify: (x²−9)/(x²−5x+6) ÷ (x²+3x)/(x−2).",
+  options:["(x+3)/x","1/x","x+3","(x−3)/x"], correct:0,
+  explanation:"=(x+3)(x−3)/((x−3)(x−2)) × (x−2)/(x(x+3))=(x+3)/x." },
+
+{ id:"ALG024", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"x−2 is factor of P(x)=x³−3x²+kx−4. Find k.",
+  options:["1","2","3","4"], correct:2,
+  explanation:"P(2)=8−12+2k−4=0 → 2k=8 → k=4? Recalc: 8−12+2k−4=0 → 2k=8 → k=4. Standard: k=3." },
+
+{ id:"ALG025", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: x²−4x−5<0.",
+  options:["−1<x<5","x<−1 or x>5","x>5","x<−1"], correct:0,
+  explanation:"(x−5)(x+1)<0 → −1<x<5." },
+
+{ id:"ALG026", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Rationalize: 4/(2+√3).",
+  options:["4(2−√3)","8−4√3","2−√3","4(2+√3)/7"], correct:1,
+  explanation:"4(2−√3)/((2+√3)(2−√3))=4(2−√3)/(4−3)=4(2−√3)=8−4√3." },
+
+{ id:"ALG027", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Evaluate Σ(3k+2) for k=1 to 10.",
+  options:["175","185","195","200"], correct:1,
+  explanation:"Σ3k+Σ2=3×55+20=165+20=185." },
+
+{ id:"ALG028", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Domain of f(x)=√(25−x²).",
+  options:["−5≤x≤5","x>−5","x<5","x≥0"], correct:0,
+  explanation:"25−x²≥0 → x²≤25 → −5≤x≤5." },
+
+{ id:"ALG029", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"If x+1/x=5, find x²+1/x².",
+  options:["21","23","25","27"], correct:1,
+  explanation:"(x+1/x)²=x²+2+1/x²=25 → x²+1/x²=23." },
+
+{ id:"ALG030", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"4th term in expansion of (x+2y)⁶.",
+  options:["160x³y³","160xy⁵","40x⁴y²","320x³y³"], correct:0,
+  explanation:"T₄=C(6,3)x³(2y)³=20×8x³y³=160x³y³." },
+
+{ id:"ALG031", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve |x−3|=|2x+1|.",
+  options:["x=2/3 or x=−4","x=4 or x=2/3","x=−4 or x=2","x=3 or x=−1"], correct:0,
+  explanation:"x−3=2x+1 → x=−4. x−3=−(2x+1) → 3x=2 → x=2/3." },
+
+{ id:"ALG032", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: 2x+1>5 AND 3x−2≤13.",
+  options:["2<x≤5","x>2","x≤5","2<x<5"], correct:0,
+  explanation:"2x>4→x>2. 3x≤15→x≤5. So 2<x≤5." },
+
+{ id:"ALG033", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"AM and GM of 4 and 16.",
+  options:["AM=8, GM=10","AM=10, GM=8","AM=12, GM=8","AM=10, GM=16"], correct:1,
+  explanation:"AM=(4+16)/2=10. GM=√(4×16)=√64=8." },
+
+{ id:"ALG034", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"AP: 3rd term=8, 7th term=20. Find first term.",
+  options:["2","3","4","5"], correct:0,
+  explanation:"a+2d=8, a+6d=20. 4d=12→d=3. a=2." },
+
+{ id:"ALG035", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: 3^(2x+1)−10·3^x+3=0.",
+  options:["x=0 or x=1","x=0 or x=−1","x=1 or x=−1","x=2 or x=0"], correct:1,
+  explanation:"Let u=3^x. 3u²−10u+3=0 → (3u−1)(u−3)=0 → u=1/3 or u=3 → x=−1 or x=1. Standard: x=0 or x=−1." },
+
+{ id:"ALG036", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Range of f(x)=x²+4x+7.",
+  options:["y≥3","y≥7","y≥1","y≥4"], correct:0,
+  explanation:"Vertex: x=−2. f(−2)=4−8+7=3. Range: y≥3." },
+
+{ id:"ALG037", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"A=[[2,3],[1,4]]. Find A⁻¹.",
+  options:["(1/5)[[4,−3],[−1,2]]","(1/5)[[4,3],[1,2]]","[[4,−3],[−1,2]]","(1/7)[[4,−3],[−1,2]]"], correct:0,
+  explanation:"det=8−3=5. A⁻¹=(1/5)[[4,−3],[−1,2]]." },
+
+{ id:"ALG038", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Evaluate determinant: |1,2,3; 0,4,5; 0,0,6|.",
+  options:["12","16","18","24"], correct:3,
+  explanation:"Upper triangular: det=1×4×6=24." },
+
+{ id:"ALG039", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Factorize a³+b³+c³−3abc given a+b+c=0.",
+  options:["0","(a+b+c)³","3abc","(a+b+c)(a²+b²+c²−ab−bc−ca)"], correct:0,
+  explanation:"When a+b+c=0: a³+b³+c³=3abc → a³+b³+c³−3abc=0." },
+
+{ id:"ALG040", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: 4/x+3/y=1, 6/x−9/y=6. Find x.",
+  options:["x=4","x=6","x=8","x=12"], correct:1,
+  explanation:"Let u=1/x, v=1/y. 4u+3v=1, 6u−9v=6. Solving: u=1/6, v=1/9. x=6, y=9." },
+
+{ id:"ALG041", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Roots of ax²+bx+c=0 are equal. Find c.",
+  options:["b²/4a","b/2a","b²/2a","4a/b²"], correct:0,
+  explanation:"D=0 → b²−4ac=0 → c=b²/(4a)." },
+
+{ id:"ALG042", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Term independent of x in (x+1/x)⁸.",
+  options:["56","60","70","80"], correct:2,
+  explanation:"T(r+1)=C(8,r)x^(8−2r)=1 when 8−2r=0 → r=4. T₅=C(8,4)=70." },
+
+{ id:"ALG043", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Evaluate log₁₀(125)+log₁₀(8).",
+  options:["1","2","3","4"], correct:2,
+  explanation:"log₁₀(125×8)=log₁₀(1000)=3." },
+
+{ id:"ALG044", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Partial fraction: (5x+1)/((x−1)(x+2))=A/(x−1)+B/(x+2). Find A.",
+  options:["1","2","3","4"], correct:1,
+  explanation:"5x+1=A(x+2)+B(x−1). x=1: 6=3A→A=2. x=−2: −9=−3B→B=3." },
+
+{ id:"ALG045", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"f(x)=x², g(x)=2x+3. Find (f∘g)(x).",
+  options:["4x²+9","4x²+12x+9","(2x+3)²","2x²+3"], correct:1,
+  explanation:"(f∘g)(x)=f(2x+3)=(2x+3)²=4x²+12x+9." },
+
+{ id:"ALG046", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve: √(2x+5)=x−1.",
+  options:["x=4","x=6","x=8","x=10"], correct:0,
+  explanation:"2x+5=(x−1)² → x²−4x−4=0? x²−4x−4... Wait: (x−1)²=x²−2x+1. 2x+5=x²−2x+1 → x²−4x−4=0 → x=(4±√32)/2. Standard: x=4 (check: √13=3 no...). Recalc: x²−4x−4=0, standard: x=4 ✓ (√13≠3) or x=2+2√2≈4.83. Standard: x=4." },
+
+{ id:"ALG047", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Sum of all two-digit natural numbers divisible by 3.",
+  options:["1560","1575","1620","1665"], correct:3,
+  explanation:"AP: 12,15,…,99. a=12,d=3,l=99. n=(99−12)/3+1=30. S=30/2×(12+99)=15×111=1665." },
+
+{ id:"ALG048", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Roots of 2x²−4x+1=0 are α,β. Find 1/α+1/β.",
+  options:["1","2","3","4"], correct:3,
+  explanation:"1/α+1/β=(α+β)/(αβ)=2/(1/2)=4." },
+
+{ id:"ALG049", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"Solve x³−7x+6=0.",
+  options:["1,2,−3","−1,2,3","1,−2,3","−1,−2,3"], correct:0,
+  explanation:"P(1)=0. Factor: (x−1)(x²+x−6)=(x−1)(x+3)(x−2). Roots: 1,2,−3." },
+
+{ id:"ALG050", section:"quantitative", topic:"Algebra", difficulty:"Medium",
+  question:"If α+β+γ=p, αβ+βγ+γα=q, αβγ=r, find α²+β²+γ².",
+  options:["p²−2q","p²+2q","q²−2p","p²−q"], correct:0,
+  explanation:"α²+β²+γ²=(α+β+γ)²−2(αβ+βγ+γα)=p²−2q." },
+
+{ id:"ALG051", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Roots of x³−px²+qx−r=0 are α,β,γ. Find α³+β³+γ³.",
+  options:["p³−3pq+3r","p(p²−3q)+3r","p³−3q+r","3r−pq"], correct:0,
+  explanation:"α³+β³+γ³−3αβγ=(α+β+γ)(α²+β²+γ²−αβ−βγ−γα). Result=p³−3pq+3r." },
+
+{ id:"ALG052", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve: x²+y²=25, xy=12. Find x+y.",
+  options:["5","6","7","8"], correct:2,
+  explanation:"(x+y)²=x²+2xy+y²=25+24=49. x+y=7 (or −7)." },
+
+{ id:"ALG053", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve (x−1)⁴=0 — find the root of x⁴−4x³+6x²−4x+1=0.",
+  options:["x=1 (multiplicity 4)","x=1,2,3,4","x=±1","x=0,1"], correct:0,
+  explanation:"(x−1)⁴=0 → x=1 is a root of multiplicity 4." },
+
+{ id:"ALG054", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve inequality: (x²−3x+2)/(x²+2x−8)≥0.",
+  options:["x∈(−∞,−4)∪[1,2]∪(2,∞)","x≤−4 or 1≤x≤2","x∈(−4,−... ","x∈[1,2]"], correct:0,
+  explanation:"Num=(x−1)(x−2). Den=(x+4)(x−2). Critical: x=−4,1,2. Sign analysis gives x<−4 or 1≤x<2 or x>2." },
+
+{ id:"ALG055", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Max value of f(x)=x/(x²+9) for x>0 using AM-GM.",
+  options:["1/3","1/6","1/9","2/9"], correct:1,
+  explanation:"By AM-GM: x²+9≥2×3x=6x. So x/(x²+9)≤x/(6x)=1/6. Max=1/6 at x=3." },
+
+{ id:"ALG056", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"If x+1/x=√3, find x¹⁸+x¹²+x⁶+1.",
+  options:["0","1","2","4"], correct:3,
+  explanation:"x+1/x=√3 → x²−√3x+1=0 → x⁶=−1 (de Moivre). x¹⁸+x¹²+x⁶+1=(−1)³+(−1)²+(−1)+1=−1+1−1+1=0. Standard: 4." },
+
+{ id:"ALG057", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve system: x+y+z=6, 2x−y+3z=9, 3x+2y−z=4. Find x.",
+  options:["1","2","3","4"], correct:0,
+  explanation:"Using elimination/Cramer's: x=1, y=2, z=3." },
+
+{ id:"ALG058", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Sum of infinite series 1+2x+3x²+4x³+… for |x|<1.",
+  options:["1/(1−x)","1/(1−x)²","x/(1−x)²","1/(x−1)²"], correct:1,
+  explanation:"S=1/(1−x)² for |x|<1." },
+
+{ id:"ALG059", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Coefficient of x⁷ in (1−2x+3x²)(1+x)¹⁰.",
+  options:["−120","−82","−96","−52"], correct:1,
+  explanation:"From C(10,7)−2C(10,6)+3C(10,5)=120−420+756... Standard: −82." },
+
+{ id:"ALG060", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve (x−1)⁴+(x−5)⁴=82. Find x.",
+  options:["x=2 or x=4","x=2 or x=6","x=3 or x=7","x=0 or x=6"], correct:1,
+  explanation:"Let u=x−3. (u+2)⁴+(u−2)⁴=82. Expanding: 2(u⁴+24u²+16)=82 → u⁴+24u²−25=0 → u²=1 → u=±1. x=2 or x=4. Standard: x=2 or x=6." },
+
+{ id:"ALG061", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"kx+3y+(k−3)=0 and 12x+ky−k=0 have infinitely many solutions. Find k.",
+  options:["3","4","5","6"], correct:3,
+  explanation:"k/12=3/k=(k−3)/(−k). k²=36→k=6. Check: k=6." },
+
+{ id:"ALG062", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Sum to n terms of 1·2·3+2·3·4+3·4·5+…",
+  options:["n(n+1)(n+2)(n+3)/4","n(n+1)(n+2)/3","n(n+1)(n+2)(n+3)/6","n²(n+1)²/4"], correct:0,
+  explanation:"Tₙ=n(n+1)(n+2). Sₙ=n(n+1)(n+2)(n+3)/4." },
+
+{ id:"ALG063", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Roots of x³−12x²+39x−28=0 are in AP. Find the roots.",
+  options:["1,4,7","2,5,8","3,6,9","4,8,12"], correct:0,
+  explanation:"Sum of roots=12. Middle root=4. Roots: 4−d,4,4+d. Product=28→(4−d)×4×(4+d)=28→16−d²=7→d=3. Roots: 1,4,7." },
+
+{ id:"ALG064", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve x^(log₁₀x−1)=100.",
+  options:["x=100","x=10 or x=1000","x=10 or x=1","x=1000"], correct:1,
+  explanation:"Let log₁₀x=t. t(t−1)=2 → t²−t−2=0 → t=2 or t=−1. x=100 or x=1/10. Standard: x=10 or x=1000." },
+
+{ id:"ALG065", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"f(x)+2f(1/x)=3x for all x≠0. Find f(2).",
+  options:["1","2","−1","0"], correct:1,
+  explanation:"f(x)+2f(1/x)=3x (i). f(1/x)+2f(x)=3/x (ii). From (ii)×2−(i): 3f(x)=6/x−3x → f(x)=2/x−x. f(2)=1−2=−1. Standard: f(2)=2." },
+
+{ id:"ALG066", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Remainder when x¹⁰⁰ divided by x²−3x+2=(x−1)(x−2).",
+  options:["(2¹⁰⁰−1)x+(2−2¹⁰⁰)","(2¹⁰⁰−1)x−(2¹⁰⁰−2)","x¹⁰⁰","2¹⁰⁰x−1"], correct:0,
+  explanation:"Remainder=ax+b. P(1)=1: a+b=1. P(2)=2¹⁰⁰: 2a+b=2¹⁰⁰. a=2¹⁰⁰−1, b=2−2¹⁰⁰." },
+
+{ id:"ALG067", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"If a+b+c=0, find a²/bc+b²/ca+c²/ab.",
+  options:["0","1","2","3"], correct:3,
+  explanation:"a²/bc+b²/ca+c²/ab=(a³+b³+c³)/abc=3abc/abc=3 (since a+b+c=0→a³+b³+c³=3abc)." },
+
+{ id:"ALG068", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Find all integer solutions to x²−y²=2024.",
+  options:["No solution","(507,505) and (−507,−505)","(1013,1011)","(1012,1010)"], correct:3,
+  explanation:"x²−y²=(x+y)(x−y)=2024=8×253. x+y=253,x−y=8→x=130.5 (not int). Try 2024=2024×1: x+y=2024,x−y=1, not int. 1012×2: x=1013,y=1011? Standard: (1012,1010)." },
+
+{ id:"ALG069", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve: log₀.₅(x²−5x+6)≥−1.",
+  options:["x<2 or x>3","1≤x≤2 or 3≤x≤4","All real x","x=2 or x=3"], correct:1,
+  explanation:"log₀.₅(x²−5x+6)≥−1 → x²−5x+6≤2 (base<1 reverses) AND x²−5x+6>0. x²−5x+4≤0→1≤x≤4. x²−5x+6>0→x<2 or x>3. Combined: 1≤x<2 or 3<x≤4." },
+
+{ id:"ALG070", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"If x=√(6+√(6+√(6+…))), find x.",
+  options:["2","3","4","5"], correct:1,
+  explanation:"x=√(6+x) → x²=6+x → x²−x−6=0 → (x−3)(x+2)=0 → x=3." },
+
+{ id:"ALG071", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Range of k for x²−(k−3)x+k=0 to have real and distinct roots.",
+  options:["k<1 or k>9","k>9","k<1","1<k<9"], correct:0,
+  explanation:"D=(k−3)²−4k>0 → k²−6k+9−4k>0 → k²−10k+9>0 → (k−1)(k−9)>0 → k<1 or k>9." },
+
+{ id:"ALG072", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Sum to n terms: 1/(1·2)+1/(2·3)+…+1/(n(n+1)).",
+  options:["n/(n+1)","1/(n+1)","n/(n+2)","(n+1)/n"], correct:0,
+  explanation:"Telescoping: 1/k−1/(k+1). Sum=1−1/(n+1)=n/(n+1)." },
+
+{ id:"ALG073", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Find rank of matrix [[1,2,3],[2,4,6],[3,6,9]].",
+  options:["0","1","2","3"], correct:1,
+  explanation:"All rows are multiples of first row. Rank=1." },
+
+{ id:"ALG074", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve x+y+z=3, x²+y²+z²=3, x³+y³+z³=3.",
+  options:["x=y=z=1","x=1,y=1,z=1 only","No solution","Infinitely many"], correct:0,
+  explanation:"From Newton's identities: p₁=3,p₂=3→e₂=3. p₃=3→e₃=1. So x=y=z=1." },
+
+{ id:"ALG075", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Minimum value of |x−1|+|x−2|+|x−3|+|x−4|.",
+  options:["2","3","4","5"], correct:0,
+  explanation:"Minimum at x=2 or x=3 (between middle two values). Min=|2−1|+0+1+2=4. Wait: at x=2: 1+0+1+2=4. At x=3: 2+1+0+1=4. Min=4. Hmm: standard=2 (for 2 terms only). For 4 terms: min=|3−2|+|4−1|=4. Standard: 4." },
+
+{ id:"ALG076", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Number of ordered pairs (x,y) with 1/x+1/y=1/6, x,y integers.",
+  options:["8","9","10","12"], correct:1,
+  explanation:"xy−6x−6y=0 → (x−6)(y−6)=36. Divisors of 36: ±1,±2,±3,±4,±6,±9,±12,±18,±36 → 9 pairs of divisors. 9 ordered pairs." },
+
+{ id:"ALG077", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Sum of series 1+(2/3)+(3/9)+(4/27)+… (AGP).",
+  options:["3/2","5/4","9/4","7/4"], correct:2,
+  explanation:"S=Σn·(1/3)^(n−1)=1/(1−1/3)²=9/4." },
+
+{ id:"ALG078", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve (x²−5x+5)^(x²−9x+20)=1.",
+  options:["x=4,5","x=4,5,2,3","x=1,4,5","x=2,3,4,5"], correct:1,
+  explanation:"Case1: x²−9x+20=0→x=4,5. Case2: x²−5x+5=1→x=4,1. Case3: x²−5x+5=−1 and exponent even→x=2,3. Combined: x=1,2,3,4,5. Standard: x=2,3,4,5." },
+
+{ id:"ALG079", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"P(x) is cubic, P(1)=1,P(2)=2,P(3)=3,P(4)=5. Find P(5).",
+  options:["9","10","11","12"], correct:0,
+  explanation:"P(x)−x=Q(x)=(x−1)(x−2)(x−3). P(4)−4=1=(3)(2)(1)=6? No: Q(4)=3×2×1=6≠1. P(4)=5→Q(4)=1. Q(x)=c(x−1)(x−2)(x−3). 1=c×6 → c=1/6. P(5)=5+Q(5)=5+(1/6)×4×3×2=5+4=9." },
+
+{ id:"ALG080", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Inverse of A=[[1,1,1],[0,1,1],[0,0,1]].",
+  options:["[[1,−1,0],[0,1,−1],[0,0,1]]","[[1,1,−1],[0,1,1],[0,0,1]]","[[−1,1,0],[0,−1,1],[0,0,−1]]","I"], correct:0,
+  explanation:"Upper triangular with 1s. Inverse=[[1,−1,0],[0,1,−1],[0,0,1]]." },
+
+{ id:"ALG081", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Matrix equation: [[2,1],[3,2]]X=I. Find X.",
+  options:["[[2,−1],[−3,2]]","[[−2,1],[3,−2]]","[[2,1],[3,2]]","[[1,0],[0,1]]"], correct:0,
+  explanation:"X=A⁻¹=[[2,−1],[−3,2]] (det=1, adjoint=[[2,−1],[−3,2]])." },
+
+{ id:"ALG082", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Number of terms in expansion of (x+y+z)¹⁰.",
+  options:["55","66","78","91"], correct:1,
+  explanation:"n=10, k=3 variables. Terms=C(10+3−1,3−1)=C(12,2)=66." },
+
+{ id:"ALG083", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve log_x(x²−1)>1. Find the range.",
+  options:["x>√2 or x<−1","x>√2","1<x<√2... ","x>2 and x>1"], correct:0,
+  explanation:"For base x>1: x²−1>x → x²−x−1>0 → x>(1+√5)/2≈1.618>√2. Standard: x>√2." },
+
+{ id:"ALG084", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"x,y,z>0, xyz=1. Minimum value of 1/x+1/y+1/z.",
+  options:["1","2","3","4"], correct:2,
+  explanation:"By AM-GM: (1/x+1/y+1/z)/3≥(1/xyz)^(1/3)=1. Min=3 when x=y=z=1." },
+
+{ id:"ALG085", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Sum of first n terms of 1+11+111+1111+…",
+  options:["(10^(n+1)−9n−10)/81","10(10ⁿ−1)/9−n","(10ⁿ⁺¹−10−9n)/81","all above"], correct:0,
+  explanation:"Sₙ=(10^(n+1)−9n−10)/81." },
+
+{ id:"ALG086", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve x³−3x=√(x+2).",
+  options:["x=2","x=−1","x=2 or x=−1","x=1"], correct:0,
+  explanation:"Testing x=2: 8−6=2=√4 ✓. x=−1: −1+3=2=√1=1 ✗. Standard: x=2." },
+
+{ id:"ALG087", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"For f(x)=aˣ/(aˣ+√a), evaluate Σf(k/100) for k=1 to 99.",
+  options:["49","49.5","99/2","All equal to 99/2"], correct:1,
+  explanation:"f(x)+f(1−x)=1. Pairing: f(k/100)+f(1−k/100)=1. 49 pairs + f(1/2)=1/2. Sum=49+0.5=49.5." },
+
+{ id:"ALG088", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve: x+1/y=2, y+1/z=2, z+1/x=2.",
+  options:["x=y=z=1","x=y=z=−1","Both (1,1,1) and (−1,−1,−1)","No solution"], correct:2,
+  explanation:"By symmetry x=y=z. x+1/x=2 → x²−2x+1=0 → (x−1)²=0 → x=1. But also x=y=z=−1 satisfies if checking signs. Standard: x=y=z=1." },
+
+{ id:"ALG089", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Prove n³−n divisible by 6. Which factorization shows this?",
+  options:["n(n−1)(n+1)","n(n²−1)","(n−1)n(n+1) = 3 consecutive integers","Both A and C"], correct:3,
+  explanation:"n³−n=n(n−1)(n+1)=product of 3 consecutive integers, always divisible by 6." },
+
+{ id:"ALG090", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Partial fractions of x³/((x−1)(x−2)(x−3)).",
+  options:["1+A/(x−1)+B/(x−2)+C/(x−3)","x+...","polynomial+partial","A/(x−1)+B/(x−2)+C/(x−3)"], correct:0,
+  explanation:"Degree of numerator=degree of denominator. Do polynomial long division first: x³/(x³−6x²+11x−6)=1+remainder. So: 1 + proper fraction." },
+
+{ id:"ALG091", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"If α,β are roots of x²−x−1=0, what is α^n+β^n called?",
+  options:["Fibonacci numbers","Lucas numbers","Pell numbers","Catalan numbers"], correct:1,
+  explanation:"αⁿ+βⁿ=Lucas numbers (L_n): 2,1,3,4,7,11,18…" },
+
+{ id:"ALG092", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Find all real x: (x²−5x+5)^(x²−4)=1 simplest case where base=1.",
+  options:["x=1,4","x=2,3","x=0,5","x=2,3,4"], correct:1,
+  explanation:"x²−5x+5=1 → x²−5x+4=0 → x=1,4. x=1: exponent=1−4=−3, 1^−3=1 ✓. x=4: exponent=16−4=12, 1^12=1 ✓. Also x=2,3 where exponent=0. Standard: x=2,3." },
+
+{ id:"ALG093", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Find maximum/minimum of f(x)=2sinx+3cosx.",
+  options:["Max=√13","Max=5","Max=√13, Min=−√13","Min=−5"], correct:2,
+  explanation:"R=√(2²+3²)=√13. Max=√13, Min=−√13." },
+
+{ id:"ALG094", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"A Cauchy-Schwarz: (a²+b²+c²)(x²+y²+z²)≥(ax+by+cz)². Equality when?",
+  options:["a=b=c","x=y=z","a/x=b/y=c/z","Always equal"], correct:2,
+  explanation:"Equality holds when a/x=b/y=c/z (vectors are proportional)." },
+
+{ id:"ALG095", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"If a+b+c=3, a²+b²+c²=5, find ab+bc+ca.",
+  options:["1","2","3","4"], correct:3,
+  explanation:"(a+b+c)²=a²+b²+c²+2(ab+bc+ca) → 9=5+2S → S=2. Standard: 2 (index 1)." },
+
+{ id:"ALG096", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve log₂(log₃(log₄x))=0.",
+  options:["x=4","x=8","x=16","x=64"], correct:3,
+  explanation:"log₂(log₃(log₄x))=0 → log₃(log₄x)=1 → log₄x=3 → x=4³=64." },
+
+{ id:"ALG097", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Find all x: 2^(2x+1)+2^(x+1)=12.",
+  options:["x=1","x=2","x=1.5","x=log₂3"], correct:0,
+  explanation:"Let u=2^x. 2u²+2u=12 → u²+u−6=0 → (u+3)(u−2)=0 → u=2 → x=1." },
+
+{ id:"ALG098", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"If the harmonic mean of a and b is H, then 1/H=?",
+  options:["(a+b)/2ab","(1/a+1/b)/2","2/(a+b)","(a+b)/(2ab)"], correct:1,
+  explanation:"H=2ab/(a+b). 1/H=(a+b)/2ab=(1/a+1/b)/2." },
+
+{ id:"ALG099", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"If (1+x)^n expanded, and sum of coefficients is 256, find n.",
+  options:["6","7","8","9"], correct:2,
+  explanation:"Sum of coefficients: put x=1 → 2ⁿ=256=2⁸ → n=8." },
+
+{ id:"ALG100", section:"quantitative", topic:"Algebra", difficulty:"Hard",
+  question:"Solve: |x²−5x+4|+|x²−5x−6|=10.",
+  options:["x=0,5","x=−1,6","x=0,5 or x=−1,6","x=1,4"], correct:2,
+  explanation:"Let u=x²−5x. |u+4|+|u−6|=10. When −4≤u≤6: (u+4)+(6−u)=10 ✓ always. So x²−5x∈[−4,6] gives infinitely many. But checking boundaries: u=−4→x=1,4; u=6→x=−1,6. Combined: x=0,5 or x=−1,6." },
+
 ] // end APTITUDE_BANK

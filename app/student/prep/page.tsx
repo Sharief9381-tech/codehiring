@@ -100,6 +100,7 @@ const APT_TOPICS = [
   { id: "ages",           name: "Problems on Ages",             icon: "🎂" },
   { id: "mensuration",   name: "Mensuration",                  icon: "📐" },
   { id: "geometry",      name: "Geometry",                     icon: "📏" },
+  { id: "algebra",       name: "Algebra",                      icon: "𝑥" },
   { id: "speed-distance",  name: "Speed & Distance",           icon: "🚆" },
   { id: "probability",     name: "Probability",                icon: "🎲" },
   { id: "data-interp",     name: "Data Interpretation",        icon: "📊" },
@@ -1077,6 +1078,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "ages": "Problems on Ages",
       "mensuration": "Mensuration",
       "geometry": "Geometry",
+      "algebra": "Algebra",
     }
     // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
     if (topic.id === "mock-aptitude") {
