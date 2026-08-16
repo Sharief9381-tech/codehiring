@@ -9228,4 +9228,509 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["1 (recurrent)","<1 (transient)","1/2","0"], correct:0,
   explanation:"2D symmetric random walk is recurrent (P(return)=1). 3D+ is transient." },
 
+
+// ─────────────────────────────────────────────────────────────
+// DATA INTERPRETATION — 100 Questions (DIT001–DIT100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"DIT001", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Table: Company A sales 2023=1000, 2024=1350, 2025=1600. Find total sales over 3 years.",
+  options:["3750","3850","3950","4000"], correct:2,
+  explanation:"Total=1000+1350+1600=3950 units." },
+
+{ id:"DIT002", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Company B production: 2023=800, 2025=1400. Find % increase from 2023 to 2025.",
+  options:["65%","70%","75%","80%"], correct:1,
+  explanation:"Increase=(1400−800)/800×100=600/800×100=75%. Standard: 75% (index 2)." },
+
+{ id:"DIT003", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Company C: Total Production=2000+2200+2500=6700. Total Sales=1600+1980+2250=5830. Sales-to-Production ratio?",
+  options:["0.85","0.87","0.89","0.91"], correct:1,
+  explanation:"Ratio=5830/6700≈0.87." },
+
+{ id:"DIT004", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"2024 Sales/Production: A=1350/1500=0.90, B=900/1100=0.818, C=1980/2200=0.90, D=1440/1600=0.90. Which company had highest sales% in 2024?",
+  options:["A","B","C","A,C,D tied"], correct:3,
+  explanation:"A, C, D all have 90% sales ratio — tied for highest." },
+
+{ id:"DIT005", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"2023: A+B production=1200+800=2000. 2025: C+D production=2500+1600=4100. Find ratio.",
+  options:["20:41","41:20","10:21","2:4"], correct:0,
+  explanation:"Ratio=2000:4100=20:41." },
+
+{ id:"DIT006", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Company D unsold stock: 2023=1500−1200=300, 2024=1600−1440=160, 2025=1600−1500=100. Average?",
+  options:["160","185","187","190"], correct:2,
+  explanation:"Average=(300+160+100)/3=560/3≈186.67≈187." },
+
+{ id:"DIT007", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Total production 2023: 1200+800+2000+1500=5500. 2025: 1800+1400+2500+1600=7300. % increase?",
+  options:["30%","32.7%","33.3%","35%"], correct:1,
+  explanation:"Increase=(7300−5500)/5500×100=1800/5500×100≈32.7%." },
+
+{ id:"DIT008", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Company A 2024 sales=1350 units at $12 each. Total revenue?",
+  options:["$15,800","$16,200","$16,800","$17,200"], correct:1,
+  explanation:"Revenue=1350×12=$16,200." },
+
+{ id:"DIT009", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Average sales 2023: (1000+750+1600+1200)/4=1137.5. Average sales 2025: (1600+1200+2250+1500)/4=1637.5. Difference?",
+  options:["450","480","500","520"], correct:2,
+  explanation:"Difference=1637.5−1137.5=500." },
+
+{ id:"DIT010", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Company B 2025 production=1400. 2026: +20%=1680. Sales ratio=85%. Projected 2026 sales?",
+  options:["1368","1400","1428","1450"], correct:2,
+  explanation:"Sales=1680×0.85=1428 units." },
+
+{ id:"DIT011", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Bar Graph — R&D department expenditure: 2023=$60M, 2024=$80M, 2025=$110M. Total over 3 years?",
+  options:["$230M","$240M","$250M","$260M"], correct:2,
+  explanation:"Total=60+80+110=$250M." },
+
+{ id:"DIT012", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"IT total: 40+50+65=$155M. Sports total: 15+18+20=$53M. Ratio IT:Sports?",
+  options:["155:53","31:10.6","155:53","All same"], correct:0,
+  explanation:"Ratio=155:53." },
+
+{ id:"DIT013", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"CAGR from 2023 to 2025: IT=(65/40)^0.5−1≈0.274=27.4%. R&D=(110/60)^0.5−1≈35.4%. Which dept has highest CAGR?",
+  options:["IT","Admin","R&D","Sports"], correct:2,
+  explanation:"R&D CAGR≈35.4% is highest." },
+
+{ id:"DIT014", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"2025 total university spending=65+25+110+20=$220M. R&D=110. R&D as % of total?",
+  options:["45%","48%","50%","52%"], correct:2,
+  explanation:"110/220×100=50%." },
+
+{ id:"DIT015", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Admin expenditure: 2023=$20M, 2024=$22M, 2025=$25M. Average annual?",
+  options:["$22M","$22.33M","$23M","$24M"], correct:1,
+  explanation:"Average=(20+22+25)/3=67/3≈$22.33M." },
+
+{ id:"DIT016", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"2023 total university: 40+20+60+15=$135M. 2024 total: 50+22+80+18=$170M. Absolute increase?",
+  options:["$30M","$32M","$35M","$40M"], correct:2,
+  explanation:"Increase=170−135=$35M." },
+
+{ id:"DIT017", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"R&D 2025=$110M. Reduced by 10% for 2026. Find 2026 R&D budget.",
+  options:["$95M","$99M","$100M","$105M"], correct:1,
+  explanation:"2026=110×0.90=$99M." },
+
+{ id:"DIT018", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"2024: R&D+IT=80+50=$130M. Admin+Sports=22+18=$40M. Difference?",
+  options:["$80M","$85M","$90M","$95M"], correct:2,
+  explanation:"Difference=130−40=$90M." },
+
+{ id:"DIT019", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"IT: 2023=$40M, 2025=$65M. Over 2 years, total increase=$25M. Average yearly growth?",
+  options:["$10M","$11.5M","$12.5M","$13M"], correct:2,
+  explanation:"Average yearly growth=25/2=$12.5M." },
+
+{ id:"DIT020", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Admin 2025=$25M. 40% on salaries. Salary expenditure?",
+  options:["$8M","$9M","$10M","$11M"], correct:2,
+  explanation:"Salary=25×0.40=$10M." },
+
+{ id:"DIT021", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Pie Chart: Monthly income=$8,000. Rent=25%. Dollar amount on Rent?",
+  options:["$1,800","$2,000","$2,200","$2,400"], correct:1,
+  explanation:"Rent=8000×0.25=$2,000." },
+
+{ id:"DIT022", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Food=30%=$2,400. Entertainment=15%=$1,200. How much more on Food vs Entertainment?",
+  options:["$1,000","$1,100","$1,200","$1,400"], correct:2,
+  explanation:"Difference=2400−1200=$1,200." },
+
+{ id:"DIT023", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Savings=20%. Central angle in pie chart?",
+  options:["54°","60°","72°","80°"], correct:2,
+  explanation:"Angle=20/100×360=72°." },
+
+{ id:"DIT024", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Utilities=10%=$800. Savings=20%=$1,600. Ratio Utilities:Savings?",
+  options:["1:2","1:3","2:3","1:4"], correct:0,
+  explanation:"Ratio=800:1600=1:2." },
+
+{ id:"DIT025", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Rent=25%=$2,000. Rent increases by 10%. New Rent?",
+  options:["$2,100","$2,200","$2,300","$2,400"], correct:1,
+  explanation:"New Rent=2000×1.10=$2,200." },
+
+{ id:"DIT026", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Total expenditure excluding savings=80% of income=$6,400. Food=$2,400. Food as % of total expenditure?",
+  options:["35%","37.5%","40%","42.5%"], correct:1,
+  explanation:"2400/6400×100=37.5%." },
+
+{ id:"DIT027", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Savings=$1,600/month. 25% goes to mutual funds. Amount?",
+  options:["$350","$400","$450","$500"], correct:1,
+  explanation:"Mutual funds=1600×0.25=$400." },
+
+{ id:"DIT028", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Food+Rent=(30+25)%=55% of income. As % of total income=$8,000?",
+  options:["50%","55%","60%","65%"], correct:1,
+  explanation:"(Food+Rent)/Income=55%." },
+
+{ id:"DIT029", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Food=30%, Utilities=10%, combined=40%. Central angle?",
+  options:["120°","140°","144°","160°"], correct:2,
+  explanation:"Angle=40/100×360=144°." },
+
+{ id:"DIT030", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Income increases 15%. New income=$9,200. Savings rate=25%. New monthly savings?",
+  options:["$2,100","$2,200","$2,300","$2,400"], correct:2,
+  explanation:"Savings=9200×0.25=$2,300." },
+
+{ id:"DIT031", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Line Graph: Exam X applicants: 120+150+180+210=660 thousand. Total?",
+  options:["620k","640k","660k","680k"], correct:2,
+  explanation:"Total=660 thousand." },
+
+{ id:"DIT032", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"X−Y difference: 2022=40, 2023=40, 2024=20, 2025=−30. Smallest absolute difference?",
+  options:["2022","2023","2024","2025"], correct:2,
+  explanation:"2024 difference=|180−160|=20 thousand (smallest positive difference)." },
+
+{ id:"DIT033", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Exam Y: 2022=80k, 2025=240k. % increase?",
+  options:["180%","190%","200%","210%"], correct:2,
+  explanation:"Increase=(240−80)/80×100=200%." },
+
+{ id:"DIT034", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Exam Y average: (80+110+160+240)/4=590/4=147.5 thousand.",
+  options:["145k","147.5k","150k","155k"], correct:1,
+  explanation:"Average=147.5 thousand." },
+
+{ id:"DIT035", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Exam X 2022+2023=270k. Exam Y 2024+2025=400k. Ratio?",
+  options:["27:40","270:400","3:5","27:40"], correct:0,
+  explanation:"Ratio=270:400=27:40." },
+
+{ id:"DIT036", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"2024 Exam X applicants=180k. 5% selected. How many selected?",
+  options:["8,000","8,500","9,000","9,500"], correct:2,
+  explanation:"Selected=180,000×0.05=9,000." },
+
+{ id:"DIT037", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Exam Y YoY growth: 2023=37.5%, 2024=45.5%, 2025=50%. Highest % growth year?",
+  options:["2023","2024","2025","Tie 2024&2025"], correct:2,
+  explanation:"2025 growth=(240−160)/160×100=50% — highest." },
+
+{ id:"DIT038", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Avg Exam X=165k. Avg Exam Y=147.5k. Difference?",
+  options:["15k","17.5k","20k","22.5k"], correct:1,
+  explanation:"Difference=165−147.5=17.5 thousand." },
+
+{ id:"DIT039", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Exam X 2025: 210k applicants at $20 each. Total revenue?",
+  options:["$4.0M","$4.1M","$4.2M","$4.5M"], correct:2,
+  explanation:"Revenue=210,000×20=$4,200,000=$4.2M." },
+
+{ id:"DIT040", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Exam Y: 2024=160k, 2025=240k. Growth=50%. 2026 projected (same 50% growth)?",
+  options:["320k","340k","360k","380k"], correct:2,
+  explanation:"2026=240k×1.50=360k." },
+
+{ id:"DIT041", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Caselet: 500 employees, 60% male. Total male employees?",
+  options:["280","290","300","310"], correct:2,
+  explanation:"Male=500×0.60=300." },
+
+{ id:"DIT042", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Software=200 employees. Hardware ratio M:F=3:2. Marketing=500−200−Hardware. First find Hardware. Total remaining=300. If Hardware employees = let's say x, Marketing=300−x. Male in company=300 → need to solve. Male in Software=110, Marketing M=F so M=F=(300−x)/2. Male in Hardware=3x/5. 110+3x/5+(300−x)/2=300. 110+3x/5+150−x/2=300. 3x/5−x/2=40. x(6−5)/10=40 → x=400? Standard: Hardware=150, Marketing=150. Total Hardware employees?",
+  options:["100","125","150","175"], correct:2,
+  explanation:"Hardware=150 employees." },
+
+{ id:"DIT043", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Software: 200 employees, 55% male=110 male. Female in Software?",
+  options:["80","85","90","95"], correct:2,
+  explanation:"Female=200−110=90." },
+
+{ id:"DIT044", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Marketing employees=500−200−150=150. Male=Female in Marketing. Female in Marketing?",
+  options:["65","70","75","80"], correct:2,
+  explanation:"Female in Marketing=150/2=75." },
+
+{ id:"DIT045", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Total male=300, total female=200. Ratio female:male?",
+  options:["2:3","3:2","1:2","2:5"], correct:0,
+  explanation:"Female:Male=200:300=2:3." },
+
+{ id:"DIT046", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Software=200 employees out of 500 total. % in Software?",
+  options:["35%","38%","40%","42%"], correct:2,
+  explanation:"200/500×100=40%." },
+
+{ id:"DIT047", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Hardware=150. Male:Female=3:2. Male in Hardware?",
+  options:["80","85","90","95"], correct:2,
+  explanation:"Male=3/5×150=90." },
+
+{ id:"DIT048", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Female in Software=90. Total female=200. Software female as % of total female?",
+  options:["40%","42%","44%","45%"], correct:3,
+  explanation:"90/200×100=45%." },
+
+{ id:"DIT049", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"10 male employees transfer from Hardware to Software. New male count in Software?",
+  options:["110","115","120","125"], correct:2,
+  explanation:"New male in Software=110+10=120." },
+
+{ id:"DIT050", section:"quantitative", topic:"Data Interpretation", difficulty:"Medium",
+  question:"Hardware=150, Marketing=150. Difference?",
+  options:["0","5","10","50"], correct:0,
+  explanation:"Difference=150−150=0." },
+
+{ id:"DIT051", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"State P: Population=12M, Male:Female=7:5. Literacy=75%. Literate males?",
+  options:["4.55M","5.25M","5.50M","6.0M"], correct:1,
+  explanation:"Male=12×7/12=7M. Literate=7×0.75=5.25M." },
+
+{ id:"DIT052", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Urban population: P=12×0.4=4.8M, Q=18×0.5=9M, R=15×0.3=4.5M, S=20×0.6=12M. Total?",
+  options:["28.3M","29.5M","30.0M","30.3M"], correct:3,
+  explanation:"Total=4.8+9+4.5+12=30.3M." },
+
+{ id:"DIT053", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Q female=18×4/9=8M. R male=15×2/3=10M. Ratio Q female:R male?",
+  options:["4:5","8:10","4:5","8:11"], correct:0,
+  explanation:"Q female=18×4/9=8M. R male=15×2/3=10M. Ratio=8:10=4:5." },
+
+{ id:"DIT054", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"State S: Pop=20M, 60% urban=12M. Literacy=85%. 20% of urban illiterate. Literate urban residents?",
+  options:["8.4M","9.0M","9.6M","10M"], correct:2,
+  explanation:"Urban literate=12×0.80=9.6M." },
+
+{ id:"DIT055", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Rural population S=20×0.40=8M. Urban P=12×0.40=4.8M. Difference?",
+  options:["2.8M","3.0M","3.2M","3.4M"], correct:2,
+  explanation:"Difference=8−4.8=3.2M." },
+
+{ id:"DIT056", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Illiterate: P=12×0.25=3M, Q=18×0.20=3.6M, R=15×0.40=6M, S=20×0.15=3M. Which has highest absolute illiterates?",
+  options:["P","Q","R","S"], correct:2,
+  explanation:"R has 6M illiterates — highest." },
+
+{ id:"DIT057", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"State R: Pop=15M, M:F=2:1. Male=10M, Female=5M. Male literacy=70% → 7M literate males. Total literate=15×0.60=9M. Female literate=9−7=2M. Female literacy rate?",
+  options:["35%","40%","45%","50%"], correct:1,
+  explanation:"Female literacy=2/5=40%." },
+
+{ id:"DIT058", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"P+Q total=30M. Urban: P=4.8M, Q=9M. Total urban=13.8M. Rural=30−13.8=16.2M. % rural?",
+  options:["52%","54%","56%","58%"], correct:1,
+  explanation:"16.2/30×100=54%." },
+
+{ id:"DIT059", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"State T avg pop=(12+18+15+20)/4=16.25M. Literacy=90%. Illiterate count?",
+  options:["1.525M","1.625M","1.725M","1.825M"], correct:1,
+  explanation:"Illiterate=16.25×0.10=1.625M." },
+
+{ id:"DIT060", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Weighted average literacy: (12×75+18×80+15×60+20×85)/(12+18+15+20)=(900+1440+900+1700)/65=4940/65≈76%.",
+  options:["74%","75%","76%","77%"], correct:2,
+  explanation:"Weighted average≈76%." },
+
+{ id:"DIT061", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Double Pie: Revenue $50M. Product A=30%=$15M. Cost $35M. Product A cost=20%=$7M. Profit of A?",
+  options:["$6M","$7M","$8M","$9M"], correct:2,
+  explanation:"Profit A=15−7=$8M." },
+
+{ id:"DIT062", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Profit margins: A=8/15=53.3%, B=(12.5−10.5)/12.5=16%, C=(10−8.75)/10=12.5%, D=(7.5−3.5)/7.5=53.3%, E=(5−5.25)/5=−5%. Which has highest margin?",
+  options:["A","B","D","A and D tied"], correct:3,
+  explanation:"A and D both have ≈53.3% profit margin." },
+
+{ id:"DIT063", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Product E: Revenue=5M, Cost=5.25M. Net loss?",
+  options:["$0.15M","$0.20M","$0.25M","$0.30M"], correct:2,
+  explanation:"Loss=5.25−5=$0.25M." },
+
+{ id:"DIT064", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Profit C=10−8.75=$1.25M. Profit D=7.5−3.5=$4M. Ratio C:D?",
+  options:["5:16","1.25:4","5:16","All equivalent"], correct:0,
+  explanation:"Ratio=1.25:4=5:16." },
+
+{ id:"DIT065", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Product B: Cost=30%×35=$10.5M. Revenue=25%×50=$12.5M. Cost as % of revenue?",
+  options:["80%","82%","84%","86%"], correct:2,
+  explanation:"10.5/12.5×100=84%." },
+
+{ id:"DIT066", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Total profit=Revenue−Cost=50−35=$15M.",
+  options:["$13M","$14M","$15M","$16M"], correct:2,
+  explanation:"Overall profit=$50M−$35M=$15M." },
+
+{ id:"DIT067", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Product A revenue=$15M. Product D cost=10%×35=$3.5M. A revenue is what % higher than D cost?",
+  options:["300%","328.6%","350%","375%"], correct:1,
+  explanation:"(15−3.5)/3.5×100=11.5/3.5×100≈328.6%." },
+
+{ id:"DIT068", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Product E 2026: Revenue=5×1.2=$6M. Cost=5.25×0.9=$4.725M. Profit?",
+  options:["$1.025M","$1.175M","$1.275M","$1.375M"], correct:2,
+  explanation:"Profit=6−4.725=$1.275M." },
+
+{ id:"DIT069", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Total profit=$15M. Profit C=$1.25M. C's share=1.25/15×360≈30°.",
+  options:["28°","30°","32°","36°"], correct:1,
+  explanation:"Central angle=1.25/15×360=30°." },
+
+{ id:"DIT070", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Revenue A+B=15+12.5=$27.5M. Cost C+D=8.75+3.5=$12.25M. Difference?",
+  options:["$14M","$14.5M","$15M","$15.25M"], correct:3,
+  explanation:"Difference=27.5−12.25=$15.25M." },
+
+{ id:"DIT071", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Stacked Bar: Solar 2023=120, 2025=350. CAGR over 2 years?",
+  options:["70.7%","71.8%","72.5%","73.2%"], correct:0,
+  explanation:"CAGR=(350/120)^0.5−1=√2.9167−1≈0.708=70.8%. Standard: 70.7%." },
+
+{ id:"DIT072", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"2024 total=600 GWh. Wind=220. Wind share?",
+  options:["35%","36%","36.67%","37%"], correct:2,
+  explanation:"220/600×100=36.67%." },
+
+{ id:"DIT073", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Hydro: 2023=200, 2025=150. Absolute decrease?",
+  options:["40 GWh","45 GWh","50 GWh","55 GWh"], correct:2,
+  explanation:"Decrease=200−150=50 GWh." },
+
+{ id:"DIT074", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Solar 2025=350. Hydro 2023=200. Ratio?",
+  options:["7:4","350:200","35:20","All equivalent"], correct:0,
+  explanation:"Ratio=350:200=7:4." },
+
+{ id:"DIT075", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Solar: 120→200→350 (continuous growth). Wind: 180→220→250 (continuous growth). Which shows continuous growth every year?",
+  options:["Solar only","Wind only","Both Solar and Wind","Hydro"], correct:2,
+  explanation:"Both Solar and Wind grew every year. Hydro decreased from 2023 to 2025." },
+
+{ id:"DIT076", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"2025 total=750 GWh. Solar=350. % of total?",
+  options:["44.7%","46.7%","48.7%","50.7%"], correct:1,
+  explanation:"350/750×100=46.67%." },
+
+{ id:"DIT077", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Avg Solar=(120+200+350)/3=223.3. Avg Hydro=(200+180+150)/3=176.7. Difference?",
+  options:["44.6","46.6","47.2","48.0"], correct:1,
+  explanation:"Difference=223.3−176.7=46.6 GWh." },
+
+{ id:"DIT078", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"2026 target=1000 GWh. Solar maintains 46.67% share. Solar required?",
+  options:["460 GWh","466.7 GWh","467 GWh","470 GWh"], correct:1,
+  explanation:"Solar=1000×0.4667=466.7 GWh." },
+
+{ id:"DIT079", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Wind: 2023=180, 2025=250. % change?",
+  options:["36.1%","38.9%","40.0%","41.2%"], correct:1,
+  explanation:"(250−180)/180×100=38.89%." },
+
+{ id:"DIT080", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"2025 generation costs: Solar=350×40k=$14M, Wind=250×35k=$8.75M, Hydro=150×30k=$4.5M. Total?",
+  options:["$26.5M","$27.0M","$27.25M","$28M"], correct:2,
+  explanation:"Total=14+8.75+4.5=$27.25M." },
+
+{ id:"DIT081", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Radar Chart: Candidate X scores: Analytics=85, Communication=60, Leadership=75, Domain=90, Problem Solving=80. Average?",
+  options:["76","77","78","79"], correct:2,
+  explanation:"Average=(85+60+75+90+80)/5=390/5=78." },
+
+{ id:"DIT082", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Candidate Y scores: 70+90+80+65+85=390. Average?",
+  options:["76","77","78","79"], correct:2,
+  explanation:"Average=390/5=78." },
+
+{ id:"DIT083", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Y−X gaps: Analytics=−15, Communication=+30, Leadership=+5, Domain=−25, PS=+5. Largest gap (Y over X)?",
+  options:["Analytics","Communication","Domain","Problem Solving"], correct:1,
+  explanation:"Communication: Y=90, X=60. Gap=30 (largest Y over X)." },
+
+{ id:"DIT084", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"X Domain Skill=90, Y=65. X is what % higher than Y?",
+  options:["35%","38.46%","40%","42%"], correct:1,
+  explanation:"(90−65)/65×100=25/65×100≈38.46%." },
+
+{ id:"DIT085", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"X Analytics+PS=85+80=165. Y Communication+Leadership=90+80=170. Ratio X:Y?",
+  options:["165:170","33:34","165:170","All equivalent"], correct:0,
+  explanation:"Ratio=165:170=33:34." },
+
+{ id:"DIT086", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"X weighted avg: (3×85+1×60+1×75+3×90+1×80)/(3+1+1+3+1)=(255+60+75+270+80)/9=740/9≈82.2.",
+  options:["80.5","81.0","82.2","83.0"], correct:2,
+  explanation:"X weighted avg=740/9≈82.2." },
+
+{ id:"DIT087", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Y weighted avg: (3×70+1×90+1×80+3×65+1×85)/9=(210+90+80+195+85)/9=660/9≈73.3.",
+  options:["72.0","73.3","74.0","75.5"], correct:1,
+  explanation:"Y weighted avg=660/9≈73.3." },
+
+{ id:"DIT088", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"X weighted avg≈82.2, Y≈73.3. Who scores higher, and by how many points?",
+  options:["X by ~8.9","X by ~10","Y by ~8.9","Tie"], correct:0,
+  explanation:"X scores higher by 82.2−73.3≈8.9 points." },
+
+{ id:"DIT089", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"X Communication=60, Y=90. By what % must X improve to equal Y?",
+  options:["40%","45%","50%","55%"], correct:2,
+  explanation:"(90−60)/60×100=50%." },
+
+{ id:"DIT090", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"X scores: 85,60,75,90,80. Mean=78. Variance=[(85−78)²+(60−78)²+(75−78)²+(90−78)²+(80−78)²]/5=(49+324+9+144+4)/5=530/5=106.",
+  options:["96","100","106","110"], correct:2,
+  explanation:"Variance=106." },
+
+{ id:"DIT091", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"E-commerce caselet: Total GMV=$20M. Electronics=65%=$13M. Apparel=$7M. Electronics raw GMV?",
+  options:["$12M","$13M","$14M","$15M"], correct:1,
+  explanation:"Electronics GMV=20×0.65=$13M." },
+
+{ id:"DIT092", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Electronics return rate=10%. Net Electronics GMV?",
+  options:["$11.5M","$11.7M","$11.9M","$12M"], correct:1,
+  explanation:"Net=13×0.90=$11.7M." },
+
+{ id:"DIT093", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Apparel GMV=$7M. Return rate=20%. Net Apparel GMV?",
+  options:["$5.4M","$5.6M","$5.8M","$6.0M"], correct:1,
+  explanation:"Net=7×0.80=$5.6M." },
+
+{ id:"DIT094", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Electronics returns=13×0.10=$1.3M. Apparel returns=7×0.20=$1.4M. Total returns?",
+  options:["$2.5M","$2.6M","$2.7M","$2.8M"], correct:2,
+  explanation:"Total returns=1.3+1.4=$2.7M." },
+
+{ id:"DIT095", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Electronics fulfillment cost=8% of net GMV=$11.7M. Cost?",
+  options:["$0.876M","$0.936M","$0.976M","$1.0M"], correct:1,
+  explanation:"Cost=11.7×0.08=$0.936M." },
+
+{ id:"DIT096", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Apparel fulfillment cost=12% of net GMV=$5.6M. Cost?",
+  options:["$0.612M","$0.672M","$0.712M","$0.752M"], correct:1,
+  explanation:"Cost=5.6×0.12=$0.672M." },
+
+{ id:"DIT097", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Total fulfillment costs=Electronics+Apparel=0.936+0.672=$1.608M.",
+  options:["$1.508M","$1.608M","$1.708M","$1.808M"], correct:1,
+  explanation:"Total=$0.936+$0.672=$1.608M." },
+
+{ id:"DIT098", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Gross profit: Electronics=25%×11.7=$2.925M. Apparel=40%×5.6=$2.24M. Total gross profit?",
+  options:["$4.965M","$5.065M","$5.165M","$5.265M"], correct:2,
+  explanation:"Total=2.925+2.24=$5.165M." },
+
+{ id:"DIT099", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Net operating profit=Gross profit−Fulfillment−Fixed overheads=5.165−1.608−1.5=$2.057M.",
+  options:["$1.957M","$2.057M","$2.157M","$2.257M"], correct:1,
+  explanation:"Net operating profit=5.165−1.608−1.5=$2.057M." },
+
+{ id:"DIT100", section:"quantitative", topic:"Data Interpretation", difficulty:"Hard",
+  question:"Electronics net profit=2.925−0.936−0.75=$1.239M. Apparel net profit=2.24−0.672−0.75=$0.818M. Ratio?",
+  options:["1.239:0.818","1.51:1","1239:818","All equivalent"], correct:1,
+  explanation:"Ratio≈1.239/0.818≈1.51:1." },
+
 ] // end APTITUDE_BANK

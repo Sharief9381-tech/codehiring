@@ -96,17 +96,15 @@ const APT_TOPICS = [
   { id: "mixture",         name: "Mixture & Alligation",       icon: "⚗" },
   { id: "time-work",       name: "Time & Work",                icon: "⚙" },
   { id: "pipes-cisterns",  name: "Pipes & Cisterns",           icon: "🚰" },
-  { id: "boats-streams",  name: "Boats & Streams",             icon: "⛵" },
-  { id: "ages",           name: "Problems on Ages",             icon: "🎂" },
-  { id: "mensuration",   name: "Mensuration",                  icon: "📐" },
-  { id: "geometry",      name: "Geometry",                     icon: "📏" },
-  { id: "algebra",       name: "Algebra",                      icon: "𝑥" },
-  { id: "coord-geo",     name: "Coordinate Geometry",          icon: "📈" },
-  { id: "permcomb",      name: "Permutation & Combination",   icon: "∑" },
-  { id: "speed-distance",  name: "Speed & Distance",           icon: "🚆" },
+  { id: "boats-streams",   name: "Boats & Streams",            icon: "⛵" },
+  { id: "ages",            name: "Problems on Ages",           icon: "🎂" },
+  { id: "mensuration",     name: "Mensuration",                icon: "📐" },
+  { id: "geometry",        name: "Geometry",                   icon: "📏" },
+  { id: "algebra",         name: "Algebra",                    icon: "𝑥" },
+  { id: "coord-geo",       name: "Coordinate Geometry",        icon: "📈" },
+  { id: "permcomb",        name: "Permutation & Combination",  icon: "∑" },
   { id: "probability",     name: "Probability",                icon: "🎲" },
   { id: "data-interp",     name: "Data Interpretation",        icon: "📊" },
-  { id: "permcomb",        name: "Permutation & Combination",  icon: "∑" },
 ]
 
 // --- CS topics ----------------------------------------------------------------
@@ -1084,6 +1082,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "coord-geo": "Coordinate Geometry",
       "permcomb": "Permutation & Combination",
       "probability": "Probability",
+      "data-interp": "Data Interpretation",
     }
     // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
     if (topic.id === "mock-aptitude") {
