@@ -701,7 +701,7 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
             </button>
             <div className="absolute left-0 top-full mt-1.5 z-50 w-56 rounded-xl border border-white/10 bg-background shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 pointer-events-none group-hover:pointer-events-auto">
               {[
-                { label: "Aptitude",      sub: "Quant . Logical . Data Interp.", color: "#f59e0b", href: "/student/prep?track=aptitude" },
+                { label: "Aptitude",      sub: "Quant . Logical . Data Interp.", color: "#f59e0b", href: "/student/practice/aptitude" },
                 { label: "Coding / DSA",  sub: "Arrays . Trees . DP . Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
                 { label: "Communication", sub: "Grammar . Vocab . Reading",       color: "#10b981", href: "/student/prep?track=communication" },
               ].map(opt => (

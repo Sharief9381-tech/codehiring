@@ -13,7 +13,7 @@ const PRACTICE_MODES = [
     icon: "A",
     iconBg: "#f59e0b",
     color: "#f59e0b",
-    href: "/student/prep?track=aptitude",
+    href: "/student/practice/aptitude",
     topics: ["Percentages", "Profit & Loss", "Time & Work", "Speed & Distance", "Number Series", "Syllogisms", "Blood Relations", "Data Interpretation"],
     count: "200+ questions",
   },
