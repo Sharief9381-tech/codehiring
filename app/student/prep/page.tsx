@@ -31,7 +31,7 @@ const ProblemEditor = dynamic(
 // --- Types --------------------------------------------------------------------
 type Path = "aptitude" | "coding" | "cs" | "company" | "communication"
 
-interface MCQ { id: number; question: string; options: string[]; correct: number; explanation: string; topic: string }
+interface MCQ { id: number; question: string; options: string[]; correct: number; explanation: string; topic: string; passage?: string }
 interface CodingQ { id: number; title: string; difficulty: string; statement: string; constraints: string; example: { input: string; output: string; explanation: string }; hints: string[]; topic: string }
 
 // --- Company data -------------------------------------------------------------
@@ -237,6 +237,15 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
       <div className="h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)" }}>
         <div className="h-full rounded-full transition-all" style={{ width: `${((cur + 1) / questions.length) * 100}%`, background: "linear-gradient(90deg,#7c3aed,#6366f1)" }} />
       </div>
+
+      {/* Passage — shown for Reading Comprehension questions */}
+      {q.passage && (
+        <div className="rounded-xl p-4 space-y-1"
+          style={{ border: "1px solid rgba(249,115,22,0.25)", background: "rgba(249,115,22,0.05)" }}>
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: "#f97316" }}>📄 Read the Passage</p>
+          <p className="text-sm leading-relaxed" style={{ color: "#d4d4d8" }}>{q.passage}</p>
+        </div>
+      )}
 
       {/* Question */}
       <div className="rounded-xl p-5"
@@ -1210,6 +1219,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
         explanation: q.explanation,
         topic: q.topic,
         difficulty: q.difficulty,
+        passage: (q as any).passage,
       }))
       setQuestions(qs)
       setStage("quiz")
