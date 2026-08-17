@@ -240,10 +240,12 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
 
       {/* Passage — shown for Reading Comprehension questions */}
       {q.passage && (
-        <div className="rounded-xl p-4 space-y-1"
+        <div className="rounded-xl p-4"
           style={{ border: "1px solid rgba(249,115,22,0.25)", background: "rgba(249,115,22,0.05)" }}>
           <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: "#f97316" }}>📄 Read the Passage</p>
-          <p className="text-sm leading-relaxed" style={{ color: "#d4d4d8" }}>{q.passage}</p>
+          <div className="max-h-48 overflow-y-auto pr-1" style={{ scrollbarWidth: "thin" }}>
+            <p className="text-sm leading-relaxed" style={{ color: "#d4d4d8" }}>{q.passage}</p>
+          </div>
         </div>
       )}
 
@@ -1195,6 +1197,12 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
     if (topic.id in COMM_LOCAL_TOPIC_MAP) {
       const topicName = COMM_LOCAL_TOPIC_MAP[topic.id]
       const seenKey = `comm_seen_${topic.id}`
+      // v2: clear old cache that didn't have passage data
+      const versionKey = `comm_seen_v_${topic.id}`
+      if (localStorage.getItem(versionKey) !== "2") {
+        localStorage.removeItem(seenKey)
+        localStorage.setItem(versionKey, "2")
+      }
       let seenIds: string[] = []
       try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
 
