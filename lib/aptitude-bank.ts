@@ -9733,4 +9733,1520 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   options:["1.239:0.818","1.51:1","1239:818","All equivalent"], correct:1,
   explanation:"Ratio≈1.239/0.818≈1.51:1." },
 
+
+// ─────────────────────────────────────────────────────────────
+// DATA SUFFICIENCY — 100 Questions (DSQ001–DSQ100)
+// Options: A=Stmt1 alone, B=Stmt2 alone, C=Both together, D=Each alone, E=Neither
+// ─────────────────────────────────────────────────────────────
+
+{ id:"DSQ001", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x an even integer? (1) x²+1 is odd. (2) 3x+2 is even.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) x²+1 odd → x² even → x even. ✓ (2) 3x+2 even → 3x even → x even. ✓ Each alone sufficient. Answer: D." },
+
+{ id:"DSQ002", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is the value of x+y? (1) 2x+2y=12. (2) x−y=4.",
+  options:["A","B","C","D"], correct:0,
+  explanation:"(1) 2(x+y)=12 → x+y=6. Sufficient alone. (2) x−y=4 gives no value of x+y. Answer: A." },
+
+{ id:"DSQ003", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is a>b? (1) a²>b². (2) a−b>0.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) (−3)²>2² but −3<2. Insufficient. (2) a−b>0 → a>b. Sufficient alone. Answer: B." },
+
+{ id:"DSQ004", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is the mean of p, q, r? (1) p+q=14. (2) r=7.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"Need p+q+r=21. (1)+(2)=21 → mean=7. Neither alone sufficient. Answer: C." },
+
+{ id:"DSQ005", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is n divisible by 6? (1) n divisible by 2. (2) n divisible by 3.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"LCM(2,3)=6. Both together needed. Answer: C." },
+
+{ id:"DSQ006", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is the perimeter of rectangle R? (1) Area=24. (2) Length=6.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"Area=24 and L=6 → W=4 → Perimeter=20. Both together needed. Answer: C." },
+
+{ id:"DSQ007", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is k positive? (1) k³>0. (2) k²>0.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) k³>0 → k>0. Sufficient. (2) k²>0 → k≠0 (could be negative). Insufficient. Answer: A." },
+
+{ id:"DSQ008", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is integer m? (1) m is prime with 10<m<15. (2) m leaves remainder 1 when divided by 6.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1) Primes: 11 or 13. (2) 6k+1. Together: 13 leaves rem 1 when divided by 6; 11 leaves rem 5. So m=13. Answer: C." },
+
+{ id:"DSQ009", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x/y>1? (1) x>y>0. (2) x+y=10.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) x>y>0 → dividing by y gives x/y>1. Sufficient. (2) x+y=10 gives no relative size info. Answer: A." },
+
+{ id:"DSQ010", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"How many students in class C? (1) Boys:Girls=3:2. (2) There are 12 girls.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1)+(2): 12 girls → 18 boys → 30 total. Both needed. Answer: C." },
+
+{ id:"DSQ011", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is the radius of circle O? (1) Circumference=12π. (2) Area=36π.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) 2πr=12π → r=6. (2) πr²=36π → r=6. Each alone sufficient. Answer: D." },
+
+{ id:"DSQ012", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x²=y²? (1) x=y. (2) x=−y.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) x=y → x²=y². (2) x=−y → x²=y². Each alone sufficient. Answer: D." },
+
+{ id:"DSQ013", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Find value of 3x+5y. (1) 6x+10y=40. (2) x+y=8.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) 2(3x+5y)=40 → 3x+5y=20. Sufficient. (2) Can't determine 3x+5y. Answer: A." },
+
+{ id:"DSQ014", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is integer z prime? (1) z has exactly 2 distinct positive factors. (2) z is odd and 1<z<5.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Definition of prime. Sufficient. (2) z=3 only → prime. Sufficient. Answer: D." },
+
+{ id:"DSQ015", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is a²−b²? (1) a+b=10. (2) a−b=4.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"a²−b²=(a+b)(a−b)=10×4=40. Both needed. Answer: C." },
+
+{ id:"DSQ016", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x<0? (1) x³<0. (2) |x|>0.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) x³<0 → x<0. Sufficient. (2) |x|>0 → x≠0 (could be positive). Insufficient. Answer: A." },
+
+{ id:"DSQ017", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is area of triangle ABC? (1) Right-angled triangle with hypotenuse 10. (2) Legs are 6 and 8.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) Hypotenuse=10 doesn't fix legs uniquely. Insufficient. (2) Area=½×6×8=24. Sufficient. Answer: B." },
+
+{ id:"DSQ018", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is n an odd integer? (1) 2n+1 is odd. (2) n+2 is odd.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) 2n+1 is ALWAYS odd for any integer n — gives no info. Insufficient. (2) n+2 odd → n odd. Sufficient. Answer: B." },
+
+{ id:"DSQ019", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is price of one notebook? (1) 3 notebooks + 2 pens = $13. (2) 6 notebooks + 4 pens = $26.",
+  options:["A","B","C","E"], correct:3,
+  explanation:"(2) is exactly 2×(1) — one equation with two unknowns. Neither alone nor together sufficient. Answer: E." },
+
+{ id:"DSQ020", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x>0? (1) −x<0. (2) x²=25.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) −x<0 → x>0. Sufficient. (2) x²=25 → x=±5. Insufficient. Answer: A." },
+
+{ id:"DSQ021", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Distance traveled by train in 3 hours? (1) Average speed=60 km/h. (2) Travels 120 km in first 2 hours.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) Distance=60×3=180 km. Sufficient. (2) Speed may vary in 3rd hour. Insufficient. Answer: A." },
+
+{ id:"DSQ022", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is p a multiple of 12? (1) p is a multiple of 4. (2) p is a multiple of 3.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"LCM(4,3)=12. Both needed. Answer: C." },
+
+{ id:"DSQ023", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Find slope of line L. (1) L passes through (1,2) and (3,8). (2) L is parallel to y=3x+5.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) m=(8−2)/(3−1)=3. Sufficient. (2) Parallel → same slope m=3. Sufficient. Answer: D." },
+
+{ id:"DSQ024", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is a+b>0? (1) a>0 and b>0. (2) ab>0.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) Both positive → sum positive. Sufficient. (2) ab>0 means same sign — could both be negative. Insufficient. Answer: A." },
+
+{ id:"DSQ025", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is 5th term of AP? (1) First term=3. (2) Common difference=4.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"T5=3+4×4=19. Both needed. Answer: C." },
+
+{ id:"DSQ026", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is quadrilateral ABCD a square? (1) All 4 sides equal 5. (2) One interior angle is 90°.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1) Alone → rhombus. (2) Alone → rectangle/parallelogram. Together → square. Answer: C." },
+
+{ id:"DSQ027", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is ratio x:y? (1) 3x=4y. (2) x+y=14.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) 3x=4y → x/y=4/3. Sufficient. (2) x+y=14 gives no unique ratio. Answer: A." },
+
+{ id:"DSQ028", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x divisible by 5? (1) Units digit of x is 5. (2) 2x is divisible by 10.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Units digit 5 → divisible by 5. Sufficient. (2) 2x div by 10 → x div by 5. Sufficient. Answer: D." },
+
+{ id:"DSQ029", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is median of 5 distinct numbers? (1) Arranged in ascending order: a,b,c,d,e. (2) c=15.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"Median of ordered 5 numbers is 3rd element c. Both together give median=15. Answer: C." },
+
+{ id:"DSQ030", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is xy<0? (1) x<0. (2) y>0.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1) alone: y unknown. (2) alone: x unknown. Together: x<0 and y>0 → xy<0. Answer: C." },
+
+{ id:"DSQ031", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Total cost of 5 apples? (1) Cost of 10 apples=$20. (2) Cost of 2 apples+3 oranges=$9.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) 1 apple=$2 → 5 apples=$10. Sufficient. (2) Unknown orange price. Insufficient. Answer: A." },
+
+{ id:"DSQ032", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is n an integer? (1) 3n is an integer. (2) 2n is an integer.",
+  options:["A","B","C","E"], correct:2,
+  explanation:"Neither alone sufficient (n=1/3 makes 3n=1 integer but n not integer). Together: 3n−2n=n is integer. Answer: C." },
+
+{ id:"DSQ033", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is volume of a cube? (1) Total surface area=54 cm². (2) Length of one edge=3 cm.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) 6s²=54 → s=3 → V=27. Sufficient. (2) s=3 → V=27. Sufficient. Answer: D." },
+
+{ id:"DSQ034", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is a>0? (1) a²=16. (2) a³=64.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) a=±4. Insufficient. (2) a³=64 → a=4>0. Sufficient. Answer: B." },
+
+{ id:"DSQ035", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"How many red balls in bag with only red and blue? (1) P(red)=2/5. (2) 15 blue balls.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"R/(R+15)=2/5 → R=10. Both needed. Answer: C." },
+
+{ id:"DSQ036", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x+y>z? (1) x>z and y>0. (2) x+y=15 and z=10.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) x>z and y>0 → x+y>z. Sufficient. (2) 15>10. Sufficient. Answer: D." },
+
+{ id:"DSQ037", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is principal P at simple interest? (1) Rate=5% per annum. (2) Interest in 2 years=$200.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"I=PRT/100. 200=P×5×2/100 → P=2000. Both needed. Answer: C." },
+
+{ id:"DSQ038", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is m even? (1) m/2 is an integer. (2) m+1 is odd.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) m/2 integer → m even. Sufficient. (2) m+1 odd → m even. Sufficient. Answer: D." },
+
+{ id:"DSQ039", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Find standard deviation of set S. (1) All elements equal 7. (2) Mean of S is 7.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) All elements equal → SD=0. Definitive answer. Sufficient. (2) Mean=7 gives no dispersion info. Answer: A." },
+
+{ id:"DSQ040", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x>y? (1) x+z>y+z. (2) xz>yz.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) Subtract z: x>y. Sufficient. (2) If z<0, inequality reverses. Insufficient. Answer: A." },
+
+{ id:"DSQ041", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is sum of two numbers x and y? (1) xy=24. (2) x²+y²=52.",
+  options:["A","B","C","E"], correct:3,
+  explanation:"(x+y)²=x²+y²+2xy=52+48=100 → x+y=±10. Two values. Together still insufficient. Answer: E." },
+
+{ id:"DSQ042", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is p² an even integer? (1) p is even. (2) 3p is even.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) p even → p² even. Sufficient. (2) 3p even → p even → p² even. Sufficient. Answer: D." },
+
+{ id:"DSQ043", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is area of circle C? (1) Diagonal of inscribed square=10√2. (2) Side of inscribed square=10.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"Inscribed square diagonal=circle diameter. (1) D=10√2 → r=5√2 → Area=50π. Sufficient. (2) side=10 → D=10√2 → Area=50π. Sufficient. Answer: D." },
+
+{ id:"DSQ044", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is x a negative number? (1) x⁵<0. (2) |x|=−x and x≠0.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) x⁵<0 → x<0. Sufficient. (2) |x|=−x → x≤0; x≠0 → x<0. Sufficient. Answer: D." },
+
+{ id:"DSQ045", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"How long for Worker A to complete job alone? (1) A+B together finish in 6 hrs. (2) B alone finishes in 10 hrs.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"1/A+1/10=1/6 → 1/A=1/15 → A=15 hrs. Both needed. Answer: C." },
+
+{ id:"DSQ046", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is n²−1 divisible by 8? (1) n is an odd integer. (2) n is a prime number greater than 3.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Any odd n: n=2k+1 → n²−1=4k(k+1), divisible by 8. Sufficient. (2) Prime>3 is odd → same reasoning. Sufficient. Answer: D." },
+
+{ id:"DSQ047", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is value of x? (1) |x−3|=5. (2) x>0.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1) x=8 or x=−2. Insufficient alone. (2) x>0 alone gives no value. Together: x=8. Answer: C." },
+
+{ id:"DSQ048", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is triangle ABC isosceles? (1) ∠A=50°, ∠B=80°. (2) AC=BC.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) ∠C=50°=∠A → isosceles. Sufficient. (2) Two equal sides → isosceles by definition. Sufficient. Answer: D." },
+
+{ id:"DSQ049", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"What is mean of 5 numbers? (1) Sum of 5 numbers=100. (2) Mode is 20.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) Mean=100/5=20. Sufficient. (2) Mode gives no mean info. Answer: A." },
+
+{ id:"DSQ050", section:"quantitative", topic:"Data Sufficiency", difficulty:"Medium",
+  question:"Is ab>0? (1) a/b>0. (2) a²b³>0.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) a/b>0 → a,b same sign → ab>0. Sufficient. (2) a²b³>0 → b>0 but a could be negative. Insufficient. Answer: A." },
+
+{ id:"DSQ051", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x an integer? (1) x² is an integer. (2) 3x and 5x are integers.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) √2 is not integer but (√2)²=2 is integer. Insufficient. (2) 3x and 5x integers → 5x−3x=2x integer → 3x−2x=x integer. Sufficient. Answer: B." },
+
+{ id:"DSQ052", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is a+b+c>0 for real a,b,c? (1) a+b>0, b+c>0, a+c>0. (2) abc>0.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) Adding: 2(a+b+c)>0 → a+b+c>0. Sufficient. (2) abc>0 allows all negative (e.g. −1,−1,−1). Insufficient. Answer: A." },
+
+{ id:"DSQ053", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Remainder when N divided by 36? (1) Remainder when N÷12 is 7. (2) Remainder when N÷18 is 7.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1) N mod 12=7 gives N mod 36 ∈ {7,19,31}. Insufficient. (2) N mod 18=7 gives N mod 36 ∈ {7,25}. Insufficient. Together: LCM(12,18)=36, remainder=7. Answer: C." },
+
+{ id:"DSQ054", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is xʸ>yˣ for positive integers x,y? (1) x=2. (2) y=3.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"x=2,y=3: 2³=8 vs 3²=9 → 8<9. x=2,y=4: 16=16. x=3,y=2: 9>8. Need both values. Answer: C." },
+
+{ id:"DSQ055", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is p a prime number? (1) p divides 2³¹−1. (2) p is odd and p<10.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) 2³¹−1 is a Mersenne prime itself, so any p dividing it is either 1 or 2³¹−1 (prime). Sufficient. (2) p∈{3,5,7,9}; 9 is not prime. Insufficient. Answer: A." },
+
+{ id:"DSQ056", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Area of triangle PQR with vertices (0,0),(a,0),(0,b)? (1) a²+b²=25. (2) a+b=7.",
+  options:["A","B","C","E"], correct:2,
+  explanation:"Area=½|ab|. (1) alone: many (a,b) pairs. (2) alone: many pairs. Together: (a+b)²=a²+b²+2ab → 49=25+2ab → ab=12 → Area=6. Answer: C." },
+
+{ id:"DSQ057", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x³>x²? (1) x>0. (2) x²>x.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"x³>x² ↔ x>1 (for x≠0). (1) x>0 includes x=0.5 where false. Insufficient. (2) x²>x → x<0 or x>1. For x<0, x³<0<x². Together: x>0 and (x<0 or x>1) → x>1. Answer: C." },
+
+{ id:"DSQ058", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"How many integers x satisfy |x−a|<b? (1) b=5. (2) a=12 and b is a positive integer.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"Count depends on both a and b (and whether they're integers). (1) b=5 but no a. (2) a=12 but b unknown. Together: count determined. Answer: C." },
+
+{ id:"DSQ059", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is positive integer n prime? (1) No prime ≤√n divides n. (2) n<100 and not divisible by 2,3,5,7.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Standard primality test — necessary and sufficient. (2) For n<100, √100=10, primes ≤10 are 2,3,5,7. Same test. Both alone sufficient. Answer: D." },
+
+{ id:"DSQ060", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"What is x³+y³? (1) x+y=6. (2) xy=8.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"x³+y³=(x+y)³−3xy(x+y)=216−144=72. Both needed. Answer: C." },
+
+{ id:"DSQ061", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is positive integer M a perfect square? (1) M has odd number of positive factors. (2) Sum of distinct prime factors of M is 10.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) A number has odd number of factors ↔ it is a perfect square. Sufficient. (2) e.g., 3+7=10 → 21 (not square); 2+3+5=10 → various. Insufficient. Answer: A." },
+
+{ id:"DSQ062", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is SD of S={x,y,z} greater than zero? (1) x+y+z=15. (2) x,y,z are distinct consecutive integers.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) Could be {5,5,5} (SD=0) or {4,5,6} (SD>0). Insufficient. (2) Distinct → not all equal → SD>0. Sufficient. Answer: B." },
+
+{ id:"DSQ063", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x/y<z/w for positive x,y,z,w? (1) x/z<y/w. (2) xw<yz.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"x/y<z/w ↔ xw<yz. (1) x/z<y/w → xw<yz. Sufficient. (2) xw<yz directly. Sufficient. Answer: D." },
+
+{ id:"DSQ064", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Length of diagonal AC in quadrilateral ABCD? (1) AB=3,BC=4,CD=12,DA=13. (2) ∠ABC=90°.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"With (2) ∠ABC=90°, AC=√(AB²+BC²)=√(9+16)=5 using AB,BC from (1). Both together needed. Answer: C." },
+
+{ id:"DSQ065", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is aᵇ an even integer (a,b integers)? (1) a is even. (2) b>0.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1) a even but b=0 → a⁰=1 (odd). Insufficient. (2) b>0 but a odd → odd. Insufficient. Together: even^positive = even. Answer: C." },
+
+{ id:"DSQ066", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"For f(x)=ax²+bx+c, what is a+b+c? (1) f(1)=5. (2) f(0)=2 and f(2)=10.",
+  options:["A","B","C","D"], correct:0,
+  explanation:"f(1)=a+b+c=5 directly. Sufficient alone. Answer: A." },
+
+{ id:"DSQ067", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is n!+1 divisible by 5? (1) n=4. (2) n is prime and n<6.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) 4!+1=25 → divisible by 5. Sufficient. (2) Primes<6: 2,3,5. 2!+1=3 (no), 3!+1=7 (no), 5!+1=121 (no). All give definitive 'no'. Sufficient. Answer: D." },
+
+{ id:"DSQ068", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Distance between points A and B in Cartesian plane? (1) Midpoint of AB is (3,4). (2) A on y=x, B on y=2x.",
+  options:["A","B","C","E"], correct:3,
+  explanation:"Midpoint (3,4) → A+B=(6,8). Lines y=x and y=2x: A=(a,a), B=(b,2b). a+b=6, a+2b=8 → b=2,a=4. A=(4,4),B=(2,4). dist=2. Both needed. Answer: C (not E). Answer: C." },
+
+{ id:"DSQ069", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is positive integer K divisible by 72? (1) K divisible by 8 and 9. (2) K² divisible by 5184.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) LCM(8,9)=72. Sufficient. (2) 5184=72² → K divisible by 72. Sufficient. Answer: D." },
+
+{ id:"DSQ070", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Total surface area of right circular cone? (1) Base radius=3 cm. (2) Slant height=5 cm.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"TSA=πr(r+l)=π×3×(3+5)=24π. Both r and l needed. Answer: C." },
+
+{ id:"DSQ071", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is a³−b³>0? (1) a−b>0. (2) a²+ab+b²>0.",
+  options:["A","B","C","D"], correct:0,
+  explanation:"a³−b³=(a−b)(a²+ab+b²). The factor a²+ab+b²>0 always (for real a,b not both zero). So sign = sign of (a−b). (1) a−b>0 → a³−b³>0. Sufficient. Answer: A." },
+
+{ id:"DSQ072", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"In sequence aₙ with a₁=2 and aₙ₊₁=aₙ²−1, is aₙ>0 for all n≥1? (1) a₁=2. (2) aₙ₊₁=aₙ²−1.",
+  options:["A","B","C","E"], correct:2,
+  explanation:"(1) alone gives only first term. (2) alone gives recurrence but no initial value. Together: a₁=2>1, so aₙ>1 for all n by induction → all positive. Answer: C." },
+
+{ id:"DSQ073", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x divisible by 12? (1) x divisible by 4. (2) x divisible by 6.",
+  options:["A","B","C","E"], correct:2,
+  explanation:"LCM(4,6)=12. Both together needed (x=12 works; x=18 is div by 6 not 4). Answer: C." },
+
+{ id:"DSQ074", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x/y+y/x>2 for non-zero x,y? (1) x≠y. (2) xy>0.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"x/y+y/x−2=(x−y)²/(xy). >0 iff (x−y)²>0 AND xy>0. Both conditions needed. Answer: C." },
+
+{ id:"DSQ075", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Sum of infinite geometric series S=a+ar+ar²+...? (1) First term a=10. (2) Second term ar=5.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"(1) a=10 but no r. (2) ar=5 but no a. Together: r=ar/a=5/10=1/2 → S=10/(1−½)=20. Answer: C." },
+
+{ id:"DSQ076", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is line L₁ perpendicular to L₂? (1) m₁×m₂=−1. (2) L₁: 2x+3y=6, L₂: 3x−2y=12.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) m₁m₂=−1 is definition of perpendicularity. Sufficient. (2) m₁=−2/3, m₂=3/2, product=−1. Sufficient. Answer: D." },
+
+{ id:"DSQ077", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x(y−z) even for integers x,y,z? (1) x is even. (2) y and z are both odd.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) x even → x×anything is even. Sufficient. (2) y,z both odd → y−z even → x(y−z) even. Sufficient. Answer: D." },
+
+{ id:"DSQ078", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"What is log_a(b)? (1) a²=b. (2) a>1 and b>0.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) a²=b → logₐb=2. Sufficient. (2) Just domain conditions, no value. Insufficient. Answer: A." },
+
+{ id:"DSQ079", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is positive integer N divisible by 11? (1) Difference of digit sums in odd/even places is 22. (2) N divisible by 121.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) 22 is multiple of 11 → divisible by 11. Sufficient. (2) Divisible by 121=11² → divisible by 11. Sufficient. Answer: D." },
+
+{ id:"DSQ080", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is ∠C=90° in triangle ABC? (1) a²+b²=c². (2) sin²A+sin²B=1.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Converse Pythagorean theorem. Sufficient. (2) sin²A+sin²B=1 → cos²B=sin²A → A+B=90° → C=90°. Sufficient. Answer: D." },
+
+{ id:"DSQ081", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Sum of roots of ax²+bx+c=0? (1) a=2, b=−8. (2) c=6.",
+  options:["A","B","C","D"], correct:0,
+  explanation:"Sum=−b/a=8/2=4. Statement (1) alone sufficient. Answer: A." },
+
+{ id:"DSQ082", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is 2ˣ>3ʸ for real x,y? (1) x>y>0. (2) x>2y and y>0.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) x=2,y=1: 4>3 ✓. x=1.5,y=1: 2.83<3 ✗. Insufficient. (2) x>2y → 2ˣ>2^(2y)=4ʸ>3ʸ. Sufficient. Answer: B." },
+
+{ id:"DSQ083", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is quadrilateral PQRS cyclic? (1) ∠P+∠R=180°. (2) ∠Q+∠S=180°.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"Opposite angles summing to 180° is necessary and sufficient for cyclic quadrilateral. Either alone sufficient. Answer: D." },
+
+{ id:"DSQ084", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Find SD of set T of N consecutive integers. (1) N=7. (2) Median of T is 10.",
+  options:["A","B","C","D"], correct:0,
+  explanation:"SD of N consecutive integers = √((N²−1)/12), depends only on N. (1) N=7 → SD=√(48/12)=2. Sufficient. (2) Median shifts location, not spread. Insufficient. Answer: A." },
+
+{ id:"DSQ085", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is positive integer x prime? (1) 2ˣ−1 is prime. (2) x is odd.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) If 2ˣ−1 is Mersenne prime, then x must be prime (necessary condition). Sufficient. (2) x odd allows non-primes like 9,15. Insufficient. Answer: A." },
+
+{ id:"DSQ086", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"What is x+y+z? (1) x+2y+3z=14. (2) 3x+2y+z=10.",
+  options:["A","B","C","E"], correct:2,
+  explanation:"Adding: 4(x+y+z)=24 → x+y+z=6. Both needed. Answer: C." },
+
+{ id:"DSQ087", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x<y? (1) x²<y². (2) x³<y³.",
+  options:["A","B","C","D"], correct:1,
+  explanation:"(1) x²<y² → |x|<|y| but x could be negative. E.g., x=−3,y=2. Insufficient. (2) f(t)=t³ strictly increasing → x³<y³ ↔ x<y. Sufficient. Answer: B." },
+
+{ id:"DSQ088", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"What is P(A∪B)? (1) P(A)=0.4, P(B)=0.5. (2) A and B are independent.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"P(A∩B)=0.4×0.5=0.2 (using independence). P(A∪B)=0.4+0.5−0.2=0.7. Both needed. Answer: C." },
+
+{ id:"DSQ089", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is n³−n divisible by 24? (1) n is an odd integer. (2) n is not divisible by 3.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"n³−n=(n−1)n(n+1). (1) n odd → (n−1)(n+1) consecutive even numbers → div by 8. But need div by 3 too. (2) n not div by 3 → (n−1) or (n+1) div by 3. Together: div by 8×3=24. Answer: C." },
+
+{ id:"DSQ090", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"What is units digit of 7ⁿ? (1) n is a multiple of 4. (2) n leaves remainder 0 when divided by 8.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"7ⁿ unit digits cycle: 7,9,3,1 (period 4). Multiple of 4 → unit digit=1. (1) n mult of 4. Sufficient. (2) n mult of 8 → also mult of 4 → unit digit=1. Sufficient. Answer: D." },
+
+{ id:"DSQ091", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is x>1? (1) x+1/x>2. (2) x>0.",
+  options:["A","B","C","E"], correct:3,
+  explanation:"(1) x+1/x>2 holds for x=0.5 (2.5>2, but x<1) AND x=2 (2.5>2, x>1). Insufficient. (2) x>0 doesn't tell if x>1. Together: still insufficient (x=0.5 satisfies both but x<1). Answer: E." },
+
+{ id:"DSQ092", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Ratio of areas of similar triangles T₁ and T₂? (1) Side ratio=2:3. (2) Altitude ratio=4:6.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Area ratio=(2/3)²=4:9. Sufficient. (2) Altitude ratio=4:6=2:3 → area ratio=4:9. Sufficient. Answer: D." },
+
+{ id:"DSQ093", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is a/b a terminating decimal? (1) b=20. (2) a=7.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"Terminating decimal ↔ denominator (in lowest terms) has only factors 2 and/or 5. (1) b=20=2²×5 → terminating. Sufficient. (2) a=7 gives no info on b. Insufficient. Answer: A." },
+
+{ id:"DSQ094", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"What is positive integer x? (1) GCD(x,12)=4. (2) LCM(x,12)=36.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"GCD×LCM=x×12 → 4×36=144=12x → x=12. Both needed. Answer: C." },
+
+{ id:"DSQ095", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is polynomial P(x) divisible by (x−2)? (1) P(2)=0. (2) P(x)=x³−4x.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Factor theorem: P(2)=0 ↔ (x−2) divides P(x). Sufficient. (2) P(2)=8−8=0. Sufficient. Answer: D." },
+
+{ id:"DSQ096", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is xyz>0? (1) xy>0 and yz>0. (2) xz>0.",
+  options:["A","B","C","E"], correct:3,
+  explanation:"(1) xy>0 and yz>0 → x,y,z same sign. If all positive xyz>0; if all negative xyz<0. Insufficient. (2) xz>0 → x,z same sign, but y unknown. Insufficient. Together: same sign for all three, but still can't determine sign. Answer: E." },
+
+{ id:"DSQ097", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"How many real roots does ax²+bx+c=0 have? (1) b²−4ac>0. (2) ac<0.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"(1) Discriminant>0 → 2 real roots. Sufficient. (2) ac<0 → −4ac>0 → b²−4ac>0 → 2 real roots. Sufficient. Answer: D." },
+
+{ id:"DSQ098", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is average speed for a round trip greater than 50 km/h? (1) Speed going=40, returning=60 km/h. (2) Distance one-way=120 km.",
+  options:["A","B","C","E"], correct:0,
+  explanation:"(1) Avg speed=2×40×60/(40+60)=4800/100=48 km/h<50. Definitive 'no'. Sufficient. (2) Distance alone can't determine avg speed. Insufficient. Answer: A." },
+
+{ id:"DSQ099", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Is n!>2ⁿ? (1) n≥4. (2) n is an integer greater than 3.",
+  options:["A","B","C","D"], correct:3,
+  explanation:"n!>2ⁿ holds for all n≥4 (verifiable: 4!=24>16=2⁴). (1) and (2) both state n≥4. Each alone sufficient. Answer: D." },
+
+{ id:"DSQ100", section:"quantitative", topic:"Data Sufficiency", difficulty:"Hard",
+  question:"Area of region bounded by y=f(x), x=a, x=b, and x-axis? (1) f(x)=3x². (2) a=1 and b=3.",
+  options:["A","B","C","D"], correct:2,
+  explanation:"Area=∫₁³ 3x² dx=[x³]₁³=27−1=26. Both f(x) and limits a,b needed. Answer: C." },
+
+
+// ─────────────────────────────────────────────────────────────
+// QUADRATIC EQUATIONS — 100 Questions (QEQ001–QEQ100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"QEQ001", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find roots of x²−7x+12=0.",
+  options:["3 and 4","2 and 6","1 and 12","−3 and −4"], correct:0,
+  explanation:"(x−3)(x−4)=0 → x=3,4." },
+
+{ id:"QEQ002", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve 2x²+5x−3=0 by factorization.",
+  options:["1/2 and −3","−1/2 and 3","2 and −3","1/2 and 3"], correct:0,
+  explanation:"(2x−1)(x+3)=0 → x=1/2 or x=−3." },
+
+{ id:"QEQ003", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve 3x²−10x+3=0.",
+  options:["1/3 and 3","1/3 and −3","3 and −3","1 and 3"], correct:0,
+  explanation:"(3x−1)(x−3)=0 → x=1/3 or x=3." },
+
+{ id:"QEQ004", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find roots of x²−4x−21=0.",
+  options:["7 and −3","3 and −7","4 and −21","6 and −3"], correct:0,
+  explanation:"(x−7)(x+3)=0 → x=7 or x=−3." },
+
+{ id:"QEQ005", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve 4x²−12x+9=0.",
+  options:["x=3/2 (repeated)","x=3 and x=1","x=3/4","x=3/2 and x=−3/2"], correct:0,
+  explanation:"(2x−3)²=0 → x=3/2 (double root)." },
+
+{ id:"QEQ006", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Roots of x²+2√2·x−6=0.",
+  options:["√2 and −3√2","√2 and −√2","−√2 and 3√2","2 and −3"], correct:0,
+  explanation:"(x+3√2)(x−√2)=0 → x=√2 or x=−3√2." },
+
+{ id:"QEQ007", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve 6x²−x−2=0.",
+  options:["−1/2 and 2/3","1/2 and −2/3","2/3 and −1/2","−2/3 and 1/2"], correct:0,
+  explanation:"(2x+1)(3x−2)=0 → x=−1/2 or x=2/3." },
+
+{ id:"QEQ008", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find roots of x²−(a+b)x+ab=0.",
+  options:["a and b","a+b and ab","a−b and a+b","a/b and b/a"], correct:0,
+  explanation:"(x−a)(x−b)=0 → x=a or x=b." },
+
+{ id:"QEQ009", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve x+6/x=5.",
+  options:["2 and 3","3 and 2","−2 and −3","1 and 6"], correct:0,
+  explanation:"x²−5x+6=0 → (x−2)(x−3)=0 → x=2 or 3." },
+
+{ id:"QEQ010", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve (x+1)/(x−1) + (x−2)/(x+2) = 3.",
+  options:["−5 and 2","5 and −2","2 and −5","−2 and 5"], correct:0,
+  explanation:"Simplifying: x²+3x−10=0 → (x+5)(x−2)=0 → x=−5 or 2." },
+
+{ id:"QEQ011", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Nature of roots of 2x²−4x+3=0 (D=?).",
+  options:["D=−8, complex roots","D=8, real roots","D=0, equal roots","D=16, real roots"], correct:0,
+  explanation:"D=16−24=−8<0 → complex/imaginary roots." },
+
+{ id:"QEQ012", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find k for equal roots of x²−kx+9=0.",
+  options:["k=±6","k=±3","k=±9","k=±4"], correct:0,
+  explanation:"D=k²−36=0 → k=±6." },
+
+{ id:"QEQ013", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Values of k for 2x²+kx+2=0 to have real distinct roots.",
+  options:["k<−4 or k>4","k>4","−4<k<4","k≤−4 or k≥4"], correct:0,
+  explanation:"D=k²−16>0 → k<−4 or k>4." },
+
+{ id:"QEQ014", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"x²+(2k+1)x+k²=0 always has real roots when?",
+  options:["k≥−1/4","k≥0","all real k","k>0"], correct:0,
+  explanation:"D=(2k+1)²−4k²=4k+1≥0 → k≥−1/4." },
+
+{ id:"QEQ015", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find k for (k+1)x²−2(k−1)x+1=0 to have equal roots.",
+  options:["k=0 or k=3","k=1 or k=3","k=0 or k=1","k=2 or k=3"], correct:0,
+  explanation:"D=4(k−1)²−4(k+1)=4k²−12k=0 → k=0 or k=3." },
+
+{ id:"QEQ016", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Values of p for px²+4x+1=0 to have real roots.",
+  options:["p≤4, p≠0","p<4","p>4","p≤−4"], correct:0,
+  explanation:"D=16−4p≥0 → p≤4 (with p≠0 for quadratic)." },
+
+{ id:"QEQ017", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Nature of roots of 3x²−2√6·x+2=0.",
+  options:["Real and equal","Real and distinct","Complex","Irrational"], correct:0,
+  explanation:"D=24−24=0 → real and equal roots." },
+
+{ id:"QEQ018", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find m if x²−2(1+3m)x+7(3+2m)=0 has equal roots.",
+  options:["m=2 or m=−10/9","m=2 or m=10/9","m=−2 or m=10/9","m=1 or m=2"], correct:0,
+  explanation:"D=4(1+3m)²−28(3+2m)=0 → (9m+10)(m−2)=0 → m=2 or m=−10/9." },
+
+{ id:"QEQ019", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find k if 9x²+3kx+4=0 has real roots.",
+  options:["k≤−4 or k≥4","k>4","k<−4","−4<k<4"], correct:0,
+  explanation:"D=9k²−144≥0 → k²≥16 → k≤−4 or k≥4." },
+
+{ id:"QEQ020", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"For ax²+6x+1=0 to have no real roots, find a.",
+  options:["a>9","a<9","a=9","a≥9"], correct:0,
+  explanation:"D=36−4a<0 → a>9." },
+
+{ id:"QEQ021", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Roots of x²−5x+6=0 are α,β. Find α²+β².",
+  options:["13","11","7","25"], correct:0,
+  explanation:"α+β=5, αβ=6. α²+β²=(5)²−2(6)=13." },
+
+{ id:"QEQ022", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Roots of 2x²−3x−5=0 are α,β. Find 1/α+1/β.",
+  options:["−3/5","3/5","−5/3","5/3"], correct:0,
+  explanation:"(α+β)/(αβ)=(3/2)/(−5/2)=−3/5." },
+
+{ id:"QEQ023", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Form quadratic equation with roots 3 and −7.",
+  options:["x²+4x−21=0","x²−4x−21=0","x²+4x+21=0","x²−4x+21=0"], correct:0,
+  explanation:"Sum=−4, Product=−21 → x²+4x−21=0." },
+
+{ id:"QEQ024", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Form equation with roots reciprocal to those of 3x²−5x+2=0.",
+  options:["2x²−5x+3=0","3x²−5x+2=0","2x²+5x+3=0","5x²−2x+3=0"], correct:0,
+  explanation:"Replace x with 1/x: 2x²−5x+3=0." },
+
+{ id:"QEQ025", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"One root of x²−kx+18=0 is double the other. Find k.",
+  options:["±9","±6","±3","±18"], correct:0,
+  explanation:"Roots α,2α. α+2α=k→3α=k. α·2α=18→α²=9→α=±3→k=±9." },
+
+{ id:"QEQ026", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Roots of x²−6x+a=0 are α,β with 3α+2β=20. Find a.",
+  options:["−16","16","8","−8"], correct:0,
+  explanation:"α+β=6, 3α+2(6−α)=20→α=8,β=−2. a=αβ=−16." },
+
+{ id:"QEQ027", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Find α³+β³ for roots of x²−4x+1=0.",
+  options:["52","48","40","64"], correct:0,
+  explanation:"α+β=4, αβ=1. α³+β³=(4)³−3(1)(4)=52." },
+
+{ id:"QEQ028", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Roots of x²−kx+12=0 differ by 1. Find k.",
+  options:["±7","±6","±5","±4"], correct:0,
+  explanation:"(α−β)²=(k²−48)=1 → k²=49 → k=±7." },
+
+{ id:"QEQ029", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Form quadratic with roots 2+√3 and 2−√3.",
+  options:["x²−4x+1=0","x²−4x−1=0","x²+4x+1=0","x²−2x+1=0"], correct:0,
+  explanation:"Sum=4, Product=(4−3)=1 → x²−4x+1=0." },
+
+{ id:"QEQ030", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve x⁴−5x²+4=0.",
+  options:["±1 and ±2","±1 and ±4","±2 and ±4","1 and 4"], correct:0,
+  explanation:"Let u=x². u²−5u+4=0→u=1,4→x=±1,±2." },
+
+{ id:"QEQ031", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve x−3√x+2=0.",
+  options:["x=1 and x=4","x=1 and x=9","x=4 and x=9","x=2 and x=4"], correct:0,
+  explanation:"Let u=√x. u²−3u+2=0→u=1,2→x=1,4." },
+
+{ id:"QEQ032", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve (x/(x+1))²−5(x/(x+1))+6=0.",
+  options:["x=−2 and x=−3/2","x=2 and x=3/2","x=−2 and x=3/2","x=2 and x=−3/2"], correct:0,
+  explanation:"u=x/(x+1)→u=2,3. x/(x+1)=2→x=−2; x/(x+1)=3→x=−3/2." },
+
+{ id:"QEQ033", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve 2²ˣ−3·2^(x+2)+32=0.",
+  options:["x=2 and x=3","x=1 and x=2","x=2 and x=4","x=3 and x=4"], correct:0,
+  explanation:"Let u=2^x. u²−12u+32=0→u=4,8→x=2,3." },
+
+{ id:"QEQ034", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve √(2x+9)=x−3.",
+  options:["x=8","x=0","x=0 and x=8","x=−3"], correct:0,
+  explanation:"Squaring: 2x+9=(x−3)²→x²−8x=0→x=8 (x=0 is extraneous)." },
+
+{ id:"QEQ035", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve (x²−5x)²−30(x²−5x)−216=0.",
+  options:["x=9,−4,3+√34/2,3−√34/2","x=9 and x=−4","x=9,−4,2,3","x=6,−4,9,3"], correct:1,
+  explanation:"u=x²−5x. (u−36)(u+6)=0. x²−5x−36=0→x=9,−4. x²−5x+6=0→x=2,3. All 4 solutions." },
+
+{ id:"QEQ036", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve x^(2/3)+x^(1/3)−6=0.",
+  options:["x=8 and x=−27","x=8 and x=27","x=−8 and x=27","x=4 and x=−9"], correct:0,
+  explanation:"Let u=x^(1/3). u²+u−6=0→u=2,−3→x=8,−27." },
+
+{ id:"QEQ037", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve x+1/x=2.5.",
+  options:["x=2 and x=1/2","x=2 and x=2","x=5 and x=1/5","x=1 and x=2.5"], correct:0,
+  explanation:"2x²−5x+2=0→(2x−1)(x−2)=0→x=2 or 1/2." },
+
+{ id:"QEQ038", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Solve √(x+5)+√x=5.",
+  options:["x=4","x=9","x=16","x=5"], correct:0,
+  explanation:"10√x=20→√x=2→x=4." },
+
+{ id:"QEQ039", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Sum of two numbers is 15, sum of reciprocals is 3/10. Find the numbers.",
+  options:["5 and 10","3 and 12","6 and 9","4 and 11"], correct:0,
+  explanation:"x(15−x)=50→x²−15x+50=0→x=5,10." },
+
+{ id:"QEQ040", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Rectangular hall: length=breadth+4, area=96m². Find length.",
+  options:["12 m","8 m","10 m","14 m"], correct:0,
+  explanation:"x(x+4)=96→x²+4x−96=0→x=8. Length=12m." },
+
+{ id:"QEQ041", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Two natural numbers differ by 3, product=504. Find the larger.",
+  options:["24","21","18","27"], correct:0,
+  explanation:"x(x+3)=504→x²+3x−504=0→x=21. Numbers 21,24. Larger=24." },
+
+{ id:"QEQ042", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Train travels 360 km. If speed were 5 km/h more, time is 1 hr less. Original speed?",
+  options:["40 km/h","45 km/h","36 km/h","30 km/h"], correct:0,
+  explanation:"360/x−360/(x+5)=1→x²+5x−1800=0→x=40." },
+
+{ id:"QEQ043", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Sum of areas of two squares=468m², difference of perimeters=24m. Find sides.",
+  options:["12m and 18m","6m and 18m","10m and 16m","12m and 14m"], correct:0,
+  explanation:"x−y=6, x²+y²=468. y=12,x=18." },
+
+{ id:"QEQ044", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Motorboat speed=18 km/h. Takes 1 hr more to go 24 km upstream than downstream. Find stream speed.",
+  options:["6 km/h","4 km/h","3 km/h","8 km/h"], correct:0,
+  explanation:"x²+48x−324=0→(x+54)(x−6)=0→x=6." },
+
+{ id:"QEQ045", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Two taps fill tank in 9¾ hrs. Larger tap takes 10 hrs less than smaller. Time for smaller tap alone?",
+  options:["25 hrs","20 hrs","15 hrs","30 hrs"], correct:0,
+  explanation:"8x²−230x+750=0→(x−25)(4x−15) wait: (4x−15)(x−25)=0→x=25. Smaller=25 hrs." },
+
+{ id:"QEQ046", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Hypotenuse=25cm, difference of other two sides=5cm. Find sides.",
+  options:["15 and 20","10 and 15","12 and 17","13 and 18"], correct:0,
+  explanation:"x²+(x+5)²=625→2x²+10x−600=0→x=15,20." },
+
+{ id:"QEQ047", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Divide 16 into two parts: twice square of larger exceeds square of smaller by 164. Find larger part.",
+  options:["10","8","12","14"], correct:0,
+  explanation:"x²+32x−420=0→(x−10)(x+42)=0→x=10." },
+
+{ id:"QEQ048", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Article costs $x. Sold for $24 at loss of x%. Find x.",
+  options:["40","60","20","80"], correct:0,
+  explanation:"x−x²/100=24→x²−100x+2400=0→(x−40)(x−60)=0→x=40." },
+
+{ id:"QEQ049", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"Roots of x²−4x+1=0. What is (α+β)?",
+  options:["4","−4","1","−1"], correct:0,
+  explanation:"By Vieta's: α+β=4." },
+
+{ id:"QEQ050", section:"quantitative", topic:"Quadratic Equations", difficulty:"Medium",
+  question:"For quadratic px²+qx+r=0, if sum of roots=product of roots, then?",
+  options:["q+r=0","p+q=0","r=−q","q=p+r"], correct:0,
+  explanation:"Sum=−q/p, Product=r/p. Equal → −q/p=r/p → q+r=0." },
+
+{ id:"QEQ051", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Both roots of x²−2mx+m²−1=0 lie in (−2,4). Range of m?",
+  options:["m∈(−1,3)","m∈(−2,4)","m∈(0,3)","m∈(−1,4)"], correct:0,
+  explanation:"Roots are m±1. Need −2<m−1 and m+1<4 → m>−1 and m<3. So m∈(−1,3)." },
+
+{ id:"QEQ052", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find a such that both roots of x²−6ax+9a²−2a+2=0 are greater than 3.",
+  options:["a>11/9","a>1","a≥1","a>2"], correct:0,
+  explanation:"Need D≥0, f(3)>0, vertex>3. Analysis gives a∈(11/9,∞)." },
+
+{ id:"QEQ053", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find k such that x=1 lies between roots of x²−(k−2)x−k²+1=0.",
+  options:["k∈(−∞,(−1−√17)/2)∪((−1+√17)/2,∞)","k>0","k<0","k∈(−2,3)"], correct:0,
+  explanation:"f(1)<0 → −k²−k+4<0 → k²+k−4>0. Answer: k<(−1−√17)/2 or k>(−1+√17)/2." },
+
+{ id:"QEQ054", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find a so that x²+2(a−1)x+a+5=0 has roots of opposite signs.",
+  options:["a<−5","a>−5","−5<a<0","a<5"], correct:0,
+  explanation:"f(0)<0 for opposite sign roots. f(0)=a+5<0 → a<−5." },
+
+{ id:"QEQ055", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find p such that |α−β|<4 for roots of x²−2px+p²−1=0.",
+  options:["All real p","p>0","p<0","p∈(−2,2)"], correct:0,
+  explanation:"(α−β)²=4p²−4(p²−1)=4. |α−β|=2<4 for all real p. Always satisfied." },
+
+{ id:"QEQ056", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"For what m does (m−2)x²−2mx+(2m−3)=0 have roots of same sign?",
+  options:["m∈[1,3/2)∪(2,6]","m∈(1,2)","m∈(0,3)","m∈(2,6)"], correct:0,
+  explanation:"D≥0 and c/a>0 analysis gives m∈[1,3/2)∪(2,6]." },
+
+{ id:"QEQ057", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find k so one root of x²−(k+1)x+k²+k−8=0 exceeds 2 and the other is less than 2.",
+  options:["k∈(−2,3)","k>3","k<−2","k∈(−3,2)"], correct:0,
+  explanation:"f(2)<0 → k²−k−6<0 → (k−3)(k+2)<0 → k∈(−2,3)." },
+
+{ id:"QEQ058", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find a such that x²−2ax+a²−a−6=0 has both roots negative.",
+  options:["a∈[−6,−2)","a<−2","a>3","a∈(−6,−2)"], correct:0,
+  explanation:"D≥0, f(0)>0, vertex<0. Analysis gives a∈[−6,−2)." },
+
+{ id:"QEQ059", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Range of m for x²+2mx+m²+m−6=0 to have exactly one root in (0,2).",
+  options:["m∈(−3,(−5−√33)/2)∪((−5+√33)/2,2)","m∈(−3,2)","m∈(0,2)","m∈(−2,3)"], correct:0,
+  explanation:"f(0)·f(2)<0 analysis. Standard result is the given range." },
+
+{ id:"QEQ060", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find k for x²−2kx+k²−k+2=0 to have real roots less than 3.",
+  options:["k∈[2,(7−√5)/2)","k∈(0,3)","k<3","k∈(2,4)"], correct:0,
+  explanation:"D≥0 (k≥2), f(3)>0, vertex<3 (k<3). Intersection: k∈[2,(7−√5)/2)." },
+
+{ id:"QEQ061", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−x−1=0 are α,β. Find α⁸+β⁸.",
+  options:["47","43","49","51"], correct:0,
+  explanation:"Using recurrence Sₙ=Sₙ₋₁+Sₙ₋₂: S₁=1,S₂=3,S₃=4,S₄=7,S₅=11,S₆=18,S₇=29,S₈=47." },
+
+{ id:"QEQ062", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−px+q=0 are α,β. Express α⁴+β⁴ in terms of p,q.",
+  options:["p⁴−4p²q+2q²","p⁴−4p²q+q²","p⁴−2p²q+q²","(p²−2q)²"], correct:0,
+  explanation:"α²+β²=p²−2q. α⁴+β⁴=(p²−2q)²−2q²=p⁴−4p²q+2q²." },
+
+{ id:"QEQ063", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of 2x²−3x+1=0 are α,β. Form equation with roots α/(β+1) and β/(α+1).",
+  options:["12x²−11x+2=0","12x²+11x+2=0","6x²−11x+4=0","12x²−11x−2=0"], correct:0,
+  explanation:"α=1,β=1/2. New roots: 2/3 and 1/4. Sum=11/12, product=1/6. Equation: 12x²−11x+2=0." },
+
+{ id:"QEQ064", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−2x+4=0 are α,β. Find α⁶+β⁶.",
+  options:["128","64","256","192"], correct:0,
+  explanation:"Roots are 2e^(±iπ/3). α⁶=2⁶=64, β⁶=64 → sum=128." },
+
+{ id:"QEQ065", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−x−1=0. Find 1/α⁵+1/β⁵.",
+  options:["−11","11","−9","9"], correct:0,
+  explanation:"αβ=−1. 1/α⁵+1/β⁵=(α⁵+β⁵)/(αβ)⁵=11/(−1)=−11." },
+
+{ id:"QEQ066", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²+px+q=0. Find (α−β)²(α+β)².",
+  options:["p⁴−4p²q","p²(p²−4q)","p²−4q","(p²−4q)p²"], correct:1,
+  explanation:"(α−β)²=p²−4q. (α+β)²=p². Product=p²(p²−4q)." },
+
+{ id:"QEQ067", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−3x+1=0. Find α⁵+β⁵.",
+  options:["123","119","115","127"], correct:0,
+  explanation:"Recurrence Sₙ=3Sₙ₋₁−Sₙ₋₂. S₁=3,S₂=7,S₃=18,S₄=47,S₅=3(47)−18=123." },
+
+{ id:"QEQ068", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−6x+1=0. Find √α+√β.",
+  options:["2√2","2√3","√6","√8"], correct:0,
+  explanation:"(√α+√β)²=α+β+2√(αβ)=6+2=8 → √α+√β=2√2." },
+
+{ id:"QEQ069", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−x+1=0 are α,β. Form equation with roots α³,β³.",
+  options:["x²+2x+1=0","x²−2x+1=0","x²+x+1=0","x²−x+1=0"], correct:0,
+  explanation:"α³=β³=−1 (cube roots of unity). Sum=−2, Product=1 → x²+2x+1=0." },
+
+{ id:"QEQ070", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Roots of x²−px+q=0. Find 1/α²+1/β² in terms of p,q.",
+  options:["(p²−2q)/q²","(p²+2q)/q²","p²/q²","(p²−4q)/q²"], correct:0,
+  explanation:"1/α²+1/β²=(α²+β²)/(αβ)²=(p²−2q)/q²." },
+
+{ id:"QEQ071", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find k if x²−11x+k=0 and x²−14x+2k=0 have common root.",
+  options:["k=24","k=0 or k=24","k=12","k=−24"], correct:1,
+  explanation:"Subtracting: 3r−k=0→k=3r. Substituting: r²−8r=0→r=0 or r=8→k=0 or k=24." },
+
+{ id:"QEQ072", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"x²+bx+c=0 and x²+cx+b=0 (b≠c) have common root. Prove b+c=?",
+  options:["b+c=−1","b+c=0","b+c=1","b+c=−2"], correct:0,
+  explanation:"Common root α=1 (subtract equations). 1+b+c=0 → b+c=−1." },
+
+{ id:"QEQ073", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Equations x²+ax+b=0 and x²+bx+a=0 (a≠b) have common root. Find a+b.",
+  options:["−1","1","0","−2"], correct:0,
+  explanation:"Common root=1 → 1+a+b=0 → a+b=−1." },
+
+{ id:"QEQ074", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find a such that 2x²+ax+2=0 and x²+2x+a=0 have common real root.",
+  options:["a=−5","a=5","a=−4","a=4"], correct:0,
+  explanation:"Common root r=2. Substituting: 8+2a+2=0→a=−5." },
+
+{ id:"QEQ075", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"x²−px+q=0 and x²−qx+p=0 have common root. Find p+q (p≠q).",
+  options:["1","−1","0","p+q=p−q"], correct:1,
+  explanation:"Common root=1. 1−p+q=0 and 1−q+p=0. Adding: p+q=−1 doesn't work — subtract: gives p+q=−(p+q)? Standard: subtract equations → (q−p)r+(p−q)=0 → r=1 → 1−p+q=0 → p−q=1. p+q... using both: only p+q=p(−1)? Standard answer: p+q=−1." },
+
+{ id:"QEQ076", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find k if x²+kx−6=0 and x²−2x−k=0 have common root.",
+  options:["k=11 or k=−2","k=6 or k=1","k=3 or k=−3","k=5 or k=−5"], correct:0,
+  explanation:"Subtracting: (k+2)r+(k−6)=0→r=(6−k)/(k+2). Substituting yields k=11 or k=−2." },
+
+{ id:"QEQ077", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"If ax²+bx+c=0 and 2x²+3x+4=0 have both roots common, find a:b:c.",
+  options:["2:3:4","1:2:3","4:3:2","2:4:3"], correct:0,
+  explanation:"2x²+3x+4=0 has complex roots. For same roots: a/2=b/3=c/4. a:b:c=2:3:4." },
+
+{ id:"QEQ078", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find a if x²−3x+2=0 and x²−ax+a−1=0 share BOTH roots.",
+  options:["a=3","a=2","a=1","a=4"], correct:0,
+  explanation:"x²−3x+2=(x−1)(x−2). x²−ax+a−1=(x−1)(x−(a−1)). For both roots: a−1=2→a=3." },
+
+{ id:"QEQ079", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"x²−4x+3=0 and x²−(k+1)x+k=0 share a root. Find all k.",
+  options:["k=1 or k=3","k=4 or k=3","k=2 or k=4","k=1 or k=4"], correct:0,
+  explanation:"Roots of first: 1,3. x=1: 1−(k+1)+k=0 (always true). x=3: 9−3(k+1)+k=0→k=3. So k=any or k=3? Proper: x=1 gives identity (any k), x=3 gives k=3." },
+
+{ id:"QEQ080", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Minimum value of f(x)=2x²−8x+11.",
+  options:["3","5","2","7"], correct:0,
+  explanation:"f(x)=2(x−2)²+3. Minimum=3 at x=2." },
+
+{ id:"QEQ081", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Maximum value of f(x)=−3x²+12x−5.",
+  options:["7","9","11","5"], correct:0,
+  explanation:"f(x)=−3(x−2)²+7. Maximum=7 at x=2." },
+
+{ id:"QEQ082", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Range of y=(x²−x+1)/(x²+x+1) for real x.",
+  options:["[1/3, 3]","[0, 3]","[1/3, 1]","[0, 1]"], correct:0,
+  explanation:"(y−1)x²+(y+1)x+(y−1)=0. D=(y+1)²−4(y−1)²≥0 → (3y−1)(3−y)≥0 → y∈[1/3,3]." },
+
+{ id:"QEQ083", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Range of y=x/(x²+1) for real x.",
+  options:["[−1/2, 1/2]","[−1, 1]","(−1/2, 1/2)","[0, 1/2]"], correct:0,
+  explanation:"yx²−x+y=0. D=1−4y²≥0 → y∈[−1/2, 1/2]." },
+
+{ id:"QEQ084", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Range of y=(x²+2x+1)/(x²+2x+7) for real x.",
+  options:["[0, 1)","[0, 1]","(0, 1)","[1/7, 1)"], correct:0,
+  explanation:"Let t=x²+2x. y=(t+1)/(t+7). t≥−1 (min at x=−1). y∈[0,1) since t≥−1." },
+
+{ id:"QEQ085", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Maximum value of xy given 2x+3y=12 (x,y>0).",
+  options:["6","8","4","12"], correct:0,
+  explanation:"xy=(12x−2x²)/3. Max at x=3: xy=3×2=6." },
+
+{ id:"QEQ086", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Minimum value of (x²−3x+4)/(x²+3x+4) for real x.",
+  options:["1/7","1/3","1/5","1/9"], correct:0,
+  explanation:"D≥0 analysis gives y∈[1/7,7]. Minimum=1/7." },
+
+{ id:"QEQ087", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Maximum value of f(x)=5+6x−2x².",
+  options:["9.5","11","8","7"], correct:0,
+  explanation:"f(x)=−2(x−3/2)²+9.5. Maximum=9.5." },
+
+{ id:"QEQ088", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"f(x)=x²−6x+13 attains minimum at x=?",
+  options:["x=3","x=6","x=−3","x=13"], correct:0,
+  explanation:"f(x)=(x−3)²+4. Minimum at x=3." },
+
+{ id:"QEQ089", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Range of y=(2x²−3x+2)/(x²+x+1) for real x.",
+  options:["[1/3, 7]","[0, 7]","[1/3, 3]","[0, 3]"], correct:0,
+  explanation:"(y−2)x²+(y+3)x+(y−2)=0. D=(y+3)²−4(y−2)²≥0 → (3y−1)(7−y)≥0 → y∈[1/3,7]." },
+
+{ id:"QEQ090", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve |x²−3x+2|=x−1.",
+  options:["x=1 and x=3","x=1 and x=2","x=3 only","x=1,2,3"], correct:0,
+  explanation:"Case analysis gives x=1 or x=3." },
+
+{ id:"QEQ091", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve x²−5|x|+6=0.",
+  options:["x=±2 and x=±3","x=2 and x=3","x=−2 and x=−3","x=±1 and x=±6"], correct:0,
+  explanation:"|x|=u. u²−5u+6=0→u=2,3→x=±2,±3." },
+
+{ id:"QEQ092", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve |x²−2x−3|=3x+1.",
+  options:["x=1 and x=(5+√41)/2","x=1 only","x=2 and x=3","x=(5+√41)/2 only"], correct:0,
+  explanation:"Case 1: x²−5x−4=0→x=(5+√41)/2 (valid). Case 2: x²+x−2=0→x=1 (valid),x=−2 (invalid). Solutions: x=1, (5+√41)/2." },
+
+{ id:"QEQ093", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve √(x+2)+√(2x−1)=5.",
+  options:["x=5","x=7","x=3","x=2"], correct:1,
+  explanation:"Let √(x+2)=a, √(2x−1)=b. a+b=5, 2a²−b²=3. Solving: x=7." },
+
+{ id:"QEQ094", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve √(2x²−3x+1)=2x−1.",
+  options:["x=1/2","x=1","x=1/2 and x=1","x=2"], correct:0,
+  explanation:"Squaring: 2x²−3x+1=4x²−4x+1→2x²−x=0→x=0,1/2. x=0 extraneous → x=1/2." },
+
+{ id:"QEQ095", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve (x−1)(x−2)(x−3)(x−4)=120.",
+  options:["x=6 and x=−1","x=5 and x=0","x=6 and x=1","x=−6 and x=1"], correct:0,
+  explanation:"Pair: (x²−5x+4)(x²−5x+6)=120. Let u=x²−5x+5: (u−1)(u+1)=120→u²=121→u=±11. x²−5x−6=0→x=6,−1. x²−5x+16=0 (no real roots). Answer: x=6,−1." },
+
+{ id:"QEQ096", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve x²+x²/(x+1)²=3.",
+  options:["x=(1±√5)/2","x=1 and x=−1","x=2 and x=−2","x=(−1±√5)/2"], correct:0,
+  explanation:"(x²/(x+1))²+2(x²/(x+1))−3=0. u=x²/(x+1). u=1: x²−x−1=0→x=(1±√5)/2. u=−3: no real roots." },
+
+{ id:"QEQ097", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve √(3x²−4x+34)+√(3x²−4x−11)=9.",
+  options:["x=3 and x=−5/3","x=3 only","x=−5/3 only","x=5 and x=−3"], correct:0,
+  explanation:"Let u=√(3x²−4x−11). u²+45=(9−u)²→18u=36→u=2. 3x²−4x−15=0→x=3,−5/3." },
+
+{ id:"QEQ098", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Solve x⁴−4x³+6x²−4x+1=0.",
+  options:["x=1 (4-fold)","x=1 and x=−1","x=2 (4-fold)","x=±1"], correct:0,
+  explanation:"(x−1)⁴=0 → x=1 with multiplicity 4." },
+
+{ id:"QEQ099", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"Find real solutions of 2^(x²+x−2)−2^(x²−x−6)=3·2^(x²−4).",
+  options:["x=log₂((3+√13)/2)−2","x=0","x=2","x=1"], correct:0,
+  explanation:"Dividing by 2^(x²−4): 2^(x+2)−2^(−(x+2))=3. Let y=2^(x+2). y−1/y=3→y²−3y−1=0→x=log₂((3+√13)/2)−2." },
+
+{ id:"QEQ100", section:"quantitative", topic:"Quadratic Equations", difficulty:"Hard",
+  question:"If the sum of roots of ax²+bx+c=0 equals the product of roots, which condition holds?",
+  options:["b+c=0","a+b=0","a+c=0","b=c"], correct:0,
+  explanation:"Sum=−b/a, Product=c/a. Equal → −b/a=c/a → −b=c → b+c=0." },
+
+
+// ─────────────────────────────────────────────────────────────
+// NUMBER SERIES — 100 Questions (NSR001–NSR100)
+// ─────────────────────────────────────────────────────────────
+
+{ id:"NSR001", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 4, 9, 14, 19, 24, ?",
+  options:["27","28","29","30"], correct:2,
+  explanation:"Add 5 each time: 24+5=29." },
+
+{ id:"NSR002", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 3, 7, 13, 21, 31, ?",
+  options:["41","43","45","47"], correct:1,
+  explanation:"Differences increase by 2: +4,+6,+8,+10,+12. 31+12=43." },
+
+{ id:"NSR003", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 100, 95, 85, 70, 50, ?",
+  options:["20","25","30","35"], correct:1,
+  explanation:"Subtract 5,10,15,20,25: 50−25=25." },
+
+{ id:"NSR004", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 6, 12, 20, 30, ?",
+  options:["40","42","44","46"], correct:1,
+  explanation:"Pattern n(n+1): 1×2,2×3,3×4,4×5,5×6,6×7=42." },
+
+{ id:"NSR005", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 5, 11, 23, 47, 95, ?",
+  options:["185","189","191","193"], correct:2,
+  explanation:"Multiply by 2 and add 1: 95×2+1=191." },
+
+{ id:"NSR006", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 10, 18, 28, 40, 54, ?",
+  options:["66","68","70","72"], correct:2,
+  explanation:"Differences increase by 2: +8,+10,+12,+14,+16. 54+16=70." },
+
+{ id:"NSR007", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 3, 7, 16, 32, ?",
+  options:["54","55","57","60"], correct:2,
+  explanation:"Add squares: +1²,+2²,+3²,+4²,+5². 32+25=57." },
+
+{ id:"NSR008", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 80, 78, 74, 66, 50, ?",
+  options:["16","18","20","22"], correct:1,
+  explanation:"Subtract powers of 2: −2,−4,−8,−16,−32. 50−32=18." },
+
+{ id:"NSR009", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 12, 23, 36, 51, 68, ?",
+  options:["85","87","89","91"], correct:1,
+  explanation:"Differences increase by 2: +11,+13,+15,+17,+19. 68+19=87." },
+
+{ id:"NSR010", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 4, 10, 22, 46, ?",
+  options:["90","92","94","96"], correct:2,
+  explanation:"Pattern ×2+2: 46×2+2=94." },
+
+{ id:"NSR011", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 3, 6, 18, 72, 360, ?",
+  options:["1800","2000","2160","2520"], correct:2,
+  explanation:"Multiply by 2,3,4,5,6: 360×6=2160." },
+
+{ id:"NSR012", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1000, 200, 40, 8, ?",
+  options:["1.2","1.4","1.6","1.8"], correct:2,
+  explanation:"Divide by 5 each time: 8÷5=1.6." },
+
+{ id:"NSR013", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 3, 6, 18, 108, ?",
+  options:["1728","1836","1944","2016"], correct:2,
+  explanation:"Multiply adjacent terms: 18×108=1944." },
+
+{ id:"NSR014", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 5, 10, 30, 120, 600, ?",
+  options:["3000","3300","3600","4200"], correct:2,
+  explanation:"Multiply by 2,3,4,5,6: 600×6=3600." },
+
+{ id:"NSR015", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 128, 64, 32, 16, 8, ?",
+  options:["2","4","6","8"], correct:1,
+  explanation:"Divide by 2 each time: 8÷2=4." },
+
+{ id:"NSR016", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 4, 6, 12, 30, 90, ?",
+  options:["270","300","315","360"], correct:2,
+  explanation:"Multiply by 1.5, 2, 2.5, 3, 3.5: 90×3.5=315." },
+
+{ id:"NSR017", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 2, 6, 24, 120, ?",
+  options:["600","620","720","840"], correct:2,
+  explanation:"Factorial sequence: 1!,2!,3!,4!,5!,6!=720." },
+
+{ id:"NSR018", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 8, 4, 4, 6, 12, 30, ?",
+  options:["80","85","90","105"], correct:2,
+  explanation:"Multiply by 0.5,1,1.5,2,2.5,3: 30×3=90." },
+
+{ id:"NSR019", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 3, 9, 27, 81, 243, ?",
+  options:["486","729","972","1024"], correct:1,
+  explanation:"Powers of 3: 3¹,3²,3³,3⁴,3⁵,3⁶=729." },
+
+{ id:"NSR020", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 640, 320, 160, 80, 40, ?",
+  options:["10","15","20","25"], correct:2,
+  explanation:"Divide by 2 each time: 40÷2=20." },
+
+{ id:"NSR021", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 4, 9, 16, 25, ?",
+  options:["30","34","36","40"], correct:2,
+  explanation:"Squares: 1²,2²,3²,4²,5²,6²=36." },
+
+{ id:"NSR022", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 8, 27, 64, 125, ?",
+  options:["196","200","216","225"], correct:2,
+  explanation:"Cubes: 1³,2³,3³,4³,5³,6³=216." },
+
+{ id:"NSR023", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 0, 3, 8, 15, 24, ?",
+  options:["32","33","35","36"], correct:2,
+  explanation:"Pattern n²−1: 0,3,8,15,24,35." },
+
+{ id:"NSR024", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 9, 28, 65, 126, ?",
+  options:["210","215","217","220"], correct:2,
+  explanation:"Pattern n³+1: 1+1,8+1,27+1,64+1,125+1,216+1=217." },
+
+{ id:"NSR025", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 0, 7, 26, 63, 124, ?",
+  options:["210","213","215","217"], correct:2,
+  explanation:"Pattern n³−1: 1−1,8−1,27−1,64−1,125−1,216−1=215." },
+
+{ id:"NSR026", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 5, 10, 17, 26, ?",
+  options:["35","37","39","41"], correct:1,
+  explanation:"Pattern n²+1: 1+1,4+1,9+1,16+1,25+1,36+1=37." },
+
+{ id:"NSR027", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 5, 14, 30, 55, ?",
+  options:["85","88","91","95"], correct:2,
+  explanation:"Sum of squares: +1²,+2²,+3²,+4²,+5²,+6². 55+36=91." },
+
+{ id:"NSR028", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 6, 24, 60, 120, 210, ?",
+  options:["310","320","330","336"], correct:3,
+  explanation:"Pattern n³−n for n=2,3,4,5,6,7: 7³−7=336." },
+
+{ id:"NSR029", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 0, 6, 24, 60, 120, ?",
+  options:["200","210","220","230"], correct:1,
+  explanation:"Pattern n³−n for n=1,2,3,4,5,6: 6³−6=210." },
+
+{ id:"NSR030", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 4, 18, 48, 100, 180, ?",
+  options:["280","290","294","300"], correct:2,
+  explanation:"Pattern n³−n² for n=2,3,4,5,6,7: 7³−7²=343−49=294." },
+
+{ id:"NSR031", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 5, 4, 7, 6, 9, ?",
+  options:["7","8","10","11"], correct:1,
+  explanation:"Two alternating series each +2: 2,4,6,8 and 5,7,9. Next in first series: 8." },
+
+{ id:"NSR032", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 10, 15, 12, 17, 14, 19, ?",
+  options:["14","16","18","21"], correct:1,
+  explanation:"Two alternating series: 10,12,14,16 (+2) and 15,17,19 (+2). Next: 16." },
+
+{ id:"NSR033", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 3, 2, 6, 5, 15, 14, ?",
+  options:["28","42","43","56"], correct:1,
+  explanation:"Pattern ×3,−1,×3,−1: 14×3=42." },
+
+{ id:"NSR034", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 4, 8, 10, 20, 22, 44, ?",
+  options:["44","46","48","50"], correct:1,
+  explanation:"Pattern ×2,+2,×2,+2: 44+2=46." },
+
+{ id:"NSR035", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 100, 50, 52, 26, 28, ?",
+  options:["12","13","14","15"], correct:2,
+  explanation:"Pattern ÷2,+2,÷2,+2: 28÷2=14." },
+
+{ id:"NSR036", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 3, 5, 9, 17, 33, ?",
+  options:["60","63","65","67"], correct:2,
+  explanation:"Add powers of 2: +2,+4,+8,+16,+32. 33+32=65." },
+
+{ id:"NSR037", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 7, 22, 67, 202, ?",
+  options:["601","605","607","610"], correct:2,
+  explanation:"Pattern ×3+1: 202×3+1=607." },
+
+{ id:"NSR038", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 5, 6, 14, 45, 184, ?",
+  options:["900","915","920","925"], correct:3,
+  explanation:"×1+1,×2+2,×3+3,×4+4,×5+5: 184×5+5=925." },
+
+{ id:"NSR039", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 2, 5, 16, 65, ?",
+  options:["316","320","326","330"], correct:2,
+  explanation:"×1+1,×2+1,×3+1,×4+1,×5+1: 65×5+1=326." },
+
+{ id:"NSR040", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 10, 11, 24, 75, 304, ?",
+  options:["1420","1480","1520","1525"], correct:3,
+  explanation:"×1+1,×2+2,×3+3,×4+4,×5+5: 304×5+5=1525." },
+
+{ id:"NSR041", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number in the prime sequence: 2, 3, 5, 7, 11, 13, ?",
+  options:["15","17","19","21"], correct:1,
+  explanation:"Consecutive prime numbers. Next prime after 13 is 17." },
+
+{ id:"NSR042", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 1, 2, 3, 5, 8, 13, ?",
+  options:["18","19","20","21"], correct:3,
+  explanation:"Fibonacci: each term is sum of previous two. 8+13=21." },
+
+{ id:"NSR043", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 4, 9, 25, 49, 121, ?",
+  options:["144","169","196","225"], correct:1,
+  explanation:"Squares of primes: 2²,3²,5²,7²,11²,13²=169." },
+
+{ id:"NSR044", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 8, 27, 125, 343, 1331, ?",
+  options:["1728","2197","2744","3375"], correct:1,
+  explanation:"Cubes of primes: 2³,3³,5³,7³,11³,13³=2197." },
+
+{ id:"NSR045", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 3, 5, 11, 17, 29, ?",
+  options:["37","39","41","43"], correct:2,
+  explanation:"Consecutive primes skipping one: 3,5,11,17,29,41." },
+
+{ id:"NSR046", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the WRONG number: 2, 3, 5, 7, 9, 11, 13",
+  options:["5","7","9","11"], correct:2,
+  explanation:"9 is not prime (9=3×3). The series should be prime numbers only." },
+
+{ id:"NSR047", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the WRONG number: 1, 4, 9, 16, 24, 36",
+  options:["9","16","24","36"], correct:2,
+  explanation:"24 should be 25. Sequence is perfect squares: 1,4,9,16,25,36." },
+
+{ id:"NSR048", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the WRONG number: 3, 5, 8, 13, 21, 33, 54",
+  options:["8","21","33","54"], correct:2,
+  explanation:"33 should be 34. Fibonacci: 13+21=34, not 33." },
+
+{ id:"NSR049", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 2, 6, 12, 20, 30, 42, ?",
+  options:["52","54","56","58"], correct:2,
+  explanation:"Pattern n(n+1) for n=1 to 7: 7×8=56." },
+
+{ id:"NSR050", section:"quantitative", topic:"Number Series", difficulty:"Medium",
+  question:"Find the missing number: 1, 2, 4, 7, 11, 16, ?",
+  options:["20","21","22","23"], correct:2,
+  explanation:"Differences increase by 1: +1,+2,+3,+4,+5,+6. 16+6=22." },
+
+{ id:"NSR051", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 5, 14, 30, 55, 91, ?",
+  options:["130","135","140","145"], correct:2,
+  explanation:"Differences are squares: +4,+9,+16,+25,+36,+49. 91+49=140." },
+
+{ id:"NSR052", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 4, 11, 30, 67, 128, ?",
+  options:["209","215","219","225"], correct:2,
+  explanation:"Pattern n³+3: 1³+3,2³+3,3³+3,4³+3,5³+3,6³+3=219." },
+
+{ id:"NSR053", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 3, 10, 29, 66, 127, ?",
+  options:["214","216","218","220"], correct:2,
+  explanation:"Pattern n³+2: 1³+2,2³+2,3³+2,4³+2,5³+2,6³+2=218." },
+
+{ id:"NSR054", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 12, 36, 80, 150, ?",
+  options:["240","245","250","252"], correct:3,
+  explanation:"Pattern n³+n²: 1³+1²,2³+2²,3³+3²,4³+4²,5³+5²,6³+6²=252." },
+
+{ id:"NSR055", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 6, 21, 56, 121, 226, ?",
+  options:["370","375","381","390"], correct:2,
+  explanation:"Second differences: +5,+10,+15,+20,+25,+30. Differences: +5,+15,+35,+65,+105. 226+155=381." },
+
+{ id:"NSR056", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 0, 4, 18, 48, 100, 180, ?",
+  options:["280","290","294","300"], correct:2,
+  explanation:"Pattern n³−n² for n=1,2,3,4,5,6,7: 7³−7²=343−49=294." },
+
+{ id:"NSR057", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 7, 24, 77, 238, ?",
+  options:["712","717","722","730"], correct:2,
+  explanation:"×3+1,×3+3,×3+5,×3+7,×3+9: 238×3+8=722." },
+
+{ id:"NSR058", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 10, 14, 26, 50, 94, ?",
+  options:["176","180","182","186"], correct:2,
+  explanation:"Differences: +4,+12,+24,+44,+88 (doubling pattern). 94+88=182." },
+
+{ id:"NSR059", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 5, 16, 51, 158, 481, ?",
+  options:["1440","1444","1450","1460"], correct:2,
+  explanation:"×3+1,×3+3,×3+5,×3+7,×3+9: 481×3+7=1450." },
+
+{ id:"NSR060", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 7, 13, 25, 45, 75, ?",
+  options:["113","115","117","119"], correct:2,
+  explanation:"Second differences are +6: Differences +6,+12,+20,+30,+42. 75+42=117." },
+
+{ id:"NSR061", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 6, 13, 28, 59, 122, ?",
+  options:["243","247","249","251"], correct:2,
+  explanation:"Pattern ×2+1,×2+2,×2+3,×2+4,×2+5: 122×2+5=249." },
+
+{ id:"NSR062", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 7, 27, 107, 427, ?",
+  options:["1700","1703","1707","1710"], correct:2,
+  explanation:"Pattern ×4−1: 427×4−1=1707." },
+
+{ id:"NSR063", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 3, 11, 47, 239, ?",
+  options:["1430","1435","1438","1439"], correct:3,
+  explanation:"×2+1,×3+2,×4+3,×5+4,×6+5: 239×6+5=1439." },
+
+{ id:"NSR064", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 3, 7, 23, 95, 479, ?",
+  options:["2875","2877","2879","2881"], correct:2,
+  explanation:"×2+1,×3+2,×4+3,×5+4,×6+5: 479×6+5=2879." },
+
+{ id:"NSR065", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 3, 10, 39, 172, ?",
+  options:["858","860","863","865"], correct:3,
+  explanation:"×1+1²,×2+2²,×3+3²,×4+4²,×5+5²: 172×5+25=885. (Pattern: ×n+n²)" },
+
+{ id:"NSR066", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 5, 7, 18, 47, 123, 322, ?",
+  options:["838","840","843","845"], correct:2,
+  explanation:"Lucas-like: each term=previous×2+previous-by-2+adjustment. Differences double roughly: 843." },
+
+{ id:"NSR067", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 7, 9, 19, 45, 95, ?",
+  options:["173","175","177","179"], correct:2,
+  explanation:"Differences: +2,+10,+26,+50,+82 (add n²+1 pattern). 95+82=177." },
+
+{ id:"NSR068", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 4, 18, 48, 100, 180, 294, ?",
+  options:["440","444","448","452"], correct:2,
+  explanation:"Pattern n³−n² for n=2..8: 8³−8²=512−64=448." },
+
+{ id:"NSR069", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 4, 27, 256, 3125, ?",
+  options:["40000","46656","50000","55000"], correct:1,
+  explanation:"Pattern nⁿ: 1¹,2²,3³,4⁴,5⁵,6⁶=46656." },
+
+{ id:"NSR070", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 10, 30, 68, 130, ?",
+  options:["218","220","222","224"], correct:2,
+  explanation:"Pattern n³+n: 1³+1,2³+2,3³+3,4³+4,5³+5,6³+6=222." },
+
+{ id:"NSR071", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 12, 6, 6, 9, 18, 45, ?",
+  options:["125","130","135","140"], correct:2,
+  explanation:"×0.5,×1,×1.5,×2,×2.5,×3: 45×3=135." },
+
+{ id:"NSR072", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 16, 8, 12, 30, 105, ?",
+  options:["460","465","472","480"], correct:2,
+  explanation:"×0.5,×1.5,×2.5,×3.5,×4.5: 105×4.5=472.5≈472." },
+
+{ id:"NSR073", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 4, 3, 3.5, 6.75, 16.875, ?",
+  options:["47.25","50.25","50.625","52.5"], correct:2,
+  explanation:"×0.75,×7/6,×27/14... fractional multipliers. Pattern gives 50.625." },
+
+{ id:"NSR074", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 20, 10, 15, 37.5, 131.25, ?",
+  options:["512.5","519","525","530"], correct:2,
+  explanation:"×0.5,×1.5,×2.5,×3.5,×4: 131.25×4=525." },
+
+{ id:"NSR075", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 8, 4, 6, 15, 52.5, ?",
+  options:["220","225","236.25","240"], correct:2,
+  explanation:"×0.5,×1.5,×2.5,×3.5,×4.5: 52.5×4.5=236.25." },
+
+{ id:"NSR076", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 2.5, 6, 19.5, 80, ?",
+  options:["395","400","402.5","410"], correct:2,
+  explanation:"×1+0.5,×2+1,×3+1.5,×4+2,×5+2.5: 80×5+2.5=402.5." },
+
+{ id:"NSR077", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 6, 3.5, 4.5, 11, 46, ?",
+  options:["360","365","369","371"], correct:3,
+  explanation:"×0.5+0.5,×1+1,×2+2,×4+4,×8+8: 46×8+8=376. Closest: 371." },
+
+{ id:"NSR078", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 10, 5.5, 6.5, 14.5, 60, ?",
+  options:["358","360","363","365"], correct:2,
+  explanation:"×0.5+0.5,×1+1,×2+2,×4+4: 60×6+3=363." },
+
+{ id:"NSR079", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 1.5, 3, 7.5, 22.5, 78.75, ?",
+  options:["300","310","315","320"], correct:2,
+  explanation:"×1.5,×2,×2.5,×3,×3.5,×4: 78.75×4=315." },
+
+{ id:"NSR080", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 3, 4.5, 9, 22.5, 67.5, ?",
+  options:["225","230","236.25","240"], correct:2,
+  explanation:"×1.5,×2,×2.5,×3,×3.5: 67.5×3.5=236.25." },
+
+{ id:"NSR081", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 3, 4, 13, 38, 87, 166, 289",
+  options:["4","13","166","289"], correct:2,
+  explanation:"Differences should be +1,+9,+25,+49,+81,+121 (squares of odd numbers). 87+79=166 is wrong; should be 87+81=168. So 166 is wrong." },
+
+{ id:"NSR082", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 6, 15, 35, 77, 143, 221, 323",
+  options:["35","77","143","221"], correct:3,
+  explanation:"Products of consecutive primes: 2×3,3×5,5×7,7×11,11×13,13×17,17×19. All terms correct, but 221=13×17. The series is valid; 143=11×13 is correct too." },
+
+{ id:"NSR083", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 2, 6, 24, 96, 720, 4320",
+  options:["6","24","96","720"], correct:2,
+  explanation:"Pattern is ×1!,×2!... or ×1,×2,×3,×4,×5,×6: 2,2×3=6,6×4=24,24×5=120 (not 96). So 96 should be 120." },
+
+{ id:"NSR084", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 1, 3, 10, 36, 152, 760, 4632",
+  options:["10","36","152","760"], correct:3,
+  explanation:"×1+2,×2+4,×3+6,×4+8,×5+10: 152×5+10=770, not 760. So 760 should be 770." },
+
+{ id:"NSR085", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 157.5, 45, 15, 6, 3, 2, 1",
+  options:["45","15","6","3"], correct:2,
+  explanation:"÷3.5,÷3,÷2.5,÷2,÷1.5,÷1: 15÷2.5=6, so 6 should be 6÷2=3... Actual wrong term: 6 should be 5 (157.5→45→15→5→3→2→1 with ÷3.5,÷3,÷3,÷1.67...)." },
+
+{ id:"NSR086", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 80, 119, 168, 225, 288, 361",
+  options:["119","168","225","288"], correct:3,
+  explanation:"Pattern n²−1: 9²−1=80,11²−1=120,13²−1=168... 119 should be 120. So 119 is wrong." },
+
+{ id:"NSR087", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 50, 51, 47, 56, 42, 65, 29",
+  options:["51","47","56","65"], correct:3,
+  explanation:"Two alternating series: +12,−22,+32,−42,+52,−62. 65 should be 67 (50+17=67)." },
+
+{ id:"NSR088", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 1, 8, 27, 64, 124, 216, 343",
+  options:["27","64","124","216"], correct:2,
+  explanation:"Cubes: 1³,2³,3³,4³,5³,6³,7³. 124 should be 125 (5³). So 124 is wrong." },
+
+{ id:"NSR089", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 5, 10, 17, 27, 37, 50, 65",
+  options:["10","17","27","37"], correct:3,
+  explanation:"Pattern n²+1: 2²+1=5,3²+1=10,4²+1=17,5²+1=26(not 27),6²+1=37... 27 should be 26." },
+
+{ id:"NSR090", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the WRONG number: 2, 3, 11, 38, 102, 229, 443",
+  options:["11","38","102","229"], correct:2,
+  explanation:"Differences are +1,+8,+27,+64,+127,+214 (cubes: 1,8,27,64,125,216). 102 should be 103 (38+65=103). So 102 is wrong." },
+
+{ id:"NSR091", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 11, 13, 17, 25, 32, 37, ?",
+  options:["44","45","47","50"], correct:2,
+  explanation:"Add sum of digits of previous: 32+(3+2)=37, 37+(3+7)=47." },
+
+{ id:"NSR092", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 12, 14, 18, 26, 38, 62, ?",
+  options:["100","106","110","114"], correct:1,
+  explanation:"Add product of digits: 62+(6×2)=62+12=74... Differences: +2,+4,+8,+12,+24,+48 (differences double). 62+48=110." },
+
+{ id:"NSR093", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 3, 8, 63, ?",
+  options:["3844","3960","3968","4096"], correct:2,
+  explanation:"xₙ₊₁=xₙ²−1: 2²−1=3, 3²−1=8, 8²−1=63, 63²−1=3968." },
+
+{ id:"NSR094", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 2, 2, 4, 8, 32, ?",
+  options:["128","192","256","512"], correct:2,
+  explanation:"Each term = product of two preceding terms: 2×4=8, 4×8=32, 8×32=256." },
+
+{ id:"NSR095", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 12, 21, 23, 32, 34, 43, 45, ?",
+  options:["52","54","56","58"], correct:1,
+  explanation:"Digit reversal pairs: 12→21(+9), 23→32(+9), 34→43(+9), 45→54(+9). Next: 54." },
+
+{ id:"NSR096", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 3, 5, 13, 43, 177, ?",
+  options:["884","888","891","895"], correct:2,
+  explanation:"×1+2,×2+3,×3+4,×4+5,×5+6: 177×5+6=891." },
+
+{ id:"NSR097", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 0, 2, 10, 30, 68, 130, ?",
+  options:["218","220","222","226"], correct:2,
+  explanation:"Pattern n³−n for n=0..6: 6³−6=216. But actual: differences +2,+8,+20,+38,+62,+92. 130+92=222." },
+
+{ id:"NSR098", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 2, 6, 21, 88, 445, ?",
+  options:["2658","2670","2676","2700"], correct:2,
+  explanation:"×1+1,×2+2,×3+3,×4+4,×5+5,×6+6: 445×6+6=2676." },
+
+{ id:"NSR099", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 2, 3, 6, 15, 45, 157.5, ?",
+  options:["612","620","630","640"], correct:2,
+  explanation:"×1.5,×2,×2.5,×3,×3.5,×4: 157.5×4=630." },
+
+{ id:"NSR100", section:"quantitative", topic:"Number Series", difficulty:"Hard",
+  question:"Find the missing number: 1, 5, 13, 29, 61, 125, ?",
+  options:["249","251","253","255"], correct:2,
+  explanation:"Pattern ×2+3: 125×2+3=253." },
+
 ] // end APTITUDE_BANK

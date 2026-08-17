@@ -105,6 +105,9 @@ const APT_TOPICS = [
   { id: "permcomb",        name: "Permutation & Combination",  icon: "∑" },
   { id: "probability",     name: "Probability",                icon: "🎲" },
   { id: "data-interp",     name: "Data Interpretation",        icon: "📊" },
+  { id: "data-suff",       name: "Data Sufficiency",           icon: "✅" },
+  { id: "quad-eq",         name: "Quadratic Equations",        icon: "²" },
+  { id: "num-series",      name: "Number Series",              icon: "🔢" },
 ]
 
 // --- CS topics ----------------------------------------------------------------
@@ -1083,6 +1086,9 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "permcomb": "Permutation & Combination",
       "probability": "Probability",
       "data-interp": "Data Interpretation",
+      "data-suff": "Data Sufficiency",
+      "quad-eq": "Quadratic Equations",
+      "num-series": "Number Series",
     }
     // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
     if (topic.id === "mock-aptitude") {
