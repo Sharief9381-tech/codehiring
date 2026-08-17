@@ -131,6 +131,7 @@ const COMM_TOPICS = [
   { id: "para-jumbles",         name: "Para Jumbles",             icon: "🔀", color: "#a855f7" },
   { id: "grammar",              name: "Grammar",                  icon: "📖", color: "#3b82f6" },
   { id: "reading-comprehension",name: "Reading Comprehension",    icon: "📰", color: "#f97316" },
+  { id: "vocabulary",           name: "Vocabulary",               icon: "🔤", color: "#14b8a6" },
 ]
 
 // --- DSA topics ---------------------------------------------------------------
@@ -1179,6 +1180,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "para-jumbles":          "Para Jumbles",
       "grammar":               "Grammar",
       "reading-comprehension": "Reading Comprehension",
+      "vocabulary":            "Vocabulary",
     }
 
     if (topic.id in COMM_LOCAL_TOPIC_MAP) {
@@ -1649,6 +1651,10 @@ export default function PrepHubPage() {
                   "reading-comprehension": {
                     emoji: "📰",
                     points: ["Read the questions before the passage","Identify the main idea in the first and last paragraphs","Inference questions — stay close to the text","Vocabulary-in-context: use surrounding words as clues","Eliminate options that are too extreme or off-topic"],
+                  },
+                  "vocabulary": {
+                    emoji: "🔤",
+                    points: ["Synonyms: choose the word closest in meaning","Antonyms: choose the word opposite in meaning","One-word substitution: match the definition exactly","Use prefix/suffix clues (mis-, un-, -tion, -ous)","Eliminate clearly wrong options using process of elimination"],
                   },
                 }
                 const guide = commGuide[t.id] || { emoji: t.icon || "📖", points: ["Review key concepts","Practise with MCQs","Focus on accuracy"] }

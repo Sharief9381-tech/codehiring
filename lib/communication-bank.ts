@@ -4061,4 +4061,510 @@ export const COMMUNICATION_BANK: CommQ[] = [
   options:["All economic data","A commonly held but potentially oversimplified belief","The idea of measuring anything","Historical records"],
   correct:1, explanation:"Such passages critically examine widely accepted assumptions." },
 
+
+// ─────────────────────────────────────────────────────────────────────────────
+// VOCABULARY — 100 Questions (VOC001–VOC100)
+// Synonyms • Antonyms • One-word Substitution | 50 Medium + 50 Hard
+// ─────────────────────────────────────────────────────────────────────────────
+
+{ id:"VOC001", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to ABANDON:",
+  options:["Keep","Forsake","Support","Continue"],
+  correct:1, explanation:"Abandon means to leave or give up completely; forsake is the closest synonym." },
+
+{ id:"VOC002", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to BRIEF:",
+  options:["Long","Short","Detailed","Complex"],
+  correct:1, explanation:"Brief means lasting a short time or expressed in few words." },
+
+{ id:"VOC003", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to CAUTIOUS:",
+  options:["Careless","Reckless","Careful","Bold"],
+  correct:2, explanation:"Cautious means careful to avoid potential problems or dangers." },
+
+{ id:"VOC004", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to DILIGENT:",
+  options:["Lazy","Hardworking","Careless","Slow"],
+  correct:1, explanation:"Diligent means having or showing care and conscientiousness in one's work." },
+
+{ id:"VOC005", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to ELOQUENT:",
+  options:["Silent","Fluent","Confused","Rude"],
+  correct:1, explanation:"Eloquent means fluent or persuasive in speaking or writing." },
+
+{ id:"VOC006", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to FEEBLE:",
+  options:["Strong","Weak","Healthy","Energetic"],
+  correct:1, explanation:"Feeble means lacking physical strength, especially as a result of age or illness." },
+
+{ id:"VOC007", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to GENUINE:",
+  options:["Fake","Real","Artificial","False"],
+  correct:1, explanation:"Genuine means truly what something is said to be; authentic." },
+
+{ id:"VOC008", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to HOSTILE:",
+  options:["Friendly","Kind","Unfriendly","Helpful"],
+  correct:2, explanation:"Hostile means unfriendly or antagonistic." },
+
+{ id:"VOC009", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to IMMENSE:",
+  options:["Tiny","Huge","Ordinary","Limited"],
+  correct:1, explanation:"Immense means extremely large or great." },
+
+{ id:"VOC010", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to JUBILANT:",
+  options:["Sad","Joyful","Angry","Calm"],
+  correct:1, explanation:"Jubilant means feeling or expressing great happiness and triumph." },
+
+{ id:"VOC011", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to KEEN:",
+  options:["Dull","Eager","Slow","Lazy"],
+  correct:1, explanation:"Keen means having or showing eagerness or enthusiasm." },
+
+{ id:"VOC012", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to LETHARGIC:",
+  options:["Energetic","Active","Sluggish","Lively"],
+  correct:2, explanation:"Lethargic means affected by lethargy; sluggish and apathetic." },
+
+{ id:"VOC013", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to MEAGRE:",
+  options:["Abundant","Insufficient","Plenty","Generous"],
+  correct:1, explanation:"Meagre means lacking in quantity or quality; inadequate." },
+
+{ id:"VOC014", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to NOVICE:",
+  options:["Expert","Beginner","Master","Professional"],
+  correct:1, explanation:"Novice means a person new to and inexperienced in a job or situation." },
+
+{ id:"VOC015", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to OBSTINATE:",
+  options:["Flexible","Stubborn","Obedient","Gentle"],
+  correct:1, explanation:"Obstinate means stubbornly refusing to change one's opinion or action." },
+
+{ id:"VOC016", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to PRECISE:",
+  options:["Vague","Exact","Approximate","Rough"],
+  correct:1, explanation:"Precise means marked by exactness and accuracy of expression or detail." },
+
+{ id:"VOC017", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to QUENCH:",
+  options:["Ignite","Satisfy","Increase","Start"],
+  correct:1, explanation:"Quench means to satisfy one's thirst or to extinguish." },
+
+{ id:"VOC018", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to RELUCTANT:",
+  options:["Willing","Eager","Unwilling","Ready"],
+  correct:2, explanation:"Reluctant means unwilling and hesitant." },
+
+{ id:"VOC019", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to SERENE:",
+  options:["Agitated","Calm","Noisy","Disturbed"],
+  correct:1, explanation:"Serene means calm, peaceful, and untroubled." },
+
+{ id:"VOC020", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Synonym] Choose the word nearest in meaning to TRANSIENT:",
+  options:["Permanent","Temporary","Eternal","Lasting"],
+  correct:1, explanation:"Transient means lasting only for a short time; impermanent." },
+
+{ id:"VOC021", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to ABUNDANT:",
+  options:["Plentiful","Scarce","Ample","Sufficient"],
+  correct:1, explanation:"Abundant means existing in large quantities; scarce is the opposite." },
+
+{ id:"VOC022", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to BRAVE:",
+  options:["Courageous","Bold","Cowardly","Valiant"],
+  correct:2, explanation:"Brave means ready to face danger; cowardly is the opposite." },
+
+{ id:"VOC023", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to COMPLEX:",
+  options:["Complicated","Simple","Intricate","Difficult"],
+  correct:1, explanation:"Complex means consisting of many different parts; simple is the opposite." },
+
+{ id:"VOC024", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to DEMOLISH:",
+  options:["Destroy","Build","Ruin","Wreck"],
+  correct:1, explanation:"Demolish means to pull or knock down; build is the opposite." },
+
+{ id:"VOC025", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to EXPAND:",
+  options:["Enlarge","Increase","Contract","Grow"],
+  correct:2, explanation:"Expand means to become larger; contract means to become smaller." },
+
+{ id:"VOC026", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to FREQUENT:",
+  options:["Regular","Rare","Common","Often"],
+  correct:1, explanation:"Frequent means occurring often; rare means not occurring often." },
+
+{ id:"VOC027", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to GENEROUS:",
+  options:["Kind","Liberal","Stingy","Charitable"],
+  correct:2, explanation:"Generous means showing readiness to give; stingy means unwilling to give." },
+
+{ id:"VOC028", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to HONEST:",
+  options:["Truthful","Sincere","Dishonest","Frank"],
+  correct:2, explanation:"Honest means free of deceit; dishonest is the opposite." },
+
+{ id:"VOC029", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to INCLUDE:",
+  options:["Contain","Exclude","Embrace","Comprise"],
+  correct:1, explanation:"Include means to make part of a whole; exclude means to leave out." },
+
+{ id:"VOC030", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to JOYFUL:",
+  options:["Happy","Cheerful","Sorrowful","Glad"],
+  correct:2, explanation:"Joyful means feeling great pleasure; sorrowful means feeling sadness." },
+
+{ id:"VOC031", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to KNOWLEDGE:",
+  options:["Wisdom","Ignorance","Learning","Understanding"],
+  correct:1, explanation:"Knowledge means information and skills; ignorance means lack of knowledge." },
+
+{ id:"VOC032", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to LEGAL:",
+  options:["Lawful","Illegal","Valid","Permitted"],
+  correct:1, explanation:"Legal means permitted by law; illegal means forbidden by law." },
+
+{ id:"VOC033", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to MODERN:",
+  options:["Contemporary","Ancient","Current","New"],
+  correct:1, explanation:"Modern means relating to the present; ancient means belonging to the distant past." },
+
+{ id:"VOC034", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to NOBLE:",
+  options:["Honourable","Ignoble","Virtuous","Dignified"],
+  correct:1, explanation:"Noble means having fine personal qualities; ignoble means not honourable." },
+
+{ id:"VOC035", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[Antonym] Choose the word opposite in meaning to OPTIMISTIC:",
+  options:["Hopeful","Pessimistic","Positive","Confident"],
+  correct:1, explanation:"Optimistic means hopeful about the future; pessimistic means expecting the worst." },
+
+{ id:"VOC036", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A person who loves books:",
+  options:["Bibliophile","Philosopher","Anthropologist","Philanthropist"],
+  correct:0, explanation:"Bibliophile = a person who collects or has a great love of books." },
+
+{ id:"VOC037", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A place where birds are kept:",
+  options:["Aquarium","Aviary","Apiary","Arena"],
+  correct:1, explanation:"Aviary = a large enclosure for keeping birds." },
+
+{ id:"VOC038", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] One who is all-powerful:",
+  options:["Omnipresent","Omniscient","Omnipotent","Omnivorous"],
+  correct:2, explanation:"Omnipotent = having unlimited power." },
+
+{ id:"VOC039", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A speech made without preparation:",
+  options:["Debate","Extempore","Rhetoric","Lecture"],
+  correct:1, explanation:"Extempore = spoken or done without preparation." },
+
+{ id:"VOC040", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] One who hates mankind:",
+  options:["Philanthropist","Misanthrope","Optimist","Humanitarian"],
+  correct:1, explanation:"Misanthrope = a person who dislikes humankind." },
+
+{ id:"VOC041", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A person who can speak many languages:",
+  options:["Linguist","Polyglot","Orator","Interpreter"],
+  correct:1, explanation:"Polyglot = a person who knows and is able to use several languages." },
+
+{ id:"VOC042", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] The study of the origin of words:",
+  options:["Etymology","Biology","Geology","Psychology"],
+  correct:0, explanation:"Etymology = the study of the origin of words and the way their meanings have changed." },
+
+{ id:"VOC043", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A person who is indifferent to pleasure and pain:",
+  options:["Stoic","Epicurean","Hedonist","Cynic"],
+  correct:0, explanation:"Stoic = a person who can endure pain or hardship without showing feelings." },
+
+{ id:"VOC044", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] One who looks at the bright side of things:",
+  options:["Pessimist","Optimist","Realist","Idealist"],
+  correct:1, explanation:"Optimist = a person who tends to be hopeful and confident about the future." },
+
+{ id:"VOC045", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A government by the people:",
+  options:["Autocracy","Democracy","Monarchy","Oligarchy"],
+  correct:1, explanation:"Democracy = a system of government by the whole population." },
+
+{ id:"VOC046", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] One who is present everywhere:",
+  options:["Omnipotent","Omniscient","Omnipresent","Omnivorous"],
+  correct:2, explanation:"Omnipresent = present everywhere at the same time." },
+
+{ id:"VOC047", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A person who writes dictionaries:",
+  options:["Lexicographer","Calligrapher","Biographer","Cartographer"],
+  correct:0, explanation:"Lexicographer = a person who compiles dictionaries." },
+
+{ id:"VOC048", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] The practice of having more than one wife at a time:",
+  options:["Monogamy","Polygamy","Bigamy","Polyandry"],
+  correct:1, explanation:"Polygamy = the practice of having more than one wife or husband at the same time." },
+
+{ id:"VOC049", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] A person who lives a solitary life:",
+  options:["Extrovert","Hermit","Socialite","Recluse"],
+  correct:1, explanation:"Hermit = a person living in solitude as a religious discipline." },
+
+{ id:"VOC050", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
+  question:"[One-word] One who knows everything:",
+  options:["Omnipotent","Omnipresent","Omniscient","Omnivorous"],
+  correct:2, explanation:"Omniscient = knowing everything." },
+
+{ id:"VOC051", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to ABSTRUSE:",
+  options:["Obvious","Obscure","Simple","Clear"],
+  correct:1, explanation:"Abstruse means difficult to understand; obscure is the closest synonym." },
+
+{ id:"VOC052", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to BELLIGERENT:",
+  options:["Peaceful","Aggressive","Friendly","Calm"],
+  correct:1, explanation:"Belligerent means hostile and aggressive." },
+
+{ id:"VOC053", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to CACOPHONY:",
+  options:["Harmony","Discord","Melody","Silence"],
+  correct:1, explanation:"Cacophony means a harsh, discordant mixture of sounds." },
+
+{ id:"VOC054", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to DELETERIOUS:",
+  options:["Beneficial","Harmful","Harmless","Helpful"],
+  correct:1, explanation:"Deleterious means causing harm or damage." },
+
+{ id:"VOC055", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to ENIGMATIC:",
+  options:["Clear","Mysterious","Obvious","Simple"],
+  correct:1, explanation:"Enigmatic means difficult to interpret or understand; mysterious." },
+
+{ id:"VOC056", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to FASTIDIOUS:",
+  options:["Careless","Meticulous","Messy","Indifferent"],
+  correct:1, explanation:"Fastidious means very attentive to and concerned about accuracy and detail." },
+
+{ id:"VOC057", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to GREGARIOUS:",
+  options:["Solitary","Sociable","Reserved","Shy"],
+  correct:1, explanation:"Gregarious means fond of company; sociable." },
+
+{ id:"VOC058", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to HACKNEYED:",
+  options:["Original","Overused","Fresh","Unique"],
+  correct:1, explanation:"Hackneyed means lacking significance through having been overused; unoriginal." },
+
+{ id:"VOC059", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to ICONOCLAST:",
+  options:["Traditionalist","Critic of established beliefs","Follower","Conformist"],
+  correct:1, explanation:"Iconoclast means a person who attacks cherished beliefs or institutions." },
+
+{ id:"VOC060", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to JUXTAPOSE:",
+  options:["Separate","Place side by side","Remove","Hide"],
+  correct:1, explanation:"Juxtapose means to place close together for contrasting effect." },
+
+{ id:"VOC061", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to LACONIC:",
+  options:["Verbose","Concise","Wordy","Lengthy"],
+  correct:1, explanation:"Laconic means using very few words; concise." },
+
+{ id:"VOC062", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to MENDACIOUS:",
+  options:["Truthful","Dishonest","Honest","Sincere"],
+  correct:1, explanation:"Mendacious means not telling the truth; lying." },
+
+{ id:"VOC063", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to NEFARIOUS:",
+  options:["Virtuous","Wicked","Kind","Honourable"],
+  correct:1, explanation:"Nefarious means wicked or criminal." },
+
+{ id:"VOC064", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to OBFUSCATE:",
+  options:["Clarify","Confuse","Explain","Simplify"],
+  correct:1, explanation:"Obfuscate means to make obscure, unclear, or unintelligible." },
+
+{ id:"VOC065", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to PERNICIOUS:",
+  options:["Beneficial","Destructive","Harmless","Helpful"],
+  correct:1, explanation:"Pernicious means having a harmful effect, especially in a gradual or subtle way." },
+
+{ id:"VOC066", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to QUIESCENT:",
+  options:["Active","Dormant","Energetic","Lively"],
+  correct:1, explanation:"Quiescent means in a state or period of inactivity or dormancy." },
+
+{ id:"VOC067", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to RECALCITRANT:",
+  options:["Obedient","Uncooperative","Compliant","Docile"],
+  correct:1, explanation:"Recalcitrant means having an obstinately uncooperative attitude." },
+
+{ id:"VOC068", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to SANGUINE:",
+  options:["Pessimistic","Optimistic","Gloomy","Doubtful"],
+  correct:1, explanation:"Sanguine means optimistic or positive, especially in a difficult situation." },
+
+{ id:"VOC069", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to TACITURN:",
+  options:["Talkative","Reserved","Chatty","Outgoing"],
+  correct:1, explanation:"Taciturn means reserved or uncommunicative in speech." },
+
+{ id:"VOC070", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Synonym] Choose the word nearest in meaning to UBIQUITOUS:",
+  options:["Rare","Omnipresent","Scarce","Limited"],
+  correct:1, explanation:"Ubiquitous means present, appearing, or found everywhere." },
+
+{ id:"VOC071", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to AMELIORATE:",
+  options:["Improve","Worsen","Enhance","Better"],
+  correct:1, explanation:"Ameliorate means to make better; worsen is the opposite." },
+
+{ id:"VOC072", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to BENEVOLENT:",
+  options:["Kind","Malevolent","Generous","Charitable"],
+  correct:1, explanation:"Benevolent means well-meaning and kindly; malevolent means having or showing a wish to do evil." },
+
+{ id:"VOC073", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to CANDID:",
+  options:["Frank","Deceptive","Honest","Open"],
+  correct:1, explanation:"Candid means truthful and straightforward; deceptive is the opposite." },
+
+{ id:"VOC074", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to DOCILE:",
+  options:["Obedient","Stubborn","Submissive","Compliant"],
+  correct:1, explanation:"Docile means ready to accept control or instruction; stubborn is the opposite." },
+
+{ id:"VOC075", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to EPHEMERAL:",
+  options:["Temporary","Permanent","Fleeting","Brief"],
+  correct:1, explanation:"Ephemeral means lasting for a very short time; permanent is the opposite." },
+
+{ id:"VOC076", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to FORTUITOUS:",
+  options:["Accidental","Intentional","Chance","Unexpected"],
+  correct:1, explanation:"Fortuitous means happening by chance; intentional is the opposite." },
+
+{ id:"VOC077", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to GARRULOUS:",
+  options:["Talkative","Taciturn","Chatty","Loquacious"],
+  correct:1, explanation:"Garrulous means excessively talkative; taciturn means reserved in speech." },
+
+{ id:"VOC078", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to HAPHAZARD:",
+  options:["Random","Methodical","Careless","Disorganised"],
+  correct:1, explanation:"Haphazard means lacking any obvious principle of organisation; methodical is the opposite." },
+
+{ id:"VOC079", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to INNOCUOUS:",
+  options:["Harmless","Harmful","Safe","Inoffensive"],
+  correct:1, explanation:"Innocuous means not harmful or offensive; harmful is the opposite." },
+
+{ id:"VOC080", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to JUBILANT:",
+  options:["Elated","Despondent","Joyful","Triumphant"],
+  correct:1, explanation:"Jubilant means feeling great happiness; despondent means in low spirits." },
+
+{ id:"VOC081", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to LUGUBRIOUS:",
+  options:["Mournful","Cheerful","Gloomy","Sorrowful"],
+  correct:1, explanation:"Lugubrious means looking or sounding sad and dismal; cheerful is the opposite." },
+
+{ id:"VOC082", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to MUNIFICENT:",
+  options:["Generous","Stingy","Liberal","Bountiful"],
+  correct:1, explanation:"Munificent means characterised by great generosity; stingy is the opposite." },
+
+{ id:"VOC083", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to NOXIOUS:",
+  options:["Harmful","Beneficial","Poisonous","Toxic"],
+  correct:1, explanation:"Noxious means harmful, poisonous, or very unpleasant; beneficial is the opposite." },
+
+{ id:"VOC084", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to OSTENTATIOUS:",
+  options:["Showy","Modest","Pretentious","Flashy"],
+  correct:1, explanation:"Ostentatious means characterised by vulgar or pretentious display; modest is the opposite." },
+
+{ id:"VOC085", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[Antonym] Choose the word opposite in meaning to PROSAIC:",
+  options:["Ordinary","Imaginative","Dull","Mundane"],
+  correct:1, explanation:"Prosaic means lacking poetic beauty; imaginative is the opposite." },
+
+{ id:"VOC086", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A person who collects coins:",
+  options:["Philatelist","Numismatist","Bibliophile","Archivist"],
+  correct:1, explanation:"Numismatist = a person who collects or studies coins, banknotes, and medals." },
+
+{ id:"VOC087", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] Fear of confined spaces:",
+  options:["Acrophobia","Claustrophobia","Agoraphobia","Xenophobia"],
+  correct:1, explanation:"Claustrophobia = extreme or irrational fear of confined places." },
+
+{ id:"VOC088", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A person who is blind to the faults of his own country:",
+  options:["Patriot","Chauvinist","Nationalist","Xenophobe"],
+  correct:1, explanation:"Chauvinist = a person displaying aggressive or exaggerated patriotism." },
+
+{ id:"VOC089", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] The killing of one's father:",
+  options:["Matricide","Patricide","Fratricide","Infanticide"],
+  correct:1, explanation:"Patricide = the killing of one's father." },
+
+{ id:"VOC090", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A speech delivered without any previous preparation:",
+  options:["Maiden speech","Extempore","Rhetoric","Monologue"],
+  correct:1, explanation:"Extempore = spoken or done without preparation." },
+
+{ id:"VOC091", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] One who believes in the existence of God:",
+  options:["Atheist","Theist","Agnostic","Skeptic"],
+  correct:1, explanation:"Theist = a person who believes in the existence of a god or gods." },
+
+{ id:"VOC092", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A person who is recovering from illness:",
+  options:["Patient","Convalescent","Invalid","Hypochondriac"],
+  correct:1, explanation:"Convalescent = a person who is recovering after an illness or operation." },
+
+{ id:"VOC093", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] The scientific study of the mind and behaviour:",
+  options:["Physiology","Psychology","Sociology","Anthropology"],
+  correct:1, explanation:"Psychology = the scientific study of the human mind and its functions." },
+
+{ id:"VOC094", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A person who renounces the world and leads a life of self-denial:",
+  options:["Hedonist","Ascetic","Epicurean","Materialist"],
+  correct:1, explanation:"Ascetic = a person who practises severe self-discipline and abstention." },
+
+{ id:"VOC095", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] One who is unable to pay debts:",
+  options:["Insolvent","Bankrupt","Both A and B","Destitute"],
+  correct:2, explanation:"Both insolvent and bankrupt refer to inability to pay debts." },
+
+{ id:"VOC096", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A person who specialises in the study of insects:",
+  options:["Ornithologist","Entomologist","Herpetologist","Ichthyologist"],
+  correct:1, explanation:"Entomologist = a person who studies insects." },
+
+{ id:"VOC097", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] The act of speaking disrespectfully about sacred things:",
+  options:["Blasphemy","Heresy","Apostasy","Sacrilege"],
+  correct:0, explanation:"Blasphemy = the act of speaking sacrilegiously about God or sacred things." },
+
+{ id:"VOC098", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A person who is fond of fighting:",
+  options:["Bellicose","Pacifist","Diplomat","Negotiator"],
+  correct:0, explanation:"Bellicose = demonstrating aggression and willingness to fight." },
+
+{ id:"VOC099", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] A statement that can be interpreted in more than one way:",
+  options:["Ambiguous","Lucid","Explicit","Categorical"],
+  correct:0, explanation:"Ambiguous = open to more than one interpretation." },
+
+{ id:"VOC100", section:"verbal", topic:"Vocabulary", difficulty:"Hard",
+  question:"[One-word] One who is present everywhere at the same time:",
+  options:["Omnipotent","Omniscient","Omnipresent","Omnivorous"],
+  correct:2, explanation:"Omnipresent = present everywhere at the same time." },
+
 ] // end COMMUNICATION_BANK
