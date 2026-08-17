@@ -1594,7 +1594,101 @@ export default function PrepHubPage() {
         </div>
 
         {/* Learn */}
-        {subView === "learn" && (
+        {subView === "learn" && activePath === "communication" && (
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-base font-semibold text-foreground">Topic Guide</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Select a topic to start practising questions</p>
+              </div>
+              <span className="text-xs px-3 py-1 rounded-full font-semibold"
+                style={{ background: `${pathMeta.color}15`, color: pathMeta.color }}>
+                {pathMeta.topics.length} topics
+              </span>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {pathMeta.topics.map((t: any) => {
+                const commGuide: Record<string, { emoji: string; points: string[] }> = {
+                  "direct-indirect": {
+                    emoji: "📢",
+                    points: ["Tense shifts back one step in reported speech","'will' → 'would', 'can' → 'could', 'may' → 'might'","Time expressions: 'today' → 'that day', 'tomorrow' → 'the next day'","Questions use statement word order (no inversion)","Imperatives → 'asked/told + to-infinitive'"],
+                  },
+                  "active-passive": {
+                    emoji: "🔄",
+                    points: ["Present Simple: is/am/are + V3","Past Simple: was/were + V3","Present Continuous: is/am/are + being + V3","Modal verbs: modal + be + V3","Imperative: Let + object + be + V3"],
+                  },
+                  "sentence-improvement": {
+                    emoji: "✏️",
+                    points: ["Check subject-verb agreement carefully","Identify correct tense consistency","Spot redundant or misplaced words","Use articles (a/an/the) correctly","Watch for parallelism in lists"],
+                  },
+                  "idioms-phrases": {
+                    emoji: "💬",
+                    points: ["Learn meaning in context, not literally","Common groups: body parts, colours, animals","Practice identifying tone (positive/negative)","Link phrases to real-life situations","Elimination strategy: rule out clearly wrong options"],
+                  },
+                  "cloze-test": {
+                    emoji: "📝",
+                    points: ["Read the full passage before filling blanks","Look for contextual clues in surrounding sentences","Match part of speech (noun/verb/adjective)","Check for collocations and idioms","Eliminate options that break sentence flow"],
+                  },
+                  "para-jumbles": {
+                    emoji: "🔀",
+                    points: ["Find the opening sentence (general/introductory)","Link sentences using pronouns and connectors","Look for cause-effect and chronological clues","The last sentence often concludes or summarises","Practice with 4-sentence sets first"],
+                  },
+                  "grammar": {
+                    emoji: "📖",
+                    points: ["Articles: 'a' before consonant sounds, 'an' before vowel sounds","Prepositions follow fixed collocations","Avoid double negatives","Adjective vs adverb: adjectives modify nouns, adverbs modify verbs","Pronoun-antecedent agreement is essential"],
+                  },
+                  "reading-comprehension": {
+                    emoji: "📰",
+                    points: ["Read the questions before the passage","Identify the main idea in the first and last paragraphs","Inference questions — stay close to the text","Vocabulary-in-context: use surrounding words as clues","Eliminate options that are too extreme or off-topic"],
+                  },
+                }
+                const guide = commGuide[t.id] || { emoji: t.icon || "📖", points: ["Review key concepts","Practise with MCQs","Focus on accuracy"] }
+                return (
+                  <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20"
+                    style={{ borderColor: `${t.color || pathMeta.color}25`, background: "rgba(15,15,20,0.6)" }}>
+                    {/* Card header */}
+                    <div className="p-4 pb-3" style={{ background: `${t.color || pathMeta.color}08` }}>
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl text-lg font-bold"
+                          style={{ background: `${t.color || pathMeta.color}20`, color: t.color || pathMeta.color }}>
+                          {guide.emoji}
+                        </div>
+                        <div>
+                          <p className="font-bold text-sm text-foreground">{t.name}</p>
+                          <p className="text-[10px] text-muted-foreground">{guide.points.length} key rules</p>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Key points */}
+                    <div className="px-4 py-3 space-y-1.5">
+                      {guide.points.map((p: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="text-[10px] rounded px-1 py-0.5 font-bold shrink-0 mt-0.5"
+                            style={{ background: `${t.color || pathMeta.color}20`, color: t.color || pathMeta.color }}>
+                            {i + 1}
+                          </span>
+                          <p className="text-xs text-muted-foreground leading-relaxed">{p}</p>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Practice button */}
+                    <div className="px-4 pb-4 pt-1">
+                      <button onClick={() => setActiveTopic({ id: t.id, name: t.name })}
+                        className="w-full h-9 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-1.5"
+                        style={{ background: `linear-gradient(135deg,${t.color || pathMeta.color},${t.color || pathMeta.color}bb)` }}>
+                        Practice {t.name} →
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Learn — Formula Cards (non-communication paths) */}
+        {subView === "learn" && activePath !== "communication" && (
           <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
