@@ -123,15 +123,15 @@ const CS_TOPICS = [
 
 // --- Communication topics -----------------------------------------------------
 const COMM_TOPICS = [
-  { id: "direct-indirect",      name: "Direct & Indirect Speech", icon: "📢", color: "#10b981" },
-  { id: "active-passive",       name: "Active & Passive Voice",   icon: "🔄", color: "#06b6d4" },
-  { id: "sentence-improvement", name: "Sentence Improvement",     icon: "✏️", color: "#8b5cf6" },
-  { id: "idioms-phrases",       name: "Idioms & Phrases",         icon: "💬", color: "#f59e0b" },
-  { id: "cloze-test",           name: "Cloze Test",               icon: "📝", color: "#ef4444" },
-  { id: "para-jumbles",         name: "Para Jumbles",             icon: "🔀", color: "#a855f7" },
-  { id: "grammar",              name: "Grammar",                  icon: "📖", color: "#3b82f6" },
-  { id: "reading-comprehension",name: "Reading Comprehension",    icon: "📰", color: "#f97316" },
-  { id: "vocabulary",           name: "Vocabulary",               icon: "🔤", color: "#14b8a6" },
+  { id: "reading-comprehension", name: "Reading Comprehension",    icon: "📰", color: "#f97316" },
+  { id: "vocabulary",            name: "Vocabulary",               icon: "🔤", color: "#14b8a6" },
+  { id: "grammar",               name: "Grammar",                  icon: "📖", color: "#3b82f6" },
+  { id: "para-jumbles",          name: "Para Jumbles",             icon: "🔀", color: "#a855f7" },
+  { id: "cloze-test",            name: "Cloze Test",               icon: "📝", color: "#ef4444" },
+  { id: "idioms-phrases",        name: "Idioms & Phrases",         icon: "💬", color: "#f59e0b" },
+  { id: "sentence-improvement",  name: "Sentence Improvement",     icon: "✏️", color: "#8b5cf6" },
+  { id: "active-passive",        name: "Active & Passive Voice",   icon: "🔄", color: "#06b6d4" },
+  { id: "direct-indirect",       name: "Direct & Indirect Speech", icon: "📢", color: "#10b981" },
 ]
 
 // --- DSA topics ---------------------------------------------------------------
