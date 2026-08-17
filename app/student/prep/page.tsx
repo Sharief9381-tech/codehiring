@@ -16,6 +16,7 @@ import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/stude
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
 import { APTITUDE_BANK } from "@/lib/aptitude-bank"
+import { COMMUNICATION_BANK } from "@/lib/communication-bank"
 
 // Full problem editor — loaded dynamically to avoid SSR issues
 const ProblemEditor = dynamic(
@@ -122,12 +123,10 @@ const CS_TOPICS = [
 
 // --- Communication topics -----------------------------------------------------
 const COMM_TOPICS = [
-  { id: "grammar",       name: "Grammar & Sentence Correction", icon: "G",  color: "#10b981" },
-  { id: "vocabulary",    name: "Vocabulary & Word Meaning",     icon: "V",  color: "#06b6d4" },
-  { id: "reading",       name: "Reading Comprehension",         icon: "RC", color: "#8b5cf6" },
-  { id: "para-jumbles",  name: "Para Jumbles",                  icon: "PJ", color: "#f59e0b" },
-  { id: "email-writing", name: "Email & Tech Communication",    icon: "E",  color: "#ec4899" },
-  { id: "verbal-logic",  name: "Verbal Reasoning",              icon: "VR", color: "#ef4444" },
+  { id: "direct-indirect",     name: "Direct & Indirect Speech", icon: "📢", color: "#10b981" },
+  { id: "active-passive",      name: "Active & Passive Voice",   icon: "🔄", color: "#06b6d4" },
+  { id: "sentence-improvement",name: "Sentence Improvement",     icon: "✏️", color: "#8b5cf6" },
+  { id: "idioms-phrases",      name: "Idioms & Phrases",         icon: "💬", color: "#f59e0b" },
 ]
 
 // --- DSA topics ---------------------------------------------------------------
@@ -1142,6 +1141,47 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       let pool = allForTopic.filter(q => !seenIds.includes(q.id))
 
       // Reset if not enough unseen questions
+      if (pool.length < 20) {
+        seenIds = []
+        localStorage.removeItem(seenKey)
+        pool = allForTopic
+      }
+
+      const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 20)
+      const newSeen = [...seenIds, ...shuffled.map(q => q.id)]
+      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
+
+      const qs = shuffled.map((q, i) => ({
+        id: i + 1,
+        question: q.question,
+        options: q.options,
+        correct: q.correct,
+        explanation: q.explanation,
+        topic: q.topic,
+        difficulty: q.difficulty,
+      }))
+      setQuestions(qs)
+      setStage("quiz")
+      return
+    }
+
+    // ── Communication local bank ──────────────────────────────────────────────
+    const COMM_LOCAL_TOPIC_MAP: Record<string, string> = {
+      "direct-indirect":      "Direct & Indirect Speech",
+      "active-passive":       "Active & Passive Voice",
+      "sentence-improvement": "Sentence Improvement",
+      "idioms-phrases":       "Idioms & Phrases",
+    }
+
+    if (topic.id in COMM_LOCAL_TOPIC_MAP) {
+      const topicName = COMM_LOCAL_TOPIC_MAP[topic.id]
+      const seenKey = `comm_seen_${topic.id}`
+      let seenIds: string[] = []
+      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
+
+      const allForTopic = COMMUNICATION_BANK.filter(q => q.topic === topicName)
+      let pool = allForTopic.filter(q => !seenIds.includes(q.id))
+
       if (pool.length < 20) {
         seenIds = []
         localStorage.removeItem(seenKey)
