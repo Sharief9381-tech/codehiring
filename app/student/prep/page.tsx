@@ -123,10 +123,14 @@ const CS_TOPICS = [
 
 // --- Communication topics -----------------------------------------------------
 const COMM_TOPICS = [
-  { id: "direct-indirect",     name: "Direct & Indirect Speech", icon: "📢", color: "#10b981" },
-  { id: "active-passive",      name: "Active & Passive Voice",   icon: "🔄", color: "#06b6d4" },
-  { id: "sentence-improvement",name: "Sentence Improvement",     icon: "✏️", color: "#8b5cf6" },
-  { id: "idioms-phrases",      name: "Idioms & Phrases",         icon: "💬", color: "#f59e0b" },
+  { id: "direct-indirect",      name: "Direct & Indirect Speech", icon: "📢", color: "#10b981" },
+  { id: "active-passive",       name: "Active & Passive Voice",   icon: "🔄", color: "#06b6d4" },
+  { id: "sentence-improvement", name: "Sentence Improvement",     icon: "✏️", color: "#8b5cf6" },
+  { id: "idioms-phrases",       name: "Idioms & Phrases",         icon: "💬", color: "#f59e0b" },
+  { id: "cloze-test",           name: "Cloze Test",               icon: "📝", color: "#ef4444" },
+  { id: "para-jumbles",         name: "Para Jumbles",             icon: "🔀", color: "#a855f7" },
+  { id: "grammar",              name: "Grammar",                  icon: "📖", color: "#3b82f6" },
+  { id: "reading-comprehension",name: "Reading Comprehension",    icon: "📰", color: "#f97316" },
 ]
 
 // --- DSA topics ---------------------------------------------------------------
@@ -1167,10 +1171,14 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
 
     // ── Communication local bank ──────────────────────────────────────────────
     const COMM_LOCAL_TOPIC_MAP: Record<string, string> = {
-      "direct-indirect":      "Direct & Indirect Speech",
-      "active-passive":       "Active & Passive Voice",
-      "sentence-improvement": "Sentence Improvement",
-      "idioms-phrases":       "Idioms & Phrases",
+      "direct-indirect":       "Direct & Indirect Speech",
+      "active-passive":        "Active & Passive Voice",
+      "sentence-improvement":  "Sentence Improvement",
+      "idioms-phrases":        "Idioms & Phrases",
+      "cloze-test":            "Cloze Test",
+      "para-jumbles":          "Para Jumbles",
+      "grammar":               "Grammar",
+      "reading-comprehension": "Reading Comprehension",
     }
 
     if (topic.id in COMM_LOCAL_TOPIC_MAP) {
