@@ -12,7 +12,8 @@ import { getDatabase, isDatabaseAvailable } from "@/lib/database"
 import { SiteConfigModel } from "@/lib/models/site-config"
 import { blogPosts } from "@/lib/blog-posts"
 
-export const revalidate = 60
+export const revalidate = 0  // no cache — always fetch live data
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   const siteConfig = isDatabaseAvailable()
@@ -98,7 +99,7 @@ export async function GET() {
       topColleges = collegesResult.map((c: any) => c.collegeCode).filter(Boolean)
 
     } catch (e) {
-      console.error("Landing API error:", e)
+      console.error("Landing API DB error:", e instanceof Error ? e.message : e)
     }
   }
 
