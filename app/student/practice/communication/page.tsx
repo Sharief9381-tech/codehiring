@@ -331,11 +331,11 @@ export default function CommunicationPracticePage() {
           <p className="text-sm text-muted-foreground mt-1">Select a topic to start practising · 20 questions per session</p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 items-stretch">
           {COMM_TOPICS.map(t => {
             const guide = COMM_GUIDE[t.id] || []
             return (
-              <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20"
+              <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20 flex flex-col"
                 style={{ borderColor: `${t.color}25`, background: "rgba(15,15,20,0.6)" }}>
                 {/* Card header */}
                 <div className="p-4 pb-3" style={{ background: `${t.color}08` }}>
@@ -351,8 +351,8 @@ export default function CommunicationPracticePage() {
                   </div>
                 </div>
 
-                {/* Rules */}
-                <div className="px-4 py-3 space-y-1.5">
+                {/* Rules — flex-1 so it fills remaining space */}
+                <div className="px-4 py-3 space-y-1.5 flex-1">
                   {guide.map((point, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <span className="text-[10px] rounded px-1 py-0.5 font-bold shrink-0 mt-0.5"
@@ -362,7 +362,7 @@ export default function CommunicationPracticePage() {
                   ))}
                 </div>
 
-                {/* Practice button */}
+                {/* Practice button — always at bottom */}
                 <div className="px-4 pb-4 pt-1">
                   <button onClick={() => startPractice(t)}
                     className="w-full h-9 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-1.5"
