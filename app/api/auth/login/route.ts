@@ -14,18 +14,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
     }
 
-    // Fallback if DB not available
+    // Fallback if DB not available — call logic directly (no HTTP self-fetch)
     if (!isDatabaseAvailable()) {
-      const fallbackResponse = await fetch(
-        `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/auth/login-fallback`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      )
-      const fallbackData = await fallbackResponse.json()
-      return NextResponse.json(fallbackData, { status: fallbackResponse.status })
+      const { findUserByEmail: fbFind, verifyPassword: fbVerify, createSession: fbSession } = await import("@/lib/auth-fallback")
+      const cookieStore = await cookies()
+      const fbUser = await fbFind(email)
+      if (!fbUser) return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
+      const valid = await fbVerify(password, fbUser.password as string)
+      if (!valid) return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
+      const token = await fbSession(fbUser._id as string, fbUser.role as UserRole)
+      const redirectTo = fbUser.email === "sharief9381@gmail.com" ? "/admin" : `/${fbUser.role}/dashboard`
+      cookieStore.set("session_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", maxAge: 7 * 24 * 60 * 60, path: "/" })
+      const { password: _, ...safe } = fbUser
+      return NextResponse.json({ success: true, user: safe, redirectTo })
     }
 
     // Get cookie store once
@@ -97,6 +98,10 @@ export async function POST(request: Request) {
     const msg = error instanceof Error ? error.message : "Unknown error"
     if (msg.includes("ETIMEOUT") || msg.includes("connect") || msg.includes("MongoDB")) {
       return NextResponse.json({ error: "Database connection failed. Please try again in a moment." }, { status: 503 })
+    }
+    // In development, return the real error for debugging
+    if (process.env.NODE_ENV === "development") {
+      return NextResponse.json({ error: "Failed to login", detail: msg }, { status: 500 })
     }
     return NextResponse.json({ error: "Failed to login" }, { status: 500 })
   }

@@ -8,17 +8,9 @@ export async function POST(request: Request) {
     const dbAvailable = isDatabaseAvailable()
 
     if (!dbAvailable) {
-      // Forward the request to the fallback API
-      const fallbackResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/signup-fallback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(await request.json()),
-      })
-
-      const fallbackData = await fallbackResponse.json()
-      return NextResponse.json(fallbackData, { status: fallbackResponse.status })
+      // Call fallback logic directly — no HTTP self-fetch (breaks on localhost dev)
+      const { POST: fallbackHandler } = await import("@/app/api/auth/signup-fallback/route")
+      return fallbackHandler(request)
     }
 
     // Import database functions only when database is available

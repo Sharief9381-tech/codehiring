@@ -156,7 +156,7 @@ export async function POST(req: Request) {
     // ── For coding sections: use company-coding-ai model first ────────────────
     if (sectionData.isCoding) {
       try {
-        const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000"
+        const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
         const codingRes = await fetch(`${baseUrl}/api/student/company-coding-ai`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -182,7 +182,7 @@ export async function POST(req: Request) {
     // ── Try web scraping for aptitude ─────────────────────────────────────────
     if (!sectionData.isCoding) {
       try {
-        const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000"
+        const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
         const scrapeRes = await fetch(`${baseUrl}/api/student/scrape-questions`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },

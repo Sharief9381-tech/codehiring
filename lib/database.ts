@@ -15,17 +15,20 @@ function getClientPromise(): Promise<MongoClient> | null {
   if (process.env.NODE_ENV === 'development') {
     const globalWithMongo = global as typeof globalThis & {
       _mongoClientPromise?: Promise<MongoClient>
+      _mongoClient?: MongoClient
     }
     if (!globalWithMongo._mongoClientPromise) {
-      client = new MongoClient(uri, {
+      const c = new MongoClient(uri, {
         serverSelectionTimeoutMS: 30000,
         connectTimeoutMS: 30000,
         socketTimeoutMS: 30000,
         maxPoolSize: 10,
       })
-      globalWithMongo._mongoClientPromise = client.connect().catch(err => {
+      globalWithMongo._mongoClient = c
+      globalWithMongo._mongoClientPromise = c.connect().catch(err => {
         // Clear on failure so next request retries
         delete (global as any)._mongoClientPromise
+        delete (global as any)._mongoClient
         throw err
       })
     }
@@ -59,11 +62,13 @@ export async function getDatabase(): Promise<Db> {
     const connectedClient = await promise
     return connectedClient.db()
   } catch (error) {
-    // Reset so next request retries
+    // Reset so next request retries with fresh connection
     if (process.env.NODE_ENV === 'development') {
       delete (global as any)._mongoClientPromise
+      delete (global as any)._mongoClient
     } else {
       clientPromise = null
+      client = null
     }
     console.error('MongoDB connection error:', error)
     throw new Error(`Failed to connect to MongoDB: ${error instanceof Error ? error.message : 'Unknown error'}`)
