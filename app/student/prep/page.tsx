@@ -110,6 +110,16 @@ const APT_TOPICS = [
   { id: "quad-eq",         name: "Quadratic Equations",        icon: "²" },
   { id: "num-series",      name: "Number Series",              icon: "🔢" },
   { id: "quantity-comp",   name: "Quantity Comparison",        icon: "⚖️" },
+  // Verbal Ability topics (served from COMMUNICATION_BANK)
+  { id: "reading-comprehension", name: "Reading Comprehension",  icon: "📰" },
+  { id: "vocabulary",            name: "Vocabulary",              icon: "🔤" },
+  { id: "grammar",               name: "Grammar",                 icon: "📖" },
+  { id: "para-jumbles",          name: "Para Jumbles",            icon: "🔀" },
+  { id: "cloze-test",            name: "Cloze Test",              icon: "📝" },
+  { id: "idioms-phrases",        name: "Idioms & Phrases",        icon: "💬" },
+  { id: "sentence-improvement",  name: "Sentence Improvement",    icon: "✏️" },
+  { id: "active-passive",        name: "Active & Passive Voice",  icon: "🔄" },
+  { id: "direct-indirect",       name: "Direct & Indirect Speech",icon: "📢" },
 ]
 
 // --- Aptitude category groups ------------------------------------------------
@@ -135,8 +145,8 @@ const APT_CATEGORIES = [
     name: "Verbal Ability",
     icon: "📊",
     color: "#10b981",
-    desc: "Tables, Bar graphs, Pie charts, Line graphs and caselet DI",
-    topicIds: ["data-interp","num-series","data-suff"],
+    desc: "Reading Comprehension, Grammar, Vocabulary, Idioms and more",
+    topicIds: ["reading-comprehension","vocabulary","grammar","para-jumbles","cloze-test","idioms-phrases","sentence-improvement","active-passive","direct-indirect"],
   },
 ]
 
