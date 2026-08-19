@@ -111,9 +111,36 @@ const APT_TOPICS = [
   { id: "num-series",      name: "Number Series",              icon: "🔢" },
 ]
 
+// --- Aptitude category groups ------------------------------------------------
+const APT_CATEGORIES = [
+  {
+    id: "quantitative",
+    name: "Quantitative Aptitude",
+    icon: "🔢",
+    color: "#f59e0b",
+    desc: "Arithmetic, algebra, geometry and number problems",
+    topicIds: ["number-system","simplification","percentages","profit-loss","si-ci","ratio-prop","averages","mixture","time-work","pipes-cisterns","boats-streams","ages","mensuration","geometry","algebra","coord-geo","permcomb","probability","quad-eq"],
+  },
+  {
+    id: "logical",
+    name: "Logical Reasoning",
+    icon: "🧠",
+    color: "#8b5cf6",
+    desc: "Coding-Decoding, Blood Relations, Syllogism, Seating Arrangement and more",
+    topicIds: ["coding-decoding","blood-relations","direction-sense","ranking-ordering","syllogism","seating-arrangement","puzzles","inequality","input-output","data-sufficiency","statement-assumptions","cause-effect","assertion-reasoning"],
+  },
+  {
+    id: "data-interpretation",
+    name: "Data Interpretation",
+    icon: "📊",
+    color: "#10b981",
+    desc: "Tables, Bar graphs, Pie charts, Line graphs and caselet DI",
+    topicIds: ["data-interp","num-series","data-suff"],
+  },
+]
+
 // --- CS topics ----------------------------------------------------------------
 const CS_TOPICS = [
-  { id: "dbms", name: "DBMS",                icon: "🗄", color: "#3b82f6" },
   { id: "os",   name: "Operating Systems",   icon: "💻", color: "#8b5cf6" },
   { id: "cn",   name: "Computer Networks",   icon: "🌐", color: "#06b6d4" },
   { id: "oops", name: "OOP Concepts",        icon: "🧩", color: "#f59e0b" },
@@ -1473,6 +1500,7 @@ export default function PrepHubPage() {
   const [activeCompany, setActiveCompany] = useState<typeof ALL_COMPANIES[0] | null>(null)
   const [activeTopic, setActiveTopic] = useState<{ id: string; name: string } | null>(null)
   const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock">("home")
+  const [aptCategory, setAptCategory] = useState<string | null>(null)   // for aptitude category drill-down
   const [showHistory, setShowHistory] = useState(false)
   const [showLearningPaths, setShowLearningPaths] = useState(false)
   const [showSmartResume, setShowSmartResume] = useState(false)
@@ -1611,7 +1639,7 @@ export default function PrepHubPage() {
             { v: "topics", l: activePath === "coding" ? "Topic Practice" : "Topic Tests" },
             { v: "mock", l: "Full Mock" },
           ].map(({ v, l }) => (
-            <button key={v} onClick={() => setSubView(v as any)}
+            <button key={v} onClick={() => { setSubView(v as any); setAptCategory(null) }}
               className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
               style={subView === v
                 ? { background: `${pathMeta.color}20`, color: pathMeta.color, border: `1px solid ${pathMeta.color}30` }
@@ -1722,19 +1750,53 @@ export default function PrepHubPage() {
         {/* Learn — Formula Cards (non-communication paths) */}
         {subView === "learn" && activePath !== "communication" && (
           <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-base font-semibold text-foreground">Formula Cards</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Click any card to expand · memorize the highlighted formula first</p>
-              </div>
-              <span className="text-xs px-3 py-1 rounded-full font-semibold"
-                style={{ background: `${pathMeta.color}15`, color: pathMeta.color }}>
-                {pathMeta.topics.length} topics
-              </span>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {pathMeta.topics.map((t: any) => {
+            {/* Aptitude: category-first drill-down */}
+            {activePath === "aptitude" && !aptCategory && (
+              <>
+                <div>
+                  <p className="text-base font-semibold text-foreground">What do you want to learn?</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Choose a category to see formula cards and concepts</p>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {APT_CATEGORIES.map(cat => (
+                    <button key={cat.id} onClick={() => setAptCategory(cat.id)}
+                      className="group rounded-2xl border text-left p-6 transition-all hover:shadow-lg hover:shadow-black/20 hover:scale-[1.02] flex flex-col gap-3"
+                      style={{ borderColor: `${cat.color}30`, background: `${cat.color}08` }}>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
+                        style={{ background: `${cat.color}20` }}>{cat.icon}</div>
+                      <div>
+                        <p className="font-bold text-foreground">{cat.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{cat.desc}</p>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs font-semibold mt-auto" style={{ color: cat.color }}>
+                        View Topics <ChevronRight className="h-3.5 w-3.5" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Aptitude: formula cards for selected category */}
+            {activePath === "aptitude" && aptCategory && (() => {
+              const cat = APT_CATEGORIES.find(c => c.id === aptCategory)!
+              const catTopics = APT_TOPICS.filter(t => cat.topicIds.includes(t.id))
+              return (
+                <>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => setAptCategory(null)}
+                      className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                      <ArrowLeft className="h-4 w-4" /> Back
+                    </button>
+                    <span className="text-muted-foreground">·</span>
+                    <p className="text-base font-semibold text-foreground">{cat.name}</p>
+                    <span className="text-xs px-3 py-1 rounded-full font-semibold ml-auto"
+                      style={{ background: `${cat.color}15`, color: cat.color }}>
+                      {catTopics.length} topics
+                    </span>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {catTopics.map((t: any) => {
                 const noteMap: Record<string, {
                   formula: string; trick: string; points: string[]; example: string; emoji: string
                 }> = {
@@ -1901,14 +1963,58 @@ export default function PrepHubPage() {
                     <div className="px-4 pb-4">
                       <button onClick={() => setActiveTopic({ id: t.id, name: t.name })}
                         className="w-full h-9 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-1.5"
-                        style={{ background: `linear-gradient(135deg,${t.color || pathMeta.color},${t.color || pathMeta.color}bb)` }}>
+                        style={{ background: `linear-gradient(135deg,${cat.color},${cat.color}bb)` }}>
                         Practice {t.name} →
                       </button>
                     </div>
                   </div>
                 )
               })}
-            </div>
+                  </div>
+                </>
+              )
+            })()}
+
+            {/* Non-aptitude paths: show all topics directly */}
+            {activePath !== "aptitude" && (
+              <>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-base font-semibold text-foreground">Formula Cards</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Memorize the highlighted formula first</p>
+                  </div>
+                  <span className="text-xs px-3 py-1 rounded-full font-semibold"
+                    style={{ background: `${pathMeta.color}15`, color: pathMeta.color }}>
+                    {pathMeta.topics.length} topics
+                  </span>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {pathMeta.topics.map((t: any) => (
+                    <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20 flex flex-col"
+                      style={{ borderColor: `${t.color || pathMeta.color}25`, background: "rgba(15,15,20,0.6)" }}>
+                      <div className="p-4 pb-3" style={{ background: `${t.color || pathMeta.color}08` }}>
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-xl text-lg font-bold"
+                            style={{ background: `${t.color || pathMeta.color}20`, color: t.color || pathMeta.color }}>
+                            {t.icon}
+                          </div>
+                          <div>
+                            <p className="font-bold text-sm text-foreground">{t.name}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-4 pb-4 pt-3 mt-auto">
+                        <button onClick={() => setActiveTopic({ id: t.id, name: t.name })}
+                          className="w-full h-9 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 active:scale-95"
+                          style={{ background: `linear-gradient(135deg,${t.color || pathMeta.color},${t.color || pathMeta.color}bb)` }}>
+                          Practice {t.name} →
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -1945,21 +2051,89 @@ export default function PrepHubPage() {
 
         {/* Topics */}
         {subView === "topics" && (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {pathMeta.topics.map((t: any) => (
-              <button key={t.id} onClick={() => setActiveTopic({ id: t.id, name: t.name })}
-                className="group rounded-xl border border-border bg-card/40 hover:border-primary/30 hover:bg-card p-5 text-left transition-all hover:scale-[1.02]">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl mb-3 text-lg"
-                  style={{ background: `${t.color || pathMeta.color}15`, border: `1px solid ${t.color || pathMeta.color}30` }}>
-                  {t.icon}
+          <>
+            {/* Aptitude: category-first */}
+            {activePath === "aptitude" && !aptCategory && (
+              <div className="space-y-6">
+                <div>
+                  <p className="text-base font-semibold text-foreground">What do you want to test?</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Choose a category, then pick a topic to practise</p>
                 </div>
-                <p className="font-semibold text-foreground">{t.name}</p>
-                <p className="text-xs text-muted-foreground mt-1 group-hover:text-primary transition-colors flex items-center gap-1">
-                  Practice <ChevronRight className="h-3 w-3" />
-                </p>
-              </button>
-            ))}
-          </div>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {APT_CATEGORIES.map(cat => (
+                    <button key={cat.id} onClick={() => setAptCategory(cat.id)}
+                      className="group rounded-2xl border text-left p-6 transition-all hover:shadow-lg hover:shadow-black/20 hover:scale-[1.02] flex flex-col gap-3"
+                      style={{ borderColor: `${cat.color}30`, background: `${cat.color}08` }}>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
+                        style={{ background: `${cat.color}20` }}>{cat.icon}</div>
+                      <div>
+                        <p className="font-bold text-foreground">{cat.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{cat.desc}</p>
+                        <p className="text-xs font-semibold mt-2" style={{ color: cat.color }}>
+                          {APT_TOPICS.filter(t => cat.topicIds.includes(t.id)).length} topics
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs font-semibold mt-auto" style={{ color: cat.color }}>
+                        Choose Topic <ChevronRight className="h-3.5 w-3.5" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Aptitude: subtopics for selected category */}
+            {activePath === "aptitude" && aptCategory && (() => {
+              const cat = APT_CATEGORIES.find(c => c.id === aptCategory)!
+              const catTopics = APT_TOPICS.filter(t => cat.topicIds.includes(t.id))
+              return (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => setAptCategory(null)}
+                      className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                      <ArrowLeft className="h-4 w-4" /> Back
+                    </button>
+                    <span className="text-muted-foreground">·</span>
+                    <p className="text-base font-semibold text-foreground">{cat.name}</p>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {catTopics.map((t: any) => (
+                      <button key={t.id} onClick={() => setActiveTopic({ id: t.id, name: t.name })}
+                        className="group rounded-xl border border-border bg-card/40 hover:border-primary/30 hover:bg-card p-5 text-left transition-all hover:scale-[1.02]">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl mb-3 text-lg"
+                          style={{ background: `${cat.color}15`, border: `1px solid ${cat.color}30` }}>
+                          {t.icon}
+                        </div>
+                        <p className="font-semibold text-foreground">{t.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1 group-hover:text-primary transition-colors flex items-center gap-1">
+                          Practice <ChevronRight className="h-3 w-3" />
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )
+            })()}
+
+            {/* Non-aptitude: show all topics directly */}
+            {activePath !== "aptitude" && (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {pathMeta.topics.map((t: any) => (
+                  <button key={t.id} onClick={() => setActiveTopic({ id: t.id, name: t.name })}
+                    className="group rounded-xl border border-border bg-card/40 hover:border-primary/30 hover:bg-card p-5 text-left transition-all hover:scale-[1.02]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl mb-3 text-lg"
+                      style={{ background: `${t.color || pathMeta.color}15`, border: `1px solid ${t.color || pathMeta.color}30` }}>
+                      {t.icon}
+                    </div>
+                    <p className="font-semibold text-foreground">{t.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1 group-hover:text-primary transition-colors flex items-center gap-1">
+                      Practice <ChevronRight className="h-3 w-3" />
+                    </p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
         )}
 
         {/* Full mock */}
