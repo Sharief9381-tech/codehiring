@@ -132,7 +132,7 @@ const APT_CATEGORIES = [
   },
   {
     id: "data-interpretation",
-    name: "Data Interpretation",
+    name: "Verbal Ability",
     icon: "📊",
     color: "#10b981",
     desc: "Tables, Bar graphs, Pie charts, Line graphs and caselet DI",
