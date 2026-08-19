@@ -11250,5 +11250,510 @@ export const APTITUDE_BANK: AptitudeQuestion[] = [
   explanation:"Pattern �2+3: 125�2+3=253." },
 
 
+// ─────────────────────────────────────────────────────────────────────────────
+// QUANTITY COMPARISON — 100 Questions (QC001–QC100)
+// Format: Quantity A vs Quantity B
+// Options: A=QA greater, B=QB greater, C=Equal, D=Cannot be determined
+// ─────────────────────────────────────────────────────────────────────────────
+
+{ id:"QC001", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 2x + 5 > 13\nQuantity A: x\nQuantity B: 4",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"2x > 8 → x > 4. So Quantity A (x) is greater than 4." },
+
+{ id:"QC002", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 3y − 7 < 11\nQuantity A: y\nQuantity B: 6",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"3y < 18 → y < 6. Quantity B (6) is greater." },
+
+{ id:"QC003", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: −4x > 20\nQuantity A: x\nQuantity B: −5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"Divide by −4 (flip inequality): x < −5. Quantity B (−5) is greater than x." },
+
+{ id:"QC004", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 5a + 2 = 3a + 12\nQuantity A: a\nQuantity B: 5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"2a = 10 → a = 5. Both quantities equal 5." },
+
+{ id:"QC005", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x > y > 0\nQuantity A: x − y\nQuantity B: y − x",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"x − y > 0 while y − x < 0. Positive > Negative." },
+
+{ id:"QC006", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: a < 0 < b\nQuantity A: ab\nQuantity B: a + b",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"ab < 0 (negative × positive). a + b could be positive or negative but is always greater than ab. e.g., a=−1,b=2: ab=−2, a+b=1; a=−5,b=1: ab=−5, a+b=−4. −4 > −5." },
+
+{ id:"QC007", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: m + n = 10 and m > 5\nQuantity A: m\nQuantity B: n",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"Since m > 5 and m + n = 10, n = 10 − m < 5. Thus m > n." },
+
+{ id:"QC008", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 2p − 3 = 7\nQuantity A: p²\nQuantity B: 25",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"2p = 10 → p = 5. p² = 25. Both equal 25." },
+
+{ id:"QC009", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x + y = 0 and x ≠ 0\nQuantity A: x/y\nQuantity B: −1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"y = −x, so x/y = x/(−x) = −1. Both equal −1." },
+
+{ id:"QC010", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 3k + 4 > 19\nQuantity A: k\nQuantity B: 5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"3k > 15 → k > 5. Quantity A is greater than 5." },
+
+{ id:"QC011", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x > 1\nQuantity A: x²\nQuantity B: x³",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"For x > 1, higher powers are larger: x³ > x²." },
+
+{ id:"QC012", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 0 < x < 1\nQuantity A: x\nQuantity B: √x",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"For 0 < x < 1, √x > x (e.g., √0.25 = 0.5 > 0.25)." },
+
+{ id:"QC013", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x² = 25\nQuantity A: x\nQuantity B: 5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"x = 5 or x = −5. If x = 5 they are equal; if x = −5, B is greater." },
+
+{ id:"QC014", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: y³ = −27\nQuantity A: y\nQuantity B: −3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"y = ∛(−27) = −3. Both equal −3." },
+
+{ id:"QC015", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: a > 0\nQuantity A: a⁰\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Any non-zero number to the power 0 equals 1. a⁰ = 1." },
+
+{ id:"QC016", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 2ˣ = 16\nQuantity A: x\nQuantity B: 4",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"2ˣ = 2⁴ → x = 4. Both equal 4." },
+
+{ id:"QC017", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 3^(n+1) = 27\nQuantity A: n\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"3^(n+1) = 3³ → n + 1 = 3 → n = 2. Both equal 2." },
+
+{ id:"QC018", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x > 0\nQuantity A: √(x²)\nQuantity B: x",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"For x > 0, √(x²) = x. Both equal x." },
+
+{ id:"QC019", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 0 < a < b < 1\nQuantity A: a²\nQuantity B: b²",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"For positive numbers < 1, if a < b then a² < b²." },
+
+{ id:"QC020", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x < 0\nQuantity A: x³\nQuantity B: x²",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"If x < 0, x³ < 0 and x² > 0. Positive > Negative." },
+
+{ id:"QC021", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: a > b > 0\nQuantity A: 1/a\nQuantity B: 1/b",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"Taking reciprocals of positive numbers reverses inequality: 1/a < 1/b." },
+
+{ id:"QC022", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x > 0\nQuantity A: 20% of 50x\nQuantity B: 50% of 20x",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"0.20 × 50x = 10x and 0.50 × 20x = 10x. Both equal 10x." },
+
+{ id:"QC023", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: y > 0\nQuantity A: y/4\nQuantity B: 0.25y",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"y/4 = 0.25y. Both are identical." },
+
+{ id:"QC024", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 0 < x < y\nQuantity A: x/y\nQuantity B: (x+1)/(y+1)",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"Adding 1 to numerator and denominator of a fraction x/y < 1 increases its value." },
+
+{ id:"QC025", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: a < 0\nQuantity A: a/2\nQuantity B: a/3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"For a < 0, dividing by larger divisor gives value closer to 0. e.g., a=−6: a/2=−3, a/3=−2. −2 > −3." },
+
+{ id:"QC026", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x = 0.4\nQuantity A: 1/x\nQuantity B: 2.5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"1/0.4 = 10/4 = 2.5. Both equal 2.5." },
+
+{ id:"QC027", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: p > 100\nQuantity A: 15% of p\nQuantity B: 15",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"15% of p = 0.15p. Since p > 100, 0.15p > 15." },
+
+{ id:"QC028", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: m, n > 0 and m/n = 3/4\nQuantity A: m\nQuantity B: n",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"m/n = 3/4 → m = (3/4)n < n since n > 0." },
+
+{ id:"QC029", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x > 1\nQuantity A: (x+1)/x\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"(x+1)/x = 1 + 1/x > 1 for x > 1." },
+
+{ id:"QC030", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: 0 < a < 1\nQuantity A: 1/a²\nQuantity B: 1/a",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"For 0 < a < 1, a² < a → 1/a² > 1/a." },
+
+{ id:"QC031", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: |x| = 7\nQuantity A: x\nQuantity B: 0",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"x = 7 or x = −7. 7 > 0 but −7 < 0." },
+
+{ id:"QC032", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: |y| < 4\nQuantity A: y\nQuantity B: 5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"|y| < 4 → −4 < y < 4. All values of y are less than 5." },
+
+{ id:"QC033", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: |a + 3| = 0\nQuantity A: a\nQuantity B: −3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"a + 3 = 0 → a = −3. Both equal −3." },
+
+{ id:"QC034", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: |x| > 5\nQuantity A: x\nQuantity B: −6",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"x > 5 or x < −5. If x = 6 > −6; if x = −7 < −6." },
+
+{ id:"QC035", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x ≠ 0\nQuantity A: |x|\nQuantity B: −|x|",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"|x| > 0 and −|x| < 0 for x ≠ 0." },
+
+{ id:"QC036", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: |y − 2| = 5\nQuantity A: y\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"y − 2 = 5 → y = 7 OR y − 2 = −5 → y = −3. 7 > 3 but −3 < 3." },
+
+{ id:"QC037", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: a < 0\nQuantity A: |a|\nQuantity B: −a",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"For a < 0, |a| = −a. Both are equal." },
+
+{ id:"QC038", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: |x + 2| < 3\nQuantity A: x\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"|x + 2| < 3 → −5 < x < 1. All values of x are < 2." },
+
+{ id:"QC039", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: |p| = |q| and p ≠ q\nQuantity A: p + q\nQuantity B: 0",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Since |p| = |q| and p ≠ q, p = −q, so p + q = 0." },
+
+{ id:"QC040", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x < −2\nQuantity A: |x|\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"If x < −2, |x| > 2." },
+
+{ id:"QC041", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x² − 9 = 0\nQuantity A: x\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"x = 3 or x = −3. 3 = 3 (equal) but −3 < 3 (B greater)." },
+
+{ id:"QC042", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: (y − 3)² = 0\nQuantity A: y\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"y − 3 = 0 → y = 3. Both equal 3." },
+
+{ id:"QC043", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: a² + 4a + 4 = 0\nQuantity A: a\nQuantity B: −2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"(a + 2)² = 0 → a = −2. Both equal −2." },
+
+{ id:"QC044", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x² − 4x + 3 = 0\nQuantity A: x\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"(x−1)(x−3) = 0 → x = 1 or x = 3. 1 < 2 but 3 > 2." },
+
+{ id:"QC045", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: y² < 16\nQuantity A: y\nQuantity B: 4",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"y² < 16 → −4 < y < 4. All values of y are < 4." },
+
+{ id:"QC046", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x² − 5x + 6 = 0\nQuantity A: Sum of roots of the equation\nQuantity B: 5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Sum of roots = −(−5)/1 = 5. Both equal 5." },
+
+{ id:"QC047", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: a² − b² = 0 and a ≠ b\nQuantity A: a + b\nQuantity B: 0",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"(a−b)(a+b) = 0. Since a ≠ b, a + b = 0." },
+
+{ id:"QC048", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x(x − 4) = 0\nQuantity A: x\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"x = 0 or x = 4. 0 < 2 but 4 > 2." },
+
+{ id:"QC049", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: m² + 1 = 0 (for real m)\nQuantity A: Number of real solutions\nQuantity B: 0",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"m² = −1 has no real solutions. Number of real solutions = 0." },
+
+{ id:"QC050", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
+  question:"Given: x² − 2x + 1 = 0\nQuantity A: x\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"(x − 1)² = 0 → x = 1. Both equal 1." },
+
+{ id:"QC051", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x + y > 10 and x − y < 2\nQuantity A: x\nQuantity B: 6",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"Add the inequalities: 2x > 12 → x > 6. Quantity A is greater." },
+
+{ id:"QC052", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a² + b² = 25 and ab = 12 (a, b > 0)\nQuantity A: a + b\nQuantity B: 7",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"(a+b)² = 25 + 2(12) = 49 → a+b = 7 (positive). Both equal 7." },
+
+{ id:"QC053", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x²y > 0 and xy² < 0\nQuantity A: x\nQuantity B: y",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"x²y > 0 → y > 0. xy² < 0 → x < 0. So x is negative, y is positive → y > x." },
+
+{ id:"QC054", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 3x + 2y = 12 and x > 2\nQuantity A: y\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"2y = 12 − 3x. Since x > 2, 3x > 6, so 12 − 3x < 6 → 2y < 6 → y < 3." },
+
+{ id:"QC055", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a³ > b³\nQuantity A: a\nQuantity B: b",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"f(t) = t³ is strictly increasing for all reals, so a³ > b³ → a > b." },
+
+{ id:"QC056", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x² > y²\nQuantity A: x\nQuantity B: y",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"x² > y² → |x| > |y|. But x = −5, y = 2 gives x < y; x = 5, y = 2 gives x > y." },
+
+{ id:"QC057", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: p² + q² = 0\nQuantity A: p\nQuantity B: q",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Sum of squares = 0 iff p = 0 and q = 0. Both equal 0." },
+
+{ id:"QC058", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x + 1/x = 2 (x > 0)\nQuantity A: x\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"x² − 2x + 1 = 0 → (x−1)² = 0 → x = 1. Both equal 1." },
+
+{ id:"QC059", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a + b + c = 0 and a > b > c\nQuantity A: a\nQuantity B: 0",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"Since a > b > c and their sum is 0, a must be positive (if a ≤ 0, all three ≤ 0, sum can't be 0)." },
+
+{ id:"QC060", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: xy = 1 and x > 1\nQuantity A: x + y\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"y = 1/x. x + 1/x > 2 for x > 1 (by AM-GM, equality only at x=1)." },
+
+{ id:"QC061", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 2ˣ = 3ʸ (x, y > 0)\nQuantity A: x\nQuantity B: y",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"x·ln2 = y·ln3. Since ln3 > ln2, x = y·(ln3/ln2) > y." },
+
+{ id:"QC062", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 0 < x < 1\nQuantity A: xˣ\nQuantity B: x",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"For 0 < x < 1, xˣ > x. e.g., 0.5^0.5 ≈ 0.707 > 0.5." },
+
+{ id:"QC063", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a > 1\nQuantity A: a^√2\nQuantity B: (√a)²",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"(√a)² = a. Since a > 1 and √2 ≈ 1.414 > 1, a^√2 > a¹ = a." },
+
+{ id:"QC064", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x < 0\nQuantity A: (x²)^(1/2)\nQuantity B: x",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"(x²)^(1/2) = |x|. For x < 0, |x| > x (positive > negative)." },
+
+{ id:"QC065", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 2^(a+b) = 32 and 2^(a−b) = 2\nQuantity A: a\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"a+b = 5, a−b = 1. Adding: 2a = 6 → a = 3. Both equal 3." },
+
+{ id:"QC066", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x > 0 and xˣ = 1\nQuantity A: x\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"For x > 0, xˣ = 1 → x = 1. Both equal 1." },
+
+{ id:"QC067", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 0 < n < 1\nQuantity A: n^(−2)\nQuantity B: n^(−1)",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"n^−2 = 1/n², n^−1 = 1/n. For 0 < n < 1, n² < n → 1/n² > 1/n." },
+
+{ id:"QC068", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a, b > 1 and aᵇ = bᵃ with a ≠ b\nQuantity A: Smaller of a or b\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"aᵇ = bᵃ for distinct a,b > 1 has solution (2, 4). The smaller value is always 2." },
+
+{ id:"QC069", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x > 1\nQuantity A: xˣ/x\nQuantity B: x^(x−1)",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"xˣ/x = x^(x−1). Both are identical." },
+
+{ id:"QC070", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 3^(2x) − 10·3^x + 9 = 0\nQuantity A: Larger value of x\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Let u = 3^x: u²−10u+9 = 0 → (u−1)(u−9) = 0 → x=0 or x=2. Larger value = 2." },
+
+{ id:"QC071", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 1/x < 1/y (x, y ≠ 0)\nQuantity A: x\nQuantity B: y",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"Sign of x and y is unknown. e.g., x=2,y=3: 1/2>1/3 (A smaller); x=−3,y=2: x<y." },
+
+{ id:"QC072", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: (x−1)/(x+1) > 0\nQuantity A: |x|\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"(x−1)/(x+1) > 0 → x > 1 or x < −1 → |x| > 1." },
+
+{ id:"QC073", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a, b > 0 and a + b = 20\nQuantity A: Maximum value of ab\nQuantity B: 100",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Maximum product when a = b = 10 → ab = 100. Both equal 100." },
+
+{ id:"QC074", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x > 0\nQuantity A: x + 1/x\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"By AM-GM, x + 1/x ≥ 2. Equal when x = 1. So could be equal or greater — cannot determine without knowing x." },
+
+{ id:"QC075", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: (a+b)/2 = 10 and a > b\nQuantity A: √(ab)\nQuantity B: 10",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"AM > GM for distinct positive numbers: (a+b)/2 > √(ab) → 10 > √(ab)." },
+
+{ id:"QC076", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: −1 < x < 0\nQuantity A: 1/x\nQuantity B: x²",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"For −1 < x < 0, 1/x < −1 (negative), while x² > 0. Positive > Negative." },
+
+{ id:"QC077", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a, b, c > 0 and a = b/c. If b increases and c decreases:\nQuantity A: New value of a\nQuantity B: Original value of a",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"a = b/c. If b increases and c decreases, a = b/c increases. New a > original a." },
+
+{ id:"QC078", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: (x² − 4)/(x − 2) = 5\nQuantity A: x\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"(x−2)(x+2)/(x−2) = 5 → x + 2 = 5 (x ≠ 2) → x = 3. Both equal 3." },
+
+{ id:"QC079", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 0 < x < y < 1\nQuantity A: (y−x)/(y+x)\nQuantity B: (y²−x²)/(y²+x²)",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"(y²−x²)/(y²+x²) = (y−x)(y+x)/((y+x)²−2xy). Since (y+x)² > y²+x², dividing by larger number makes B smaller." },
+
+{ id:"QC080", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: p > 0 and p − 1/p = 0\nQuantity A: p\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"p − 1/p = 0 → p² = 1 → p = 1 (since p > 0). Both equal 1." },
+
+{ id:"QC081", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: |x − 3| ≤ 2\nQuantity A: x\nQuantity B: 5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"|x − 3| ≤ 2 → 1 ≤ x ≤ 5. x can equal 5 (equal) or be less than 5." },
+
+{ id:"QC082", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: |2x + 1| > 7\nQuantity A: Minimum integer value of x\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"|2x+1| > 7 → x > 3 or x < −4. Positive integers start at 4; negative integers are −5, −6... Minimum has no lower bound — so comparing with 3: B is greater than the negative integer values." },
+
+{ id:"QC083", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x² − 7x + 12 ≤ 0\nQuantity A: x\nQuantity B: 3.5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"(x−3)(x−4) ≤ 0 → 3 ≤ x ≤ 4. x can be 3 < 3.5 or 4 > 3.5." },
+
+{ id:"QC084", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: |x + 1| = |x − 5|\nQuantity A: x\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Distance from x to −1 equals distance to 5 → x = (−1+5)/2 = 2. Both equal 2." },
+
+{ id:"QC085", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: |x| + |y| = |x + y|\nQuantity A: xy\nQuantity B: 0",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"|x|+|y|=|x+y| holds iff x and y have the same sign or one is zero → xy ≥ 0. Could be > 0 or = 0." },
+
+{ id:"QC086", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: Expression x² − 4x + 5\nQuantity A: Minimum possible value of the expression\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Complete the square: (x−2)² + 1. Minimum value is 1 (at x = 2)." },
+
+{ id:"QC087", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: |x − 2| + |x − 4| = 2\nQuantity A: x\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"Equation holds for all x ∈ [2, 4]. x can be 2.5 < 3 or 3.5 > 3." },
+
+{ id:"QC088", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x² + y² − 4x + 6y + 13 = 0\nQuantity A: x + y\nQuantity B: −1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"(x−2)² + (y+3)² = 0 → x = 2, y = −3 → x + y = −1. Both equal −1." },
+
+{ id:"QC089", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: |x² − 4| = 0\nQuantity A: |x|\nQuantity B: 2",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"x² = 4 → x = ±2 → |x| = 2. Both equal 2." },
+
+{ id:"QC090", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: 2x² − 8x + 9 > 0\nQuantity A: Number of real values of x satisfying the inequality\nQuantity B: Infinitely many",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Discriminant = 64 − 72 = −8 < 0 and a = 2 > 0, so the quadratic is positive for ALL real x — infinitely many solutions." },
+
+{ id:"QC091", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x₁ = 2, x(n+1) = 2xₙ − 1 for n ≥ 1\nQuantity A: x₅\nQuantity B: 17",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"x1=2, x2=3, x3=5, x4=9, x5=17. Both equal 17." },
+
+{ id:"QC092", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: f(x) = x² − x. For x > 1:\nQuantity A: f(x + 1)\nQuantity B: f(x) + 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"f(x+1) = x²+x. f(x)+1 = x²−x+1. Difference = 2x−1 > 0 for x > 1." },
+
+{ id:"QC093", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: aₙ = (−1)ⁿ · n\nQuantity A: a₁₀ + a₁₁\nQuantity B: −1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"a₁₀ = 10, a₁₁ = −11. Sum = −1. Both equal −1." },
+
+{ id:"QC094", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x, y, z are consecutive positive integers with x < y < z\nQuantity A: xz\nQuantity B: y²",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"y = k, x = k−1, z = k+1. xz = (k−1)(k+1) = k²−1 < k² = y²." },
+
+{ id:"QC095", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: f(x) = |x − 2|\nQuantity A: f(−3)\nQuantity B: f(7)",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"f(−3) = |−5| = 5. f(7) = |5| = 5. Both equal 5." },
+
+{ id:"QC096", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a, b are integers with 1 ≤ a < b ≤ 5\nQuantity A: Maximum value of b/a\nQuantity B: 5",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"Max ratio when b = 5, a = 1 → 5/1 = 5. Both equal 5." },
+
+{ id:"QC097", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x³ − x = 0\nQuantity A: Number of distinct real roots\nQuantity B: 3",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:2, explanation:"x(x−1)(x+1) = 0 → x = 0, 1, −1. Exactly 3 distinct real roots." },
+
+{ id:"QC098", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a + b > 0 and ab < 0\nQuantity A: |a|\nQuantity B: |b|",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:3, explanation:"ab < 0 means one positive and one negative. a+b > 0 means the positive has larger absolute value, but which variable is positive is unknown." },
+
+{ id:"QC099", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: x, y are positive integers such that xʸ = 64\nQuantity A: Minimum possible value of x + y\nQuantity B: 10",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:1, explanation:"Pairs: (64,1)→65; (8,2)→10; (4,3)→7; (2,6)→8. Minimum = 4+3 = 7 < 10. Quantity B is greater." },
+
+{ id:"QC100", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
+  question:"Given: a, b > 0 and a² + b² = 1\nQuantity A: a + b\nQuantity B: 1",
+  options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
+  correct:0, explanation:"(a+b)² = 1 + 2ab > 1 for a,b > 0 → a+b > 1. Quantity A is greater." },
 
 ] // end APTITUDE_BANK

@@ -109,6 +109,7 @@ const APT_TOPICS = [
   { id: "data-suff",       name: "Data Sufficiency",           icon: "✅" },
   { id: "quad-eq",         name: "Quadratic Equations",        icon: "²" },
   { id: "num-series",      name: "Number Series",              icon: "🔢" },
+  { id: "quantity-comp",   name: "Quantity Comparison",        icon: "⚖️" },
 ]
 
 // --- Aptitude category groups ------------------------------------------------
@@ -119,7 +120,7 @@ const APT_CATEGORIES = [
     icon: "🔢",
     color: "#f59e0b",
     desc: "Arithmetic, algebra, geometry and number problems",
-    topicIds: ["number-system","simplification","percentages","profit-loss","si-ci","ratio-prop","averages","mixture","time-work","pipes-cisterns","boats-streams","ages","mensuration","geometry","algebra","coord-geo","permcomb","probability","quad-eq"],
+    topicIds: ["number-system","simplification","percentages","profit-loss","si-ci","ratio-prop","averages","mixture","time-work","pipes-cisterns","boats-streams","ages","mensuration","geometry","algebra","coord-geo","permcomb","probability","quad-eq","quantity-comp"],
   },
   {
     id: "logical",
@@ -1131,6 +1132,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "data-suff": "Data Sufficiency",
       "quad-eq": "Quadratic Equations",
       "num-series": "Number Series",
+      "quantity-comp": "Quantity Comparison",
     }
     // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
     if (topic.id === "mock-aptitude") {
