@@ -96,6 +96,7 @@ export default function CommunicationCoachPage() {
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [speechEnabled, setSpeechEnabled] = useState(true)
   const recognitionRef = useRef<any>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Practice mode
   const [currentQuestion, setCurrentQuestion] = useState("")
@@ -530,7 +531,6 @@ export default function CommunicationCoachPage() {
 
   // ─── INTERVIEW VIEW ─────────────────────────────────────────────────────────
   if (view === "interview" && scenario) {
-    const messagesEndRef = useRef<HTMLDivElement>(null)
 
     return (
       <div className="min-h-screen flex flex-col" style={{ background: "#09090b" }}>
