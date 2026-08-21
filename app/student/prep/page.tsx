@@ -1646,7 +1646,11 @@ export default function PrepHubPage() {
   // Redirect 1st and 2nd year students away from Prep Track
   useEffect(() => {
     if (yearLoaded && (isFirstYear || isSecondYear)) {
-      window.location.replace("/student/learn")
+      // Don't redirect if we're already on the practice sub-route
+      const isPracticeRoute = window.location.pathname.startsWith("/student/practice/")
+      if (!isPracticeRoute) {
+        window.location.replace("/student/learn")
+      }
     }
   }, [yearLoaded, isFirstYear, isSecondYear])
 
