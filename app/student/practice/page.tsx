@@ -32,14 +32,14 @@ const PRACTICE_MODES = [
   {
     id: "communication",
     label: "Communication",
-    subtitle: "Grammar · Vocab · Reading",
-    desc: "Improve verbal ability, grammar, reading comprehension, and technical communication skills required in placement drives.",
-    icon: "C",
+    subtitle: "Written · Spoken · AI Voice Coach",
+    desc: "Master written English and spoken communication — grammar, vocabulary, reading comprehension, sentence skills, and AI voice practice for HR & GD rounds.",
+    icon: "🎤",
     iconBg: "#10b981",
     color: "#10b981",
     href: "/student/practice/communication",
-    topics: ["Grammar & Sentence Correction", "Vocabulary & Word Meaning", "Reading Comprehension", "Para Jumbles", "Email Writing", "Verbal Reasoning"],
-    count: "150+ exercises",
+    topics: ["Direct & Indirect Speech", "Active & Passive Voice", "Sentence Improvement", "Idioms & Phrases", "Cloze Test", "Para Jumbles", "Reading Comprehension", "Grammar", "Vocabulary", "🎤 AI Voice Coach"],
+    count: "900 questions · Voice Coach",
   },
 ]
 
@@ -123,7 +123,7 @@ function PracticeContent() {
           {[
             { icon: <Brain className="h-4 w-4 text-yellow-400" />, label: "Aptitude", value: "200+", sub: "questions" },
             { icon: <Code2 className="h-4 w-4 text-indigo-400" />, label: "Coding", value: "750+", sub: "problems" },
-            { icon: <MessageCircle className="h-4 w-4 text-emerald-400" />, label: "Communication", value: "150+", sub: "exercises" },
+            { icon: <MessageCircle className="h-4 w-4 text-emerald-400" />, label: "Communication", value: "900", sub: "questions + voice" },
           ].map(s => (
             <div key={s.label} className="rounded-2xl p-4 text-center"
               style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>

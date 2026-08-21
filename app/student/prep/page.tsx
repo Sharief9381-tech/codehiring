@@ -15,8 +15,9 @@ import { ProctoredShell, type ViolationLog } from "@/components/student/proctor"
 import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/student/assessment-history"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
-import { APTITUDE_BANK } from "@/lib/aptitude-bank"
+import { QUANTITATIVE_BANK } from "@/lib/quantitative-reasoning"
 import { COMMUNICATION_BANK } from "@/lib/communication-bank"
+import { VoiceCoach } from "@/components/student/voice-coach"
 
 // Full problem editor — loaded dynamically to avoid SSR issues
 const ProblemEditor = dynamic(
@@ -110,6 +111,28 @@ const APT_TOPICS = [
   { id: "quad-eq",         name: "Quadratic Equations",        icon: "²" },
   { id: "num-series",      name: "Number Series",              icon: "🔢" },
   { id: "quantity-comp",   name: "Quantity Comparison",        icon: "⚖️" },
+  // Logical Reasoning topics (served from QUANTITATIVE_BANK)
+  { id: "coding-decoding",       name: "Coding-Decoding",              icon: "🔐" },
+  { id: "blood-relations",       name: "Blood Relations",              icon: "🩸" },
+  { id: "direction-sense",       name: "Direction Sense",              icon: "🧭" },
+  { id: "ranking-ordering",      name: "Ranking & Ordering",           icon: "🏆" },
+  { id: "syllogism",             name: "Syllogism",                    icon: "🔗" },
+  { id: "seating-arrangement",   name: "Seating Arrangement",          icon: "💺" },
+  { id: "puzzles",               name: "Puzzles",                      icon: "🧩" },
+  { id: "inequality",            name: "Inequality",                   icon: "≠" },
+  { id: "input-output",          name: "Input-Output",                 icon: "⇄" },
+  { id: "data-sufficiency",      name: "Data Sufficiency (Logical)",   icon: "📋" },
+  { id: "statement-assumptions", name: "Statement & Assumptions",      icon: "💭" },
+  { id: "cause-effect",          name: "Cause & Effect",               icon: "⚡" },
+  { id: "assertion-reasoning",   name: "Assertion & Reasoning",        icon: "🎯" },
+  { id: "analogy",               name: "Analogy",                      icon: "🔁" },
+  { id: "classification",        name: "Classification",               icon: "🗂️" },
+  { id: "course-of-action",      name: "Course of Action",             icon: "📌" },
+  { id: "mirror-water-images",   name: "Mirror & Water Images",        icon: "🪞" },
+  { id: "paper-folding",         name: "Paper Folding & Cutting",      icon: "✂️" },
+  { id: "cubes-dice",            name: "Cubes & Dice",                 icon: "🎲" },
+  { id: "calendar-clock",        name: "Calendar & Clock",             icon: "🗓️" },
+  { id: "venn-diagrams",         name: "Venn Diagrams",                icon: "🔵" },
   // Verbal Ability topics (served from COMMUNICATION_BANK)
   { id: "reading-comprehension", name: "Reading Comprehension",  icon: "📰" },
   { id: "vocabulary",            name: "Vocabulary",              icon: "🔤" },
@@ -129,23 +152,35 @@ const APT_CATEGORIES = [
     name: "Quantitative Aptitude",
     icon: "🔢",
     color: "#f59e0b",
-    desc: "Arithmetic, algebra, geometry and number problems",
-    topicIds: ["number-system","simplification","percentages","profit-loss","si-ci","ratio-prop","averages","mixture","time-work","pipes-cisterns","boats-streams","ages","mensuration","geometry","algebra","coord-geo","permcomb","probability","quad-eq","quantity-comp"],
+    desc: "Master arithmetic, algebra, geometry and number problems essential for every placement test.",
+    subtitle: "Arithmetic · Algebra · Geometry",
+    tags: ["Number System", "Percentages", "Time & Work", "Profit & Loss"],
+    extraCount: 17,
+    exerciseCount: "200+",
+    topicIds: ["number-system","simplification","percentages","profit-loss","si-ci","ratio-prop","averages","mixture","time-work","pipes-cisterns","boats-streams","ages","mensuration","geometry","algebra","coord-geo","permcomb","probability","quad-eq","quantity-comp","num-series"],
   },
   {
     id: "logical",
     name: "Logical Reasoning",
     icon: "🧠",
     color: "#8b5cf6",
-    desc: "Coding-Decoding, Blood Relations, Syllogism, Seating Arrangement and more",
-    topicIds: ["coding-decoding","blood-relations","direction-sense","ranking-ordering","syllogism","seating-arrangement","puzzles","inequality","input-output","data-sufficiency","statement-assumptions","cause-effect","assertion-reasoning"],
+    desc: "Sharpen your reasoning with Coding-Decoding, Blood Relations, Syllogism, Seating Arrangement and more.",
+    subtitle: "Puzzles · Syllogism · Series",
+    tags: ["Coding-Decoding", "Seating Arrangement", "Syllogism", "Venn Diagrams"],
+    extraCount: 17,
+    exerciseCount: "190+",
+    topicIds: ["coding-decoding","blood-relations","direction-sense","ranking-ordering","syllogism","seating-arrangement","puzzles","inequality","input-output","data-sufficiency","statement-assumptions","cause-effect","assertion-reasoning","analogy","classification","course-of-action","mirror-water-images","paper-folding","cubes-dice","calendar-clock","venn-diagrams"],
   },
   {
     id: "data-interpretation",
-    name: "Verbal Ability",
-    icon: "📊",
+    name: "Communication",
+    icon: "🎤",
     color: "#10b981",
-    desc: "Reading Comprehension, Grammar, Vocabulary, Idioms and more",
+    desc: "Master written English and spoken communication — grammar, vocabulary, reading comprehension, sentence skills, and AI voice practice for HR & GD rounds.",
+    subtitle: "Written · Spoken · AI Voice Coach",
+    tags: ["Direct & Indirect Speech", "Active & Passive Voice", "Sentence Improvement", "Idioms & Phrases"],
+    extraCount: 6,
+    exerciseCount: "900 questions · Voice Coach",
     topicIds: ["reading-comprehension","vocabulary","grammar","para-jumbles","cloze-test","idioms-phrases","sentence-improvement","active-passive","direct-indirect"],
   },
 ]
@@ -1143,6 +1178,27 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "quad-eq": "Quadratic Equations",
       "num-series": "Number Series",
       "quantity-comp": "Quantity Comparison",
+      "coding-decoding": "Coding-Decoding",
+      "blood-relations": "Blood Relations",
+      "direction-sense": "Direction Sense",
+      "ranking-ordering": "Ranking & Ordering",
+      "syllogism": "Syllogism",
+      "seating-arrangement": "Seating Arrangement",
+      "puzzles": "Puzzles",
+      "inequality": "Inequality",
+      "input-output": "Input-Output",
+      "data-sufficiency": "Data Sufficiency",
+      "statement-assumptions": "Statement & Assumptions",
+      "cause-effect": "Cause & Effect",
+      "assertion-reasoning": "Assertion & Reasoning",
+      "analogy": "Analogy",
+      "classification": "Classification",
+      "course-of-action": "Course of Action",
+      "mirror-water-images": "Mirror & Water Images",
+      "paper-folding": "Paper Folding & Cutting",
+      "cubes-dice": "Cubes & Dice",
+      "calendar-clock": "Calendar & Clock",
+      "venn-diagrams": "Venn Diagrams",
     }
     // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
     if (topic.id === "mock-aptitude") {
@@ -1151,11 +1207,11 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
 
       const allTopics = Object.values(LOCAL_TOPIC_MAP)
-      const picked: typeof APTITUDE_BANK = []
+      const picked: typeof QUANTITATIVE_BANK = []
 
       for (const topicName of allTopics) {
         // Prefer Hard, then Medium, exclude seen
-        const pool = APTITUDE_BANK.filter(q =>
+        const pool = QUANTITATIVE_BANK.filter(q =>
           q.topic === topicName &&
           (q.difficulty === "Hard" || q.difficulty === "Medium") &&
           !seenIds.includes(q.id)
@@ -1163,7 +1219,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
         // Reset seen for this topic if exhausted
         const available = pool.length > 0
           ? pool
-          : APTITUDE_BANK.filter(q => q.topic === topicName && (q.difficulty === "Hard" || q.difficulty === "Medium"))
+          : QUANTITATIVE_BANK.filter(q => q.topic === topicName && (q.difficulty === "Hard" || q.difficulty === "Medium"))
 
         // Shuffle and pick 1
         const shuffled = available.sort(() => Math.random() - 0.5)
@@ -1192,7 +1248,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       let seenIds: string[] = []
       try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
 
-      const allForTopic = APTITUDE_BANK.filter(q => q.topic === topicName)
+      const allForTopic = QUANTITATIVE_BANK.filter(q => q.topic === topicName)
       let pool = allForTopic.filter(q => !seenIds.includes(q.id))
 
       // Reset if not enough unseen questions
@@ -1511,7 +1567,7 @@ export default function PrepHubPage() {
   const [activePath, setActivePath] = useState<Path | null>(null)
   const [activeCompany, setActiveCompany] = useState<typeof ALL_COMPANIES[0] | null>(null)
   const [activeTopic, setActiveTopic] = useState<{ id: string; name: string } | null>(null)
-  const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock">("home")
+  const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock" | "voice">("home")
   const [aptCategory, setAptCategory] = useState<string | null>(null)   // for aptitude category drill-down
   const [showHistory, setShowHistory] = useState(false)
   const [showLearningPaths, setShowLearningPaths] = useState(false)
@@ -1650,6 +1706,7 @@ export default function PrepHubPage() {
             { v: "learn", l: "Learn" },
             { v: "topics", l: activePath === "coding" ? "Topic Practice" : "Topic Tests" },
             { v: "mock", l: "Full Mock" },
+            ...(activePath === "communication" ? [{ v: "voice", l: "🎤 Voice Coach" }] : []),
           ].map(({ v, l }) => (
             <button key={v} onClick={() => { setSubView(v as any); setAptCategory(null) }}
               className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
@@ -1759,6 +1816,11 @@ export default function PrepHubPage() {
           </div>
         )}
 
+        {/* Voice Coach — Communication only */}
+        {subView === "voice" && activePath === "communication" && (
+          <VoiceCoach />
+        )}
+
         {/* Learn — Formula Cards (non-communication paths) */}
         {subView === "learn" && activePath !== "communication" && (
           <div className="space-y-6">
@@ -1774,14 +1836,41 @@ export default function PrepHubPage() {
                     <button key={cat.id} onClick={() => setAptCategory(cat.id)}
                       className="group rounded-2xl border text-left p-6 transition-all hover:shadow-lg hover:shadow-black/20 hover:scale-[1.02] flex flex-col gap-3"
                       style={{ borderColor: `${cat.color}30`, background: `${cat.color}08` }}>
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
-                        style={{ background: `${cat.color}20` }}>{cat.icon}</div>
+                      {/* Icon */}
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl font-bold text-white"
+                        style={{ background: cat.color }}>{typeof cat.icon === 'string' && cat.icon.length <= 2 ? cat.name[0] : cat.icon}</div>
+                      {/* Title + subtitle */}
                       <div>
-                        <p className="font-bold text-foreground">{cat.name}</p>
-                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{cat.desc}</p>
+                        <p className="font-bold text-lg text-foreground">{cat.name}</p>
+                        {(cat as any).subtitle && (
+                          <p className="text-xs font-semibold mt-0.5" style={{ color: cat.color }}>{(cat as any).subtitle}</p>
+                        )}
+                        <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{cat.desc}</p>
                       </div>
-                      <div className="flex items-center gap-1 text-xs font-semibold mt-auto" style={{ color: cat.color }}>
-                        View Topics <ChevronRight className="h-3.5 w-3.5" />
+                      {/* Tags */}
+                      {(cat as any).tags && (
+                        <div className="flex flex-wrap gap-1.5 mt-1">
+                          {((cat as any).tags as string[]).map((tag: string) => (
+                            <span key={tag} className="text-[11px] px-2.5 py-0.5 rounded-full border font-medium"
+                              style={{ borderColor: `${cat.color}40`, color: cat.color, background: `${cat.color}10` }}>
+                              {tag}
+                            </span>
+                          ))}
+                          {(cat as any).extraCount > 0 && (
+                            <span className="text-[11px] px-2.5 py-0.5 rounded-full border font-medium text-muted-foreground border-white/10 bg-white/5">
+                              +{(cat as any).extraCount} more
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {/* Footer */}
+                      <div className="flex items-center justify-between mt-auto pt-2">
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                          ⚡ {(cat as any).exerciseCount ?? "100+"} exercises
+                        </span>
+                        <span className="flex items-center gap-1 text-sm font-semibold" style={{ color: cat.color }}>
+                          Start <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </span>
                       </div>
                     </button>
                   ))}
@@ -2076,17 +2165,41 @@ export default function PrepHubPage() {
                     <button key={cat.id} onClick={() => setAptCategory(cat.id)}
                       className="group rounded-2xl border text-left p-6 transition-all hover:shadow-lg hover:shadow-black/20 hover:scale-[1.02] flex flex-col gap-3"
                       style={{ borderColor: `${cat.color}30`, background: `${cat.color}08` }}>
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
-                        style={{ background: `${cat.color}20` }}>{cat.icon}</div>
+                      {/* Icon */}
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl font-bold text-white"
+                        style={{ background: cat.color }}>{typeof cat.icon === 'string' && cat.icon.length <= 2 ? cat.name[0] : cat.icon}</div>
+                      {/* Title + subtitle */}
                       <div>
-                        <p className="font-bold text-foreground">{cat.name}</p>
-                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{cat.desc}</p>
-                        <p className="text-xs font-semibold mt-2" style={{ color: cat.color }}>
-                          {APT_TOPICS.filter(t => cat.topicIds.includes(t.id)).length} topics
-                        </p>
+                        <p className="font-bold text-lg text-foreground">{cat.name}</p>
+                        {(cat as any).subtitle && (
+                          <p className="text-xs font-semibold mt-0.5" style={{ color: cat.color }}>{(cat as any).subtitle}</p>
+                        )}
+                        <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{cat.desc}</p>
                       </div>
-                      <div className="flex items-center gap-1 text-xs font-semibold mt-auto" style={{ color: cat.color }}>
-                        Choose Topic <ChevronRight className="h-3.5 w-3.5" />
+                      {/* Tags */}
+                      {(cat as any).tags && (
+                        <div className="flex flex-wrap gap-1.5 mt-1">
+                          {((cat as any).tags as string[]).map((tag: string) => (
+                            <span key={tag} className="text-[11px] px-2.5 py-0.5 rounded-full border font-medium"
+                              style={{ borderColor: `${cat.color}40`, color: cat.color, background: `${cat.color}10` }}>
+                              {tag}
+                            </span>
+                          ))}
+                          {(cat as any).extraCount > 0 && (
+                            <span className="text-[11px] px-2.5 py-0.5 rounded-full border font-medium text-muted-foreground border-white/10 bg-white/5">
+                              +{(cat as any).extraCount} more
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {/* Footer */}
+                      <div className="flex items-center justify-between mt-auto pt-2">
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                          ⚡ {(cat as any).exerciseCount ?? "100+"} exercises
+                        </span>
+                        <span className="flex items-center gap-1 text-sm font-semibold" style={{ color: cat.color }}>
+                          Start <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </span>
                       </div>
                     </button>
                   ))}
@@ -2382,4 +2495,5 @@ export default function PrepHubPage() {
     </div>
   )
 }
+
 
