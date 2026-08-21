@@ -41,7 +41,6 @@ const studentLinks = [
 // -- 2nd-year nav (no Prep Track yet) -----------------------------------------
 const secondYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",    icon: LayoutDashboard },
-  { href: "/student/platforms",  label: "Platforms",    icon: Code2 },
   { href: "/student/practice",   label: "Practice",     icon: Target },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
@@ -51,7 +50,6 @@ const secondYearLinks = [
 // -- 1st-year dedicated nav ----------------------------------------------------
 const firstYearLinks = [
   { href: "/student/dashboard",  label: "Dashboard",   icon: LayoutDashboard },
-  { href: "/student/platforms",  label: "Platforms",   icon: Code2 },
   { href: "/student/practice",   label: "Practice",    icon: Target },
   { href: "/student/analytics",  label: "Analytics",   icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard", icon: Trophy },
