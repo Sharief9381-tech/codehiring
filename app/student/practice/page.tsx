@@ -47,17 +47,17 @@ function PracticeContent() {
   const router = useRouter()
 
   return (
-    <div className="min-h-screen" style={{ background: "linear-gradient(135deg,#0d1117 0%,#161b22 100%)" }}>
+    <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
 
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-2"
-            style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", color: "#a5b4fc" }}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-2
+            bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 dark:text-indigo-300">
             <Target className="h-3.5 w-3.5" /> Practice Hub
           </div>
-          <h1 className="text-3xl font-black text-white">What do you want to practice?</h1>
-          <p className="text-gray-400 text-sm max-w-md mx-auto">
+          <h1 className="text-3xl font-black text-foreground">What do you want to practice?</h1>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto">
             Choose a practice track. Each section is tailored to help you crack placement assessments at top companies.
           </p>
         </div>
@@ -67,13 +67,10 @@ function PracticeContent() {
           {PRACTICE_MODES.map(mode => (
             <button key={mode.id}
               onClick={() => router.push(mode.href)}
-              className="group relative text-left rounded-3xl p-6 transition-all hover:scale-[1.02] hover:shadow-2xl"
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: `1px solid rgba(255,255,255,0.08)`,
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.border = `1px solid ${mode.color}40` }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.border = "1px solid rgba(255,255,255,0.08)" }}>
+              className="group relative text-left rounded-3xl p-6 transition-all hover:scale-[1.02] hover:shadow-xl
+                bg-card border border-border hover:shadow-black/10 dark:hover:shadow-black/40"
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${mode.color}50` }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "" }}>
 
               {/* Icon */}
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl mb-4 text-2xl font-black text-white"
@@ -82,23 +79,22 @@ function PracticeContent() {
               </div>
 
               {/* Title */}
-              <h2 className="text-xl font-black text-white mb-1">{mode.label}</h2>
+              <h2 className="text-xl font-black text-foreground mb-1">{mode.label}</h2>
               <p className="text-sm font-medium mb-3" style={{ color: mode.color }}>{mode.subtitle}</p>
 
               {/* Desc */}
-              <p className="text-xs text-gray-400 leading-relaxed mb-4">{mode.desc}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-4">{mode.desc}</p>
 
               {/* Topics */}
               <div className="flex flex-wrap gap-1.5 mb-5">
                 {mode.topics.slice(0, 4).map(t => (
                   <span key={t} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-                    style={{ background: `${mode.color}12`, color: mode.color }}>
+                    style={{ background: `${mode.color}18`, color: mode.color }}>
                     {t}
                   </span>
                 ))}
                 {mode.topics.length > 4 && (
-                  <span className="text-[10px] px-2 py-0.5 rounded-full text-gray-500"
-                    style={{ background: "rgba(255,255,255,0.05)" }}>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full text-muted-foreground bg-muted">
                     +{mode.topics.length - 4} more
                   </span>
                 )}
@@ -106,7 +102,7 @@ function PracticeContent() {
 
               {/* CTA */}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500 flex items-center gap-1">
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
                   <Zap className="h-3 w-3 text-yellow-500" /> {mode.count}
                 </span>
                 <span className="flex items-center gap-1 text-sm font-semibold transition-all group-hover:gap-2"
@@ -121,15 +117,14 @@ function PracticeContent() {
         {/* Quick stats */}
         <div className="grid grid-cols-3 gap-4 pt-2">
           {[
-            { icon: <Brain className="h-4 w-4 text-yellow-400" />, label: "Aptitude", value: "200+", sub: "questions" },
+            { icon: <Brain className="h-4 w-4 text-yellow-500" />, label: "Aptitude", value: "200+", sub: "questions" },
             { icon: <Code2 className="h-4 w-4 text-indigo-400" />, label: "Coding", value: "750+", sub: "problems" },
-            { icon: <MessageCircle className="h-4 w-4 text-emerald-400" />, label: "Communication", value: "900", sub: "questions + voice" },
+            { icon: <MessageCircle className="h-4 w-4 text-emerald-500" />, label: "Communication", value: "900", sub: "questions + voice" },
           ].map(s => (
-            <div key={s.label} className="rounded-2xl p-4 text-center"
-              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div key={s.label} className="rounded-2xl p-4 text-center bg-card border border-border">
               <div className="flex justify-center mb-2">{s.icon}</div>
-              <p className="text-xl font-black text-white">{s.value}</p>
-              <p className="text-xs text-gray-400">{s.sub}</p>
+              <p className="text-xl font-black text-foreground">{s.value}</p>
+              <p className="text-xs text-muted-foreground">{s.sub}</p>
             </div>
           ))}
         </div>
@@ -140,7 +135,7 @@ function PracticeContent() {
 
 export default function PracticePage() {
   return (
-    <Suspense fallback={<div className="flex-1 flex items-center justify-center text-gray-400">Loading...</div>}>
+    <Suspense fallback={<div className="flex-1 flex items-center justify-center text-muted-foreground">Loading...</div>}>
       <PracticeContent />
     </Suspense>
   )
