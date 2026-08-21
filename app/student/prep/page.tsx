@@ -1611,7 +1611,7 @@ export default function PrepHubPage() {
     const track = pathnameTrack || trackFromParam
     if (track === "aptitude" || track === "coding" || track === "communication") {
       setActivePath(track as Path)
-      setSubView("home")
+      setSubView("topics")
       setFromPractice(true)
       // Only strip query param if it came from ?track=, not from pathname
       if (trackFromParam && !pathnameTrack) {
