@@ -1774,8 +1774,8 @@ export default function PrepHubPage() {
                 }
                 const guide = commGuide[t.id] || { emoji: t.icon || "📖", points: ["Review key concepts","Practise with MCQs","Focus on accuracy"] }
                 return (
-                  <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20"
-                    style={{ borderColor: `${t.color || pathMeta.color}25`, background: "rgba(15,15,20,0.6)" }}>
+                  <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/30 bg-card"
+                    style={{ borderColor: `${t.color || pathMeta.color}25` }}>
                     {/* Card header */}
                     <div className="p-4 pb-3" style={{ background: `${t.color || pathMeta.color}08` }}>
                       <div className="flex items-center gap-2.5">
@@ -2008,8 +2008,8 @@ export default function PrepHubPage() {
                 }
 
                 return (
-                  <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20"
-                    style={{ borderColor: `${t.color || pathMeta.color}25`, background: "rgba(15,15,20,0.6)" }}>
+                  <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/30 bg-card"
+                    style={{ borderColor: `${t.color || pathMeta.color}25` }}>
 
                     {/* Card header */}
                     <div className="p-4 pb-3" style={{ background: `${t.color || pathMeta.color}08` }}>
@@ -2054,9 +2054,8 @@ export default function PrepHubPage() {
                     </div>
 
                     {/* Example */}
-                    <div className="mx-4 mb-3 rounded-xl px-3 py-2"
-                      style={{ background: "rgba(245,158,11,0.06)", border: "1px solid rgba(245,158,11,0.2)" }}>
-                      <p className="text-[9px] font-bold text-amber-400 uppercase tracking-wider mb-0.5">Solved Example</p>
+                    <div className="mx-4 mb-3 rounded-xl px-3 py-2 bg-amber-500/5 border border-amber-500/20">
+                      <p className="text-[9px] font-bold text-amber-500 uppercase tracking-wider mb-0.5">Solved Example</p>
                       <p className="text-xs text-muted-foreground leading-relaxed">{note.example}</p>
                     </div>
 
@@ -2091,8 +2090,8 @@ export default function PrepHubPage() {
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {pathMeta.topics.map((t: any) => (
-                    <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20 flex flex-col"
-                      style={{ borderColor: `${t.color || pathMeta.color}25`, background: "rgba(15,15,20,0.6)" }}>
+                    <div key={t.id} className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/30 flex flex-col bg-card"
+                      style={{ borderColor: `${t.color || pathMeta.color}25` }}>
                       <div className="p-4 pb-3" style={{ background: `${t.color || pathMeta.color}08` }}>
                         <div className="flex items-center gap-2.5">
                           <div className="flex h-9 w-9 items-center justify-center rounded-xl text-lg font-bold"

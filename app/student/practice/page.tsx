@@ -50,6 +50,16 @@ function PracticeContent() {
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
 
+        {/* Back button */}
+        <div>
+          <button onClick={() => router.back()}
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </button>
+        </div>
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-2

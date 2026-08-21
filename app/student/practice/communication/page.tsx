@@ -71,7 +71,7 @@ function ScoreRing({ score, size = 80, color }: { score: number; size?: number; 
   return (
     <div style={{ width: size, height: size, position: "relative" }}>
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={8} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(0,0,0,0.1)" className="dark:[stroke:rgba(255,255,255,0.08)]" strokeWidth={8} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color}
           strokeWidth={8} strokeDasharray={`${fill} ${circ}`}
           strokeLinecap="round" style={{ transition: "stroke-dasharray 0.8s ease" }} />
@@ -269,7 +269,7 @@ export default function CommunicationCoachPage() {
   // ─── HOME VIEW ──────────────────────────────────────────────────────────────
   if (view === "home") {
     return (
-      <div className="min-h-screen" style={{ background: "#09090b" }}>
+      <div className="min-h-screen bg-background">
         <div className="max-w-5xl mx-auto px-4 py-6">
           {/* Header */}
           <div className="flex items-center gap-3 mb-8">
@@ -298,8 +298,8 @@ export default function CommunicationCoachPage() {
           {/* Scenario cards */}
           <div className="grid gap-5 sm:grid-cols-2">
             {SCENARIOS.map(sc => (
-              <div key={sc.id} className="rounded-2xl border overflow-hidden"
-                style={{ borderColor: `${sc.color}25`, background: "rgba(15,15,20,0.7)" }}>
+              <div key={sc.id} className="rounded-2xl border overflow-hidden bg-card"
+                style={{ borderColor: `${sc.color}25` }}>
                 {/* Card top */}
                 <div className="p-5 pb-4" style={{ background: `${sc.color}08` }}>
                   <div className="flex items-center gap-3 mb-3">
@@ -336,8 +336,7 @@ export default function CommunicationCoachPage() {
           </div>
 
           {/* Tips */}
-          <div className="mt-8 rounded-2xl border border-border p-5"
-            style={{ background: "rgba(15,15,20,0.5)" }}>
+          <div className="mt-8 rounded-2xl border border-border p-5 bg-card">
             <p className="text-sm font-semibold text-foreground mb-3">💡 How to use</p>
             <div className="grid sm:grid-cols-3 gap-4 text-xs text-muted-foreground">
               <div><span className="font-semibold text-foreground">1. Choose a scenario</span> — Pick what you want to practise: HR, Technical, GD or Spoken English.</div>
@@ -353,7 +352,7 @@ export default function CommunicationCoachPage() {
   // ─── PRACTICE VIEW ──────────────────────────────────────────────────────────
   if (view === "practice" && scenario) {
     return (
-      <div className="min-h-screen" style={{ background: "#09090b" }}>
+      <div className="min-h-screen bg-background">
         <div className="max-w-2xl mx-auto px-4 py-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
@@ -403,7 +402,7 @@ export default function CommunicationCoachPage() {
             </div>
 
             {/* Mic area */}
-            <div className="rounded-2xl p-6 text-center space-y-4" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "rgba(24,24,27,0.8)" }}>
+            <div className="rounded-2xl p-6 text-center space-y-4 bg-card border border-border">
               {/* Mic button */}
               <div className="flex flex-col items-center gap-3">
                 <button
@@ -429,7 +428,7 @@ export default function CommunicationCoachPage() {
 
               {/* Transcript */}
               {transcript && (
-                <div className="rounded-xl p-3 text-left" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <div className="rounded-xl p-3 text-left bg-muted/50 border border-border">
                   <p className="text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-wider">Your answer</p>
                   <p className="text-sm text-foreground leading-relaxed">{transcript}</p>
                 </div>
@@ -456,7 +455,7 @@ export default function CommunicationCoachPage() {
             {feedback && (
               <div className="space-y-4">
                 {/* Overall score */}
-                <div className="rounded-2xl p-5 flex items-center gap-5" style={{ border: "1px solid rgba(255,255,255,0.1)", background: "rgba(24,24,27,0.9)" }}>
+                <div className="rounded-2xl p-5 flex items-center gap-5 bg-card border border-border">
                   <ScoreRing score={feedback.overallScore}
                     color={feedback.overallScore >= 75 ? "#10b981" : feedback.overallScore >= 50 ? "#f59e0b" : "#ef4444"} />
                   <div>
@@ -475,14 +474,14 @@ export default function CommunicationCoachPage() {
                     { label: "Content", data: feedback.content, icon: "💡" },
                     { label: "Confidence", data: feedback.confidence, icon: "💪" },
                   ].map(({ label, data, icon }) => (
-                    <div key={label} className="rounded-xl p-3.5" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "rgba(24,24,27,0.6)" }}>
+                    <div key={label} className="rounded-xl p-3.5 bg-card border border-border">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs font-semibold text-foreground">{icon} {label}</span>
                         <span className="text-sm font-bold" style={{ color: data.score >= 75 ? "#10b981" : data.score >= 50 ? "#f59e0b" : "#ef4444" }}>
                           {data.score}
                         </span>
                       </div>
-                      <div className="h-1.5 rounded-full mb-2" style={{ background: "rgba(255,255,255,0.08)" }}>
+                      <div className="h-1.5 rounded-full mb-2 bg-black/10 dark:bg-white/10">
                         <div className="h-full rounded-full transition-all"
                           style={{ width: `${data.score}%`, background: data.score >= 75 ? "#10b981" : data.score >= 50 ? "#f59e0b" : "#ef4444" }} />
                       </div>
@@ -533,10 +532,9 @@ export default function CommunicationCoachPage() {
   if (view === "interview" && scenario) {
 
     return (
-      <div className="min-h-screen flex flex-col" style={{ background: "#09090b" }}>
+      <div className="min-h-screen flex flex-col bg-background">
         {/* Header */}
-        <div className="sticky top-0 z-10 px-4 py-3 border-b border-border flex items-center justify-between"
-          style={{ background: "#09090b" }}>
+        <div className="sticky top-0 z-10 px-4 py-3 border-b border-border flex items-center justify-between bg-background">
           <button onClick={() => { stopSpeaking(); stopListening(); setView("home") }}
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" /> End Session
@@ -564,7 +562,10 @@ export default function CommunicationCoachPage() {
               }`}
                 style={msg.role === "user"
                   ? { background: `linear-gradient(135deg,${scenario.color},${scenario.color}bb)` }
-                  : { background: "rgba(24,24,27,0.9)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  : undefined}
+                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                  msg.role === "user" ? "text-white" : "text-foreground bg-card border border-border"
+                }`}>
                 {msg.role === "assistant" && (
                   <div className="flex items-center gap-1.5 mb-1.5">
                     <span className="text-[10px] font-bold" style={{ color: scenario.color }}>🤖 AI Interviewer</span>
@@ -583,8 +584,7 @@ export default function CommunicationCoachPage() {
 
           {loadingReply && (
             <div className="flex justify-start">
-              <div className="rounded-2xl px-4 py-3 flex items-center gap-2"
-                style={{ background: "rgba(24,24,27,0.9)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div className="rounded-2xl px-4 py-3 flex items-center gap-2 bg-card border border-border">
                 <div className="flex gap-1">
                   {[0, 1, 2].map(i => (
                     <div key={i} className="h-2 w-2 rounded-full animate-bounce"
@@ -599,13 +599,11 @@ export default function CommunicationCoachPage() {
         </div>
 
         {/* Input area */}
-        <div className="sticky bottom-0 border-t border-border px-4 py-4"
-          style={{ background: "#09090b" }}>
+        <div className="sticky bottom-0 border-t border-border px-4 py-4 bg-background">
           <div className="max-w-2xl mx-auto space-y-3">
             {/* Transcript preview */}
             {transcript && (
-              <div className="rounded-xl px-3 py-2 text-sm text-muted-foreground"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div className="rounded-xl px-3 py-2 text-sm text-muted-foreground bg-muted/50 border border-border">
                 {transcript}
               </div>
             )}
