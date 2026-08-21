@@ -302,54 +302,61 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
   return (
     <div className="space-y-5">
       {/* Progress */}
-      <div className="flex items-center justify-between text-sm" style={{ color: "#A1A1AA" }}>
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
         <span>Question {cur + 1} of {questions.length}</span>
-        <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-          style={{ background: "rgba(124,58,237,0.15)", color: "#a78bfa" }}>{q.topic}</span>
+        <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-violet-500/15 text-violet-500">
+          {q.topic}
+        </span>
       </div>
-      <div className="h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)" }}>
+      <div className="h-1.5 rounded-full bg-black/10 dark:bg-white/10">
         <div className="h-full rounded-full transition-all" style={{ width: `${((cur + 1) / questions.length) * 100}%`, background: "linear-gradient(90deg,#7c3aed,#6366f1)" }} />
       </div>
 
       {/* Passage — shown for Reading Comprehension questions */}
       {q.passage && (
-        <div className="rounded-xl p-4"
-          style={{ border: "1px solid rgba(249,115,22,0.25)", background: "rgba(249,115,22,0.05)" }}>
-          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: "#f97316" }}>📄 Read the Passage</p>
+        <div className="rounded-xl p-4 border border-orange-500/25 bg-orange-500/5">
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-2 text-orange-500">📄 Read the Passage</p>
           <div className="max-h-48 overflow-y-auto pr-1" style={{ scrollbarWidth: "thin" }}>
-            <p className="text-sm leading-relaxed" style={{ color: "#d4d4d8" }}>{q.passage}</p>
+            <p className="text-sm leading-relaxed text-foreground">{q.passage}</p>
           </div>
         </div>
       )}
 
       {/* Question */}
-      <div className="rounded-xl p-5"
-        style={{ border: "1px solid rgba(255,255,255,0.08)", background: "rgba(24,24,27,0.8)" }}>
-        <p className="text-base font-medium leading-relaxed" style={{ color: "#FAFAFA" }}>{q.question}</p>
+      <div className="rounded-xl p-5 bg-card border border-border">
+        <p className="text-base font-medium leading-relaxed text-foreground">{q.question}</p>
       </div>
 
       {/* Options */}
       <div className="space-y-2.5">
         {q.options.map((opt, i) => {
-          let style: React.CSSProperties = { border: "1px solid rgba(255,255,255,0.08)", background: "rgba(24,24,27,0.5)", cursor: "pointer" }
+          // Build className and style separately so we can keep semantic states
+          let extraStyle: React.CSSProperties = {}
+          let extraClass = ""
+
           if (submitted) {
-            if (i === q.correct) style = { border: "1px solid #10b981", background: "rgba(16,185,129,0.10)", cursor: "default" }
-            else if (i === selected && i !== q.correct) style = { border: "1px solid #ef4444", background: "rgba(239,68,68,0.10)", cursor: "default", opacity: 0.8 }
-            else style = { border: "1px solid rgba(255,255,255,0.05)", background: "rgba(24,24,27,0.3)", cursor: "default", opacity: 0.45 }
+            if (i === q.correct) {
+              extraStyle = { borderColor: "#10b981", background: "rgba(16,185,129,0.10)", cursor: "default" }
+            } else if (i === selected && i !== q.correct) {
+              extraStyle = { borderColor: "#ef4444", background: "rgba(239,68,68,0.10)", cursor: "default", opacity: 0.8 }
+            } else {
+              extraClass = "opacity-40"
+              extraStyle = { cursor: "default" }
+            }
           } else if (selected === i) {
-            style = { border: "1px solid #7c3aed", background: "rgba(124,58,237,0.12)", cursor: "pointer" }
+            extraStyle = { borderColor: "#7c3aed", background: "rgba(124,58,237,0.12)", cursor: "pointer" }
           }
+
           return (
             <button key={i} onClick={() => choose(i)}
-              className="w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left"
-              style={style}
+              className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left bg-card border border-border hover:border-violet-500/40 ${extraClass}`}
+              style={extraStyle}
               onMouseEnter={e => { if (!submitted && selected !== i) e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)" }}
-              onMouseLeave={e => { if (!submitted && selected !== i) e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)" }}>
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
-                style={{ background: "rgba(255,255,255,0.06)", color: "#A1A1AA" }}>
+              onMouseLeave={e => { if (!submitted && selected !== i) e.currentTarget.style.borderColor = "" }}>
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold bg-muted text-muted-foreground">
                 {["A", "B", "C", "D"][i]}
               </span>
-              <span className="text-sm" style={{ color: "#FAFAFA" }}>{opt}</span>
+              <span className="text-sm text-foreground">{opt}</span>
               {submitted && i === q.correct && <CheckCircle2 className="h-4 w-4 text-emerald-500 ml-auto shrink-0" />}
               {submitted && i === selected && i !== q.correct && <XCircle className="h-4 w-4 text-red-500 ml-auto shrink-0" />}
             </button>
@@ -359,9 +366,9 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
 
       {/* Explanation — only after submission */}
       {submitted && (
-        <div className="rounded-xl p-4" style={{ border: "1px solid rgba(59,130,246,0.25)", background: "rgba(59,130,246,0.07)" }}>
-          <p className="text-xs font-semibold mb-1" style={{ color: "#60a5fa" }}>Explanation</p>
-          <p className="text-sm" style={{ color: "#A1A1AA" }}>{q.explanation}</p>
+        <div className="rounded-xl p-4 border border-blue-500/25 bg-blue-500/7">
+          <p className="text-xs font-semibold mb-1 text-blue-500">Explanation</p>
+          <p className="text-sm text-muted-foreground">{q.explanation}</p>
         </div>
       )}
 
