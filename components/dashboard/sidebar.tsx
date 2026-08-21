@@ -55,7 +55,6 @@ const firstYearLinks = [
   { href: "/student/practice",   label: "Practice",    icon: Target },
   { href: "/student/analytics",  label: "Analytics",   icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard", icon: Trophy },
-  { href: "/student/learn",      label: "Learn",       icon: BookOpen },
   { href: "/student/ai",         label: "AI Insights", icon: Sparkles },
 ]
 
