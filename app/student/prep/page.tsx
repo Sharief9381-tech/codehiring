@@ -15,9 +15,6 @@ import { ProctoredShell, type ViolationLog } from "@/components/student/proctor"
 import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/student/assessment-history"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
-import { QUANTITATIVE_BANK } from "@/lib/quantitative-reasoning"
-import { COMMUNICATION_BANK } from "@/lib/communication-bank"
-import { LOGICAL_REASONING_BANK } from "@/lib/logical-reasoning-bank"
 import { VoiceCoach } from "@/components/student/voice-coach"
 
 // Full problem editor — loaded dynamically to avoid SSR issues
@@ -1161,6 +1158,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
   }
 
   useEffect(() => {
+    ;(async () => {
     // Use local aptitude bank for number-system, simplification and percentages topics
     const LOCAL_TOPIC_MAP: Record<string, string> = {
       "number-system": "Number System",
@@ -1235,12 +1233,13 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
     }
     // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
     if (topic.id === "mock-aptitude") {
+      const { QUANTITATIVE_BANK } = await import("@/lib/quantitative-reasoning")
       const seenKey = "aptitude_mock_seen"
       let seenIds: string[] = []
       try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
 
       const allTopics = Object.values(LOCAL_TOPIC_MAP)
-      const picked: typeof QUANTITATIVE_BANK = []
+      const picked: any[] = []
 
       for (const topicName of allTopics) {
         // Prefer Hard, then Medium, exclude seen
@@ -1276,7 +1275,9 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       return
     }
 
-    if (topic.id in LOCAL_TOPIC_MAP) {      const topicName = LOCAL_TOPIC_MAP[topic.id]
+    if (topic.id in LOCAL_TOPIC_MAP) {
+      const { QUANTITATIVE_BANK } = await import("@/lib/quantitative-reasoning")
+      const topicName = LOCAL_TOPIC_MAP[topic.id]
       const seenKey = `aptitude_seen_${topic.id}`
       let seenIds: string[] = []
       try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
@@ -1311,6 +1312,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
 
     // ── Logical Reasoning local bank ──────────────────────────────────────────
     if (topic.id in LOGICAL_TOPIC_MAP) {
+      const { LOGICAL_REASONING_BANK } = await import("@/lib/logical-reasoning-bank")
       const topicName = LOGICAL_TOPIC_MAP[topic.id]
       const seenKey = `logical_seen_${topic.id}`
       let seenIds: string[] = []
@@ -1357,6 +1359,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
     }
 
     if (topic.id in COMM_LOCAL_TOPIC_MAP) {
+      const { COMMUNICATION_BANK } = await import("@/lib/communication-bank")
       const topicName = COMM_LOCAL_TOPIC_MAP[topic.id]
       const seenKey = `comm_seen_${topic.id}`
       // v2: clear old cache that didn't have passage data
@@ -1409,6 +1412,7 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       .then(r => r.json())
       .then(d => { setQuestions(d.questions ?? []); setStage("quiz") })
       .catch(() => setStage("quiz"))
+    })()
   }, [])
 
   if (stage === "loading") return (
