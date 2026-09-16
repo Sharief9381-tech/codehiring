@@ -17,6 +17,7 @@ import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
 import { QUANTITATIVE_BANK } from "@/lib/quantitative-reasoning"
 import { COMMUNICATION_BANK } from "@/lib/communication-bank"
+import { LOGICAL_REASONING_BANK } from "@/lib/logical-reasoning-bank"
 import { VoiceCoach } from "@/components/student/voice-coach"
 
 // Full problem editor — loaded dynamically to avoid SSR issues
@@ -1207,6 +1208,31 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "calendar-clock": "Calendar & Clock",
       "venn-diagrams": "Venn Diagrams",
     }
+
+    // Logical reasoning topics — served from LOGICAL_REASONING_BANK
+    const LOGICAL_TOPIC_MAP: Record<string, string> = {
+      "coding-decoding": "Coding-Decoding",
+      "blood-relations": "Blood Relations",
+      "direction-sense": "Direction Sense",
+      "ranking-ordering": "Ranking & Ordering",
+      "syllogism": "Syllogism",
+      "seating-arrangement": "Seating Arrangement",
+      "puzzles": "Puzzles",
+      "inequality": "Inequality",
+      "input-output": "Input-Output",
+      "data-sufficiency": "Data Sufficiency",
+      "statement-assumptions": "Statement & Assumptions",
+      "cause-effect": "Cause & Effect",
+      "assertion-reasoning": "Assertion & Reasoning",
+      "analogy": "Analogy",
+      "classification": "Classification",
+      "course-of-action": "Course of Action",
+      "mirror-water-images": "Mirror & Water Images",
+      "paper-folding": "Paper Folding & Cutting",
+      "cubes-dice": "Cubes & Dice",
+      "calendar-clock": "Calendar & Clock",
+      "venn-diagrams": "Venn Diagrams",
+    }
     // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
     if (topic.id === "mock-aptitude") {
       const seenKey = "aptitude_mock_seen"
@@ -1270,6 +1296,40 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
 
       const qs = shuffled.map((q, i) => ({
+        id: i + 1,
+        question: q.question,
+        options: q.options,
+        correct: q.correct,
+        explanation: q.explanation,
+        topic: q.topic,
+        difficulty: q.difficulty,
+      }))
+      setQuestions(qs)
+      setStage("quiz")
+      return
+    }
+
+    // ── Logical Reasoning local bank ──────────────────────────────────────────
+    if (topic.id in LOGICAL_TOPIC_MAP) {
+      const topicName = LOGICAL_TOPIC_MAP[topic.id]
+      const seenKey = `logical_seen_${topic.id}`
+      let seenIds: string[] = []
+      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
+
+      const allForTopic = LOGICAL_REASONING_BANK.filter((q: any) => q.topic === topicName)
+      let pool = allForTopic.filter((q: any) => !seenIds.includes(q.id))
+
+      if (pool.length < 20) {
+        seenIds = []
+        localStorage.removeItem(seenKey)
+        pool = allForTopic
+      }
+
+      const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 20)
+      const newSeen = [...seenIds, ...shuffled.map((q: any) => q.id)]
+      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
+
+      const qs = shuffled.map((q: any, i: number) => ({
         id: i + 1,
         question: q.question,
         options: q.options,

@@ -85,7 +85,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS013", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I wrote a letter yesterday."',
   options:["He said that he wrote a letter the previous day.","He said that he had written a letter the previous day.","He said that he has written a letter the previous day.","He said that he wrote a letter yesterday."],
-  correct:1, explanation:"Past Simple often changes to Past Perfect; 'yesterday' → 'the previous day'." },
+  correct:1, explanation:"Past Simple often changes to Past Perfect; 'yesterday' -> 'the previous day'." },
 
 { id:"DIS014", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I was watching TV."',
@@ -120,17 +120,17 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS020", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said to me, "Are you free?"',
   options:["She asked me if I was free.","She asked me if I am free.","She asked me was I free.","She told me if I was free."],
-  correct:0, explanation:"Yes/No question → if/whether + statement order + tense change." },
+  correct:0, explanation:"Yes/No question -> if/whether + statement order + tense change." },
 
 { id:"DIS021", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I have to go now."',
   options:["He said that he has to go then.","He said that he had to go then.","He said that he have to go then.","He said that he had to go now."],
-  correct:1, explanation:"'Have to' changes to 'had to'; 'now' → 'then'." },
+  correct:1, explanation:"'Have to' changes to 'had to'; 'now' -> 'then'." },
 
 { id:"DIS022", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I will help you."',
   options:["She said that she will help me.","She said that she would help me.","She said that she would help you.","She said that she will help you."],
-  correct:1, explanation:"'Will' → 'would'; pronoun 'you' changes according to context." },
+  correct:1, explanation:"'Will' -> 'would'; pronoun 'you' changes according to context." },
 
 { id:"DIS023", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I was born in 1990."',
@@ -145,7 +145,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS025", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said to her, "Why are you crying?"',
   options:["He asked her why she was crying.","He asked her why was she crying.","He asked her why is she crying.","He told her why she was crying."],
-  correct:0, explanation:"Wh-question → statement order + tense change." },
+  correct:0, explanation:"Wh-question -> statement order + tense change." },
 
 { id:"DIS026", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "Please wait here."',
@@ -160,17 +160,17 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS028", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I am reading a book."',
   options:["She said that she is reading a book.","She said that she was reading a book.","She said that she had been reading a book.","She said that she read a book."],
-  correct:1, explanation:"Present Continuous → Past Continuous." },
+  correct:1, explanation:"Present Continuous -> Past Continuous." },
 
 { id:"DIS029", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I have lost my keys."',
   options:["He said that he has lost his keys.","He said that he had lost his keys.","He said that he lost his keys.","He said that he was losing his keys."],
-  correct:1, explanation:"Present Perfect → Past Perfect." },
+  correct:1, explanation:"Present Perfect -> Past Perfect." },
 
 { id:"DIS030", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said to him, "Can you help me?"',
   options:["She asked him if he could help her.","She asked him if he can help her.","She asked him could he help her.","She told him if he could help her."],
-  correct:0, explanation:"Yes/No question with modal → if + modal change + statement order." },
+  correct:0, explanation:"Yes/No question with modal -> if + modal change + statement order." },
 
 { id:"DIS031", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I must finish this today."',
@@ -180,57 +180,57 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS032", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I may join you later."',
   options:["She said that she may join us later.","She said that she might join us later.","She said that she may joined us later.","She said that she might joined us later."],
-  correct:1, explanation:"'May' → 'might'." },
+  correct:1, explanation:"'May' -> 'might'." },
 
 { id:"DIS033", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I wrote the letter last week."',
   options:["He said that he wrote the letter the previous week.","He said that he had written the letter the previous week.","He said that he has written the letter the previous week.","He said that he wrote the letter last week."],
-  correct:1, explanation:"Past Simple → Past Perfect; 'last week' → 'the previous week'." },
+  correct:1, explanation:"Past Simple -> Past Perfect; 'last week' -> 'the previous week'." },
 
 { id:"DIS034", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I was cooking dinner."',
   options:["She said that she was cooking dinner.","She said that she had been cooking dinner.","She said that she has been cooking dinner.","She said that she cooked dinner."],
-  correct:1, explanation:"Past Continuous often → Past Perfect Continuous." },
+  correct:1, explanation:"Past Continuous often -> Past Perfect Continuous." },
 
 { id:"DIS035", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said to me, "When will you return?"',
   options:["He asked me when I would return.","He asked me when would I return.","He asked me when will I return.","He told me when I would return."],
-  correct:0, explanation:"Wh-question → statement order + 'will' → 'would'." },
+  correct:0, explanation:"Wh-question -> statement order + 'will' -> 'would'." },
 
 { id:"DIS036", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "Don\'t be late."',
   options:["She told me not to be late.","She ordered me not to be late.","She asked me not to be late.","All of the above (depending on tone)"],
-  correct:3, explanation:"Negative command → 'not to + infinitive'." },
+  correct:3, explanation:"Negative command -> 'not to + infinitive'." },
 
 { id:"DIS037", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I am leaving tomorrow."',
   options:["He said that he was leaving the next day.","He said that he is leaving tomorrow.","He said that he was leaving tomorrow.","He said that he had left the next day."],
-  correct:0, explanation:"'Tomorrow' → 'the next day'." },
+  correct:0, explanation:"'Tomorrow' -> 'the next day'." },
 
 { id:"DIS038", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I can drive a car."',
   options:["She said that she can drive a car.","She said that she could drive a car.","She said that she could drove a car.","She said that she can drove a car."],
-  correct:1, explanation:"'Can' → 'could'." },
+  correct:1, explanation:"'Can' -> 'could'." },
 
 { id:"DIS039", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I may be late."',
   options:["He said that he may be late.","He said that he might be late.","He said that he may been late.","He said that he might been late."],
-  correct:1, explanation:"'May' → 'might'." },
+  correct:1, explanation:"'May' -> 'might'." },
 
 { id:"DIS040", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said to me, "Is it raining?"',
   options:["She asked me if it was raining.","She asked me if it is raining.","She asked me was it raining.","She told me if it was raining."],
-  correct:0, explanation:"Yes/No question → if + statement order + tense change." },
+  correct:0, explanation:"Yes/No question -> if + statement order + tense change." },
 
 { id:"DIS041", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I have to submit the report."',
   options:["He said that he has to submit the report.","He said that he had to submit the report.","He said that he have to submit the report.","He said that he had to submitted the report."],
-  correct:1, explanation:"'Have to' → 'had to'." },
+  correct:1, explanation:"'Have to' -> 'had to'." },
 
 { id:"DIS042", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I will call you later."',
   options:["She said that she will call me later.","She said that she would call me later.","She said that she would call you later.","She said that she will call you later."],
-  correct:1, explanation:"'Will' → 'would'; pronoun adjustment." },
+  correct:1, explanation:"'Will' -> 'would'; pronoun adjustment." },
 
 { id:"DIS043", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I was born in Delhi."',
@@ -245,32 +245,32 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS045", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said to her, "Where have you been?"',
   options:["He asked her where she had been.","He asked her where had she been.","He asked her where has she been.","He told her where she had been."],
-  correct:0, explanation:"Wh-question with present perfect → statement order + past perfect." },
+  correct:0, explanation:"Wh-question with present perfect -> statement order + past perfect." },
 
 { id:"DIS046", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "Please sit down."',
   options:["She asked me to sit down.","She told me to sit down.","She ordered me to sit down.","All of the above (depending on tone)"],
-  correct:3, explanation:"Polite request → to-infinitive; reporting verb varies." },
+  correct:3, explanation:"Polite request -> to-infinitive; reporting verb varies." },
 
 { id:"DIS047", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I shall do it."',
   options:["He said that he should do it.","He said that he would do it.","He said that he shall do it.","He said that he will do it."],
-  correct:1, explanation:"'Shall' for future → 'would'." },
+  correct:1, explanation:"'Shall' for future -> 'would'." },
 
 { id:"DIS048", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said, "I am writing a letter."',
   options:["She said that she is writing a letter.","She said that she was writing a letter.","She said that she had been writing a letter.","She said that she wrote a letter."],
-  correct:1, explanation:"Present Continuous → Past Continuous." },
+  correct:1, explanation:"Present Continuous -> Past Continuous." },
 
 { id:"DIS049", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I have seen that movie."',
   options:["He said that he has seen that movie.","He said that he had seen that movie.","He said that he saw that movie.","He said that he was seeing that movie."],
-  correct:1, explanation:"Present Perfect → Past Perfect." },
+  correct:1, explanation:"Present Perfect -> Past Perfect." },
 
 { id:"DIS050", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: She said to him, "Will you come with me?"',
   options:["She asked him if he would come with her.","She asked him if he will come with her.","She asked him would he come with her.","She told him if he would come with her."],
-  correct:0, explanation:"Yes/No question with 'will' → if + would + statement order." },
+  correct:0, explanation:"Yes/No question with 'will' -> if + would + statement order." },
 
 { id:"DIS051", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "I wish I were rich."',
@@ -350,17 +350,17 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS066", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "I am going to buy a new car next month."',
   options:["She said that she was going to buy a new car the following month.","She said that she is going to buy a new car next month.","She said that she was going to buy a new car next month.","She said that she had been going to buy a new car the following month."],
-  correct:0, explanation:"'Going to' future + time change ('next month' → 'the following month')." },
+  correct:0, explanation:"'Going to' future + time change ('next month' -> 'the following month')." },
 
 { id:"DIS067", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "I have been living here since 2010."',
   options:["He said that he has been living there since 2010.","He said that he had been living there since 2010.","He said that he was living there since 2010.","He said that he lived there since 2010."],
-  correct:1, explanation:"Present Perfect Continuous → Past Perfect Continuous; 'here' → 'there'." },
+  correct:1, explanation:"Present Perfect Continuous -> Past Perfect Continuous; 'here' -> 'there'." },
 
 { id:"DIS068", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said to me, "What were you doing at 8 pm yesterday?"',
   options:["She asked me what I had been doing at 8 pm the previous day.","She asked me what I was doing at 8 pm yesterday.","She asked me what had I been doing at 8 pm the previous day.","She asked me what I have been doing at 8 pm the previous day."],
-  correct:0, explanation:"Past Continuous in question → Past Perfect Continuous; time expression changes." },
+  correct:0, explanation:"Past Continuous in question -> Past Perfect Continuous; time expression changes." },
 
 { id:"DIS069", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "I must have left my keys at home."',
@@ -400,7 +400,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS076", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "It is high time we started."',
   options:["She said that it was high time they started.","She said that it is high time they started.","She said that it was high time they had started.","She said that it is high time we started."],
-  correct:0, explanation:"'It is high time + past' → 'it was high time + past'." },
+  correct:0, explanation:"'It is high time + past' -> 'it was high time + past'." },
 
 { id:"DIS077", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "I had better not interfere."',
@@ -410,7 +410,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS078", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "Long live the king!"',
   options:["She prayed that the king might live long.","She wished that the king might live long.","Both A and B","She said that the king lives long."],
-  correct:2, explanation:"Optative sentences → prayed/wished + might." },
+  correct:2, explanation:"Optative sentences -> prayed/wished + might." },
 
 { id:"DIS079", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "Would that I had wings!"',
@@ -430,7 +430,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS082", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "I have been waiting here for two hours."',
   options:["She said that she has been waiting there for two hours.","She said that she had been waiting there for two hours.","She said that she was waiting there for two hours.","She said that she waited there for two hours."],
-  correct:1, explanation:"Present Perfect Continuous → Past Perfect Continuous; 'here' → 'there'." },
+  correct:1, explanation:"Present Perfect Continuous -> Past Perfect Continuous; 'here' -> 'there'." },
 
 { id:"DIS083", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said to me, "What had you done before I arrived?"',
@@ -445,7 +445,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS085", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "I can\'t have been so careless."',
   options:["He said that he couldn't have been so careless.","He said that he can't have been so careless.","He said that he could not have been so careless.","Both A and C"],
-  correct:3, explanation:"'Can't have' → 'couldn't have'." },
+  correct:3, explanation:"'Can't have' -> 'couldn't have'." },
 
 { id:"DIS086", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "I should have been more careful."',
@@ -475,7 +475,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS091", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "It is time you started working."',
   options:["He said that it was time I started working.","He said that it is time I started working.","He said that it was time I had started working.","He said that it is time you started working."],
-  correct:0, explanation:"'It is time + past' → 'it was time + past'." },
+  correct:0, explanation:"'It is time + past' -> 'it was time + past'." },
 
 { id:"DIS092", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "I had better leave before it gets dark."',
@@ -485,7 +485,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS093", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "God save the Queen!"',
   options:["He prayed that God might save the Queen.","He wished that God might save the Queen.","Both A and B","He said that God saves the Queen."],
-  correct:2, explanation:"Optative → prayed/wished + might." },
+  correct:2, explanation:"Optative -> prayed/wished + might." },
 
 { id:"DIS094", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "Would that the war would end!"',
@@ -500,12 +500,12 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS096", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "I am going to visit my parents next week."',
   options:["She said that she was going to visit her parents the following week.","She said that she is going to visit her parents next week.","She said that she was going to visit her parents next week.","She said that she had been going to visit her parents the following week."],
-  correct:0, explanation:"'Going to' + time change ('next week' → 'the following week')." },
+  correct:0, explanation:"'Going to' + time change ('next week' -> 'the following week')." },
 
 { id:"DIS097", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: He said, "I have been working on this project for six months."',
   options:["He said that he has been working on that project for six months.","He said that he had been working on that project for six months.","He said that he was working on that project for six months.","He said that he worked on that project for six months."],
-  correct:1, explanation:"Present Perfect Continuous → Past Perfect Continuous; 'this' → 'that'." },
+  correct:1, explanation:"Present Perfect Continuous -> Past Perfect Continuous; 'this' -> 'that'." },
 
 { id:"DIS098", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said to me, "Why had you not informed me earlier?"',
@@ -520,7 +520,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"DIS100", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Hard",
   question:'Change into indirect speech: She said, "I can\'t have been so foolish."',
   options:["She said that she couldn't have been so foolish.","She said that she can't have been so foolish.","She said that she could not have been so foolish.","Both A and C"],
-  correct:3, explanation:"'Can't have been' → 'couldn't have been'." },
+  correct:3, explanation:"'Can't have been' -> 'couldn't have been'." },
 
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -530,27 +530,27 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV001", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: She writes a letter.",
   options:["A letter is written by her.","A letter was written by her.","A letter is being written by her.","A letter has been written by her."],
-  correct:0, explanation:"Present Simple Active → Present Simple Passive (is/am/are + V3)." },
+  correct:0, explanation:"Present Simple Active -> Present Simple Passive (is/am/are + V3)." },
 
 { id:"APV002", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They are playing football.",
   options:["Football is played by them.","Football is being played by them.","Football was being played by them.","Football has been played by them."],
-  correct:1, explanation:"Present Continuous Active → Present Continuous Passive (is/am/are + being + V3)." },
+  correct:1, explanation:"Present Continuous Active -> Present Continuous Passive (is/am/are + being + V3)." },
 
 { id:"APV003", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: He has completed the work.",
   options:["The work is completed by him.","The work has been completed by him.","The work was completed by him.","The work is being completed by him."],
-  correct:1, explanation:"Present Perfect Active → Present Perfect Passive (has/have + been + V3)." },
+  correct:1, explanation:"Present Perfect Active -> Present Perfect Passive (has/have + been + V3)." },
 
 { id:"APV004", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The teacher taught the students.",
   options:["The students are taught by the teacher.","The students were taught by the teacher.","The students have been taught by the teacher.","The students are being taught by the teacher."],
-  correct:1, explanation:"Past Simple Active → Past Simple Passive (was/were + V3)." },
+  correct:1, explanation:"Past Simple Active -> Past Simple Passive (was/were + V3)." },
 
 { id:"APV005", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They were watching a movie.",
   options:["A movie is being watched by them.","A movie was being watched by them.","A movie has been watched by them.","A movie was watched by them."],
-  correct:1, explanation:"Past Continuous Active → Past Continuous Passive (was/were + being + V3)." },
+  correct:1, explanation:"Past Continuous Active -> Past Continuous Passive (was/were + being + V3)." },
 
 { id:"APV006", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Someone has stolen my bag.",
@@ -560,7 +560,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV007", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The chef is preparing the meal.",
   options:["The meal is prepared by the chef.","The meal is being prepared by the chef.","The meal was being prepared by the chef.","The meal has been prepared by the chef."],
-  correct:1, explanation:"Present Continuous → is/am/are + being + V3." },
+  correct:1, explanation:"Present Continuous -> is/am/are + being + V3." },
 
 { id:"APV008", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Open the door.",
@@ -575,17 +575,17 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV010", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They will finish the project tomorrow.",
   options:["The project will be finished by them tomorrow.","The project will finish by them tomorrow.","The project is finished by them tomorrow.","The project would be finished by them tomorrow."],
-  correct:0, explanation:"Future Simple Active → will be + V3." },
+  correct:0, explanation:"Future Simple Active -> will be + V3." },
 
 { id:"APV011", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The children have broken the window.",
   options:["The window is broken by the children.","The window has been broken by the children.","The window was broken by the children.","The window is being broken by the children."],
-  correct:1, explanation:"Present Perfect → has/have been + V3." },
+  correct:1, explanation:"Present Perfect -> has/have been + V3." },
 
 { id:"APV012", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: She was writing a letter.",
   options:["A letter is being written by her.","A letter was being written by her.","A letter has been written by her.","A letter was written by her."],
-  correct:1, explanation:"Past Continuous → was/were + being + V3." },
+  correct:1, explanation:"Past Continuous -> was/were + being + V3." },
 
 { id:"APV013", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Do not touch the exhibits.",
@@ -595,7 +595,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV014", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The company will announce the results next week.",
   options:["The results will be announced by the company next week.","The results will announce by the company next week.","The results are announced by the company next week.","The results would be announced by the company next week."],
-  correct:0, explanation:"Future Simple → will be + V3." },
+  correct:0, explanation:"Future Simple -> will be + V3." },
 
 { id:"APV015", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: People speak English all over the world.",
@@ -605,12 +605,12 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV016", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The storm destroyed the crops.",
   options:["The crops are destroyed by the storm.","The crops were destroyed by the storm.","The crops have been destroyed by the storm.","The crops are being destroyed by the storm."],
-  correct:1, explanation:"Past Simple → was/were + V3." },
+  correct:1, explanation:"Past Simple -> was/were + V3." },
 
 { id:"APV017", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: He is going to buy a new car.",
   options:["A new car is going to be bought by him.","A new car is bought by him.","A new car will be bought by him.","A new car has been bought by him."],
-  correct:0, explanation:"'Going to' future → is/am/are going to be + V3." },
+  correct:0, explanation:"'Going to' future -> is/am/are going to be + V3." },
 
 { id:"APV018", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Someone is knocking at the door.",
@@ -620,7 +620,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV019", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They had completed the assignment before the deadline.",
   options:["The assignment was completed before the deadline.","The assignment had been completed before the deadline.","The assignment has been completed before the deadline.","The assignment is completed before the deadline."],
-  correct:1, explanation:"Past Perfect Active → had been + V3." },
+  correct:1, explanation:"Past Perfect Active -> had been + V3." },
 
 { id:"APV020", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The principal gave her a prize.",
@@ -630,7 +630,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV021", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Close the window.",
   options:["The window is closed.","Let the window be closed.","The window was closed.","The window has been closed."],
-  correct:1, explanation:"Imperative → Let + object + be + V3." },
+  correct:1, explanation:"Imperative -> Let + object + be + V3." },
 
 { id:"APV022", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Who taught you French?",
@@ -640,42 +640,42 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV023", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The gardener is watering the plants.",
   options:["The plants are watered by the gardener.","The plants are being watered by the gardener.","The plants were being watered by the gardener.","The plants have been watered by the gardener."],
-  correct:1, explanation:"Present Continuous → is/am/are + being + V3." },
+  correct:1, explanation:"Present Continuous -> is/am/are + being + V3." },
 
 { id:"APV024", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They must complete the form.",
   options:["The form must be completed by them.","The form must complete by them.","The form must be complete by them.","The form must been completed by them."],
-  correct:0, explanation:"Modal + V1 → modal + be + V3." },
+  correct:0, explanation:"Modal + V1 -> modal + be + V3." },
 
 { id:"APV025", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The postman delivers letters every day.",
   options:["Letters are delivered every day by the postman.","Letters were delivered every day by the postman.","Letters have been delivered every day by the postman.","Letters are being delivered every day by the postman."],
-  correct:0, explanation:"Present Simple → is/am/are + V3." },
+  correct:0, explanation:"Present Simple -> is/am/are + V3." },
 
 { id:"APV026", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: She can solve this problem.",
   options:["This problem can be solved by her.","This problem can solve by her.","This problem can be solve by her.","This problem could be solved by her."],
-  correct:0, explanation:"Modal 'can' → can be + V3." },
+  correct:0, explanation:"Modal 'can' -> can be + V3." },
 
 { id:"APV027", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The boys were flying kites.",
   options:["Kites are being flown by the boys.","Kites were being flown by the boys.","Kites have been flown by the boys.","Kites were flown by the boys."],
-  correct:1, explanation:"Past Continuous → was/were + being + V3." },
+  correct:1, explanation:"Past Continuous -> was/were + being + V3." },
 
 { id:"APV028", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Please help me.",
   options:["I am helped.","Let me be helped.","I was helped.","I have been helped."],
-  correct:1, explanation:"Polite imperative → Let + object + be + V3." },
+  correct:1, explanation:"Polite imperative -> Let + object + be + V3." },
 
 { id:"APV029", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The teacher has punished the student.",
   options:["The student is punished by the teacher.","The student has been punished by the teacher.","The student was punished by the teacher.","The student is being punished by the teacher."],
-  correct:1, explanation:"Present Perfect → has/have been + V3." },
+  correct:1, explanation:"Present Perfect -> has/have been + V3." },
 
 { id:"APV030", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They are going to build a new hospital.",
   options:["A new hospital is going to be built by them.","A new hospital is built by them.","A new hospital will be built by them.","A new hospital has been built by them."],
-  correct:0, explanation:"'Going to' → is/am/are going to be + V3." },
+  correct:0, explanation:"'Going to' -> is/am/are going to be + V3." },
 
 { id:"APV031", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Someone has broken the vase.",
@@ -685,12 +685,12 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV032", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The manager will sign the documents.",
   options:["The documents will be signed by the manager.","The documents will sign by the manager.","The documents are signed by the manager.","The documents would be signed by the manager."],
-  correct:0, explanation:"Future Simple → will be + V3." },
+  correct:0, explanation:"Future Simple -> will be + V3." },
 
 { id:"APV033", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: She was reading a novel.",
   options:["A novel is being read by her.","A novel was being read by her.","A novel has been read by her.","A novel was read by her."],
-  correct:1, explanation:"Past Continuous → was/were + being + V3." },
+  correct:1, explanation:"Past Continuous -> was/were + being + V3." },
 
 { id:"APV034", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Do not insult the poor.",
@@ -700,12 +700,12 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV035", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The children are flying kites in the park.",
   options:["Kites are flown by the children in the park.","Kites are being flown by the children in the park.","Kites were being flown by the children in the park.","Kites have been flown by the children in the park."],
-  correct:1, explanation:"Present Continuous → is/am/are + being + V3." },
+  correct:1, explanation:"Present Continuous -> is/am/are + being + V3." },
 
 { id:"APV036", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: He had written the letter before he left.",
   options:["The letter was written before he left.","The letter had been written before he left.","The letter has been written before he left.","The letter is written before he left."],
-  correct:1, explanation:"Past Perfect → had been + V3." },
+  correct:1, explanation:"Past Perfect -> had been + V3." },
 
 { id:"APV037", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Who has broken this window?",
@@ -715,37 +715,37 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV038", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They should respect their elders.",
   options:["Their elders should be respected by them.","Their elders should respect by them.","Their elders should be respect by them.","Their elders should been respected by them."],
-  correct:0, explanation:"Modal → modal + be + V3." },
+  correct:0, explanation:"Modal -> modal + be + V3." },
 
 { id:"APV039", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The storm has damaged many houses.",
   options:["Many houses are damaged by the storm.","Many houses have been damaged by the storm.","Many houses were damaged by the storm.","Many houses are being damaged by the storm."],
-  correct:1, explanation:"Present Perfect → has/have been + V3." },
+  correct:1, explanation:"Present Perfect -> has/have been + V3." },
 
 { id:"APV040", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: She can speak three languages.",
   options:["Three languages can be spoken by her.","Three languages can speak by her.","Three languages can be speak by her.","Three languages could be spoken by her."],
-  correct:0, explanation:"Modal 'can' → can be + V3." },
+  correct:0, explanation:"Modal 'can' -> can be + V3." },
 
 { id:"APV041", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The committee is considering the proposal.",
   options:["The proposal is considered by the committee.","The proposal is being considered by the committee.","The proposal was being considered by the committee.","The proposal has been considered by the committee."],
-  correct:1, explanation:"Present Continuous → is/am/are + being + V3." },
+  correct:1, explanation:"Present Continuous -> is/am/are + being + V3." },
 
 { id:"APV042", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Keep the door closed.",
   options:["The door is kept closed.","Let the door be kept closed.","The door was kept closed.","The door has been kept closed."],
-  correct:1, explanation:"Imperative → Let + object + be + V3." },
+  correct:1, explanation:"Imperative -> Let + object + be + V3." },
 
 { id:"APV043", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They have invited me to the party.",
   options:["I am invited to the party by them.","I have been invited to the party by them.","I was invited to the party by them.","I am being invited to the party by them."],
-  correct:1, explanation:"Present Perfect → has/have been + V3." },
+  correct:1, explanation:"Present Perfect -> has/have been + V3." },
 
 { id:"APV044", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The mechanic is repairing the car.",
   options:["The car is repaired by the mechanic.","The car is being repaired by the mechanic.","The car was being repaired by the mechanic.","The car has been repaired by the mechanic."],
-  correct:1, explanation:"Present Continuous → is/am/are + being + V3." },
+  correct:1, explanation:"Present Continuous -> is/am/are + being + V3." },
 
 { id:"APV045", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Someone will clean the room.",
@@ -755,7 +755,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV046", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: She was teaching the children.",
   options:["The children are being taught by her.","The children were being taught by her.","The children have been taught by her.","The children were taught by her."],
-  correct:1, explanation:"Past Continuous → was/were + being + V3." },
+  correct:1, explanation:"Past Continuous -> was/were + being + V3." },
 
 { id:"APV047", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Do not waste water.",
@@ -765,17 +765,17 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV048", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The company has launched a new product.",
   options:["A new product is launched by the company.","A new product has been launched by the company.","A new product was launched by the company.","A new product is being launched by the company."],
-  correct:1, explanation:"Present Perfect → has/have been + V3." },
+  correct:1, explanation:"Present Perfect -> has/have been + V3." },
 
 { id:"APV049", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: They are painting the house.",
   options:["The house is painted by them.","The house is being painted by them.","The house was being painted by them.","The house has been painted by them."],
-  correct:1, explanation:"Present Continuous → is/am/are + being + V3." },
+  correct:1, explanation:"Present Continuous -> is/am/are + being + V3." },
 
 { id:"APV050", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: He must finish the work today.",
   options:["The work must be finished by him today.","The work must finish by him today.","The work must be finish by him today.","The work must been finished by him today."],
-  correct:0, explanation:"Modal → modal + be + V3." },
+  correct:0, explanation:"Modal -> modal + be + V3." },
 
 { id:"APV051", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They say that he is a genius.",
@@ -795,7 +795,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV054", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: Someone will have completed the task by tomorrow.",
   options:["The task will have been completed by tomorrow.","The task will be completed by tomorrow.","The task has been completed by tomorrow.","The task would have been completed by tomorrow."],
-  correct:0, explanation:"Future Perfect Active → will have been + V3." },
+  correct:0, explanation:"Future Perfect Active -> will have been + V3." },
 
 { id:"APV055", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They are going to announce the winner tomorrow.",
@@ -825,7 +825,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV060", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: The authorities are to announce a new policy soon.",
   options:["A new policy is to be announced soon.","A new policy is announced soon.","A new policy will be announced soon.","A new policy has to be announced soon."],
-  correct:0, explanation:"'Be to' construction → is/am/are to be + V3." },
+  correct:0, explanation:"'Be to' construction -> is/am/are to be + V3." },
 
 { id:"APV061", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They have been building the bridge for two years.",
@@ -840,7 +840,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV063", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They will have finished the construction by next month.",
   options:["The construction will have been finished by next month.","The construction will be finished by next month.","The construction has been finished by next month.","The construction would have been finished by next month."],
-  correct:0, explanation:"Future Perfect → will have been + V3." },
+  correct:0, explanation:"Future Perfect -> will have been + V3." },
 
 { id:"APV064", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: People think that the minister will resign.",
@@ -855,7 +855,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV066", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: Someone must have taken the documents.",
   options:["The documents must have been taken.","The documents must be taken.","The documents must have taken.","The documents must been taken."],
-  correct:0, explanation:"Modal perfect → modal + have been + V3." },
+  correct:0, explanation:"Modal perfect -> modal + have been + V3." },
 
 { id:"APV067", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They are believed to have left the country. (Convert to equivalent passive structure)",
@@ -895,7 +895,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV074", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: Someone is to meet you at the airport.",
   options:["You are to be met at the airport.","You are met at the airport.","You will be met at the airport.","You have to be met at the airport."],
-  correct:0, explanation:"'Be to' → is/am/are to be + V3." },
+  correct:0, explanation:"'Be to' -> is/am/are to be + V3." },
 
 { id:"APV075", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They have been considering your application.",
@@ -930,7 +930,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV081", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They are to have completed the work by now.",
   options:["The work is to have been completed by now.","The work is to be completed by now.","The work has to have been completed by now.","The work is to have completed by now."],
-  correct:0, explanation:"'Be to' + perfect infinitive → is/am/are to have been + V3." },
+  correct:0, explanation:"'Be to' + perfect infinitive -> is/am/are to have been + V3." },
 
 { id:"APV082", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: Someone must be helping him.",
@@ -955,7 +955,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV086", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: The management is to review the policy next month.",
   options:["The policy is to be reviewed next month.","The policy is reviewed next month.","The policy will be reviewed next month.","The policy has to be reviewed next month."],
-  correct:0, explanation:"'Be to' → is/am/are to be + V3." },
+  correct:0, explanation:"'Be to' -> is/am/are to be + V3." },
 
 { id:"APV087", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They have been looking after the children well.",
@@ -995,7 +995,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV094", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: Someone has to complete this task urgently.",
   options:["This task has to be completed urgently.","This task has to complete urgently.","This task has been completed urgently.","This task has to been completed urgently."],
-  correct:0, explanation:"'Have to' → has/have to be + V3." },
+  correct:0, explanation:"'Have to' -> has/have to be + V3." },
 
 { id:"APV095", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They are known to have supported the movement. (Convert to equivalent passive)",

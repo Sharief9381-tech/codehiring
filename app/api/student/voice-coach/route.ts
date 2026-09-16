@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+﻿import { NextResponse } from "next/server"
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
@@ -16,13 +16,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "AI service not configured" }, { status: 503 })
     }
 
-    // ── Mode: get a question ──────────────────────────────────────────────────
+    // â”€â”€ Mode: get a question â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (mode === "get-question") {
       const scenarioPrompts: Record<string, string> = {
         hr: "Generate one HR interview question for a fresh engineering graduate. Keep it concise, one sentence.",
         technical: "Generate one technical interview question for a CS/IT engineering student. Focus on concepts, not code. One sentence.",
         gd: "Give one group discussion topic for engineering students. One sentence.",
-        english: "Give one spoken English practice prompt — describe an object, tell a story, or discuss a daily topic. One sentence.",
+        english: "Give one spoken English practice prompt â€” describe an object, tell a story, or discuss a daily topic. One sentence.",
       }
       const prompt = scenarioPrompts[scenario] || scenarioPrompts.hr
 
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "llama3-8b-8192",
+          model: "llama-3.3-70b-versatile",
           messages: [{ role: "user", content: prompt }],
           max_tokens: 100,
           temperature: 0.8,
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ question: generatedQuestion })
     }
 
-    // ── Mode: analyze practice answer ─────────────────────────────────────────
+    // â”€â”€ Mode: analyze practice answer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (mode === "practice") {
       const systemPrompt = `You are an expert communication coach for engineering students preparing for campus placements.
 Analyze the student's spoken answer and provide structured feedback.
@@ -65,7 +65,7 @@ Analyze and return JSON feedback.`
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "llama3-8b-8192",
+          model: "llama-3.3-70b-versatile",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt },
@@ -95,7 +95,7 @@ Analyze and return JSON feedback.`
       return NextResponse.json(feedback)
     }
 
-    // ── Mode: mock interview (conversation) ───────────────────────────────────
+    // â”€â”€ Mode: mock interview (conversation) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (mode === "interview") {
       const systemPrompt = `You are an interviewer conducting a ${scenario === "hr" ? "HR" : scenario === "technical" ? "technical" : "communication"} interview for an engineering student.
 Keep responses short (2-3 sentences max). Ask follow-up questions naturally. 
@@ -111,7 +111,7 @@ Be encouraging but professional. After 8 exchanges, provide a brief performance 
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "llama3-8b-8192",
+          model: "llama-3.3-70b-versatile",
           messages,
           max_tokens: 200,
           temperature: 0.7,
@@ -128,3 +128,4 @@ Be encouraging but professional. After 8 exchanges, provide a brief performance 
     return NextResponse.json({ error: "Failed to process request" }, { status: 500 })
   }
 }
+
