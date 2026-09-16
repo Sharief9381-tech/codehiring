@@ -111,7 +111,7 @@ export async function POST(request: Request) {
     const { message, history = [] } = await request.json()
     if (!message?.trim()) return NextResponse.json({ error: "Message required" }, { status: 400 })
 
-    const student = await UserModel.findById(user._id as string)
+    const student = await UserModel.findById(user._id as string).catch(() => null)
     // Trim context to avoid token limit issues
     const rawContext = student ? buildStudentContext(student) : ""
     const studentContext = rawContext.length > 3000 ? rawContext.slice(0, 3000) + "\n[context trimmed]" : rawContext
