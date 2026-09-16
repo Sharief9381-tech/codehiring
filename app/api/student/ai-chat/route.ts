@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/student/ai-chat
  * AI career chatbot for students - powered by Groq.
  * Maintains conversation context via messages array sent from client.
@@ -141,7 +141,7 @@ ${studentContext}`
         const res = await fetch(GROQ_API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
-          body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages, max_tokens: 600, temperature: 0.7 }),
+          body: JSON.stringify({ model: "groq/compound-mini", messages, max_tokens: 600, temperature: 0.7 }),
           signal: AbortSignal.timeout(20000),
         })
         if (res.ok) {

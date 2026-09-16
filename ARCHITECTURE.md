@@ -1,4 +1,4 @@
-# CodeHiring — System Architecture
+remove# CodeHiring — System Architecture
 
 ---
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/student/problem-detail
  * Returns problem data. Flow:
  * 1. Check static problem-bank - if fully detailed (has testCases), return instantly
@@ -94,7 +94,7 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
 
   let data: any = null
   if (groqKey) {
-    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile") } catch {}
+    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "groq/compound-mini") } catch {}
   }
   if (!data && openaiKey) {
     try { data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch {}

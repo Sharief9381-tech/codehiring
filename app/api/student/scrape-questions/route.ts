@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/student/scrape-questions
  * Scrapes real previous year questions from IndiaBix, PrepInsta, GFG etc.
  * Then uses Groq to parse and structure them into MCQ format.
@@ -141,7 +141,7 @@ Return ONLY valid JSON array:
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
+      model: "groq/compound-mini",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.4,
       max_tokens: 6000,

@@ -25,7 +25,7 @@ async function callAI(prompt: string, maxTokens = 6000): Promise<string> {
     const res = await fetch(GROQ_API, {
       method: "POST",
       headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
+      body: JSON.stringify({ model: "groq/compound-mini", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
     })
     if (res.ok) { const d = await res.json(); return d.choices?.[0]?.message?.content?.trim() ?? "" }
   }

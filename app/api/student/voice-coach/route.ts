@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: "groq/compound-mini",
           messages: [{ role: "user", content: prompt }],
           max_tokens: 100,
           temperature: 0.8,
@@ -65,7 +65,7 @@ Analyze and return JSON feedback.`
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: "groq/compound-mini",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt },
@@ -111,7 +111,7 @@ Be encouraging but professional. After 8 exchanges, provide a brief performance 
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: "groq/compound-mini",
           messages,
           max_tokens: 200,
           temperature: 0.7,

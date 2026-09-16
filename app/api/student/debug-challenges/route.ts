@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GET  /api/student/debug-challenges?lang=Python
  * Returns 3 AI-generated "find and fix the bug" challenges in the chosen language.
  * Basic -> Intermediate -> Advanced curriculum, infinite progression.
@@ -128,7 +128,7 @@ async function generateWithGroq(topic: typeof CURRICULUM[0], lang: string, seed:
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
+      model: "groq/compound-mini",
       messages: [{ role: "user", content: buildPrompt(topic, lang, ts) }],
       temperature: 0.85,
       max_tokens: 2500,

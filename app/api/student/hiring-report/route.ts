@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/student/hiring-report
  * Generates a full Company Hiring Simulation & Recruitment Report via Groq AI.
  */
@@ -169,7 +169,7 @@ Generate a FULL RECRUITMENT REPORT in this EXACT JSON format (no markdown, no ex
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: "groq/compound-mini",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.6,
         max_tokens: 3000,

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/student/evaluate-code
  * Evaluates student code using Mistral (primary) -> Groq -> OpenAI fallback chain.
  */
@@ -69,7 +69,7 @@ Evaluate the code and respond ONLY with a valid JSON object (no markdown, no exp
     // 2. Groq fallback
     if (!data && groqKey) {
       try {
-        data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "llama-3.3-70b-versatile")
+        data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "groq/compound-mini")
       } catch { /* fall through */ }
     }
 
