@@ -1,10 +1,10 @@
 /**
- * Groq AI client - uses llama-3.1-8b-instant (free, fast)
+ * Groq AI client - uses llama-3.3-70b-versatile (free, fast)
  * Get your free key at https://console.groq.com
  */
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-const MODEL = "llama-3.1-8b-instant"
+const MODEL = "llama-3.3-70b-versatile"
 
 export async function groqChat(
   systemPrompt: string,
