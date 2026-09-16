@@ -6,7 +6,6 @@
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
-import { groqChat, isGroqAvailable } from "@/lib/groq"
 
 function buildStudentContext(student: any): string {
   const lp: Record<string, any> = student.linkedPlatforms || {}
@@ -103,7 +102,9 @@ export async function POST(request: Request) {
     const user = await getCurrentUser()
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
-    if (!isGroqAvailable()) {
+    const groqKey = process.env.GROQ_API_KEY
+    const openaiKey = process.env.OPENAI_API_KEY
+    if (!groqKey && !openaiKey) {
       return NextResponse.json({ error: "AI not configured" }, { status: 503 })
     }
 
@@ -111,41 +112,70 @@ export async function POST(request: Request) {
     if (!message?.trim()) return NextResponse.json({ error: "Message required" }, { status: 400 })
 
     const student = await UserModel.findById(user._id as string)
-    const studentContext = student ? buildStudentContext(student) : ""
+    // Trim context to avoid token limit issues
+    const rawContext = student ? buildStudentContext(student) : ""
+    const studentContext = rawContext.length > 3000 ? rawContext.slice(0, 3000) + "\n[context trimmed]" : rawContext
 
     const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+    const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+
     const systemPrompt = `You are CodeHiring AI - a smart, data-driven career advisor for software engineering students in India.
-You have FULL access to the student's complete profile below including all platform stats, skills, achievements, resume analysis, and placement status.
-Use the specific numbers and data from their profile to give personalised, accurate advice.
-Be concise, friendly, and action-oriented. Use bullet points for lists. Mention specific stats when relevant.
-Never say you "don't have access" - you have everything below.
+You have access to the student's profile including platform stats, skills, achievements, and placement status.
+Use their specific data to give personalised, accurate advice.
+Be concise, friendly, and action-oriented. Use bullet points for lists.
 Focus on: placement preparation, coding improvement, career guidance, skill gaps, job matching, company-specific prep.
 
 ${studentContext}`
 
     const messages = [
       { role: "system", content: systemPrompt },
-      ...history.slice(-12),
+      ...history.slice(-8),
       { role: "user", content: message },
     ]
 
-    const res = await fetch(GROQ_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages,
-        max_tokens: 800,
-        temperature: 0.7,
-      }),
-    })
+    // Try Groq first, fall back to OpenAI
+    let reply = ""
 
-    if (!res.ok) throw new Error(`Groq error: ${res.status}`)
-    const data = await res.json()
-    const reply = data.choices?.[0]?.message?.content ?? "Sorry, I couldn't generate a response."
+    if (groqKey) {
+      try {
+        const res = await fetch(GROQ_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
+          body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages, max_tokens: 600, temperature: 0.7 }),
+          signal: AbortSignal.timeout(20000),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          reply = data.choices?.[0]?.message?.content ?? ""
+        } else {
+          const errText = await res.text()
+          console.error("Groq error:", res.status, errText)
+        }
+      } catch (e) {
+        console.error("Groq fetch failed:", e)
+      }
+    }
+
+    if (!reply && openaiKey) {
+      try {
+        const res = await fetch(OPENAI_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${openaiKey}` },
+          body: JSON.stringify({ model: "gpt-4o-mini", messages, max_tokens: 600, temperature: 0.7 }),
+          signal: AbortSignal.timeout(20000),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          reply = data.choices?.[0]?.message?.content ?? ""
+        }
+      } catch (e) {
+        console.error("OpenAI fetch failed:", e)
+      }
+    }
+
+    if (!reply) {
+      return NextResponse.json({ error: "AI temporarily unavailable" }, { status: 503 })
+    }
 
     return NextResponse.json({ reply })
   } catch (error) {
