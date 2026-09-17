@@ -12,7 +12,6 @@ import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
 
-const GROQ_API     = "https://api.groq.com/openai/v1/chat/completions"
 const APILAYER_URL = "https://api.apilayer.com/resume_parser/upload"
 
 // -- Extract readable text from PDF buffer --------------------------------------
@@ -54,9 +53,10 @@ async function parseWithAPILayer(fileBuffer: Buffer, fileName: string): Promise<
   */
 }
 
-// -- Deep analysis via Groq -----------------------------------------------------
-async function groqDeepAnalysis(parsedResume: any, profileCtx: string): Promise<any> {
-  if (!process.env.GROQ_API_KEY) return null
+// -- Deep analysis via OpenAI gpt-4o-mini ---------------------------------------
+async function openaiDeepAnalysis(parsedResume: any, profileCtx: string): Promise<any> {
+  const key = process.env.OPENAI_API_KEY
+  if (!key) return null
 
   const resumeStr = JSON.stringify(parsedResume, null, 2).slice(0, 5000)
 
@@ -70,7 +70,7 @@ ${resumeStr}
 CANDIDATE CODING PROFILE:
 ${profileCtx}
 
-Return ONLY valid JSON (no markdown):
+Return ONLY valid JSON (no markdown, no explanation outside the JSON):
 {
   "overallScore": <0-100>,
   "overallReason": "2 sentences citing specific resume content",
@@ -110,42 +110,50 @@ Return ONLY valid JSON (no markdown):
     "suggestedReason": "why these appear in 80%+ of SDE job postings"
   },
   "jobMatches": [
-    { "role": "Software Engineer", "company": "Service company (TCS/Infosys)", "match": <0-100>, "missingSkills": [], "reason": "cite resume strengths", "howToClose": "specific actions" },
-    { "role": "Backend Developer",  "company": "Product startup",               "match": <0-100>, "missingSkills": [], "reason": "...", "howToClose": "..." },
-    { "role": "Full Stack Developer","company": "Mid-size tech company",         "match": <0-100>, "missingSkills": [], "reason": "...", "howToClose": "..." }
+    { "role": "Software Engineer",   "company": "Service company (TCS/Infosys)", "match": <0-100>, "missingSkills": [], "reason": "cite resume strengths", "howToClose": "specific actions" },
+    { "role": "Backend Developer",   "company": "Product startup",               "match": <0-100>, "missingSkills": [], "reason": "...", "howToClose": "..." },
+    { "role": "Full Stack Developer","company": "Mid-size tech company",          "match": <0-100>, "missingSkills": [], "reason": "...", "howToClose": "..." }
   ],
   "wordCount": { "current": <number>, "ideal": "400-600 words", "status": "Too short|Good|Too long", "advice": "specific advice" },
   "strengthPoints": ["cite actual resume strength 1", "cite actual resume strength 2", "cite actual resume strength 3"],
   "criticalIssues": ["specific critical problem 1", "specific critical problem 2"],
   "quickWins": [
-    { "action": "specific action with example", "impact": "high", "effort": "low", "whyItMatters": "recruiter/ATS impact with numbers if possible" },
-    { "action": "specific action", "impact": "high", "effort": "low", "whyItMatters": "..." },
-    { "action": "specific action", "impact": "medium", "effort": "low", "whyItMatters": "..." }
+    { "action": "specific action with example", "impact": "high", "effort": "low", "whyItMatters": "recruiter/ATS impact" },
+    { "action": "specific action",              "impact": "high", "effort": "low", "whyItMatters": "..." },
+    { "action": "specific action",              "impact": "medium", "effort": "low", "whyItMatters": "..." }
   ],
   "improvedSummary": "rewritten 2-3 sentence summary using actual resume content",
   "summaryExplanation": "break down why each element of the summary works",
   "templateRecommendation": { "name": "Technical|Minimal|Creative|Executive", "reason": "specific to this resume" },
   "linkedinTips": ["specific tip 1", "specific tip 2"],
   "interviewReadiness": <0-100>,
-  "interviewReadinessReason": "based on actual resume content and coding profile"
+  "interviewReadinessReason": "based on actual resume content and coding profile",
+  "readinessLevel": "Needs Work|Campus Ready|Interview Ready|Job Ready"
 }`
 
-  const res = await fetch(GROQ_API, {
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
-    headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
+    headers: {
+      "Authorization": `Bearer ${key}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
-      model: "groq/compound-mini",
+      model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.3,
-      max_tokens: 4500,
+      max_tokens: 4000,
+      response_format: { type: "json_object" },
     }),
+    signal: AbortSignal.timeout(40000),
   })
 
-  if (!res.ok) return null
+  if (!res.ok) {
+    console.error("OpenAI analysis error:", res.status, await res.text())
+    return null
+  }
   const data = await res.json()
   const raw  = data.choices?.[0]?.message?.content?.trim() ?? ""
-  const json = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
-  try { return JSON.parse(json) } catch { return null }
+  try { return JSON.parse(raw) } catch { return null }
 }
 
 export async function POST(req: Request) {
@@ -207,8 +215,8 @@ export async function POST(req: Request) {
       parseSource   = "groq_only"
     }
 
-    // Step 3: Deep analysis
-    const analysis = await groqDeepAnalysis(parsedResume, profileCtx)
+    // Step 3: Deep analysis via OpenAI gpt-4o-mini
+    const analysis = await openaiDeepAnalysis(parsedResume, profileCtx)
     if (!analysis) return NextResponse.json({ error: "AI analysis failed" }, { status: 500 })
 
     analysis._parseSource = parseSource
