@@ -37,6 +37,99 @@ function TypingDots() {
   )
 }
 
+// Simple markdown renderer for AI responses
+function renderMarkdown(text: string) {
+  const lines = text.split("\n")
+  const elements: React.ReactNode[] = []
+  let i = 0
+
+  while (i < lines.length) {
+    const line = lines[i]
+
+    // Skip empty lines
+    if (!line.trim()) { elements.push(<div key={i} className="h-2" />); i++; continue }
+
+    // H3 heading
+    if (line.startsWith("### ")) {
+      elements.push(<p key={i} className="font-bold text-sm mt-3 mb-1 text-foreground">{line.slice(4)}</p>)
+      i++; continue
+    }
+    // H2 heading
+    if (line.startsWith("## ")) {
+      elements.push(<p key={i} className="font-bold text-base mt-3 mb-1 text-foreground">{line.slice(3)}</p>)
+      i++; continue
+    }
+    // H1 heading
+    if (line.startsWith("# ")) {
+      elements.push(<p key={i} className="font-bold text-base mt-2 mb-1 text-foreground">{line.slice(2)}</p>)
+      i++; continue
+    }
+    // Horizontal rule
+    if (line.trim() === "---") {
+      elements.push(<hr key={i} className="border-border/40 my-2" />)
+      i++; continue
+    }
+    // Bullet point
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      elements.push(
+        <div key={i} className="flex items-start gap-2 text-sm">
+          <span className="text-primary mt-1 shrink-0">•</span>
+          <span dangerouslySetInnerHTML={{ __html: inlineFormat(line.slice(2)) }} />
+        </div>
+      )
+      i++; continue
+    }
+    // Numbered list
+    if (/^\d+\.\s/.test(line)) {
+      const num = line.match(/^(\d+)\.\s/)?.[1]
+      elements.push(
+        <div key={i} className="flex items-start gap-2 text-sm">
+          <span className="text-primary font-bold shrink-0 min-w-[1.2rem]">{num}.</span>
+          <span dangerouslySetInnerHTML={{ __html: inlineFormat(line.replace(/^\d+\.\s/, "")) }} />
+        </div>
+      )
+      i++; continue
+    }
+    // Table row — skip for simplicity, render as plain text
+    if (line.startsWith("|")) {
+      // Collect all table rows
+      const rows: string[] = []
+      while (i < lines.length && lines[i].startsWith("|")) {
+        if (!lines[i].match(/^\|[-| ]+\|$/)) rows.push(lines[i])
+        i++
+      }
+      elements.push(
+        <div key={`table-${i}`} className="text-sm space-y-0.5 my-1">
+          {rows.map((r, ri) => {
+            const cells = r.split("|").filter(c => c.trim())
+            return (
+              <div key={ri} className={`flex gap-2 ${ri === 0 ? "font-semibold border-b border-border/30 pb-1" : ""}`}>
+                {cells.map((c, ci) => (
+                  <span key={ci} className="flex-1 min-w-0" dangerouslySetInnerHTML={{ __html: inlineFormat(c.trim()) }} />
+                ))}
+              </div>
+            )
+          })}
+        </div>
+      )
+      continue
+    }
+    // Regular paragraph
+    elements.push(
+      <p key={i} className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: inlineFormat(line) }} />
+    )
+    i++
+  }
+  return elements
+}
+
+function inlineFormat(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    .replace(/`(.+?)`/g, '<code class="bg-muted px-1 rounded text-xs font-mono">$1</code>')
+}
+
 function MessageBubble({ msg }: { msg: Message }) {
   const isAI = msg.role === "assistant"
   return (
@@ -53,13 +146,16 @@ function MessageBubble({ msg }: { msg: Message }) {
         }
       </div>
       {/* Bubble */}
-      <div className={`max-w-[76%] flex flex-col gap-0.5 ${isAI ? "items-start" : "items-end"}`}>
-        <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
+      <div className={`max-w-[82%] flex flex-col gap-0.5 ${isAI ? "items-start" : "items-end"}`}>
+        <div className={`rounded-2xl px-4 py-3 ${
           isAI
-            ? "bg-card border border-border/50 text-foreground rounded-tl-sm shadow-sm"
+            ? "bg-card border border-border/50 text-foreground rounded-tl-sm shadow-sm space-y-1"
             : "bg-gradient-to-br from-violet-600 to-primary text-white rounded-tr-sm shadow-md shadow-primary/20"
         }`}>
-          {msg.content}
+          {isAI
+            ? renderMarkdown(msg.content)
+            : <p className="text-sm leading-relaxed">{msg.content}</p>
+          }
         </div>
       </div>
     </div>
