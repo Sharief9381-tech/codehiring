@@ -1,12 +1,14 @@
 /**
  * GET /api/student/ai-insights
  * Returns AI-generated career insights for the logged-in student.
- * Uses Groq llama-3.1-8b-instant. Falls back gracefully if key not set.
+ * Tries Groq compound-mini first, falls back to OpenAI gpt-4o-mini.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
-import { groqChat, isGroqAvailable } from "@/lib/groq"
+
+const GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
+const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 
 function buildStudentSummary(student: any): string {
   const platforms = Object.keys(student.linkedPlatforms || {})
@@ -22,19 +24,59 @@ function buildStudentSummary(student: any): string {
     contests += s.contests?.length || s.contestsParticipated || s.attendedContestsCount || 0
   })
 
-  return `
-Student: ${student.name}
-Branch: ${student.branch || "N/A"}, Year: ${student.graduationYear || "N/A"}
-College Code: ${student.collegeCode || "N/A"}
-Skills: ${(student.skills || []).join(", ") || "None listed"}
-Connected Platforms: ${platforms.join(", ") || "None"}
-Total Problems Solved: ${totalProblems}
-Highest Rating: ${highestRating}
-GitHub Contributions: ${githubContributions}
-Contests Participated: ${contests}
-Open to Work: ${student.isOpenToWork ? "Yes" : "No"}
-LinkedIn: ${student.linkedinUrl ? "Added" : "Not added"}
-  `.trim()
+  return [
+    `Student: ${student.name}`,
+    `Branch: ${student.branch || "N/A"}, Graduation: ${student.graduationYear || "N/A"}`,
+    `Skills: ${(student.skills || []).join(", ") || "None listed"}`,
+    `Platforms: ${platforms.join(", ") || "None"}`,
+    `Total Problems Solved: ${totalProblems}`,
+    `Highest Rating: ${highestRating || "N/A"}`,
+    `GitHub Contributions: ${githubContributions}`,
+    `Contests: ${contests}`,
+    `Open to Work: ${student.isOpenToWork ? "Yes" : "No"}`,
+  ].join("\n")
+}
+
+async function callAI(messages: any[], maxTokens: number): Promise<string> {
+  const groqKey   = process.env.GROQ_API_KEY
+  const openaiKey = process.env.OPENAI_API_KEY
+
+  // Try Groq first
+  if (groqKey) {
+    try {
+      const res = await fetch(GROQ_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
+        body: JSON.stringify({ model: "groq/compound-mini", messages, max_tokens: maxTokens, temperature: 0.3 }),
+        signal: AbortSignal.timeout(20000),
+      })
+      if (res.ok) {
+        const d = await res.json()
+        const content = d.choices?.[0]?.message?.content?.trim() ?? ""
+        if (content) return content
+      } else {
+        console.error("Groq insights error:", res.status, await res.text())
+      }
+    } catch (e) {
+      console.error("Groq insights fetch failed:", e)
+    }
+  }
+
+  // Fallback to OpenAI
+  if (openaiKey) {
+    const res = await fetch(OPENAI_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${openaiKey}` },
+      body: JSON.stringify({ model: "gpt-4o-mini", messages, max_tokens: maxTokens, temperature: 0.3 }),
+      signal: AbortSignal.timeout(20000),
+    })
+    if (res.ok) {
+      const d = await res.json()
+      return d.choices?.[0]?.message?.content?.trim() ?? ""
+    }
+  }
+
+  throw new Error("No AI provider available")
 }
 
 export async function GET() {
@@ -42,57 +84,49 @@ export async function GET() {
     const user = await getCurrentUser()
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
-    const student = await UserModel.findById(user._id as string)
-    if (!student) return NextResponse.json({ error: "Not found" }, { status: 404 })
-
-    if (!isGroqAvailable()) {
+    if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       return NextResponse.json({
         available: false,
-        message: "Add GROQ_API_KEY to .env.local to enable AI insights (free at console.groq.com)",
+        message: "Add GROQ_API_KEY to .env to enable AI insights.",
       })
     }
 
+    const student = await UserModel.findById(user._id as string).catch(() => null)
+    if (!student) return NextResponse.json({ error: "Not found" }, { status: 404 })
+
     const summary = buildStudentSummary(student)
 
-    const systemPrompt = `You are a career advisor for software engineering students in India. 
-Analyze the student's coding profile and give concise, actionable career insights.
-Be specific, encouraging but honest. Focus on placement readiness.
-Respond in JSON with this exact structure:
+    const messages = [
+      {
+        role: "system",
+        content: `You are a career advisor for software engineering students in India.
+Analyze the student profile and return ONLY a valid JSON object — no markdown, no explanation, no extra text.
+Use exactly this structure:
 {
-  "overallAssessment": "2-3 sentence summary of the student's profile strength",
+  "overallAssessment": "2-3 sentence summary",
   "strengths": ["strength 1", "strength 2", "strength 3"],
-  "improvements": ["specific improvement 1", "specific improvement 2", "specific improvement 3"],
-  "placementTip": "One specific actionable tip to improve placement chances",
-  "skillGaps": ["skill gap 1", "skill gap 2"],
+  "improvements": ["improvement 1", "improvement 2", "improvement 3"],
+  "placementTip": "One specific actionable tip",
+  "skillGaps": ["gap 1", "gap 2"],
   "estimatedPlacementReadiness": 75
-}`
+}`,
+      },
+      { role: "user", content: summary },
+    ]
 
-    const raw = await groqChat(systemPrompt, summary, 600)
+    const raw = await callAI(messages, 500)
 
-    // Extract JSON — handle reasoning tokens that compound-mini may prepend
-    // Try to find the outermost complete JSON object
+    // Extract JSON — strip any surrounding text
     const jsonMatch = raw.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      console.error("No JSON found in response:", raw.slice(0, 200))
-      throw new Error("Invalid AI response format")
-    }
+    if (!jsonMatch) throw new Error(`No JSON in response: ${raw.slice(0, 100)}`)
 
-    // Parse — may throw if JSON is malformed, caught below
-    let insights: any
-    try {
-      insights = JSON.parse(jsonMatch[0])
-    } catch {
-      // Try to extract from last JSON block if multiple exist
-      const allMatches = [...raw.matchAll(/\{[\s\S]*?\}/g)]
-      const last = allMatches[allMatches.length - 1]
-      if (last) insights = JSON.parse(last[0])
-      else throw new Error("Could not parse JSON from AI response")
-    }
+    const insights = JSON.parse(jsonMatch[0])
 
-    // Ensure required fields have defaults
-    if (!insights.estimatedPlacementReadiness) insights.estimatedPlacementReadiness = 50
-    if (!insights.strengths) insights.strengths = []
-    if (!insights.improvements) insights.improvements = []
+    // Ensure required fields
+    insights.estimatedPlacementReadiness = Number(insights.estimatedPlacementReadiness) || 50
+    insights.strengths   = insights.strengths   || []
+    insights.improvements = insights.improvements || []
+    insights.skillGaps   = insights.skillGaps   || []
 
     return NextResponse.json({ available: true, insights })
   } catch (error) {
