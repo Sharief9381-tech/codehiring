@@ -69,11 +69,30 @@ Respond in JSON with this exact structure:
 
     const raw = await groqChat(systemPrompt, summary, 600)
 
-    // Parse JSON from response
+    // Extract JSON — handle reasoning tokens that compound-mini may prepend
+    // Try to find the outermost complete JSON object
     const jsonMatch = raw.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) throw new Error("Invalid AI response format")
+    if (!jsonMatch) {
+      console.error("No JSON found in response:", raw.slice(0, 200))
+      throw new Error("Invalid AI response format")
+    }
 
-    const insights = JSON.parse(jsonMatch[0])
+    // Parse — may throw if JSON is malformed, caught below
+    let insights: any
+    try {
+      insights = JSON.parse(jsonMatch[0])
+    } catch {
+      // Try to extract from last JSON block if multiple exist
+      const allMatches = [...raw.matchAll(/\{[\s\S]*?\}/g)]
+      const last = allMatches[allMatches.length - 1]
+      if (last) insights = JSON.parse(last[0])
+      else throw new Error("Could not parse JSON from AI response")
+    }
+
+    // Ensure required fields have defaults
+    if (!insights.estimatedPlacementReadiness) insights.estimatedPlacementReadiness = 50
+    if (!insights.strengths) insights.strengths = []
+    if (!insights.improvements) insights.improvements = []
 
     return NextResponse.json({ available: true, insights })
   } catch (error) {
