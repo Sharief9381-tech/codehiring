@@ -54,7 +54,7 @@ async function parseWithAPILayer(fileBuffer: Buffer, fileName: string): Promise<
 }
 
 // -- Deep analysis via OpenAI gpt-4o-mini ---------------------------------------
-async function openaiDeepAnalysis(parsedResume: any, profileCtx: string): Promise<any> {
+async function openaiDeepAnalysis(parsedResume: any): Promise<any> {
   const key = process.env.OPENAI_API_KEY
   if (!key) return null
 
@@ -62,13 +62,11 @@ async function openaiDeepAnalysis(parsedResume: any, profileCtx: string): Promis
 
   const prompt = `You are a senior technical recruiter at Google/Amazon with 10+ years experience. 
 Perform a DEEP ResumeWorded-style review of this candidate's resume.
+Analyze ONLY the resume content below — do not factor in any external platform stats.
 Be specific - cite actual content from the resume in every explanation.
 
 PARSED RESUME:
 ${resumeStr}
-
-CANDIDATE CODING PROFILE:
-${profileCtx}
 
 Return ONLY valid JSON (no markdown, no explanation outside the JSON):
 {
@@ -127,7 +125,7 @@ Return ONLY valid JSON (no markdown, no explanation outside the JSON):
   "templateRecommendation": { "name": "Technical|Minimal|Creative|Executive", "reason": "specific to this resume" },
   "linkedinTips": ["specific tip 1", "specific tip 2"],
   "interviewReadiness": <0-100>,
-  "interviewReadinessReason": "based on actual resume content and coding profile",
+  "interviewReadinessReason": "based on resume content only",
   "readinessLevel": "Needs Work|Campus Ready|Interview Ready|Job Ready"
 }`
 
@@ -185,15 +183,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No resume file found. Upload your resume first." }, { status: 400 })
     }
 
-    // Build candidate coding profile context
-    const platforms = Object.entries(doc.linkedPlatforms ?? {})
-      .filter(([, v]: any) => v?.username)
-      .map(([pid, pd]: any) => {
-        const s = pd.stats ?? {}
-        return `${pid}: solved=${s.totalSolved ?? s.problemsSolved ?? 0} rating=${s.rating ?? s.currentRating ?? 0}`
-      }).join(" | ")
-
-    const profileCtx = `Name: ${doc.name} | Branch: ${doc.branch ?? "N/A"} | Grad: ${doc.graduationYear ?? "N/A"} | Skills: ${(doc.skills ?? []).join(", ") || "none"} | Coding: ${platforms || "none"}`
+    // Build candidate profile context (basic info only, no platform stats)
+    // Note: analysis is resume-only — platform stats excluded intentionally
 
     let parsedResume: any = null
     let parseSource = "fallback"
@@ -215,8 +206,8 @@ export async function POST(req: Request) {
       parseSource   = "groq_only"
     }
 
-    // Step 3: Deep analysis via OpenAI gpt-4o-mini
-    const analysis = await openaiDeepAnalysis(parsedResume, profileCtx)
+    // Step 3: Deep analysis via OpenAI gpt-4o-mini (resume-only, no platform stats)
+    const analysis = await openaiDeepAnalysis(parsedResume)
     if (!analysis) return NextResponse.json({ error: "AI analysis failed" }, { status: 500 })
 
     analysis._parseSource = parseSource
