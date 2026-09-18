@@ -8,6 +8,7 @@ import { getPYQContext } from "@/lib/question-bank"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { retrieveSimilarPYQs, formatPYQsAsContext } from "@/lib/rag/vector-store"
 import { getLiveWebContext, formatWebContext } from "@/lib/rag/web-context"
+import { getCompanyPattern, patternToTopicOverrides } from "@/lib/rag/company-pattern"
 
 const GROQ_API   = "https://api.groq.com/openai/v1/chat/completions"
 const OPENAI_API = "https://api.openai.com/v1/chat/completions"
@@ -153,6 +154,23 @@ export async function POST(req: Request) {
 
     if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
+    }
+
+    // ── Try to get live company pattern from RAG (7-day cache) ────────────────
+    try {
+      const livePattern = await getCompanyPattern(company, companyName)
+      if (livePattern) {
+        const topicOverrides = patternToTopicOverrides(livePattern)
+        const sectionOverride = topicOverrides[section]
+        if (sectionOverride?.topics?.length > 0) {
+          sectionData.topics = sectionOverride.topics
+        }
+        if (sectionOverride?.difficulty) {
+          sectionData.difficulty = sectionOverride.difficulty
+        }
+      }
+    } catch (e) {
+      console.warn("Company pattern fetch failed, using defaults:", e)
     }
 
     // ── For coding sections: use company-coding-ai model first ────────────────
