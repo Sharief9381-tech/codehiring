@@ -7,6 +7,7 @@ import { NextResponse } from "next/server"
 import { getPYQContext } from "@/lib/question-bank"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { retrieveSimilarPYQs, formatPYQsAsContext } from "@/lib/rag/vector-store"
+import { getLiveWebContext, formatWebContext } from "@/lib/rag/web-context"
 
 const GROQ_API   = "https://api.groq.com/openai/v1/chat/completions"
 const OPENAI_API = "https://api.openai.com/v1/chat/completions"
@@ -202,34 +203,46 @@ export async function POST(req: Request) {
     // ── AI generation with RAG context ───────────────────────────────────────
     const topicsList = sectionData.topics.join(", ")
 
-    // Try RAG first (MongoDB vector search), fall back to static PYQ bank
+    // Build context from 3 sources in parallel: vector store, pyq_bank, live web
     let pyqContext = ""
+    const contextParts: string[] = []
+
+    // Source 1: Static PYQ bank (always available)
+    const staticCtx = getPYQContext(company, section, 5)
+    if (staticCtx) contextParts.push(staticCtx)
+
+    // Source 2: MongoDB vector store + approved pyq_bank (if OpenAI key available)
     if (process.env.OPENAI_API_KEY) {
       try {
         const queryText = `${sectionData.name} ${topicsList} ${sectionData.difficulty}`
-        const retrieved = await retrieveSimilarPYQs(company, section, queryText, 8)
+        const [retrieved, dbPYQs] = await Promise.allSettled([
+          retrieveSimilarPYQs(company, section, queryText, 6),
+          import("@/lib/models/pyq").then(m => m.getApprovedPYQs(company, section, 4)),
+        ])
 
-        // Also pull approved questions from pyq_bank collection
-        try {
-          const { getApprovedPYQs } = await import("@/lib/models/pyq")
-          const dbPYQs = await getApprovedPYQs(company, section, 5)
-          if (dbPYQs.length > 0) {
-            const dbContext = dbPYQs.map((q: any, i: number) => `Q${i+1} [DB, ${q.difficulty}, ${q.topic}]:\n${q.question}\nOptions: ${q.options?.map((o: string, j: number) => `${["A","B","C","D"][j]}) ${o}`).join(" | ")}\nCorrect: ${["A","B","C","D"][q.correct]}\nExplanation: ${q.explanation}`).join("\n\n")
-            retrieved.push(...dbPYQs as any)
-            pyqContext = formatPYQsAsContext(retrieved.slice(0, 8), company, section)
-          } else {
-            pyqContext = formatPYQsAsContext(retrieved, company, section)
-          }
-        } catch {
-          pyqContext = formatPYQsAsContext(retrieved, company, section)
+        const allPYQs: any[] = []
+        if (retrieved.status === "fulfilled") allPYQs.push(...retrieved.value)
+        if (dbPYQs.status === "fulfilled") allPYQs.push(...dbPYQs.value)
+
+        if (allPYQs.length > 0) {
+          const ragCtx = formatPYQsAsContext(allPYQs.slice(0, 8), company, section)
+          if (ragCtx) contextParts.push(ragCtx)
         }
-      } catch (ragErr) {
-        console.warn("RAG retrieval failed, falling back to static bank:", ragErr)
-        pyqContext = getPYQContext(company, section, 5)
+      } catch (e) {
+        console.warn("RAG vector retrieval failed:", e)
       }
-    } else {
-      pyqContext = getPYQContext(company, section, 5)
     }
+
+    // Source 3: Live web context (non-blocking, 24h cached)
+    try {
+      const webText = await getLiveWebContext(company, section)
+      const webCtx = formatWebContext(webText, company, section)
+      if (webCtx) contextParts.push(webCtx)
+    } catch (e) {
+      console.warn("Live web context failed:", e)
+    }
+
+    pyqContext = contextParts.join("\n\n===\n\n")
 
     const prompt = sectionData.isCoding
       ? `You are creating a ${companyName} coding assessment.
