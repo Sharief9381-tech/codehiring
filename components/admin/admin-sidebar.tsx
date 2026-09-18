@@ -23,6 +23,7 @@ const adminLinks = [
   { tab: "feedback",     label: "Feedback",     icon: MessageSquare },
   { tab: "analytics",    label: "Analytics",    icon: BarChart3 },
   { tab: "blog",         label: "Blog",         icon: BookOpen },
+  { tab: "pyq",          label: "PYQ Bank",     icon: Crown },
 ]
 
 interface AdminSidebarProps {

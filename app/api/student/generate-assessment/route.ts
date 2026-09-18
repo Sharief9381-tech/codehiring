@@ -208,7 +208,21 @@ export async function POST(req: Request) {
       try {
         const queryText = `${sectionData.name} ${topicsList} ${sectionData.difficulty}`
         const retrieved = await retrieveSimilarPYQs(company, section, queryText, 8)
-        pyqContext = formatPYQsAsContext(retrieved, company, section)
+
+        // Also pull approved questions from pyq_bank collection
+        try {
+          const { getApprovedPYQs } = await import("@/lib/models/pyq")
+          const dbPYQs = await getApprovedPYQs(company, section, 5)
+          if (dbPYQs.length > 0) {
+            const dbContext = dbPYQs.map((q: any, i: number) => `Q${i+1} [DB, ${q.difficulty}, ${q.topic}]:\n${q.question}\nOptions: ${q.options?.map((o: string, j: number) => `${["A","B","C","D"][j]}) ${o}`).join(" | ")}\nCorrect: ${["A","B","C","D"][q.correct]}\nExplanation: ${q.explanation}`).join("\n\n")
+            retrieved.push(...dbPYQs as any)
+            pyqContext = formatPYQsAsContext(retrieved.slice(0, 8), company, section)
+          } else {
+            pyqContext = formatPYQsAsContext(retrieved, company, section)
+          }
+        } catch {
+          pyqContext = formatPYQsAsContext(retrieved, company, section)
+        }
       } catch (ragErr) {
         console.warn("RAG retrieval failed, falling back to static bank:", ragErr)
         pyqContext = getPYQContext(company, section, 5)
