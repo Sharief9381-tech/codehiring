@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server"
 import { getPYQContext } from "@/lib/question-bank"
 import { ALL_COMPANIES } from "@/lib/companies-data"
+import { retrieveSimilarPYQs, formatPYQsAsContext } from "@/lib/rag/vector-store"
 
 const GROQ_API   = "https://api.groq.com/openai/v1/chat/completions"
 const OPENAI_API = "https://api.openai.com/v1/chat/completions"
@@ -198,9 +199,23 @@ export async function POST(req: Request) {
       } catch {}
     }
 
-    // ── AI generation ─────────────────────────────────────────────────────────
+    // ── AI generation with RAG context ───────────────────────────────────────
     const topicsList = sectionData.topics.join(", ")
-    const pyqContext = getPYQContext(company, section, 5)
+
+    // Try RAG first (MongoDB vector search), fall back to static PYQ bank
+    let pyqContext = ""
+    if (process.env.OPENAI_API_KEY) {
+      try {
+        const queryText = `${sectionData.name} ${topicsList} ${sectionData.difficulty}`
+        const retrieved = await retrieveSimilarPYQs(company, section, queryText, 8)
+        pyqContext = formatPYQsAsContext(retrieved, company, section)
+      } catch (ragErr) {
+        console.warn("RAG retrieval failed, falling back to static bank:", ragErr)
+        pyqContext = getPYQContext(company, section, 5)
+      }
+    } else {
+      pyqContext = getPYQContext(company, section, 5)
+    }
 
     const prompt = sectionData.isCoding
       ? `You are creating a ${companyName} coding assessment.
