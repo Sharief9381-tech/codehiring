@@ -268,28 +268,19 @@ function ScoreBadge({ score }: { score: number }) {
 function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (score: number, answers: number[], qs: MCQ[]) => void }) {
   const [cur, setCur] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
-  const [submitted, setSubmitted] = useState(false)
   const [answers, setAnswers] = useState<number[]>([])
 
   const q = questions[cur]
 
-  const choose = (i: number) => {
-    if (submitted) return
-    setSelected(i)
-  }
-
-  const submit = () => {
-    if (selected === null) return
-    setSubmitted(true)
-  }
+  const choose = (i: number) => setSelected(i)
 
   const next = () => {
-    const newAnswers = [...answers, selected ?? -1]
+    if (selected === null) return
+    const newAnswers = [...answers, selected]
     if (cur + 1 < questions.length) {
       setAnswers(newAnswers)
       setCur(c => c + 1)
       setSelected(null)
-      setSubmitted(false)
     } else {
       const correct = newAnswers.filter((a, i) => a === questions[i].correct).length
       const score = Math.round((correct / questions.length) * 100)
@@ -325,66 +316,29 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
         <p className="text-base font-medium leading-relaxed text-foreground">{q.question}</p>
       </div>
 
-      {/* Options */}
+      {/* Options — no correct/wrong shown during the test */}
       <div className="space-y-2.5">
-        {q.options.map((opt, i) => {
-          // Build className and style separately so we can keep semantic states
-          let extraStyle: React.CSSProperties = {}
-          let extraClass = ""
-
-          if (submitted) {
-            if (i === q.correct) {
-              extraStyle = { borderColor: "#10b981", background: "rgba(16,185,129,0.10)", cursor: "default" }
-            } else if (i === selected && i !== q.correct) {
-              extraStyle = { borderColor: "#ef4444", background: "rgba(239,68,68,0.10)", cursor: "default", opacity: 0.8 }
-            } else {
-              extraClass = "opacity-40"
-              extraStyle = { cursor: "default" }
-            }
-          } else if (selected === i) {
-            extraStyle = { borderColor: "#7c3aed", background: "rgba(124,58,237,0.12)", cursor: "pointer" }
-          }
-
-          return (
-            <button key={i} onClick={() => choose(i)}
-              className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left bg-card border border-border hover:border-violet-500/40 ${extraClass}`}
-              style={extraStyle}
-              onMouseEnter={e => { if (!submitted && selected !== i) e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)" }}
-              onMouseLeave={e => { if (!submitted && selected !== i) e.currentTarget.style.borderColor = "" }}>
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold bg-muted text-muted-foreground">
-                {["A", "B", "C", "D"][i]}
-              </span>
-              <span className="text-sm text-foreground">{opt}</span>
-              {submitted && i === q.correct && <CheckCircle2 className="h-4 w-4 text-emerald-500 ml-auto shrink-0" />}
-              {submitted && i === selected && i !== q.correct && <XCircle className="h-4 w-4 text-red-500 ml-auto shrink-0" />}
-            </button>
-          )
-        })}
+        {q.options.map((opt, i) => (
+          <button key={i} onClick={() => choose(i)}
+            className="w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left bg-card border border-border hover:border-violet-500/40"
+            style={selected === i ? { borderColor: "#7c3aed", background: "rgba(124,58,237,0.12)" } : {}}
+            onMouseEnter={e => { if (selected !== i) e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)" }}
+            onMouseLeave={e => { if (selected !== i) e.currentTarget.style.borderColor = "" }}>
+            <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors ${selected === i ? "bg-violet-500/20 text-violet-500" : "bg-muted text-muted-foreground"}`}>
+              {["A", "B", "C", "D"][i]}
+            </span>
+            <span className="text-sm text-foreground">{opt}</span>
+          </button>
+        ))}
       </div>
 
-      {/* Explanation — only after submission */}
-      {submitted && (
-        <div className="rounded-xl p-4 border border-blue-500/25 bg-blue-500/7">
-          <p className="text-xs font-semibold mb-1 text-blue-500">Explanation</p>
-          <p className="text-sm text-muted-foreground">{q.explanation}</p>
-        </div>
-      )}
-
-      {/* Submit or Next */}
-      {!submitted ? (
-        <button onClick={submit} disabled={selected === null}
-          className="w-full h-11 rounded-xl font-semibold text-white disabled:opacity-40 transition-all flex items-center justify-center gap-2"
-          style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-          Submit Answer
-        </button>
-      ) : (
-        <button onClick={next}
-          className="w-full h-11 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2"
-          style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-          {cur + 1 === questions.length ? "Finish & See Results" : "Next Question"}
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      )}
+      {/* Next / Finish — no submit step, just move forward */}
+      <button onClick={next} disabled={selected === null}
+        className="w-full h-11 rounded-xl font-semibold text-white disabled:opacity-40 transition-all flex items-center justify-center gap-2"
+        style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+        {cur + 1 === questions.length ? "Finish & See Results" : "Next Question"}
+        <ChevronRight className="h-4 w-4" />
+      </button>
     </div>
   )
 }
