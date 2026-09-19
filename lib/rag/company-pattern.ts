@@ -134,7 +134,138 @@ const FALLBACK_PATTERNS: Record<string, Omit<CompanyPattern, "company"|"companyN
   },
 }
 
-// ── Web fetch utility ─────────────────────────────────────────────────────────
+// ── Category-based fallback patterns (used for companies without specific fallback) ──
+const CATEGORY_FALLBACKS: Record<string, Omit<CompanyPattern, "company"|"companyName"|"fetchedAt"|"source">> = {
+  "IT Services": {
+    totalQuestions: 55, totalTime: 75,
+    sections: [
+      { id:"quantitative", name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Percentages","Time & Work","Speed & Distance","Number Series","Averages","Profit & Loss"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning", questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Series","Puzzles"], isCoding:false },
+      { id:"verbal", name:"Verbal Ability", questions:10, timeMinutes:15, difficulty:"Easy", topics:["Synonyms","Fill in the Blanks","Error Detection","Grammar","Vocabulary"], isCoding:false },
+      { id:"basic-coding", name:"Basic Coding", questions:1, timeMinutes:20, difficulty:"Easy", topics:["Arrays","Strings","Loops","Basic Math"], isCoding:true },
+      { id:"advanced-coding", name:"Advanced Coding", questions:1, timeMinutes:30, difficulty:"Medium", topics:["Sorting","Recursion","Hash Map","Trees"], isCoding:true },
+    ],
+    notes:"Standard IT services pattern. Easy to medium difficulty.",
+  },
+  "Product": {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"basic-coding", name:"Coding Round 1", questions:2, timeMinutes:75, difficulty:"Medium-Hard", topics:["Sliding Window","Two Pointers","Hash Map","BFS/DFS","Binary Search","Dynamic Programming"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2", questions:1, timeMinutes:30, difficulty:"Hard", topics:["Advanced DP","Graph Algorithms","Tree DP","System Design"], isCoding:true },
+    ],
+    notes:"Pure coding focus. High difficulty. Emphasizes optimal solutions.",
+  },
+  "Startups": {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"basic-coding", name:"Coding Assessment", questions:2, timeMinutes:60, difficulty:"Medium", topics:["Arrays","Strings","Hash Map","BFS/DFS","Sorting","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Advanced Coding", questions:1, timeMinutes:30, difficulty:"Hard", topics:["Dynamic Programming","Graphs","Advanced Data Structures"], isCoding:true },
+    ],
+    notes:"Startup pattern: focus on practical coding skills.",
+  },
+  "Consulting": {
+    totalQuestions: 50, totalTime: 80,
+    sections: [
+      { id:"quantitative", name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Data Interpretation","Business Math","Percentages","Ratios","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning", questions:15, timeMinutes:25, difficulty:"Medium", topics:["Deductive Reasoning","Abstract Patterns","Syllogisms","Critical Reasoning"], isCoding:false },
+      { id:"verbal", name:"Verbal Ability", questions:15, timeMinutes:25, difficulty:"Medium", topics:["Reading Comprehension","Sentence Correction","Critical Reasoning","Vocabulary"], isCoding:false },
+    ],
+    notes:"No coding for pure consulting roles. Focus on analytical ability.",
+  },
+  "BFSI": {
+    totalQuestions: 55, totalTime: 90,
+    sections: [
+      { id:"quantitative", name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Data Interpretation","Financial Math","Percentages","Ratios","Statistics","Probability"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning", questions:15, timeMinutes:25, difficulty:"Medium", topics:["Seating Arrangement","Blood Relations","Coding-Decoding","Syllogisms","Puzzles"], isCoding:false },
+      { id:"basic-coding", name:"Technical/Coding", questions:2, timeMinutes:45, difficulty:"Medium", topics:["Arrays","Hash Map","Sorting","Graphs","Dynamic Programming"], isCoding:true },
+    ],
+    notes:"BFSI pattern. Financial aptitude important.",
+  },
+  "Core Engg": {
+    totalQuestions: 80, totalTime: 120,
+    sections: [
+      { id:"quantitative", name:"Quantitative Aptitude", questions:25, timeMinutes:35, difficulty:"Medium", topics:["Mathematics","Physics","Engineering Math","Data Interpretation","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Aptitude", questions:25, timeMinutes:35, difficulty:"Medium", topics:["Engineering Concepts","Technical MCQ","Domain Knowledge","Logical Reasoning"], isCoding:false },
+      { id:"verbal", name:"Verbal Ability", questions:20, timeMinutes:25, difficulty:"Easy-Medium", topics:["Grammar","Comprehension","Vocabulary","Technical Communication"], isCoding:false },
+      { id:"basic-coding", name:"Technical MCQ/Coding", questions:10, timeMinutes:25, difficulty:"Easy-Medium", topics:["Programming Basics","Algorithms","Data Structures"], isCoding:false },
+    ],
+    notes:"Core engineering pattern. Domain-specific technical knowledge tested.",
+  },
+  "Telecom": {
+    totalQuestions: 55, totalTime: 90,
+    sections: [
+      { id:"quantitative", name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Bandwidth Calculations","Signal Math","Percentages","Data Analysis","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical + Logical", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Networking Concepts","Logical Reasoning","Data Interpretation","Technical MCQ"], isCoding:false },
+      { id:"basic-coding", name:"Coding", questions:2, timeMinutes:45, difficulty:"Medium", topics:["Arrays","Graphs","Network Routing","Algorithms"], isCoding:true },
+    ],
+    notes:"Telecom-specific technical knowledge. Network concepts important.",
+  },
+  "FMCG": {
+    totalQuestions: 70, totalTime: 90,
+    sections: [
+      { id:"quantitative", name:"Quantitative Aptitude", questions:25, timeMinutes:35, difficulty:"Medium", topics:["Data Interpretation","Business Math","Market Analysis","Percentages","Ratios"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical + Analytical", questions:25, timeMinutes:35, difficulty:"Medium", topics:["Data Analysis","Business Cases","Logical Reasoning","Abstract Patterns"], isCoding:false },
+      { id:"verbal", name:"Verbal Ability", questions:20, timeMinutes:25, difficulty:"Medium", topics:["Reading Comprehension","Business Communication","Vocabulary","Grammar"], isCoding:false },
+    ],
+    notes:"FMCG pattern. Business aptitude and analytical skills focused.",
+  },
+  "Pharma": {
+    totalQuestions: 60, totalTime: 90,
+    sections: [
+      { id:"quantitative", name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Data Analysis","Statistics","Mathematics","Scientific Calculations"], isCoding:false },
+      { id:"advanced-aptitude", name:"Reasoning + Technical", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Logical Reasoning","Scientific Knowledge","Data Interpretation","Problem Solving"], isCoding:false },
+      { id:"verbal", name:"Verbal Ability", questions:20, timeMinutes:30, difficulty:"Easy-Medium", topics:["Reading Comprehension","Technical Writing","Grammar","Vocabulary"], isCoding:false },
+    ],
+    notes:"Pharma pattern. Scientific aptitude may be tested.",
+  },
+  "EV/Auto": {
+    totalQuestions: 60, totalTime: 90,
+    sections: [
+      { id:"quantitative", name:"Technical + Math", questions:20, timeMinutes:30, difficulty:"Medium-Hard", topics:["Engineering Math","Physics","Data Analysis","Battery Calculations"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ", questions:20, timeMinutes:30, difficulty:"Hard", topics:["Embedded Systems","Electronics","Automotive Engineering","Control Systems"], isCoding:false },
+      { id:"advanced-coding", name:"Coding", questions:2, timeMinutes:45, difficulty:"Hard", topics:["Embedded C","Algorithms","Signal Processing","Optimization"], isCoding:true },
+    ],
+    notes:"EV/Auto pattern. Strong technical and engineering knowledge required.",
+  },
+  "Defence": {
+    totalQuestions: 100, totalTime: 120,
+    sections: [
+      { id:"quantitative", name:"Mathematics", questions:30, timeMinutes:40, difficulty:"Hard", topics:["Engineering Mathematics","Physics","Signal Processing","Trigonometry"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical + General", questions:40, timeMinutes:45, difficulty:"Hard", topics:["Technical Knowledge","Science","Engineering Concepts","Current Affairs"], isCoding:false },
+      { id:"verbal", name:"English", questions:30, timeMinutes:35, difficulty:"Medium", topics:["Grammar","Comprehension","Vocabulary","Communication"], isCoding:false },
+    ],
+    notes:"Government/defence pattern. GATE-like technical depth. Physical tests may follow.",
+  },
+}
+
+// ── Build pattern from sections in companies-data.ts ─────────────────────────
+function buildPatternFromSections(
+  company: string,
+  companyName: string,
+  sections: string[],
+  category: string,
+  duration: number,
+  totalQuestions: number
+): CompanyPattern {
+  const categoryFallback = CATEGORY_FALLBACKS[category] ?? CATEGORY_FALLBACKS["IT Services"]
+
+  // Filter category sections to only include what this company has
+  const filteredSections = categoryFallback.sections.filter(s => sections.includes(s.id))
+
+  // If no match, use all category sections
+  const finalSections = filteredSections.length > 0 ? filteredSections : categoryFallback.sections
+
+  return {
+    company,
+    companyName,
+    fetchedAt: new Date(),
+    source: "category-fallback",
+    totalQuestions: totalQuestions || categoryFallback.totalQuestions,
+    totalTime: duration || categoryFallback.totalTime,
+    sections: finalSections,
+    notes: categoryFallback.notes,
+  }
+}
 async function fetchFromWeb(query: string): Promise<string> {
   const googleKey = process.env.GOOGLE_API_KEY
   const googleCx  = process.env.GOOGLE_SEARCH_CX
@@ -259,17 +390,17 @@ export async function getCompanyPattern(company: string, companyName: string): P
     }
   } catch {}
 
-  // 3. Build final pattern: live data > fallback
-  const fallback = FALLBACK_PATTERNS[company]
+  // 3. Build final pattern: live data > specific fallback > category fallback
+  const specificFallback = FALLBACK_PATTERNS[company]
   const pattern: CompanyPattern = {
     company,
     companyName,
     fetchedAt: new Date(),
-    source: liveData?.sections?.length ? "web+ai" : fallback ? "fallback" : "default",
-    totalQuestions: liveData?.totalQuestions ?? fallback?.totalQuestions ?? 60,
-    totalTime:      liveData?.totalTime      ?? fallback?.totalTime      ?? 60,
-    sections:       (liveData?.sections?.length ? liveData.sections : fallback?.sections) ?? [],
-    notes:          liveData?.notes          ?? fallback?.notes          ?? "",
+    source: liveData?.sections?.length ? "web+ai" : specificFallback ? "fallback" : "category-fallback",
+    totalQuestions: liveData?.totalQuestions ?? specificFallback?.totalQuestions ?? 60,
+    totalTime:      liveData?.totalTime      ?? specificFallback?.totalTime      ?? 60,
+    sections:       (liveData?.sections?.length ? liveData.sections : specificFallback?.sections) ?? [],
+    notes:          liveData?.notes          ?? specificFallback?.notes          ?? "",
   }
 
   // 4. Cache in MongoDB
@@ -283,6 +414,43 @@ export async function getCompanyPattern(company: string, companyName: string): P
   } catch {}
 
   return pattern.sections.length > 0 ? pattern : null
+}
+
+/**
+ * Bulk seed patterns for all companies using category fallbacks.
+ * Fast — no web fetch, just uses hardcoded accurate patterns.
+ */
+export async function seedAllCompanyPatterns(companies: Array<{ id: string; name: string; category: string; sections: string[]; duration: number; questions: number }>) {
+  const db = await getDatabase()
+  const col = db.collection("company_patterns")
+  const ops = []
+
+  for (const co of companies) {
+    // Use specific fallback if available, else build from category
+    const specificFallback = FALLBACK_PATTERNS[co.id]
+    let pattern: CompanyPattern
+
+    if (specificFallback) {
+      pattern = {
+        company: co.id, companyName: co.name, fetchedAt: new Date(), source: "fallback",
+        totalQuestions: specificFallback.totalQuestions, totalTime: specificFallback.totalTime,
+        sections: specificFallback.sections, notes: specificFallback.notes,
+      }
+    } else {
+      pattern = buildPatternFromSections(co.id, co.name, co.sections, co.category, co.duration, co.questions)
+    }
+
+    ops.push({
+      updateOne: {
+        filter: { company: co.id },
+        update: { $set: { ...pattern, updatedAt: new Date() } },
+        upsert: true,
+      },
+    })
+  }
+
+  await col.bulkWrite(ops, { ordered: false })
+  return ops.length
 }
 
 export function patternToSectionQty(pattern: CompanyPattern): Record<string, number> {

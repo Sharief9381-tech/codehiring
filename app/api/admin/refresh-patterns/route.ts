@@ -1,15 +1,16 @@
 /**
  * POST /api/admin/refresh-patterns
- * Fetches and caches the latest hiring patterns for specified companies (or all).
- * Body: { companies?: string[], secret? }
+ * Seeds hiring patterns for all 189 companies (or specified subset).
+ * Uses hardcoded accurate fallbacks — instant, no rate limits.
+ * For specific companies, also tries live web fetch.
  *
- * GET /api/admin/refresh-patterns?company=tcs
- * Returns the cached pattern for a specific company.
+ * Body: { companies?: string[], liveOnly?: boolean, secret? }
+ * GET  /api/admin/refresh-patterns?company=tcs  — view cached pattern
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { ALL_COMPANIES } from "@/lib/companies-data"
-import { getCompanyPattern } from "@/lib/rag/company-pattern"
+import { getCompanyPattern, seedAllCompanyPatterns } from "@/lib/rag/company-pattern"
 import { getDatabase } from "@/lib/database"
 
 function isAdmin(user: any) {
@@ -21,11 +22,9 @@ export async function GET(req: Request) {
   const url = new URL(req.url)
   const secret = url.searchParams.get("secret")
   const hasSecret = secret === process.env.SEED_SECRET || secret === process.env.NEXTAUTH_SECRET
-
   if (!isAdmin(user) && !hasSecret) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const company = url.searchParams.get("company")
-
   const db = await getDatabase()
   const col = db.collection("company_patterns")
 
@@ -34,46 +33,56 @@ export async function GET(req: Request) {
     return NextResponse.json({ pattern })
   }
 
-  // Return all cached patterns summary
-  const all = await col.find({}, { projection: { company: 1, companyName: 1, fetchedAt: 1, totalQuestions: 1, totalTime: 1, "sections.id": 1, "sections.questions": 1 } }).toArray()
-  return NextResponse.json({ patterns: all, total: all.length })
+  const all = await col.find({}, { projection: { company: 1, companyName: 1, source: 1, fetchedAt: 1, totalQuestions: 1, totalTime: 1 } }).toArray()
+  return NextResponse.json({ patterns: all, total: all.length, allCompanies: ALL_COMPANIES.length })
 }
 
 export async function POST(req: Request) {
   const user = await getCurrentUser()
   const body = await req.json().catch(() => ({}))
   const hasSecret = body.secret === process.env.SEED_SECRET || body.secret === process.env.NEXTAUTH_SECRET
-
   if (!isAdmin(user) && !hasSecret) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const targetIds: string[] = body.companies ?? ALL_COMPANIES.slice(0, 20).map(c => c.id) // default: first 20
+  const specificCompanies: string[] | undefined = body.companies
+  const liveOnly: boolean = body.liveOnly ?? false
 
-  const results: { company: string; status: string; sections?: number }[] = []
-
-  for (const companyId of targetIds) {
-    const co = ALL_COMPANIES.find(c => c.id === companyId)
-    if (!co) { results.push({ company: companyId, status: "not_found" }); continue }
-
-    try {
-      const pattern = await getCompanyPattern(companyId, co.name)
-      if (pattern) {
-        results.push({ company: companyId, status: "ok", sections: pattern.sections.length })
-      } else {
-        results.push({ company: companyId, status: "failed" })
+  // If specific companies with liveOnly — fetch live patterns for those
+  if (specificCompanies?.length && liveOnly) {
+    const results = []
+    for (const companyId of specificCompanies) {
+      const co = ALL_COMPANIES.find(c => c.id === companyId)
+      if (!co) { results.push({ company: companyId, status: "not_found" }); continue }
+      try {
+        const pattern = await getCompanyPattern(companyId, co.name)
+        results.push({ company: companyId, status: pattern ? "ok" : "failed", sections: pattern?.sections.length ?? 0 })
+      } catch (e: any) {
+        results.push({ company: companyId, status: "error: " + e.message?.slice(0, 50) })
       }
-    } catch (e: any) {
-      results.push({ company: companyId, status: "error: " + e.message?.slice(0, 50) })
+      await new Promise(r => setTimeout(r, 300))
     }
-
-    // Small delay to avoid rate limits
-    await new Promise(r => setTimeout(r, 500))
+    return NextResponse.json({ success: true, fetched: results.filter(r => r.status === "ok").length, total: specificCompanies.length, results })
   }
 
-  const ok = results.filter(r => r.status === "ok").length
-  return NextResponse.json({
-    success: true,
-    fetched: ok,
-    total: targetIds.length,
-    results,
-  })
+  // Default: bulk seed ALL 189 companies using category fallbacks (fast, no rate limits)
+  const targetCompanies = specificCompanies
+    ? ALL_COMPANIES.filter(c => specificCompanies.includes(c.id))
+    : ALL_COMPANIES
+
+  try {
+    const seeded = await seedAllCompanyPatterns(
+      targetCompanies.map(c => ({
+        id: c.id, name: c.name, category: c.category,
+        sections: c.sections, duration: c.duration, questions: c.questions,
+      }))
+    )
+
+    return NextResponse.json({
+      success: true,
+      seeded,
+      total: targetCompanies.length,
+      message: `Seeded ${seeded} company patterns into MongoDB`,
+    })
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
 }
