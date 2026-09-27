@@ -54,8 +54,8 @@ const COMPANY_SECTION_OVERRIDES: Record<string, Record<string, Partial<typeof SE
   tcs: {
     "quantitative":      { topics: ["Percentages","Profit & Loss","Time & Work","Speed & Distance","Probability","Number Series","Averages"] },
     "advanced-aptitude": { topics: ["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Data Sufficiency","Puzzles","Input-Output"] },
-    "basic-coding":      { topics: ["Simple loops","Arrays","String manipulation","Basic math","Pattern printing"], difficulty: "Easy" },
-    "advanced-coding":   { topics: ["Binary Search","Sliding Window","Hash Map","Stack","Tree DFS","Dynamic Programming (1D)","Greedy"], difficulty: "Medium" },
+    // TCS NQT 2025: NO basic-coding MCQ. 3 actual coding problems in Advanced Coding section.
+    "advanced-coding":   { topics: ["Array Manipulation","String Operations","Basic DP / Recursion","Hash Map","Greedy","Sorting","Binary Search"], difficulty: "Medium" },
   },
   infosys: {
     "quantitative":      { topics: ["Ratios","Averages","Mixtures","Algebra","Geometry","Probability"] },
@@ -309,6 +309,7 @@ function getFallbackQuestions(company: string, section: string, count: number) {
     return [
       { id:1, title:"Two Sum", difficulty:"Easy", statement:"Given an array of integers nums and an integer target, return indices of the two numbers that add up to target. You may assume each input has exactly one solution.", constraints:"2<=nums.length<=10^4, -10^9<=nums[i]<=10^9", example:{input:"nums=[2,7,11,15], target=9",output:"[0,1]",explanation:"nums[0]+nums[1]=9"}, hints:["Use a hash map to store complement","Single pass O(n) solution possible"], topic:"Arrays & Hashing" },
       { id:2, title:"Reverse String", difficulty:"Easy", statement:"Write a function that reverses a string. The input string is given as an array of characters s. Modify the array in-place.", constraints:"1<=s.length<=10^5, s[i] is a printable ASCII character", example:{input:'s=["h","e","l","l","o"]',output:'["o","l","l","e","h"]',explanation:"Reversed in place"}, hints:["Use two pointers from both ends","Swap characters until pointers meet"], topic:"Two Pointers" },
+      { id:3, title:"Maximum Subarray", difficulty:"Medium", statement:"Given an integer array nums, find the subarray with the largest sum, and return its sum.", constraints:"1<=nums.length<=10^5, -10^4<=nums[i]<=10^4", example:{input:"nums=[-2,1,-3,4,-1,2,1,-5,4]",output:"6",explanation:"The subarray [4,-1,2,1] has the largest sum 6"}, hints:["Use Kadane's algorithm","Track current sum and max sum"], topic:"Dynamic Programming" },
     ].slice(0, count)
   }
 

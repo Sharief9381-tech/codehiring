@@ -5,7 +5,7 @@ export interface CompanyEntry {
 }
 
 export const ALL_COMPANIES: CompanyEntry[] = [
-  { id:"tcs",name:"TCS",abbr:"TC",color:"#7c3aed",duration:75,questions:60,difficulty:"Medium",sections:["quantitative","advanced-aptitude","basic-coding","advanced-coding"],desc:"TCS NQT",category:"IT Services",roles:["Systems Engineer","Developer","Analyst"] },
+  { id:"tcs",name:"TCS",abbr:"TC",color:"#7c3aed",duration:75,questions:60,difficulty:"Medium",sections:["quantitative","advanced-aptitude","advanced-coding"],desc:"TCS NQT",category:"IT Services",roles:["Systems Engineer","Developer","Analyst"] },
   { id:"infosys",name:"Infosys",abbr:"IN",color:"#059669",duration:95,questions:65,difficulty:"Medium",sections:["quantitative","advanced-aptitude","basic-coding","advanced-coding"],desc:"InfyTQ Test",category:"IT Services",roles:["Systems Engineer","Technology Analyst"] },
   { id:"wipro",name:"Wipro",abbr:"WI",color:"#0284c7",duration:60,questions:55,difficulty:"Easy",sections:["quantitative","advanced-aptitude","basic-coding","advanced-coding"],desc:"Wipro NLTH",category:"IT Services",roles:["Project Engineer","Software Developer"] },
   { id:"cognizant",name:"Cognizant",abbr:"CG",color:"#0891b2",duration:70,questions:55,difficulty:"Easy",sections:["quantitative","advanced-aptitude","basic-coding","advanced-coding"],desc:"Cognizant GenC",category:"IT Services",roles:["Programmer Analyst","GenC Developer"] },

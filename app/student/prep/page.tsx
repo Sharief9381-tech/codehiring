@@ -35,7 +35,7 @@ interface CodingQ { id: number; title: string; difficulty: string; statement: st
 
 // --- Company data -------------------------------------------------------------
 const COMPANIES = [
-  { id:"tcs",       name:"TCS",          abbr:"TC", color:"#7c3aed", logo:"🔷", duration:75,  questions:60, difficulty:"Medium",    sections:["quantitative","logical","verbal","coding"], desc:"TCS NQT - National Qualifier Test",      category:"Service",    roles:["Systems Engineer","Developer","Analyst"] },
+  { id:"tcs",       name:"TCS",          abbr:"TC", color:"#7c3aed", logo:"🔷", duration:75,  questions:60, difficulty:"Medium",    sections:["quantitative","advanced-aptitude","advanced-coding"], desc:"TCS NQT - National Qualifier Test",      category:"Service",    roles:["Systems Engineer","Developer","Analyst"] },
   { id:"infosys",   name:"Infosys",       abbr:"IN", color:"#059669", logo:"🟢", duration:95,  questions:65, difficulty:"Medium",    sections:["quantitative","logical","verbal","coding"], desc:"InfyTQ Certification Test",              category:"Service",    roles:["Systems Engineer","Technology Analyst"] },
   { id:"wipro",     name:"Wipro",         abbr:"WI", color:"#0284c7", logo:"🔵", duration:60,  questions:55, difficulty:"Easy",      sections:["quantitative","logical","verbal","coding"], desc:"Wipro NLTH Online Test",                 category:"Service",    roles:["Project Engineer","Software Developer"] },
   { id:"cognizant", name:"Cognizant",     abbr:"CG", color:"#0891b2", logo:"🔹", duration:70,  questions:55, difficulty:"Easy",      sections:["quantitative","logical","verbal","coding"], desc:"Cognizant GenC Elevate",                 category:"Service",    roles:["Programmer Analyst","GenC Developer"] },
@@ -77,6 +77,17 @@ const SECTION_QTY: Record<string, number> = {
   // legacy
   logical: 12,
   coding:  2,
+}
+
+// Company-specific overrides for section question counts
+const COMPANY_SECTION_QTY: Record<string, Record<string, number>> = {
+  tcs:       { "advanced-coding": 3 },
+  infosys:   { "advanced-coding": 2 },
+  wipro:     { "advanced-coding": 2 },
+  cognizant: { "advanced-coding": 2 },
+  amazon:    { "basic-coding": 1, "advanced-coding": 1 },
+  google:    { "advanced-coding": 2 },
+  microsoft: { "advanced-coding": 2 },
 }
 
 // Section type: determines which component handles it
@@ -590,7 +601,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
       const res = await fetch("/api/student/generate-assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ company: company.id, section: sectionKey, count: SECTION_QTY[sectionKey] ?? 5 }),
+        body: JSON.stringify({ company: company.id, section: sectionKey, count: COMPANY_SECTION_QTY[company.id]?.[sectionKey] ?? SECTION_QTY[sectionKey] ?? 5 }),
       })
       const data = await res.json()
       if (isCodingSection(sectionKey)) {
@@ -960,22 +971,15 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           outputFormat: "",
           constraints: q.constraints ? [q.constraints] : [],
           examples:    q.example ? [{ input: q.example.input, output: q.example.output, explanation: q.example.explanation }] : [],
-          input:       q.example?.input  ?? "",
-          output:      q.example?.output ?? "",
-          starters:    {
-            Python:     `from typing import List, Optional\n\nclass Solution:\n    def solve(self):\n        # ${q.title}\n        pass\n`,
-            JavaScript: `// ${q.title}\nfunction solution() {\n  \n}\n`,
-            TypeScript: `// ${q.title}\nfunction solution(): void {\n  \n}\n`,
-            Java:       `class Solution {\n    // ${q.title}\n    public void solve() {\n        \n    }\n}\n`,
-            "C++":      `// ${q.title}\nclass Solution {\npublic:\n    void solve() {\n        \n    }\n};\n`,
-          },
-          pythonTest1: "", expectedTest1: "",
-          pythonTest2: "", expectedTest2: "",
-          pythonTest3: "", expectedTest3: "",
-          pythonTest4: "", expectedTest4: "",
-          static: false,
+          // stdin-based test cases (required by problem-editor v10 format)
+          stdin1:    q.example?.input  ?? "",
+          expected1: q.example?.output ?? "",
+          public1:   true,
+          stdin2: "", expected2: "", public2: false,
+          stdin3: "", expected3: "", public3: false,
+          static: true,
         }
-        sessionStorage.setItem(`problem_v4_${syntheticId}`, JSON.stringify(problemData))
+        sessionStorage.setItem(`problem_v10_${syntheticId}`, JSON.stringify(problemData))
       } catch {}
     }
 
