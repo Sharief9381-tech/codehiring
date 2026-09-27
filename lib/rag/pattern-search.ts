@@ -3,20 +3,15 @@
  *
  * Collection: pattern_embeddings
  * Each doc = one section of one company's exam pattern, embedded as a vector.
- * Query: "TCS quantitative aptitude 2025 sections" → returns semantically similar
- * pattern docs from any company/year, ranked by cosine similarity.
  *
- * Atlas Vector Search Index (create once in Atlas UI → Search → Create Index):
- * Collection: pattern_embeddings
- * Index name: pattern_vector_index
- * {
- *   "fields": [{
- *     "type": "vector",
- *     "path": "embedding",
- *     "numDimensions": 1536,
- *     "similarity": "cosine"
- *   }]
- * }
+ * Supports two embedding modes:
+ * - OpenAI text-embedding-3-small (1536 dims) — when OPENAI_API_KEY is set with credits
+ * - Local hash embedding (256 dims) — free fallback, no API needed
+ *
+ * Atlas Vector Search Index:
+ * - Name: pattern_vector_index
+ * - numDimensions: 256 (local) or 1536 (OpenAI)
+ * - Set EMBED_DIMS env var to override, default is auto-detected
  */
 
 import { getDatabase } from "@/lib/database"
