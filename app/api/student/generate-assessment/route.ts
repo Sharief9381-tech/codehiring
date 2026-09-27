@@ -146,9 +146,14 @@ export async function POST(req: Request) {
     company = body.company ?? ""
     section = body.section ?? ""
     count   = body.count ?? 5
+    // Optional: caller can pass live topics from the pattern fetch
+    const liveTopics: string[] | undefined = body.topics
 
     const sectionData = getSectionData(company, section)
     if (!sectionData) return NextResponse.json({ error: "Unknown section" }, { status: 400 })
+
+    // If caller supplied live topics (from company-assessment-pattern), use them
+    if (liveTopics?.length) sectionData.topics = liveTopics
 
     const companyName = getCompanyName(company)
 

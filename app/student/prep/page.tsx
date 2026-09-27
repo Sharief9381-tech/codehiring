@@ -556,6 +556,19 @@ function Results({ score, answers, questions, company, section, onRetry, onBack 
 // --- Company Assessment flow --------------------------------------------------
 type AssessStage = "info" | "roadmap" | "instructions" | "section" | "results" | "coding" | "report"
 
+interface LiveSectionPattern {
+  id: string; name: string; questions: number; timeMinutes: number
+  difficulty: string; topics: string[]; isCoding: boolean
+}
+interface LivePattern {
+  sections: LiveSectionPattern[]
+  totalQuestions: number
+  totalTime: number
+  notes: string
+  source: string
+  fresh: boolean
+}
+
 function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[0]; onBack: () => void }) {
   const [stage, setStage] = useState<AssessStage>("info")
   const [curSection, setCurSection] = useState(0)
@@ -567,7 +580,17 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   const [answers, setAnswers] = useState<number[]>([])
   const [allQuestions, setAllQuestions] = useState<MCQ[]>([])
   const [allAnswers, setAllAnswers] = useState<number[]>([])
-  const [timeLeft, setTimeLeft] = useState(company.duration * 60)
+
+  // Live pattern from web search — overrides static company data
+  const [livePattern, setLivePattern] = useState<LivePattern | null>(null)
+  const [patternLoading, setPatternLoading] = useState(true)
+
+  // Derived: use live pattern sections if available, else fall back to static
+  const activeSections = livePattern?.sections?.map(s => s.id) ?? company.sections
+  const activeDuration = livePattern?.totalTime ?? company.duration
+  const activeQuestions = livePattern?.totalQuestions ?? company.questions
+
+  const [timeLeft, setTimeLeft] = useState(activeDuration * 60)
   const [timeTaken, setTimeTaken] = useState(0)
   const [hiringReport, setHiringReport] = useState<any>(null)
   const [reportLoading, setReportLoading] = useState(false)
@@ -576,7 +599,34 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   const [showLeaderboard, setShowLeaderboard] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const section = company.sections[curSection]
+  // ── Fetch live exam pattern when company is selected ──────────────────────
+  useEffect(() => {
+    setPatternLoading(true)
+    fetch("/api/student/company-assessment-pattern", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ company: company.id }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.pattern?.sections?.length > 0) {
+          setLivePattern({
+            sections:       data.pattern.sections,
+            totalQuestions: data.pattern.totalQuestions,
+            totalTime:      data.pattern.totalTime,
+            notes:          data.pattern.notes ?? "",
+            source:         data.source ?? "fallback",
+            fresh:          data.fresh ?? false,
+          })
+          // Sync timer to live duration
+          setTimeLeft((data.pattern.totalTime ?? company.duration) * 60)
+        }
+      })
+      .catch(() => {})
+      .finally(() => setPatternLoading(false))
+  }, [company.id])
+
+  const section = activeSections[curSection]
   const isCoding = isCodingSection(section)
   const totalScore = Object.values(sectionScores).length > 0
     ? Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / Object.values(sectionScores).length)
@@ -598,10 +648,15 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   const loadSection = async (sectionKey: string) => {
     setLoading(true)
     try {
+      // Get question count and topics from live pattern if available
+      const liveSection = livePattern?.sections?.find(s => s.id === sectionKey)
+      const liveCount = liveSection?.questions
+      const liveTopics = liveSection?.topics?.length ? liveSection.topics : undefined
+      const count = liveCount ?? COMPANY_SECTION_QTY[company.id]?.[sectionKey] ?? SECTION_QTY[sectionKey] ?? 5
       const res = await fetch("/api/student/generate-assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ company: company.id, section: sectionKey, count: COMPANY_SECTION_QTY[company.id]?.[sectionKey] ?? SECTION_QTY[sectionKey] ?? 5 }),
+        body: JSON.stringify({ company: company.id, section: sectionKey, count, ...(liveTopics ? { topics: liveTopics } : {}) }),
       })
       const data = await res.json()
       if (isCodingSection(sectionKey)) {
@@ -622,10 +677,10 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     setSectionScores({})
     setAllQuestions([])
     setAllAnswers([])
-    setTimeLeft(company.duration * 60)
+    setTimeLeft(activeDuration * 60)
     setTimeTaken(0)
     setProctorActive(true)
-    loadSection(company.sections[0])
+    loadSection(activeSections[0])
   }
 
   const generateReport = async (finalScore: number, finalScores: Record<string, number>, qs: MCQ[], ans: number[]) => {
@@ -648,7 +703,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
         body: JSON.stringify({
           company: company.id,
           companyName: company.name,
-          targetRole: company.sections.includes("coding") && !company.sections.includes("quantitative") ? "Software Developer" : "Systems Engineer",
+          targetRole: activeSections.includes("advanced-coding") || activeSections.includes("coding") ? "Software Developer" : "Systems Engineer",
           scores: { overall: finalScore, sections: finalScores },
           candidateRatings: { aptitude: finalScores.quantitative ?? 50, coding: finalScores.coding ?? 50, dsa: finalScores.coding ?? 50, csFoundations: finalScores.technical ?? 50, communication: 65 },
           violations: violationLog,
@@ -668,7 +723,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           body: JSON.stringify({
             company: company.id,
             companyName: company.name,
-            sections: company.sections,
+            sections: activeSections,
             overallScore: finalScore,
             sectionScores: finalScores,
             timeTaken,
@@ -695,9 +750,9 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     setAllAnswers(newAnswers)
 
     const next = curSection + 1
-    if (next < company.sections.length) {
+    if (next < activeSections.length) {
       setCurSection(next)
-      loadSection(company.sections[next])
+      loadSection(activeSections[next])
     } else {
       if (timerRef.current) clearInterval(timerRef.current)
       const nonCoding = newQs.filter(q => q.options?.length > 0)
@@ -715,9 +770,9 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     const next = curSection + 1
     const newScores = { ...sectionScores, coding: 75 }
     setSectionScores(newScores)
-    if (next < company.sections.length) {
+    if (next < activeSections.length) {
       setCurSection(next)
-      loadSection(company.sections[next])
+      loadSection(activeSections[next])
     } else {
       if (timerRef.current) clearInterval(timerRef.current)
       const finalScore = Math.round(Object.values(newScores).reduce((a, b) => a + b, 0) / Object.values(newScores).length)
@@ -726,10 +781,10 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   }
 
   const roadmapReqs = [
-    { label: "Quantitative", pct: company.sections.includes("quantitative") ? 65 : 0, topic: "Probability, Time & Work" },
-    { label: "Logical Reasoning", pct: company.sections.includes("logical") ? 78 : 0, topic: "Syllogisms, Seating Arrangement" },
-    { label: "Verbal Ability", pct: company.sections.includes("verbal") ? 72 : 0, topic: "Reading Comprehension" },
-    { label: "Coding", pct: company.sections.includes("coding") ? 55 : 0, topic: "Arrays, Strings, Basic DP" },
+    { label: "Quantitative", pct: activeSections.includes("quantitative") ? 65 : 0, topic: "Probability, Time & Work" },
+    { label: "Logical Reasoning", pct: activeSections.includes("advanced-aptitude") || activeSections.includes("logical") ? 78 : 0, topic: "Syllogisms, Seating Arrangement" },
+    { label: "Verbal Ability", pct: activeSections.includes("verbal") ? 72 : 0, topic: "Reading Comprehension" },
+    { label: "Coding", pct: (activeSections.includes("coding") || activeSections.includes("basic-coding") || activeSections.includes("advanced-coding")) ? 55 : 0, topic: "Arrays, Strings, Basic DP" },
   ].filter(r => r.pct > 0)
 
   // -- INFO --
@@ -745,16 +800,29 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
             style={{ background: company.color }}>
             {company.abbr}
           </div>
-          <div>
+          <div className="flex-1">
             <h2 className="text-xl font-bold text-foreground">{company.name}</h2>
             <p className="text-sm text-muted-foreground">{company.desc}</p>
           </div>
+          {/* Live pattern badge */}
+          {!patternLoading && (
+            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold ${livePattern?.fresh ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${livePattern?.fresh ? "bg-emerald-400" : "bg-amber-400"}`} />
+              {livePattern?.fresh ? "Live Pattern" : "Cached Pattern"}
+            </div>
+          )}
+          {patternLoading && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-500/15 text-blue-400">
+              <Loader2 className="h-3 w-3 animate-spin" /> Fetching…
+            </div>
+          )}
         </div>
 
+        {/* Stats row — uses live pattern data */}
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: "Duration", value: `${company.duration} min`, icon: <Timer className="h-4 w-4" /> },
-            { label: "Questions", value: company.questions, icon: <FileText className="h-4 w-4" /> },
+            { label: "Duration", value: `${activeDuration} min`, icon: <Timer className="h-4 w-4" /> },
+            { label: "Questions", value: activeQuestions, icon: <FileText className="h-4 w-4" /> },
             { label: "Difficulty", value: company.difficulty, icon: <Target className="h-4 w-4" /> },
           ].map(s => (
             <div key={s.label} className="rounded-xl border border-border bg-card/50 p-4 text-center">
@@ -765,16 +833,67 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           ))}
         </div>
 
+        {/* Live section breakdown */}
         <div>
-          <p className="text-sm font-semibold text-foreground mb-2">Sections</p>
-          <div className="flex flex-wrap gap-2">
-            {company.sections.map(s => (
-              <span key={s} className="text-xs px-3 py-1 rounded-full border border-border bg-card/40 text-foreground font-medium">
-                {SECTION_LABELS[s]}
+          <p className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+            Sections
+            {livePattern?.source === "web+ai" && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-bold">
+                🌐 Live from Web
               </span>
-            ))}
-          </div>
+            )}
+          </p>
+          {patternLoading ? (
+            <div className="space-y-2">
+              {[1,2,3].map(i => (
+                <div key={i} className="h-12 rounded-xl bg-muted/20 animate-pulse" />
+              ))}
+            </div>
+          ) : livePattern?.sections?.length ? (
+            <div className="space-y-2">
+              {livePattern.sections.map((s, i) => {
+                const isCod = s.isCoding
+                const dotColor = isCod ? "#6366f1" : "#10b981"
+                return (
+                  <div key={s.id} className="flex items-center gap-3 rounded-xl border border-border bg-card/40 px-4 py-3">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black text-white"
+                      style={{ background: company.color + "99" }}>{i + 1}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-foreground truncate">{s.name}</p>
+                      {s.topics?.length > 0 && (
+                        <p className="text-[10px] text-muted-foreground truncate">{s.topics.slice(0, 4).join(" · ")}</p>
+                      )}
+                    </div>
+                    <div className="shrink-0 flex items-center gap-3 text-xs text-muted-foreground">
+                      <span className="font-semibold text-foreground">{s.questions}Q</span>
+                      <span>{s.timeMinutes}m</span>
+                      <span className="px-2 py-0.5 rounded-full font-medium"
+                        style={{ background: `${dotColor}15`, color: dotColor }}>
+                        {isCod ? "Coding" : s.difficulty}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {activeSections.map(s => (
+                <span key={s} className="text-xs px-3 py-1 rounded-full border border-border bg-card/40 text-foreground font-medium">
+                  {SECTION_LABELS[s] ?? s}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
+
+        {/* Notes from web */}
+        {livePattern?.notes && (
+          <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 flex items-start gap-2">
+            <AlertCircle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-300 leading-relaxed">{livePattern.notes}</p>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -845,8 +964,8 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
       <h3 className="text-xl font-bold text-foreground">Assessment Instructions</h3>
       <div className="rounded-xl border border-border bg-card/40 p-5 space-y-3">
         {[
-          `Total duration: ${company.duration} minutes`,
-          `${company.sections.length} sections - complete all in sequence`,
+          `Total duration: ${activeDuration} minutes`,
+          `${activeSections.length} sections - complete all in sequence`,
           "Each section has its own set of questions generated for you",
           "For MCQs: select your answer and click Next",
           "For Coding: write your solution and click Submit",
@@ -859,9 +978,26 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           </div>
         ))}
       </div>
+      {/* Section summary before starting */}
+      <div className="rounded-xl border border-border bg-card/40 p-4 space-y-2">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Section Breakdown</p>
+        {(livePattern?.sections ?? activeSections.map(id => ({ id, name: SECTION_LABELS[id] ?? id, questions: COMPANY_SECTION_QTY[company.id]?.[id] ?? SECTION_QTY[id] ?? 5, isCoding: isCodingSection(id) }))).map((s: any, i: number) => (
+          <div key={s.id ?? i} className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2">
+              <span className="h-5 w-5 flex items-center justify-center rounded-full text-[10px] font-black text-white shrink-0"
+                style={{ background: company.color + "99" }}>{i + 1}</span>
+              <span className="text-foreground font-medium">{s.name}</span>
+            </div>
+            <span className="text-muted-foreground text-xs">{s.questions}Q · {s.isCoding ? "Coding" : "MCQ"}</span>
+          </div>
+        ))}
+      </div>
       <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 flex items-start gap-3">
         <AlertCircle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
-        <p className="text-sm text-amber-300">Questions are AI-generated specifically for {company.name} pattern. They simulate the real exam experience.</p>
+        <p className="text-sm text-amber-300">
+          Questions are AI-generated specifically for {company.name} pattern
+          {livePattern?.fresh ? " using the latest 2025 exam data" : ""}. They simulate the real exam experience.
+        </p>
       </div>
       {loading ? (
         <div className="flex items-center justify-center gap-3 py-8">
@@ -910,13 +1046,13 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
             {company.abbr}
           </div>
           <div>
-            <p className="text-xs" style={{ color: "#71717A" }}>{company.name} . Section {curSection + 1}/{company.sections.length}</p>
+            <p className="text-xs" style={{ color: "#71717A" }}>{company.name} . Section {curSection + 1}/{activeSections.length}</p>
             <p className="font-semibold text-sm" style={{ color: "#FAFAFA" }}>{SECTION_LABELS[section]}</p>
           </div>
         </div>
         {/* Section progress dots */}
         <div className="hidden sm:flex items-center gap-1.5">
-          {company.sections.map((s, i) => (
+          {activeSections.map((s, i) => (
             <div key={s} className="h-2 rounded-full transition-all"
               style={{
                 width: i === curSection ? 24 : 8,
