@@ -9,6 +9,7 @@ import { ALL_COMPANIES } from "@/lib/companies-data"
 import { retrieveSimilarPYQs, formatPYQsAsContext } from "@/lib/rag/vector-store"
 import { getLiveWebContext, formatWebContext } from "@/lib/rag/web-context"
 import { getCompanyPattern, patternToTopicOverrides } from "@/lib/rag/company-pattern"
+import { queryPatternForSection } from "@/lib/rag/pattern-search"
 
 const GROQ_API   = "https://api.groq.com/openai/v1/chat/completions"
 const OPENAI_API = "https://api.openai.com/v1/chat/completions"
@@ -163,19 +164,34 @@ export async function POST(req: Request) {
 
     // ── Try to get live company pattern from RAG (7-day cache) ────────────────
     try {
-      const livePattern = await getCompanyPattern(company, companyName)
-      if (livePattern) {
-        const topicOverrides = patternToTopicOverrides(livePattern)
-        const sectionOverride = topicOverrides[section]
-        if (sectionOverride?.topics?.length > 0) {
-          sectionData.topics = sectionOverride.topics
+      // 1. Semantic search in pattern_embeddings — fastest, richest context
+      const sectionConfig = SECTION_CONFIG[section]
+      if (sectionConfig && process.env.OPENAI_API_KEY) {
+        const semanticDoc = await queryPatternForSection(
+          company, companyName, section, sectionConfig.name
+        )
+        if (semanticDoc && semanticDoc.topics?.length > 0) {
+          sectionData.topics = semanticDoc.topics
+          if (semanticDoc.difficulty) sectionData.difficulty = semanticDoc.difficulty
         }
-        if (sectionOverride?.difficulty) {
-          sectionData.difficulty = sectionOverride.difficulty
+      }
+
+      // 2. Fallback: full company pattern via web+AI (uses company-pattern.ts)
+      if (sectionData.topics === SECTION_CONFIG[section]?.topics) {
+        const livePattern = await getCompanyPattern(company, companyName)
+        if (livePattern) {
+          const topicOverrides = patternToTopicOverrides(livePattern)
+          const sectionOverride = topicOverrides[section]
+          if (sectionOverride?.topics?.length > 0) {
+            sectionData.topics = sectionOverride.topics
+          }
+          if (sectionOverride?.difficulty) {
+            sectionData.difficulty = sectionOverride.difficulty
+          }
         }
       }
     } catch (e) {
-      console.warn("Company pattern fetch failed, using defaults:", e)
+      console.warn("Pattern fetch failed, using defaults:", e)
     }
 
     // ── For coding sections: use company-coding-ai model first ────────────────
