@@ -53,12 +53,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json(
-        { error: "OPENAI_API_KEY required for embeddings" },
-        { status: 503 }
-      )
-    }
+    // OpenAI check removed — embed.ts now falls back to local hash embedding
+    // so seeding works even without OpenAI credits
 
     const before = await countPYQs()
 

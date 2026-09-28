@@ -1,17 +1,20 @@
 /**
  * MongoDB Atlas Vector Search for RAG
  * Collection: pyq_embeddings
- * Index: pyq_vector_index (must be created in Atlas UI)
+ * Index: pyq_vector_index (create in Atlas UI or programmatically)
  *
- * Atlas Vector Search Index definition (create in Atlas UI → Search → Create Index):
+ * Atlas Vector Search Index definition:
  * {
  *   "fields": [{
  *     "type": "vector",
  *     "path": "embedding",
- *     "numDimensions": 1536,
+ *     "numDimensions": 256,
  *     "similarity": "cosine"
  *   }]
  * }
+ *
+ * Note: Uses 256-dim local hash embeddings when OpenAI is unavailable.
+ * If OpenAI credits are added, re-seed with 1536-dim and recreate index.
  */
 
 import { getDatabase } from "@/lib/database"
@@ -108,8 +111,8 @@ export async function retrieveSimilarPYQs(
         numCandidates: topK * 10,
         limit:        topK,
         filter: {
-          company: company,
-          section: section,
+          company: { $eq: company },
+          section: { $eq: section },
         },
       },
     },

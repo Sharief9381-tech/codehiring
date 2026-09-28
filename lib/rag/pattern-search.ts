@@ -150,7 +150,7 @@ export async function semanticPatternSearch(
 
   // Add company filter if specified
   if (company) {
-    vectorStage.$vectorSearch.filter = { company }
+    vectorStage.$vectorSearch.filter = { company: { $eq: company } }
   }
 
   try {
