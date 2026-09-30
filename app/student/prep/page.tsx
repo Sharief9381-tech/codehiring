@@ -96,6 +96,31 @@ function isCodingSection(sectionKey: string): boolean {
   return sectionKey === "basic-coding" || sectionKey === "advanced-coding" || sectionKey === "coding"
 }
 
+// Clean assessment example input/output → plain stdin numbers
+// Converts "nums=[2,7,11,15], target=9" → "2 7 11 15\n9"
+// Converts "[0,1]" → "0 1"
+function cleanStdin(raw: string): string {
+  if (!raw) return ""
+  // If it's already plain (just numbers/spaces/newlines) return as-is
+  if (/^[\d\s\-+.]+$/.test(raw.trim())) return raw.trim()
+  // Extract all numbers from the string in order
+  const parts: string[] = []
+  // Match named args like nums=[2,7,11,15], target=9 → split by comma-space at top level
+  // Strategy: find all [...] arrays and standalone numbers
+  const arrayMatches = raw.match(/\[([^\]]*)\]/g)
+  const remainder = raw.replace(/\[([^\]]*)\]/g, "")
+  if (arrayMatches) {
+    for (const arr of arrayMatches) {
+      const nums = arr.replace(/[\[\]]/g, "").split(",").map(s => s.trim()).filter(Boolean)
+      parts.push(nums.join(" "))
+    }
+  }
+  // Extract remaining standalone numbers (e.g. target=9 → 9)
+  const standalones = remainder.match(/-?\d+(\.\d+)?/g)
+  if (standalones) parts.push(...standalones)
+  return parts.join("\n").trim() || raw.trim()
+}
+
 // --- Aptitude topics ----------------------------------------------------------
 const APT_TOPICS = [
   { id: "number-system",   name: "Number System",              icon: "#" },
@@ -1121,9 +1146,9 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           outputFormat: "",
           constraints: q.constraints ? [q.constraints] : [],
           examples:    q.example ? [{ input: q.example.input, output: q.example.output, explanation: q.example.explanation }] : [],
-          // stdin-based test cases (required by problem-editor v10 format)
-          stdin1:    q.example?.input  ?? "",
-          expected1: q.example?.output ?? "",
+          // stdin-based test cases — clean display format to plain stdin numbers
+          stdin1:    cleanStdin(q.example?.input  ?? ""),
+          expected1: cleanStdin(q.example?.output ?? ""),
           public1:   true,
           stdin2: "", expected2: "", public2: false,
           stdin3: "", expected3: "", public3: false,

@@ -291,15 +291,23 @@ export async function POST(req: Request) {
     pyqContext = contextParts.join("\n\n===\n\n")
 
     const prompt = sectionData.isCoding
-      ? `You are creating a ${companyName} coding assessment.
+      ? `You are creating a ${companyName} coding assessment question.
 ${pyqContext ? pyqContext + "\n\n" : ""}Section: ${sectionData.name}
 Topics: ${topicsList}
 Difficulty: ${sectionData.difficulty}
 Count: ${count}
 
 Generate ${count} ORIGINAL coding problems that feel like real ${companyName} OA questions.
+
+CRITICAL RULES FOR EXAMPLE INPUT/OUTPUT:
+- example.input MUST be plain numbers only — NO variable names, NO brackets, NO "nums=", NO "target="
+- Format: first line = array elements space-separated, second line = single value if needed
+- Good: "2 7 11 15\\n9"  Bad: "nums=[2,7,11,15], target=9"
+- Good: "0 1 0 3 12"    Bad: "[0,1,0,3,12]"
+- The student writes a complete stdin program that reads these plain numbers
+
 Return ONLY valid JSON array:
-[{"id":1,"title":"...","difficulty":"${sectionData.difficulty}","statement":"...","constraints":"...","example":{"input":"...","output":"...","explanation":"..."},"hints":["..."],"topic":"..."}]`
+[{"id":1,"title":"...","difficulty":"${sectionData.difficulty}","statement":"...","constraints":"...","example":{"input":"PLAIN NUMBERS e.g. 2 7 11 15\\n9","output":"0 1","explanation":"..."},"hints":["..."],"topic":"..."}]`
       : `You are creating a ${companyName} ${sectionData.name} test.
 ${pyqContext ? pyqContext + "\n\n" : ""}Section: ${sectionData.name}
 Topics: ${topicsList}
