@@ -1,7 +1,7 @@
 /**
  * POST /api/admin/seed-problems
  * Generates and stores 100 coding problems per company in MongoDB.
- * Runs one company per request — call in a loop from the seeder script.
+ * Runs one company per request ï¿½ call in a loop from the seeder script.
  * Protected by SEED_SECRET env var.
  *
  * Body: { company: string, secret: string, batchSize?: number }
@@ -46,7 +46,7 @@ async function callAI(prompt: string, maxTokens = 8000): Promise<string> {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "openai/gpt-oss-20b",
+        model: "qwen/qwen3.8-27b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.9,
         max_tokens: maxTokens,
@@ -62,7 +62,7 @@ async function callAI(prompt: string, maxTokens = 8000): Promise<string> {
 
 // -- Problem batch definitions ------------------------------------------------
 
-// 100 problems = 10 batches × 10 problems each
+// 100 problems = 10 batches ï¿½ 10 problems each
 // Each batch targets different patterns to ensure full coverage
 const PATTERN_BATCHES: Record<string, string[][]> = {
   "Product": [
@@ -242,7 +242,7 @@ function buildBatchPrompt(
 
   // Industry-specific framing for authentic problems
   const contextMap: Record<string, string> = {
-    "Product":    `Tech product company. Frame problems around real product features — search, recommendations, messaging, feeds, APIs.`,
+    "Product":    `Tech product company. Frame problems around real product features ï¿½ search, recommendations, messaging, feeds, APIs.`,
     "IT Services":`IT services company hiring freshers for client delivery. Problems should be straightforward, solvable in 15-20 minutes with basic DSA.`,
     "Startups":   `High-growth startup. Frame around real business scenarios: food delivery, ride sharing, fintech transactions, e-commerce. Optimize for scale.`,
     "BFSI":       `Banking and financial services. Frame around transactions, portfolios, interest calculations, risk scoring, account management. Precision is critical.`,
@@ -273,7 +273,7 @@ function buildBatchPrompt(
   const constraints = constraintMap[category] ?? "Standard constraints appropriate to difficulty"
 
   const avoidList = existingTitles.length > 0
-    ? `\nALREADY GENERATED — DO NOT REPEAT ANY OF THESE: ${existingTitles.slice(-25).join(" | ")}`
+    ? `\nALREADY GENERATED ï¿½ DO NOT REPEAT ANY OF THESE: ${existingTitles.slice(-25).join(" | ")}`
     : ""
 
   return `You are the CodeHiring AI model. Your task: generate 10 ORIGINAL coding assessment problems for ${companyName}'s campus OA.
@@ -289,14 +289,14 @@ DIFFICULTY DISTRIBUTION: ${diffDist}
 CONSTRAINT SIZES: ${constraints}
 
 STRICT RULES:
-1. Each problem uses a DIFFERENT pattern — no repeats within this batch
+1. Each problem uses a DIFFERENT pattern ï¿½ no repeats within this batch
 2. Problems must authentically reflect how ${companyName} asks questions in real campus OA
 3. Use ${category} industry scenarios to frame the problems (not generic "Given array..." every time)
-4. Every example must have CORRECT input/output — verify manually before including
+4. Every example must have CORRECT input/output ï¿½ verify manually before including
 5. Constraints must match the difficulty: Easy=small, Hard=large
 6. At least 2 examples per problem covering different cases
 7. Hints should guide the student toward the optimal O(n) or O(n log n) approach
-8. Problems must be ORIGINAL — inspired by real patterns, not copied from LeetCode
+8. Problems must be ORIGINAL ï¿½ inspired by real patterns, not copied from LeetCode
 
 Return ONLY a valid JSON array. No markdown. No code fences. No explanation. Nothing before or after the []:
 [
@@ -429,7 +429,7 @@ export async function POST(req: Request) {
   return NextResponse.json({ company: companyId, generated, total, errors, batchId })
 }
 
-// GET — check progress for all companies
+// GET ï¿½ check progress for all companies
 export async function GET(req: Request) {
   const url = new URL(req.url)
   const secret = url.searchParams.get("secret") ?? ""

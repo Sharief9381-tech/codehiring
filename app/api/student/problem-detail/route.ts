@@ -31,11 +31,11 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
     "Generate a coding problem for: " + title + " (" + difficulty + " difficulty).",
     "",
     "STRICT RULES FOR STDIN/STDOUT:",
-    "1. Input must be plain numbers only — NO variable names like 'nums =', NO brackets like '[1,2,3]'",
+    "1. Input must be plain numbers only ï¿½ NO variable names like 'nums =', NO brackets like '[1,2,3]'",
     "2. Each input value or group goes on its own line as plain space-separated numbers",
     "3. Example for Two Sum: line 1 = '2 7 11 15' (the array), line 2 = '9' (target)",
     "4. Example for single array: '0 1 0 3 12' (just the array on one line)",
-    "5. The student writes a complete stdin/stdout program — no class, no function signature",
+    "5. The student writes a complete stdin/stdout program ï¿½ no class, no function signature",
     "6. inputFormat MUST describe exactly how to read the stdin (e.g. 'First line: n space-separated integers. Second line: integer target.')",
     "7. outputFormat MUST describe exactly what to print",
     "",
@@ -45,7 +45,7 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
     '  "inputFormat": "Exact description of stdin. E.g. \'First line: n space-separated integers. Second line: integer target.\'",',
     '  "outputFormat": "Exact description of stdout. E.g. \'Print two space-separated indices.\' or \'Print n space-separated integers.\'",',
     '  "examples": [',
-    '    {"input": "PLAIN NUMBERS ONLY — e.g. \'2 7 11 15\\n9\' for Two Sum", "output": "0 1", "explanation": "brief"},',
+    '    {"input": "PLAIN NUMBERS ONLY ï¿½ e.g. \'2 7 11 15\\n9\' for Two Sum", "output": "0 1", "explanation": "brief"},',
     '    {"input": "second test PLAIN NUMBERS e.g. \'3 2 4\\n6\'", "output": "1 2", "explanation": "brief"}',
     "  ],",
     '  "constraints": ["constraint 1", "constraint 2"],',
@@ -94,7 +94,7 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
 
   let data: any = null
   if (groqKey) {
-    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b") } catch {}
+    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.8-27b") } catch {}
   }
   if (!data && openaiKey) {
     try { data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch {}
@@ -216,7 +216,7 @@ export async function POST(req: Request) {
         Java:       aiData.javaStarter   ?? sp?.starters?.Java       ?? "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] arr = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
         "C++":      aiData.cppStarter    ?? sp?.starters?.["C++"]    ?? "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> arr;\n    while(cin>>x) arr.push_back(x);\n    // Write your solution here\n    return 0;\n}",
       },
-    // Stdin-based test cases — 2 public + 3 hidden
+    // Stdin-based test cases ï¿½ 2 public + 3 hidden
       stdin1:    tc(0)?.stdin ?? aiData.examples?.[0]?.input ?? "",
       expected1: tc(0)?.expected ?? aiData.examples?.[0]?.output ?? "",
       public1:   tc(0)?.isPublic !== false,

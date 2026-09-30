@@ -128,7 +128,7 @@ async function generateWithGroq(topic: typeof CURRICULUM[0], lang: string, seed:
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "openai/gpt-oss-20b",
+      model: "qwen/qwen3.8-27b",
       messages: [{ role: "user", content: buildPrompt(topic, lang, ts) }],
       temperature: 0.85,
       max_tokens: 2500,

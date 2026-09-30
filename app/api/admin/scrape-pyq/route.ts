@@ -89,7 +89,7 @@ Return ONLY valid JSON array:
   const res = await fetch(GROQ_API, {
     method: "POST",
     headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: "openai/gpt-oss-20b", messages: [{ role: "user", content: prompt }], temperature: 0.3, max_tokens: 4000 }),
+    body: JSON.stringify({ model: "qwen/qwen3.8-27b", messages: [{ role: "user", content: prompt }], temperature: 0.3, max_tokens: 4000 }),
     signal: AbortSignal.timeout(30000),
   })
   if (!res.ok) return []

@@ -141,7 +141,7 @@ Return ONLY valid JSON array:
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "openai/gpt-oss-20b",
+      model: "qwen/qwen3.8-27b",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.4,
       max_tokens: 6000,

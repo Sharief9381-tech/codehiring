@@ -130,7 +130,7 @@ Respond with ONLY valid JSON (no markdown code fence, no explanation):
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-oss-20b",
+        model: "qwen/qwen3.8-27b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.85,
         max_tokens: 1200,

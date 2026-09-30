@@ -3,8 +3,8 @@
  * CodeHiring's own coding question model.
  *
  * Priority chain:
- * 1. MongoDB DB (18,900 pre-seeded problems) — instant, shuffled
- * 2. Static banks (service/fintech/it-services) — RAG examples for AI
+ * 1. MongoDB DB (18,900 pre-seeded problems) ï¿½ instant, shuffled
+ * 2. Static banks (service/fintech/it-services) ï¿½ RAG examples for AI
  * 3. AI generation with company profile + pattern templates
  * 4. Static bank direct return (no AI)
  *
@@ -40,7 +40,7 @@ async function callAI(systemPrompt: string, userPrompt: string, maxTokens = 6000
     const r = await fetch(GROQ_API, {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "openai/gpt-oss-20b", messages: msgs, temperature: 0.85, max_tokens: maxTokens }),
+      body: JSON.stringify({ model: "qwen/qwen3.8-27b", messages: msgs, temperature: 0.85, max_tokens: maxTokens }),
     })
     if (r.ok) { const d = await r.json(); return d.choices?.[0]?.message?.content?.trim() ?? "" }
   }
@@ -128,7 +128,7 @@ export async function POST(req: Request) {
     const ragText = formatRAGExamples(staticExamples, 4)
     const batchPatterns = selectBatchPatterns(section, 0, Math.max(1, count))
 
-    // -- 3. No AI provider — cannot serve without AI ---------------------------
+    // -- 3. No AI provider ï¿½ cannot serve without AI ---------------------------
     if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       return NextResponse.json({
         error: "No AI provider configured. Set GROQ_API_KEY or OPENAI_API_KEY to generate company-specific coding questions.",

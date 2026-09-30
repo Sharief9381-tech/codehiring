@@ -29,7 +29,7 @@ async function callAI(prompt: string, maxTokens = 6000): Promise<string> {
     const res = await fetch(GROQ_API, {
       method: "POST",
       headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "openai/gpt-oss-20b", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
+      body: JSON.stringify({ model: "qwen/qwen3.8-27b", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
     })
     if (res.ok) { const d = await res.json(); return d.choices?.[0]?.message?.content?.trim() ?? "" }
   }
@@ -171,7 +171,7 @@ export async function POST(req: Request) {
 
     // -- Try to get live company pattern from RAG (7-day cache) ----------------
     try {
-      // 1. Semantic search in pattern_embeddings — fastest, richest context
+      // 1. Semantic search in pattern_embeddings ï¿½ fastest, richest context
       const sectionConfig = SECTION_CONFIG[section]
       if (sectionConfig && process.env.OPENAI_API_KEY) {
         const semanticDoc = await queryPatternForSection(
@@ -300,7 +300,7 @@ Count: ${count}
 Generate ${count} ORIGINAL coding problems that feel like real ${companyName} OA questions.
 
 CRITICAL RULES FOR EXAMPLE INPUT/OUTPUT:
-- example.input MUST be plain numbers only — NO variable names, NO brackets, NO "nums=", NO "target="
+- example.input MUST be plain numbers only ï¿½ NO variable names, NO brackets, NO "nums=", NO "target="
 - Format: first line = array elements space-separated, second line = single value if needed
 - Good: "2 7 11 15\\n9"  Bad: "nums=[2,7,11,15], target=9"
 - Good: "0 1 0 3 12"    Bad: "[0,1,0,3,12]"
@@ -340,7 +340,7 @@ Return ONLY valid JSON array:
 function getFallbackQuestions(company: string, section: string, count: number) {
   const isCoding = section === "coding" || section === "basic-coding" || section === "advanced-coding"
 
-  // For coding sections — NEVER fall back to aptitude questions
+  // For coding sections ï¿½ NEVER fall back to aptitude questions
   if (isCoding) {
     return [
       { id:1, title:"Two Sum", difficulty:"Easy", statement:"Given an array of integers nums and an integer target, return indices of the two numbers that add up to target. You may assume each input has exactly one solution.", constraints:"2<=nums.length<=10^4, -10^9<=nums[i]<=10^9", example:{input:"2 7 11 15\n9",output:"0 1",explanation:"nums[0]+nums[1]=9"}, hints:["Use a hash map to store complement","Single pass O(n) solution possible"], topic:"Arrays & Hashing" },
@@ -349,7 +349,7 @@ function getFallbackQuestions(company: string, section: string, count: number) {
     ].slice(0, count)
   }
 
-  // For aptitude sections — use company-specific PYQ bank if available,
+  // For aptitude sections ï¿½ use company-specific PYQ bank if available,
   // then try same section from similar companies, then generate generic questions
   const { QUESTION_BANK } = require("@/lib/question-bank")
 
@@ -383,6 +383,6 @@ function getFallbackQuestions(company: string, section: string, count: number) {
   return [
     { id:1, question:"A train 240m long passes a pole in 24 seconds. How long to pass a 650m platform?", options:["89 sec","85 sec","90 sec","80 sec"], correct:0, explanation:"Speed=240/24=10m/s. Time=(240+650)/10=89sec", topic:"Speed & Distance", difficulty:"Medium" },
     { id:2, question:"If 20% of a number is 120, what is 35% of that number?", options:["200","210","205","195"], correct:1, explanation:"Number=120/0.20=600. 35% of 600=210", topic:"Percentages", difficulty:"Medium" },
-    { id:3, question:"Find the missing: 3, 7, 15, 31, 63, ?", options:["127","125","128","124"], correct:0, explanation:"Each term = previous×2+1. 63×2+1=127", topic:"Number Series", difficulty:"Medium" },
+    { id:3, question:"Find the missing: 3, 7, 15, 31, 63, ?", options:["127","125","128","124"], correct:0, explanation:"Each term = previousï¿½2+1. 63ï¿½2+1=127", topic:"Number Series", difficulty:"Medium" },
   ].slice(0, count)
 }

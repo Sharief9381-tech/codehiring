@@ -169,7 +169,7 @@ Generate a FULL RECRUITMENT REPORT in this EXACT JSON format (no markdown, no ex
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-oss-20b",
+        model: "qwen/qwen3.8-27b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.6,
         max_tokens: 3000,

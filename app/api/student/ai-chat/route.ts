@@ -123,11 +123,11 @@ export async function POST(request: Request) {
 You have access to the student's profile including platform stats, skills, achievements, and placement status.
 
 RESPONSE RULES:
-- Be concise and focused — answer the specific question asked, don't dump everything you know
+- Be concise and focused ï¿½ answer the specific question asked, don't dump everything you know
 - Use bullet points (- item) for lists, **bold** for key terms
 - Use ### for section headers only when the answer genuinely needs sections
 - Keep answers under 300 words unless the user explicitly asks for a detailed plan
-- Be direct and actionable — every point should be something the student can do today
+- Be direct and actionable ï¿½ every point should be something the student can do today
 - Use the student's actual stats when relevant (e.g. their LeetCode count, rating, etc.)
 
 ${studentContext}`
@@ -146,7 +146,7 @@ ${studentContext}`
         const res = await fetch(GROQ_API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
-          body: JSON.stringify({ model: "openai/gpt-oss-20b", messages, max_tokens: 600, temperature: 0.7 }),
+          body: JSON.stringify({ model: "qwen/qwen3.8-27b", messages, max_tokens: 600, temperature: 0.7 }),
           signal: AbortSignal.timeout(20000),
         })
         if (res.ok) {
