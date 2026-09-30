@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/student/resume-ai
  * ResumeWorded-style deep analysis:
  * - Overall score with breakdown (Impact, Brevity, Style, Sections, Skills)
@@ -169,7 +169,7 @@ Return ONLY valid JSON:
       method: "POST",
       headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "groq/compound-mini",
+        model: "openai/gpt-oss-20b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.4,
         max_tokens: 4000,

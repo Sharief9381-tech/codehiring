@@ -1,4 +1,4 @@
-﻿// Dynamic API clients for various coding platforms
+// Dynamic API clients for various coding platforms
 
 export interface PlatformStats {
   totalProblems?: number

@@ -1,4 +1,4 @@
-﻿export interface GitHubStats {
+export interface GitHubStats {
   username: string
   name: string
   bio: string

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET  /api/student/first-year-progress  - get progress, streak, badges
  * POST /api/student/first-year-progress  - update progress (complete milestone, update streak, award badge)
  */

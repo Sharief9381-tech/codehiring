@@ -1,4 +1,4 @@
-﻿export interface CodeStudioStats {
+export interface CodeStudioStats {
   username: string
   problemsSolved: number
   score: number

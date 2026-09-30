@@ -1,10 +1,10 @@
-﻿/**
- * Groq AI client - uses groq/compound-mini (free, fast)
+/**
+ * Groq AI client - uses openai/gpt-oss-20b (free, fast)
  * Get your free key at https://console.groq.com
  */
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-const MODEL = "groq/compound-mini"
+const MODEL = "openai/gpt-oss-20b"
 
 export async function groqChat(
   systemPrompt: string,

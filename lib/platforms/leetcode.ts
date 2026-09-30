@@ -1,4 +1,4 @@
-﻿export interface LeetCodeStats {
+export interface LeetCodeStats {
   username: string
   totalSolved: number
   easySolved: number

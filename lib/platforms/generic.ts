@@ -1,4 +1,4 @@
-﻿export interface GenericPlatformStats {
+export interface GenericPlatformStats {
   username: string
   platformName: string
   platformUrl: string

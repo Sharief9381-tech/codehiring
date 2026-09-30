@@ -1,4 +1,4 @@
-﻿// Analytics tracking system
+// Analytics tracking system
 import { getDatabase, isDatabaseAvailable } from '@/lib/database'
 import { ObjectId } from 'mongodb'
 

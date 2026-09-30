@@ -47,7 +47,7 @@ async function callAI(messages: any[], maxTokens: number): Promise<string> {
       const res = await fetch(GROQ_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
-        body: JSON.stringify({ model: "groq/compound-mini", messages, max_tokens: maxTokens, temperature: 0.3 }),
+        body: JSON.stringify({ model: "openai/gpt-oss-20b", messages, max_tokens: maxTokens, temperature: 0.3 }),
         signal: AbortSignal.timeout(20000),
       })
       if (res.ok) {

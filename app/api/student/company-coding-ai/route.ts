@@ -1,10 +1,10 @@
-﻿/**
+/**
  * POST /api/student/company-coding-ai
  * CodeHiring's own coding question model.
  *
  * Priority chain:
- * 1. MongoDB DB (18,900 pre-seeded problems) — instant, shuffled
- * 2. Static banks (service/fintech/it-services) — RAG examples for AI
+ * 1. MongoDB DB (18,900 pre-seeded problems) � instant, shuffled
+ * 2. Static banks (service/fintech/it-services) � RAG examples for AI
  * 3. AI generation with company profile + pattern templates
  * 4. Static bank direct return (no AI)
  *
@@ -40,7 +40,7 @@ async function callAI(systemPrompt: string, userPrompt: string, maxTokens = 6000
     const r = await fetch(GROQ_API, {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "groq/compound-mini", messages: msgs, temperature: 0.85, max_tokens: maxTokens }),
+      body: JSON.stringify({ model: "openai/gpt-oss-20b", messages: msgs, temperature: 0.85, max_tokens: maxTokens }),
     })
     if (r.ok) { const d = await r.json(); return d.choices?.[0]?.message?.content?.trim() ?? "" }
   }
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
     const companyName = co?.name ?? companyId
     const category = co?.category ?? "IT Services"
 
-    // ── 1. MongoDB first (AI-generated problems already seeded) ──────────────
+    // -- 1. MongoDB first (AI-generated problems already seeded) --------------
     try {
       const dbCount = await countProblemsForCompany(companyId)
       if (dbCount >= count) {
@@ -114,7 +114,7 @@ export async function POST(req: Request) {
       }
     } catch { /* DB unavailable, continue to live AI */ }
 
-    // ── 2. No DB or insufficient problems → live AI generation ───────────────
+    // -- 2. No DB or insufficient problems ? live AI generation ---------------
     // (This also runs when the seeder hasn't run yet for this company)
     const profile = getCompanyCodingProfile(companyId, category)
     const section = profile?.sections[sectionId] ?? profile?.sections["coding"] ?? {
@@ -128,14 +128,14 @@ export async function POST(req: Request) {
     const ragText = formatRAGExamples(staticExamples, 4)
     const batchPatterns = selectBatchPatterns(section, 0, Math.max(1, count))
 
-    // ── 3. No AI provider — cannot serve without AI ───────────────────────────
+    // -- 3. No AI provider � cannot serve without AI ---------------------------
     if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       return NextResponse.json({
         error: "No AI provider configured. Set GROQ_API_KEY or OPENAI_API_KEY to generate company-specific coding questions.",
       }, { status: 503 })
     }
 
-    // ── 4. AI generation using company profile ────────────────────────────────
+    // -- 4. AI generation using company profile --------------------------------
     const systemPrompt = buildModelPrompt(
       section, companyName, category,
       profile?.realExamNotes ?? "",
@@ -152,7 +152,7 @@ export async function POST(req: Request) {
     const parsed = JSON.parse(cleaned)
     const questions: any[] = Array.isArray(parsed) ? parsed : (parsed.questions ?? [])
 
-    // ── 5. Cache to MongoDB ───────────────────────────────────────────────────
+    // -- 5. Cache to MongoDB ---------------------------------------------------
     if (questions.length > 0) {
       try {
         const col = await getCompanyProblemsCollection()

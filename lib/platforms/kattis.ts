@@ -1,4 +1,4 @@
-﻿export interface KattisStats {
+export interface KattisStats {
   username: string
   problemsSolved: number
   score: number

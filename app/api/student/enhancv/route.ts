@@ -1,4 +1,4 @@
-ï»¿/**
+/**
  * POST /api/student/enhancv
  *
  * Free resume parsing pipeline:
@@ -62,7 +62,7 @@ async function openaiDeepAnalysis(parsedResume: any): Promise<any> {
 
   const prompt = `You are a senior technical recruiter at Google/Amazon with 10+ years experience. 
 Perform a DEEP ResumeWorded-style review of this candidate's resume.
-Analyze ONLY the resume content below â€” do not factor in any external platform stats.
+Analyze ONLY the resume content below — do not factor in any external platform stats.
 Be specific - cite actual content from the resume in every explanation.
 
 PARSED RESUME:
@@ -184,7 +184,7 @@ export async function POST(req: Request) {
     }
 
     // Build candidate profile context (basic info only, no platform stats)
-    // Note: analysis is resume-only â€” platform stats excluded intentionally
+    // Note: analysis is resume-only — platform stats excluded intentionally
 
     let parsedResume: any = null
     let parseSource = "fallback"

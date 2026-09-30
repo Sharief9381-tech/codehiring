@@ -1,4 +1,4 @@
-﻿/**
+/**
  * InterviewBit scraper - v3 (definitive)
  *
  * Deep investigation (June 2026) confirmed:

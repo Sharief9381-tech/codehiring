@@ -1,4 +1,4 @@
-﻿/**
+/**
  * HackerEarth scraper
  *
  * HackerEarth migrated to a pure client-side React app (Next.js App Router) in 2024.

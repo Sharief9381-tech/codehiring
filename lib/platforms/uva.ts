@@ -1,4 +1,4 @@
-﻿export interface UVaStats {
+export interface UVaStats {
   username: string
   problemsSolved: number
   submissions: number

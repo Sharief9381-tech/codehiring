@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/feedback  - authenticated user submits feedback (type 1 or type 2)
  * GET  /api/feedback  - returns approved general feedback for landing page testimonials
  */
@@ -107,7 +107,7 @@ async function sendFeedbackEmail(data: {
   const TO_EMAIL = "sharief9381@gmail.com"
 
   const stars = data.rating
-    ? "★".repeat(data.rating) + "☆".repeat(5 - data.rating)
+    ? "?".repeat(data.rating) + "?".repeat(5 - data.rating)
     : ""
 
   const htmlBody = data.type === "general"

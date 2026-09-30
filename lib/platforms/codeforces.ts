@@ -1,4 +1,4 @@
-﻿export interface CodeforcesStats {
+export interface CodeforcesStats {
   username: string
   rating: number
   maxRating: number

@@ -144,7 +144,7 @@ ${text.slice(0, 4000)}`
       if (d?.sections?.length > 0) return d
     }
     if (groqKey) {
-      const d = await tryAI("https://api.groq.com/openai/v1/chat/completions", groqKey, "groq/compound-mini").catch(() => null)
+      const d = await tryAI("https://api.groq.com/openai/v1/chat/completions", groqKey, "openai/gpt-oss-20b").catch(() => null)
       if (d?.sections?.length > 0) return d
     }
   } catch {}

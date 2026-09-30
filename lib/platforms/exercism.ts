@@ -1,4 +1,4 @@
-﻿export interface ExercismStats {
+export interface ExercismStats {
   username: string
   completedExercises: number
   languages: string[]

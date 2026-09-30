@@ -1,4 +1,4 @@
-﻿export interface TopCoderStats {
+export interface TopCoderStats {
   username: string
   rating: number
   maxRating: number

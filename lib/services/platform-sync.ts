@@ -1,4 +1,4 @@
-﻿import { UserModel } from '@/lib/models/user'
+import { UserModel } from '@/lib/models/user'
 import { aggregateStudentStats } from '@/lib/services/stats-aggregator'
 import { detectNewAchievements } from '@/lib/services/achievements'
 import { fetchLeetCodeStats } from '@/lib/platforms/leetcode'

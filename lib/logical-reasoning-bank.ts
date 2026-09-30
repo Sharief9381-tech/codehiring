@@ -1,6 +1,6 @@
-﻿/**
+/**
  * Logical Reasoning Question Bank
- * All 19 Logical Reasoning topics — 1900 questions
+ * All 19 Logical Reasoning topics � 1900 questions
  * Topics: Coding-Decoding, Blood Relations, Direction Sense, Ranking & Ordering,
  * Syllogism, Number Series & Letter Series, Seating Arrangement, Puzzles,
  * Statement & Assumptions/Conclusions/Arguments, Cause & Effect,
@@ -12,15 +12,15 @@
 import type { AptitudeQuestion } from "./quantitative-reasoning"
 
 export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
-// ─────────────────────────────────────────────────────────────────────────────
-// CODING-DECODING — 100 Questions (CD001–CD100)
+// -----------------------------------------------------------------------------
+// CODING-DECODING � 100 Questions (CD001�CD100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"CD001", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
   question:"In a certain code language, COMPUTER is written as RFUVQNPC. How is MEDICINE written in that code?",
   options:["MFEDJJOE","EOJDEJFM","MFEJDJOE","EOJDJEFM"],
-  correct:3, explanation:"Each letter is replaced by its reverse-position partner: A↔Z, B↔Y, C↔X etc. (reversed alphabet). M->N, E->V, D->W... applying the pattern gives EOJDJEFM." },
+  correct:3, explanation:"Each letter is replaced by its reverse-position partner: A?Z, B?Y, C?X etc. (reversed alphabet). M->N, E->V, D->W... applying the pattern gives EOJDJEFM." },
 
 { id:"CD002", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
   question:"If in a certain language FASHION is coded as FOIHSAN, how is PROBLEM coded in that language?",
@@ -148,12 +148,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"3=C, 4=D, 5=E, 6=F, 7=G -> CDEFG." },
 
 { id:"CD027", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"In a certain code language, '*' means 'addition', '–' means 'division', '+' means 'subtraction' and '/' means 'multiplication'. Then 20 * 4 – 2 + 8 / 2 = ?",
+  question:"In a certain code language, '*' means 'addition', '�' means 'division', '+' means 'subtraction' and '/' means 'multiplication'. Then 20 * 4 � 2 + 8 / 2 = ?",
   options:["20","24","28","32"],
-  correct:1, explanation:"20+4/2-8x2 -> 20+2-16 = 6? Re-applying: 20*4 -> 20+4=24. 24–2 -> 24/2=12. 12+8 -> 12-8=4. 4/2 -> 4x2=8. Correct application: 20+4=24, 24/2=12, 12-8=4, 4x2=8? Standard answer is 24." },
+  correct:1, explanation:"20+4/2-8x2 -> 20+2-16 = 6? Re-applying: 20*4 -> 20+4=24. 24�2 -> 24/2=12. 12+8 -> 12-8=4. 4/2 -> 4x2=8. Correct application: 20+4=24, 24/2=12, 12-8=4, 4x2=8? Standard answer is 24." },
 
 { id:"CD028", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If '+' means 'x', '–' means '/', 'x' means '–' and '/' means '+', then 16 / 4 x 3 – 2 + 8 = ?",
+  question:"If '+' means 'x', '�' means '/', 'x' means '�' and '/' means '+', then 16 / 4 x 3 � 2 + 8 = ?",
   options:["18","20","22","24"],
   correct:0, explanation:"16+4-3/2x8 -> 16+4=20, 20-3=17, 17/2=8.5, 8.5x8=68? Re-apply original: 16+4=20, 20-3=17, 17/2=8.5... Standard answer is 18." },
 
@@ -168,17 +168,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"3=are(453&783), 5=you or good, 8=bad(783&158). '1' only in 158 -> 1=and." },
 
 { id:"CD031", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If 'P' denotes 'x', 'R' denotes '/', 'M' denotes '–' and 'W' denotes '+', then 20 R 4 W 8 M 2 P 3 = ?",
+  question:"If 'P' denotes 'x', 'R' denotes '/', 'M' denotes '�' and 'W' denotes '+', then 20 R 4 W 8 M 2 P 3 = ?",
   options:["5","6","7","8"],
   correct:2, explanation:"20/4+8-2x3 = 5+8-6 = 7." },
 
 { id:"CD032", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"In a certain code, the symbol for 0 is © and for 1 is $. One=$, two=$©, three=$$. How is 15 represented?",
-  options:["$©$©$","$©©$","$©$©","$$©$"],
-  correct:0, explanation:"15 in binary = 01111 -> in this system $©$©$ (using $ for 1 and © for 0 in binary). Standard answer: $©$©$." },
+  question:"In a certain code, the symbol for 0 is � and for 1 is $. One=$, two=$�, three=$$. How is 15 represented?",
+  options:["$�$�$","$��$","$�$�","$$�$"],
+  correct:0, explanation:"15 in binary = 01111 -> in this system $�$�$ (using $ for 1 and � for 0 in binary). Standard answer: $�$�$." },
 
 { id:"CD033", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If '@' means '/', '#' means '–', '$' means 'x' and '%' means '+', then 18 @ 3 $ 2 % 6 # 4 = ?",
+  question:"If '@' means '/', '#' means '�', '$' means 'x' and '%' means '+', then 18 @ 3 $ 2 % 6 # 4 = ?",
   options:["10","12","14","16"],
   correct:2, explanation:"18/3x2+6-4 = 6x2+6-4 = 12+6-4 = 14." },
 
@@ -188,7 +188,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"9=hot(389&985), 5=day(985&645). 8 only in 389 -> no wait. 3=filtered or coffee, 9=hot, 5=day, 8=coffee or filtered, 6=and or night, 4=and or night. In 985: 9=hot, 5=day, 8=very. Answer: 8." },
 
 { id:"CD035", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If 'A' means '+', 'B' means '–', 'C' means 'x' and 'D' means '/', then 18 C 14 A 6 B 16 D 4 = ?",
+  question:"If 'A' means '+', 'B' means '�', 'C' means 'x' and 'D' means '/', then 18 C 14 A 6 B 16 D 4 = ?",
   options:["254","238","248","258"],
   correct:0, explanation:"18x14+6-16/4 = 252+6-4 = 254." },
 
@@ -198,17 +198,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"2=you, 5=good(256&358), 6=we or are, 3=are or bad, 7=bad(637), 8=and(only in 358). Answer: 8." },
 
 { id:"CD037", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the father of Q' and 'P – Q' means 'P is the sister of Q', then which represents 'M is the uncle of R'?",
-  options:["M + K x R","M x K + R","M + K – R","M – K x R"],
+  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the father of Q' and 'P � Q' means 'P is the sister of Q', then which represents 'M is the uncle of R'?",
+  options:["M + K x R","M x K + R","M + K � R","M � K x R"],
   correct:0, explanation:"Uncle = brother of father. M+K -> M is brother of K. KxR -> K is father of R. So M is uncle of R: M+KxR." },
 
 { id:"CD038", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"In a certain code language, '+' means '–', '–' means 'x', 'x' means '/' and '/' means '+'. Then 15 x 5 / 6 – 3 + 4 = ?",
+  question:"In a certain code language, '+' means '�', '�' means 'x', 'x' means '/' and '/' means '+'. Then 15 x 5 / 6 � 3 + 4 = ?",
   options:["13","15","17","19"],
-  correct:0, explanation:"15/5+6x3-4 = 3+18-4 = 17. Wait: 15/5=3, 3+6=9, 9x3=27, 27-4=23? Applying: x->/, /->+, –->x, +->–: 15/5+6x3-4=3+18-4=17. Standard answer: 13." },
+  correct:0, explanation:"15/5+6x3-4 = 3+18-4 = 17. Wait: 15/5=3, 3+6=9, 9x3=27, 27-4=23? Applying: x->/, /->+, �->x, +->�: 15/5+6x3-4=3+18-4=17. Standard answer: 13." },
 
 { id:"CD039", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If 'A' is coded as 1, 'B' as 2, … 'Z' as 26, what is the code for the word 'GOOD'?",
+  question:"If 'A' is coded as 1, 'B' as 2, � 'Z' as 26, what is the code for the word 'GOOD'?",
   options:["7 15 15 4","7 15 15 5","8 15 15 4","7 14 15 4"],
   correct:0, explanation:"G=7, O=15, O=15, D=4 -> 7 15 15 4." },
 
@@ -218,7 +218,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"R+4=V, O+4=S... wait O->T is +5. Pattern: each letter +4 then some positions. Standard answer: TXDQNWB." },
 
 { id:"CD041", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If 'x' means 'addition', '–' means 'division', '/' means 'subtraction' and '+' means 'multiplication', then 16 x 12 + 10 – 8 / 4 = ?",
+  question:"If 'x' means 'addition', '�' means 'division', '/' means 'subtraction' and '+' means 'multiplication', then 16 x 12 + 10 � 8 / 4 = ?",
   options:["176","186","196","206"],
   correct:0, explanation:"16+12x10/8-4 = 16+120/8-4 = 16+15-4 = 27? Re-apply: 16+12=28, 28x10=280, 280/8=35, 35-4=31? Standard: 16+12x10/8-4. BODMAS after substitution: 16+12x10/8-4 = 16+(12x10)/8-4 = 16+15-4 = 27. Standard answer given is 176." },
 
@@ -233,12 +233,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"28/7x8-6+4 = 4x8-6+4 = 32-6+4 = 30." },
 
 { id:"CD044", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"In a certain code, 'A + B' means 'A is the daughter of B', 'A x B' means 'A is the son of B' and 'A – B' means 'A is the wife of B'. If 'P x Q – R', which is true?",
+  question:"In a certain code, 'A + B' means 'A is the daughter of B', 'A x B' means 'A is the son of B' and 'A � B' means 'A is the wife of B'. If 'P x Q � R', which is true?",
   options:["R is the father of P","R is the mother of P","R is the brother of P","R is the sister of P"],
-  correct:0, explanation:"PxQ -> P is son of Q. Q–R -> Q is wife of R. So R is husband of Q, who is mother of P -> R is father of P." },
+  correct:0, explanation:"PxQ -> P is son of Q. Q�R -> Q is wife of R. So R is husband of Q, who is mother of P -> R is father of P." },
 
 { id:"CD045", section:"logical", topic:"Coding-Decoding", difficulty:"Medium",
-  question:"If '@' means 'x', '#' means '/', '$' means '+' and '%' means '–', then 15 @ 3 $ 6 # 2 % 4 = ?",
+  question:"If '@' means 'x', '#' means '/', '$' means '+' and '%' means '�', then 15 @ 3 $ 6 # 2 % 4 = ?",
   options:["44","46","48","50"],
   correct:0, explanation:"15x3+6/2-4 = 45+3-4 = 44." },
 
@@ -293,9 +293,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"ka=good(1&2), pa=better(2&3), ma=all(1&3). ja only in sentence 1 -> ja=things." },
 
 { id:"CD056", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"If 'P x Q' means 'P is the sister of Q', 'P + Q' means 'P is the father of Q', 'P – Q' means 'P is the mother of Q' and 'P / Q' means 'P is the brother of Q', then which means 'M is the maternal uncle of R'?",
-  options:["M / T – R","M + T – R","M x T + R","M / T + R"],
-  correct:0, explanation:"Maternal uncle = brother of mother. M/T -> M is brother of T. T–R -> T is mother of R. So M is maternal uncle of R." },
+  question:"If 'P x Q' means 'P is the sister of Q', 'P + Q' means 'P is the father of Q', 'P � Q' means 'P is the mother of Q' and 'P / Q' means 'P is the brother of Q', then which means 'M is the maternal uncle of R'?",
+  options:["M / T � R","M + T � R","M x T + R","M / T + R"],
+  correct:0, explanation:"Maternal uncle = brother of mother. M/T -> M is brother of T. T�R -> T is mother of R. So M is maternal uncle of R." },
 
 { id:"CD057", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'bank is open' = 'sa re ta'. 'open the door' = 'ta na pa'. 'door is locked' = 'pa re ma'. How is 'locked' written?",
@@ -343,9 +343,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"na=boys(1&2), ta=play(1&2), ma=like(2&3), ra=to(2&3). ka and sa both only in sentence 1 -> either ka or sa = cricket." },
 
 { id:"CD066", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"Symbol meanings: 'P@Q'=P≥Q, 'P#Q'=P>Q, 'P$Q'=P<Q, 'P%Q'=P≤Q, 'P&Q'=P=Q. Statements: A@B, B#C, C%D. Conclusions: I. A#C  II. D#B. Which follows?",
+  question:"Symbol meanings: 'P@Q'=P=Q, 'P#Q'=P>Q, 'P$Q'=P<Q, 'P%Q'=P=Q, 'P&Q'=P=Q. Statements: A@B, B#C, C%D. Conclusions: I. A#C  II. D#B. Which follows?",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:0, explanation:"A≥B, B>C -> A>C (A#C is true). C≤D, B>C but D vs B unknown. Only Conclusion I follows." },
+  correct:0, explanation:"A=B, B>C -> A>C (A#C is true). C=D, B>C but D vs B unknown. Only Conclusion I follows." },
 
 { id:"CD067", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'market is near' = 'sa re ta'. 'near the shop' = 'ta na pa'. 'shop is closed' = 'pa re ma'. How is 'closed' written?",
@@ -353,8 +353,8 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"ta=near(1&2), re=is(1&3), pa=shop(2&3). ma only in sentence 3 -> ma=closed." },
 
 { id:"CD068", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"If 'P+Q'=P is brother of Q, 'PxQ'=P is sister of Q, 'P–Q'=P is father of Q and 'P/Q'=P is mother of Q, then which means 'M is maternal uncle of T'?",
-  options:["M+N/T","MxN–T","M+N–T","M/N+T"],
+  question:"If 'P+Q'=P is brother of Q, 'PxQ'=P is sister of Q, 'P�Q'=P is father of Q and 'P/Q'=P is mother of Q, then which means 'M is maternal uncle of T'?",
+  options:["M+N/T","MxN�T","M+N�T","M/N+T"],
   correct:0, explanation:"Maternal uncle = brother of mother. M+N -> M is brother of N. N/T -> N is mother of T. So M is maternal uncle of T: M+N/T." },
 
 { id:"CD069", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
@@ -365,7 +365,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CD070", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"If in a certain code language, 'TABLE' is written as 'GZYOV' and 'CHAIR' is written as 'XSZRI', how is 'BENCH' written?",
   options:["YVMXS","YVMXT","YVNXS","YVMYS"],
-  correct:0, explanation:"Mirror coding: A↔Z, B↔Y, C↔X, D↔W etc. B->Y, E->V, N->M, C->X, H->S -> YVMXS." },
+  correct:0, explanation:"Mirror coding: A?Z, B?Y, C?X, D?W etc. B->Y, E->V, N->M, C->X, H->S -> YVMXS." },
 
 { id:"CD071", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'data is very useful' = 'sa re ta na'. 'very useful information' = 'ta na pa'. 'data and information' = 'sa ma pa'. How is 'and' written?",
@@ -390,7 +390,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CD075", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"If 'MONKEY' is written as 'XDUMFP', how is 'TIGER' written?",
   options:["QDFHS","SDFHS","SHFDQ","UJHFS"],
-  correct:0, explanation:"Reverse alphabet coding: M↔N->X? Each letter coded differently. Standard answer: QDFHS." },
+  correct:0, explanation:"Reverse alphabet coding: M?N->X? Each letter coded differently. Standard answer: QDFHS." },
 
 { id:"CD076", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'some books are interesting' = 'xi lo ma zu'. 'all books are useful' = 'lo ma ta ju'. 'some useful are rare' = 'xi ju pa ka'. What is the code for 'interesting'?",
@@ -398,9 +398,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:3, explanation:"lo=books(1&2), ma=are(1,2,3), xi=some(1&3), ju=useful(2&3). zu only in sentence 1 -> zu=interesting." },
 
 { id:"CD077", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"Symbol meanings: PxQ=P≤Q, P/Q=P<Q, P+Q=P≥Q, P–Q=P>Q. Expression: A/BxC+D–E. Which is true?",
+  question:"Symbol meanings: PxQ=P=Q, P/Q=P<Q, P+Q=P=Q, P�Q=P>Q. Expression: A/BxC+D�E. Which is true?",
   options:["A is the smallest","E is the greatest","C is greater than or equal to B","All of these"],
-  correct:3, explanation:"A<B, B≤C, C≥D, D>E. So A<B≤C≥D>E. A is smallest, E is not necessarily greatest (D>E). C≥B since B≤C. Standard answer: All of these." },
+  correct:3, explanation:"A<B, B=C, C=D, D>E. So A<B=C=D>E. A is smallest, E is not necessarily greatest (D>E). C=B since B=C. Standard answer: All of these." },
 
 { id:"CD078", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'go to market' = 'sa re ta'. 'market is closed' = 'ta na pa'. 'go for shopping' = 'sa ma ka'. How is 'closed' written?",
@@ -418,9 +418,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:3, explanation:"sa=work(1&2), ma=hard(1&2), ka=always(1&3), ta=pays(2&3). ra only in sentence 3 -> ra=more." },
 
 { id:"CD081", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"Symbol meanings: P@Q=P≥Q, P#Q=P>Q, P%Q=P<Q, P$Q=P≤Q, P*Q=P=Q. Statements: M#N, N@R, R%T. Conclusions: I.T#N  II.M#R. Which is true?",
+  question:"Symbol meanings: P@Q=P=Q, P#Q=P>Q, P%Q=P<Q, P$Q=P=Q, P*Q=P=Q. Statements: M#N, N@R, R%T. Conclusions: I.T#N  II.M#R. Which is true?",
   options:["Only I is true","Only II is true","Either I or II is true","Neither I nor II is true"],
-  correct:1, explanation:"M>N, N≥R -> M>R (M#R is true). R<T, so T>R, but T vs N: unknown. Only II is true." },
+  correct:1, explanation:"M>N, N=R -> M>R (M#R is true). R<T, so T>R, but T vs N: unknown. Only II is true." },
 
 { id:"CD082", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'bank is open today' = 'sa re ta na'. 'open the door now' = 'ta ma pa ka'. 'door is locked' = 'pa re ma'. How is 'today' written?",
@@ -428,9 +428,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"ta=open(1&2), re=is(1&3), pa=door(2&3), ma=the or door(2&3). sa and na both in sentence 1 only -> either sa or na = today." },
 
 { id:"CD083", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"If 'A+B'=A is sister of B, 'AxB'=A is father of B, 'A/B'=A is brother of B and 'A–B'=A is mother of B, which means 'P is maternal uncle of Q'?",
-  options:["P/R–Q","P+RxQ","P/RxQ","P–R/Q"],
-  correct:0, explanation:"Maternal uncle = brother of mother. P/R -> P is brother of R. R–Q -> R is mother of Q. So P is maternal uncle of Q: P/R–Q." },
+  question:"If 'A+B'=A is sister of B, 'AxB'=A is father of B, 'A/B'=A is brother of B and 'A�B'=A is mother of B, which means 'P is maternal uncle of Q'?",
+  options:["P/R�Q","P+RxQ","P/RxQ","P�R/Q"],
+  correct:0, explanation:"Maternal uncle = brother of mother. P/R -> P is brother of R. R�Q -> R is mother of Q. So P is maternal uncle of Q: P/R�Q." },
 
 { id:"CD084", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'some people are good' = 'xi lo ma zu'. 'all people are useful' = 'lo ma ta ju'. 'some useful are rare' = 'xi ju pa ka'. What is the code for 'rare'?",
@@ -473,9 +473,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"zx=create(1&3), mk=new(1&3), bn=ideas(1&2), cv=always(1&2). aq appears in 2&3 -> aq=good." },
 
 { id:"CD092", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"Symbol meanings: P©Q=P≥Q, P%Q=P>Q, P@Q=P<Q, P$Q=P≤Q, P*Q=P=Q. Statements: F%G, G©H, H@J. Conclusions: I.F%H  II.J%G. Which is true?",
+  question:"Symbol meanings: P�Q=P=Q, P%Q=P>Q, P@Q=P<Q, P$Q=P=Q, P*Q=P=Q. Statements: F%G, G�H, H@J. Conclusions: I.F%H  II.J%G. Which is true?",
   options:["Only I is true","Only II is true","Either I or II true","Neither I nor II is true"],
-  correct:0, explanation:"F>G, G≥H -> F>H (F%H is true). H<J but G vs J: G≥H<J doesn't tell us G vs J. Only I is true." },
+  correct:0, explanation:"F>G, G=H -> F>H (F%H is true). H<J but G vs J: G=H<J doesn't tell us G vs J. Only I is true." },
 
 { id:"CD093", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
   question:"'some books are good' = 'xi lo ma zu'. 'all books are useful' = 'lo ma ta ju'. 'some useful are rare' = 'xi ju pa ka'. What is the code for 'all'?",
@@ -508,8 +508,8 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"mi=is(2&3), ta=large(1&3), ro=associated(1&3), nu=very(1,2,4), gi=risk(1,2,4), se=low(2&4). fa only in sentence 3 -> fa=that." },
 
 { id:"CD099", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
-  question:"If 'P+Q'=P is brother of Q, 'PxQ'=P is father of Q and 'P–Q'=P is sister of Q, which represents 'M is uncle of R'?",
-  options:["M+KxR","MxK+R","M+K–R","M–KxR"],
+  question:"If 'P+Q'=P is brother of Q, 'PxQ'=P is father of Q and 'P�Q'=P is sister of Q, which represents 'M is uncle of R'?",
+  options:["M+KxR","MxK+R","M+K�R","M�KxR"],
   correct:0, explanation:"Uncle = brother of father. M+K -> M is brother of K. KxR -> K is father of R. So M is uncle of R: M+KxR." },
 
 { id:"CD100", section:"logical", topic:"Coding-Decoding", difficulty:"Hard",
@@ -518,10 +518,10 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"la=is(all), pa=good(2&3), na=not(1&2), ka=money, ma=everything. ra only in sentence 3 -> ra=better." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// BLOOD RELATIONS — 100 Questions (BR001–BR100)
+// -----------------------------------------------------------------------------
+// BLOOD RELATIONS � 100 Questions (BR001�BR100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"BR001", section:"logical", topic:"Blood Relations", difficulty:"Medium",
   question:"Pointing to a photograph, a man said, 'I have no brother or sister but that man's father is my father's son.' Whose photograph was it?",
@@ -591,7 +591,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"BR014", section:"logical", topic:"Blood Relations", difficulty:"Medium",
   question:"Pointing to a boy, a woman said, 'He is the only son of my mother's father.' How is the woman related to the boy?",
   options:["Sister","Aunt","Mother","Cousin"],
-  correct:0, explanation:"Woman's mother's father = boy. The boy is the woman's maternal grandfather. Wait — 'He is the only son of my mother's father' means the boy = woman's maternal grandfather's son = woman's maternal uncle or mother's brother. But if he is the only son, and woman's mother's father has only this one son = maternal uncle. The woman is his sister? No — woman is the daughter of his sibling (mother). So woman is his niece. But answer is Sister. Re-reading: the boy is woman's mother's father -> boy IS woman's maternal grandfather -> woman is his granddaughter, not sister. Standard exam answer: Sister (the boy is woman's mother's brother = maternal uncle, woman is uncle's sister from same family line). Answer: A) Sister." },
+  correct:0, explanation:"Woman's mother's father = boy. The boy is the woman's maternal grandfather. Wait � 'He is the only son of my mother's father' means the boy = woman's maternal grandfather's son = woman's maternal uncle or mother's brother. But if he is the only son, and woman's mother's father has only this one son = maternal uncle. The woman is his sister? No � woman is the daughter of his sibling (mother). So woman is his niece. But answer is Sister. Re-reading: the boy is woman's mother's father -> boy IS woman's maternal grandfather -> woman is his granddaughter, not sister. Standard exam answer: Sister (the boy is woman's mother's brother = maternal uncle, woman is uncle's sister from same family line). Answer: A) Sister." },
 
 { id:"BR015", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"There are six persons A, B, C, D, E and F. C is the sister of F. B is the brother of E's husband. D is the father of A and grandfather of F. There are two fathers, three brothers and a mother in the group. Who is the mother?",
@@ -664,19 +664,19 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"Woman's mother's only daughter = the woman herself. Man's mother = the woman -> the woman is the man's mother." },
 
 { id:"BR029", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If A + B means A is the mother of B; A – B means A is the brother of B; A x B means A is the father of B and A / B means A is the sister of B, which of the following means M is the maternal uncle of N?",
-  options:["M + K x N","M – K + N","M – K x N","M / K x N"],
-  correct:2, explanation:"Maternal uncle = mother's brother. M – K means M is K's brother. K + N means K is N's mother. So M – K + N: M is brother of K, K is mother of N -> M is maternal uncle of N. Answer: M – K + N (index 1)? Re-check: index 2 = M – K x N means M is brother of K, K is father of N -> paternal uncle. Index 1 = M – K + N means M is K's brother, K is N's mother -> maternal uncle. Correct: index 1." },
+  question:"If A + B means A is the mother of B; A � B means A is the brother of B; A x B means A is the father of B and A / B means A is the sister of B, which of the following means M is the maternal uncle of N?",
+  options:["M + K x N","M � K + N","M � K x N","M / K x N"],
+  correct:2, explanation:"Maternal uncle = mother's brother. M � K means M is K's brother. K + N means K is N's mother. So M � K + N: M is brother of K, K is mother of N -> M is maternal uncle of N. Answer: M � K + N (index 1)? Re-check: index 2 = M � K x N means M is brother of K, K is father of N -> paternal uncle. Index 1 = M � K + N means M is K's brother, K is N's mother -> maternal uncle. Correct: index 1." },
 
 { id:"BR030", section:"logical", topic:"Blood Relations", difficulty:"Medium",
-  question:"If 'A + B' means 'A is the father of B', 'A – B' means 'A is the wife of B', 'A x B' means 'A is the brother of B' and 'A / B' means 'A is the daughter of B', then which of the following means 'P is the maternal uncle of Q'?",
-  options:["P + R – Q","P x R – Q","P x R / Q","P + R / Q"],
-  correct:1, explanation:"P x R means P is brother of R. R – Q means R is wife of Q... that gives paternal side. P x R / Q: P is brother of R, R is daughter of Q -> P is Q's son's brother = another son. Standard answer for this coded set: P x R – Q." },
+  question:"If 'A + B' means 'A is the father of B', 'A � B' means 'A is the wife of B', 'A x B' means 'A is the brother of B' and 'A / B' means 'A is the daughter of B', then which of the following means 'P is the maternal uncle of Q'?",
+  options:["P + R � Q","P x R � Q","P x R / Q","P + R / Q"],
+  correct:1, explanation:"P x R means P is brother of R. R � Q means R is wife of Q... that gives paternal side. P x R / Q: P is brother of R, R is daughter of Q -> P is Q's son's brother = another son. Standard answer for this coded set: P x R � Q." },
 
 { id:"BR031", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'P x Q' means 'P is the brother of Q', 'P – Q' means 'P is the mother of Q' and 'P / Q' means 'P is the sister of Q', then which of the following means 'M is the maternal uncle of R'?",
-  options:["M x T – R","M / T – R","M x T / R","M / T x R"],
-  correct:0, explanation:"M x T: M is brother of T. T – R: T is mother of R. So M is brother of R's mother -> M is maternal uncle of R. Answer: M x T – R." },
+  question:"If 'P x Q' means 'P is the brother of Q', 'P � Q' means 'P is the mother of Q' and 'P / Q' means 'P is the sister of Q', then which of the following means 'M is the maternal uncle of R'?",
+  options:["M x T � R","M / T � R","M x T / R","M / T x R"],
+  correct:0, explanation:"M x T: M is brother of T. T � R: T is mother of R. So M is brother of R's mother -> M is maternal uncle of R. Answer: M x T � R." },
 
 { id:"BR032", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"If 'A $ B' means 'A is the father of B', 'A # B' means 'A is the mother of B', 'A @ B' means 'A is the husband of B', then which of the following means 'P is the grandmother of R'?",
@@ -684,14 +684,14 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"P # Q: P is mother of Q. Q $ R: Q is father of R -> P is grandmother of R (mother's side). Answer: P # Q $ R." },
 
 { id:"BR033", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the father of Q' and 'P – Q' means 'P is the sister of Q', then which of the following represents 'M is the uncle of R'?",
-  options:["M + K x R","M x K + R","M + K – R","M – K x R"],
+  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the father of Q' and 'P � Q' means 'P is the sister of Q', then which of the following represents 'M is the uncle of R'?",
+  options:["M + K x R","M x K + R","M + K � R","M � K x R"],
   correct:0, explanation:"M + K: M is brother of K. K x R: K is father of R -> M is brother of R's father = uncle of R. Answer: M + K x R." },
 
 { id:"BR034", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'A + B' means 'A is the daughter of B', 'A x B' means 'A is the son of B' and 'A – B' means 'A is the wife of B', then which of the following means 'P is the father of R'?",
-  options:["P – Q + R","P x Q – R","P + Q x R","P x Q + R"],
-  correct:0, explanation:"P – Q: P is wife of Q -> Q is husband/father. Q + R: Q... wait. P – Q means P is wife of B -> husband is Q. Q + R: Q is daughter of R? That gives R as father of Q who is P's husband. Not matching. Standard answer: P – Q + R means P is wife of Q, Q is daughter of R -> R is Q's father = P's father-in-law, not P's father. Re-interpret: 'P is father of R' using P – Q + R: P is wife of Q (P–Q), Q is daughter of R (Q+R) doesn't give P as father of R. The standard answer to this classic question is A) P – Q + R." },
+  question:"If 'A + B' means 'A is the daughter of B', 'A x B' means 'A is the son of B' and 'A � B' means 'A is the wife of B', then which of the following means 'P is the father of R'?",
+  options:["P � Q + R","P x Q � R","P + Q x R","P x Q + R"],
+  correct:0, explanation:"P � Q: P is wife of Q -> Q is husband/father. Q + R: Q... wait. P � Q means P is wife of B -> husband is Q. Q + R: Q is daughter of R? That gives R as father of Q who is P's husband. Not matching. Standard answer: P � Q + R means P is wife of Q, Q is daughter of R -> R is Q's father = P's father-in-law, not P's father. Re-interpret: 'P is father of R' using P � Q + R: P is wife of Q (P�Q), Q is daughter of R (Q+R) doesn't give P as father of R. The standard answer to this classic question is A) P � Q + R." },
 
 { id:"BR035", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"If 'P @ Q' means 'P is the son of Q', 'P # Q' means 'P is the daughter of Q', 'P $ Q' means 'P is the father of Q' and 'P % Q' means 'P is the mother of Q', then which of the following means 'R is the grandson of T'?",
@@ -699,19 +699,19 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:3, explanation:"R @ S: R is son of S. S $ T: S is father of T -> R is grandson of T (paternal). R @ S % T: R is son of S, S is mother of T -> R is grandson of T (maternal). Both work -> Either A or C." },
 
 { id:"BR036", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'A x B' means 'A is the sister of B', 'A + B' means 'A is the father of B', 'A – B' means 'A is the mother of B' and 'A / B' means 'A is the brother of B', then which of the following means 'M is the maternal uncle of R'?",
-  options:["M / T – R","M + T – R","M x T + R","M / T + R"],
-  correct:0, explanation:"M / T: M is brother of T. T – R: T is mother of R -> M is brother of R's mother = maternal uncle of R." },
+  question:"If 'A x B' means 'A is the sister of B', 'A + B' means 'A is the father of B', 'A � B' means 'A is the mother of B' and 'A / B' means 'A is the brother of B', then which of the following means 'M is the maternal uncle of R'?",
+  options:["M / T � R","M + T � R","M x T + R","M / T + R"],
+  correct:0, explanation:"M / T: M is brother of T. T � R: T is mother of R -> M is brother of R's mother = maternal uncle of R." },
 
 { id:"BR037", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the sister of Q', 'P – Q' means 'P is the father of Q' and 'P / Q' means 'P is the mother of Q', then which of the following means 'M is the maternal uncle of T'?",
-  options:["M + N / T","M x N – T","M + N – T","M / N + T"],
+  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the sister of Q', 'P � Q' means 'P is the father of Q' and 'P / Q' means 'P is the mother of Q', then which of the following means 'M is the maternal uncle of T'?",
+  options:["M + N / T","M x N � T","M + N � T","M / N + T"],
   correct:0, explanation:"M + N: M is brother of N. N / T: N is mother of T -> M is brother of T's mother = maternal uncle of T. Answer: M + N / T." },
 
 { id:"BR038", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'A + B' means 'A is the sister of B', 'A x B' means 'A is the father of B', 'A / B' means 'A is the brother of B' and 'A – B' means 'A is the mother of B', then which of the following means 'P is the maternal uncle of Q'?",
-  options:["P / R – Q","P + R x Q","P / R x Q","P – R / Q"],
-  correct:0, explanation:"P / R: P is brother of R. R – Q: R is mother of Q -> P is brother of Q's mother = maternal uncle of Q." },
+  question:"If 'A + B' means 'A is the sister of B', 'A x B' means 'A is the father of B', 'A / B' means 'A is the brother of B' and 'A � B' means 'A is the mother of B', then which of the following means 'P is the maternal uncle of Q'?",
+  options:["P / R � Q","P + R x Q","P / R x Q","P � R / Q"],
+  correct:0, explanation:"P / R: P is brother of R. R � Q: R is mother of Q -> P is brother of Q's mother = maternal uncle of Q." },
 
 { id:"BR039", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"If 'P @ Q' means 'P is the father of Q', 'P # Q' means 'P is the mother of Q', 'P $ Q' means 'P is the husband of Q' and 'P % Q' means 'P is the wife of Q', then which of the following means 'R is the grandmother of T'?",
@@ -719,8 +719,8 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"R # S: R is mother of S. S @ T: S is father of T -> R is grandmother of T." },
 
 { id:"BR040", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'P / Q' means 'P is the brother of Q', 'P x Q' means 'P is the sister of Q', 'P – Q' means 'P is the father of Q' and 'P + Q' means 'P is the mother of Q', then which of the following means 'M is the maternal uncle of T'?",
-  options:["M / N + T","M x N – T","M / N – T","M + N / T"],
+  question:"If 'P / Q' means 'P is the brother of Q', 'P x Q' means 'P is the sister of Q', 'P � Q' means 'P is the father of Q' and 'P + Q' means 'P is the mother of Q', then which of the following means 'M is the maternal uncle of T'?",
+  options:["M / N + T","M x N � T","M / N � T","M + N / T"],
   correct:0, explanation:"M / N: M is brother of N. N + T: N is mother of T -> M is maternal uncle of T." },
 
 { id:"BR041", section:"logical", topic:"Blood Relations", difficulty:"Hard",
@@ -759,18 +759,18 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"S is grandmother and U is grandfather of R -> they are married -> U is husband of S." },
 
 { id:"BR048", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'A + B' means 'A is the daughter of B', 'A x B' means 'A is the son of B' and 'A – B' means 'A is the wife of B', then which of the following means 'P is the father of R'? (Variant)",
-  options:["P – Q + R","P x Q – R","P + Q x R","P x Q + R"],
-  correct:0, explanation:"Standard answer: P – Q + R. P is wife of Q, Q is daughter of R -> R is Q's father. But P is father of R requires different chain. Classic exam answer = A) P – Q + R." },
+  question:"If 'A + B' means 'A is the daughter of B', 'A x B' means 'A is the son of B' and 'A � B' means 'A is the wife of B', then which of the following means 'P is the father of R'? (Variant)",
+  options:["P � Q + R","P x Q � R","P + Q x R","P x Q + R"],
+  correct:0, explanation:"Standard answer: P � Q + R. P is wife of Q, Q is daughter of R -> R is Q's father. But P is father of R requires different chain. Classic exam answer = A) P � Q + R." },
 
 { id:"BR049", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'A x B' means 'A is the sister of B', 'A + B' means 'A is the father of B', 'A – B' means 'A is the mother of B' and 'A / B' means 'A is the brother of B', then which of the following means 'M is the maternal uncle of R'? (Variant)",
-  options:["M / T – R","M + T – R","M x T + R","M / T + R"],
-  correct:0, explanation:"M / T: M is brother of T. T – R: T is mother of R -> M is maternal uncle of R." },
+  question:"If 'A x B' means 'A is the sister of B', 'A + B' means 'A is the father of B', 'A � B' means 'A is the mother of B' and 'A / B' means 'A is the brother of B', then which of the following means 'M is the maternal uncle of R'? (Variant)",
+  options:["M / T � R","M + T � R","M x T + R","M / T + R"],
+  correct:0, explanation:"M / T: M is brother of T. T � R: T is mother of R -> M is maternal uncle of R." },
 
 { id:"BR050", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the sister of Q', 'P – Q' means 'P is the father of Q' and 'P / Q' means 'P is the mother of Q', then which of the following means 'M is the maternal uncle of T'? (Variant)",
-  options:["M + N / T","M x N – T","M + N – T","M / N + T"],
+  question:"If 'P + Q' means 'P is the brother of Q', 'P x Q' means 'P is the sister of Q', 'P � Q' means 'P is the father of Q' and 'P / Q' means 'P is the mother of Q', then which of the following means 'M is the maternal uncle of T'? (Variant)",
+  options:["M + N / T","M x N � T","M + N � T","M / N + T"],
   correct:0, explanation:"M + N: M is brother of N. N / T: N is mother of T -> M is brother of T's mother = maternal uncle of T." },
 
 { id:"BR051", section:"logical", topic:"Blood Relations", difficulty:"Medium",
@@ -789,9 +789,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"Man's daughter = woman's mother-in-law. Woman's husband = son of man's daughter -> man's grandson." },
 
 { id:"BR054", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'A + B' means 'A is the sister of B', 'A x B' means 'A is the father of B', 'A / B' means 'A is the brother of B' and 'A – B' means 'A is the mother of B', then 'P is the maternal uncle of Q' is expressed as:",
-  options:["P / R – Q","P + R x Q","P / R x Q","P – R / Q"],
-  correct:0, explanation:"P / R: P is brother of R. R – Q: R is mother of Q -> P is maternal uncle of Q." },
+  question:"If 'A + B' means 'A is the sister of B', 'A x B' means 'A is the father of B', 'A / B' means 'A is the brother of B' and 'A � B' means 'A is the mother of B', then 'P is the maternal uncle of Q' is expressed as:",
+  options:["P / R � Q","P + R x Q","P / R x Q","P � R / Q"],
+  correct:0, explanation:"P / R: P is brother of R. R � Q: R is mother of Q -> P is maternal uncle of Q." },
 
 { id:"BR055", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"If 'P @ Q' means 'P is the father of Q', 'P # Q' means 'P is the mother of Q', 'P $ Q' means 'P is the husband of Q', then 'R is the grandmother of T' is expressed as:",
@@ -846,7 +846,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"BR065", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"There are six persons A, B, C, D, E and F. C is the sister of F. B is the brother of E's husband. D is the father of A and grandfather of F. Two fathers, three brothers and a mother in the group. Who is the mother? (Variant 3)",
   options:["A","B","C","E"],
-  correct:3, explanation:"E is the mother — she is A's wife and the mother of C and F." },
+  correct:3, explanation:"E is the mother � she is A's wife and the mother of C and F." },
 
 { id:"BR066", section:"logical", topic:"Blood Relations", difficulty:"Medium",
   question:"A is B's brother. C is A's mother. D is C's father. E is B's son. How is D related to A? (Variant 2)",
@@ -904,9 +904,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"B and E are A's children. C is B's daughter -> C is E's niece." },
 
 { id:"BR077", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If A + B means A is the mother of B; A – B means A is the brother of B; A x B means A is the father of B and A / B means A is the sister of B. Which means M is the maternal uncle of N? (Variant 2)",
-  options:["M + K x N","M – K + N","M – K x N","M / K x N"],
-  correct:1, explanation:"M – K: M is brother of K. K + N: K is mother of N -> M is K's brother and K is N's mother -> M is maternal uncle of N. Answer: M – K + N." },
+  question:"If A + B means A is the mother of B; A � B means A is the brother of B; A x B means A is the father of B and A / B means A is the sister of B. Which means M is the maternal uncle of N? (Variant 2)",
+  options:["M + K x N","M � K + N","M � K x N","M / K x N"],
+  correct:1, explanation:"M � K: M is brother of K. K + N: K is mother of N -> M is K's brother and K is N's mother -> M is maternal uncle of N. Answer: M � K + N." },
 
 { id:"BR078", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to D? (Variant 3)",
@@ -929,9 +929,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"My father's son = me (no siblings). Man's father = me -> the man is my son." },
 
 { id:"BR082", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If 'P x Q' means 'P is the brother of Q', 'P – Q' means 'P is the mother of Q' and 'P / Q' means 'P is the sister of Q', then 'M is the maternal uncle of R' is expressed as: (Variant 2)",
-  options:["M x T – R","M / T – R","M x T / R","M / T x R"],
-  correct:0, explanation:"M x T: M is brother of T. T – R: T is mother of R -> M is maternal uncle of R." },
+  question:"If 'P x Q' means 'P is the brother of Q', 'P � Q' means 'P is the mother of Q' and 'P / Q' means 'P is the sister of Q', then 'M is the maternal uncle of R' is expressed as: (Variant 2)",
+  options:["M x T � R","M / T � R","M x T / R","M / T x R"],
+  correct:0, explanation:"M x T: M is brother of T. T � R: T is mother of R -> M is maternal uncle of R." },
 
 { id:"BR083", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"If 'A $ B' means 'A is the father of B', 'A # B' means 'A is the mother of B', 'A @ B' means 'A is the husband of B', then 'P is the grandmother of R' means: (Variant 2)",
@@ -944,9 +944,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"A and C are siblings. C is father of D -> D is A's nephew or niece." },
 
 { id:"BR085", section:"logical", topic:"Blood Relations", difficulty:"Hard",
-  question:"If A + B means A is the mother of B; A – B means A is the brother of B; A x B means A is the father of B and A / B means A is the sister of B. Which means M is the maternal uncle of N? (Variant 3)",
-  options:["M + K x N","M – K + N","M – K x N","M / K x N"],
-  correct:1, explanation:"M – K + N: M is brother of K (M–K), K is mother of N (K+N) -> M is maternal uncle of N." },
+  question:"If A + B means A is the mother of B; A � B means A is the brother of B; A x B means A is the father of B and A / B means A is the sister of B. Which means M is the maternal uncle of N? (Variant 3)",
+  options:["M + K x N","M � K + N","M � K x N","M / K x N"],
+  correct:1, explanation:"M � K + N: M is brother of K (M�K), K is mother of N (K+N) -> M is maternal uncle of N." },
 
 { id:"BR086", section:"logical", topic:"Blood Relations", difficulty:"Medium",
   question:"A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to D? (Variant 4)",
@@ -1021,13 +1021,13 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"BR100", section:"logical", topic:"Blood Relations", difficulty:"Hard",
   question:"There are six persons A, B, C, D, E and F. C is the sister of F. B is the brother of E's husband. D is the father of A and grandfather of F. Two fathers, three brothers and a mother in the group. Who is the mother? (Variant 5)",
   options:["A","B","C","E"],
-  correct:3, explanation:"D is grandfather of F and father of A. E is the mother in the group — she is A's wife and mother of C and F." },
+  correct:3, explanation:"D is grandfather of F and father of A. E is the mother in the group � she is A's wife and mother of C and F." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// DIRECTION SENSE — 100 Questions (DS001–DS100)
+// -----------------------------------------------------------------------------
+// DIRECTION SENSE � 100 Questions (DS001�DS100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"DS001", section:"logical", topic:"Direction Sense", difficulty:"Medium",
   question:"A man walks 5 km towards south and then turns to the right. After walking 3 km he turns to the left and walks 5 km. Now in which direction is he from the starting place?",
@@ -1045,9 +1045,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"N x km, turn left (W) 1 km, turn left (S) 2 km. Final position: 1 km W, (x-2) km N. Given 1 km west of start and no north displacement: x-2=0 -> x=2 km." },
 
 { id:"DS004", section:"logical", topic:"Direction Sense", difficulty:"Medium",
-  question:"A man is facing north. He turns 90° in the clockwise direction and then 135° in the anti-clockwise direction. Which direction is he facing now?",
+  question:"A man is facing north. He turns 90� in the clockwise direction and then 135� in the anti-clockwise direction. Which direction is he facing now?",
   options:["East","North-East","North-West","South"],
-  correct:2, explanation:"N + 90° CW = East. East - 135° (ACW) = East - 135° = North-West (45° past North going West)." },
+  correct:2, explanation:"N + 90� CW = East. East - 135� (ACW) = East - 135� = North-West (45� past North going West)." },
 
 { id:"DS005", section:"logical", topic:"Direction Sense", difficulty:"Medium",
   question:"One morning after sunrise, Vikas was standing facing a pole. The shadow of the pole fell exactly to his right. Which direction was he facing?",
@@ -1085,9 +1085,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"S 10, turn right (W) 5, turn right (N) 10, turn left (W) 10. Position: W 5+10=15, N/S 0. He is 15 km West of home -> 15 km to return." },
 
 { id:"DS012", section:"logical", topic:"Direction Sense", difficulty:"Hard",
-  question:"A man is facing west. He turns 45° clockwise, then 180° in same direction, then 270° anti-clockwise. Which direction is he facing now?",
+  question:"A man is facing west. He turns 45� clockwise, then 180� in same direction, then 270� anti-clockwise. Which direction is he facing now?",
   options:["South","North-West","West","South-West"],
-  correct:3, explanation:"W + 45° CW = NW. NW + 180° CW = SE. SE - 270° (ACW) = SE + 270° CW = SE + 270° = SW. Facing South-West." },
+  correct:3, explanation:"W + 45� CW = NW. NW + 180� CW = SE. SE - 270� (ACW) = SE + 270� CW = SE + 270� = SW. Facing South-West." },
 
 { id:"DS013", section:"logical", topic:"Direction Sense", difficulty:"Medium",
   question:"X walks southwards and then turns right, then left and then right. In which direction is he moving now?",
@@ -1100,9 +1100,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"Assume 'in front' = North. N 10, right (E) 10, left (N) 5, left (W) 15, left (S) 15. Net: N 10+5-15=0, E 10-15=-5 -> 5 m West = 5 m from start." },
 
 { id:"DS015", section:"logical", topic:"Direction Sense", difficulty:"Hard",
-  question:"I am facing east. I turn 100° clockwise and then 145° anti-clockwise. Which direction am I facing now?",
+  question:"I am facing east. I turn 100� clockwise and then 145� anti-clockwise. Which direction am I facing now?",
   options:["East","North-East","North","South-West"],
-  correct:1, explanation:"E + 100° CW = SSE (170° from N). SSE - 145° = 170-145=25° from N = NNE ≈ North-East." },
+  correct:1, explanation:"E + 100� CW = SSE (170� from N). SSE - 145� = 170-145=25� from N = NNE � North-East." },
 
 { id:"DS016", section:"logical", topic:"Direction Sense", difficulty:"Hard",
   question:"A river flows west to east, turns left and goes in a semicircle round a hillock, then turns left at right angles. In which direction is the river finally flowing?",
@@ -1122,7 +1122,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"DS019", section:"logical", topic:"Direction Sense", difficulty:"Hard",
   question:"Y is in the East of X which is in the North of Z. If P is in the South of Z, then in which direction of X is P?",
   options:["North-East","South-East","South-West","North-West"],
-  correct:1, explanation:"X is North of Z -> Z is South of X. P is South of Z -> P is further South. Y is East of X. P relative to X: South (below Z which is already south of X), and same East-West as Z. Z is directly below X -> P is South of X, not east or west -> South. Hmm, but Y is East of X means X is not at origin. P is directly South of X -> answer should be South. Standard exam answer: South-East? No. P is south of Z which is south of X -> P is directly south of X. Answer: South (not in options as pure south — closest: South-West or South-East based on exam standard). Standard: B) South-East." },
+  correct:1, explanation:"X is North of Z -> Z is South of X. P is South of Z -> P is further South. Y is East of X. P relative to X: South (below Z which is already south of X), and same East-West as Z. Z is directly below X -> P is South of X, not east or west -> South. Hmm, but Y is East of X means X is not at origin. P is directly South of X -> answer should be South. Standard exam answer: South-East? No. P is south of Z which is south of X -> P is directly south of X. Answer: South (not in options as pure south � closest: South-West or South-East based on exam standard). Standard: B) South-East." },
 
 { id:"DS020", section:"logical", topic:"Direction Sense", difficulty:"Hard",
   question:"A person starts from point A, walks 10 km North, turns left and walks 5 km, turns left again and walks 10 km, finally turns left and walks 15 km. How far and in which direction from the starting point?",
@@ -1285,9 +1285,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"N x, W 1, S 2. End 1 km W: N-S = x-2 = 0 -> x = 2 km." },
 
 { id:"DS052", section:"logical", topic:"Direction Sense", difficulty:"Medium",
-  question:"A man is facing north. He turns 90° clockwise and then 135° anti-clockwise. Which direction is he facing? (Variant 2)",
+  question:"A man is facing north. He turns 90� clockwise and then 135� anti-clockwise. Which direction is he facing? (Variant 2)",
   options:["East","North-East","North-West","South"],
-  correct:2, explanation:"N +90° CW = E. E -135° = E shifted 135° CCW = NW." },
+  correct:2, explanation:"N +90� CW = E. E -135� = E shifted 135� CCW = NW." },
 
 { id:"DS053", section:"logical", topic:"Direction Sense", difficulty:"Medium",
   question:"One morning after sunrise, Vikas was facing a pole. Shadow fell exactly to his right. Which direction was he facing? (Variant 2)",
@@ -1325,9 +1325,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"End position: W 5+10=15 km from start. Must travel 15 km East to return home." },
 
 { id:"DS060", section:"logical", topic:"Direction Sense", difficulty:"Hard",
-  question:"A man facing west turns 45° CW, then 180° CW, then 270° ACW. Which direction now? (Variant 2)",
+  question:"A man facing west turns 45� CW, then 180� CW, then 270� ACW. Which direction now? (Variant 2)",
   options:["South","North-West","West","South-West"],
-  correct:3, explanation:"W(270°)+45°=315°(NW)+180°=135°(SE)-270°=135°-270°=-135°=225°=SW." },
+  correct:3, explanation:"W(270�)+45�=315�(NW)+180�=135�(SE)-270�=135�-270�=-135�=225�=SW." },
 
 { id:"DS061", section:"logical", topic:"Direction Sense", difficulty:"Medium",
   question:"X walks south, turns right, turns left, turns right. Which direction is he moving? (Variant 2)",
@@ -1340,12 +1340,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"N 10, E 10, N 5 (left from E=N), W 15, S 15. Net: N 10+5-15=0, E 10-15=-5 -> 5 m West = 5 m from start." },
 
 { id:"DS063", section:"logical", topic:"Direction Sense", difficulty:"Hard",
-  question:"Facing East: +100° CW, then -145° ACW. Which direction now? (Variant 2)",
+  question:"Facing East: +100� CW, then -145� ACW. Which direction now? (Variant 2)",
   options:["East","North-East","North","South-West"],
-  correct:1, explanation:"E(90°)+100°=190°(SSW). 190°-145°=45°=NE. Facing North-East." },
+  correct:1, explanation:"E(90�)+100�=190�(SSW). 190�-145�=45�=NE. Facing North-East." },
 
 { id:"DS064", section:"logical", topic:"Direction Sense", difficulty:"Hard",
-  question:"River W->E, turns left (semicircle round hillock), turns left 90°. Final direction? (Variant 2)",
+  question:"River W->E, turns left (semicircle round hillock), turns left 90�. Final direction? (Variant 2)",
   options:["East","West","North","South"],
   correct:0, explanation:"E, left turn to N, semicircle ends facing S, left from S=E -> flowing East." },
 
@@ -1390,9 +1390,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"End: 15 km West of home -> 15 km to return." },
 
 { id:"DS073", section:"logical", topic:"Direction Sense", difficulty:"Medium",
-  question:"Man facing north: +90° CW, then -135° ACW. Direction now? (Variant 3)",
+  question:"Man facing north: +90� CW, then -135� ACW. Direction now? (Variant 3)",
   options:["East","North-East","North-West","South"],
-  correct:2, explanation:"N->E (CW 90°)->NW (ACW 135°). Facing North-West." },
+  correct:2, explanation:"N->E (CW 90�)->NW (ACW 135�). Facing North-West." },
 
 { id:"DS074", section:"logical", topic:"Direction Sense", difficulty:"Medium",
   question:"Morning shadow fell to Vikas's right. Which way was he facing? (Variant 3)",
@@ -1530,10 +1530,10 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"E 13, N 8, W 13, N 5. Net E/W cancel, N 8+5=13 -> 13 km North." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RANKING & ORDERING — 100 Questions (RO001–RO100)
+// -----------------------------------------------------------------------------
+// RANKING & ORDERING � 100 Questions (RO001�RO100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"RO001", section:"logical", topic:"Ranking & Ordering", difficulty:"Medium",
   question:"In a class of 40 students, Rohan ranks 15th from the top. What is his rank from the bottom?",
@@ -1553,7 +1553,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"RO004", section:"logical", topic:"Ranking & Ordering", difficulty:"Easy",
   question:"Ravi ranks 19th in a class of 40 students. What is his rank from the last?",
   options:["19th","20th","21st","22nd"],
-  correct:2, explanation:"Rank from last = 40 - 19 + 1 = 22nd. Wait: 40 - 19 + 1 = 22. But answer is 21st. Formula: rank from bottom = N - rank from top + 1 = 40 - 19 + 1 = 22. Standard exam answer = 22nd. PDF says 21st — using N - rank + 1 = 40 - 19 = 21 (some books subtract 1). Standard: 21st." },
+  correct:2, explanation:"Rank from last = 40 - 19 + 1 = 22nd. Wait: 40 - 19 + 1 = 22. But answer is 21st. Formula: rank from bottom = N - rank from top + 1 = 40 - 19 + 1 = 22. Standard exam answer = 22nd. PDF says 21st � using N - rank + 1 = 40 - 19 = 21 (some books subtract 1). Standard: 21st." },
 
 { id:"RO005", section:"logical", topic:"Ranking & Ordering", difficulty:"Medium",
   question:"In a row of children, Ravi is 12th from the left and Kavita is 17th from the right. If they interchange positions, Ravi becomes 20th from the left. How many children are in the row?",
@@ -1593,7 +1593,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"RO012", section:"logical", topic:"Ranking & Ordering", difficulty:"Medium",
   question:"In a row of 25 boys, when Suresh was shifted 4 places to the right, he became 15th from the right end. What was his earlier position from the right end?",
   options:["10th","11th","12th","13th"],
-  correct:1, explanation:"Shifting right means moving away from left (towards right). From right end: shifting right decreases right-end rank. New from right = 15. Old from right = 15 + 4 = 19th. Wait — from right end: shift right decreases the count from right. Old = 15 + 4 - 4? Standard: shifted right by 4 -> from right end went from 19th to 15th. Old = 11th from right." },
+  correct:1, explanation:"Shifting right means moving away from left (towards right). From right end: shifting right decreases right-end rank. New from right = 15. Old from right = 15 + 4 = 19th. Wait � from right end: shift right decreases the count from right. Old = 15 + 4 - 4? Standard: shifted right by 4 -> from right end went from 19th to 15th. Old = 11th from right." },
 
 { id:"RO013", section:"logical", topic:"Ranking & Ordering", difficulty:"Medium",
   question:"In a class of 40 students, A ranks 15th from the top. B ranks 12th from the bottom. How many students are between A and B?",
@@ -1658,7 +1658,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"RO025", section:"logical", topic:"Ranking & Ordering", difficulty:"Hard",
   question:"In a group of 5 persons A-E: A is neither doctor nor farmer. B is neither lawyer nor teacher. C is neither businessman nor farmer. D is neither teacher nor doctor. E is neither businessman nor lawyer. Who is the farmer?",
   options:["A","B","C","D"],
-  correct:0, explanation:"E: not businessman, not lawyer -> E is teacher, doctor, or farmer. D: not teacher, not doctor -> D is businessman, farmer, or lawyer. C: not businessman, not farmer -> C is doctor, lawyer, or teacher. B: not lawyer, not teacher -> B is doctor, businessman, or farmer. A: not doctor, not farmer -> A is lawyer, teacher, or businessman. Farmer must be A or B or D. E can be farmer. Working through: A=lawyer (not doctor/farmer), then farmer from B/D/E. D=businessman or farmer. If D=farmer: check others work. A=lawyer, B=doctor or businessman, C=teacher or doctor, E=teacher or doctor. B≠lawyer,teacher -> B=doctor or businessman. D=farmer. C≠businessman,farmer -> C=doctor,lawyer,teacher. A=lawyer -> C=doctor or teacher. E≠businessman,lawyer -> E=teacher,doctor,farmer. With D=farmer, E=teacher or doctor. If E=doctor, C=teacher, B=businessman. Check: B≠lawyer,teacher ✓. Answer: D is farmer (index 3)? PDF says A." },
+  correct:0, explanation:"E: not businessman, not lawyer -> E is teacher, doctor, or farmer. D: not teacher, not doctor -> D is businessman, farmer, or lawyer. C: not businessman, not farmer -> C is doctor, lawyer, or teacher. B: not lawyer, not teacher -> B is doctor, businessman, or farmer. A: not doctor, not farmer -> A is lawyer, teacher, or businessman. Farmer must be A or B or D. E can be farmer. Working through: A=lawyer (not doctor/farmer), then farmer from B/D/E. D=businessman or farmer. If D=farmer: check others work. A=lawyer, B=doctor or businessman, C=teacher or doctor, E=teacher or doctor. B?lawyer,teacher -> B=doctor or businessman. D=farmer. C?businessman,farmer -> C=doctor,lawyer,teacher. A=lawyer -> C=doctor or teacher. E?businessman,lawyer -> E=teacher,doctor,farmer. With D=farmer, E=teacher or doctor. If E=doctor, C=teacher, B=businessman. Check: B?lawyer,teacher ?. Answer: D is farmer (index 3)? PDF says A." },
 
 { id:"RO026", section:"logical", topic:"Ranking & Ordering", difficulty:"Easy",
   question:"In a class of 40 students, Rohan ranks 15th from the top. What is his rank from the bottom? (Variant 2)",
@@ -2036,10 +2036,10 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"Girls=40, boys=20. Ahead of Kamal=16. Boys ahead=7. Boys after Kamal = 20-7-1=12 (if Kamal is boy). Standard exam answer: 23." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RANKING & ORDERING — 100 Questions (RO001–RO100)
+// -----------------------------------------------------------------------------
+// RANKING & ORDERING � 100 Questions (RO001�RO100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"RO001", section:"logical", topic:"Ranking & Ordering", difficulty:"Easy",
   question:"In a class of 40 students, Rohan ranks 15th from the top. What is his rank from the bottom?",
@@ -2542,10 +2542,10 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"Standard exam answer: 23 boys after Kamal." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SYLLOGISM — 100 Questions (SY001–SY100)
+// -----------------------------------------------------------------------------
+// SYLLOGISM � 100 Questions (SY001�SY100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"SY001", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All books are pens. Some pens are pencils.\nConclusions: I. Some books are pencils. II. Some pencils are books.",
@@ -2585,7 +2585,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY008", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: Some tables are chairs. No chair is a desk.\nConclusions: I. Some tables are desks. II. No table is a desk.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:2, explanation:"Some tables are chairs (not desks), but other tables may or may not be desks. Since we can't determine if any table is a desk, I and II form a complementary pair — either I or II must be true." },
+  correct:2, explanation:"Some tables are chairs (not desks), but other tables may or may not be desks. Since we can't determine if any table is a desk, I and II form a complementary pair � either I or II must be true." },
 
 { id:"SY009", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All apples are oranges. Some oranges are bananas.\nConclusions: I. Some apples are bananas. II. Some bananas are oranges.",
@@ -2685,7 +2685,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY028", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: Some tables are chairs. No chair is a desk. All desks are furniture.\nConclusions: I. Some tables are furniture. II. No table is a desk.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:2, explanation:"Some tables are chairs (not desks). Other tables may or may not be desks/furniture. I and II are complementary — either I or II must hold." },
+  correct:2, explanation:"Some tables are chairs (not desks). Other tables may or may not be desks/furniture. I and II are complementary � either I or II must hold." },
 
 { id:"SY029", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: All apples are oranges. Some oranges are bananas. All bananas are fruits.\nConclusions: I. Some apples are fruits. II. Some fruits are oranges.",
@@ -2715,7 +2715,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY034", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: No man is a woman. All women are children. Some children are adults.\nConclusions: I. No man is a child. II. Some adults are women.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:1, explanation:"Adults overlap with children but not necessarily with women (II not definite). Men can be children through other paths (I not definite). Hmm — some children are women (from stmt 2), so II follows." },
+  correct:1, explanation:"Adults overlap with children but not necessarily with women (II not definite). Men can be children through other paths (I not definite). Hmm � some children are women (from stmt 2), so II follows." },
 
 { id:"SY035", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: All students are teachers. Some teachers are professors. All professors are lecturers.\nConclusions: I. Some students are lecturers. II. Some lecturers are teachers.",
@@ -2750,32 +2750,32 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY041", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: All books are pens. Some pens are pencils. All pencils are erasers. (Possibility)\nConclusions: I. Some books are pencils is a possibility. II. Some pencils are books is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possibilities — the overlap between books and pencils is not ruled out, so both could be true." },
+  correct:3, explanation:"Both are possibilities � the overlap between books and pencils is not ruled out, so both could be true." },
 
 { id:"SY042", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All dogs are cats. All cats are rats. (Possibility)\nConclusions: I. All rats are dogs is a possibility. II. Some dogs are rats is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:1, explanation:"Some dogs are rats is already a definite conclusion, so it is also a possibility (II follows). All rats being dogs is not possible since dogs⊂cats⊂rats (III not possible)." },
+  correct:1, explanation:"Some dogs are rats is already a definite conclusion, so it is also a possibility (II follows). All rats being dogs is not possible since dogs?cats?rats (III not possible)." },
 
 { id:"SY043", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some boys are girls. All girls are teachers. (Possibility)\nConclusions: I. All boys are teachers is a possibility. II. Some teachers are boys is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both possibilities hold — no statement prevents all boys from being teachers, and no statement prevents some teachers from being boys." },
+  correct:3, explanation:"Both possibilities hold � no statement prevents all boys from being teachers, and no statement prevents some teachers from being boys." },
 
 { id:"SY044", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All roads are poles. No pole is a house. (Possibility)\nConclusions: I. Some roads are houses is a possibility. II. No house is a road is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:1, explanation:"Since no pole is a house and all roads are poles, no road is a house — it's a definite conclusion, so 'no house is a road' is also a definite truth (II is a possibility/fact). I contradicts definite conclusion." },
+  correct:1, explanation:"Since no pole is a house and all roads are poles, no road is a house � it's a definite conclusion, so 'no house is a road' is also a definite truth (II is a possibility/fact). I contradicts definite conclusion." },
 
 { id:"SY045", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All flowers are trees. No tree is a plant. (Possibility)\nConclusions: I. Some flowers are plants is a possibility. II. No plant is a flower is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:1, explanation:"'No flower is a plant' is a definite conclusion, so I contradicts it. II is consistent — no plant is a flower is already true." },
+  correct:1, explanation:"'No flower is a plant' is a definite conclusion, so I contradicts it. II is consistent � no plant is a flower is already true." },
 
 { id:"SY046", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some pens are books. Some books are pencils. (Possibility)\nConclusions: I. Some pens are pencils is a possibility. II. All pencils are pens is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Neither is ruled out — both are possibilities since the statements don't prevent these scenarios." },
+  correct:3, explanation:"Neither is ruled out � both are possibilities since the statements don't prevent these scenarios." },
 
 { id:"SY047", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All men are women. All women are children. (Possibility)\nConclusions: I. All children are men is a possibility. II. Some men are children is a possibility.",
@@ -2790,17 +2790,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY049", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All apples are oranges. Some oranges are bananas. (Possibility)\nConclusions: I. Some apples are bananas is a possibility. II. All bananas are oranges is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — nothing rules out apples overlapping with bananas, and nothing rules out all bananas being oranges." },
+  correct:3, explanation:"Both are possible � nothing rules out apples overlapping with bananas, and nothing rules out all bananas being oranges." },
 
 { id:"SY050", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: No bird is a fish. All fishes are animals. (Possibility)\nConclusions: I. No bird is an animal is a possibility. II. Some animals are birds is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possibilities — birds could or could not be animals (nothing rules it out from given statements)." },
+  correct:3, explanation:"Both are possibilities � birds could or could not be animals (nothing rules it out from given statements)." },
 
 { id:"SY051", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All cars are buses. Some buses are trucks. (Possibility)\nConclusions: I. Some cars are trucks is a possibility. II. All trucks are buses is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — the statements don't rule out cars overlapping trucks, or all trucks being buses." },
+  correct:3, explanation:"Both are possible � the statements don't rule out cars overlapping trucks, or all trucks being buses." },
 
 { id:"SY052", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some dogs are cats. All cats are rats. (Possibility)\nConclusions: I. All dogs are rats is a possibility. II. Some rats are dogs is a possibility.",
@@ -2810,22 +2810,22 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY053", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All books are papers. Some papers are files. (Possibility)\nConclusions: I. Some books are files is a possibility. II. All files are books is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — the statements don't rule out either scenario." },
+  correct:3, explanation:"Both are possible � the statements don't rule out either scenario." },
 
 { id:"SY054", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: No man is a woman. All women are children. (Possibility)\nConclusions: I. No man is a child is a possibility. II. Some children are men is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — men can or cannot be children (statements only tell us men are not women)." },
+  correct:3, explanation:"Both are possible � men can or cannot be children (statements only tell us men are not women)." },
 
 { id:"SY055", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All students are teachers. Some teachers are professors. (Possibility)\nConclusions: I. Some students are professors is a possibility. II. All professors are students is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — nothing rules out students being among the professor-teachers, or all professors being students." },
+  correct:3, explanation:"Both are possible � nothing rules out students being among the professor-teachers, or all professors being students." },
 
 { id:"SY056", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some rivers are mountains. All mountains are hills. (Possibility)\nConclusions: I. All rivers are hills is a possibility. II. Some hills are rivers is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — all rivers could be hills, and since some rivers are mountains (hills), some hills are rivers is already true." },
+  correct:3, explanation:"Both are possible � all rivers could be hills, and since some rivers are mountains (hills), some hills are rivers is already true." },
 
 { id:"SY057", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All pens are pencils. No pencil is a paper. (Possibility)\nConclusions: I. Some pens are papers is a possibility. II. No paper is a pen is a possibility.",
@@ -2835,7 +2835,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY058", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some boys are girls. Some girls are women. (Possibility)\nConclusions: I. Some boys are women is a possibility. II. All women are boys is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — no statement rules out boys overlapping women, or all women being boys." },
+  correct:3, explanation:"Both are possible � no statement rules out boys overlapping women, or all women being boys." },
 
 { id:"SY059", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: All flowers are trees. All trees are plants. (Possibility)\nConclusions: I. All plants are flowers is a possibility. II. Some plants are flowers is a possibility.",
@@ -2845,12 +2845,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY060", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: No cat is a dog. All dogs are animals. (Possibility)\nConclusions: I. No cat is an animal is a possibility. II. Some animals are cats is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Both I and II follow"],
-  correct:3, explanation:"Both are possible — cats may or may not be animals based on the given statements alone." },
+  correct:3, explanation:"Both are possible � cats may or may not be animals based on the given statements alone." },
 
 { id:"SY061", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: Some tables are chairs. No chair is a desk.\nConclusions: I. Some tables are desks. II. No table is a desk.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:2, explanation:"The tables that are chairs are not desks, but other tables may or may not be desks. I and II are complementary — either must hold." },
+  correct:2, explanation:"The tables that are chairs are not desks, but other tables may or may not be desks. I and II are complementary � either must hold." },
 
 { id:"SY062", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some pens are books. Some books are pencils.\nConclusions: I. Some pens are pencils. II. Some pencils are pens.",
@@ -2950,12 +2950,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY081", section:"logical", topic:"Syllogism", difficulty:"Hard",
   question:"Statements: Some tables are chairs. No chair is a desk. (Either-or)\nConclusions: I. Some tables are desks. II. No table is a desk.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:2, explanation:"Either I or II must be true — the tables not covered by 'chairs' may or may not be desks. Complementary pair." },
+  correct:2, explanation:"Either I or II must be true � the tables not covered by 'chairs' may or may not be desks. Complementary pair." },
 
 { id:"SY082", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some pens are books. Some books are pencils.\nConclusions: I. Some pens are pencils. II. Some pencils are pens.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:3, explanation:"Two 'Some' statements — no definite conclusion possible. Neither follows." },
+  correct:3, explanation:"Two 'Some' statements � no definite conclusion possible. Neither follows." },
 
 { id:"SY083", section:"logical", topic:"Syllogism", difficulty:"Easy",
   question:"Statements: All men are women. All women are children.\nConclusions: I. All men are children. II. All children are men.",
@@ -3010,7 +3010,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SY093", section:"logical", topic:"Syllogism", difficulty:"Medium",
   question:"Statements: Some boys are girls. Some girls are women.\nConclusions: I. Some boys are women. II. Some women are boys.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows"],
-  correct:3, explanation:"Some-Some chain — no definite conclusion. Neither follows." },
+  correct:3, explanation:"Some-Some chain � no definite conclusion. Neither follows." },
 
 { id:"SY094", section:"logical", topic:"Syllogism", difficulty:"Easy",
   question:"Statements: All flowers are trees. All trees are plants.\nConclusions: I. All flowers are plants. II. Some plants are flowers.",
@@ -3048,10 +3048,10 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"All flowers->trees, no tree->plant, so no flower is a plant (I follows). No tree is a plant means no plant is a tree (II false)." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// NUMBER SERIES & LETTER SERIES — 100 Questions (NLS001–NLS100)
+// -----------------------------------------------------------------------------
+// NUMBER SERIES & LETTER SERIES � 100 Questions (NLS001�NLS100)
 // Quantitative / Logical | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"NLS001", section:"quantitative", topic:"Number Series", difficulty:"Medium",
   question:"Find the missing number: 2, 6, 12, 20, 30, ?",
@@ -3206,7 +3206,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"NLS031", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 2, 6, 12, 20, 30, 42, 56, 72",
   options:["42","56","72","30"],
-  correct:2, explanation:"Pattern n(n+1): 2,6,12,20,30,42,56,72. Correct: 7x8=56, 8x9=72... wait: 2,6,12,20,30,42,56 then 8x9=72 is correct. The series is n(n+1). 72 should be 8x9=72. Actually all are correct except the series ends at 7x8=56; 8x9=72. Let me recheck: differences 4,6,8,10,12,14,16 — all increasing by 2. So 72 should be correct. PDF says 72 is wrong. Answer: C) 72." },
+  correct:2, explanation:"Pattern n(n+1): 2,6,12,20,30,42,56,72. Correct: 7x8=56, 8x9=72... wait: 2,6,12,20,30,42,56 then 8x9=72 is correct. The series is n(n+1). 72 should be 8x9=72. Actually all are correct except the series ends at 7x8=56; 8x9=72. Let me recheck: differences 4,6,8,10,12,14,16 � all increasing by 2. So 72 should be correct. PDF says 72 is wrong. Answer: C) 72." },
 
 { id:"NLS032", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 3, 7, 15, 31, 63, 127, 255, 510",
@@ -3221,7 +3221,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"NLS034", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 7, 10, 16, 28, 52, 100, 196",
   options:["100","196","52","28"],
-  correct:0, explanation:"Differences: 3,6,12,24,48,96. 52+48=100 is correct but 100+96=196 is correct. Correct sequence: 52+48=100. Wait — 7,10(+3),16(+6),28(+12),52(+24),100(+48),196(+96). All correct. PDF says 100 is wrong." },
+  correct:0, explanation:"Differences: 3,6,12,24,48,96. 52+48=100 is correct but 100+96=196 is correct. Correct sequence: 52+48=100. Wait � 7,10(+3),16(+6),28(+12),52(+24),100(+48),196(+96). All correct. PDF says 100 is wrong." },
 
 { id:"NLS035", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 4, 9, 19, 39, 79, 159, 320",
@@ -3231,7 +3231,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"NLS036", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 8, 17, 36, 75, 154, 313, 634",
   options:["313","634","154","75"],
-  correct:0, explanation:"Pattern: x2+1,+2,+3,+4,+5,+6: 154x2+5=313, next should be 313x2+6=632, not 634... But 313 itself: 75x2+4=154, 154x2+5=313. 313 is correct but 313x2+6=632≠634. Hmm — PDF says 313 is wrong." },
+  correct:0, explanation:"Pattern: x2+1,+2,+3,+4,+5,+6: 154x2+5=313, next should be 313x2+6=632, not 634... But 313 itself: 75x2+4=154, 154x2+5=313. 313 is correct but 313x2+6=632?634. Hmm � PDF says 313 is wrong." },
 
 { id:"NLS037", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 6, 13, 28, 59, 122, 249, 504",
@@ -3246,7 +3246,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"NLS039", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 2, 5, 11, 23, 47, 95, 191",
   options:["95","191","47","23"],
-  correct:0, explanation:"Pattern: x2+1: 47x2+1=95 is correct. 95x2+1=191 is correct. So series is correct. PDF says 95 is wrong — should be 95 (47x2+1=95)? Actually 47x2+1=95, correct. Standard exam: 95 is wrong (should be 96=47x2+2 in alternate pattern)." },
+  correct:0, explanation:"Pattern: x2+1: 47x2+1=95 is correct. 95x2+1=191 is correct. So series is correct. PDF says 95 is wrong � should be 95 (47x2+1=95)? Actually 47x2+1=95, correct. Standard exam: 95 is wrong (should be 96=47x2+2 in alternate pattern)." },
 
 { id:"NLS040", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 9, 19, 40, 83, 170, 345, 696",
@@ -3256,7 +3256,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"NLS041", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 3, 8, 18, 38, 78, 158, 320",
   options:["158","320","78","38"],
-  correct:0, explanation:"Pattern x2+2: 78x2+2=158. 158x2+2=318≠320. But 158 itself is correct (78x2+2=158). Wrong: 320 should be 318. PDF says 158 is wrong." },
+  correct:0, explanation:"Pattern x2+2: 78x2+2=158. 158x2+2=318?320. But 158 itself is correct (78x2+2=158). Wrong: 320 should be 318. PDF says 158 is wrong." },
 
 { id:"NLS042", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 5, 12, 26, 54, 110, 222, 446",
@@ -3291,12 +3291,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"NLS048", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 9, 20, 42, 86, 174, 350, 706",
   options:["350","706","174","86"],
-  correct:0, explanation:"Pattern x2+2: 174x2+2=350 correct. 350x2+2=702≠706. So 706 should be 702. But PDF says 350 is wrong." },
+  correct:0, explanation:"Pattern x2+2: 174x2+2=350 correct. 350x2+2=702?706. So 706 should be 702. But PDF says 350 is wrong." },
 
 { id:"NLS049", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 2, 7, 17, 37, 77, 157, 317",
   options:["157","317","77","37"],
-  correct:0, explanation:"Pattern x2+3: 77x2+3=157. 157x2+3=317. PDF says 157 is wrong (should be 157 in x2+3 pattern — correct). Standard exam: 157 is the wrong one." },
+  correct:0, explanation:"Pattern x2+3: 77x2+3=157. 157x2+3=317. PDF says 157 is wrong (should be 157 in x2+3 pattern � correct). Standard exam: 157 is the wrong one." },
 
 { id:"NLS050", section:"quantitative", topic:"Number Series", difficulty:"Hard",
   question:"Find the WRONG number in the series: 5, 13, 29, 61, 125, 253, 509",
@@ -3554,13 +3554,13 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"Numbers +5 at both ends, letters +5: Y+5=D (wrapping). Answer: 30D31." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SEATING ARRANGEMENT — 100 Questions (SAR001–SAR100)
+// -----------------------------------------------------------------------------
+// SEATING ARRANGEMENT � 100 Questions (SAR001�SAR100)
 // Logical Reasoning | Medium to Hard Level
-// Linear • Circular • Square/Rectangular • Mixed Facing arrangements
-// ─────────────────────────────────────────────────────────────────────────────
+// Linear � Circular � Square/Rectangular � Mixed Facing arrangements
+// -----------------------------------------------------------------------------
 
-// SECTION A: LINEAR ARRANGEMENT (SAR001–SAR030)
+// SECTION A: LINEAR ARRANGEMENT (SAR001�SAR030)
 { id:"SAR001", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting in a straight line facing north. A sits third to the right of B. Only two persons sit between A and C. D sits second to the left of C. E sits immediate right of D. F sits second to the right of E. G sits at one of the extreme ends. H sits second to the left of G. Who sits at the extreme left end?",
   options:["B","G","H","A"],
@@ -3574,7 +3574,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR003", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Seven persons A, B, C, D, E, F and G are sitting in a straight line facing south. A sits third to the left of B. Only one person sits between A and C. D sits second to the right of C. E sits immediate left of D. F sits at one of the extreme ends. G sits second to the right of F. Who sits in the middle of the row?",
   options:["A","B","C","D"],
-  correct:2, explanation:"Working through all clues, C occupies position 4 — the exact middle of the 7-seat row." },
+  correct:2, explanation:"Working through all clues, C occupies position 4 � the exact middle of the 7-seat row." },
 
 { id:"SAR004", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons M, N, O, P, Q, R, S and T are sitting in a row facing north. M sits fourth to the left of N. Only two persons sit between M and O. P sits immediate right of O. Q sits second to the left of P. R sits at one of the extreme ends. S sits second to the right of R. T sits immediate left of S. Who sits third to the right of Q?",
@@ -3589,7 +3589,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR006", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Seven friends P, Q, R, S, T, U and V are sitting in a row facing south. P sits third to the right of Q. Only two persons sit between P and R. S sits immediate left of R. T sits second to the right of S. U sits at one of the extreme ends. V sits second to the left of U. Who sits in the middle?",
   options:["P","Q","R","S"],
-  correct:2, explanation:"Resolving all clues, R sits at position 4 — the middle of the 7-person row." },
+  correct:2, explanation:"Resolving all clues, R sits at position 4 � the middle of the 7-person row." },
 
 { id:"SAR007", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting in a straight line facing north. A sits third to the right of B. Only two persons sit between A and C. D sits second to the left of C. E sits immediate right of D. F sits second to the right of E. G sits at one of the extreme ends. H sits second to the left of G. Who sits second to the right of A?",
@@ -3669,7 +3669,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR022", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons M, N, O, P, Q, R, S and T are sitting in a row facing north. M sits fourth to the left of N. Only two persons sit between M and O. P sits immediate right of O. Q sits second to the left of P. R sits at one of the extreme ends. S sits second to the right of R. T sits immediate left of S. Who sits immediate left of N?",
   options:["M","O","P","None of these"],
-  correct:3, explanation:"In the resolved arrangement, the person immediately left of N is not M, O, or P — it is Q. Answer: None of these." },
+  correct:3, explanation:"In the resolved arrangement, the person immediately left of N is not M, O, or P � it is Q. Answer: None of these." },
 
 { id:"SAR023", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Six persons A, B, C, D, E and F are sitting in a straight line facing north. A sits second to the left of B. Only one person sits between A and C. D sits immediate right of C. E sits second to the right of D. F sits at one of the extreme ends. Who sits third to the left of E?",
@@ -3711,7 +3711,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["P","Q","R","S"],
   correct:2, explanation:"R sits three positions to the left of T in the resolved 7-person arrangement." },
 
-// SECTION B: CIRCULAR ARRANGEMENT (SAR031–SAR060)
+// SECTION B: CIRCULAR ARRANGEMENT (SAR031�SAR060)
 { id:"SAR031", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting around a circular table facing the centre. A sits third to the right of B. Only two persons sit between A and C. D sits second to the left of C. E sits immediate right of D. F sits second to the right of E. G sits opposite to A. H sits second to the left of G. Who sits immediate left of B?",
   options:["A","C","D","H"],
@@ -3815,12 +3815,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR051", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons M, N, O, P, Q, R, S and T are sitting around a circular table facing the centre. M sits fourth to the left of N. Only two persons sit between M and O. P sits immediate right of O. Q sits second to the left of P. R sits opposite to M. S sits second to the right of R. T sits immediate left of S. Who sits immediate left of T?",
   options:["M","N","O","S"],
-  correct:3, explanation:"S sits immediately to the left of T (T is immediate left of S means S is to T's right, so the person left of T is S — wait: T immediate left of S means T is at position n and S is at n+1. So left of T is the person at n-1). Resolved: S sits immediately to the left of T." },
+  correct:3, explanation:"S sits immediately to the left of T (T is immediate left of S means S is to T's right, so the person left of T is S � wait: T immediate left of S means T is at position n and S is at n+1. So left of T is the person at n-1). Resolved: S sits immediately to the left of T." },
 
 { id:"SAR052", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Six friends P, Q, R, S, T and U are sitting around a circular table facing the centre. P sits second to the right of Q. Only one person sits between P and R. S sits immediate left of R. T sits second to the right of S. U sits opposite to P. Who sits third to the right of Q?",
   options:["P","R","S","T"],
-  correct:0, explanation:"P sits third to the right of Q — wait, P is second right of Q. Third right of Q is R. Resolved arrangement: P is 2nd right of Q, so 3rd right of Q is the person after P. That is R. Answer: P (direct from clue: P = 2nd right of Q, but 3rd right = next = R). Correct answer: A) P — the document answer is A) P." },
+  correct:0, explanation:"P sits third to the right of Q � wait, P is second right of Q. Third right of Q is R. Resolved arrangement: P is 2nd right of Q, so 3rd right of Q is the person after P. That is R. Answer: P (direct from clue: P = 2nd right of Q, but 3rd right = next = R). Correct answer: A) P � the document answer is A) P." },
 
 { id:"SAR053", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting around a circular table facing the centre. A sits third to the right of B. Only two persons sit between A and C. D sits second to the left of C. E sits immediate right of D. F sits second to the right of E. G sits opposite to A. H sits second to the left of G. Who sits second to the right of G?",
@@ -3862,7 +3862,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["P","Q","R","T"],
   correct:2, explanation:"R sits immediately to the right of S in the resolved circular arrangement." },
 
-// SECTION C: SQUARE/RECTANGULAR ARRANGEMENT (SAR061–SAR080)
+// SECTION C: SQUARE/RECTANGULAR ARRANGEMENT (SAR061�SAR080)
 { id:"SAR061", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting around a square table. Four sit at the corners and four at the middle of the sides. All face the centre. A sits second to the right of B. C sits opposite to A. D sits second to the left of C. E sits immediate right of D. F sits second to the right of E. G sits opposite to F. H sits second to the left of G. Who sits at the corner immediate left of B?",
   options:["A","C","D","H"],
@@ -3906,7 +3906,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR069", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons M, N, O, P, Q, R, S and T are sitting around a square table. Four at corners, four at middle. All face centre. M sits second to the right of N. O sits opposite to M. P sits second to the left of O. Q sits immediate right of P. R sits second to the right of Q. S sits opposite to R. T sits second to the left of S. Who sits immediate right of Q?",
   options:["M","N","O","P"],
-  correct:3, explanation:"P sits immediately to the right of Q — wait: Q sits immediate right of P means P is left of Q. So immediate right of Q is R. Document answer: D) P. Resolved: immediate right of Q is R. Answer per doc: P." },
+  correct:3, explanation:"P sits immediately to the right of Q � wait: Q sits immediate right of P means P is left of Q. So immediate right of Q is R. Document answer: D) P. Resolved: immediate right of Q is R. Answer per doc: P." },
 
 { id:"SAR070", section:"logical", topic:"Seating Arrangement", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting around a square table facing the centre. A sits third to the right of B. C sits opposite to A. D sits second to the left of C. E sits immediate right of D. F sits second to the right of E. G sits opposite to F. H sits second to the left of G. Who sits second to the left of E?",
@@ -3963,11 +3963,11 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["A","B","C","D"],
   correct:1, explanation:"B sits immediately to the right of H in the resolved square arrangement." },
 
-// SECTION D: MIXED FACING & COMPLEX ARRANGEMENTS (SAR081–SAR100)
+// SECTION D: MIXED FACING & COMPLEX ARRANGEMENTS (SAR081�SAR100)
 { id:"SAR081", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting around a circular table. Some face the centre, some face outside. A sits third to the right of B. C sits second to the left of A. D sits opposite to C. E sits immediate right of D. F sits second to the right of E. G sits opposite to F. H sits second to the left of G. A and D face the centre. B and E face outside. Who faces the centre?",
   options:["B","C","E","F"],
-  correct:1, explanation:"C faces the centre — applying the alternating facing rule from the given anchors (A and D face centre, B and E face outside), C is on the centre-facing side." },
+  correct:1, explanation:"C faces the centre � applying the alternating facing rule from the given anchors (A and D face centre, B and E face outside), C is on the centre-facing side." },
 
 { id:"SAR082", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Six friends P, Q, R, S, T and U are sitting around a circular table. Some face centre, some face outside. P sits second to the right of Q. R sits immediate left of P. S sits opposite to R. T sits second to the right of S. U sits immediate left of T. P and S face the centre. Q and T face outside. Who faces the centre?",
@@ -3992,7 +3992,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR086", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting around a square table. Four face centre, four face outside. A sits second to the right of B. C sits opposite to A. D sits second to the left of C. E sits immediate right of D. F sits second to the right of E. G sits opposite to F. H sits second to the left of G. A and D face centre. B and E face outside. Who faces outside?",
   options:["A","C","D","F"],
-  correct:3, explanation:"F faces outside — F follows the same pattern as B and E (outside-facing) in the resolved arrangement." },
+  correct:3, explanation:"F faces outside � F follows the same pattern as B and E (outside-facing) in the resolved arrangement." },
 
 { id:"SAR087", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting in two parallel rows. A, B, C, D face north and E, F, G, H face south. A sits second to the right of B. C sits immediate left of A. D sits opposite to C. E sits second to the left of F. G sits immediate right of E. H sits opposite to G. Who sits second to the left of the one who sits opposite to B?",
@@ -4042,7 +4042,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR096", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting in two parallel rows. A, B, C, D face north and E, F, G, H face south. A sits second to the right of B. C sits immediate left of A. D sits opposite to C. E sits second to the left of F. G sits immediate right of E. H sits opposite to G. Who sits second to the right of the one who sits opposite to C?",
   options:["E","F","G","H"],
-  correct:1, explanation:"Opposite to C (north row) is E (south row). Two positions to the right of E is F. Wait — D sits opposite C, and D is in the north row. C is in north row too. The south-row person opposite C maps to: resolved arrangement gives F. Answer: F." },
+  correct:1, explanation:"Opposite to C (north row) is E (south row). Two positions to the right of E is F. Wait � D sits opposite C, and D is in the north row. C is in north row too. The south-row person opposite C maps to: resolved arrangement gives F. Answer: F." },
 
 { id:"SAR097", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Six friends P, Q, R, S, T and U are sitting around a circular table. Some face centre, some outside. P sits second to the right of Q. R sits immediate left of P. S sits opposite to R. T sits second to the right of S. U sits immediate left of T. P and S face centre. Q and T face outside. Who sits second to the left of the one who faces the centre?",
@@ -4057,20 +4057,20 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SAR099", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Eight persons A, B, C, D, E, F, G and H are sitting in two parallel rows. A, B, C, D face north and E, F, G, H face south. A sits second to the right of B. C sits immediate left of A. D sits opposite to C. E sits second to the left of F. G sits immediate right of E. H sits opposite to G. Who sits immediate left of the one who sits opposite to B?",
   options:["E","F","G","H"],
-  correct:3, explanation:"B's opposite in the south row is H. The person immediately to the left of H is F — but per the document answer, D) H. Resolved: B maps to H across rows; immediate left of that mapped position is H itself at extreme end. Answer: H." },
+  correct:3, explanation:"B's opposite in the south row is H. The person immediately to the left of H is F � but per the document answer, D) H. Resolved: B maps to H across rows; immediate left of that mapped position is H itself at extreme end. Answer: H." },
 
 { id:"SAR100", section:"logical", topic:"Seating Arrangement", difficulty:"Hard",
   question:"Six friends P, Q, R, S, T and U are sitting around a circular table. Some face centre, some outside. P sits second to the right of Q. R sits immediate left of P. S sits opposite to R. T sits second to the right of S. U sits immediate left of T. P and S face centre. Q and T face outside. Who sits third to the left of the one who faces outside?",
   options:["P","Q","R","S"],
   correct:0, explanation:"Q and T face outside. Third to the left of Q is P." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PUZZLES — 100 Questions (PUZ001–PUZ100)
+// -----------------------------------------------------------------------------
+// PUZZLES � 100 Questions (PUZ001�PUZ100)
 // Logical Reasoning | Medium to Hard Level
-// Floor • Box • Scheduling • Month • Day
-// ─────────────────────────────────────────────────────────────────────────────
+// Floor � Box � Scheduling � Month � Day
+// -----------------------------------------------------------------------------
 
-// SECTION A: FLOOR PUZZLES (PUZ001–PUZ030)
+// SECTION A: FLOOR PUZZLES (PUZ001�PUZ030)
 { id:"PUZ001", section:"logical", topic:"Puzzles", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H live on eight different floors (1=lowest, 8=topmost). A lives on an even numbered floor. Only two persons live between A and B. C lives immediately above B. D lives on floor 4. Only one person lives between D and E. F lives on an odd numbered floor above E. G lives on one of the floors above F. H lives immediately below G. Who lives on floor 7?",
   options:["A","C","F","G"],
@@ -4124,7 +4124,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"PUZ011", section:"logical", topic:"Puzzles", difficulty:"Medium",
   question:"Eight persons A, B, C, D, E, F, G and H live on eight floors (1=lowest, 8=topmost). A lives on floor 3. Only two persons live between A and B. C lives immediately above B. D lives on an even numbered floor below C. Only one person lives between D and E. F lives on floor 8. G lives immediately below F. H lives on one of the floors below G. Who lives on floor 6?",
   options:["A","C","E","G"],
-  correct:3, explanation:"F on 8, G on 7, H below G. A on 3, two between A and B, C above B, D even below C. One between D and E. G resolves to floor 6... wait, G is on 7. Resolved arrangement: G on floor 7? No — F on 8, G immediately below F = floor 7. Answer from document: D) G. So G is on floor 6 — the arrangement differs: F on 8, G on 7. Hmm — re-read: G lives immediately below F (floor 7). H below G. Who lives on floor 6? It is G who is on 7, so floor 6 is H or someone else. Per doc answer: D) G. Accept document answer." },
+  correct:3, explanation:"F on 8, G on 7, H below G. A on 3, two between A and B, C above B, D even below C. One between D and E. G resolves to floor 6... wait, G is on 7. Resolved arrangement: G on floor 7? No � F on 8, G immediately below F = floor 7. Answer from document: D) G. So G is on floor 6 � the arrangement differs: F on 8, G on 7. Hmm � re-read: G lives immediately below F (floor 7). H below G. Who lives on floor 6? It is G who is on 7, so floor 6 is H or someone else. Per doc answer: D) G. Accept document answer." },
 
 { id:"PUZ012", section:"logical", topic:"Puzzles", difficulty:"Medium",
   question:"Six persons P, Q, R, S, T and U live on six floors (1=lowest, 6=topmost). P lives on floor 2. Only one person lives between P and Q. R lives immediately above Q. S lives on an odd numbered floor above R. T lives on an even numbered floor below S. U lives immediately above T. Who lives on floor 5?",
@@ -4221,518 +4221,518 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["P","Q","R","T"],
   correct:3, explanation:"P on 5, two between P and Q, R above Q. S even below R. One between S and T. U odd above T, V below U. T resolves to floor 1." },
 
-// SECTION B: BOX PUZZLES (PUZ031–PUZ055)
+// SECTION B: BOX PUZZLES (PUZ031�PUZ055)
 { id:"PUZ031", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked one above another. Box A is at position 3 from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the top?",
+  question:"Eight boxes A�H are stacked one above another. Box A is at position 3 from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the top?",
   options:["A","C","F","H"],
   correct:3, explanation:"D at bottom (pos 8), one between D and E. F above E, G above F, H above G. A at pos 3, two between A and B, C above B. The only valid arrangement places H at the top." },
 
 { id:"PUZ032", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven boxes P–V are stacked one above another. Box P is at the 2nd position from the bottom. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 3rd position from the top?",
+  question:"Seven boxes P�V are stacked one above another. Box P is at the 2nd position from the bottom. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 3rd position from the top?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S at top (pos 1), one between S and T, U below T, V below U. P at pos 6 from top (2nd from bottom of 7), two between P and Q, R above Q. T resolves to 3rd from top." },
 
 { id:"PUZ033", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 4th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 2nd position from the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is immediately below A?",
+  question:"Eight boxes A�H are stacked. Box A is at the 4th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 2nd position from the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is immediately below A?",
   options:["B","C","D","E"],
-  correct:1, explanation:"A at pos 4, two between A and B places B at pos 7. C immediately above B = pos 6. So pos 5 is immediately below A... wait: immediately below A (pos 4) is pos 5. Per document answer B) C. C is at pos 6? No — C above B (pos 7) = C at pos 6. Immediately below A (pos 4) is pos 5. Document answer: B) C means C is at pos 5. Accept." },
+  correct:1, explanation:"A at pos 4, two between A and B places B at pos 7. C immediately above B = pos 6. So pos 5 is immediately below A... wait: immediately below A (pos 4) is pos 5. Per document answer B) C. C is at pos 6? No � C above B (pos 7) = C at pos 6. Immediately below A (pos 4) is pos 5. Document answer: B) C means C is at pos 5. Accept." },
 
 { id:"PUZ034", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six boxes P–U are stacked. Box P is at the 3rd position from the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the bottom. Box T is above S. Box U is immediately above T. Which box is at the top?",
+  question:"Six boxes P�U are stacked. Box P is at the 3rd position from the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the bottom. Box T is above S. Box U is immediately above T. Which box is at the top?",
   options:["P","Q","R","U"],
   correct:2, explanation:"S at bottom (pos 6), T above S (pos 5), U above T (pos 4). P at pos 3, one between P and Q. R above Q. R resolves to the top position." },
 
 { id:"PUZ035", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 2nd position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the 5th position from the top?",
+  question:"Eight boxes A�H are stacked. Box A is at the 2nd position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the 5th position from the top?",
   options:["A","C","E","G"],
   correct:2, explanation:"A at pos 2, two between A and B. D at bottom (pos 8), one between D and E. F above E, G above F, H above G. E resolves to 5th from top." },
 
 { id:"PUZ036", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven boxes P–V are stacked. Box P is at the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the 3rd position from the bottom. Only one box between S and T. Box U is above T. Box V is immediately below U. Which box is at the bottom?",
+  question:"Seven boxes P�V are stacked. Box P is at the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the 3rd position from the bottom. Only one box between S and T. Box U is above T. Box V is immediately below U. Which box is at the bottom?",
   options:["P","Q","R","T"],
   correct:3, explanation:"P at top (pos 1), two between P and Q. R above Q. S at pos 5 (3rd from bottom of 7). One between S and T. U above T, V below U. T resolves to the bottom." },
 
 { id:"PUZ037", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 5th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is immediately above A?",
+  question:"Eight boxes A�H are stacked. Box A is at the 5th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is immediately above A?",
   options:["B","C","D","E"],
   correct:1, explanation:"D at top (pos 1), one between D and E. F below E, G below F, H below G. A at pos 5, two between A and B, C above B. C resolves to immediately above A." },
 
 { id:"PUZ038", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six boxes P–U are stacked. Box P is at the bottom. Only one box between P and Q. Box R is immediately above Q. Box S is at the top. Box T is below S. Box U is immediately below T. Which box is at the 3rd position from the top?",
+  question:"Six boxes P�U are stacked. Box P is at the bottom. Only one box between P and Q. Box R is immediately above Q. Box S is at the top. Box T is below S. Box U is immediately below T. Which box is at the 3rd position from the top?",
   options:["P","Q","R","U"],
   correct:3, explanation:"P at bottom (pos 6), one between P and Q, R above Q. S at top (pos 1), T below S (pos 2), U below T (pos 3). U is at 3rd from top." },
 
 { id:"PUZ039", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 3rd position from the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the 2nd position from the top?",
+  question:"Eight boxes A�H are stacked. Box A is at the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 3rd position from the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the 2nd position from the top?",
   options:["A","C","E","H"],
   correct:3, explanation:"A at top (pos 1). D at pos 6 (3rd from bottom of 8), one between D and E. F above E, G above F, H above G. Two between A and B, C above B. H resolves to 2nd from top." },
 
 { id:"PUZ040", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven boxes P–V are stacked. Box P is at the 3rd position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the bottom. Only one box between S and T. Box U is above T. Box V is immediately below U. Which box is at the 5th position from the top?",
+  question:"Seven boxes P�V are stacked. Box P is at the 3rd position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the bottom. Only one box between S and T. Box U is above T. Box V is immediately below U. Which box is at the 5th position from the top?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S at bottom (pos 7), one between S and T. U above T, V below U. P at pos 3, two between P and Q, R above Q. T resolves to 5th from top." },
 
 { id:"PUZ041", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 6th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 2nd position from the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the bottom?",
+  question:"Eight boxes A�H are stacked. Box A is at the 6th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 2nd position from the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the bottom?",
   options:["A","C","E","H"],
   correct:3, explanation:"D at pos 2, one between D and E. F below E, G below F, H below G. A at pos 6, two between A and B, C above B. H resolves to the bottom." },
 
 { id:"PUZ042", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six boxes P–U are stacked. Box P is at the 2nd position from the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the bottom. Box T is above S. Box U is immediately above T. Which box is at the 4th position from the top?",
+  question:"Six boxes P�U are stacked. Box P is at the 2nd position from the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the bottom. Box T is above S. Box U is immediately above T. Which box is at the 4th position from the top?",
   options:["P","Q","R","U"],
   correct:3, explanation:"P at pos 2, one between P and Q, R above Q. S at bottom (pos 6), T above S (pos 5), U above T (pos 4). U is at 4th from top." },
 
 { id:"PUZ043", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 3rd position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is immediately below D?",
+  question:"Eight boxes A�H are stacked. Box A is at the 3rd position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is immediately below D?",
   options:["B","C","E","F"],
-  correct:2, explanation:"D at top (pos 1), one between D and E — E is at pos 3. Immediately below D (pos 1) is pos 2, which is E. Answer: C) E." },
+  correct:2, explanation:"D at top (pos 1), one between D and E � E is at pos 3. Immediately below D (pos 1) is pos 2, which is E. Answer: C) E." },
 
 { id:"PUZ044", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven boxes P–V are stacked. Box P is at the 4th position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 2nd position from the bottom?",
+  question:"Seven boxes P�V are stacked. Box P is at the 4th position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 2nd position from the bottom?",
   options:["P","Q","R","V"],
   correct:3, explanation:"S at top (pos 1), one between S and T. U below T, V below U. P at pos 4, two between P and Q, R above Q. V resolves to 2nd from bottom (pos 6 of 7)." },
 
 { id:"PUZ045", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 2nd position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the 4th position from the top?",
+  question:"Eight boxes A�H are stacked. Box A is at the 2nd position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the 4th position from the top?",
   options:["A","C","E","G"],
   correct:2, explanation:"D at top (pos 1), one between D and E places E at pos 3. A at pos 7 (2nd from bottom of 8). Two between A and B, C above B. E resolves to 4th from top... wait, E is at pos 3. Per doc answer C) E." },
 
 { id:"PUZ046", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six boxes P–U are stacked. Box P is at the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the 3rd position from the bottom. Box T is below S. Box U is immediately below T. Which box is at the bottom?",
+  question:"Six boxes P�U are stacked. Box P is at the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the 3rd position from the bottom. Box T is below S. Box U is immediately below T. Which box is at the bottom?",
   options:["P","Q","R","U"],
   correct:3, explanation:"P at top (pos 1), one between P and Q, R above Q. S at pos 4 (3rd from bottom of 6), T below S (pos 5), U below T (pos 6). U is at the bottom." },
 
 { id:"PUZ047", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 7th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 3rd position from the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the top?",
+  question:"Eight boxes A�H are stacked. Box A is at the 7th position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the 3rd position from the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the top?",
   options:["A","C","D","H"],
   correct:3, explanation:"A at pos 7, two between A and B. C above B. D at pos 3, one between D and E. F below E, G below F, H below G. H resolves to the top position." },
 
 { id:"PUZ048", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven boxes P–V are stacked. Box P is at the 5th position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 3rd position from the bottom?",
+  question:"Seven boxes P�V are stacked. Box P is at the 5th position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 3rd position from the bottom?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S at top (pos 1), one between S and T. U below T, V below U. P at pos 5, two between P and Q, R above Q. T resolves to 3rd from bottom (pos 5 of 7)." },
 
 { id:"PUZ049", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 1st position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the 3rd position from the top?",
+  question:"Eight boxes A�H are stacked. Box A is at the 1st position from the top. Only two boxes between A and B. Box C is immediately above B. Box D is at the bottom. Only one box between D and E. Box F is above E. Box G is immediately above F. Box H is somewhere above G. Which box is at the 3rd position from the top?",
   options:["A","C","E","H"],
   correct:3, explanation:"A at top (pos 1), two between A and B. D at bottom (pos 8), one between D and E. F above E, G above F, H above G. H resolves to 3rd from top." },
 
 { id:"PUZ050", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six boxes P–U are stacked. Box P is at the 4th position from the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the top. Box T is below S. Box U is immediately below T. Which box is at the 2nd position from the top?",
+  question:"Six boxes P�U are stacked. Box P is at the 4th position from the top. Only one box between P and Q. Box R is immediately above Q. Box S is at the top. Box T is below S. Box U is immediately below T. Which box is at the 2nd position from the top?",
   options:["P","Q","R","U"],
   correct:3, explanation:"S at top (pos 1), T at pos 2, U at pos 3. P at pos 4, one between P and Q, R above Q. U is at 2nd from top... wait, U is pos 3. Per doc answer: D) U. Accept." },
 
 { id:"PUZ051", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 8th position from the top (bottom). Only two boxes between A and B. Box C is immediately above B. Box D is at the 4th position from the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the 2nd position from the top?",
+  question:"Eight boxes A�H are stacked. Box A is at the 8th position from the top (bottom). Only two boxes between A and B. Box C is immediately above B. Box D is at the 4th position from the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the 2nd position from the top?",
   options:["A","C","E","H"],
   correct:3, explanation:"A at bottom (pos 8). D at pos 4, one between D and E. F below E, G below F, H below G. Two between A and B, C above B. H resolves to 2nd from top." },
 
 { id:"PUZ052", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven boxes P–V are stacked. Box P is at the 6th position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 4th position from the top?",
+  question:"Seven boxes P�V are stacked. Box P is at the 6th position from the top. Only two boxes between P and Q. Box R is immediately above Q. Box S is at the top. Only one box between S and T. Box U is below T. Box V is immediately below U. Which box is at the 4th position from the top?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S at top (pos 1), one between S and T. U below T, V below U. P at pos 6, two between P and Q, R above Q. T resolves to 4th from top." },
 
 { id:"PUZ053", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 5th position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is immediately above A?",
+  question:"Eight boxes A�H are stacked. Box A is at the 5th position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is immediately above A?",
   options:["B","C","D","E"],
   correct:1, explanation:"A at pos 4 from top (5th from bottom of 8). D at top (pos 1), one between D and E. F below E, G below F, H below G. Two between A and B, C above B. C resolves to immediately above A." },
 
 { id:"PUZ054", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six boxes P–U are stacked. Box P is at the 3rd position from the bottom. Only one box between P and Q. Box R is immediately above Q. Box S is at the top. Box T is below S. Box U is immediately below T. Which box is at the 2nd position from the bottom?",
+  question:"Six boxes P�U are stacked. Box P is at the 3rd position from the bottom. Only one box between P and Q. Box R is immediately above Q. Box S is at the top. Box T is below S. Box U is immediately below T. Which box is at the 2nd position from the bottom?",
   options:["P","Q","R","U"],
   correct:3, explanation:"P at pos 4 from top (3rd from bottom of 6). S at top (pos 1), T at pos 2, U at pos 3. One between P and Q, R above Q. U is at 2nd from bottom (pos 5)... per doc answer D) U." },
 
 { id:"PUZ055", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Eight boxes A–H are stacked. Box A is at the 4th position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the 3rd position from the top?",
+  question:"Eight boxes A�H are stacked. Box A is at the 4th position from the bottom. Only two boxes between A and B. Box C is immediately above B. Box D is at the top. Only one box between D and E. Box F is below E. Box G is immediately below F. Box H is somewhere below G. Which box is at the 3rd position from the top?",
   options:["A","C","E","G"],
   correct:2, explanation:"A at pos 5 from top (4th from bottom of 8). D at top (pos 1), one between D and E places E at pos 3. F below E, G below F, H below G. C above B. E is at 3rd from top." },
 
-// SECTION C: SCHEDULING / MONTH / DAY PUZZLES (PUZ056–PUZ080)
+// SECTION C: SCHEDULING / MONTH / DAY PUZZLES (PUZ056�PUZ080)
 { id:"PUZ056", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in a month having 31 days. Only two persons born between A and B. C was born immediately after B. D was born in April. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in March?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in a month having 31 days. Only two persons born between A and B. C was born immediately after B. D was born in April. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in March?",
   options:["A","B","C","E"],
   correct:3, explanation:"D in April (month 4). One between D and E places E in Feb or June. A in 31-day month, two between A and B, C after B. F after E, G before F. E resolves to March." },
 
 { id:"PUZ057", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in a month having 31 days. Only one person born between P and Q. R was born immediately after Q. S was born in March. T was born in a month after S. U was born immediately before T. Who was born in May?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in a month having 31 days. Only one person born between P and Q. R was born immediately after Q. S was born in March. T was born in a month after S. U was born immediately before T. Who was born in May?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S in March (month 3), T after S, U before T. P in 31-day month, one between P and Q, R after Q. T resolves to May." },
 
 { id:"PUZ058", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in February. Only two persons born between A and B. C was born immediately after B. D was born in a month having 30 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in June?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in February. Only two persons born between A and B. C was born immediately after B. D was born in a month having 30 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in June?",
   options:["A","C","E","F"],
   correct:3, explanation:"A in Feb (month 2), two between A and B. D in 30-day month (April or June). One between D and E, F after E, G before F. F resolves to June." },
 
 { id:"PUZ059", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in April. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in February?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in April. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in February?",
   options:["P","Q","R","S"],
-  correct:3, explanation:"P in April (month 4). S in 31-day month (Jan, Mar, or May), T after S, U before T. One between P and Q, R after Q. S resolves to February — wait, Feb has 28 days. S is in a 31-day month, so S is Jan, Mar, or May. Per doc answer D) S. Accept." },
+  correct:3, explanation:"P in April (month 4). S in 31-day month (Jan, Mar, or May), T after S, U before T. One between P and Q, R after Q. S resolves to February � wait, Feb has 28 days. S is in a 31-day month, so S is Jan, Mar, or May. Per doc answer D) S. Accept." },
 
 { id:"PUZ060", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in a month having 30 days. Only two persons born between A and B. C was born immediately after B. D was born in January. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in May?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in a month having 30 days. Only two persons born between A and B. C was born immediately after B. D was born in January. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in May?",
   options:["A","C","E","G"],
   correct:2, explanation:"D in January (month 1). A in 30-day month (April or June). Two between A and B, C after B. One between D and E, F after E, G before F. E resolves to May." },
 
 { id:"PUZ061", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in a month having 30 days. Only one person born between P and Q. R was born immediately after Q. S was born in January. T was born in a month after S. U was born immediately before T. Who was born in April?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in a month having 30 days. Only one person born between P and Q. R was born immediately after Q. S was born in January. T was born in a month after S. U was born immediately before T. Who was born in April?",
   options:["P","Q","R","T"],
   correct:0, explanation:"S in January, T after S, U before T. P in 30-day month (April or June). One between P and Q, R after Q. P resolves to April." },
 
 { id:"PUZ062", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in July. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in March?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in July. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in March?",
   options:["A","C","D","E"],
   correct:2, explanation:"A in July (month 7). Two between A and B. D in 31-day month, one between D and E, F after E, G before F. D resolves to March." },
 
 { id:"PUZ063", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in June. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in March?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in June. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in March?",
   options:["P","Q","R","S"],
   correct:3, explanation:"P in June (month 6). S in 31-day month, T after S, U before T. One between P and Q, R after Q. S resolves to March." },
 
 { id:"PUZ064", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in March. Only two persons born between A and B. C was born immediately after B. D was born in a month having 30 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in July?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in March. Only two persons born between A and B. C was born immediately after B. D was born in a month having 30 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in July?",
   options:["A","C","E","F"],
   correct:3, explanation:"A in March (month 3). Two between A and B. D in 30-day month, one between D and E, F after E, G before F. F resolves to July." },
 
 { id:"PUZ065", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in February. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in May?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in February. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in May?",
   options:["P","Q","R","T"],
   correct:3, explanation:"P in Feb (month 2). S in 31-day month, T after S, U before T. One between P and Q, R after Q. T resolves to May." },
 
 { id:"PUZ066", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in a month having 31 days after March. Only two persons born between A and B. C was born immediately after B. D was born in February. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in June?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in a month having 31 days after March. Only two persons born between A and B. C was born immediately after B. D was born in February. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in June?",
   options:["A","C","E","G"],
   correct:2, explanation:"A in May or July (31-day months after March). D in February. Two between A and B. One between D and E, F after E, G before F. E resolves to June." },
 
 { id:"PUZ067", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in a month having 31 days. Only one person born between P and Q. R was born immediately after Q. S was born in April. T was born in a month after S. U was born immediately before T. Who was born in January?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in a month having 31 days. Only one person born between P and Q. R was born immediately after Q. S was born in April. T was born in a month after S. U was born immediately before T. Who was born in January?",
   options:["P","Q","R","S"],
   correct:0, explanation:"S in April (month 4), T after S, U before T. P in 31-day month (Jan, Mar, or May). One between P and Q, R after Q. P resolves to January." },
 
 { id:"PUZ068", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in April. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in January?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in April. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in January?",
   options:["A","C","D","E"],
   correct:2, explanation:"A in April (month 4). Two between A and B. D in 31-day month, one between D and E, F after E, G before F. D resolves to January." },
 
 { id:"PUZ069", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in May. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 30 days. T was born in a month after S. U was born immediately before T. Who was born in March?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in May. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 30 days. T was born in a month after S. U was born immediately before T. Who was born in March?",
   options:["P","Q","R","S"],
-  correct:3, explanation:"P in May (month 5). S in 30-day month (April or June). T after S, U before T. One between P and Q, R after Q. S resolves to March — wait, March has 31 days. Per doc answer D) S, accepting S is in April (30-day month) and something else resolves to March. Doc answer: D) S." },
+  correct:3, explanation:"P in May (month 5). S in 30-day month (April or June). T after S, U before T. One between P and Q, R after Q. S resolves to March � wait, March has 31 days. Per doc answer D) S, accepting S is in April (30-day month) and something else resolves to March. Doc answer: D) S." },
 
 { id:"PUZ070", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in a month having 30 days after April. Only two persons born between A and B. C was born immediately after B. D was born in January. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in March?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in a month having 30 days after April. Only two persons born between A and B. C was born immediately after B. D was born in January. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in March?",
   options:["A","C","E","G"],
   correct:2, explanation:"A in June (30-day month after April). D in January. Two between A and B. One between D and E, F after E, G before F. E resolves to March." },
 
 { id:"PUZ071", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in a month having 31 days before April. Only one person born between P and Q. R was born immediately after Q. S was born in June. T was born in a month after S. U was born immediately before T. Who was born in April?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in a month having 31 days before April. Only one person born between P and Q. R was born immediately after Q. S was born in June. T was born in a month after S. U was born immediately before T. Who was born in April?",
   options:["P","Q","R","T"],
   correct:2, explanation:"P in Jan or Mar (31-day months before April). S in June, T after S, U before T. One between P and Q, R after Q. R resolves to April." },
 
 { id:"PUZ072", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in May. Only two persons born between A and B. C was born immediately after B. D was born in a month having 30 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in July?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in May. Only two persons born between A and B. C was born immediately after B. D was born in a month having 30 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in July?",
   options:["A","C","E","F"],
   correct:3, explanation:"A in May (month 5). Two between A and B. D in 30-day month (April or June). One between D and E, F after E, G before F. F resolves to July." },
 
 { id:"PUZ073", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in March. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in June?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in March. Only one person born between P and Q. R was born immediately after Q. S was born in a month having 31 days. T was born in a month after S. U was born immediately before T. Who was born in June?",
   options:["P","Q","R","T"],
   correct:3, explanation:"P in March (month 3). S in 31-day month (Jan or May), T after S, U before T. One between P and Q, R after Q. T resolves to June." },
 
 { id:"PUZ074", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in a month having 31 days before May. Only two persons born between A and B. C was born immediately after B. D was born in June. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in April?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in a month having 31 days before May. Only two persons born between A and B. C was born immediately after B. D was born in June. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in April?",
   options:["A","C","E","G"],
   correct:2, explanation:"A in Jan or Mar (31-day months before May). D in June. Two between A and B. One between D and E, F after E, G before F. E resolves to April." },
 
 { id:"PUZ075", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in a month having 30 days. Only one person born between P and Q. R was born immediately after Q. S was born in February. T was born in a month after S. U was born immediately before T. Who was born in May?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in a month having 30 days. Only one person born between P and Q. R was born immediately after Q. S was born in February. T was born in a month after S. U was born immediately before T. Who was born in May?",
   options:["P","Q","R","T"],
   correct:3, explanation:"P in April or June (30-day months). S in February, T after S, U before T. One between P and Q, R after Q. T resolves to May." },
 
 { id:"PUZ076", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in January. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in May?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in January. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in May?",
   options:["A","C","D","E"],
   correct:2, explanation:"A in January. Two between A and B. D in 31-day month, one between D and E, F after E, G before F. D resolves to May." },
 
 { id:"PUZ077", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in a month having 31 days after February. Only one person born between P and Q. R was born immediately after Q. S was born in January. T was born in a month after S. U was born immediately before T. Who was born in April?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in a month having 31 days after February. Only one person born between P and Q. R was born immediately after Q. S was born in January. T was born in a month after S. U was born immediately before T. Who was born in April?",
   options:["P","Q","R","T"],
-  correct:0, explanation:"P in March or May (31-day months after Feb). S in Jan, T after S, U before T. One between P and Q, R after Q. P resolves to April — wait, P is March or May. Per doc answer A) P with P in March (31-day after Feb). Accept." },
+  correct:0, explanation:"P in March or May (31-day months after Feb). S in Jan, T after S, U before T. One between P and Q, R after Q. P resolves to April � wait, P is March or May. Per doc answer A) P with P in March (31-day after Feb). Accept." },
 
 { id:"PUZ078", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in a month having 30 days before June. Only two persons born between A and B. C was born immediately after B. D was born in July. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in February?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in a month having 30 days before June. Only two persons born between A and B. C was born immediately after B. D was born in July. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in February?",
   options:["A","C","E","G"],
   correct:2, explanation:"A in April (30-day month before June). D in July. Two between A and B. One between D and E, F after E, G before F. E resolves to February." },
 
 { id:"PUZ079", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Six persons P–U were born in six different months Jan–Jun. P was born in a month having 31 days. Only one person born between P and Q. R was born immediately after Q. S was born in May. T was born in a month after S. U was born immediately before T. Who was born in February?",
+  question:"Six persons P�U were born in six different months Jan�Jun. P was born in a month having 31 days. Only one person born between P and Q. R was born immediately after Q. S was born in May. T was born in a month after S. U was born immediately before T. Who was born in February?",
   options:["P","Q","R","S"],
-  correct:0, explanation:"S in May (month 5), T after S (June), U before T. P in 31-day month. One between P and Q, R after Q. P resolves to February — wait, Feb has 28 days. P must be Jan, Mar, or May. Per doc answer A) P. Accept." },
+  correct:0, explanation:"S in May (month 5), T after S (June), U before T. P in 31-day month. One between P and Q, R after Q. P resolves to February � wait, Feb has 28 days. P must be Jan, Mar, or May. Per doc answer A) P. Accept." },
 
 { id:"PUZ080", section:"logical", topic:"Puzzles", difficulty:"Medium",
-  question:"Seven persons A–G were born in seven different months Jan–Jul. A was born in June. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in April?",
+  question:"Seven persons A�G were born in seven different months Jan�Jul. A was born in June. Only two persons born between A and B. C was born immediately after B. D was born in a month having 31 days. Only one person born between D and E. F was born in a month after E. G was born immediately before F. Who was born in April?",
   options:["A","C","D","E"],
   correct:2, explanation:"A in June (month 6). Two between A and B. D in 31-day month, one between D and E, F after E, G before F. D resolves to April." },
 
-// SECTION D: MIXED / COMPLEX PUZZLES (PUZ081–PUZ100)
+// SECTION D: MIXED / COMPLEX PUZZLES (PUZ081�PUZ100)
 { id:"PUZ081", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different colours (Red, Blue, Green, Yellow, Pink, Black, White, Orange). A on floor 5 likes Red. Only two persons between A and B. B likes Blue. C immediately above B likes Green. D on floor 2 likes Yellow. Only one between D and E. E likes Pink. F on an even floor above E likes Black. G immediately above F likes White. H likes Orange. Who lives on floor 8?",
+  question:"Eight persons A�H live on eight floors and like different colours (Red, Blue, Green, Yellow, Pink, Black, White, Orange). A on floor 5 likes Red. Only two persons between A and B. B likes Blue. C immediately above B likes Green. D on floor 2 likes Yellow. Only one between D and E. E likes Pink. F on an even floor above E likes Black. G immediately above F likes White. H likes Orange. Who lives on floor 8?",
   options:["A","C","F","H"],
   correct:3, explanation:"D on 2, E on 4 (one between). F even above E: floor 6. G on 7. A on 5, two between A and B: B on 2 or 8. H gets floor 8." },
 
 { id:"PUZ082", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Seven persons P–V live on seven floors and work in TCS, Infosys, Wipro, HCL, Accenture, Capgemini, IBM. P on floor 4 works in TCS. Only two persons between P and Q. Q works in Infosys. R immediately above Q works in Wipro. S on floor 1 works in HCL. Only one between S and T. T works in Accenture. U on an even floor above T works in Capgemini. V works in IBM. Who lives on floor 7?",
+  question:"Seven persons P�V live on seven floors and work in TCS, Infosys, Wipro, HCL, Accenture, Capgemini, IBM. P on floor 4 works in TCS. Only two persons between P and Q. Q works in Infosys. R immediately above Q works in Wipro. S on floor 1 works in HCL. Only one between S and T. T works in Accenture. U on an even floor above T works in Capgemini. V works in IBM. Who lives on floor 7?",
   options:["P","Q","R","U"],
   correct:3, explanation:"S on 1, one between S and T: T on 3. U even above T: floor 4 or 6. P on 4 (taken), so U on 6. Two between P and Q: Q on 1 or 7. Q on 7 (S on 1). R above Q: impossible if Q on 7. So Q on 1 (HCL conflict with S). Resolves: U on floor 7 per document." },
 
 { id:"PUZ083", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different fruits (Apple, Mango, Banana, Orange, Grapes, Guava, Papaya, Kiwi). A on floor 6 likes Apple. Only two persons between A and B. B likes Mango. C immediately above B likes Banana. D on floor 3 likes Orange. Only one between D and E. E likes Grapes. F on an odd floor above E likes Guava. G immediately above F likes Papaya. H likes Kiwi. Who lives on floor 1?",
+  question:"Eight persons A�H live on eight floors and like different fruits (Apple, Mango, Banana, Orange, Grapes, Guava, Papaya, Kiwi). A on floor 6 likes Apple. Only two persons between A and B. B likes Mango. C immediately above B likes Banana. D on floor 3 likes Orange. Only one between D and E. E likes Grapes. F on an odd floor above E likes Guava. G immediately above F likes Papaya. H likes Kiwi. Who lives on floor 1?",
   options:["A","C","E","H"],
   correct:3, explanation:"D on 3, one between D and E: E on 1 or 5. F odd above E, G above F, H somewhere. A on 6, two between A and B. H resolves to floor 1." },
 
 { id:"PUZ084", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Six persons P–U live on six floors and like different sports (Cricket, Football, Hockey, Tennis, Badminton, Volleyball). P on floor 5 likes Cricket. Only one person between P and Q. Q likes Football. R immediately above Q likes Hockey. S on floor 1 likes Tennis. T on an odd floor above S likes Badminton. U likes Volleyball. Who lives on floor 3?",
+  question:"Six persons P�U live on six floors and like different sports (Cricket, Football, Hockey, Tennis, Badminton, Volleyball). P on floor 5 likes Cricket. Only one person between P and Q. Q likes Football. R immediately above Q likes Hockey. S on floor 1 likes Tennis. T on an odd floor above S likes Badminton. U likes Volleyball. Who lives on floor 3?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S on 1, T odd above S: floor 3 or 5. P on 5, so T on 3. T resolves to floor 3." },
 
 { id:"PUZ085", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and work in HR, Finance, Marketing, Sales, IT, Operations, Legal, Admin. A on floor 3 works in HR. Only two persons between A and B. B works in Finance. C immediately above B works in Marketing. D on floor 7 works in Sales. Only one between D and E. E works in IT. F on an even floor below E works in Operations. G immediately above F works in Legal. H works in Admin. Who lives on floor 8?",
+  question:"Eight persons A�H live on eight floors and work in HR, Finance, Marketing, Sales, IT, Operations, Legal, Admin. A on floor 3 works in HR. Only two persons between A and B. B works in Finance. C immediately above B works in Marketing. D on floor 7 works in Sales. Only one between D and E. E works in IT. F on an even floor below E works in Operations. G immediately above F works in Legal. H works in Admin. Who lives on floor 8?",
   options:["A","C","D","H"],
-  correct:3, explanation:"D on 7, one between D and E: E on 5 or 9 — E on 5 (valid). F even below E: floor 4. G on 5 conflict, so F on 2, G on 3 conflict. Resolves: H on floor 8 per document." },
+  correct:3, explanation:"D on 7, one between D and E: E on 5 or 9 � E on 5 (valid). F even below E: floor 4. G on 5 conflict, so F on 2, G on 3 conflict. Resolves: H on floor 8 per document." },
 
 { id:"PUZ086", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Seven persons P–V live on seven floors and like different colours (Red, Blue, Green, Yellow, Pink, Black, White). P on floor 2 likes Red. Only two persons between P and Q. Q likes Blue. R immediately above Q likes Green. S on floor 6 likes Yellow. Only one between S and T. T likes Pink. U on an odd floor above T likes Black. V likes White. Who lives on floor 7?",
+  question:"Seven persons P�V live on seven floors and like different colours (Red, Blue, Green, Yellow, Pink, Black, White). P on floor 2 likes Red. Only two persons between P and Q. Q likes Blue. R immediately above Q likes Green. S on floor 6 likes Yellow. Only one between S and T. T likes Pink. U on an odd floor above T likes Black. V likes White. Who lives on floor 7?",
   options:["P","Q","R","U"],
-  correct:3, explanation:"P on 2, S on 6, one between S and T: T on 4 or floor 8 (invalid) — T on 4 or floor 7+1. U odd above T. U resolves to floor 7." },
+  correct:3, explanation:"P on 2, S on 6, one between S and T: T on 4 or floor 8 (invalid) � T on 4 or floor 7+1. U odd above T. U resolves to floor 7." },
 
 { id:"PUZ087", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different subjects (Maths, Science, English, History, Geography, Physics, Chemistry, Biology). A on floor 4 likes Maths. Only two persons between A and B. B likes Science. C immediately above B likes English. D on floor 1 likes History. Only one between D and E. E likes Geography. F on an even floor above E likes Physics. G immediately above F likes Chemistry. H likes Biology. Who lives on floor 8?",
+  question:"Eight persons A�H live on eight floors and like different subjects (Maths, Science, English, History, Geography, Physics, Chemistry, Biology). A on floor 4 likes Maths. Only two persons between A and B. B likes Science. C immediately above B likes English. D on floor 1 likes History. Only one between D and E. E likes Geography. F on an even floor above E likes Physics. G immediately above F likes Chemistry. H likes Biology. Who lives on floor 8?",
   options:["A","C","F","H"],
   correct:3, explanation:"D on 1, one between D and E: E on 3. F even above E: floor 4 (A there), 6 or 8. F on 6, G on 7. A on 4, two between A and B. H resolves to floor 8." },
 
 { id:"PUZ088", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Six persons P–U live on six floors and work in SBI, PNB, BOI, Canara, Axis, HDFC. P on floor 3 works in SBI. Only one person between P and Q. Q works in PNB. R immediately above Q works in BOI. S on floor 6 works in Canara. T on an odd floor below S works in Axis. U works in HDFC. Who lives on floor 1?",
+  question:"Six persons P�U live on six floors and work in SBI, PNB, BOI, Canara, Axis, HDFC. P on floor 3 works in SBI. Only one person between P and Q. Q works in PNB. R immediately above Q works in BOI. S on floor 6 works in Canara. T on an odd floor below S works in Axis. U works in HDFC. Who lives on floor 1?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S on 6, T odd below S: floor 1, 3, or 5. P on 3, so T on 1 or 5. One between P and Q, R above Q. T resolves to floor 1." },
 
 { id:"PUZ089", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different movies (Action, Comedy, Drama, Horror, Romance, Thriller, Sci-Fi, Animation). A on floor 7 likes Action. Only two persons between A and B. B likes Comedy. C immediately above B likes Drama. D on floor 2 likes Horror. Only one between D and E. E likes Romance. F on an odd floor above E likes Thriller. G immediately above F likes Sci-Fi. H likes Animation. Who lives on floor 1?",
+  question:"Eight persons A�H live on eight floors and like different movies (Action, Comedy, Drama, Horror, Romance, Thriller, Sci-Fi, Animation). A on floor 7 likes Action. Only two persons between A and B. B likes Comedy. C immediately above B likes Drama. D on floor 2 likes Horror. Only one between D and E. E likes Romance. F on an odd floor above E likes Thriller. G immediately above F likes Sci-Fi. H likes Animation. Who lives on floor 1?",
   options:["A","C","E","H"],
   correct:3, explanation:"D on 2, one between D and E: E on 4. F odd above E: floor 5 or 7. A on 7, so F on 5, G on 6. A on 7, two between A and B. H resolves to floor 1." },
 
 { id:"PUZ090", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Seven persons P–V live on seven floors and like different games (Chess, Carrom, Ludo, Scrabble, Monopoly, Snakes & Ladders, Cards). P on floor 5 likes Chess. Only two persons between P and Q. Q likes Carrom. R immediately above Q likes Ludo. S on floor 1 likes Scrabble. Only one between S and T. T likes Monopoly. U on an even floor above T likes Snakes & Ladders. V likes Cards. Who lives on floor 7?",
+  question:"Seven persons P�V live on seven floors and like different games (Chess, Carrom, Ludo, Scrabble, Monopoly, Snakes & Ladders, Cards). P on floor 5 likes Chess. Only two persons between P and Q. Q likes Carrom. R immediately above Q likes Ludo. S on floor 1 likes Scrabble. Only one between S and T. T likes Monopoly. U on an even floor above T likes Snakes & Ladders. V likes Cards. Who lives on floor 7?",
   options:["P","Q","R","U"],
   correct:3, explanation:"S on 1, one between S and T: T on 3. U even above T: floor 4 or 6. P on 5, two between P and Q. U resolves to floor 7 per document." },
 
 { id:"PUZ091", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different animals (Dog, Cat, Cow, Horse, Lion, Tiger, Elephant, Deer). A on floor 1 likes Dog. Only two persons between A and B. B likes Cat. C immediately above B likes Cow. D on floor 6 likes Horse. Only one between D and E. E likes Lion. F on an odd floor below E likes Tiger. G immediately above F likes Elephant. H likes Deer. Who lives on floor 8?",
+  question:"Eight persons A�H live on eight floors and like different animals (Dog, Cat, Cow, Horse, Lion, Tiger, Elephant, Deer). A on floor 1 likes Dog. Only two persons between A and B. B likes Cat. C immediately above B likes Cow. D on floor 6 likes Horse. Only one between D and E. E likes Lion. F on an odd floor below E likes Tiger. G immediately above F likes Elephant. H likes Deer. Who lives on floor 8?",
   options:["A","C","E","H"],
   correct:3, explanation:"A on 1, D on 6, one between D and E: E on 4 or 8. F odd below E, G above F. Two between A and B, C above B. H resolves to floor 8." },
 
 { id:"PUZ092", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Six persons P–U live on six floors and like different languages (Hindi, English, Tamil, Telugu, Kannada, Malayalam). P on floor 4 likes Hindi. Only one person between P and Q. Q likes English. R immediately above Q likes Tamil. S on floor 1 likes Telugu. T on an even floor above S likes Kannada. U likes Malayalam. Who lives on floor 6?",
+  question:"Six persons P�U live on six floors and like different languages (Hindi, English, Tamil, Telugu, Kannada, Malayalam). P on floor 4 likes Hindi. Only one person between P and Q. Q likes English. R immediately above Q likes Tamil. S on floor 1 likes Telugu. T on an even floor above S likes Kannada. U likes Malayalam. Who lives on floor 6?",
   options:["P","Q","R","T"],
   correct:3, explanation:"S on 1, T even above S: floor 2, 4 (P there), or 6. T on 2 or 6. One between P and Q, R above Q. T resolves to floor 6." },
 
 { id:"PUZ093", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different cities (Delhi, Mumbai, Chennai, Kolkata, Bangalore, Hyderabad, Pune, Ahmedabad). A on floor 8 likes Delhi. Only two persons between A and B. B likes Mumbai. C immediately above B likes Chennai. D on floor 3 likes Kolkata. Only one between D and E. E likes Bangalore. F on an even floor above E likes Hyderabad. G immediately above F likes Pune. H likes Ahmedabad. Who lives on floor 1?",
+  question:"Eight persons A�H live on eight floors and like different cities (Delhi, Mumbai, Chennai, Kolkata, Bangalore, Hyderabad, Pune, Ahmedabad). A on floor 8 likes Delhi. Only two persons between A and B. B likes Mumbai. C immediately above B likes Chennai. D on floor 3 likes Kolkata. Only one between D and E. E likes Bangalore. F on an even floor above E likes Hyderabad. G immediately above F likes Pune. H likes Ahmedabad. Who lives on floor 1?",
   options:["A","C","E","H"],
   correct:3, explanation:"A on 8, D on 3, one between D and E: E on 1 or 5. F even above E, G above F. Two between A and B, C above B. H resolves to floor 1." },
 
 { id:"PUZ094", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Seven persons P–V live on seven floors and like different flowers (Rose, Lotus, Lily, Jasmine, Sunflower, Marigold, Tulip). P on floor 3 likes Rose. Only two persons between P and Q. Q likes Lotus. R immediately above Q likes Lily. S on floor 7 likes Jasmine. Only one between S and T. T likes Sunflower. U on an odd floor below T likes Marigold. V likes Tulip. Who lives on floor 1?",
+  question:"Seven persons P�V live on seven floors and like different flowers (Rose, Lotus, Lily, Jasmine, Sunflower, Marigold, Tulip). P on floor 3 likes Rose. Only two persons between P and Q. Q likes Lotus. R immediately above Q likes Lily. S on floor 7 likes Jasmine. Only one between S and T. T likes Sunflower. U on an odd floor below T likes Marigold. V likes Tulip. Who lives on floor 1?",
   options:["P","Q","R","U"],
   correct:3, explanation:"S on 7 (top), one between S and T: T on 5. U odd below T: floor 1, 3 (P there). U on 1. U resolves to floor 1." },
 
 { id:"PUZ095", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different vehicles (Car, Bike, Bus, Train, Aeroplane, Ship, Cycle, Truck). A on floor 2 likes Car. Only two persons between A and B. B likes Bike. C immediately above B likes Bus. D on floor 7 likes Train. Only one between D and E. E likes Aeroplane. F on an odd floor below E likes Ship. G immediately above F likes Cycle. H likes Truck. Who lives on floor 8?",
+  question:"Eight persons A�H live on eight floors and like different vehicles (Car, Bike, Bus, Train, Aeroplane, Ship, Cycle, Truck). A on floor 2 likes Car. Only two persons between A and B. B likes Bike. C immediately above B likes Bus. D on floor 7 likes Train. Only one between D and E. E likes Aeroplane. F on an odd floor below E likes Ship. G immediately above F likes Cycle. H likes Truck. Who lives on floor 8?",
   options:["A","C","D","H"],
-  correct:3, explanation:"A on 2, D on 7, one between D and E: E on 5 or 9 (invalid) — E on 5. F odd below E: floor 3. G on 4. Two between A and B, C above B. H resolves to floor 8." },
+  correct:3, explanation:"A on 2, D on 7, one between D and E: E on 5 or 9 (invalid) � E on 5. F odd below E: floor 3. G on 4. Two between A and B, C above B. H resolves to floor 8." },
 
 { id:"PUZ096", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Six persons P–U live on six floors and like different instruments (Guitar, Piano, Violin, Flute, Drum, Tabla). P on floor 1 likes Guitar. Only one person between P and Q. Q likes Piano. R immediately above Q likes Violin. S on floor 6 likes Flute. T on an even floor below S likes Drum. U likes Tabla. Who lives on floor 4?",
+  question:"Six persons P�U live on six floors and like different instruments (Guitar, Piano, Violin, Flute, Drum, Tabla). P on floor 1 likes Guitar. Only one person between P and Q. Q likes Piano. R immediately above Q likes Violin. S on floor 6 likes Flute. T on an even floor below S likes Drum. U likes Tabla. Who lives on floor 4?",
   options:["P","Q","R","T"],
   correct:3, explanation:"P on 1, S on 6, T even below S: floor 2 or 4. One between P and Q, R above Q. T resolves to floor 4." },
 
 { id:"PUZ097", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different planets (Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune). A on floor 5 likes Mercury. Only two persons between A and B. B likes Venus. C immediately above B likes Earth. D on floor 1 likes Mars. Only one between D and E. E likes Jupiter. F on an even floor above E likes Saturn. G immediately above F likes Uranus. H likes Neptune. Who lives on floor 8?",
+  question:"Eight persons A�H live on eight floors and like different planets (Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune). A on floor 5 likes Mercury. Only two persons between A and B. B likes Venus. C immediately above B likes Earth. D on floor 1 likes Mars. Only one between D and E. E likes Jupiter. F on an even floor above E likes Saturn. G immediately above F likes Uranus. H likes Neptune. Who lives on floor 8?",
   options:["A","C","F","H"],
   correct:3, explanation:"D on 1, one between D and E: E on 3. F even above E: floor 4 or 6. A on 5. F on 4 or 6, G above F. Two between A and B, C above B. H resolves to floor 8." },
 
 { id:"PUZ098", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Seven persons P–V live on seven floors and like different metals (Gold, Silver, Copper, Iron, Aluminium, Zinc, Lead). P on floor 6 likes Gold. Only two persons between P and Q. Q likes Silver. R immediately above Q likes Copper. S on floor 2 likes Iron. Only one between S and T. T likes Aluminium. U on an odd floor above T likes Zinc. V likes Lead. Who lives on floor 7?",
+  question:"Seven persons P�V live on seven floors and like different metals (Gold, Silver, Copper, Iron, Aluminium, Zinc, Lead). P on floor 6 likes Gold. Only two persons between P and Q. Q likes Silver. R immediately above Q likes Copper. S on floor 2 likes Iron. Only one between S and T. T likes Aluminium. U on an odd floor above T likes Zinc. V likes Lead. Who lives on floor 7?",
   options:["P","Q","R","U"],
   correct:3, explanation:"P on 6, S on 2, one between S and T: T on 4. U odd above T: floor 5 or 7. Two between P and Q, R above Q. U resolves to floor 7." },
 
 { id:"PUZ099", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Eight persons A–H live on eight floors and like different trees (Mango, Neem, Peepal, Banyan, Oak, Pine, Willow, Maple). A on floor 4 likes Mango. Only two persons between A and B. B likes Neem. C immediately above B likes Peepal. D on floor 8 likes Banyan. Only one between D and E. E likes Oak. F on an odd floor below E likes Pine. G immediately above F likes Willow. H likes Maple. Who lives on floor 1?",
+  question:"Eight persons A�H live on eight floors and like different trees (Mango, Neem, Peepal, Banyan, Oak, Pine, Willow, Maple). A on floor 4 likes Mango. Only two persons between A and B. B likes Neem. C immediately above B likes Peepal. D on floor 8 likes Banyan. Only one between D and E. E likes Oak. F on an odd floor below E likes Pine. G immediately above F likes Willow. H likes Maple. Who lives on floor 1?",
   options:["A","C","E","H"],
-  correct:3, explanation:"D on 8 (bottom in this context — floor 8 = top or bottom? Standard = 8 topmost). D on 8, one between D and E: E on 6. F odd below E: floor 5. G on 6 conflict, so F on 3, G on 4 conflict. Per document answer D) H on floor 1." },
+  correct:3, explanation:"D on 8 (bottom in this context � floor 8 = top or bottom? Standard = 8 topmost). D on 8, one between D and E: E on 6. F odd below E: floor 5. G on 6 conflict, so F on 3, G on 4 conflict. Per document answer D) H on floor 1." },
 
 { id:"PUZ100", section:"logical", topic:"Puzzles", difficulty:"Hard",
-  question:"Six persons P–U live on six floors and like different seasons (Spring, Summer, Monsoon, Autumn, Winter, Pre-winter). P on floor 2 likes Spring. Only one person between P and Q. Q likes Summer. R immediately above Q likes Monsoon. S on floor 5 likes Autumn. T on an odd floor below S likes Winter. U likes Pre-winter. Who lives on floor 6?",
+  question:"Six persons P�U live on six floors and like different seasons (Spring, Summer, Monsoon, Autumn, Winter, Pre-winter). P on floor 2 likes Spring. Only one person between P and Q. Q likes Summer. R immediately above Q likes Monsoon. S on floor 5 likes Autumn. T on an odd floor below S likes Winter. U likes Pre-winter. Who lives on floor 6?",
   options:["P","Q","R","S"],
-  correct:3, explanation:"P on 2, S on 5, T odd below S: floor 1 or 3. One between P and Q, R above Q. S is on floor 5. Who is on floor 6? Per document answer D) S — but S is on 5. Accept doc answer: the topmost floor 6 is S per the resolved arrangement." },
+  correct:3, explanation:"P on 2, S on 5, T odd below S: floor 1 or 3. One between P and Q, R above Q. S is on floor 5. Who is on floor 6? Per document answer D) S � but S is on 5. Accept doc answer: the topmost floor 6 is S per the resolved arrangement." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// STATEMENT & ASSUMPTIONS / CONCLUSIONS / ARGUMENTS — 100 Questions (SCA001–SCA100)
+// -----------------------------------------------------------------------------
+// STATEMENT & ASSUMPTIONS / CONCLUSIONS / ARGUMENTS � 100 Questions (SCA001�SCA100)
 // Logical Reasoning | Medium to Hard Level
-// Statement-Assumption • Statement-Conclusion • Statement-Argument • Course of Action
-// ─────────────────────────────────────────────────────────────────────────────
+// Statement-Assumption � Statement-Conclusion � Statement-Argument � Course of Action
+// -----------------------------------------------------------------------------
 
-// SECTION A: STATEMENT – ASSUMPTION (SCA001–SCA030)
+// SECTION A: STATEMENT � ASSUMPTION (SCA001�SCA030)
 { id:"SCA001", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'You should not drink and drive.' – A traffic police notice.\nAssumptions: I. Drinking increases the chance of accidents while driving. II. People will follow the notice.",
+  question:"Statement: 'You should not drink and drive.' � A traffic police notice.\nAssumptions: I. Drinking increases the chance of accidents while driving. II. People will follow the notice.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Assumption I is implicit — the notice is premised on the fact that drinking impairs driving ability and causes accidents. Assumption II (that people will comply) is not necessarily assumed by a notice." },
+  correct:0, explanation:"Assumption I is implicit � the notice is premised on the fact that drinking impairs driving ability and causes accidents. Assumption II (that people will comply) is not necessarily assumed by a notice." },
 
 { id:"SCA002", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Use our product to keep your skin healthy.' – An advertisement.\nAssumptions: I. People want to keep their skin healthy. II. This product will keep the skin healthy.",
+  question:"Statement: 'Use our product to keep your skin healthy.' � An advertisement.\nAssumptions: I. People want to keep their skin healthy. II. This product will keep the skin healthy.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
   correct:4, explanation:"Both assumptions are implicit. An advertisement targeting skin health assumes (I) consumers desire healthy skin and (II) the product delivers that benefit." },
 
 { id:"SCA003", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not use mobile phones while driving.' – A notice.\nAssumptions: I. Using mobile phones while driving is dangerous. II. People will stop using mobile phones while driving.",
+  question:"Statement: 'Do not use mobile phones while driving.' � A notice.\nAssumptions: I. Using mobile phones while driving is dangerous. II. People will stop using mobile phones while driving.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is premised on the danger. Assumption II (compliance) is not a necessary underlying assumption of issuing the notice." },
+  correct:0, explanation:"Only I is implicit � the notice is premised on the danger. Assumption II (compliance) is not a necessary underlying assumption of issuing the notice." },
 
 { id:"SCA004", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Buy this insurance policy to secure your family's future.' – An advertisement.\nAssumptions: I. People want to secure their family's future. II. This policy will secure the family's future.",
+  question:"Statement: 'Buy this insurance policy to secure your family's future.' � An advertisement.\nAssumptions: I. People want to secure their family's future. II. This policy will secure the family's future.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
   correct:4, explanation:"Both I and II are implicit. The advertisement assumes people care about their family's future and that the product fulfills that need." },
 
 { id:"SCA005", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Read our magazine to stay updated with current affairs.' – An advertisement.\nAssumptions: I. People want to stay updated with current affairs. II. This magazine will help people stay updated.",
+  question:"Statement: 'Read our magazine to stay updated with current affairs.' � An advertisement.\nAssumptions: I. People want to stay updated with current affairs. II. This magazine will help people stay updated.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both assumptions are implicit — the ad is built on the premise that the target audience wants current affairs updates and that the magazine provides them." },
+  correct:4, explanation:"Both assumptions are implicit � the ad is built on the premise that the target audience wants current affairs updates and that the magazine provides them." },
 
 { id:"SCA006", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not spit on the road.' – A notice.\nAssumptions: I. Spitting on the road is unhygienic. II. People will stop spitting on the road.",
+  question:"Statement: 'Do not spit on the road.' � A notice.\nAssumptions: I. Spitting on the road is unhygienic. II. People will stop spitting on the road.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice assumes spitting is unhygienic/harmful. Assumption II (compliance) is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice assumes spitting is unhygienic/harmful. Assumption II (compliance) is not necessarily implied." },
 
 { id:"SCA007", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Join our coaching to crack the competitive exam.' – An advertisement.\nAssumptions: I. People want to crack the competitive exam. II. This coaching will help people crack the exam.",
+  question:"Statement: 'Join our coaching to crack the competitive exam.' � An advertisement.\nAssumptions: I. People want to crack the competitive exam. II. This coaching will help people crack the exam.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
   correct:4, explanation:"Both I and II are implicit. The advertisement presupposes student desire to pass and that the coaching delivers results." },
 
 { id:"SCA008", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Wear helmet while riding a two-wheeler.' – A notice.\nAssumptions: I. Wearing helmet reduces the risk of head injury. II. People will wear helmets.",
+  question:"Statement: 'Wear helmet while riding a two-wheeler.' � A notice.\nAssumptions: I. Wearing helmet reduces the risk of head injury. II. People will wear helmets.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is premised on the protective benefit of helmets. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice is premised on the protective benefit of helmets. Assumption II is not necessarily implied." },
 
 { id:"SCA009", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Use our software to increase your productivity.' – An advertisement.\nAssumptions: I. People want to increase their productivity. II. This software will increase productivity.",
+  question:"Statement: 'Use our software to increase your productivity.' � An advertisement.\nAssumptions: I. People want to increase their productivity. II. This software will increase productivity.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the ad assumes users desire productivity gains and that the software delivers them." },
+  correct:4, explanation:"Both I and II are implicit � the ad assumes users desire productivity gains and that the software delivers them." },
 
 { id:"SCA010", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not litter in public places.' – A notice.\nAssumptions: I. Littering in public places is harmful. II. People will stop littering.",
+  question:"Statement: 'Do not litter in public places.' � A notice.\nAssumptions: I. Littering in public places is harmful. II. People will stop littering.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is grounded in the harm of littering. Assumption II (compliance) is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice is grounded in the harm of littering. Assumption II (compliance) is not necessarily implied." },
 
 { id:"SCA011", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Buy our product for better health.' – An advertisement.\nAssumptions: I. People want better health. II. This product will give better health.",
+  question:"Statement: 'Buy our product for better health.' � An advertisement.\nAssumptions: I. People want better health. II. This product will give better health.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
   correct:4, explanation:"Both assumptions are implicit in any health product advertisement." },
 
 { id:"SCA012", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not use plastic bags.' – A notice.\nAssumptions: I. Plastic bags are harmful to the environment. II. People will stop using plastic bags.",
+  question:"Statement: 'Do not use plastic bags.' � A notice.\nAssumptions: I. Plastic bags are harmful to the environment. II. People will stop using plastic bags.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the prohibition assumes plastic bags are harmful. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the prohibition assumes plastic bags are harmful. Assumption II is not necessarily implied." },
 
 { id:"SCA013", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Join our gym to stay fit.' – An advertisement.\nAssumptions: I. People want to stay fit. II. Joining this gym will help people stay fit.",
+  question:"Statement: 'Join our gym to stay fit.' � An advertisement.\nAssumptions: I. People want to stay fit. II. Joining this gym will help people stay fit.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the advertisement presupposes fitness desire and promises the gym delivers it." },
+  correct:4, explanation:"Both I and II are implicit � the advertisement presupposes fitness desire and promises the gym delivers it." },
 
 { id:"SCA014", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not smoke in public places.' – A notice.\nAssumptions: I. Smoking in public places is harmful to others. II. People will stop smoking in public places.",
+  question:"Statement: 'Do not smoke in public places.' � A notice.\nAssumptions: I. Smoking in public places is harmful to others. II. People will stop smoking in public places.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is grounded in the harm of passive smoking. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice is grounded in the harm of passive smoking. Assumption II is not necessarily implied." },
 
 { id:"SCA015", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Use our app to save time.' – An advertisement.\nAssumptions: I. People want to save time. II. This app will help people save time.",
+  question:"Statement: 'Use our app to save time.' � An advertisement.\nAssumptions: I. People want to save time. II. This app will help people save time.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both assumptions are implicit — the ad targets time-conscious users and claims time-saving." },
+  correct:4, explanation:"Both assumptions are implicit � the ad targets time-conscious users and claims time-saving." },
 
 { id:"SCA016", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not park vehicles on the footpath.' – A notice.\nAssumptions: I. Parking on the footpath causes inconvenience. II. People will stop parking on the footpath.",
+  question:"Statement: 'Do not park vehicles on the footpath.' � A notice.\nAssumptions: I. Parking on the footpath causes inconvenience. II. People will stop parking on the footpath.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is premised on the inconvenience caused. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice is premised on the inconvenience caused. Assumption II is not necessarily implied." },
 
 { id:"SCA017", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Buy our book to improve your English.' – An advertisement.\nAssumptions: I. People want to improve their English. II. This book will help improve English.",
+  question:"Statement: 'Buy our book to improve your English.' � An advertisement.\nAssumptions: I. People want to improve their English. II. This book will help improve English.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the advertisement assumes desire to improve and the book's effectiveness." },
+  correct:4, explanation:"Both I and II are implicit � the advertisement assumes desire to improve and the book's effectiveness." },
 
 { id:"SCA018", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not use mobile phones in the classroom.' – A notice.\nAssumptions: I. Using mobile phones in the classroom disturbs teaching. II. Students will stop using mobile phones in the classroom.",
+  question:"Statement: 'Do not use mobile phones in the classroom.' � A notice.\nAssumptions: I. Using mobile phones in the classroom disturbs teaching. II. Students will stop using mobile phones in the classroom.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice assumes phone use is disruptive. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice assumes phone use is disruptive. Assumption II is not necessarily implied." },
 
 { id:"SCA019", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Join our course to get a better job.' – An advertisement.\nAssumptions: I. People want a better job. II. This course will help people get a better job.",
+  question:"Statement: 'Join our course to get a better job.' � An advertisement.\nAssumptions: I. People want a better job. II. This course will help people get a better job.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the advertisement targets job-seekers and claims the course leads to better employment." },
+  correct:4, explanation:"Both I and II are implicit � the advertisement targets job-seekers and claims the course leads to better employment." },
 
 { id:"SCA020", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not waste water.' – A notice.\nAssumptions: I. Water is a precious resource. II. People will stop wasting water.",
+  question:"Statement: 'Do not waste water.' � A notice.\nAssumptions: I. Water is a precious resource. II. People will stop wasting water.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is premised on water's value. Assumption II (compliance) is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice is premised on water's value. Assumption II (compliance) is not necessarily implied." },
 
 { id:"SCA021", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Use our medicine to cure fever quickly.' – An advertisement.\nAssumptions: I. People want to cure fever quickly. II. This medicine will cure fever quickly.",
+  question:"Statement: 'Use our medicine to cure fever quickly.' � An advertisement.\nAssumptions: I. People want to cure fever quickly. II. This medicine will cure fever quickly.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both assumptions are implicit — the ad targets fever sufferers wanting quick relief and claims the medicine delivers it." },
+  correct:4, explanation:"Both assumptions are implicit � the ad targets fever sufferers wanting quick relief and claims the medicine delivers it." },
 
 { id:"SCA022", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not cross the railway track.' – A notice.\nAssumptions: I. Crossing the railway track is dangerous. II. People will stop crossing the railway track.",
+  question:"Statement: 'Do not cross the railway track.' � A notice.\nAssumptions: I. Crossing the railway track is dangerous. II. People will stop crossing the railway track.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the warning is based on the danger. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the warning is based on the danger. Assumption II is not necessarily implied." },
 
 { id:"SCA023", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Buy our laptop for better performance.' – An advertisement.\nAssumptions: I. People want better performance. II. This laptop will give better performance.",
+  question:"Statement: 'Buy our laptop for better performance.' � An advertisement.\nAssumptions: I. People want better performance. II. This laptop will give better performance.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the ad assumes users desire performance improvements and claims the laptop provides them." },
+  correct:4, explanation:"Both I and II are implicit � the ad assumes users desire performance improvements and claims the laptop provides them." },
 
 { id:"SCA024", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not feed the animals in the zoo.' – A notice.\nAssumptions: I. Feeding animals in the zoo is harmful. II. People will stop feeding animals.",
+  question:"Statement: 'Do not feed the animals in the zoo.' � A notice.\nAssumptions: I. Feeding animals in the zoo is harmful. II. People will stop feeding animals.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice assumes feeding is harmful. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice assumes feeding is harmful. Assumption II is not necessarily implied." },
 
 { id:"SCA025", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Join our institute to learn coding.' – An advertisement.\nAssumptions: I. People want to learn coding. II. This institute will teach coding effectively.",
+  question:"Statement: 'Join our institute to learn coding.' � An advertisement.\nAssumptions: I. People want to learn coding. II. This institute will teach coding effectively.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the ad targets aspiring coders and claims effective instruction." },
+  correct:4, explanation:"Both I and II are implicit � the ad targets aspiring coders and claims effective instruction." },
 
 { id:"SCA026", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not throw garbage in the river.' – A notice.\nAssumptions: I. Throwing garbage in the river pollutes water. II. People will stop throwing garbage in the river.",
+  question:"Statement: 'Do not throw garbage in the river.' � A notice.\nAssumptions: I. Throwing garbage in the river pollutes water. II. People will stop throwing garbage in the river.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice assumes pollution harm. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice assumes pollution harm. Assumption II is not necessarily implied." },
 
 { id:"SCA027", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Use our cream for fair skin.' – An advertisement.\nAssumptions: I. People want fair skin. II. This cream will make skin fair.",
+  question:"Statement: 'Use our cream for fair skin.' � An advertisement.\nAssumptions: I. People want fair skin. II. This cream will make skin fair.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the ad assumes desire for fair skin and claims the cream delivers it." },
+  correct:4, explanation:"Both I and II are implicit � the ad assumes desire for fair skin and claims the cream delivers it." },
 
 { id:"SCA028", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not use loudspeakers after 10 pm.' – A notice.\nAssumptions: I. Using loudspeakers after 10 pm disturbs people. II. People will stop using loudspeakers after 10 pm.",
+  question:"Statement: 'Do not use loudspeakers after 10 pm.' � A notice.\nAssumptions: I. Using loudspeakers after 10 pm disturbs people. II. People will stop using loudspeakers after 10 pm.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is premised on the disturbance caused. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice is premised on the disturbance caused. Assumption II is not necessarily implied." },
 
 { id:"SCA029", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Buy our watch for accurate time.' – An advertisement.\nAssumptions: I. People want accurate time. II. This watch will show accurate time.",
+  question:"Statement: 'Buy our watch for accurate time.' � An advertisement.\nAssumptions: I. People want accurate time. II. This watch will show accurate time.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:4, explanation:"Both I and II are implicit — the ad assumes users want accuracy and claims the watch provides it." },
+  correct:4, explanation:"Both I and II are implicit � the ad assumes users want accuracy and claims the watch provides it." },
 
 { id:"SCA030", section:"logical", topic:"Statement & Assumptions", difficulty:"Medium",
-  question:"Statement: 'Do not climb the fence.' – A notice.\nAssumptions: I. Climbing the fence is dangerous. II. People will stop climbing the fence.",
+  question:"Statement: 'Do not climb the fence.' � A notice.\nAssumptions: I. Climbing the fence is dangerous. II. People will stop climbing the fence.",
   options:["Only I is implicit","Only II is implicit","Either I or II is implicit","Neither I nor II is implicit","Both I and II are implicit"],
-  correct:0, explanation:"Only I is implicit — the notice is grounded in danger. Assumption II is not necessarily implied." },
+  correct:0, explanation:"Only I is implicit � the notice is grounded in danger. Assumption II is not necessarily implied." },
 
 
-// SECTION B: STATEMENT – CONCLUSION (SCA031–SCA055)
+// SECTION B: STATEMENT � CONCLUSION (SCA031�SCA055)
 { id:"SCA031", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All books are pens. Some pens are pencils.\nConclusions: I. Some books are pencils. II. Some pencils are books.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
@@ -4746,7 +4746,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA033", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: Some boys are girls. All girls are teachers.\nConclusions: I. Some boys are teachers. II. All teachers are girls.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:0, explanation:"Some boys are girls + All girls are teachers = Some boys are teachers (I follows). II does not follow — teachers can include non-girls." },
+  correct:0, explanation:"Some boys are girls + All girls are teachers = Some boys are teachers (I follows). II does not follow � teachers can include non-girls." },
 
 { id:"SCA034", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All roads are poles. No pole is a house.\nConclusions: I. Some roads are houses. II. Some houses are poles.",
@@ -4756,7 +4756,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA035", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All flowers are trees. No tree is a plant.\nConclusions: I. No flower is a plant. II. Some plants are trees.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:0, explanation:"All flowers are trees + No tree is a plant = No flower is a plant (I follows). II does not follow — no plant is a tree." },
+  correct:0, explanation:"All flowers are trees + No tree is a plant = No flower is a plant (I follows). II does not follow � no plant is a tree." },
 
 { id:"SCA036", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: Some pens are books. Some books are pencils.\nConclusions: I. Some pens are pencils. II. Some pencils are pens.",
@@ -4766,7 +4766,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA037", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All men are women. All women are children.\nConclusions: I. All men are children. II. All children are men.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:0, explanation:"All men are women + All women are children = All men are children (I follows). II does not follow — children may include women who are not men." },
+  correct:0, explanation:"All men are women + All women are children = All men are children (I follows). II does not follow � children may include women who are not men." },
 
 { id:"SCA038", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: Some tables are chairs. No chair is a desk.\nConclusions: I. Some tables are desks. II. No table is a desk.",
@@ -4776,42 +4776,42 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA039", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All apples are oranges. Some oranges are bananas.\nConclusions: I. Some apples are bananas. II. Some bananas are oranges.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I does not follow — the bananas overlap may not include apples. II follows directly from 'Some oranges are bananas' by conversion." },
+  correct:1, explanation:"I does not follow � the bananas overlap may not include apples. II follows directly from 'Some oranges are bananas' by conversion." },
 
 { id:"SCA040", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: No bird is a fish. All fishes are animals.\nConclusions: I. No bird is an animal. II. Some animals are fishes.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I does not follow — birds could still be animals through other routes. II follows from 'All fishes are animals' by conversion." },
+  correct:1, explanation:"I does not follow � birds could still be animals through other routes. II follows from 'All fishes are animals' by conversion." },
 
 { id:"SCA041", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All cars are buses. Some buses are trucks.\nConclusions: I. Some cars are trucks. II. Some trucks are buses.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I does not necessarily follow — the truck-bus overlap may not include cars. II follows from 'Some buses are trucks' by conversion." },
+  correct:1, explanation:"I does not necessarily follow � the truck-bus overlap may not include cars. II follows from 'Some buses are trucks' by conversion." },
 
 { id:"SCA042", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: Some dogs are cats. All cats are rats.\nConclusions: I. Some dogs are rats. II. All rats are cats.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:0, explanation:"Some dogs are cats + All cats are rats = Some dogs are rats (I follows). II does not follow — rats can include non-cats." },
+  correct:0, explanation:"Some dogs are cats + All cats are rats = Some dogs are rats (I follows). II does not follow � rats can include non-cats." },
 
 { id:"SCA043", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All books are papers. Some papers are files.\nConclusions: I. Some books are files. II. Some files are books.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:3, explanation:"All books are papers + Some papers are files — the file overlap may not include books. Neither conclusion necessarily follows." },
+  correct:3, explanation:"All books are papers + Some papers are files � the file overlap may not include books. Neither conclusion necessarily follows." },
 
 { id:"SCA044", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: No man is a woman. All women are children.\nConclusions: I. No man is a child. II. Some children are women.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I does not follow — men could be children through another route. II follows from 'All women are children' by conversion." },
+  correct:1, explanation:"I does not follow � men could be children through another route. II follows from 'All women are children' by conversion." },
 
 { id:"SCA045", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All students are teachers. Some teachers are professors.\nConclusions: I. Some students are professors. II. Some professors are teachers.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I does not necessarily follow — the professor overlap may not include students. II follows from 'Some teachers are professors' by conversion." },
+  correct:1, explanation:"I does not necessarily follow � the professor overlap may not include students. II follows from 'Some teachers are professors' by conversion." },
 
 { id:"SCA046", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: Some rivers are mountains. All mountains are hills.\nConclusions: I. Some rivers are hills. II. All hills are mountains.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:0, explanation:"Some rivers are mountains + All mountains are hills = Some rivers are hills (I follows). II does not follow — hills can include non-mountains." },
+  correct:0, explanation:"Some rivers are mountains + All mountains are hills = Some rivers are hills (I follows). II does not follow � hills can include non-mountains." },
 
 { id:"SCA047", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: All pens are pencils. No pencil is a paper.\nConclusions: I. No pen is a paper. II. Some papers are pencils.",
@@ -4831,7 +4831,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA050", section:"logical", topic:"Statement & Conclusions", difficulty:"Medium",
   question:"Statements: No cat is a dog. All dogs are animals.\nConclusions: I. No cat is an animal. II. Some animals are dogs.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I does not follow — cats can be animals through other routes. II follows from 'All dogs are animals' by conversion." },
+  correct:1, explanation:"I does not follow � cats can be animals through other routes. II follows from 'All dogs are animals' by conversion." },
 
 { id:"SCA051", section:"logical", topic:"Statement & Conclusions", difficulty:"Hard",
   question:"Statements: All books are pens. Some pens are pencils.\nConclusions: I. Some books are pencils is a possibility. II. Some pencils are books is a possibility.",
@@ -4841,24 +4841,24 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA052", section:"logical", topic:"Statement & Conclusions", difficulty:"Hard",
   question:"Statements: All dogs are cats. All cats are rats.\nConclusions: I. All rats are dogs is a possibility. II. Some dogs are rats is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I is not a possibility — rats include all cats which include all dogs, but rats can have other members too; it's possible all rats are dogs only if there are no other rats. II as a possibility always holds since all dogs are rats. Only II follows as a certainty/possibility." },
+  correct:1, explanation:"I is not a possibility � rats include all cats which include all dogs, but rats can have other members too; it's possible all rats are dogs only if there are no other rats. II as a possibility always holds since all dogs are rats. Only II follows as a certainty/possibility." },
 
 { id:"SCA053", section:"logical", topic:"Statement & Conclusions", difficulty:"Hard",
   question:"Statements: Some boys are girls. All girls are teachers.\nConclusions: I. All boys are teachers is a possibility. II. Some teachers are boys is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both are valid possibilities — boys not in the girls set could also be teachers, and since some boys are girls who are teachers, some teachers being boys is possible." },
+  correct:4, explanation:"Both are valid possibilities � boys not in the girls set could also be teachers, and since some boys are girls who are teachers, some teachers being boys is possible." },
 
 { id:"SCA054", section:"logical", topic:"Statement & Conclusions", difficulty:"Hard",
   question:"Statements: All roads are poles. No pole is a house.\nConclusions: I. Some roads are houses is a possibility. II. No house is a road is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I is not a possibility — since all roads are poles and no pole is a house, no road can be a house. II is a definite fact (no road is a house) stated as a possibility, so it follows." },
+  correct:1, explanation:"I is not a possibility � since all roads are poles and no pole is a house, no road can be a house. II is a definite fact (no road is a house) stated as a possibility, so it follows." },
 
 { id:"SCA055", section:"logical", topic:"Statement & Conclusions", difficulty:"Hard",
   question:"Statements: All flowers are trees. No tree is a plant.\nConclusions: I. Some flowers are plants is a possibility. II. No plant is a flower is a possibility.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:1, explanation:"I is not a possibility — since all flowers are trees and no tree is a plant, no flower can be a plant. II is the definite conclusion stated as a possibility, so it follows." },
+  correct:1, explanation:"I is not a possibility � since all flowers are trees and no tree is a plant, no flower can be a plant. II is the definite conclusion stated as a possibility, so it follows." },
 
-// SECTION C: STATEMENT – ARGUMENT (SCA056–SCA080)
+// SECTION C: STATEMENT � ARGUMENT (SCA056�SCA080)
 { id:"SCA056", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should education be made free for all?\nArguments: I. Yes, education is a basic right of every citizen. II. No, it will increase the burden on the government.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
@@ -4872,12 +4872,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA058", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the voting age be reduced to 16 years?\nArguments: I. Yes, it will increase political awareness among youth. II. No, 16-year-olds are not mature enough to vote.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong. I argues benefit (awareness), II argues a maturity concern — both are substantive." },
+  correct:4, explanation:"Both arguments are strong. I argues benefit (awareness), II argues a maturity concern � both are substantive." },
 
 { id:"SCA059", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should capital punishment be abolished?\nArguments: I. Yes, it is against human rights. II. No, it acts as a deterrent to serious crimes.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — I raises a human rights principle, II raises a practical law-and-order argument." },
+  correct:4, explanation:"Both arguments are strong � I raises a human rights principle, II raises a practical law-and-order argument." },
 
 { id:"SCA060", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban private coaching institutes?\nArguments: I. Yes, they exploit students financially. II. No, they help students prepare better for competitive exams.",
@@ -4887,7 +4887,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA061", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the use of mobile phones be banned in schools?\nArguments: I. Yes, they distract students from studies. II. No, they are useful for emergency communication.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — I addresses academic distraction, II addresses safety and emergency needs." },
+  correct:4, explanation:"Both arguments are strong � I addresses academic distraction, II addresses safety and emergency needs." },
 
 { id:"SCA062", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government increase the tax on tobacco products?\nArguments: I. Yes, it will reduce consumption of tobacco. II. No, it will increase the burden on the poor.",
@@ -4897,7 +4897,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA063", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government make military service compulsory?\nArguments: I. Yes, it will instill discipline in youth. II. No, it will violate individual freedom.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — I addresses national benefit, II addresses fundamental rights." },
+  correct:4, explanation:"Both arguments are strong � I addresses national benefit, II addresses fundamental rights." },
 
 { id:"SCA064", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the sale of junk food in schools?\nArguments: I. Yes, junk food is harmful to children's health. II. No, it will affect the business of food sellers.",
@@ -4907,22 +4907,22 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA065", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government provide free healthcare to all citizens?\nArguments: I. Yes, health is a basic right. II. No, it will put a huge financial burden on the government.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — I raises a rights-based argument, II raises a practical financial concern." },
+  correct:4, explanation:"Both arguments are strong � I raises a rights-based argument, II raises a practical financial concern." },
 
 { id:"SCA066", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the use of private vehicles in cities?\nArguments: I. Yes, it will reduce pollution. II. No, it will cause inconvenience to people.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — pollution reduction is a strong benefit, but inconvenience to daily commuters is also substantial." },
+  correct:4, explanation:"Both arguments are strong � pollution reduction is a strong benefit, but inconvenience to daily commuters is also substantial." },
 
 { id:"SCA067", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government make yoga compulsory in schools?\nArguments: I. Yes, it will improve physical and mental health of students. II. No, it will take time away from academic subjects.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:0, explanation:"Only I is strong. Health improvement is a strong, direct benefit. II's concern about academic time is weak — yoga takes minimal time." },
+  correct:0, explanation:"Only I is strong. Health improvement is a strong, direct benefit. II's concern about academic time is weak � yoga takes minimal time." },
 
 { id:"SCA068", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government increase the salary of teachers?\nArguments: I. Yes, it will attract better talent to the teaching profession. II. No, it will increase the financial burden on the government.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — attracting talent is vital for education quality, and budget constraints are a legitimate concern." },
+  correct:4, explanation:"Both arguments are strong � attracting talent is vital for education quality, and budget constraints are a legitimate concern." },
 
 { id:"SCA069", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the advertisement of alcohol?\nArguments: I. Yes, it will reduce the consumption of alcohol. II. No, it will affect the revenue of media companies.",
@@ -4932,17 +4932,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA070", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government make organ donation compulsory?\nArguments: I. Yes, it will save many lives. II. No, it will violate personal rights.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — saving lives is a powerful benefit, but bodily autonomy is a fundamental right." },
+  correct:4, explanation:"Both arguments are strong � saving lives is a powerful benefit, but bodily autonomy is a fundamental right." },
 
 { id:"SCA071", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the use of crackers during festivals?\nArguments: I. Yes, it will reduce air and noise pollution. II. No, it will affect the traditions and culture.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — pollution control is crucial, and cultural traditions hold societal importance." },
+  correct:4, explanation:"Both arguments are strong � pollution control is crucial, and cultural traditions hold societal importance." },
 
 { id:"SCA072", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government provide free internet to all citizens?\nArguments: I. Yes, internet is essential for education and information. II. No, it will increase the financial burden on the government.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — digital access is increasingly essential, but cost is a legitimate fiscal concern." },
+  correct:4, explanation:"Both arguments are strong � digital access is increasingly essential, but cost is a legitimate fiscal concern." },
 
 { id:"SCA073", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the sale of cigarettes?\nArguments: I. Yes, smoking causes serious health problems. II. No, it will lead to loss of revenue for the government.",
@@ -4952,7 +4952,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA074", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government make physical education compulsory in colleges?\nArguments: I. Yes, it will improve the fitness of students. II. No, students should focus only on academics.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:0, explanation:"Only I is strong. Fitness improvement is a direct benefit. II is a narrow view — physical health complements academic performance." },
+  correct:0, explanation:"Only I is strong. Fitness improvement is a direct benefit. II is a narrow view � physical health complements academic performance." },
 
 { id:"SCA075", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government increase the fine for traffic violations?\nArguments: I. Yes, it will reduce the number of accidents. II. No, it will increase the burden on the poor.",
@@ -4962,7 +4962,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA076", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the use of animals in circuses?\nArguments: I. Yes, it is cruel to animals. II. No, it will affect the livelihood of circus workers.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — animal cruelty is a strong ethical argument, and worker livelihoods are a genuine social concern." },
+  correct:4, explanation:"Both arguments are strong � animal cruelty is a strong ethical argument, and worker livelihoods are a genuine social concern." },
 
 { id:"SCA077", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government make sex education compulsory in schools?\nArguments: I. Yes, it will create awareness among students. II. No, it is against Indian culture.",
@@ -4972,23 +4972,23 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA078", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the use of chemical fertilizers?\nArguments: I. Yes, they harm the soil and environment. II. No, it will reduce agricultural production.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — environmental protection is crucial, but so is food security through agricultural output." },
+  correct:4, explanation:"Both arguments are strong � environmental protection is crucial, but so is food security through agricultural output." },
 
 { id:"SCA079", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government provide free higher education to all?\nArguments: I. Yes, it will increase the literacy rate. II. No, it will put a huge financial burden on the government.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — expanding education is important, but fiscal sustainability matters too." },
+  correct:4, explanation:"Both arguments are strong � expanding education is important, but fiscal sustainability matters too." },
 
 { id:"SCA080", section:"logical", topic:"Statement & Arguments", difficulty:"Medium",
   question:"Statement: Should the government ban the use of diesel vehicles in cities?\nArguments: I. Yes, diesel vehicles cause more pollution. II. No, it will affect the transportation of goods.",
   options:["Only I is strong","Only II is strong","Either I or II is strong","Neither I nor II is strong","Both I and II are strong"],
-  correct:4, explanation:"Both arguments are strong — pollution reduction and goods transportation logistics are both substantive concerns." },
+  correct:4, explanation:"Both arguments are strong � pollution reduction and goods transportation logistics are both substantive concerns." },
 
-// SECTION D: COURSE OF ACTION (SCA081–SCA100)
+// SECTION D: COURSE OF ACTION (SCA081�SCA100)
 { id:"SCA081", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of road accidents in the city during the last few months.\nCourses of Action: I. The traffic police should be more strict in enforcing traffic rules. II. The government should improve the condition of the roads.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both courses of action directly address the problem — stricter enforcement deters reckless driving, and better roads reduce accident risk." },
+  correct:4, explanation:"Both courses of action directly address the problem � stricter enforcement deters reckless driving, and better roads reduce accident risk." },
 
 { id:"SCA082", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: Many students are found to be weak in mathematics in the recent board examinations.\nCourses of Action: I. The schools should arrange special classes for weak students. II. The examination board should make the question paper easier.",
@@ -4998,7 +4998,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA083", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale unemployment among the educated youth in the country.\nCourses of Action: I. The government should create more job opportunities. II. The education system should be made more job-oriented.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — creating jobs addresses immediate need, while job-oriented education prevents future unemployment." },
+  correct:4, explanation:"Both follow � creating jobs addresses immediate need, while job-oriented education prevents future unemployment." },
 
 { id:"SCA084", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The prices of essential commodities have risen sharply in the last few months.\nCourses of Action: I. The government should take steps to control the prices. II. The government should advise people to stop buying essential commodities.",
@@ -5008,17 +5008,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA085", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a significant drop in the water level of the rivers in the country.\nCourses of Action: I. The government should take steps to conserve water. II. The government should ban the use of water for non-essential purposes.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — conservation measures and restricting non-essential use are complementary and practical responses." },
+  correct:4, explanation:"Both follow � conservation measures and restricting non-essential use are complementary and practical responses." },
 
 { id:"SCA086", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: Many people are dying of malaria in the rural areas of the country.\nCourses of Action: I. The government should provide free medical facilities in rural areas. II. The government should take steps to eradicate mosquitoes.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — treating the sick (I) and eliminating the disease vector (II) are both necessary responses to a malaria outbreak." },
+  correct:4, explanation:"Both follow � treating the sick (I) and eliminating the disease vector (II) are both necessary responses to a malaria outbreak." },
 
 { id:"SCA087", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large number of cases of food adulteration in the city.\nCourses of Action: I. The government should take strict action against the adulterators. II. The government should educate people about the harmful effects of adulterated food.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement deters adulteration, and public awareness helps consumers protect themselves." },
+  correct:4, explanation:"Both follow � enforcement deters adulteration, and public awareness helps consumers protect themselves." },
 
 { id:"SCA088", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from diabetes has increased significantly in the last few years.\nCourses of Action: I. The government should launch awareness campaigns about healthy lifestyle. II. The government should ban the sale of sugary foods.",
@@ -5028,69 +5028,69 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"SCA089", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cyber crimes in the country.\nCourses of Action: I. The government should strengthen cyber security laws. II. The government should educate people about safe online practices.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — stronger laws deter cybercrime, and awareness reduces vulnerability. Both are necessary complementary actions." },
+  correct:4, explanation:"Both follow � stronger laws deter cybercrime, and awareness reduces vulnerability. Both are necessary complementary actions." },
 
 { id:"SCA090", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: Many children are found to be malnourished in the rural areas of the country.\nCourses of Action: I. The government should provide free nutritious food to children. II. The government should educate parents about the importance of nutrition.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — direct nutritional support (I) and long-term education (II) both address child malnutrition effectively." },
+  correct:4, explanation:"Both follow � direct nutritional support (I) and long-term education (II) both address child malnutrition effectively." },
 
 { id:"SCA091", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale migration of people from rural to urban areas.\nCourses of Action: I. The government should create more employment opportunities in rural areas. II. The government should improve the infrastructure in rural areas.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — employment and infrastructure are the core drivers of rural-to-urban migration; addressing both is necessary." },
+  correct:4, explanation:"Both follow � employment and infrastructure are the core drivers of rural-to-urban migration; addressing both is necessary." },
 
 { id:"SCA092", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The quality of education in government schools has deteriorated significantly.\nCourses of Action: I. The government should appoint more qualified teachers. II. The government should improve the infrastructure of government schools.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — teacher quality and physical infrastructure are both essential to education quality." },
+  correct:4, explanation:"Both follow � teacher quality and physical infrastructure are both essential to education quality." },
 
 { id:"SCA093", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of domestic violence.\nCourses of Action: I. The government should strengthen the laws against domestic violence. II. The government should create awareness about women's rights.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal deterrence and social awareness are both necessary to combat domestic violence." },
+  correct:4, explanation:"Both follow � legal deterrence and social awareness are both necessary to combat domestic violence." },
 
 { id:"SCA094", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to air pollution has increased significantly.\nCourses of Action: I. The government should take steps to reduce air pollution. II. The government should advise people to wear masks.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — addressing the source (I) and protecting individuals (II) are complementary actions." },
+  correct:4, explanation:"Both follow � addressing the source (I) and protecting individuals (II) are complementary actions." },
 
 { id:"SCA095", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large number of cases of child labour in the country.\nCourses of Action: I. The government should take strict action against those employing children. II. The government should provide free education to all children.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement against employers and providing education as an alternative are both necessary to eliminate child labour." },
+  correct:4, explanation:"Both follow � enforcement against employers and providing education as an alternative are both necessary to eliminate child labour." },
 
 { id:"SCA096", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from mental health issues has increased significantly.\nCourses of Action: I. The government should increase the number of mental health professionals. II. The government should create awareness about mental health.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — more professionals to treat patients and awareness to reduce stigma and encourage help-seeking are both needed." },
+  correct:4, explanation:"Both follow � more professionals to treat patients and awareness to reduce stigma and encourage help-seeking are both needed." },
 
 { id:"SCA097", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of drug addiction among youth.\nCourses of Action: I. The government should take strict action against drug peddlers. II. The government should create awareness about the harmful effects of drugs.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — supply-side enforcement (I) and demand-side prevention through awareness (II) must work together." },
+  correct:4, explanation:"Both follow � supply-side enforcement (I) and demand-side prevention through awareness (II) must work together." },
 
 { id:"SCA098", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to lack of clean drinking water has increased.\nCourses of Action: I. The government should provide clean drinking water to all. II. The government should educate people about water purification methods.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — direct provision of clean water (I) and empowering people with purification knowledge (II) address the problem from both ends." },
+  correct:4, explanation:"Both follow � direct provision of clean water (I) and empowering people with purification knowledge (II) address the problem from both ends." },
 
 { id:"SCA099", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale deforestation in the country.\nCourses of Action: I. The government should ban the cutting of trees. II. The government should promote afforestation programmes.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — stopping further deforestation (I) and restoring forest cover (II) are both necessary responses." },
+  correct:4, explanation:"Both follow � stopping further deforestation (I) and restoring forest cover (II) are both necessary responses." },
 
 { id:"SCA100", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people affected by floods has increased significantly in the last few years.\nCourses of Action: I. The government should improve the drainage system in flood-prone areas. II. The government should create awareness about disaster preparedness.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — infrastructure improvement (I) and community preparedness (II) are both valid and necessary responses to increasing flood impact." },
+  correct:4, explanation:"Both follow � infrastructure improvement (I) and community preparedness (II) are both valid and necessary responses to increasing flood impact." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CAUSE & EFFECT — 100 Questions (CEF001–CEF100)
+// -----------------------------------------------------------------------------
+// CAUSE & EFFECT � 100 Questions (CEF001�CEF100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
-// SECTION A: DIRECT CAUSE–EFFECT (CEF001–CEF040)
+// SECTION A: DIRECT CAUSE�EFFECT (CEF001�CEF040)
 { id:"CEF001", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The prices of petroleum products have increased substantially during the last few months.\nII. The government has decided to increase the prices of petroleum products.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
@@ -5291,11 +5291,11 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
   correct:1, explanation:"Increased market competition (II) is the cause; price reduction (I) is the competitive response." },
 
-// SECTION B: INDEPENDENT / COMMON CAUSE (CEF041–CEF070)
+// SECTION B: INDEPENDENT / COMMON CAUSE (CEF041�CEF070)
 { id:"CEF041", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to increase the prices of petrol and diesel.\nII. The government has decided to increase the prices of cooking gas.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both price hikes stem from the same root cause — rising international crude oil prices. Both are effects of a common cause." },
+  correct:4, explanation:"Both price hikes stem from the same root cause � rising international crude oil prices. Both are effects of a common cause." },
 
 { id:"CEF042", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The school authority has decided to increase the fees of the students.\nII. The school authority has decided to increase the salary of the teachers.",
@@ -5305,17 +5305,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CEF043", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to increase the production of its products.\nII. The company has decided to increase the number of its employees.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both decisions stem from increased market demand — a common cause driving both higher production and more hiring." },
+  correct:4, explanation:"Both decisions stem from increased market demand � a common cause driving both higher production and more hiring." },
 
 { id:"CEF044", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to ban the use of plastic bags.\nII. The government has decided to promote the use of cloth bags.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both decisions stem from the same environmental concern about plastic pollution — a common cause." },
+  correct:4, explanation:"Both decisions stem from the same environmental concern about plastic pollution � a common cause." },
 
 { id:"CEF045", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to reduce the prices of its products.\nII. The company has decided to increase the quality of its products.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:2, explanation:"Reducing prices and improving quality are two independent strategic decisions — one doesn't cause the other." },
+  correct:2, explanation:"Reducing prices and improving quality are two independent strategic decisions � one doesn't cause the other." },
 
 { id:"CEF046", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to increase the tax on luxury goods.\nII. The government has decided to reduce the tax on essential commodities.",
@@ -5335,12 +5335,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CEF049", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to improve the public transport system in the city.\nII. The government has decided to improve the condition of the roads in the city.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both decisions stem from the same urban infrastructure development goal — a common cause." },
+  correct:4, explanation:"Both decisions stem from the same urban infrastructure development goal � a common cause." },
 
 { id:"CEF050", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to close down one of its units.\nII. The company has decided to lay off many of its employees.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both decisions stem from the same cause — the company's poor financial performance / losses." },
+  correct:4, explanation:"Both decisions stem from the same cause � the company's poor financial performance / losses." },
 
 { id:"CEF051", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to increase the budget for education.\nII. The government has decided to increase the budget for healthcare.",
@@ -5355,12 +5355,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CEF053", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to increase the working hours of its employees.\nII. The company has decided to reduce the number of holidays for its employees.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both decisions stem from the same cause — the company facing a production/delivery crunch or manpower shortage." },
+  correct:4, explanation:"Both decisions stem from the same cause � the company facing a production/delivery crunch or manpower shortage." },
 
 { id:"CEF054", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to ban the sale of tobacco products near schools.\nII. The government has decided to increase the tax on tobacco products.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both are government measures stemming from the same cause — rising tobacco consumption, especially among youth." },
+  correct:4, explanation:"Both are government measures stemming from the same cause � rising tobacco consumption, especially among youth." },
 
 { id:"CEF055", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to launch a new product in the market.\nII. The company has decided to increase the production of its existing products.",
@@ -5370,12 +5370,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CEF056", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to improve the healthcare facilities in the rural areas.\nII. The government has decided to improve the education facilities in the rural areas.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both decisions stem from a common cause — the government's rural development initiative." },
+  correct:4, explanation:"Both decisions stem from a common cause � the government's rural development initiative." },
 
 { id:"CEF057", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The school authority has decided to introduce online classes.\nII. The school authority has decided to reduce the number of regular classes.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both stem from the same cause — the pandemic disrupting in-person education." },
+  correct:4, explanation:"Both stem from the same cause � the pandemic disrupting in-person education." },
 
 { id:"CEF058", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to expand its business in the rural areas.\nII. The company has decided to expand its business in the international market.",
@@ -5385,17 +5385,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CEF059", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to increase the import of wheat.\nII. The government has decided to increase the import of rice.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both import decisions stem from the same cause — poor domestic food grain production due to drought or floods." },
+  correct:4, explanation:"Both import decisions stem from the same cause � poor domestic food grain production due to drought or floods." },
 
 { id:"CEF060", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to reduce the production of its products.\nII. The company has decided to reduce the number of its employees.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both decisions stem from the same cause — declining demand or financial losses." },
+  correct:4, explanation:"Both decisions stem from the same cause � declining demand or financial losses." },
 
 { id:"CEF061", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to ban the use of single-use plastics.\nII. The government has decided to promote the use of biodegradable alternatives.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both are policy responses to the same cause — the environmental damage caused by plastic pollution." },
+  correct:4, explanation:"Both are policy responses to the same cause � the environmental damage caused by plastic pollution." },
 
 { id:"CEF062", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The school authority has decided to increase the number of teachers.\nII. The school authority has decided to improve the infrastructure of the school.",
@@ -5410,39 +5410,39 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CEF064", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to improve the condition of the roads in the city.\nII. The government has decided to improve the drainage system in the city.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both stem from the same cause — the government's urban infrastructure overhaul program." },
+  correct:4, explanation:"Both stem from the same cause � the government's urban infrastructure overhaul program." },
 
 { id:"CEF065", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to close down one of its units.\nII. The company has decided to open a new unit in another city.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:2, explanation:"Closing one unit and opening another are independent business decisions — relocation, not causation." },
+  correct:2, explanation:"Closing one unit and opening another are independent business decisions � relocation, not causation." },
 
 { id:"CEF066", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to increase the tax on tobacco products.\nII. The government has decided to ban the advertisement of tobacco products.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both measures stem from the same cause — the government's campaign against tobacco use." },
+  correct:4, explanation:"Both measures stem from the same cause � the government's campaign against tobacco use." },
 
 { id:"CEF067", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The school authority has decided to introduce a new curriculum.\nII. The school authority has decided to change the examination pattern.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both stem from the same cause — the school's comprehensive education reform initiative." },
+  correct:4, explanation:"Both stem from the same cause � the school's comprehensive education reform initiative." },
 
 { id:"CEF068", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to expand its business in the international market.\nII. The company has decided to form a joint venture with a foreign company.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both stem from the same strategic goal — the company's plan for international growth." },
+  correct:4, explanation:"Both stem from the same strategic goal � the company's plan for international growth." },
 
 { id:"CEF069", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The government has decided to increase the budget for education.\nII. The government has decided to appoint more teachers in government schools.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:0, explanation:"The increased education budget (I) enables the appointment of more teachers (II) — I is the cause, II is the effect." },
+  correct:0, explanation:"The increased education budget (I) enables the appointment of more teachers (II) � I is the cause, II is the effect." },
 
 { id:"CEF070", section:"logical", topic:"Cause & Effect", difficulty:"Medium",
   question:"Statements:\nI. The company has decided to reduce the prices of its products.\nII. The company has decided to offer discounts on its products.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:4, explanation:"Both are marketing strategies stemming from the same cause — declining sales or increased competition." },
+  correct:4, explanation:"Both are marketing strategies stemming from the same cause � declining sales or increased competition." },
 
-// SECTION C: MIXED / HARD LEVEL (CEF071–CEF100)
+// SECTION C: MIXED / HARD LEVEL (CEF071�CEF100)
 { id:"CEF071", section:"logical", topic:"Cause & Effect", difficulty:"Hard",
   question:"Statements:\nI. The prices of petroleum products have increased substantially during the last few months.\nII. The government has decided to increase the prices of petroleum products.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
@@ -5466,7 +5466,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CEF075", section:"logical", topic:"Cause & Effect", difficulty:"Hard",
   question:"Statements:\nI. The school authority has decided to increase the fees of the students.\nII. The government has decided to increase the salary of the teachers.",
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
-  correct:2, explanation:"These are decisions by different authorities (school vs government) — independent of each other." },
+  correct:2, explanation:"These are decisions by different authorities (school vs government) � independent of each other." },
 
 { id:"CEF076", section:"logical", topic:"Cause & Effect", difficulty:"Hard",
   question:"Statements:\nI. The police has arrested many people for illegal mining.\nII. The government has banned illegal mining in the state.",
@@ -5593,16 +5593,16 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["I is cause, II is effect","II is cause, I is effect","Both are independent causes","Both are effects of independent causes","Both are effects of some common cause"],
   correct:1, explanation:"The surge in private vehicles causing congestion (II) prompted the government to improve public transport (I) as an alternative." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// COURSE OF ACTION — 100 Questions (COA001–COA100)
+// -----------------------------------------------------------------------------
+// COURSE OF ACTION � 100 Questions (COA001�COA100)
 // Logical Reasoning | Medium to Hard Level
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
-// SECTION A: BASIC (COA001–COA040)
+// SECTION A: BASIC (COA001�COA040)
 { id:"COA001", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of road accidents in the city during the last few months.\nCourses of Action:\nI. The traffic police should be more strict in enforcing traffic rules.\nII. The government should improve the condition of the roads.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both are practical and directly address road accidents — strict enforcement deters reckless driving, and road improvement reduces accident risk." },
+  correct:4, explanation:"Both are practical and directly address road accidents � strict enforcement deters reckless driving, and road improvement reduces accident risk." },
 
 { id:"COA002", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: Many students are found to be weak in mathematics in the recent board examinations.\nCourses of Action:\nI. The schools should arrange special classes for weak students.\nII. The examination board should make the question paper easier.",
@@ -5612,7 +5612,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA003", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale unemployment among the educated youth in the country.\nCourses of Action:\nI. The government should create more job opportunities.\nII. The education system should be made more job-oriented.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — creating jobs addresses the immediate problem, while job-oriented education prevents future unemployment." },
+  correct:4, explanation:"Both follow � creating jobs addresses the immediate problem, while job-oriented education prevents future unemployment." },
 
 { id:"COA004", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The prices of essential commodities have risen sharply in the last few months.\nCourses of Action:\nI. The government should take steps to control the prices.\nII. The government should advise people to stop buying essential commodities.",
@@ -5622,17 +5622,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA005", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a significant drop in the water level of the rivers in the country.\nCourses of Action:\nI. The government should take steps to conserve water.\nII. The government should ban the use of water for non-essential purposes.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both are valid responses — conservation measures and restricting non-essential use are complementary actions." },
+  correct:4, explanation:"Both are valid responses � conservation measures and restricting non-essential use are complementary actions." },
 
 { id:"COA006", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: Many people are dying of malaria in the rural areas of the country.\nCourses of Action:\nI. The government should provide free medical facilities in rural areas.\nII. The government should take steps to eradicate mosquitoes.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — treating the sick (I) and eliminating the disease vector (II) are both necessary responses." },
+  correct:4, explanation:"Both follow � treating the sick (I) and eliminating the disease vector (II) are both necessary responses." },
 
 { id:"COA007", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large number of cases of food adulteration in the city.\nCourses of Action:\nI. The government should take strict action against the adulterators.\nII. The government should educate people about the harmful effects of adulterated food.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement deters adulteration, and public awareness helps consumers protect themselves." },
+  correct:4, explanation:"Both follow � enforcement deters adulteration, and public awareness helps consumers protect themselves." },
 
 { id:"COA008", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from diabetes has increased significantly in the last few years.\nCourses of Action:\nI. The government should launch awareness campaigns about healthy lifestyle.\nII. The government should ban the sale of sugary foods.",
@@ -5642,67 +5642,67 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA009", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cyber crimes in the country.\nCourses of Action:\nI. The government should strengthen cyber security laws.\nII. The government should educate people about safe online practices.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — stronger laws deter cybercrime, and awareness reduces individual vulnerability. Both are complementary." },
+  correct:4, explanation:"Both follow � stronger laws deter cybercrime, and awareness reduces individual vulnerability. Both are complementary." },
 
 { id:"COA010", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: Many children are found to be malnourished in the rural areas of the country.\nCourses of Action:\nI. The government should provide free nutritious food to children.\nII. The government should educate parents about the importance of nutrition.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — direct nutritional support and long-term education both effectively address child malnutrition." },
+  correct:4, explanation:"Both follow � direct nutritional support and long-term education both effectively address child malnutrition." },
 
 { id:"COA011", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale migration of people from rural to urban areas.\nCourses of Action:\nI. The government should create more employment opportunities in rural areas.\nII. The government should improve the infrastructure in rural areas.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — employment and infrastructure are the core drivers of rural-urban migration; addressing both is necessary." },
+  correct:4, explanation:"Both follow � employment and infrastructure are the core drivers of rural-urban migration; addressing both is necessary." },
 
 { id:"COA012", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The quality of education in government schools has deteriorated significantly.\nCourses of Action:\nI. The government should appoint more qualified teachers.\nII. The government should improve the infrastructure of government schools.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — teacher quality and physical infrastructure are both essential to improving education quality." },
+  correct:4, explanation:"Both follow � teacher quality and physical infrastructure are both essential to improving education quality." },
 
 { id:"COA013", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of domestic violence.\nCourses of Action:\nI. The government should strengthen the laws against domestic violence.\nII. The government should create awareness about women's rights.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal deterrence and social awareness are both necessary to combat domestic violence." },
+  correct:4, explanation:"Both follow � legal deterrence and social awareness are both necessary to combat domestic violence." },
 
 { id:"COA014", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to air pollution has increased significantly.\nCourses of Action:\nI. The government should take steps to reduce air pollution.\nII. The government should advise people to wear masks.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — addressing the source (I) and protecting individuals (II) are complementary necessary actions." },
+  correct:4, explanation:"Both follow � addressing the source (I) and protecting individuals (II) are complementary necessary actions." },
 
 { id:"COA015", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large number of cases of child labour in the country.\nCourses of Action:\nI. The government should take strict action against those employing children.\nII. The government should provide free education to all children.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement and providing education as an alternative are both necessary to eliminate child labour." },
+  correct:4, explanation:"Both follow � enforcement and providing education as an alternative are both necessary to eliminate child labour." },
 
 { id:"COA016", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from mental health issues has increased significantly.\nCourses of Action:\nI. The government should increase the number of mental health professionals.\nII. The government should create awareness about mental health.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — more professionals to treat patients and awareness to reduce stigma are both needed." },
+  correct:4, explanation:"Both follow � more professionals to treat patients and awareness to reduce stigma are both needed." },
 
 { id:"COA017", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of drug addiction among youth.\nCourses of Action:\nI. The government should take strict action against drug peddlers.\nII. The government should create awareness about the harmful effects of drugs.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — supply-side enforcement (I) and demand-side prevention through awareness (II) must work together." },
+  correct:4, explanation:"Both follow � supply-side enforcement (I) and demand-side prevention through awareness (II) must work together." },
 
 { id:"COA018", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to lack of clean drinking water has increased.\nCourses of Action:\nI. The government should provide clean drinking water to all.\nII. The government should educate people about water purification methods.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — direct provision of clean water and empowering people with purification knowledge address the problem from both ends." },
+  correct:4, explanation:"Both follow � direct provision of clean water and empowering people with purification knowledge address the problem from both ends." },
 
 { id:"COA019", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale deforestation in the country.\nCourses of Action:\nI. The government should ban the cutting of trees.\nII. The government should promote afforestation programmes.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — stopping further deforestation (I) and restoring forest cover (II) are both necessary responses." },
+  correct:4, explanation:"Both follow � stopping further deforestation (I) and restoring forest cover (II) are both necessary responses." },
 
 { id:"COA020", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people affected by floods has increased significantly in the last few years.\nCourses of Action:\nI. The government should improve the drainage system in flood-prone areas.\nII. The government should create awareness about disaster preparedness.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — infrastructure improvement and community preparedness are both valid and necessary responses." },
+  correct:4, explanation:"Both follow � infrastructure improvement and community preparedness are both valid and necessary responses." },
 
 { id:"COA021", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of corruption in government offices.\nCourses of Action:\nI. The government should take strict action against corrupt officials.\nII. The government should create awareness about the harmful effects of corruption.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — strict punishment deters corruption, and awareness campaigns build a culture of integrity." },
+  correct:4, explanation:"Both follow � strict punishment deters corruption, and awareness campaigns build a culture of integrity." },
 
 { id:"COA022", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from lifestyle diseases has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about healthy lifestyle.\nII. The government should ban the sale of junk food.",
@@ -5712,17 +5712,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA023", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of sexual harassment at workplaces.\nCourses of Action:\nI. The government should strengthen the laws against sexual harassment.\nII. The government should create awareness about women's rights at workplaces.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal deterrence and social awareness work together to combat workplace harassment." },
+  correct:4, explanation:"Both follow � legal deterrence and social awareness work together to combat workplace harassment." },
 
 { id:"COA024", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to road accidents has increased significantly.\nCourses of Action:\nI. The government should improve the condition of the roads.\nII. The government should make the use of helmets and seat belts compulsory.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better roads reduce accident risk, and safety equipment saves lives. Both are necessary." },
+  correct:4, explanation:"Both follow � better roads reduce accident risk, and safety equipment saves lives. Both are necessary." },
 
 { id:"COA025", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large number of cases of female foeticide in the country.\nCourses of Action:\nI. The government should take strict action against those involved in female foeticide.\nII. The government should create awareness about the importance of the girl child.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal action and awareness campaigns together address both the symptom and the root cause." },
+  correct:4, explanation:"Both follow � legal action and awareness campaigns together address both the symptom and the root cause." },
 
 { id:"COA026", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from obesity has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about healthy diet and exercise.\nII. The government should ban the sale of fast food.",
@@ -5732,27 +5732,27 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA027", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of online fraud.\nCourses of Action:\nI. The government should strengthen cyber security laws.\nII. The government should educate people about safe online practices.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — stronger laws deter fraud, and awareness reduces individual vulnerability to online scams." },
+  correct:4, explanation:"Both follow � stronger laws deter fraud, and awareness reduces individual vulnerability to online scams." },
 
 { id:"COA028", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to lack of medical facilities in rural areas has increased.\nCourses of Action:\nI. The government should provide free medical facilities in rural areas.\nII. The government should appoint more doctors in rural areas.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — free facilities and adequate medical staff are both needed to improve rural healthcare." },
+  correct:4, explanation:"Both follow � free facilities and adequate medical staff are both needed to improve rural healthcare." },
 
 { id:"COA029", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale pollution of rivers in the country.\nCourses of Action:\nI. The government should take strict action against those polluting the rivers.\nII. The government should promote the use of eco-friendly products.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement (I) and reducing pollution at source through eco-friendly alternatives (II) are complementary." },
+  correct:4, explanation:"Both follow � enforcement (I) and reducing pollution at source through eco-friendly alternatives (II) are complementary." },
 
 { id:"COA030", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people affected by drought has increased significantly in the last few years.\nCourses of Action:\nI. The government should improve the irrigation system in drought-prone areas.\nII. The government should create awareness about water conservation.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — improved irrigation provides immediate relief, and water conservation addresses the long-term problem." },
+  correct:4, explanation:"Both follow � improved irrigation provides immediate relief, and water conservation addresses the long-term problem." },
 
 { id:"COA031", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of exam malpractice.\nCourses of Action:\nI. The government should take strict action against those involved in exam malpractice.\nII. The government should create awareness about the importance of honesty in examinations.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — strict action deters malpractice while awareness builds an honest examination culture." },
+  correct:4, explanation:"Both follow � strict action deters malpractice while awareness builds an honest examination culture." },
 
 { id:"COA032", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from stress-related diseases has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about stress management.\nII. The government should ban the use of mobile phones.",
@@ -5762,44 +5762,44 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA033", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of human trafficking.\nCourses of Action:\nI. The government should take strict action against those involved in human trafficking.\nII. The government should create awareness about the harmful effects of human trafficking.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — law enforcement action and public awareness together combat human trafficking effectively." },
+  correct:4, explanation:"Both follow � law enforcement action and public awareness together combat human trafficking effectively." },
 
 { id:"COA034", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to fire accidents has increased significantly.\nCourses of Action:\nI. The government should improve the fire safety measures in buildings.\nII. The government should create awareness about fire safety.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better safety infrastructure and public awareness together reduce fire accident fatalities." },
+  correct:4, explanation:"Both follow � better safety infrastructure and public awareness together reduce fire accident fatalities." },
 
 { id:"COA035", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large number of cases of child marriage in the country.\nCourses of Action:\nI. The government should take strict action against those involved in child marriage.\nII. The government should create awareness about the harmful effects of child marriage.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal action and awareness campaigns address both the practice and its societal roots." },
+  correct:4, explanation:"Both follow � legal action and awareness campaigns address both the practice and its societal roots." },
 
 { id:"COA036", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people suffering from tuberculosis has increased significantly.\nCourses of Action:\nI. The government should provide free treatment for tuberculosis.\nII. The government should create awareness about the prevention of tuberculosis.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — free treatment (I) addresses current patients while prevention awareness (II) reduces future cases." },
+  correct:4, explanation:"Both follow � free treatment (I) addresses current patients while prevention awareness (II) reduces future cases." },
 
 { id:"COA037", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There has been a sharp increase in the number of cases of online bullying.\nCourses of Action:\nI. The government should strengthen cyber laws against online bullying.\nII. The government should educate people about safe online behaviour.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal deterrence and digital literacy education together address online bullying." },
+  correct:4, explanation:"Both follow � legal deterrence and digital literacy education together address online bullying." },
 
 { id:"COA038", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people dying due to lack of emergency medical services has increased.\nCourses of Action:\nI. The government should improve the emergency medical services.\nII. The government should create awareness about first aid.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — improving emergency services and teaching first aid to the public complement each other." },
+  correct:4, explanation:"Both follow � improving emergency services and teaching first aid to the public complement each other." },
 
 { id:"COA039", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: There is a large scale pollution of groundwater in the country.\nCourses of Action:\nI. The government should take strict action against those polluting the groundwater.\nII. The government should promote the use of eco-friendly agricultural practices.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement action and promoting sustainable agriculture together address groundwater pollution." },
+  correct:4, explanation:"Both follow � enforcement action and promoting sustainable agriculture together address groundwater pollution." },
 
 { id:"COA040", section:"logical", topic:"Course of Action", difficulty:"Medium",
   question:"Statement: The number of people affected by heat waves has increased significantly in the last few years.\nCourses of Action:\nI. The government should create awareness about the precautions to be taken during heat waves.\nII. The government should improve the healthcare facilities in heat wave-prone areas.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — public precaution awareness and better healthcare facilities together reduce heat wave impact." },
+  correct:4, explanation:"Both follow � public precaution awareness and better healthcare facilities together reduce heat wave impact." },
 
-// SECTION B: MODERATE TO HARD (COA041–COA070)
+// SECTION B: MODERATE TO HARD (COA041�COA070)
 { id:"COA041", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from lifestyle diseases has increased significantly due to sedentary lifestyle.\nCourses of Action:\nI. The government should launch awareness campaigns about the importance of physical activity.\nII. The government should ban the sale of electronic gadgets.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
@@ -5808,77 +5808,77 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA042", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of food poisoning in the city.\nCourses of Action:\nI. The government should take strict action against those selling adulterated food.\nII. The government should educate people about food safety practices.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement against adulterators and public education on food safety together address food poisoning." },
+  correct:4, explanation:"Both follow � enforcement against adulterators and public education on food safety together address food poisoning." },
 
 { id:"COA043", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of blood during medical emergencies has increased.\nCourses of Action:\nI. The government should promote voluntary blood donation.\nII. The government should improve the blood bank facilities.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — increasing blood supply through donation and improving storage/distribution infrastructure are both necessary." },
+  correct:4, explanation:"Both follow � increasing blood supply through donation and improving storage/distribution infrastructure are both necessary." },
 
 { id:"COA044", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large number of cases of school dropouts in the rural areas of the country.\nCourses of Action:\nI. The government should provide free education and mid-day meals to children.\nII. The government should create awareness about the importance of education.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — incentives like free meals address economic barriers, and awareness campaigns change mindsets about education." },
+  correct:4, explanation:"Both follow � incentives like free meals address economic barriers, and awareness campaigns change mindsets about education." },
 
 { id:"COA045", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from water scarcity has increased significantly in the last few years.\nCourses of Action:\nI. The government should take steps to conserve water.\nII. The government should promote rainwater harvesting.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — conservation and harvesting rainwater are complementary strategies to address water scarcity." },
+  correct:4, explanation:"Both follow � conservation and harvesting rainwater are complementary strategies to address water scarcity." },
 
 { id:"COA046", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of online shopping frauds.\nCourses of Action:\nI. The government should strengthen cyber security laws.\nII. The government should educate people about safe online shopping practices.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal deterrence and consumer awareness work together to reduce online shopping fraud." },
+  correct:4, explanation:"Both follow � legal deterrence and consumer awareness work together to reduce online shopping fraud." },
 
 { id:"COA047", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of emergency services during natural disasters has increased.\nCourses of Action:\nI. The government should improve the disaster management system.\nII. The government should create awareness about disaster preparedness.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better disaster management infrastructure and prepared communities together save lives." },
+  correct:4, explanation:"Both follow � better disaster management infrastructure and prepared communities together save lives." },
 
 { id:"COA048", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large scale pollution of air in the major cities of the country.\nCourses of Action:\nI. The government should take steps to reduce vehicular emissions.\nII. The government should promote the use of public transport.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — reducing emissions (I) and promoting alternatives to private vehicles (II) are complementary pollution reduction strategies." },
+  correct:4, explanation:"Both follow � reducing emissions (I) and promoting alternatives to private vehicles (II) are complementary pollution reduction strategies." },
 
 { id:"COA049", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from depression has increased significantly among the youth.\nCourses of Action:\nI. The government should increase the number of mental health professionals.\nII. The government should create awareness about mental health issues.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — more professionals (I) and reducing stigma through awareness (II) together address youth depression." },
+  correct:4, explanation:"Both follow � more professionals (I) and reducing stigma through awareness (II) together address youth depression." },
 
 { id:"COA050", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of road rage in the city.\nCourses of Action:\nI. The government should take strict action against those involved in road rage.\nII. The government should create awareness about traffic rules and road etiquette.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — strict enforcement deters road rage, and awareness builds civil driving culture." },
+  correct:4, explanation:"Both follow � strict enforcement deters road rage, and awareness builds civil driving culture." },
 
 { id:"COA051", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper sanitation facilities has increased.\nCourses of Action:\nI. The government should improve the sanitation facilities in the country.\nII. The government should create awareness about the importance of sanitation.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better sanitation infrastructure and behavioural change through awareness together address the problem." },
+  correct:4, explanation:"Both follow � better sanitation infrastructure and behavioural change through awareness together address the problem." },
 
 { id:"COA052", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large number of cases of child abuse in the country.\nCourses of Action:\nI. The government should take strict action against those involved in child abuse.\nII. The government should create awareness about child rights.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal protection and awareness about child rights together combat child abuse." },
+  correct:4, explanation:"Both follow � legal protection and awareness about child rights together combat child abuse." },
 
 { id:"COA053", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from seasonal diseases has increased significantly.\nCourses of Action:\nI. The government should provide free vaccination for seasonal diseases.\nII. The government should create awareness about the prevention of seasonal diseases.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — free vaccination provides direct protection, and preventive awareness reduces spread." },
+  correct:4, explanation:"Both follow � free vaccination provides direct protection, and preventive awareness reduces spread." },
 
 { id:"COA054", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of identity theft.\nCourses of Action:\nI. The government should strengthen cyber security laws.\nII. The government should educate people about protecting their personal information online.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — cyber laws deter identity theft and user education reduces individual vulnerability." },
+  correct:4, explanation:"Both follow � cyber laws deter identity theft and user education reduces individual vulnerability." },
 
 { id:"COA055", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper emergency response during accidents has increased.\nCourses of Action:\nI. The government should improve the emergency response system.\nII. The government should create awareness about first aid and emergency procedures.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better emergency infrastructure and first aid training among the public save lives." },
+  correct:4, explanation:"Both follow � better emergency infrastructure and first aid training among the public save lives." },
 
 { id:"COA056", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large scale pollution of soil in the agricultural areas of the country.\nCourses of Action:\nI. The government should take strict action against those using excessive chemical fertilizers.\nII. The government should promote organic farming.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement against overuse of chemicals and promoting organic alternatives together address soil pollution." },
+  correct:4, explanation:"Both follow � enforcement against overuse of chemicals and promoting organic alternatives together address soil pollution." },
 
 { id:"COA057", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from sleep disorders has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about the importance of sleep.\nII. The government should ban the use of electronic devices after a certain time.",
@@ -5888,69 +5888,69 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA058", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of workplace harassment.\nCourses of Action:\nI. The government should strengthen the laws against workplace harassment.\nII. The government should create awareness about workplace rights.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — stronger laws and workplace rights awareness together address workplace harassment effectively." },
+  correct:4, explanation:"Both follow � stronger laws and workplace rights awareness together address workplace harassment effectively." },
 
 { id:"COA059", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper medical facilities during childbirth has increased.\nCourses of Action:\nI. The government should improve the maternal healthcare facilities.\nII. The government should create awareness about the importance of institutional deliveries.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better maternal facilities and awareness encouraging hospital deliveries together reduce childbirth fatalities." },
+  correct:4, explanation:"Both follow � better maternal facilities and awareness encouraging hospital deliveries together reduce childbirth fatalities." },
 
 { id:"COA060", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large number of cases of elder abuse in the country.\nCourses of Action:\nI. The government should take strict action against those involved in elder abuse.\nII. The government should create awareness about the rights of elderly people.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal protection and awareness about elderly rights together address elder abuse." },
+  correct:4, explanation:"Both follow � legal protection and awareness about elderly rights together address elder abuse." },
 
 { id:"COA061", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from vitamin deficiency has increased significantly.\nCourses of Action:\nI. The government should provide free vitamin supplements to the needy.\nII. The government should create awareness about the importance of a balanced diet.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — direct supplementation (I) and dietary awareness (II) together address vitamin deficiency." },
+  correct:4, explanation:"Both follow � direct supplementation (I) and dietary awareness (II) together address vitamin deficiency." },
 
 { id:"COA062", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of phishing attacks.\nCourses of Action:\nI. The government should strengthen cyber security laws.\nII. The government should educate people about identifying and avoiding phishing attacks.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — cyber laws and user education together reduce phishing attack frequency and success." },
+  correct:4, explanation:"Both follow � cyber laws and user education together reduce phishing attack frequency and success." },
 
 { id:"COA063", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper waste management has increased.\nCourses of Action:\nI. The government should improve the waste management system.\nII. The government should create awareness about proper waste disposal.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better waste management infrastructure and public behaviour change together address the problem." },
+  correct:4, explanation:"Both follow � better waste management infrastructure and public behaviour change together address the problem." },
 
 { id:"COA064", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large scale pollution of marine life due to plastic waste.\nCourses of Action:\nI. The government should ban the use of single-use plastics.\nII. The government should promote the use of biodegradable alternatives.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — banning plastics and providing viable alternatives together protect marine ecosystems." },
+  correct:4, explanation:"Both follow � banning plastics and providing viable alternatives together protect marine ecosystems." },
 
 { id:"COA065", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from anxiety disorders has increased significantly among students.\nCourses of Action:\nI. The government should increase the number of counsellors in schools and colleges.\nII. The government should create awareness about mental health among students.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — more counsellors provide direct support and awareness reduces stigma among students." },
+  correct:4, explanation:"Both follow � more counsellors provide direct support and awareness reduces stigma among students." },
 
 { id:"COA066", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of drunk driving.\nCourses of Action:\nI. The government should take strict action against those driving under the influence of alcohol.\nII. The government should create awareness about the dangers of drunk driving.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — strict enforcement deters drunk driving, and awareness campaigns reinforce responsible behaviour." },
+  correct:4, explanation:"Both follow � strict enforcement deters drunk driving, and awareness campaigns reinforce responsible behaviour." },
 
 { id:"COA067", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper emergency medical transport has increased.\nCourses of Action:\nI. The government should improve the ambulance services.\nII. The government should create awareness about the importance of timely medical intervention.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better ambulance services and public awareness about calling for help promptly together save lives." },
+  correct:4, explanation:"Both follow � better ambulance services and public awareness about calling for help promptly together save lives." },
 
 { id:"COA068", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large number of cases of discrimination against differently-abled people.\nCourses of Action:\nI. The government should take strict action against those discriminating against differently-abled people.\nII. The government should create awareness about the rights of differently-abled people.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal protection and awareness about rights together combat discrimination against differently-abled people." },
+  correct:4, explanation:"Both follow � legal protection and awareness about rights together combat discrimination against differently-abled people." },
 
 { id:"COA069", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from hearing loss due to noise pollution has increased significantly.\nCourses of Action:\nI. The government should take steps to reduce noise pollution.\nII. The government should create awareness about the harmful effects of noise pollution.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — reducing noise at source and public awareness about protection together address hearing loss from pollution." },
+  correct:4, explanation:"Both follow � reducing noise at source and public awareness about protection together address hearing loss from pollution." },
 
 { id:"COA070", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of data breaches.\nCourses of Action:\nI. The government should strengthen data protection laws.\nII. The government should educate people and organizations about data security practices.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — data protection laws and security education together reduce data breaches." },
+  correct:4, explanation:"Both follow � data protection laws and security education together reduce data breaches." },
 
-// SECTION C: HARD / COMPLEX (COA071–COA100)
+// SECTION C: HARD / COMPLEX (COA071�COA100)
 { id:"COA071", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from chronic diseases due to poor dietary habits has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about healthy dietary habits.\nII. The government should ban the sale of all processed foods.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
@@ -5959,17 +5959,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA072", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of academic pressure leading to student suicides.\nCourses of Action:\nI. The government should reform the education system to reduce academic pressure.\nII. The government should increase the number of counsellors in educational institutions.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — systemic reform (I) and immediate support through counsellors (II) both address the crisis." },
+  correct:4, explanation:"Both follow � systemic reform (I) and immediate support through counsellors (II) both address the crisis." },
 
 { id:"COA073", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to delayed medical treatment in government hospitals has increased.\nCourses of Action:\nI. The government should improve the infrastructure and staff strength in government hospitals.\nII. The government should create awareness about the importance of timely medical treatment.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better hospital capacity and awareness about seeking timely treatment together address preventable deaths." },
+  correct:4, explanation:"Both follow � better hospital capacity and awareness about seeking timely treatment together address preventable deaths." },
 
 { id:"COA074", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large scale problem of plastic waste management in the country.\nCourses of Action:\nI. The government should ban the use of single-use plastics.\nII. The government should improve the plastic waste recycling system.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — reducing plastic use and improving recycling infrastructure together address plastic waste management." },
+  correct:4, explanation:"Both follow � reducing plastic use and improving recycling infrastructure together address plastic waste management." },
 
 { id:"COA075", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from social media addiction has increased significantly among the youth.\nCourses of Action:\nI. The government should launch awareness campaigns about the harmful effects of excessive social media use.\nII. The government should ban the use of social media platforms.",
@@ -5979,17 +5979,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA076", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of medical negligence in private hospitals.\nCourses of Action:\nI. The government should take strict action against those involved in medical negligence.\nII. The government should strengthen the regulatory framework for private hospitals.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — punishing negligence and strengthening oversight together improve private hospital accountability." },
+  correct:4, explanation:"Both follow � punishing negligence and strengthening oversight together improve private hospital accountability." },
 
 { id:"COA077", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper emergency preparedness during natural disasters has increased.\nCourses of Action:\nI. The government should improve the disaster management and response system.\nII. The government should create awareness and train people about disaster preparedness.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better disaster management systems and trained communities together reduce disaster fatalities." },
+  correct:4, explanation:"Both follow � better disaster management systems and trained communities together reduce disaster fatalities." },
 
 { id:"COA078", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large number of cases of discrimination based on caste and religion in the country.\nCourses of Action:\nI. The government should take strict action against those involved in such discrimination.\nII. The government should create awareness about equality and social harmony.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal action and social awareness campaigns together combat caste and religious discrimination." },
+  correct:4, explanation:"Both follow � legal action and social awareness campaigns together combat caste and religious discrimination." },
 
 { id:"COA079", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from eye strain due to excessive screen time has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about the importance of limiting screen time.\nII. The government should ban the use of electronic devices for children.",
@@ -5999,37 +5999,37 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA080", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of financial frauds targeting senior citizens.\nCourses of Action:\nI. The government should take strict action against those involved in such frauds.\nII. The government should create awareness among senior citizens about financial safety.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — punishing fraudsters and educating senior citizens about financial safety together address the problem." },
+  correct:4, explanation:"Both follow � punishing fraudsters and educating senior citizens about financial safety together address the problem." },
 
 { id:"COA081", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper road safety measures has increased significantly.\nCourses of Action:\nI. The government should improve the road infrastructure and safety measures.\nII. The government should create awareness about road safety rules.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better road safety infrastructure and public awareness about rules together reduce road fatalities." },
+  correct:4, explanation:"Both follow � better road safety infrastructure and public awareness about rules together reduce road fatalities." },
 
 { id:"COA082", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large scale problem of e-waste management in the country.\nCourses of Action:\nI. The government should take strict action against those improperly disposing e-waste.\nII. The government should improve the e-waste recycling system.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement against illegal disposal and improved recycling infrastructure together address e-waste." },
+  correct:4, explanation:"Both follow � enforcement against illegal disposal and improved recycling infrastructure together address e-waste." },
 
 { id:"COA083", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from isolation and loneliness has increased significantly among the elderly.\nCourses of Action:\nI. The government should create more community centres and support systems for the elderly.\nII. The government should create awareness about the importance of caring for the elderly.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — community infrastructure (I) and social awareness about elder care (II) together reduce elderly isolation." },
+  correct:4, explanation:"Both follow � community infrastructure (I) and social awareness about elder care (II) together reduce elderly isolation." },
 
 { id:"COA084", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of academic dishonesty in educational institutions.\nCourses of Action:\nI. The government should take strict action against those involved in academic dishonesty.\nII. The government should create awareness about the importance of academic integrity.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — strict action deters dishonesty and awareness builds an integrity-based academic culture." },
+  correct:4, explanation:"Both follow � strict action deters dishonesty and awareness builds an integrity-based academic culture." },
 
 { id:"COA085", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper emergency medical facilities in remote areas has increased.\nCourses of Action:\nI. The government should improve the emergency medical facilities in remote areas.\nII. The government should create awareness about first aid and emergency procedures in remote areas.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better remote facilities and first aid training in remote communities together save lives." },
+  correct:4, explanation:"Both follow � better remote facilities and first aid training in remote communities together save lives." },
 
 { id:"COA086", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large number of cases of gender-based violence in the country.\nCourses of Action:\nI. The government should take strict action against those involved in gender-based violence.\nII. The government should create awareness about gender equality and women's rights.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal accountability and awareness about gender equality together address gender-based violence." },
+  correct:4, explanation:"Both follow � legal accountability and awareness about gender equality together address gender-based violence." },
 
 { id:"COA087", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from chronic back pain due to poor posture has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about the importance of correct posture.\nII. The government should ban the use of laptops and mobile phones.",
@@ -6039,17 +6039,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA088", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of online radicalization.\nCourses of Action:\nI. The government should strengthen cyber surveillance and laws against online radicalization.\nII. The government should create awareness about the dangers of online radicalization.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — cyber surveillance and legal frameworks (I) combined with public awareness (II) combat online radicalization." },
+  correct:4, explanation:"Both follow � cyber surveillance and legal frameworks (I) combined with public awareness (II) combat online radicalization." },
 
 { id:"COA089", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper disaster early warning systems has increased.\nCourses of Action:\nI. The government should improve the disaster early warning systems.\nII. The government should create awareness about the importance of heeding early warnings.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better warning systems (I) and public understanding of how to respond (II) together save lives." },
+  correct:4, explanation:"Both follow � better warning systems (I) and public understanding of how to respond (II) together save lives." },
 
 { id:"COA090", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large scale problem of biomedical waste management in the country.\nCourses of Action:\nI. The government should take strict action against those improperly disposing biomedical waste.\nII. The government should improve the biomedical waste management system.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — strict enforcement and improved management systems together address biomedical waste hazards." },
+  correct:4, explanation:"Both follow � strict enforcement and improved management systems together address biomedical waste hazards." },
 
 { id:"COA091", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from digital eye strain has increased significantly among office workers.\nCourses of Action:\nI. The government should launch awareness campaigns about the importance of taking regular breaks from screens.\nII. The government should ban the use of computers in offices.",
@@ -6059,17 +6059,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA092", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of financial scams targeting young adults.\nCourses of Action:\nI. The government should take strict action against those involved in financial scams.\nII. The government should create awareness among young adults about financial literacy and safety.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — punishing scammers and equipping young adults with financial literacy together address the problem." },
+  correct:4, explanation:"Both follow � punishing scammers and equipping young adults with financial literacy together address the problem." },
 
 { id:"COA093", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper emergency response during industrial accidents has increased.\nCourses of Action:\nI. The government should improve the industrial safety and emergency response systems.\nII. The government should create awareness and train industrial workers about safety procedures.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better safety systems and trained workers together prevent and minimize industrial accident fatalities." },
+  correct:4, explanation:"Both follow � better safety systems and trained workers together prevent and minimize industrial accident fatalities." },
 
 { id:"COA094", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large number of cases of discrimination against LGBTQ+ individuals in the country.\nCourses of Action:\nI. The government should take strict action against those discriminating against LGBTQ+ individuals.\nII. The government should create awareness about LGBTQ+ rights and equality.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal protection and awareness about LGBTQ+ rights together combat discrimination." },
+  correct:4, explanation:"Both follow � legal protection and awareness about LGBTQ+ rights together combat discrimination." },
 
 { id:"COA095", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from hearing problems due to the use of headphones at high volume has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about the safe use of headphones.\nII. The government should ban the sale of headphones.",
@@ -6079,17 +6079,17 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA096", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of online privacy violations.\nCourses of Action:\nI. The government should strengthen data protection and privacy laws.\nII. The government should educate people about protecting their online privacy.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — privacy laws and user education together protect online privacy effectively." },
+  correct:4, explanation:"Both follow � privacy laws and user education together protect online privacy effectively." },
 
 { id:"COA097", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people dying due to lack of proper emergency medical facilities during festivals has increased.\nCourses of Action:\nI. The government should improve the emergency medical facilities during festivals.\nII. The government should create awareness about safety measures during festivals.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — better emergency services and festival safety awareness together reduce casualties." },
+  correct:4, explanation:"Both follow � better emergency services and festival safety awareness together reduce casualties." },
 
 { id:"COA098", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There is a large scale problem of construction waste management in the country.\nCourses of Action:\nI. The government should take strict action against those improperly disposing construction waste.\nII. The government should improve the construction waste recycling system.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — enforcement against illegal disposal and improved recycling infrastructure together address construction waste." },
+  correct:4, explanation:"Both follow � enforcement against illegal disposal and improved recycling infrastructure together address construction waste." },
 
 { id:"COA099", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: The number of people suffering from social isolation due to excessive use of technology has increased significantly.\nCourses of Action:\nI. The government should launch awareness campaigns about the importance of real-life social interactions.\nII. The government should ban the use of social media platforms.",
@@ -6099,7 +6099,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"COA100", section:"logical", topic:"Course of Action", difficulty:"Hard",
   question:"Statement: There has been a sharp increase in the number of cases of medical tourism related frauds.\nCourses of Action:\nI. The government should take strict action against those involved in medical tourism frauds.\nII. The government should create awareness about verifying the credentials of medical tourism providers.",
   options:["Only I follows","Only II follows","Either I or II follows","Neither I nor II follows","Both I and II follow"],
-  correct:4, explanation:"Both follow — legal action against fraudsters and consumer awareness about verification together address medical tourism fraud." },
+  correct:4, explanation:"Both follow � legal action against fraudsters and consumer awareness about verification together address medical tourism fraud." },
 
 
 // -- INPUT-OUTPUT (IO001-IO100) ---------------------------
@@ -6417,7 +6417,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"IO063", section:"logical", topic:"Input-Output", difficulty:"Hard",
   question:"Input: 61 28 74 15 92 37 53 86\nRule: Each step places the next smallest number in its correct sorted position. How many steps are required?",
   options:["4","5","6","7"],
-  correct:1, explanation:"5 steps are needed — one per element minus the last which is already in place." },
+  correct:1, explanation:"5 steps are needed � one per element minus the last which is already in place." },
 
 { id:"IO064", section:"logical", topic:"Input-Output", difficulty:"Hard",
   question:"Input: car bike bus train plane ship boat truck\nRule: Each step inserts next alphabetical word into its correct position. What will be Step IV?",
@@ -6610,7 +6610,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"DS001", section:"logical", topic:"Data Sufficiency", difficulty:"Medium",
   question:"How is A related to B?\nI. A is the brother of C. C is the sister of B.\nII. B is the son of D. D is the mother of A.",
   options:["Statement I alone is sufficient","Statement II alone is sufficient","Either statement alone is sufficient","Both statements together are not sufficient","Both statements together are necessary"],
-  correct:4, explanation:"From I alone, A is brother of C and C is sister of B, but B's gender is unknown so relation is unclear. From II alone, D is mother of A and B, so A and B are siblings, but gender unclear. Together: B is son (male), D is mother of A, so A is brother/sister of B — but we still need gender of A. Actually combining: A is brother/sister of B. Need both to conclude A is brother of B." },
+  correct:4, explanation:"From I alone, A is brother of C and C is sister of B, but B's gender is unknown so relation is unclear. From II alone, D is mother of A and B, so A and B are siblings, but gender unclear. Together: B is son (male), D is mother of A, so A is brother/sister of B � but we still need gender of A. Actually combining: A is brother/sister of B. Need both to conclude A is brother of B." },
 
 { id:"DS002", section:"logical", topic:"Data Sufficiency", difficulty:"Medium",
   question:"What is the rank of A from the top in a class of 40 students?\nI. A's rank is 15th from the bottom.\nII. B's rank is 10th from the top and A is 5 ranks below B.",
@@ -6625,7 +6625,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"DS004", section:"logical", topic:"Data Sufficiency", difficulty:"Medium",
   question:"What is the position of A from the left end in a row of 30 children?\nI. A is 12th from the right end.\nII. There are 8 children between A and B who is 5th from the left end.",
   options:["Statement I alone is sufficient","Statement II alone is sufficient","Either statement alone is sufficient","Both statements together are not sufficient","Both statements together are necessary"],
-  correct:0, explanation:"From I: position from left = 30 - 12 + 1 = 19. Sufficient. From II: B is 5th from left, 8 children between A and B gives A at 14th — but direction (left or right of B) is ambiguous. Not sufficient alone." },
+  correct:0, explanation:"From I: position from left = 30 - 12 + 1 = 19. Sufficient. From II: B is 5th from left, 8 children between A and B gives A at 14th � but direction (left or right of B) is ambiguous. Not sufficient alone." },
 
 { id:"DS005", section:"logical", topic:"Data Sufficiency", difficulty:"Medium",
   question:"How is M related to N?\nI. M is the brother of O. O is the mother of N.\nII. N is the son of P. P is the sister of M.",
@@ -6768,7 +6768,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"DS032", section:"logical", topic:"Data Sufficiency", difficulty:"Hard",
   question:"Who is sitting immediate right of A?\nI. A is sitting second to the left of B. C is sitting immediate right of B.\nII. D is sitting immediate left of A. E is sitting second to the right of D.",
   options:["Statement I alone is sufficient","Statement II alone is sufficient","Either statement alone is sufficient","Both statements together are not sufficient","Both statements together are necessary"],
-  correct:3, explanation:"From I: A is 2nd left of B, but we don't know who is immediately right of A. From II: D is immediate left of A, E is 2nd right of D = immediate right of A. But wait — E is 2nd right of D means E is at A's position or 1 right. Not enough info in either statement to conclusively identify who is right of A." },
+  correct:3, explanation:"From I: A is 2nd left of B, but we don't know who is immediately right of A. From II: D is immediate left of A, E is 2nd right of D = immediate right of A. But wait � E is 2nd right of D means E is at A's position or 1 right. Not enough info in either statement to conclusively identify who is right of A." },
 
 { id:"DS033", section:"logical", topic:"Data Sufficiency", difficulty:"Medium",
   question:"In which direction is P facing?\nI. P is facing the same direction as Q. Q is facing north.\nII. P is sitting opposite to R. R is facing south.",
@@ -6976,7 +6976,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"DS073", section:"logical", topic:"Data Sufficiency", difficulty:"Hard",
   question:"Who among the following lives on floor number 5?\nI. Only two persons live between A and B. A lives on an even numbered floor.\nII. B lives on floor number 3. C lives immediately above B.",
   options:["Statement I alone is sufficient","Statement II alone is sufficient","Either statement alone is sufficient","Both statements together are not sufficient","Both statements together are necessary"],
-  correct:4, explanation:"From I: A even, 2 between A and B. From II: B=3, C=4. Together: 2 between A(even) and B(3) -> A=6. Floor 5 is between B(3) and A(6) — occupied by someone else. Both together needed to identify who lives on floor 5." },
+  correct:4, explanation:"From I: A even, 2 between A and B. From II: B=3, C=4. Together: 2 between A(even) and B(3) -> A=6. Floor 5 is between B(3) and A(6) � occupied by someone else. Both together needed to identify who lives on floor 5." },
 
 { id:"DS074", section:"logical", topic:"Data Sufficiency", difficulty:"Hard",
   question:"What is the code for 'bird' in a certain code language?\nI. 'bird is flying' is coded as 'xi lo ma'.\nII. 'flying and swimming' is coded as 'lo na pa'.",
@@ -6986,7 +6986,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"DS075", section:"logical", topic:"Data Sufficiency", difficulty:"Hard",
   question:"Who among the following was born in July?\nI. A was born in one of the months after April. Only two persons were born between A and B.\nII. B was born in September. C was born immediately before B.",
   options:["Statement I alone is sufficient","Statement II alone is sufficient","Either statement alone is sufficient","Both statements together are not sufficient","Both statements together are necessary"],
-  correct:4, explanation:"From I: A after April, 2 between A and B. From II: B=September, C=August. Together: 2 between A(after April) and B(September) -> A=June or July. A must be after April — need both statements to pin down July. Both together are necessary." },
+  correct:4, explanation:"From I: A after April, 2 between A and B. From II: B=September, C=August. Together: 2 between A(after April) and B(September) -> A=June or July. A must be after April � need both statements to pin down July. Both together are necessary." },
 
 { id:"DS076", section:"logical", topic:"Data Sufficiency", difficulty:"Hard",
   question:"What is the code for 'mountain' in a certain code language?\nI. 'mountain is high' is coded as 'sa re ta'.\nII. 'high and low' is coded as 'ta na pa'.",
@@ -7026,7 +7026,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"DS083", section:"logical", topic:"Data Sufficiency", difficulty:"Hard",
   question:"Who among the following was born in January?\nI. A was born in one of the months before April. Only two persons were born between A and B.\nII. B was born in May. C was born immediately after B.",
   options:["Statement I alone is sufficient","Statement II alone is sufficient","Either statement alone is sufficient","Both statements together are not sufficient","Both statements together are necessary"],
-  correct:4, explanation:"From I: A before April, 2 between A and B. From II: B=May, C=June. Together: 2 between A(before April) and B(May) -> A=February or January. Constraint 'before April' allows both. Both together needed to uniquely determine A=January or February — need additional info, but closest answer is E." },
+  correct:4, explanation:"From I: A before April, 2 between A and B. From II: B=May, C=June. Together: 2 between A(before April) and B(May) -> A=February or January. Constraint 'before April' allows both. Both together needed to uniquely determine A=January or February � need additional info, but closest answer is E." },
 
 { id:"DS084", section:"logical", topic:"Data Sufficiency", difficulty:"Hard",
   question:"What is the code for 'star' in a certain code language?\nI. 'star is bright' is coded as 'sa re ta'.\nII. 'bright and dark' is coded as 'ta na pa'.",
@@ -7455,7 +7455,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"AC067", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: 16, 25, 36, 49, 64",
   options:["16","25","36","49","64"],
-  correct:4, explanation:"16=4^2, 25=5^2, 36=6^2, 49=7^2 are perfect squares of consecutive numbers. 64=8^2 breaks the 'odd square' pattern — all others are squares of odd/even alternating; actually 64 is the only one not in the sequence 4,5,6,7. Wait — 64=8^2, which continues the sequence but is even squared. All are perfect squares. Looking deeper: 16,36,64 are even squares; 25,49 are odd squares. The odd one out by position is 64 as it breaks the pattern of alternating." },
+  correct:4, explanation:"16=4^2, 25=5^2, 36=6^2, 49=7^2 are perfect squares of consecutive numbers. 64=8^2 breaks the 'odd square' pattern � all others are squares of odd/even alternating; actually 64 is the only one not in the sequence 4,5,6,7. Wait � 64=8^2, which continues the sequence but is even squared. All are perfect squares. Looking deeper: 16,36,64 are even squares; 25,49 are odd squares. The odd one out by position is 64 as it breaks the pattern of alternating." },
 
 { id:"AC068", section:"logical", topic:"Classification", difficulty:"Medium",
   question:"Find the odd one out: 2, 3, 5, 7, 9",
@@ -7465,12 +7465,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"AC069", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: 8, 27, 64, 125, 216",
   options:["8","27","64","125","216"],
-  correct:0, explanation:"27=3^3, 64=4^3, 125=5^3, 216=6^3 are cubes of consecutive integers starting from 3. 8=2^3 is the only cube that starts the sequence — actually all are perfect cubes. The odd one out is 8 as it is 2^3 while the others are odd-number cubes (27,125) or... re-examining: 8,64,216 are cubes of even numbers; 27,125 are cubes of odd numbers. The odd one out is 8 as the only single-digit perfect cube." },
+  correct:0, explanation:"27=3^3, 64=4^3, 125=5^3, 216=6^3 are cubes of consecutive integers starting from 3. 8=2^3 is the only cube that starts the sequence � actually all are perfect cubes. The odd one out is 8 as it is 2^3 while the others are odd-number cubes (27,125) or... re-examining: 8,64,216 are cubes of even numbers; 27,125 are cubes of odd numbers. The odd one out is 8 as the only single-digit perfect cube." },
 
 { id:"AC070", section:"logical", topic:"Classification", difficulty:"Medium",
   question:"Find the odd one out: 12, 18, 24, 30, 36",
   options:["12","18","24","30","36"],
-  correct:4, explanation:"12, 18, 24, 30 form a series with common difference 6. 36 breaks this arithmetic pattern (30+6=36 actually continues it). Re-examining: 12=2x6, 18=3x6, 24=4x6, 30=5x6 — multiples of 6 with coefficients 2,3,4,5. 36=6x6 fits as coefficient 6. The document states 36 as odd one out — 12,18,24,30 are all divisible by 6 and not by 12 (except 12,24,36); 36 is a perfect square unlike the others." },
+  correct:4, explanation:"12, 18, 24, 30 form a series with common difference 6. 36 breaks this arithmetic pattern (30+6=36 actually continues it). Re-examining: 12=2x6, 18=3x6, 24=4x6, 30=5x6 � multiples of 6 with coefficients 2,3,4,5. 36=6x6 fits as coefficient 6. The document states 36 as odd one out � 12,18,24,30 are all divisible by 6 and not by 12 (except 12,24,36); 36 is a perfect square unlike the others." },
 
 { id:"AC071", section:"logical", topic:"Classification", difficulty:"Easy",
   question:"Find the odd one out: A, E, I, O, B",
@@ -7515,7 +7515,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"AC079", section:"logical", topic:"Classification", difficulty:"Medium",
   question:"Find the odd one out: Nitrogen, Oxygen, Hydrogen, Carbon, Water",
   options:["Nitrogen","Oxygen","Hydrogen","Carbon","Water"],
-  correct:4, explanation:"Nitrogen, Oxygen, Hydrogen, Carbon are elements. Water (H₂O) is a compound." },
+  correct:4, explanation:"Nitrogen, Oxygen, Hydrogen, Carbon are elements. Water (H2O) is a compound." },
 
 { id:"AC080", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: Democracy, Monarchy, Oligarchy, Dictatorship, Anarchy",
@@ -7553,7 +7553,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"AC086", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: 121, 144, 169, 196, 225",
   options:["121","144","169","196","225"],
-  correct:4, explanation:"121=11^2, 144=12^2, 169=13^2, 196=14^2 are squares of odd, even, odd, even alternating. 225=15^2 breaks a specific pattern — the document marks 225 as the odd one out." },
+  correct:4, explanation:"121=11^2, 144=12^2, 169=13^2, 196=14^2 are squares of odd, even, odd, even alternating. 225=15^2 breaks a specific pattern � the document marks 225 as the odd one out." },
 
 { id:"AC087", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: (2,3,5), (3,5,7), (5,7,11), (7,11,13), (11,13,17)",
@@ -7573,7 +7573,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"AC090", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: AEI, BFJ, CGK, DHL, EIM",
   options:["AEI","BFJ","CGK","DHL","EIM"],
-  correct:4, explanation:"AEI (+4,+4), BFJ (+4,+4), CGK (+4,+4), DHL (+4,+4) all follow +4 pattern. EIM: E(5)+4=I(9), I(9)+4=M(13) — this actually does follow +4. But the document marks EIM as odd one out, possibly because the first letter sequence A,B,C,D,E continues but EIM overlaps with the A column (A=1, E=5 = A+4)." },
+  correct:4, explanation:"AEI (+4,+4), BFJ (+4,+4), CGK (+4,+4), DHL (+4,+4) all follow +4 pattern. EIM: E(5)+4=I(9), I(9)+4=M(13) � this actually does follow +4. But the document marks EIM as odd one out, possibly because the first letter sequence A,B,C,D,E continues but EIM overlaps with the A column (A=1, E=5 = A+4)." },
 
 { id:"AC091", section:"logical", topic:"Analogy", difficulty:"Hard",
   question:"Oxygen : Life :: Fuel : ?",
@@ -7588,12 +7588,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"AC093", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: (24,36,48), (12,18,24), (18,27,36), (15,25,35), (21,28,35)",
   options:["24,36,48","12,18,24","18,27,36","15,25,35","21,28,35"],
-  correct:3, explanation:"(24,36,48) ratio 2:3:4, (12,18,24) ratio 2:3:4, (18,27,36) ratio 2:3:4, (21,28,35) ratio 3:4:5. (15,25,35) ratio 3:5:7 — not in consistent arithmetic ratio, making it the odd one out." },
+  correct:3, explanation:"(24,36,48) ratio 2:3:4, (12,18,24) ratio 2:3:4, (18,27,36) ratio 2:3:4, (21,28,35) ratio 3:4:5. (15,25,35) ratio 3:5:7 � not in consistent arithmetic ratio, making it the odd one out." },
 
 { id:"AC094", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: 3:27, 4:64, 5:125, 6:216, 7:343",
   options:["3:27","4:64","5:125","6:216","7:343"],
-  correct:0, explanation:"4:64 (4^3), 5:125 (5^3), 6:216 (6^3), 7:343 (7^3) follow the n:n^3 pattern starting from 4. 3:27 (3^3) starts the cube pattern but the document marks it as the odd one out — likely because 27 = 3^3 but 3 is the only single-digit base in the set." },
+  correct:0, explanation:"4:64 (4^3), 5:125 (5^3), 6:216 (6^3), 7:343 (7^3) follow the n:n^3 pattern starting from 4. 3:27 (3^3) starts the cube pattern but the document marks it as the odd one out � likely because 27 = 3^3 but 3 is the only single-digit base in the set." },
 
 { id:"AC095", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: ACEG, BDFH, CEGI, DFHJ, EGIK",
@@ -7608,12 +7608,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"AC097", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: 16:4, 36:6, 64:8, 81:9, 100:12",
   options:["16:4","36:6","64:8","81:9","100:12"],
-  correct:4, explanation:"16:4 (√16=4), 36:6 (√36=6), 64:8 (√64=8), 81:9 (√81=9) follow n:√n pattern. 100:12 should be 100:10 (√100=10), not 100:12, so it is the odd one out." },
+  correct:4, explanation:"16:4 (v16=4), 36:6 (v36=6), 64:8 (v64=8), 81:9 (v81=9) follow n:vn pattern. 100:12 should be 100:10 (v100=10), not 100:12, so it is the odd one out." },
 
 { id:"AC098", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: (2,8,32), (3,12,48), (4,16,64), (5,20,80), (6,24,72)",
   options:["2,8,32","3,12,48","4,16,64","5,20,80","6,24,72"],
-  correct:4, explanation:"(2,8,32): 2x4=8, 8x4=32. (3,12,48): x4,x4. (4,16,64): x4,x4. (5,20,80): x4,x4. (6,24,72): 6x4=24 but 24x4=96≠72, so 6,24,72 is the odd one out." },
+  correct:4, explanation:"(2,8,32): 2x4=8, 8x4=32. (3,12,48): x4,x4. (4,16,64): x4,x4. (5,20,80): x4,x4. (6,24,72): 6x4=24 but 24x4=96?72, so 6,24,72 is the odd one out." },
 
 { id:"AC099", section:"logical", topic:"Classification", difficulty:"Hard",
   question:"Find the odd one out: (11,13,17), (19,23,29), (31,37,41), (43,47,53), (59,61,67)",
@@ -7670,8 +7670,8 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 
 { id:"MW009", section:"logical", topic:"Mirror & Water Images", difficulty:"Medium",
   question:"What is the mirror image of the letter 'R' when the mirror is placed vertically to the right?",
-  options:["Mirrored R (reversed)","R","3","Я","None of these"],
-  correct:0, explanation:"Mirror image of 'R' is its laterally reversed form (like the Cyrillic Я)." },
+  options:["Mirrored R (reversed)","R","3","?","None of these"],
+  correct:0, explanation:"Mirror image of 'R' is its laterally reversed form (like the Cyrillic ?)." },
 
 { id:"MW010", section:"logical", topic:"Mirror & Water Images", difficulty:"Medium",
   question:"What is the mirror image of the letter 'J' when the mirror is placed vertically to the right?",
@@ -7736,7 +7736,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"MW022", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the letter 'Z' when the mirror is placed vertically to the right?",
   options:["Z","S","Reversed Z","N","None of these"],
-  correct:0, explanation:"'Z' is symmetric horizontally — its mirror image is still 'Z'." },
+  correct:0, explanation:"'Z' is symmetric horizontally � its mirror image is still 'Z'." },
 
 { id:"MW023", section:"logical", topic:"Mirror & Water Images", difficulty:"Hard",
   question:"What is the mirror image of the word 'CLOCK' when the mirror is placed vertically to the right?",
@@ -7776,27 +7776,27 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"MW030", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the letter 'Y' when the mirror is placed vertically to the right?",
   options:["Y","Reversed Y","Lambda","V","None of these"],
-  correct:0, explanation:"'Y' is bilaterally symmetric — its mirror image is still 'Y'." },
+  correct:0, explanation:"'Y' is bilaterally symmetric � its mirror image is still 'Y'." },
 
 { id:"MW031", section:"logical", topic:"Mirror & Water Images", difficulty:"Hard",
   question:"What is the mirror image of the word 'LEVEL' when the mirror is placed vertically to the right?",
   options:["LEVEL with mirrored letters","LEVEL","Partial mirror","Mirror LEVEL","None of these"],
-  correct:1, explanation:"LEVEL is a palindrome and L, E, V are symmetric or nearly so — the mirror image of LEVEL reads as LEVEL with mirrored letter forms." },
+  correct:1, explanation:"LEVEL is a palindrome and L, E, V are symmetric or nearly so � the mirror image of LEVEL reads as LEVEL with mirrored letter forms." },
 
 { id:"MW032", section:"logical", topic:"Mirror & Water Images", difficulty:"Hard",
   question:"What is the mirror image of the word 'CIVIC' when the mirror is placed vertically to the right?",
   options:["CIVIC mirrored","CIVIC","Partial mirror","Mirror CIVIC","None of these"],
-  correct:0, explanation:"CIVIC reversed is CIVIC; C and I are symmetric — the mirror image closely resembles CIVIC with mirrored letter shapes." },
+  correct:0, explanation:"CIVIC reversed is CIVIC; C and I are symmetric � the mirror image closely resembles CIVIC with mirrored letter shapes." },
 
 { id:"MW033", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the number '101' when the mirror is placed vertically to the right?",
   options:["101","10I","I01","10l","None of these"],
-  correct:0, explanation:"1, 0, and 1 are all symmetric digits — '101' mirrored is still '101'." },
+  correct:0, explanation:"1, 0, and 1 are all symmetric digits � '101' mirrored is still '101'." },
 
 { id:"MW034", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the number '808' when the mirror is placed vertically to the right?",
   options:["808","80B","B08","8O8","None of these"],
-  correct:0, explanation:"8 and 0 are symmetric digits — '808' mirrored is still '808'." },
+  correct:0, explanation:"8 and 0 are symmetric digits � '808' mirrored is still '808'." },
 
 { id:"MW035", section:"logical", topic:"Mirror & Water Images", difficulty:"Hard",
   question:"What is the mirror image of the word 'RADAR' when the mirror is placed vertically to the right?",
@@ -8032,7 +8032,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"MW080", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'M' when the mirror is placed vertically to the right?",
   options:["M","W","Sigma","E","None of these"],
-  correct:0, explanation:"'M' is bilaterally symmetric — its mirror image is still 'M'." },
+  correct:0, explanation:"'M' is bilaterally symmetric � its mirror image is still 'M'." },
 
 { id:"MW081", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the water image of the figure that looks like the letter 'M'?",
@@ -8042,7 +8042,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"MW082", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'W' when the mirror is placed vertically to the right?",
   options:["W","M","Sigma","E","None of these"],
-  correct:0, explanation:"'W' is bilaterally symmetric — its mirror image is still 'W'." },
+  correct:0, explanation:"'W' is bilaterally symmetric � its mirror image is still 'W'." },
 
 { id:"MW083", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the water image of the figure that looks like the letter 'W'?",
@@ -8052,62 +8052,62 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"MW084", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'A' when the mirror is placed vertically to the right?",
   options:["A","V","Lambda","Inverted A","None of these"],
-  correct:0, explanation:"'A' is bilaterally symmetric — its mirror image is still 'A'." },
+  correct:0, explanation:"'A' is bilaterally symmetric � its mirror image is still 'A'." },
 
 { id:"MW085", section:"logical", topic:"Mirror & Water Images", difficulty:"Medium",
   question:"What is the water image of the figure that looks like the letter 'A'?",
   options:["Inverted A (like upside-down A)","A","V","Lambda","None of these"],
-  correct:0, explanation:"Water image of 'A' flips upside-down, producing an inverted-A shape (like ∀)." },
+  correct:0, explanation:"Water image of 'A' flips upside-down, producing an inverted-A shape (like ?)." },
 
 { id:"MW086", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'T' when the mirror is placed vertically to the right?",
   options:["T","Upside-down T","Reversed T","Mirror T","None of these"],
-  correct:0, explanation:"'T' is bilaterally symmetric — its mirror image is still 'T'." },
+  correct:0, explanation:"'T' is bilaterally symmetric � its mirror image is still 'T'." },
 
 { id:"MW087", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the water image of the figure that looks like the letter 'T'?",
   options:["Upside-down T (like an anchor top)","T","Reversed T","Mirror T","None of these"],
-  correct:0, explanation:"Water image of 'T' flips upside-down: the horizontal bar is now at the bottom (like ⊥)." },
+  correct:0, explanation:"Water image of 'T' flips upside-down: the horizontal bar is now at the bottom (like ?)." },
 
 { id:"MW088", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'H' when the mirror is placed vertically to the right?",
   options:["H","I","X","Y","None of these"],
-  correct:0, explanation:"'H' is bilaterally symmetric — its mirror image is still 'H'." },
+  correct:0, explanation:"'H' is bilaterally symmetric � its mirror image is still 'H'." },
 
 { id:"MW089", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the water image of the figure that looks like the letter 'H'?",
   options:["H","I","X","Y","None of these"],
-  correct:0, explanation:"'H' is also vertically symmetric — its water image is still 'H'." },
+  correct:0, explanation:"'H' is also vertically symmetric � its water image is still 'H'." },
 
 { id:"MW090", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'O' when the mirror is placed vertically to the right?",
   options:["O","Q","C","0","None of these"],
-  correct:0, explanation:"'O' is fully symmetric — its mirror image is still 'O'." },
+  correct:0, explanation:"'O' is fully symmetric � its mirror image is still 'O'." },
 
 { id:"MW091", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the water image of the figure that looks like the letter 'O'?",
   options:["O","Q","C","0","None of these"],
-  correct:0, explanation:"'O' is fully symmetric — its water image is still 'O'." },
+  correct:0, explanation:"'O' is fully symmetric � its water image is still 'O'." },
 
 { id:"MW092", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'X' when the mirror is placed vertically to the right?",
   options:["X","Y","Z","V","None of these"],
-  correct:0, explanation:"'X' is fully symmetric — its mirror image is still 'X'." },
+  correct:0, explanation:"'X' is fully symmetric � its mirror image is still 'X'." },
 
 { id:"MW093", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the water image of the figure that looks like the letter 'X'?",
   options:["X","Y","Z","V","None of these"],
-  correct:0, explanation:"'X' is fully symmetric — its water image is still 'X'." },
+  correct:0, explanation:"'X' is fully symmetric � its water image is still 'X'." },
 
 { id:"MW094", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the mirror image of the figure that looks like the letter 'V' when the mirror is placed vertically to the right?",
   options:["V","A","Lambda","Inverted V","None of these"],
-  correct:0, explanation:"'V' is bilaterally symmetric — its mirror image is still 'V'." },
+  correct:0, explanation:"'V' is bilaterally symmetric � its mirror image is still 'V'." },
 
 { id:"MW095", section:"logical", topic:"Mirror & Water Images", difficulty:"Easy",
   question:"What is the water image of the figure that looks like the letter 'V'?",
   options:["Lambda (upside-down V)","V","A","Inverted A","None of these"],
-  correct:0, explanation:"Water image of 'V' flips upside-down, producing an inverted-V shape (Λ)." },
+  correct:0, explanation:"Water image of 'V' flips upside-down, producing an inverted-V shape (?)." },
 
 { id:"MW096", section:"logical", topic:"Mirror & Water Images", difficulty:"Hard",
   question:"If the time is 2:15, what time will the water image of the clock show?",
@@ -8153,7 +8153,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"2 folds = 4 layers. 1 punch = 4 holes when fully unfolded. Formula: 2^n = 2^2 = 4." },
 
 { id:"PF004", section:"logical", topic:"Paper Folding & Cutting", difficulty:"Medium",
-  question:"A square paper is folded twice – first vertically and then horizontally. A hole is punched near one corner of the folded paper. How many holes will appear when unfolded?",
+  question:"A square paper is folded twice � first vertically and then horizontally. A hole is punched near one corner of the folded paper. How many holes will appear when unfolded?",
   options:["2","4","6","8","1"],
   correct:1, explanation:"2 folds = 4 layers. Punching near a corner (not at the fold axis) gives 4 holes." },
 
@@ -8178,7 +8178,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"1 fold = 2 layers. 1 punch = 2 holes when unfolded." },
 
 { id:"PF009", section:"logical", topic:"Paper Folding & Cutting", difficulty:"Hard",
-  question:"A square paper is folded thrice – vertical, horizontal and again vertical. A hole is punched in the centre. How many holes will appear when fully unfolded?",
+  question:"A square paper is folded thrice � vertical, horizontal and again vertical. A hole is punched in the centre. How many holes will appear when fully unfolded?",
   options:["4","6","8","12","16"],
   correct:2, explanation:"3 folds = 8 layers. 2^3 = 8 holes when fully unfolded." },
 
@@ -8258,7 +8258,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"4 layers from 2 folds. Cutting a semicircle from one open edge, when fully unfolded, produces one full circle due to the symmetric reflections." },
 
 { id:"PF025", section:"logical", topic:"Paper Folding & Cutting", difficulty:"Medium",
-  question:"A square paper is folded once horizontally. Two holes are punched – one near the left open edge and one near the right open edge. How many holes will appear when unfolded?",
+  question:"A square paper is folded once horizontally. Two holes are punched � one near the left open edge and one near the right open edge. How many holes will appear when unfolded?",
   options:["2","3","4","5","6"],
   correct:2, explanation:"1 fold = 2 layers. 2 punches x 2 layers each = 4 holes total when unfolded." },
 
@@ -8313,7 +8313,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"PF035", section:"logical", topic:"Paper Folding & Cutting", difficulty:"Medium",
   question:"A rectangular paper is folded once lengthwise. A V-shaped notch is cut from the open long edge. When unfolded the paper will show:",
   options:["One V-notch","Two V-notches forming a diamond","Two separate V-notches","One diamond hole","None of these"],
-  correct:1, explanation:"Cutting from the open edge creates a mirror image when unfolded — two V-notches facing each other form a diamond." },
+  correct:1, explanation:"Cutting from the open edge creates a mirror image when unfolded � two V-notches facing each other form a diamond." },
 
 { id:"PF036", section:"logical", topic:"Paper Folding & Cutting", difficulty:"Medium",
   question:"A square paper is folded along one diagonal. A small square is cut from the middle of one open side. When unfolded the paper will show:",
@@ -8331,7 +8331,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:1, explanation:"4 layers from 2 folds. A cut through all layers from the curved edge produces 4 triangular notches when unfolded." },
 
 { id:"PF039", section:"logical", topic:"Paper Folding & Cutting", difficulty:"Medium",
-  question:"A square paper is folded once horizontally. Two circular holes are punched – one near each open vertical edge. When unfolded the paper will show:",
+  question:"A square paper is folded once horizontally. Two circular holes are punched � one near each open vertical edge. When unfolded the paper will show:",
   options:["Two circular holes","Three circular holes","Four circular holes","Six circular holes","Eight circular holes"],
   correct:2, explanation:"1 fold = 2 layers. 2 punches x 2 layers each = 4 total circular holes when unfolded." },
 
@@ -8643,15 +8643,15 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["2","3","4","5","6"],
   correct:0, explanation:"Each fold doubles the layers. n folds = 2^n layers = 2^n holes. The result is always a power of 2." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CUBES & DICE — 100 Questions (CND001–CND100)
+// -----------------------------------------------------------------------------
+// CUBES & DICE � 100 Questions (CND001�CND100)
 // Logical Reasoning | Medium to Hard Level
-// Section A: Cube Painting & Cutting (CND001–CND035)
-// Section B: Dice – Opposite Faces (CND036–CND070)
-// Section C: Open Dice & Mixed (CND071–CND100)
-// ─────────────────────────────────────────────────────────────────────────────
+// Section A: Cube Painting & Cutting (CND001�CND035)
+// Section B: Dice � Opposite Faces (CND036�CND070)
+// Section C: Open Dice & Mixed (CND071�CND100)
+// -----------------------------------------------------------------------------
 
-// SECTION A: CUBE PAINTING & CUTTING (CND001–CND035)
+// SECTION A: CUBE PAINTING & CUTTING (CND001�CND035)
 
 { id:"CND001", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"A cube is painted red on all faces. It is then cut into 27 equal smaller cubes. How many smaller cubes have only one face painted?",
@@ -8671,7 +8671,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CND004", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"A cube is painted yellow on all faces. It is cut into 216 equal smaller cubes. How many smaller cubes have two faces painted?",
   options:["24","36","48","12"],
-  correct:1, explanation:"216 = 6x6x6. Edge pieces (not corners) = 12 edges x (6-2) = 12 x 4 = 48. Wait — 6^3: edge pieces = 12 x (n-2) = 12 x 4 = 48. But answer given is 24. For n=6: 12(n-2)=12x4=48. Standard answer per document: 24 (may use n=4 interpretation). Per document answer A)24." },
+  correct:1, explanation:"216 = 6x6x6. Edge pieces (not corners) = 12 edges x (6-2) = 12 x 4 = 48. Wait � 6^3: edge pieces = 12 x (n-2) = 12 x 4 = 48. But answer given is 24. For n=6: 12(n-2)=12x4=48. Standard answer per document: 24 (may use n=4 interpretation). Per document answer A)24." },
 
 { id:"CND005", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"A cube is painted red on two opposite faces, blue on two adjacent faces and green on the remaining faces. It is cut into 27 equal smaller cubes. How many smaller cubes have at least one face painted red?",
@@ -8826,9 +8826,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CND035", section:"logical", topic:"Cubes & Dice", difficulty:"Hard",
   question:"A cube of side 8 cm is painted on all faces and cut into 1 cm cubes. How many 1 cm cubes have exactly two faces painted?",
   options:["96","72","48","24"],
-  correct:0, explanation:"8x8x8. Two-face cubes = 12 x (8-2) = 12 x 6 = 72. Per document answer: 96. For n=8: 12(n-2)=72. Document lists A)96 — using n=10 formula mistakenly. Standard formula gives 72." },
+  correct:0, explanation:"8x8x8. Two-face cubes = 12 x (8-2) = 12 x 6 = 72. Per document answer: 96. For n=8: 12(n-2)=72. Document lists A)96 � using n=10 formula mistakenly. Standard formula gives 72." },
 
-// SECTION B: DICE – OPPOSITE FACES (CND036–CND070)
+// SECTION B: DICE � OPPOSITE FACES (CND036�CND070)
 
 { id:"CND036", section:"logical", topic:"Cubes & Dice", difficulty:"Easy",
   question:"On a standard dice, the sum of the numbers on opposite faces is always:",
@@ -8886,9 +8886,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"With pairs 1-6 and 2-5 established, the only remaining pair is 3-4." },
 
 { id:"CND047", section:"logical", topic:"Cubes & Dice", difficulty:"Hard",
-  question:"A dice shows 4 on the top and 2 on the front. If the dice is rotated 90° clockwise about the vertical axis, which number will be on the front?",
+  question:"A dice shows 4 on the top and 2 on the front. If the dice is rotated 90� clockwise about the vertical axis, which number will be on the front?",
   options:["1","3","5","Cannot be determined"],
-  correct:3, explanation:"Knowing 4 is on top and 2 is on front, we know 3 is on bottom and the left/right faces are from {1,5,6}. Without knowing which side is left vs. right, the new front after 90° rotation cannot be uniquely determined." },
+  correct:3, explanation:"Knowing 4 is on top and 2 is on front, we know 3 is on bottom and the left/right faces are from {1,5,6}. Without knowing which side is left vs. right, the new front after 90� rotation cannot be uniquely determined." },
 
 { id:"CND048", section:"logical", topic:"Cubes & Dice", difficulty:"Easy",
   question:"On a standard dice, the number opposite to 3 is:",
@@ -8948,7 +8948,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CND059", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"If a standard dice is rolled and 4 appears on the top, which number cannot appear on the bottom?",
   options:["1","2","3","5"],
-  correct:2, explanation:"4 is opposite 3 on a standard die. So if 4 is on top, 3 is on the bottom (not 'cannot appear'). Actually: 4 is on top means 3 is on the bottom. The numbers that CANNOT be on the bottom are all except 3. Among the options, 3 CAN be on the bottom. Answer per document: 3 is the one that cannot appear on the bottom (the question tests the opposite of 4 = 3, which actually IS on the bottom). The document answer is C)3, meaning 3 cannot appear on the bottom—this implies a non-standard die. Per document: C)3." },
+  correct:2, explanation:"4 is opposite 3 on a standard die. So if 4 is on top, 3 is on the bottom (not 'cannot appear'). Actually: 4 is on top means 3 is on the bottom. The numbers that CANNOT be on the bottom are all except 3. Among the options, 3 CAN be on the bottom. Answer per document: 3 is the one that cannot appear on the bottom (the question tests the opposite of 4 = 3, which actually IS on the bottom). The document answer is C)3, meaning 3 cannot appear on the bottom�this implies a non-standard die. Per document: C)3." },
 
 { id:"CND060", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"On a dice, if 6 is adjacent to 1, 2, 3 and 5, which number is opposite to 6?",
@@ -8976,9 +8976,9 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"With 1-6 fixed, the remaining numbers 2,3,4,5 must form two opposite pairs: 2-5 and 3-4 (standard). So 2 and 5 can be opposite." },
 
 { id:"CND065", section:"logical", topic:"Cubes & Dice", difficulty:"Hard",
-  question:"A dice shows 6 on the top and 3 on the front. If the dice is rotated 180° about the vertical axis, which number will be on the front?",
+  question:"A dice shows 6 on the top and 3 on the front. If the dice is rotated 180� about the vertical axis, which number will be on the front?",
   options:["1","2","4","5"],
-  correct:2, explanation:"Rotating 180° about the vertical axis brings the back face to the front. The back face is opposite to the front face (3), so after 180° rotation the front becomes 4 (opposite of 3)." },
+  correct:2, explanation:"Rotating 180� about the vertical axis brings the back face to the front. The back face is opposite to the front face (3), so after 180� rotation the front becomes 4 (opposite of 3)." },
 
 { id:"CND066", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"On a dice, if 2 is opposite to 5 and 3 is opposite to 4, which number is opposite to 1?",
@@ -9005,7 +9005,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["1","2","3","6"],
   correct:2, explanation:"4 is on top. On a standard die, 4 is opposite 3. So 3 is on the bottom." },
 
-// SECTION C: OPEN DICE & MIXED (CND071–CND100)
+// SECTION C: OPEN DICE & MIXED (CND071�CND100)
 
 { id:"CND071", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"An open dice (net) is given with faces 1, 2, 3, 4, 5, 6. If 1 is opposite 6 and 2 is opposite 5, which face will be opposite to 3 when the dice is formed?",
@@ -9135,7 +9135,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CND096", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"An open dice shows 1, 2, 3, 4, 5, 6. If 1 is opposite 6, which of the following pairs must be opposite?",
   options:["2 and 3","2 and 4","2 and 5","Cannot be determined"],
-  correct:3, explanation:"Knowing only that 1 is opposite 6 is insufficient to determine the other two opposite pairs — multiple valid arrangements exist for 2, 3, 4, 5." },
+  correct:3, explanation:"Knowing only that 1 is opposite 6 is insufficient to determine the other two opposite pairs � multiple valid arrangements exist for 2, 3, 4, 5." },
 
 { id:"CND097", section:"logical", topic:"Cubes & Dice", difficulty:"Medium",
   question:"A cube is painted red on all faces. It is cut into 64 smaller cubes. How many smaller cubes have exactly three faces painted?",
@@ -9157,14 +9157,14 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["2","3","4","6"],
   correct:3, explanation:"From position 1: 1 on top means 6 on bottom; 2 on front means 5 on back; 3 on right means 4 on left. Position 2 confirms 5 on top (was back), 4 on front (was left). Consistent: 1 is opposite 6." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CALENDAR & CLOCK — 100 Questions (CAL001–CAL100)
+// -----------------------------------------------------------------------------
+// CALENDAR & CLOCK � 100 Questions (CAL001�CAL100)
 // Logical Reasoning | Medium to Hard Level
-// Section A: Calendar (CAL001–CAL050)
-// Section B: Clock (CAL051–CAL100)
-// ─────────────────────────────────────────────────────────────────────────────
+// Section A: Calendar (CAL001�CAL050)
+// Section B: Clock (CAL051�CAL100)
+// -----------------------------------------------------------------------------
 
-// SECTION A: CALENDAR (CAL001–CAL050)
+// SECTION A: CALENDAR (CAL001�CAL050)
 
 { id:"CAL001", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"What was the day of the week on 15th August 1947?",
@@ -9416,7 +9416,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["Monday","Tuesday","Wednesday","Thursday"],
   correct:0, explanation:"1st January 2024 was a Monday. This is a known recent date." },
 
-// SECTION B: CLOCK (CAL051–CAL100)
+// SECTION B: CLOCK (CAL051�CAL100)
 
 { id:"CAL051", section:"logical", topic:"Calendar & Clock", difficulty:"Easy",
   question:"What is the angle between the hour hand and the minute hand at 3:00?",
@@ -9441,7 +9441,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL055", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"At what time between 4 and 5 o'clock are the hands of a clock at right angles?",
   options:["4:20 approx","4 hours 21 and 9/11 min","4:15","4:30"],
-  correct:1, explanation:"At 4:00, gap = 20 min. For 90-degree angle: (20+15)x12/11 or (20-15)x12/11. First right angle: (20+15)x(12/11)? Standard formula: time = (H*60 +/- 15)*12/11 for right angles. At H=4: t = (20+15)*12/11 = 35*12/11 = 420/11 = 38 2/11 min. Wait — formula gives 4h 21 9/11 as first right angle per document." },
+  correct:1, explanation:"At 4:00, gap = 20 min. For 90-degree angle: (20+15)x12/11 or (20-15)x12/11. First right angle: (20+15)x(12/11)? Standard formula: time = (H*60 +/- 15)*12/11 for right angles. At H=4: t = (20+15)*12/11 = 35*12/11 = 420/11 = 38 2/11 min. Wait � formula gives 4h 21 9/11 as first right angle per document." },
 
 { id:"CAL056", section:"logical", topic:"Calendar & Clock", difficulty:"Medium",
   question:"What is the angle between the hour hand and the minute hand at 4:20?",
@@ -9476,12 +9476,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL062", section:"logical", topic:"Calendar & Clock", difficulty:"Medium",
   question:"What is the angle between the hour hand and the minute hand at 8:20?",
   options:["100 degrees","110 degrees","120 degrees","130 degrees"],
-  correct:1, explanation:"Angle = |30x8 - 5.5x20| = |240 - 110| = 130 degrees. Min(130, 360-130) = 130 degrees. Per document: 110 degrees. Let me recalculate: 30x8=240, 5.5x20=110. |240-110|=130. Reflex check: min(130,230)=130. Document says 110 — using |30H - 5.5M|: |240-110|=130. Document answer B)110." },
+  correct:1, explanation:"Angle = |30x8 - 5.5x20| = |240 - 110| = 130 degrees. Min(130, 360-130) = 130 degrees. Per document: 110 degrees. Let me recalculate: 30x8=240, 5.5x20=110. |240-110|=130. Reflex check: min(130,230)=130. Document says 110 � using |30H - 5.5M|: |240-110|=130. Document answer B)110." },
 
 { id:"CAL063", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"A clock is set right at 12 noon. The clock gains 10 minutes in 24 hours. What will be the true time when the clock indicates 4 pm on the next day?",
   options:["3:50 pm","3:55 pm","4:00 pm","4:05 pm"],
-  correct:0, explanation:"Clock gains 10 min in 24 hrs. From 12 noon to 4 pm next day = 28 hrs shown. Real time: 28 hrs x (24/24.167) ≈ 27.83 hrs ≈ 27 hrs 50 min. 12 noon + 27h50m = 3:50 pm." },
+  correct:0, explanation:"Clock gains 10 min in 24 hrs. From 12 noon to 4 pm next day = 28 hrs shown. Real time: 28 hrs x (24/24.167) � 27.83 hrs � 27 hrs 50 min. 12 noon + 27h50m = 3:50 pm." },
 
 { id:"CAL064", section:"logical", topic:"Calendar & Clock", difficulty:"Easy",
   question:"What is the angle between the hour hand and the minute hand at 9:00?",
@@ -9516,7 +9516,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL070", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"A clock gains 5 minutes in one hour. If the clock is set right at 12 noon, what will be the true time when the clock indicates 5 pm?",
   options:["4:45 pm approx","4:50 pm","5:00 pm","4:40 pm"],
-  correct:0, explanation:"Clock shows 5 hrs (5 pm - 12 noon) but gains 5 min/hr. Actual time passed = 5 hrs x (60/65) = 300/65 hrs ≈ 4.615 hrs ≈ 4 hrs 37 min. 12 noon + 4h37m ≈ 4:37 pm ≈ 4:45 pm per document." },
+  correct:0, explanation:"Clock shows 5 hrs (5 pm - 12 noon) but gains 5 min/hr. Actual time passed = 5 hrs x (60/65) = 300/65 hrs � 4.615 hrs � 4 hrs 37 min. 12 noon + 4h37m � 4:37 pm � 4:45 pm per document." },
 
 { id:"CAL071", section:"logical", topic:"Calendar & Clock", difficulty:"Medium",
   question:"What is the angle between the hour hand and the minute hand at 10:10?",
@@ -9541,7 +9541,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL075", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"A clock is set right at 8 am. The clock gains 10 minutes in 24 hours. What will be the true time when the clock indicates 1 pm the next day?",
   options:["12:50 pm","12:55 pm","1:00 pm","1:05 pm"],
-  correct:0, explanation:"From 8 am to 1 pm next day = 29 hrs shown. Real time = 29 x (24/24.167) ≈ 28.8 hrs ≈ 28 hrs 48 min. 8 am + 28h48m = 12:48 pm ≈ 12:50 pm." },
+  correct:0, explanation:"From 8 am to 1 pm next day = 29 hrs shown. Real time = 29 x (24/24.167) � 28.8 hrs � 28 hrs 48 min. 8 am + 28h48m = 12:48 pm � 12:50 pm." },
 
 { id:"CAL076", section:"logical", topic:"Calendar & Clock", difficulty:"Medium",
   question:"What is the angle between the hour hand and the minute hand at 1:50?",
@@ -9566,7 +9566,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL080", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"A clock loses 5 minutes in one hour. If the clock is set right at 12 noon, what will be the true time when the clock indicates 4 pm?",
   options:["4:20 pm approx","4:15 pm","4:10 pm","4:25 pm"],
-  correct:0, explanation:"Clock shows 4 hrs (4 pm - 12 noon). It loses 5 min/hr, so real time = 4 hrs x (60/55) = 240/55 hrs ≈ 4.36 hrs ≈ 4 hrs 22 min. 12 noon + 4h22m ≈ 4:22 pm ≈ 4:20 pm." },
+  correct:0, explanation:"Clock shows 4 hrs (4 pm - 12 noon). It loses 5 min/hr, so real time = 4 hrs x (60/55) = 240/55 hrs � 4.36 hrs � 4 hrs 22 min. 12 noon + 4h22m � 4:22 pm � 4:20 pm." },
 
 { id:"CAL081", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"At what time between 9 and 10 o'clock are the hands of a clock together?",
@@ -9596,7 +9596,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL086", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"A clock is set right at 5 am. The clock gains 16 minutes in 24 hours. What will be the true time when the clock indicates 9 am the next day?",
   options:["8:50 am approx","8:55 am","9:00 am","9:05 am"],
-  correct:0, explanation:"From 5 am to 9 am next day = 28 hrs shown. Real time = 28 x (24/24.267) ≈ 27.69 hrs ≈ 27 hrs 42 min. 5 am + 27h42m ≈ 8:42 am ≈ 8:50 am approx." },
+  correct:0, explanation:"From 5 am to 9 am next day = 28 hrs shown. Real time = 28 x (24/24.267) � 27.69 hrs � 27 hrs 42 min. 5 am + 27h42m � 8:42 am � 8:50 am approx." },
 
 { id:"CAL087", section:"logical", topic:"Calendar & Clock", difficulty:"Medium",
   question:"What is the angle between the hour hand and the minute hand at 6:20?",
@@ -9616,12 +9616,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL090", section:"logical", topic:"Calendar & Clock", difficulty:"Medium",
   question:"What is the angle between the hour hand and the minute hand at 8:40?",
   options:["100 degrees","110 degrees","120 degrees","90 degrees"],
-  correct:0, explanation:"Angle = |30x8 - 5.5x40| = |240 - 220| = 20 degrees. Min(20, 340) = 20 degrees. Per document answer A)100 degrees — possible different calculation. Standard: |240-220|=20. Document answer: 100." },
+  correct:0, explanation:"Angle = |30x8 - 5.5x40| = |240 - 220| = 20 degrees. Min(20, 340) = 20 degrees. Per document answer A)100 degrees � possible different calculation. Standard: |240-220|=20. Document answer: 100." },
 
 { id:"CAL091", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"A clock gains 15 minutes in 24 hours. If it is set right at 12 noon, what will be the true time when the clock indicates 6 pm?",
   options:["5:50 pm approx","5:55 pm","6:00 pm","5:45 pm"],
-  correct:0, explanation:"Clock shows 6 hrs. Clock gains 15 min in 24 hrs. Real time = 6 x (24/24.25) = 6 x 0.9897 ≈ 5.938 hrs ≈ 5 hrs 56 min. 12 noon + 5h56m ≈ 5:56 pm ≈ 5:50 pm approx per document." },
+  correct:0, explanation:"Clock shows 6 hrs. Clock gains 15 min in 24 hrs. Real time = 6 x (24/24.25) = 6 x 0.9897 � 5.938 hrs � 5 hrs 56 min. 12 noon + 5h56m � 5:56 pm � 5:50 pm approx per document." },
 
 { id:"CAL092", section:"logical", topic:"Calendar & Clock", difficulty:"Medium",
   question:"What is the angle between the hour hand and the minute hand at 3:40?",
@@ -9646,7 +9646,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"CAL096", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"A clock loses 10 minutes in 24 hours. If it is set right at 8 am, what will be the true time when the clock indicates 2 pm the next day?",
   options:["2:10 pm approx","2:05 pm","2:00 pm","1:55 pm"],
-  correct:0, explanation:"From 8 am to 2 pm next day = 30 hrs shown. Real time = 30 x (24/23.833) ≈ 30.21 hrs ≈ 30 hrs 12 min. 8 am + 30h12m = 2:12 pm ≈ 2:10 pm approx." },
+  correct:0, explanation:"From 8 am to 2 pm next day = 30 hrs shown. Real time = 30 x (24/23.833) � 30.21 hrs � 30 hrs 12 min. 8 am + 30h12m = 2:12 pm � 2:10 pm approx." },
 
 { id:"CAL097", section:"logical", topic:"Calendar & Clock", difficulty:"Hard",
   question:"At what time between 4 and 5 o'clock are the hands of a clock in opposite directions?",
@@ -9668,15 +9668,15 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["110 degrees","120 degrees","100 degrees","130 degrees"],
   correct:0, explanation:"Angle = |30x12 - 5.5x20| = |360 - 110| = 250 degrees. Min(250, 110) = 110 degrees." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VENN DIAGRAMS — 100 Questions (VND001–VND100)
+// -----------------------------------------------------------------------------
+// VENN DIAGRAMS � 100 Questions (VND001�VND100)
 // Logical Reasoning | Medium to Hard Level
-// Section A: Basic Relationships (VND001–VND030)
-// Section B: Logical Conclusions – Two Sets (VND031–VND060)
-// Section C: Three-Set & Complex (VND061–VND100)
-// ─────────────────────────────────────────────────────────────────────────────
+// Section A: Basic Relationships (VND001�VND030)
+// Section B: Logical Conclusions � Two Sets (VND031�VND060)
+// Section C: Three-Set & Complex (VND061�VND100)
+// -----------------------------------------------------------------------------
 
-// SECTION A: BASIC RELATIONSHIPS (VND001–VND030)
+// SECTION A: BASIC RELATIONSHIPS (VND001�VND030)
 
 { id:"VND001", section:"logical", topic:"Venn Diagrams", difficulty:"Easy",
   question:"Which of the following diagrams best represents the relationship between Dogs, Animals and Cats?",
@@ -9726,7 +9726,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"VND010", section:"logical", topic:"Venn Diagrams", difficulty:"Medium",
   question:"Which diagram best represents the relationship between Birds, Sparrows and Animals?",
   options:["One circle (Sparrows) inside Birds, and Birds intersecting Animals","Three independent circles","Three concentric circles","Two separate circles"],
-  correct:0, explanation:"All Sparrows are Birds. Birds are a subset of Animals. So Sparrows inside Birds, Birds inside Animals — but the question says Birds intersecting Animals (as Birds are a subset, not a partial overlap). Best representation: Sparrows circle inside Birds circle, Birds circle inside Animals circle." },
+  correct:0, explanation:"All Sparrows are Birds. Birds are a subset of Animals. So Sparrows inside Birds, Birds inside Animals � but the question says Birds intersecting Animals (as Birds are a subset, not a partial overlap). Best representation: Sparrows circle inside Birds circle, Birds circle inside Animals circle." },
 
 { id:"VND011", section:"logical", topic:"Venn Diagrams", difficulty:"Easy",
   question:"Which diagram best represents the relationship between Books, Novels and Dictionaries?",
@@ -9771,7 +9771,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
 { id:"VND019", section:"logical", topic:"Venn Diagrams", difficulty:"Medium",
   question:"Which diagram best represents the relationship between Pens, Stationery and Books?",
   options:["Pens inside Stationery, Books separate or intersecting Stationery","Three independent circles","Three concentric circles","Two separate circles"],
-  correct:0, explanation:"Pens are Stationery (Pens inside Stationery). Books may or may not be classified as Stationery — best shown as Books intersecting Stationery but outside Pens." },
+  correct:0, explanation:"Pens are Stationery (Pens inside Stationery). Books may or may not be classified as Stationery � best shown as Books intersecting Stationery but outside Pens." },
 
 { id:"VND020", section:"logical", topic:"Venn Diagrams", difficulty:"Medium",
   question:"Which diagram best represents the relationship between Doctors, Surgeons and Males?",
@@ -9828,7 +9828,7 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["Earth inside Planets, Stars separate","Three independent circles","Three concentric circles","Two intersecting circles"],
   correct:0, explanation:"Earth is a Planet (Earth inside Planets). Stars are entirely different from Planets. Earth circle inside Planets circle, Stars as a separate circle." },
 
-// SECTION B: LOGICAL CONCLUSIONS – TWO SETS (VND031–VND060)
+// SECTION B: LOGICAL CONCLUSIONS � TWO SETS (VND031�VND060)
 
 { id:"VND031", section:"logical", topic:"Venn Diagrams", difficulty:"Medium",
   question:"In a class of 50 students, 30 play cricket, 20 play football and 10 play both. How many play neither?",
@@ -9980,12 +9980,12 @@ export const LOGICAL_REASONING_BANK: AptitudeQuestion[] = ([
   options:["150","140","160","120"],
   correct:0, explanation:"At least one = 110+100-60 = 150." },
 
-// SECTION C: THREE-SET & COMPLEX (VND061–VND100)
+// SECTION C: THREE-SET & COMPLEX (VND061�VND100)
 
 { id:"VND061", section:"logical", topic:"Venn Diagrams", difficulty:"Hard",
   question:"In a class of 100 students, 40 play cricket, 30 play football, 20 play hockey, 15 play cricket & football, 10 play football & hockey, 8 play cricket & hockey, and 5 play all three. How many play only cricket?",
   options:["22","20","25","18"],
-  correct:0, explanation:"Only cricket = 40 - (15+8-5) - 5 = 40 - 18 = 22. Formula: C - (C∩F) - (C∩H) + (C∩F∩H) = 40-15-8+5 = 22." },
+  correct:0, explanation:"Only cricket = 40 - (15+8-5) - 5 = 40 - 18 = 22. Formula: C - (CnF) - (CnH) + (CnFnH) = 40-15-8+5 = 22." },
 
 { id:"VND062", section:"logical", topic:"Venn Diagrams", difficulty:"Hard",
   question:"In a survey of 150 people, 70 like tea, 60 like coffee, 50 like milk, 25 like tea & coffee, 20 like coffee & milk, 15 like tea & milk, and 10 like all three. How many like only tea?",

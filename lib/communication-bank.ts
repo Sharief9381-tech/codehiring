@@ -1,8 +1,8 @@
-﻿// ─────────────────────────────────────────────────────────────────────────────
-// COMMUNICATION BANK — 400 Questions across 4 topics
+// -----------------------------------------------------------------------------
+// COMMUNICATION BANK � 400 Questions across 4 topics
 // Topics: Direct & Indirect Speech, Active & Passive Voice,
 //         Sentence Improvement, Idioms & Phrases
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 export interface CommQ {
   id: string
@@ -18,9 +18,9 @@ export interface CommQ {
 
 export const COMMUNICATION_BANK: CommQ[] = [
 
-// ─────────────────────────────────────────────────────────────────────────────
-// DIRECT & INDIRECT SPEECH — 100 Questions (DIS001–DIS100)
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+// DIRECT & INDIRECT SPEECH � 100 Questions (DIS001�DIS100)
+// -----------------------------------------------------------------------------
 
 { id:"DIS001", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
   question:'Change into indirect speech: He said, "I am busy."',
@@ -238,8 +238,8 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:0, explanation:"Permanent facts often remain unchanged." },
 
 { id:"DIS044", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
-  question:'Change into indirect speech: She said, "Water boils at 100°C."',
-  options:["She said that water boiled at 100°C.","She said that water boils at 100°C.","She said that water had boiled at 100°C.","She said that water is boiling at 100°C."],
+  question:'Change into indirect speech: She said, "Water boils at 100�C."',
+  options:["She said that water boiled at 100�C.","She said that water boils at 100�C.","She said that water had boiled at 100�C.","She said that water is boiling at 100�C."],
   correct:1, explanation:"Scientific truths remain in present tense." },
 
 { id:"DIS045", section:"verbal", topic:"Direct & Indirect Speech", difficulty:"Medium",
@@ -523,9 +523,9 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:3, explanation:"'Can't have been' -> 'couldn't have been'." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ACTIVE & PASSIVE VOICE — 100 Questions (APV001–APV100)
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+// ACTIVE & PASSIVE VOICE � 100 Questions (APV001�APV100)
+// -----------------------------------------------------------------------------
 
 { id:"APV001", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: She writes a letter.",
@@ -590,7 +590,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV013", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Do not touch the exhibits.",
   options:["The exhibits are not touched.","Let the exhibits not be touched.","The exhibits should not be touched.","Both B and C"],
-  correct:3, explanation:"Negative imperatives can be expressed as 'Let…not be' or with 'should not be'." },
+  correct:3, explanation:"Negative imperatives can be expressed as 'Let�not be' or with 'should not be'." },
 
 { id:"APV014", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The company will announce the results next week.",
@@ -635,7 +635,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV022", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Who taught you French?",
   options:["By whom were you taught French?","Who were you taught French by?","Both A and B","By who were you taught French?"],
-  correct:2, explanation:"Both formal ('By whom') and informal ('Who…by') are acceptable." },
+  correct:2, explanation:"Both formal ('By whom') and informal ('Who�by') are acceptable." },
 
 { id:"APV023", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The gardener is watering the plants.",
@@ -695,7 +695,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV034", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: Do not insult the poor.",
   options:["The poor are not insulted.","Let the poor not be insulted.","The poor should not be insulted.","Both B and C"],
-  correct:3, explanation:"Negative imperative can use 'Let…not be' or 'should not be'." },
+  correct:3, explanation:"Negative imperative can use 'Let�not be' or 'should not be'." },
 
 { id:"APV035", section:"verbal", topic:"Active & Passive Voice", difficulty:"Medium",
   question:"Change into passive voice: The children are flying kites in the park.",
@@ -780,7 +780,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV051", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They say that he is a genius.",
   options:["He is said to be a genius.","It is said that he is a genius.","Both A and B","He is said that he is a genius."],
-  correct:2, explanation:"Impersonal passive: 'It is said that…' or 'He is said to be…'." },
+  correct:2, explanation:"Impersonal passive: 'It is said that�' or 'He is said to be�'." },
 
 { id:"APV052", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: People believe that the company is making huge profits.",
@@ -860,7 +860,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV067", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They are believed to have left the country. (Convert to equivalent passive structure)",
   options:["It is believed that they have left the country.","They are believed to leave the country.","It is believed them to have left the country.","They are believed that they have left the country."],
-  correct:0, explanation:"The given sentence is already passive; 'It is believed that…' is equivalent." },
+  correct:0, explanation:"The given sentence is already passive; 'It is believed that�' is equivalent." },
 
 { id:"APV068", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: The teacher made the students rewrite the essay.",
@@ -1000,7 +1000,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"APV095", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: They are known to have supported the movement. (Convert to equivalent passive)",
   options:["It is known that they have supported the movement.","They are known that they have supported the movement.","It is known them to have supported the movement.","They are known supporting the movement."],
-  correct:0, explanation:"The given sentence is already a form of passive; 'It is known that…' is equivalent." },
+  correct:0, explanation:"The given sentence is already a form of passive; 'It is known that�' is equivalent." },
 
 { id:"APV096", section:"verbal", topic:"Active & Passive Voice", difficulty:"Hard",
   question:"Change into passive voice: The committee is expected to reach a decision soon.",
@@ -1028,9 +1028,9 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:2, explanation:"Both personal and impersonal passive structures are correct." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SENTENCE IMPROVEMENT — 100 Questions (SIM001–SIM100)
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+// SENTENCE IMPROVEMENT � 100 Questions (SIM001�SIM100)
+// -----------------------------------------------------------------------------
 
 { id:"SIM001", section:"verbal", topic:"Sentence Improvement", difficulty:"Medium",
   question:"She is senior than me in the office. (Improve the underlined part if needed.)",
@@ -1195,7 +1195,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"SIM033", section:"verbal", topic:"Sentence Improvement", difficulty:"Medium",
   question:"The reason why he left was because he was unhappy. (Improve.)",
   options:["was that he was unhappy","was because he is unhappy","is because he was unhappy","No improvement"],
-  correct:0, explanation:"Avoid 'the reason…because'; use 'the reason…that'." },
+  correct:0, explanation:"Avoid 'the reason�because'; use 'the reason�that'." },
 
 { id:"SIM034", section:"verbal", topic:"Sentence Improvement", difficulty:"Medium",
   question:"He is working hard so that he will succeed. (Improve.)",
@@ -1205,7 +1205,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"SIM035", section:"verbal", topic:"Sentence Improvement", difficulty:"Medium",
   question:"Scarcely had I reached the station than the train left. (Improve.)",
   options:["when the train left","then the train left","as the train left","No improvement"],
-  correct:0, explanation:"'Scarcely…when' is the correct correlative." },
+  correct:0, explanation:"'Scarcely�when' is the correct correlative." },
 
 { id:"SIM036", section:"verbal", topic:"Sentence Improvement", difficulty:"Medium",
   question:"He is junior than me by three years. (Improve.)",
@@ -1255,7 +1255,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"SIM045", section:"verbal", topic:"Sentence Improvement", difficulty:"Medium",
   question:"The more you work hard, the more you succeed. (Improve.)",
   options:["The harder you work, the more you succeed","The more hard you work","The more you work harder","No improvement"],
-  correct:0, explanation:"Correct correlative structure: 'The harder…the more…'." },
+  correct:0, explanation:"Correct correlative structure: 'The harder�the more�'." },
 
 { id:"SIM046", section:"verbal", topic:"Sentence Improvement", difficulty:"Medium",
   question:"He is one of the best player of the team. (Improve.)",
@@ -1285,12 +1285,12 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"SIM051", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"No sooner had the meeting begun when the fire alarm went off. (Improve.)",
   options:["than the fire alarm went off","when the fire alarm goes off","then the fire alarm went off","No improvement"],
-  correct:0, explanation:"'No sooner…than' is the correct correlative pair." },
+  correct:0, explanation:"'No sooner�than' is the correct correlative pair." },
 
 { id:"SIM052", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"Hardly had he finished his speech than the audience started applauding. (Improve.)",
   options:["when the audience started","then the audience started","as the audience started","No improvement"],
-  correct:0, explanation:"'Hardly…when' is the correct structure." },
+  correct:0, explanation:"'Hardly�when' is the correct structure." },
 
 { id:"SIM053", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"If I would have known about the problem, I would have helped. (Improve.)",
@@ -1315,7 +1315,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"SIM057", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"Had he worked harder, he will have succeeded. (Improve.)",
   options:["would have succeeded","will succeed","would succeed","No improvement"],
-  correct:0, explanation:"Third conditional: 'Had + past participle… would have + past participle'." },
+  correct:0, explanation:"Third conditional: 'Had + past participle� would have + past participle'." },
 
 { id:"SIM058", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"She suggested that he applies for the position. (Improve.)",
@@ -1330,7 +1330,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"SIM060", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"Neither the CEO nor the directors was present at the meeting. (Improve.)",
   options:["were present","was present","has present","No improvement"],
-  correct:0, explanation:"When subjects are joined by 'neither…nor', the verb agrees with the nearer subject (directors = plural)." },
+  correct:0, explanation:"When subjects are joined by 'neither�nor', the verb agrees with the nearer subject (directors = plural)." },
 
 { id:"SIM061", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"He is one of the few people who has understood the concept fully. (Improve.)",
@@ -1345,7 +1345,7 @@ export const COMMUNICATION_BANK: CommQ[] = [
 { id:"SIM063", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"Not only the students but also the teacher were surprised. (Improve.)",
   options:["was surprised","were surprised","have surprised","No improvement"],
-  correct:0, explanation:"When subjects are joined by 'not only…but also', the verb agrees with the nearer subject." },
+  correct:0, explanation:"When subjects are joined by 'not only�but also', the verb agrees with the nearer subject." },
 
 { id:"SIM064", section:"verbal", topic:"Sentence Improvement", difficulty:"Hard",
   question:"Each of the candidates have to submit their documents by Monday. (Improve.)",
@@ -1533,9 +1533,9 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:0, explanation:"Use 'known for' to indicate the reason for reputation." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// IDIOMS & PHRASES — 100 Questions (IDP001–IDP100)
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+// IDIOMS & PHRASES � 100 Questions (IDP001�IDP100)
+// -----------------------------------------------------------------------------
 
 { id:"IDP001", section:"verbal", topic:"Idioms & Phrases", difficulty:"Medium",
   question:"What is the meaning of the idiom 'A blessing in disguise'?",
@@ -2037,13 +2037,13 @@ export const COMMUNICATION_BANK: CommQ[] = [
   options:["To clean thoroughly","To hide a problem instead of dealing with it","To solve a problem","To display openly"],
   correct:1, explanation:"To conceal something embarrassing or problematic." },
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CLOZE TEST, PARA JUMBLES & GRAMMAR — moved from aptitude-bank
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+// CLOZE TEST, PARA JUMBLES & GRAMMAR � moved from aptitude-bank
+// -----------------------------------------------------------------------------
 
-// ─────────────────────────────────────────────────────────────
-// CLOZE TEST — 100 Questions (50 Medium + 50 Hard)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
+// CLOZE TEST � 100 Questions (50 Medium + 50 Hard)
+// -------------------------------------------------------------
 
 { id:"CT001", section:"verbal", topic:"Cloze Test", difficulty:"Medium",
   question:"Education plays a vital role. It helps in the overall _____ of an individual's personality.",
@@ -2546,9 +2546,9 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:1,
   explanation:"Rapid technological change drives lifelong learning." },
 
-// ─────────────────────────────────────────────────────────────
-// PARA JUMBLES — 100 Questions (50 Medium + 50 Hard)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
+// PARA JUMBLES � 100 Questions (50 Medium + 50 Hard)
+// -------------------------------------------------------------
 
 { id:"PJ001", section:"verbal", topic:"Para Jumbles", difficulty:"Medium",
   question:"Rearrange: P:'He was a great leader.' Q:'People still remember him.' R:'He fought for the freedom of the country.' S:'His contribution is unforgettable.'",
@@ -3051,107 +3051,107 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:0,
   explanation:"Q curiosity, P scientific temper, R questioning, S education nurture." },
 
-// ─────────────────────────────────────────────────────────────
-// GRAMMAR — 100 Questions (50 Medium + 50 Hard)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
+// GRAMMAR � 100 Questions (50 Medium + 50 Hard)
+// -------------------------------------------------------------
 
 { id:"GR001", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'The committee / have decided / to postpone / the meeting.' — Identify the error.",
+  question:"[Error Spotting] 'The committee / have decided / to postpone / the meeting.' � Identify the error.",
   options:["The committee","have decided","to postpone","the meeting"],
   correct:1,
   explanation:"'Committee' is a collective noun treated as singular. Use 'has decided'." },
 { id:"GR002", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'Neither of the two boys / have completed / their homework / on time.' — Identify the error.",
+  question:"[Error Spotting] 'Neither of the two boys / have completed / their homework / on time.' � Identify the error.",
   options:["Neither of the two boys","have completed","their homework","on time"],
   correct:1,
   explanation:"'Neither' is singular. Use 'has completed'." },
 { id:"GR003", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'She is / one of the best / student / in the class.' — Identify the error.",
+  question:"[Error Spotting] 'She is / one of the best / student / in the class.' � Identify the error.",
   options:["She is","one of the best","student","in the class"],
   correct:2,
   explanation:"After 'one of the' use plural noun: 'students'." },
 { id:"GR004", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'The news / are / very disappointing / today.' — Identify the error.",
+  question:"[Error Spotting] 'The news / are / very disappointing / today.' � Identify the error.",
   options:["The news","are","very disappointing","today"],
   correct:1,
   explanation:"'News' is singular. Use 'is'." },
 { id:"GR005", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'Each of the players / have been / given / a certificate.' — Identify the error.",
+  question:"[Error Spotting] 'Each of the players / have been / given / a certificate.' � Identify the error.",
   options:["Each of the players","have been","given","a certificate"],
   correct:1,
   explanation:"'Each' is singular. Use 'has been'." },
 { id:"GR006", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'He did not / knew / the answer / to the question.' — Identify the error.",
+  question:"[Error Spotting] 'He did not / knew / the answer / to the question.' � Identify the error.",
   options:["He did not","knew","the answer","to the question"],
   correct:1,
   explanation:"After 'did not' use base form: 'know'." },
 { id:"GR007", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'The teacher asked / the students / to carefully / listen him.' — Identify the error.",
+  question:"[Error Spotting] 'The teacher asked / the students / to carefully / listen him.' � Identify the error.",
   options:["The teacher asked","the students","to carefully","listen him"],
   correct:3,
   explanation:"Correct form is 'listen to him'." },
 { id:"GR008", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'She prefers / coffee than / tea / in the morning.' — Identify the error.",
+  question:"[Error Spotting] 'She prefers / coffee than / tea / in the morning.' � Identify the error.",
   options:["She prefers","coffee than","tea","in the morning"],
   correct:1,
   explanation:"'Prefer' is followed by 'to', not 'than'." },
 { id:"GR009", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'Despite of / the heavy rain / they continued / the match.' — Identify the error.",
+  question:"[Error Spotting] 'Despite of / the heavy rain / they continued / the match.' � Identify the error.",
   options:["Despite of","the heavy rain","they continued","the match"],
   correct:0,
   explanation:"Use 'Despite' or 'In spite of', not 'Despite of'." },
 { id:"GR010", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'The number of students / are increasing / every year / in the college.' — Identify the error.",
+  question:"[Error Spotting] 'The number of students / are increasing / every year / in the college.' � Identify the error.",
   options:["The number of students","are increasing","every year","in the college"],
   correct:1,
   explanation:"'The number of' takes singular verb: 'is increasing'." },
 { id:"GR011", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'He is / senior than / me / in service.' — Identify the error.",
+  question:"[Error Spotting] 'He is / senior than / me / in service.' � Identify the error.",
   options:["He is","senior than","me","in service"],
   correct:1,
   explanation:"'Senior' is followed by 'to', not 'than'." },
 { id:"GR012", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'One of my friend / is coming / to visit me / tomorrow.' — Identify the error.",
+  question:"[Error Spotting] 'One of my friend / is coming / to visit me / tomorrow.' � Identify the error.",
   options:["One of my friend","is coming","to visit me","tomorrow"],
   correct:0,
   explanation:"Use plural: 'One of my friends'." },
 { id:"GR013", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'The sceneries / of Kashmir / are / very beautiful.' — Identify the error.",
+  question:"[Error Spotting] 'The sceneries / of Kashmir / are / very beautiful.' � Identify the error.",
   options:["The sceneries","of Kashmir","are","very beautiful"],
   correct:0,
   explanation:"'Scenery' is uncountable. Use 'The scenery'." },
 { id:"GR014", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'He has been / living in this house / since / five years.' — Identify the error.",
+  question:"[Error Spotting] 'He has been / living in this house / since / five years.' � Identify the error.",
   options:["He has been","living in this house","since","five years"],
   correct:2,
   explanation:"Use 'for' with a period of time: 'for five years'." },
 { id:"GR015", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'Neither Ramesh / nor his friends / was present / in the meeting.' — Identify the error.",
+  question:"[Error Spotting] 'Neither Ramesh / nor his friends / was present / in the meeting.' � Identify the error.",
   options:["Neither Ramesh","nor his friends","was present","in the meeting"],
   correct:2,
   explanation:"Verb agrees with nearer subject 'friends' (plural): 'were present'." },
 { id:"GR016", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'She is / better than / any student / in the class.' — Identify the error.",
+  question:"[Error Spotting] 'She is / better than / any student / in the class.' � Identify the error.",
   options:["She is","better than","any student","in the class"],
   correct:2,
   explanation:"Use 'any other student' to exclude herself from comparison." },
 { id:"GR017", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'The furniture / in this room / are / quite old.' — Identify the error.",
+  question:"[Error Spotting] 'The furniture / in this room / are / quite old.' � Identify the error.",
   options:["The furniture","in this room","are","quite old"],
   correct:2,
   explanation:"'Furniture' is uncountable and takes singular verb: 'is'." },
 { id:"GR018", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'He ordered / for a cup / of coffee / immediately.' — Identify the error.",
+  question:"[Error Spotting] 'He ordered / for a cup / of coffee / immediately.' � Identify the error.",
   options:["He ordered","for a cup","of coffee","immediately"],
   correct:1,
   explanation:"'Order' does not take 'for'. Correct: 'He ordered a cup of coffee'." },
 { id:"GR019", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'The police / is investigating / the case / thoroughly.' — Identify the error.",
+  question:"[Error Spotting] 'The police / is investigating / the case / thoroughly.' � Identify the error.",
   options:["The police","is investigating","the case","thoroughly"],
   correct:1,
   explanation:"'Police' is plural. Use 'are investigating'." },
 { id:"GR020", section:"verbal", topic:"Grammar", difficulty:"Medium",
-  question:"[Error Spotting] 'She made / him to / clean the room / before leaving.' — Identify the error.",
+  question:"[Error Spotting] 'She made / him to / clean the room / before leaving.' � Identify the error.",
   options:["She made","him to","clean the room","before leaving"],
   correct:1,
   explanation:"After 'make' use bare infinitive: 'him clean' (no 'to')." },
@@ -3306,105 +3306,105 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:1,
   explanation:"'Order' does not take 'for' in this structure." },
 { id:"GR051", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'Hardly had he / finished the work / than the manager / called him.' — Identify the error.",
+  question:"[Error Spotting] 'Hardly had he / finished the work / than the manager / called him.' � Identify the error.",
   options:["Hardly had he","finished the work","than the manager","called him"],
   correct:2,
   explanation:"'Hardly...when' is the correct correlative. Use 'when' instead of 'than'." },
 { id:"GR052", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'Scarcely had I / reached the station / than the train / departed.' — Identify the error.",
+  question:"[Error Spotting] 'Scarcely had I / reached the station / than the train / departed.' � Identify the error.",
   options:["Scarcely had I","reached the station","than the train","departed"],
   correct:2,
   explanation:"'Scarcely...when' is correct. Use 'when', not 'than'." },
 { id:"GR053", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'No sooner did / the bell ring / when the students / rushed out.' — Identify the error.",
+  question:"[Error Spotting] 'No sooner did / the bell ring / when the students / rushed out.' � Identify the error.",
   options:["No sooner did","the bell ring","when the students","rushed out"],
   correct:2,
   explanation:"'No sooner...than' is the correct pair. Use 'than'." },
 { id:"GR054", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'The reason why / he left the job / was because / he was unhappy.' — Identify the error.",
+  question:"[Error Spotting] 'The reason why / he left the job / was because / he was unhappy.' � Identify the error.",
   options:["The reason why","he left the job","was because","he was unhappy"],
   correct:2,
   explanation:"Avoid 'the reason...because'. Use 'the reason...that'." },
 { id:"GR055", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'He is / one of those persons / who always / thinks of others.' — Identify the error.",
+  question:"[Error Spotting] 'He is / one of those persons / who always / thinks of others.' � Identify the error.",
   options:["He is","one of those persons","who always","thinks of others"],
   correct:3,
   explanation:"'Who' refers to 'persons' (plural). Use 'think'." },
 { id:"GR056", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'Having finished / his work / he went / to home.' — Identify the error.",
+  question:"[Error Spotting] 'Having finished / his work / he went / to home.' � Identify the error.",
   options:["Having finished","his work","he went","to home"],
   correct:3,
   explanation:"Use 'home' without 'to': 'went home'." },
 { id:"GR057", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'The more / you work hard / the more / you will succeed.' — Identify the error.",
+  question:"[Error Spotting] 'The more / you work hard / the more / you will succeed.' � Identify the error.",
   options:["The more","you work hard","the more","you will succeed"],
   correct:1,
   explanation:"Correct structure: 'The harder you work, the more you will succeed'." },
 { id:"GR058", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'It is high time / that we / do something / about pollution.' — Identify the error.",
+  question:"[Error Spotting] 'It is high time / that we / do something / about pollution.' � Identify the error.",
   options:["It is high time","that we","do something","about pollution"],
   correct:2,
   explanation:"After 'it is high time' use past subjunctive: 'did something'." },
 { id:"GR059", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'I would rather / you come / tomorrow / instead of today.' — Identify the error.",
+  question:"[Error Spotting] 'I would rather / you come / tomorrow / instead of today.' � Identify the error.",
   options:["I would rather","you come","tomorrow","instead of today"],
   correct:1,
   explanation:"After 'would rather' + subject, use past tense: 'you came'." },
 { id:"GR060", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'Supposing if / it rains / we shall / cancel the trip.' — Identify the error.",
+  question:"[Error Spotting] 'Supposing if / it rains / we shall / cancel the trip.' � Identify the error.",
   options:["Supposing if","it rains","we shall","cancel the trip"],
   correct:0,
   explanation:"Use either 'Supposing' or 'If', not both together." },
 { id:"GR061", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'He denied / to have / stolen / the money.' — Identify the error.",
+  question:"[Error Spotting] 'He denied / to have / stolen / the money.' � Identify the error.",
   options:["He denied","to have","stolen","the money"],
   correct:1,
   explanation:"'Deny' is followed by gerund: 'denied having stolen'." },
 { id:"GR062", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'Unless you / do not work hard / you will not / succeed.' — Identify the error.",
+  question:"[Error Spotting] 'Unless you / do not work hard / you will not / succeed.' � Identify the error.",
   options:["Unless you","do not work hard","you will not","succeed"],
   correct:1,
   explanation:"'Unless' already means 'if not'. Do not use another negative." },
 { id:"GR063", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'He is / accustomed with / the climate / of this place.' — Identify the error.",
+  question:"[Error Spotting] 'He is / accustomed with / the climate / of this place.' � Identify the error.",
   options:["He is","accustomed with","the climate","of this place"],
   correct:1,
   explanation:"Use 'accustomed to'." },
 { id:"GR064", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'The two / first chapters / of the book / are interesting.' — Identify the error.",
+  question:"[Error Spotting] 'The two / first chapters / of the book / are interesting.' � Identify the error.",
   options:["The two","first chapters","of the book","are interesting"],
   correct:0,
   explanation:"Correct order is 'The first two chapters'." },
 { id:"GR065", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'She is / the most unique / artist / of our times.' — Identify the error.",
+  question:"[Error Spotting] 'She is / the most unique / artist / of our times.' � Identify the error.",
   options:["She is","the most unique","artist","of our times"],
   correct:1,
   explanation:"'Unique' is an absolute adjective and does not take superlative." },
 { id:"GR066", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'I have / finished my work / two hours / ago.' — Identify the error.",
+  question:"[Error Spotting] 'I have / finished my work / two hours / ago.' � Identify the error.",
   options:["I have","finished my work","two hours","ago"],
   correct:0,
   explanation:"With 'ago' use simple past: 'I finished my work two hours ago'." },
 { id:"GR067", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'He congratulated / me for / my success / in the examination.' — Identify the error.",
+  question:"[Error Spotting] 'He congratulated / me for / my success / in the examination.' � Identify the error.",
   options:["He congratulated","me for","my success","in the examination"],
   correct:1,
   explanation:"Use 'congratulated me on'." },
 { id:"GR068", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'The climate / of Shimla / is better / than Delhi.' — Identify the error.",
+  question:"[Error Spotting] 'The climate / of Shimla / is better / than Delhi.' � Identify the error.",
   options:["The climate","of Shimla","is better","than Delhi"],
   correct:3,
   explanation:"Compare like with like: 'than that of Delhi'." },
 { id:"GR069", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'Being a rainy day / I decided / to stay / at home.' — Identify the error.",
+  question:"[Error Spotting] 'Being a rainy day / I decided / to stay / at home.' � Identify the error.",
   options:["Being a rainy day","I decided","to stay","at home"],
   correct:0,
   explanation:"Dangling participle. Correct: 'It being a rainy day...' or 'As it was a rainy day...'" },
 { id:"GR070", section:"verbal", topic:"Grammar", difficulty:"Hard",
-  question:"[Error Spotting] 'The jury / were divided / in their / opinion.' — Identify the error.",
+  question:"[Error Spotting] 'The jury / were divided / in their / opinion.' � Identify the error.",
   options:["The jury","were divided","in their","opinion"],
   correct:3,
-  explanation:"No error — when members act individually, collective noun can take plural verb." },
+  explanation:"No error � when members act individually, collective noun can take plural verb." },
 { id:"GR071", section:"verbal", topic:"Grammar", difficulty:"Hard",
   question:"[Sentence Correction] Choose the correct sentence: 'Hardly he had entered when the lights went out.'",
   options:["Hardly he had entered when the lights went out.","Hardly had he entered when the lights went out.","Hardly he entered than the lights went out.","Hardly had he entered than the lights went out."],
@@ -3557,10 +3557,10 @@ export const COMMUNICATION_BANK: CommQ[] = [
   explanation:"'Unique' is absolute and does not take intensifiers." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// READING COMPREHENSION — 100 Questions (RC001–RC100)
+// -----------------------------------------------------------------------------
+// READING COMPREHENSION � 100 Questions (RC001�RC100)
 // 50 Medium + 50 Hard | Passage-based + Inference + Vocabulary in Context
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 { id:"RC001", section:"verbal", topic:"Reading Comprehension", difficulty:"Medium",
   passage:"The importance of education in modern society cannot be overstated. Education not only equips individuals with knowledge and skills but also shapes their character and values. In many developing countries, access to quality education remains a major challenge, especially for children from rural and economically weaker backgrounds. Governments and non-governmental organisations have launched several initiatives to improve literacy rates and school enrolment. However, the quality of education often suffers due to inadequate infrastructure, shortage of trained teachers, and outdated curricula. Experts believe that investing in teacher training and digital learning tools can significantly improve learning outcomes. Moreover, education plays a crucial role in promoting social equality and economic growth. Nations that prioritise education tend to have higher levels of innovation and better standards of living. Therefore, ensuring inclusive and quality education for all should be a top priority for policymakers worldwide.",
@@ -3593,31 +3593,31 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:1, explanation:"The last sentence clearly states that ensuring inclusive and quality education for all should be a top priority." },
 
 { id:"RC006", section:"verbal", topic:"Reading Comprehension", difficulty:"Medium",
-  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5°C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
+  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5�C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
   question:"What is identified as the primary cause of climate change?",
   options:["Natural volcanic activity","Human activities like burning fossil fuels and deforestation","Changes in solar radiation","Ocean currents"],
   correct:1, explanation:"The passage clearly states that human activities, particularly burning of fossil fuels and deforestation, are the primary drivers." },
 
 { id:"RC007", section:"verbal", topic:"Reading Comprehension", difficulty:"Medium",
-  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5°C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
+  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5�C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
   question:"What international agreement is mentioned in the passage?",
   options:["Kyoto Protocol","Paris Agreement","Montreal Protocol","Geneva Convention"],
   correct:1, explanation:"The passage specifically mentions the Paris Agreement." },
 
 { id:"RC008", section:"verbal", topic:"Reading Comprehension", difficulty:"Medium",
-  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5°C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
+  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5�C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
   question:"According to experts, what temperature limit should not be exceeded?",
-  options:["1°C","1.5°C","2.5°C","3°C"],
-  correct:1, explanation:"Experts warn that urgent action is needed to limit global warming to 1.5°C above pre-industrial levels." },
+  options:["1�C","1.5�C","2.5�C","3�C"],
+  correct:1, explanation:"Experts warn that urgent action is needed to limit global warming to 1.5�C above pre-industrial levels." },
 
 { id:"RC009", section:"verbal", topic:"Reading Comprehension", difficulty:"Medium",
-  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5°C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
+  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5�C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
   question:"Which is suggested as an alternative to fossil fuels?",
   options:["Coal and oil","Solar and wind power","Nuclear waste","Natural gas only"],
   correct:1, explanation:"The passage mentions renewable energy sources like solar and wind power as promising alternatives." },
 
 { id:"RC010", section:"verbal", topic:"Reading Comprehension", difficulty:"Medium",
-  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5°C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
+  passage:"Climate change is one of the most pressing global issues of our time. Rising temperatures, melting glaciers, and extreme weather events are clear indicators of a changing climate. Human activities, particularly the burning of fossil fuels and deforestation, are the primary drivers of this change. The consequences are far-reaching, affecting agriculture, water resources, and human health. Many countries have committed to reducing carbon emissions under international agreements such as the Paris Agreement. However, progress has been slow, and experts warn that urgent action is needed to limit global warming to 1.5�C above pre-industrial levels. Renewable energy sources like solar and wind power offer promising alternatives to fossil fuels. Individuals can also contribute by adopting sustainable practices such as reducing energy consumption, using public transport, and supporting eco-friendly products. Collective efforts at the individual, national, and international levels are essential to combat climate change effectively.",
   question:"How can individuals contribute to combating climate change?",
   options:["By increasing energy consumption","By adopting sustainable practices","By ignoring international agreements","By supporting deforestation"],
   correct:1, explanation:"The passage lists reducing energy consumption, using public transport, and supporting eco-friendly products as individual contributions." },
@@ -3898,31 +3898,31 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:1, explanation:"The passage notes that digital globalisation has accelerated with remote work and online platforms." },
 
 { id:"RC061", section:"verbal", topic:"Reading Comprehension", difficulty:"Hard",
-  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version—linguistic relativity—continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
+  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version�linguistic relativity�continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
   question:"The strong form of the Sapir-Whorf hypothesis is also known as:",
   options:["Linguistic relativity","Linguistic determinism","Cognitive flexibility","Bilingual advantage"],
-  correct:1, explanation:"The passage states that the strong form proposed that language determines thought — linguistic determinism." },
+  correct:1, explanation:"The passage states that the strong form proposed that language determines thought � linguistic determinism." },
 
 { id:"RC062", section:"verbal", topic:"Reading Comprehension", difficulty:"Hard",
-  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version—linguistic relativity—continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
+  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version�linguistic relativity�continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
   question:"What has research shown about speakers of different languages?",
   options:["They all think in exactly the same way","They may categorise colours, space, and time differently","Language has no influence on cognition","Only monolinguals show cognitive differences"],
   correct:1, explanation:"The passage cites studies showing differences in categorising colours, spatial relations, and time." },
 
 { id:"RC063", section:"verbal", topic:"Reading Comprehension", difficulty:"Hard",
-  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version—linguistic relativity—continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
+  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version�linguistic relativity�continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
   question:"Languages that use absolute spatial terms appear to:",
   options:["Impair orientation abilities","Enhance speakers' orientation abilities","Have no effect on spatial thinking","Make left/right distinctions stronger"],
   correct:1, explanation:"The passage states that such languages seem to enhance their speakers' orientation abilities." },
 
 { id:"RC064", section:"verbal", topic:"Reading Comprehension", difficulty:"Hard",
-  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version—linguistic relativity—continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
+  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version�linguistic relativity�continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
   question:"The author's position on the language-thought relationship is that:",
   options:["Language rigidly determines all thought","Language has absolutely no influence on thought","Language can influence cognitive habits without rigidly determining thought","Only bilingualism matters"],
   correct:2, explanation:"The passage concludes that language does not rigidly determine thought but can influence cognitive habits and attentional patterns." },
 
 { id:"RC065", section:"verbal", topic:"Reading Comprehension", difficulty:"Hard",
-  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version—linguistic relativity—continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
+  passage:"The relationship between language and thought has long fascinated philosophers, linguists, and cognitive scientists. The Sapir-Whorf hypothesis, in its strong form, proposed that the language one speaks determines the way one thinks and perceives the world. Although the strong version of linguistic determinism has been largely rejected, a weaker version�linguistic relativity�continues to influence research. Studies have shown that speakers of different languages may categorise colours, spatial relations, and even time differently. For instance, some languages lack distinct terms for certain colours, and speakers of those languages appear less sensitive to those distinctions. Similarly, languages that use absolute rather than relative spatial terms (e.g., north/south instead of left/right) seem to enhance their speakers' orientation abilities. These findings suggest that while language does not rigidly determine thought, it can influence cognitive habits and attentional patterns. Contemporary research explores how bilingualism affects executive function and whether learning new languages can expand cognitive flexibility. Understanding these connections has implications for education, cross-cultural communication, and artificial intelligence systems that process natural language.",
   question:"Which field is mentioned as potentially benefiting from understanding language-thought connections?",
   options:["Only literature","Education, cross-cultural communication, and AI","Agriculture exclusively","Sports science"],
   correct:1, explanation:"The final sentence lists education, cross-cultural communication, and artificial intelligence systems." },
@@ -4103,10 +4103,10 @@ export const COMMUNICATION_BANK: CommQ[] = [
   correct:1, explanation:"Such passages critically examine widely accepted assumptions." },
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VOCABULARY — 100 Questions (VOC001–VOC100)
-// Synonyms • Antonyms • One-word Substitution | 50 Medium + 50 Hard
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+// VOCABULARY � 100 Questions (VOC001�VOC100)
+// Synonyms � Antonyms � One-word Substitution | 50 Medium + 50 Hard
+// -----------------------------------------------------------------------------
 
 { id:"VOC001", section:"verbal", topic:"Vocabulary", difficulty:"Medium",
   question:"[Synonym] Choose the word nearest in meaning to ABANDON:",

@@ -1,4 +1,4 @@
-﻿export interface KaggleStats {
+export interface KaggleStats {
   username: string
   tier: string
   competitions: number

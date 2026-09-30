@@ -1,4 +1,4 @@
-﻿import {
+import {
   fetchLeetCodeStats,
   fetchGitHubStats,
   fetchCodeforcesStats,

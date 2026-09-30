@@ -1,4 +1,4 @@
-﻿export interface SPOJStats {
+export interface SPOJStats {
   username: string
   problemsSolved: number
   score: number

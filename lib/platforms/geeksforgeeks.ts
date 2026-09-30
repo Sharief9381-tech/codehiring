@@ -1,4 +1,4 @@
-﻿export interface GeeksforGeeksStats {
+export interface GeeksforGeeksStats {
   username: string
   codingScore: number
   problemsSolved: number

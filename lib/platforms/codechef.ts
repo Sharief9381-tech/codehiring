@@ -1,4 +1,4 @@
-﻿export interface CodeChefStats {
+export interface CodeChefStats {
   username: string
   currentRating: number
   highestRating: number
@@ -137,7 +137,7 @@ export async function fetchCodeChefStats(username: string): Promise<CodeChefStat
 
         // Stars
         let stars = getStarsFromRating(currentRating)
-        const starsMatch = html.match(/(\d+)[★*]\s*(?:Coder|rated)/i)
+        const starsMatch = html.match(/(\d+)[?*]\s*(?:Coder|rated)/i)
         if (starsMatch) stars = starsMatch[1] + '*'
 
         if (currentRating > 0 || problemsSolved > 0 || globalRank > 0) {

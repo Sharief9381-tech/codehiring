@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/cron/generate-blog
  *
  * Generates a fresh, unique blog post via Groq AI and saves it to MongoDB.
@@ -130,7 +130,7 @@ Respond with ONLY valid JSON (no markdown code fence, no explanation):
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "groq/compound-mini",
+        model: "openai/gpt-oss-20b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.85,
         max_tokens: 1200,

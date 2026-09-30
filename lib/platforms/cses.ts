@@ -1,4 +1,4 @@
-﻿export interface CSESStats {
+export interface CSESStats {
   username: string
   problemsSolved: number
   totalProblems: number

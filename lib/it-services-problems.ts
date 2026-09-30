@@ -1,4 +1,4 @@
-﻿/**
+/**
  * IT Services Extended Problem Bank
  * Companies: Capgemini, Mphasis, Hexaware, LTIMindtree, Zensar, Persistent Systems,
  *   Cyient, Birlasoft, Sonata Software, Tata Elxsi, Nisum, Xoriant,

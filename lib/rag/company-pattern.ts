@@ -1303,7 +1303,7 @@ ${webContent.slice(0, 3000)}`
 
   try {
     if (groqKey) {
-      const data = await tryAI("https://api.groq.com/openai/v1/chat/completions", groqKey, "groq/compound-mini").catch(() => null)
+      const data = await tryAI("https://api.groq.com/openai/v1/chat/completions", groqKey, "openai/gpt-oss-20b").catch(() => null)
       if (data?.sections?.length > 0) return data
     }
     if (openaiKey) {

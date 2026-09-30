@@ -1,4 +1,4 @@
-﻿export interface HackerRankStats {
+export interface HackerRankStats {
   username: string
   name: string
   country: string

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/student/generate-assessment
  * Body: { company: string, section: string, count: number }
  * Handles all section types: quantitative, advanced-aptitude, verbal, basic-coding, advanced-coding
@@ -29,14 +29,14 @@ async function callAI(prompt: string, maxTokens = 6000): Promise<string> {
     const res = await fetch(GROQ_API, {
       method: "POST",
       headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "groq/compound-mini", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
+      body: JSON.stringify({ model: "openai/gpt-oss-20b", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
     })
     if (res.ok) { const d = await res.json(); return d.choices?.[0]?.message?.content?.trim() ?? "" }
   }
   throw new Error("No AI provider available")
 }
 
-// ── Section definitions ──────────────────────────────────────────────────────
+// -- Section definitions ------------------------------------------------------
 
 const SECTION_CONFIG: Record<string, { name: string; isCoding: boolean; difficulty: string; topics: string[]; lang?: string }> = {
   "quantitative":       { name: "Quantitative Aptitude",  isCoding: false, difficulty: "Medium",      topics: ["Percentages","Profit & Loss","Time & Work","Speed & Distance","Number Series","Averages","Probability","Permutation & Combination"] },
@@ -49,7 +49,7 @@ const SECTION_CONFIG: Record<string, { name: string; isCoding: boolean; difficul
   "coding":             { name: "Coding",                  isCoding: true,  difficulty: "Medium",       topics: ["Arrays","Strings","Sorting","Recursion","Basic DP","Math Problems"], lang: "Any" },
 }
 
-// ── Company-specific section overrides ───────────────────────────────────────
+// -- Company-specific section overrides ---------------------------------------
 
 const COMPANY_SECTION_OVERRIDES: Record<string, Record<string, Partial<typeof SECTION_CONFIG[string]>>> = {
   tcs: {
@@ -132,7 +132,7 @@ const COMPANY_SECTION_OVERRIDES: Record<string, Record<string, Partial<typeof SE
   },
 }
 
-// ── Pattern lookup ────────────────────────────────────────────────────────────
+// -- Pattern lookup ------------------------------------------------------------
 
 function getSectionData(companyId: string, sectionId: string) {
   const base = SECTION_CONFIG[sectionId]
@@ -145,7 +145,7 @@ function getCompanyName(companyId: string): string {
   return ALL_COMPANIES.find(c => c.id === companyId)?.name ?? companyId
 }
 
-// ── POST handler ──────────────────────────────────────────────────────────────
+// -- POST handler --------------------------------------------------------------
 
 export async function POST(req: Request) {
   let company = "", section = "", count = 5
@@ -169,9 +169,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
     }
 
-    // ── Try to get live company pattern from RAG (7-day cache) ────────────────
+    // -- Try to get live company pattern from RAG (7-day cache) ----------------
     try {
-      // 1. Semantic search in pattern_embeddings — fastest, richest context
+      // 1. Semantic search in pattern_embeddings � fastest, richest context
       const sectionConfig = SECTION_CONFIG[section]
       if (sectionConfig && process.env.OPENAI_API_KEY) {
         const semanticDoc = await queryPatternForSection(
@@ -201,7 +201,7 @@ export async function POST(req: Request) {
       console.warn("Pattern fetch failed, using defaults:", e)
     }
 
-    // ── For coding sections: use company-coding-ai model first ────────────────
+    // -- For coding sections: use company-coding-ai model first ----------------
     if (sectionData.isCoding) {
       try {
         const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
@@ -227,7 +227,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // ── Try web scraping for aptitude ─────────────────────────────────────────
+    // -- Try web scraping for aptitude -----------------------------------------
     if (!sectionData.isCoding) {
       try {
         const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
@@ -246,7 +246,7 @@ export async function POST(req: Request) {
       } catch {}
     }
 
-    // ── AI generation with RAG context ───────────────────────────────────────
+    // -- AI generation with RAG context ---------------------------------------
     const topicsList = sectionData.topics.join(", ")
 
     // Build context from 3 sources in parallel: vector store, pyq_bank, live web
@@ -300,7 +300,7 @@ Count: ${count}
 Generate ${count} ORIGINAL coding problems that feel like real ${companyName} OA questions.
 
 CRITICAL RULES FOR EXAMPLE INPUT/OUTPUT:
-- example.input MUST be plain numbers only — NO variable names, NO brackets, NO "nums=", NO "target="
+- example.input MUST be plain numbers only � NO variable names, NO brackets, NO "nums=", NO "target="
 - Format: first line = array elements space-separated, second line = single value if needed
 - Good: "2 7 11 15\\n9"  Bad: "nums=[2,7,11,15], target=9"
 - Good: "0 1 0 3 12"    Bad: "[0,1,0,3,12]"
@@ -335,35 +335,54 @@ Return ONLY valid JSON array:
   }
 }
 
-// ── Fallback questions ────────────────────────────────────────────────────────
+// -- Fallback questions --------------------------------------------------------
 
 function getFallbackQuestions(company: string, section: string, count: number) {
   const isCoding = section === "coding" || section === "basic-coding" || section === "advanced-coding"
 
-  // For coding sections — NEVER fall back to aptitude questions
+  // For coding sections � NEVER fall back to aptitude questions
   if (isCoding) {
     return [
-      { id:1, title:"Two Sum", difficulty:"Easy", statement:"Given an array of integers nums and an integer target, return indices of the two numbers that add up to target. You may assume each input has exactly one solution.", constraints:"2<=nums.length<=10^4, -10^9<=nums[i]<=10^9", example:{input:"nums=[2,7,11,15], target=9",output:"[0,1]",explanation:"nums[0]+nums[1]=9"}, hints:["Use a hash map to store complement","Single pass O(n) solution possible"], topic:"Arrays & Hashing" },
-      { id:2, title:"Reverse String", difficulty:"Easy", statement:"Write a function that reverses a string. The input string is given as an array of characters s. Modify the array in-place.", constraints:"1<=s.length<=10^5, s[i] is a printable ASCII character", example:{input:'s=["h","e","l","l","o"]',output:'["o","l","l","e","h"]',explanation:"Reversed in place"}, hints:["Use two pointers from both ends","Swap characters until pointers meet"], topic:"Two Pointers" },
-      { id:3, title:"Maximum Subarray", difficulty:"Medium", statement:"Given an integer array nums, find the subarray with the largest sum, and return its sum.", constraints:"1<=nums.length<=10^5, -10^4<=nums[i]<=10^4", example:{input:"nums=[-2,1,-3,4,-1,2,1,-5,4]",output:"6",explanation:"The subarray [4,-1,2,1] has the largest sum 6"}, hints:["Use Kadane's algorithm","Track current sum and max sum"], topic:"Dynamic Programming" },
+      { id:1, title:"Two Sum", difficulty:"Easy", statement:"Given an array of integers nums and an integer target, return indices of the two numbers that add up to target. You may assume each input has exactly one solution.", constraints:"2<=nums.length<=10^4, -10^9<=nums[i]<=10^9", example:{input:"2 7 11 15\n9",output:"0 1",explanation:"nums[0]+nums[1]=9"}, hints:["Use a hash map to store complement","Single pass O(n) solution possible"], topic:"Arrays & Hashing" },
+      { id:2, title:"Reverse String", difficulty:"Easy", statement:"Write a function that reverses a string. The input string is given as an array of characters s. Modify the array in-place.", constraints:"1<=s.length<=10^5, s[i] is a printable ASCII character", example:{input:"hello",output:"olleh",explanation:"Reversed in place"}, hints:["Use two pointers from both ends","Swap characters until pointers meet"], topic:"Two Pointers" },
+      { id:3, title:"Maximum Subarray", difficulty:"Medium", statement:"Given an integer array nums, find the subarray with the largest sum, and return its sum.", constraints:"1<=nums.length<=10^5, -10^4<=nums[i]<=10^4", example:{input:"-2 1 -3 4 -1 2 1 -5 4",output:"6",explanation:"The subarray [4,-1,2,1] has the largest sum 6"}, hints:["Use Kadane's algorithm","Track current sum and max sum"], topic:"Dynamic Programming" },
     ].slice(0, count)
   }
 
-  // For aptitude sections — use PYQ bank
+  // For aptitude sections � use company-specific PYQ bank if available,
+  // then try same section from similar companies, then generate generic questions
   const { QUESTION_BANK } = require("@/lib/question-bank")
-  const bank = QUESTION_BANK[company]?.[section]
-    ?? QUESTION_BANK["tcs"]?.[section]
-    ?? QUESTION_BANK["tcs"]?.["quantitative"]
-    ?? []
+
+  // Try exact company + section
+  let bank = QUESTION_BANK[company]?.[section]
+
+  // Try same section from any company (pick randomly to avoid always showing TCS)
+  if (!bank?.length) {
+    const allCompanies = Object.keys(QUESTION_BANK)
+    // Shuffle to get variety
+    const shuffled = allCompanies.sort(() => Math.random() - 0.5)
+    for (const co of shuffled) {
+      if (QUESTION_BANK[co]?.[section]?.length >= 3) {
+        bank = QUESTION_BANK[co][section]
+        break
+      }
+    }
+  }
+
+  // Final fallback: any section from TCS
+  if (!bank?.length) {
+    bank = QUESTION_BANK["tcs"]?.["quantitative"] ?? []
+  }
 
   if (bank.length > 0) {
     const shuffled = [...bank].sort(() => Math.random() - 0.5)
     return shuffled.slice(0, Math.min(count, shuffled.length)).map((q: any, i: number) => ({ ...q, id: i + 1 }))
   }
 
+  // Absolute last resort: generic aptitude questions
   return [
     { id:1, question:"A train 240m long passes a pole in 24 seconds. How long to pass a 650m platform?", options:["89 sec","85 sec","90 sec","80 sec"], correct:0, explanation:"Speed=240/24=10m/s. Time=(240+650)/10=89sec", topic:"Speed & Distance", difficulty:"Medium" },
     { id:2, question:"If 20% of a number is 120, what is 35% of that number?", options:["200","210","205","195"], correct:1, explanation:"Number=120/0.20=600. 35% of 600=210", topic:"Percentages", difficulty:"Medium" },
-    { id:3, question:"Find the missing: 3, 7, 15, 31, 63, ?", options:["127","125","128","124"], correct:0, explanation:"Each term = previous×2+1. 63×2+1=127", topic:"Number Series", difficulty:"Medium" },
+    { id:3, question:"Find the missing: 3, 7, 15, 31, 63, ?", options:["127","125","128","124"], correct:0, explanation:"Each term = previous�2+1. 63�2+1=127", topic:"Number Series", difficulty:"Medium" },
   ].slice(0, count)
 }
