@@ -356,6 +356,727 @@ const FALLBACK_PATTERNS: Record<string, Omit<CompanyPattern, "company"|"companyN
     ],
     notes:"ICICI Bank PO Tech. Standard banking aptitude pattern.",
   },
+  // ── More IT Services ────────────────────────────────────────────────────────
+  zensar: {
+    totalQuestions: 50, totalTime: 65,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Percentages","Averages","Time & Work","Number Series","Profit & Loss"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Series","Blood Relations","Directions","Puzzles","Syllogisms"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Comprehension","Error Detection"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:1,  timeMinutes:30, difficulty:"Easy-Medium", topics:["Arrays","Strings","Sorting","Loops","Basic Math"], isCoding:true },
+    ],
+    notes:"Zensar Technologies campus. Easy-Medium difficulty.",
+  },
+  cyient: {
+    totalQuestions: 52, totalTime: 65,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude",  questions:18, timeMinutes:22, difficulty:"Medium",      topics:["Percentages","Time & Work","Speed & Distance","Number Series","Algebra","Geometry"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",      questions:18, timeMinutes:22, difficulty:"Medium",      topics:["Blood Relations","Directions","Coding-Decoding","Series","Analogies","Puzzles"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",         questions:10, timeMinutes:13, difficulty:"Easy-Medium", topics:["Reading Comprehension","Vocabulary","Grammar","Error Detection"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",                questions:1,  timeMinutes:30, difficulty:"Medium",      topics:["Arrays","Strings","Sorting","Recursion","Basic Math"], isCoding:true },
+    ],
+    notes:"Cyient GET. Engineering domain preferred. Moderate difficulty.",
+  },
+  birlasoft: {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Percentages","Time & Work","Averages","Number Series","Profit & Loss"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Series","Directions","Blood Relations","Analogies","Statement & Conclusion"], isCoding:false },
+      { id:"verbal",            name:"English Ability",       questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Fill in Blanks","Error Detection"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:1,  timeMinutes:25, difficulty:"Easy",        topics:["Arrays","Strings","Basic Loops","Simple Math"], isCoding:true },
+    ],
+    notes:"Birlasoft Campus. Easy difficulty. Good for freshers.",
+  },
+  sonata: {
+    totalQuestions: 48, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Percentages","Averages","Time & Work","Number Series"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Series","Directions","Blood Relations","Analogies"], isCoding:false },
+      { id:"verbal",            name:"English Ability",       questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:1,  timeMinutes:25, difficulty:"Easy",        topics:["Arrays","Strings","Basic Math","Loops"], isCoding:true },
+    ],
+    notes:"Sonata Software campus. Standard IT pattern.",
+  },
+  "tata-elxsi": {
+    totalQuestions: 55, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude",   questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Percentages","Time & Work","Speed & Distance","Number Series","Algebra","Geometry"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",       questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Blood Relations","Directions","Coding-Decoding","Series","Analogies","Puzzles"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",          questions:10, timeMinutes:15, difficulty:"Easy-Medium", topics:["Reading Comprehension","Vocabulary","Grammar"], isCoding:false },
+      { id:"basic-coding",      name:"Technical MCQ / Pseudo",  questions:5,  timeMinutes:10, difficulty:"Easy",        topics:["C/C++","Data Structures","Algorithm Tracing","OOP Concepts"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",                 questions:1,  timeMinutes:30, difficulty:"Medium",      topics:["Arrays","Strings","Sorting","DP","Embedded Algorithms"], isCoding:true },
+    ],
+    notes:"Tata Elxsi GET. Domain-specific (Embedded/Design). Technical MCQ important.",
+  },
+  nisum: {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Percentages","Averages","Algebra","Number Series","Time & Work"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Puzzles","Series","Directions","Blood Relations","Analogies"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:45, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Sorting","Basic DP"], isCoding:true },
+    ],
+    notes:"Nisum Coding Assessment. Medium DSA focus.",
+  },
+  xoriant: {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Percentages","Time & Work","Averages","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Series","Directions","Blood Relations","Puzzles"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:45, difficulty:"Medium",      topics:["Arrays","Strings","Hash Map","Sorting"], isCoding:true },
+    ],
+    notes:"Xoriant Campus Test. Standard IT pattern.",
+  },
+  mastech: {
+    totalQuestions: 48, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Percentages","Averages","Time & Work","Number Series"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Series","Directions","Blood Relations","Analogies"], isCoding:false },
+      { id:"verbal",            name:"English Ability",       questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:1,  timeMinutes:25, difficulty:"Easy",        topics:["Arrays","Strings","Basic Math","Loops"], isCoding:true },
+    ],
+    notes:"Mastech Digital. Easy difficulty for freshers.",
+  },
+  "3i-infotech": {
+    totalQuestions: 48, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:16, timeMinutes:20, difficulty:"Easy",        topics:["Percentages","Averages","Time & Work","Number Series","Ratios"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:16, timeMinutes:20, difficulty:"Easy",        topics:["Series","Directions","Blood Relations","Analogies","Syllogisms"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Comprehension","Fill Blanks"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:1,  timeMinutes:25, difficulty:"Easy",        topics:["Basic Arrays","Strings","Math","Loops"], isCoding:true },
+    ],
+    notes:"3i Infotech Graduate. Easy pattern. Good for entry-level.",
+  },
+  infoedge: {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Data Interpretation","Percentages","Averages","Algebra","Number Series"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Puzzles","Series","Directions","Analogies","Critical Reasoning"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:45, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Binary Search"], isCoding:true },
+    ],
+    notes:"Info Edge (Naukri). Product mindset + DSA.",
+  },
+  "niit-tech": {
+    totalQuestions: 48, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Percentages","Averages","Time & Work","Number Series"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Easy",        topics:["Series","Directions","Blood Relations","Analogies"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:1,  timeMinutes:25, difficulty:"Easy",        topics:["Arrays","Strings","Basic Math"], isCoding:true },
+    ],
+    notes:"NIIT Technologies. Easy to moderate difficulty.",
+  },
+  // ── More Product ────────────────────────────────────────────────────────────
+  oracle: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Medium-Hard", topics:["Data Interpretation","Algebra","Number Systems","Probability","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:10, timeMinutes:15, difficulty:"Medium",      topics:["Seating Arrangement","Blood Relations","Coding-Decoding","Puzzles"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Hard",        topics:["Arrays","Graphs","DP","Binary Search","Trees","SQL/DBMS"], isCoding:true },
+    ],
+    notes:"Oracle OA. Strong DSA + DB knowledge. AMCAT/HackerRank platform.",
+  },
+  nvidia: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Technical Aptitude",  questions:20, timeMinutes:25, difficulty:"Hard",      topics:["Computer Architecture","Digital Design","GPU Concepts","Algorithm Complexity","Math"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",       questions:15, timeMinutes:20, difficulty:"Hard",      topics:["C/C++","Data Structures","Computer Architecture","Parallel Programming","OS"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",             questions:2,  timeMinutes:60, difficulty:"Very Hard", topics:["Bit Manipulation","Graphs","DP","Math","Optimization","Parallel Algorithms"], isCoding:true },
+    ],
+    notes:"NVIDIA Assessment. Very hard. Embedded/GPU programming knowledge needed.",
+  },
+  intel: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Technical Aptitude",  questions:20, timeMinutes:25, difficulty:"Hard",      topics:["Computer Architecture","Digital Circuits","Algorithm Analysis","Math","Signal Processing"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",       questions:15, timeMinutes:20, difficulty:"Hard",      topics:["C/C++","Data Structures","OS","Computer Architecture","VLSI Basics"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",             questions:2,  timeMinutes:60, difficulty:"Hard",      topics:["Arrays","Graphs","DP","Bit Manipulation","System Programming"], isCoding:true },
+    ],
+    notes:"Intel Campus. Hardware + software mix. Strong C/C++ expected.",
+  },
+  intuit: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","String Manipulation","Two Pointers","Sorting"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Medium-Hard", topics:["Dynamic Programming","Graph BFS/DFS","Trees","Recursion"], isCoding:true },
+    ],
+    notes:"Intuit Campus OA. Finance + tech. Good problem quality.",
+  },
+  cisco: {
+    totalQuestions: 3, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Technical Aptitude",  questions:20, timeMinutes:25, difficulty:"Medium-Hard", topics:["Networking Math","Algorithm Complexity","Data Interpretation","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",       questions:15, timeMinutes:20, difficulty:"Medium-Hard", topics:["Networking (CCNA level)","Routing Protocols","OSI Model","Data Structures","OS"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",             questions:2,  timeMinutes:60, difficulty:"Hard",        topics:["Graphs","Arrays","DP","Network Algorithms","Bit Manipulation"], isCoding:true },
+    ],
+    notes:"Cisco Campus OA. Networking knowledge is a strong advantage.",
+  },
+  samsung: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Technical Aptitude",  questions:20, timeMinutes:25, difficulty:"Hard",      topics:["Computer Architecture","Algorithm Analysis","Math","Digital Circuits","Embedded Systems"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",       questions:15, timeMinutes:20, difficulty:"Hard",      topics:["C/C++","Data Structures","OS","Computer Architecture","Embedded C"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",             questions:2,  timeMinutes:60, difficulty:"Hard",      topics:["Arrays","DP","Graphs","Bit Manipulation","Math","Embedded Algorithms"], isCoding:true },
+    ],
+    notes:"Samsung R&D. C/C++ mastery essential. Embedded systems knowledge an advantage.",
+  },
+  "palo-alto": {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Hard",      topics:["Arrays","Hash Map","Binary Search","Two Pointers","String Algorithms"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",      topics:["Graphs","DP","Trees","Security Algorithms","Network Programming"], isCoding:true },
+    ],
+    notes:"Palo Alto Networks OA. Cybersecurity context. Hard DSA.",
+  },
+  servicenow: {
+    totalQuestions: 3, totalTime: 70,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Binary Search","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Medium-Hard", topics:["Dynamic Programming","Graph BFS/DFS","Trees","Sorting Algorithms"], isCoding:true },
+    ],
+    notes:"ServiceNow OA. Good work-life balance company. Medium-hard DSA.",
+  },
+  linkedin: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Graph BFS/DFS","Two Pointers","Sliding Window"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","Trees","System Design Basics"], isCoding:true },
+    ],
+    notes:"LinkedIn SWE Assessment. HackerRank OA. Medium-hard level.",
+  },
+  uber: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Graphs","Two Pointers","Sliding Window"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","Priority Queue","System Design"], isCoding:true },
+    ],
+    notes:"Uber Campus OA. Focus on maps/graph algorithms. Hard level.",
+  },
+  stripe: {
+    totalQuestions: 2, totalTime: 60,
+    sections: [
+      { id:"advanced-coding", name:"Coding Assessment", questions:2, timeMinutes:60, difficulty:"Hard", topics:["Arrays","Hash Map","String Processing","APIs","Financial Algorithms","Graph Algorithms"], isCoding:true },
+    ],
+    notes:"Stripe OA. API design + DSA. Financial context helpful.",
+  },
+  snowflake: {
+    totalQuestions: 3, totalTime: 70,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Hard",      topics:["Arrays","Hash Map","Sorting","Binary Search","String Algorithms"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",      topics:["Dynamic Programming","Graph Algorithms","Trees","SQL/Data Engineering"], isCoding:true },
+    ],
+    notes:"Snowflake OA. Very hard. Data engineering context a plus.",
+  },
+  databricks: {
+    totalQuestions: 3, totalTime: 70,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Very Hard", topics:["Arrays","Hash Map","Graph Algorithms","Distributed Systems Basics"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Very Hard", topics:["Dynamic Programming","Distributed Algorithms","Trees","System Design"], isCoding:true },
+    ],
+    notes:"Databricks OA. Very hard. Big data context. Spark/data pipelines helpful.",
+  },
+  thoughtworks: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","OOP Design","String Manipulation","Recursion","Clean Code"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:45, difficulty:"Hard",        topics:["System Design","Refactoring","TDD","Design Patterns","Graph Algorithms"], isCoding:true },
+    ],
+    notes:"ThoughtWorks Challenge. Code quality + OOP design matters more than raw DSA.",
+  },
+  // ── More Startups ───────────────────────────────────────────────────────────
+  paytm: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Aptitude",          questions:15, timeMinutes:15, difficulty:"Medium",      topics:["Data Interpretation","Percentages","Averages","Number Series"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning", questions:10, timeMinutes:10, difficulty:"Medium",      topics:["Series","Puzzles","Blood Relations","Directions"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",            questions:2,  timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","DP","Graphs","Two Pointers"], isCoding:true },
+    ],
+    notes:"Paytm Campus. FinTech context. Good DSA + some aptitude.",
+  },
+  phonepe: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Graphs","Two Pointers","Sorting"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","System Design","Trees"], isCoding:true },
+    ],
+    notes:"PhonePe SDE OA. FinTech focus. Hard DSA required.",
+  },
+  groww: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","Two Pointers","Binary Search","Strings"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graphs","Trees","Greedy"], isCoding:true },
+    ],
+    notes:"Groww SDE OA. FinTech context. Medium-hard DSA.",
+  },
+  meesho: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Sorting","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","Trees","Recursion"], isCoding:true },
+    ],
+    notes:"Meesho SDE OA. E-commerce tech. Medium-hard DSA.",
+  },
+  myntra: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Binary Search","Sliding Window"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graphs","Trees","Priority Queue"], isCoding:true },
+    ],
+    notes:"Myntra SDE. Flipkart subsidiary. HackerEarth OA.",
+  },
+  ola: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Graphs","Two Pointers","Sorting"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","Maps/Location Algorithms","Priority Queue"], isCoding:true },
+    ],
+    notes:"Ola Campus OA. Maps/location context. Medium-hard level.",
+  },
+  browserstack: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Strings","Binary Search","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["DP","Graphs","Trees","API Design","System Design Basics"], isCoding:true },
+    ],
+    notes:"BrowserStack SDE OA. Testing/Dev tools context. Hard DSA.",
+  },
+  dream11: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","Sorting","Two Pointers","Strings"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Greedy","Graph Algorithms","Trees"], isCoding:true },
+    ],
+    notes:"Dream11 SDE. Sports tech context. Medium-hard DSA.",
+  },
+  cred: {
+    totalQuestions: 2, totalTime: 60,
+    sections: [
+      { id:"advanced-coding", name:"Coding Assessment", questions:2, timeMinutes:60, difficulty:"Hard", topics:["Arrays","Hash Map","Graphs","DP","System Design Basics","API Design"], isCoding:true },
+    ],
+    notes:"CRED SDE. FinTech + product focused. Hard level. Clean code matters.",
+  },
+  zepto: {
+    totalQuestions: 2, totalTime: 60,
+    sections: [
+      { id:"advanced-coding", name:"Coding Assessment", questions:2, timeMinutes:60, difficulty:"Hard", topics:["Arrays","Hash Map","Graphs","Priority Queue","Sorting","Supply Chain Algorithms"], isCoding:true },
+    ],
+    notes:"Zepto SDE OA. Quick commerce context. Hard level.",
+  },
+  byjus: {
+    totalQuestions: 50, totalTime: 70,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Data Interpretation","Percentages","Averages","Algebra","Number Series"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Puzzles","Series","Directions","Blood Relations","Analogies"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Medium",      topics:["Reading Comprehension","Grammar","Vocabulary","Para Jumbles"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:45, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Binary Search","Basic DP"], isCoding:true },
+    ],
+    notes:"BYJU'S Campus. EdTech context. Medium difficulty.",
+  },
+  unacademy: {
+    totalQuestions: 45, totalTime: 60,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:45, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Sorting","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Medium-Hard", topics:["DP","Graph Algorithms","Trees","Recursion"], isCoding:true },
+    ],
+    notes:"Unacademy Tech. EdTech context. Medium difficulty.",
+  },
+  makemytrip: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Graph BFS/DFS","Two Pointers","Binary Search"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["DP","Graph Algorithms","Priority Queue","System Design"], isCoding:true },
+    ],
+    notes:"MakeMyTrip OA. Travel tech context. Medium-hard DSA.",
+  },
+  sharechat: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Graphs","Strings","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["DP","Graph Algorithms","Trees","Distributed Systems"], isCoding:true },
+    ],
+    notes:"ShareChat SDE. Social media tech. Medium-hard level.",
+  },
+  zerodha: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Graphs","Financial Algorithms","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["DP","System Design","Concurrency","Financial Data Structures"], isCoding:true },
+    ],
+    notes:"Zerodha Tech. FinTech broker context. Strong backend/system design.",
+  },
+  postman: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Strings","API Design","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["DP","Graph Algorithms","System Design","API Architecture"], isCoding:true },
+    ],
+    notes:"Postman SDE OA. API-first context. Strong backend knowledge needed.",
+  },
+  "urban-company": {
+    totalQuestions: 45, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:15, difficulty:"Medium", topics:["Data Interpretation","Percentages","Averages","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:10, timeMinutes:10, difficulty:"Medium", topics:["Series","Puzzles","Directions","Blood Relations"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:50, difficulty:"Medium", topics:["Arrays","Hash Map","Strings","Sorting","Basic DP"], isCoding:true },
+    ],
+    notes:"Urban Company SDE. On-demand services tech. Medium difficulty.",
+  },
+  cleartax: {
+    totalQuestions: 45, totalTime: 60,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:45, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Sorting","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Medium-Hard", topics:["DP","Graph Algorithms","Financial Data Structures"], isCoding:true },
+    ],
+    notes:"ClearTax SDE. FinTech + tax context. Medium difficulty.",
+  },
+  // ── More Consulting ─────────────────────────────────────────────────────────
+  mckinsey: {
+    totalQuestions: 50, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Problem Solving (PST)", questions:26, timeMinutes:60, difficulty:"Hard", topics:["Data Interpretation","Business Cases","Charts & Graphs","Financial Math","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:14, timeMinutes:20, difficulty:"Hard", topics:["Critical Reasoning","Deductive Logic","Abstract Patterns","Analytical Reasoning"], isCoding:false },
+      { id:"verbal",            name:"Verbal",                questions:10, timeMinutes:10, difficulty:"Hard", topics:["Reading Comprehension","Business Writing","Critical Reasoning"], isCoding:false },
+    ],
+    notes:"McKinsey PST (Problem Solving Test). Very hard. Case study + data interpretation focus.",
+  },
+  bcg: {
+    totalQuestions: 50, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Potential Test (PT)",   questions:25, timeMinutes:55, difficulty:"Hard", topics:["Business Cases","Data Interpretation","Financial Analysis","Math Word Problems"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Hard", topics:["Abstract Reasoning","Deductive Logic","Pattern Recognition","Critical Thinking"], isCoding:false },
+      { id:"verbal",            name:"Verbal Reasoning",      questions:10, timeMinutes:15, difficulty:"Hard", topics:["Reading Comprehension","Argument Analysis","Business Communication"], isCoding:false },
+    ],
+    notes:"BCG Potential Test. Very hard. Top tier consulting. Case study skills critical.",
+  },
+  bain: {
+    totalQuestions: 50, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Business Aptitude",     questions:25, timeMinutes:55, difficulty:"Hard", topics:["Business Case Math","Data Interpretation","Financial Modeling","Percentages","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Hard", topics:["Deductive Reasoning","Critical Reasoning","Pattern Recognition","Abstract Logic"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Hard", topics:["Reading Comprehension","Argument Analysis","Business Writing"], isCoding:false },
+    ],
+    notes:"Bain Assessment. Top consulting firm. Business acumen + analytical skills.",
+  },
+  "oliver-wyman": {
+    totalQuestions: 48, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Numerical Reasoning",   questions:20, timeMinutes:30, difficulty:"Hard", topics:["Business Math","Data Analysis","Financial Calculations","Statistics","Percentages"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:18, timeMinutes:30, difficulty:"Hard", topics:["Abstract Reasoning","Deductive Logic","Critical Thinking","Pattern Recognition"], isCoding:false },
+      { id:"verbal",            name:"Verbal Reasoning",      questions:10, timeMinutes:20, difficulty:"Hard", topics:["Reading Comprehension","Critical Reasoning","Argument Evaluation"], isCoding:false },
+    ],
+    notes:"Oliver Wyman Assessment. Very competitive consulting. Strong quant + logic.",
+  },
+  genpact: {
+    totalQuestions: 55, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:18, timeMinutes:25, difficulty:"Medium", topics:["Data Interpretation","Percentages","Averages","Ratios","Business Math"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium", topics:["Series","Puzzles","Directions","Blood Relations","Analogies"], isCoding:false },
+      { id:"verbal",            name:"English Ability",       questions:12, timeMinutes:15, difficulty:"Medium", topics:["Grammar","Vocabulary","Reading Comprehension","Error Detection"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:45, difficulty:"Medium", topics:["Arrays","Strings","Hash Map","Sorting","Basic DP"], isCoding:true },
+    ],
+    notes:"Genpact Campus. BPO/Analytics context. Medium difficulty.",
+  },
+  fractal: {
+    totalQuestions: 3, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Hard", topics:["Statistics","Probability","Data Analysis","ML Basics","Financial Math","Regression"], isCoding:false },
+      { id:"advanced-aptitude", name:"Analytical Reasoning",  questions:15, timeMinutes:20, difficulty:"Hard", topics:["Data Interpretation","Business Cases","Critical Reasoning","Abstract Logic"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding / SQL",         questions:2,  timeMinutes:60, difficulty:"Hard", topics:["SQL","Python Data Analysis","Arrays","Hash Map","Statistical Algorithms"], isCoding:true },
+    ],
+    notes:"Fractal Analytics OA. Strong statistics + Python/SQL required. Data Science focus.",
+  },
+  "mu-sigma": {
+    totalQuestions: 50, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Statistics","Probability","Data Interpretation","Math","Ratios","Percentages"], isCoding:false },
+      { id:"advanced-aptitude", name:"Analytical Ability",    questions:18, timeMinutes:25, difficulty:"Medium", topics:["Critical Reasoning","Data Analysis","Logical Deduction","Pattern Recognition"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:12, timeMinutes:20, difficulty:"Medium", topics:["Reading Comprehension","Vocabulary","Critical Reasoning","Grammar"], isCoding:false },
+    ],
+    notes:"Mu Sigma Assessment. Decision scientist track. Statistics heavy.",
+  },
+  "tiger-analytics": {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Quantitative + Statistics", questions:20, timeMinutes:25, difficulty:"Hard", topics:["Statistics","Probability","Machine Learning Basics","Data Interpretation","Math"], isCoding:false },
+      { id:"advanced-aptitude", name:"Analytical Reasoning",      questions:15, timeMinutes:20, difficulty:"Hard", topics:["Data Analysis","Business Cases","Critical Reasoning","Abstract Logic"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding / Analytics",       questions:2,  timeMinutes:60, difficulty:"Hard", topics:["SQL","Python","Statistical Analysis","Arrays","Data Structures"], isCoding:true },
+    ],
+    notes:"Tiger Analytics OA. Advanced analytics. Python + SQL + Statistics required.",
+  },
+  latentview: {
+    totalQuestions: 55, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Medium", topics:["Statistics","Data Interpretation","Math","Percentages","Probability"], isCoding:false },
+      { id:"advanced-aptitude", name:"Analytical Ability",    questions:15, timeMinutes:20, difficulty:"Medium", topics:["Business Cases","Critical Reasoning","Data Analysis","Logical Deduction"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Medium", topics:["Reading Comprehension","Grammar","Vocabulary"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding / SQL",         questions:2,  timeMinutes:50, difficulty:"Medium", topics:["SQL","Python Basics","Arrays","Hash Map","Data Analysis"], isCoding:true },
+    ],
+    notes:"LatentView Analytics Campus. SQL + Python + Business analytics.",
+  },
+  wns: {
+    totalQuestions: 55, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Medium", topics:["Data Interpretation","Percentages","Averages","Ratios","Business Math"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:20, timeMinutes:25, difficulty:"Medium", topics:["Series","Puzzles","Directions","Blood Relations","Critical Reasoning"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:15, timeMinutes:25, difficulty:"Medium", topics:["Reading Comprehension","Vocabulary","Grammar","Error Detection"], isCoding:false },
+    ],
+    notes:"WNS Analytics Campus. BPO/Analytics focus. No coding typically.",
+  },
+  exl: {
+    totalQuestions: 55, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Medium", topics:["Data Interpretation","Percentages","Statistics","Ratios","Business Math"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:20, timeMinutes:25, difficulty:"Medium", topics:["Series","Puzzles","Directions","Blood Relations","Analogies"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:15, timeMinutes:25, difficulty:"Medium", topics:["Reading Comprehension","Vocabulary","Grammar","Para Jumbles"], isCoding:false },
+    ],
+    notes:"EXL Service Campus. Analytics + BPO. No coding for most roles.",
+  },
+  // ── More BFSI ───────────────────────────────────────────────────────────────
+  "deutsche-bank": {
+    totalQuestions: 55, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Medium-Hard", topics:["Financial Math","Statistics","Data Interpretation","Probability","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Seating Arrangement","Blood Relations","Coding-Decoding","Syllogisms"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","DP","Graphs","Financial Algorithms","Hash Map"], isCoding:true },
+    ],
+    notes:"Deutsche Bank Campus. Tech + Finance. Medium-hard DSA + financial aptitude.",
+  },
+  hsbc: {
+    totalQuestions: 50, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Numerical Reasoning",  questions:20, timeMinutes:25, difficulty:"Medium", topics:["Data Interpretation","Financial Math","Percentages","Ratios","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",    questions:20, timeMinutes:25, difficulty:"Medium", topics:["Deductive Reasoning","Abstract Patterns","Critical Thinking","Sequences"], isCoding:false },
+      { id:"verbal",            name:"Verbal Reasoning",     questions:10, timeMinutes:15, difficulty:"Medium", topics:["Reading Comprehension","True/False","Vocabulary","Business Grammar"], isCoding:false },
+    ],
+    notes:"HSBC Campus. Global banking. Numerical + verbal reasoning focus.",
+  },
+  citi: {
+    totalQuestions: 55, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Medium-Hard", topics:["Financial Math","Data Interpretation","Statistics","Probability","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Seating Arrangement","Puzzles","Syllogisms","Blood Relations"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","DP","Graphs","Financial Algorithms","Hash Map"], isCoding:true },
+    ],
+    notes:"Citi ICG Technology. Tech + Finance. Medium-hard level.",
+  },
+  nomura: {
+    totalQuestions: 3, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Hard", topics:["Financial Math","Statistics","Probability","Data Interpretation","Derivatives"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",         questions:15, timeMinutes:20, difficulty:"Hard", topics:["C++","Data Structures","OS","Algorithms","Financial Products"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Hard", topics:["DP","Graph Algorithms","Financial Algorithms","Arrays","Optimization"], isCoding:true },
+    ],
+    notes:"Nomura Technology. Quantitative finance + DSA. Very competitive.",
+  },
+  amex: {
+    totalQuestions: 3, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Hard", topics:["Financial Math","Data Interpretation","Statistics","Probability","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium", topics:["Seating Arrangement","Puzzles","Blood Relations","Syllogisms"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Hard", topics:["Arrays","DP","Graph Algorithms","Financial Algorithms","Hash Map"], isCoding:true },
+    ],
+    notes:"American Express Technology OA. FinTech. Hard level.",
+  },
+  mastercard: {
+    totalQuestions: 3, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Hard", topics:["Financial Math","Data Interpretation","Statistics","Probability"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium", topics:["Puzzles","Seating Arrangement","Syllogisms","Blood Relations"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Hard", topics:["Arrays","DP","Graphs","Payment Algorithms","Hash Map"], isCoding:true },
+    ],
+    notes:"Mastercard Technology OA. FinTech payments context. Hard level.",
+  },
+  visa: {
+    totalQuestions: 3, totalTime: 80,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Hard", topics:["Financial Math","Data Interpretation","Statistics","Probability"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium", topics:["Puzzles","Seating Arrangement","Syllogisms","Directions"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Hard", topics:["Arrays","DP","Graphs","Financial Algorithms","Concurrency"], isCoding:true },
+    ],
+    notes:"Visa Campus Technology OA. Payments tech. Hard level.",
+  },
+  hdfc: {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Easy-Medium", topics:["Data Interpretation","Arithmetic","Percentages","Ratios","Simple Interest","Profit & Loss"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:20, timeMinutes:20, difficulty:"Easy-Medium", topics:["Syllogisms","Series","Blood Relations","Directions","Analogies"], isCoding:false },
+      { id:"verbal",            name:"English Language",      questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Reading Comprehension","Error Detection"], isCoding:false },
+    ],
+    notes:"HDFC Bank Campus. Standard banking aptitude. No coding typically.",
+  },
+  axis: {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Easy-Medium", topics:["Data Interpretation","Arithmetic","Percentages","Ratios","Time & Work"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:20, timeMinutes:20, difficulty:"Easy-Medium", topics:["Syllogisms","Series","Blood Relations","Directions","Puzzles"], isCoding:false },
+      { id:"verbal",            name:"English Language",      questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Reading Comprehension","Fill Blanks"], isCoding:false },
+    ],
+    notes:"Axis Bank Campus. Standard banking aptitude. No coding.",
+  },
+  sbi: {
+    totalQuestions: 200, totalTime: 120,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:50, timeMinutes:30, difficulty:"Medium", topics:["Data Interpretation","Number Series","Simplification","Percentage","Ratio","Time & Work","Probability"], isCoding:false },
+      { id:"advanced-aptitude", name:"Reasoning Ability",     questions:50, timeMinutes:30, difficulty:"Medium", topics:["Seating Arrangement","Puzzles","Syllogisms","Blood Relations","Coding-Decoding","Input-Output"], isCoding:false },
+      { id:"verbal",            name:"English Language",      questions:40, timeMinutes:30, difficulty:"Medium", topics:["Reading Comprehension","Error Detection","Para Jumbles","Fill Blanks","Vocabulary"], isCoding:false },
+    ],
+    notes:"SBI PO/SCO Exam. 200 questions in 2 hours. Competitive banking exam. Time management critical.",
+  },
+  // ── Core Engineering ────────────────────────────────────────────────────────
+  "tata-motors": {
+    totalQuestions: 80, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Mathematics", questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Physics","Mechanics","Data Interpretation","Statistics","Thermodynamics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Aptitude",     questions:25, timeMinutes:30, difficulty:"Medium", topics:["Mechanical Engineering","Manufacturing","Materials","Automotive Systems","Technical MCQ"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",         questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Comprehension","Vocabulary","Technical Writing"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding / Technical",    questions:2,  timeMinutes:30, difficulty:"Medium", topics:["C/C++","Algorithms","Data Structures","Embedded Logic"], isCoding:true },
+    ],
+    notes:"Tata Motors GET. Mechanical/Electrical/CS streams. Domain knowledge tested heavily.",
+  },
+  "l-and-t": {
+    totalQuestions: 80, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Mathematics", questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Physics","Civil/Mech Engineering","Data Interpretation","Geometry"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Aptitude",     questions:25, timeMinutes:30, difficulty:"Medium", topics:["Domain Technical MCQ","Construction Concepts","Engineering Materials","Project Management"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",         questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Comprehension","Vocabulary"], isCoding:false },
+      { id:"advanced-coding",   name:"Technical / Coding",    questions:2,  timeMinutes:30, difficulty:"Medium", topics:["C/C++","Basic Algorithms","Data Structures","Technical Problem Solving"], isCoding:true },
+    ],
+    notes:"L&T GET. Civil/Mechanical/EE focus. Domain engineering questions are key.",
+  },
+  bhel: {
+    totalQuestions: 120, totalTime: 120,
+    sections: [
+      { id:"quantitative",      name:"General Aptitude",      questions:40, timeMinutes:40, difficulty:"Medium", topics:["Engineering Math","Physics","Arithmetic","Data Interpretation","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Knowledge",   questions:60, timeMinutes:60, difficulty:"Medium", topics:["Domain Engineering MCQ","Mechanical/Electrical/Civil/CS Technical","GATE-level Questions"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:20, timeMinutes:20, difficulty:"Medium", topics:["Grammar","Vocabulary","Reading Comprehension","Error Detection"], isCoding:false },
+    ],
+    notes:"BHEL ET Assessment. GATE-level technical depth. Domain MCQ is most important section.",
+  },
+  ongc: {
+    totalQuestions: 100, totalTime: 120,
+    sections: [
+      { id:"quantitative",      name:"General Aptitude",      questions:30, timeMinutes:35, difficulty:"Medium", topics:["Math","Physics","Chemistry","Data Interpretation","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Knowledge",   questions:55, timeMinutes:65, difficulty:"Medium", topics:["Domain Engineering (Petroleum/Mech/EE/CS)","Technical MCQ","GATE-level Questions"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:20, difficulty:"Medium", topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+    ],
+    notes:"ONGC Graduate Trainee. Domain-heavy. GATE score often used for shortlisting.",
+  },
+  ntpc: {
+    totalQuestions: 120, totalTime: 120,
+    sections: [
+      { id:"quantitative",      name:"General Aptitude",      questions:40, timeMinutes:40, difficulty:"Medium", topics:["Engineering Math","Physics","Arithmetic","Reasoning","Data Interpretation"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Knowledge",   questions:60, timeMinutes:60, difficulty:"Medium", topics:["Domain Engineering MCQ (EE/Mech/CS/Civil)","GATE-level","Power Systems","Control Systems"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:20, timeMinutes:20, difficulty:"Medium", topics:["Grammar","Vocabulary","Reading Comprehension"], isCoding:false },
+    ],
+    notes:"NTPC ET Assessment. Power sector. EE/Mech engineering domain knowledge critical.",
+  },
+  iocl: {
+    totalQuestions: 100, totalTime: 120,
+    sections: [
+      { id:"quantitative",      name:"General Aptitude",      questions:30, timeMinutes:35, difficulty:"Medium", topics:["Math","Physics","Chemistry","Data Interpretation"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Knowledge",   questions:55, timeMinutes:65, difficulty:"Medium", topics:["Petroleum/Chemical/Mech/EE Engineering MCQ","GATE-level Questions","Refinery Concepts"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:20, difficulty:"Medium", topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+    ],
+    notes:"IOCL Officer Assessment. Petroleum/Chemical engineering preferred. GATE score counts.",
+  },
+  gail: {
+    totalQuestions: 100, totalTime: 120,
+    sections: [
+      { id:"quantitative",      name:"General Aptitude",      questions:30, timeMinutes:35, difficulty:"Medium", topics:["Math","Physics","Chemistry","Data Interpretation","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Knowledge",   questions:55, timeMinutes:65, difficulty:"Medium", topics:["Gas Engineering","Chemical/Mech/EE MCQ","GATE-level Questions","Pipeline Concepts"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:20, difficulty:"Medium", topics:["Grammar","Vocabulary","Reading Comprehension"], isCoding:false },
+    ],
+    notes:"GAIL Executive Trainee. Natural gas sector. Technical MCQ is most weightage.",
+  },
+  bpcl: {
+    totalQuestions: 100, totalTime: 120,
+    sections: [
+      { id:"quantitative",      name:"General Aptitude",      questions:30, timeMinutes:35, difficulty:"Medium", topics:["Math","Physics","Chemistry","Data Interpretation"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical Knowledge",   questions:55, timeMinutes:65, difficulty:"Medium", topics:["Petroleum/Chemical/Mech/EE Engineering MCQ","Refinery Operations","GATE-level"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:20, difficulty:"Medium", topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+    ],
+    notes:"BPCL Engineer Assessment. Oil refinery context. Domain MCQ critical.",
+  },
+  "maruti-suzuki": {
+    totalQuestions: 75, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Aptitude",   questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Physics","Mechanics","Automotive Engineering","Data Interpretation"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",          questions:25, timeMinutes:30, difficulty:"Medium", topics:["Automotive Systems","Manufacturing Processes","Materials Science","Mechanical Engineering","Quality Control"], isCoding:false },
+      { id:"verbal",            name:"English",                questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+      { id:"advanced-coding",   name:"Technical / Coding",    questions:2,  timeMinutes:25, difficulty:"Medium", topics:["C/C++","Embedded C","Data Structures","Algorithms"], isCoding:true },
+    ],
+    notes:"Maruti Suzuki GET. Automotive focus. Mechanical + EE preferred. Manufacturing concepts.",
+  },
+  mahindra: {
+    totalQuestions: 75, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Aptitude",   questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Physics","Mechanics","Data Interpretation","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",          questions:25, timeMinutes:30, difficulty:"Medium", topics:["Automotive/Mech Engineering","Manufacturing","Materials","Quality Systems","Technical MCQ"], isCoding:false },
+      { id:"verbal",            name:"English",                questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+      { id:"advanced-coding",   name:"Technical / Coding",    questions:2,  timeMinutes:25, difficulty:"Medium", topics:["C/C++","Embedded Systems","Data Structures","Basic Algorithms"], isCoding:true },
+    ],
+    notes:"Mahindra GET. Core engineering + management track. Multi-domain.",
+  },
+  bosch: {
+    totalQuestions: 75, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Aptitude",   questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Physics","Electronics","Embedded Systems Math","Data Interpretation"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",          questions:25, timeMinutes:30, difficulty:"Medium", topics:["Embedded Systems","Electronics","C/C++","Automotive Systems","Sensors & Actuators"], isCoding:false },
+      { id:"verbal",            name:"English",                questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Vocabulary","Comprehension"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",                questions:2,  timeMinutes:30, difficulty:"Medium", topics:["Embedded C","Algorithms","Data Structures","RTOS Concepts","Signal Processing"], isCoding:true },
+    ],
+    notes:"Bosch GET. Strong embedded systems focus. C/C++ mandatory. EE/CS preferred.",
+  },
+  siemens: {
+    totalQuestions: 75, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Aptitude",   questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Physics","Electronics","Control Systems Math","Data Analysis"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",          questions:25, timeMinutes:30, difficulty:"Medium", topics:["Automation","PLC","Control Systems","Electronics","Industrial Engineering","EE Concepts"], isCoding:false },
+      { id:"verbal",            name:"English",                questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Vocabulary","Technical Communication"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding / Technical",    questions:2,  timeMinutes:30, difficulty:"Medium", topics:["C/C++","Embedded C","Data Structures","Control System Programming"], isCoding:true },
+    ],
+    notes:"Siemens GET. Industrial automation + EE/Mech. Strong technical depth required.",
+  },
+  honeywell: {
+    totalQuestions: 75, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Technical Aptitude",    questions:25, timeMinutes:30, difficulty:"Medium-Hard", topics:["Engineering Math","Physics","Control Systems","Instrumentation","Data Analysis"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",         questions:25, timeMinutes:30, difficulty:"Hard",        topics:["Instrumentation","Process Control","C/C++","Embedded Systems","Industrial Automation"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Technical Communication"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:30, difficulty:"Hard",        topics:["Embedded C","Algorithms","RTOS","Control Algorithms","Data Structures"], isCoding:true },
+    ],
+    notes:"Honeywell Campus. Automation/Process control. Strong engineering knowledge. Hard level.",
+  },
+  ge: {
+    totalQuestions: 75, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Technical Aptitude",    questions:25, timeMinutes:30, difficulty:"Hard", topics:["Engineering Math","Physics","Data Analysis","Statistics","Power Systems"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",         questions:25, timeMinutes:30, difficulty:"Hard", topics:["Power Systems","Embedded Systems","Data Structures","C/C++","Digital Systems"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:15, difficulty:"Easy", topics:["Grammar","Vocabulary","Technical Communication"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:30, difficulty:"Hard", topics:["C/C++","Algorithms","Data Structures","Industrial Algorithms","Optimization"], isCoding:true },
+    ],
+    notes:"GE Digital Campus OA. Power + digital blend. Hard technical level.",
+  },
+  caterpillar: {
+    totalQuestions: 70, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Aptitude",  questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Physics","Mechanics","Thermodynamics","Data Interpretation"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",         questions:25, timeMinutes:30, difficulty:"Medium", topics:["Mechanical Engineering","Manufacturing Processes","Fluid Mechanics","Materials","Heavy Equipment"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Vocabulary","Technical Communication"], isCoding:false },
+      { id:"advanced-coding",   name:"Technical / Coding",   questions:1,  timeMinutes:25, difficulty:"Medium", topics:["C/C++","Data Structures","Embedded Logic","Algorithms"], isCoding:true },
+    ],
+    notes:"Caterpillar GET. Heavy equipment/manufacturing context. Mechanical/EE preferred.",
+  },
+  cummins: {
+    totalQuestions: 70, totalTime: 90,
+    sections: [
+      { id:"quantitative",      name:"Engineering Aptitude",  questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engineering Math","Thermodynamics","Fluid Mechanics","Heat Transfer","Data Analysis"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",         questions:25, timeMinutes:30, difficulty:"Medium", topics:["Engine Systems","Power Generation","Mechanical Engineering","Manufacturing","Emissions"], isCoding:false },
+      { id:"verbal",            name:"English",               questions:15, timeMinutes:15, difficulty:"Easy",   topics:["Grammar","Vocabulary","Technical Communication"], isCoding:false },
+      { id:"advanced-coding",   name:"Technical / Coding",   questions:1,  timeMinutes:25, difficulty:"Medium", topics:["C/C++","Data Structures","Embedded Logic","Algorithms"], isCoding:true },
+    ],
+    notes:"Cummins India GET. Engine/power generation focus. Mechanical/EE preferred.",
+  },
 }
 
 // ── Category-based fallback patterns (used for companies without specific fallback) ──
