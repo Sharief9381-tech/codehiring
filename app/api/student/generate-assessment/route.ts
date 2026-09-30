@@ -7,7 +7,6 @@ import { NextResponse } from "next/server"
 import { getPYQContext } from "@/lib/question-bank"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { retrieveSimilarPYQs, formatPYQsAsContext } from "@/lib/rag/vector-store"
-import { getLiveWebContext, formatWebContext } from "@/lib/rag/web-context"
 import { getCompanyPattern, patternToTopicOverrides } from "@/lib/rag/company-pattern"
 import { queryPatternForSection } from "@/lib/rag/pattern-search"
 
@@ -207,74 +206,32 @@ export async function POST(req: Request) {
     }
 
     // -- For coding sections: use company-coding-ai model first ----------------
-    if (sectionData.isCoding) {
-      try {
-        const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
-        const codingRes = await fetch(`${baseUrl}/api/student/company-coding-ai`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ company, section, count, difficulty: sectionData.difficulty }),
-          signal: AbortSignal.timeout(20000),
-        })
-        if (codingRes.ok) {
-          const codingData = await codingRes.json()
-          if (codingData.questions?.length > 0) {
-            return NextResponse.json({
-              questions: codingData.questions,
-              company: companyName,
-              section: sectionData.name,
-              source: codingData.source,
-            })
-          }
-        }
-      } catch (codingErr) {
-        console.error("company-coding-ai error:", codingErr)
-      }
-    }
+    // NOTE: We skip the self-HTTP-call to company-coding-ai to avoid timeout overhead.
+    // AI generation below handles coding sections directly.
 
-    // -- Try web scraping for aptitude -----------------------------------------
-    if (!sectionData.isCoding) {
-      try {
-        const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
-        const scrapeRes = await fetch(`${baseUrl}/api/student/scrape-questions`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ company, section, count }),
-          signal: AbortSignal.timeout(15000),
-        })
-        if (scrapeRes.ok) {
-          const scrapeData = await scrapeRes.json()
-          if (scrapeData.questions?.length >= count) {
-            return NextResponse.json({ questions: scrapeData.questions, company: companyName, section: sectionData.name, source: "scraped" })
-          }
-        }
-      } catch {}
-    }
+    // -- Skip web scraping (sites block Node.js fetches, wastes 15s timeout) ---
 
     // -- AI generation with RAG context ---------------------------------------
-    const topicsList = sectionData.topics.join(", ")
 
-    // Build context from 3 sources in parallel: vector store, pyq_bank, live web
+    // Build context from PYQ bank only (web/vector context skipped for speed)
     let pyqContext = ""
     const contextParts: string[] = []
 
-    // Source 1: Static PYQ bank (always available)
+    // Static PYQ bank context
     const staticCtx = getPYQContext(company, section, 5)
     if (staticCtx) contextParts.push(staticCtx)
 
-    // Source 2: MongoDB vector store + approved pyq_bank (if OpenAI key available)
+    // MongoDB vector store (only if OpenAI embeddings available)
     if (process.env.OPENAI_API_KEY) {
       try {
-        const queryText = `${sectionData.name} ${topicsList} ${sectionData.difficulty}`
+        const queryText = `${sectionData.name} ${sectionData.topics.join(", ")} ${sectionData.difficulty}`
         const [retrieved, dbPYQs] = await Promise.allSettled([
           retrieveSimilarPYQs(company, section, queryText, 6),
           import("@/lib/models/pyq").then(m => m.getApprovedPYQs(company, section, 4)),
         ])
-
         const allPYQs: any[] = []
         if (retrieved.status === "fulfilled") allPYQs.push(...retrieved.value)
         if (dbPYQs.status === "fulfilled") allPYQs.push(...dbPYQs.value)
-
         if (allPYQs.length > 0) {
           const ragCtx = formatPYQsAsContext(allPYQs.slice(0, 8), company, section)
           if (ragCtx) contextParts.push(ragCtx)
@@ -284,16 +241,9 @@ export async function POST(req: Request) {
       }
     }
 
-    // Source 3: Live web context (non-blocking, 24h cached)
-    try {
-      const webText = await getLiveWebContext(company, section)
-      const webCtx = formatWebContext(webText, company, section)
-      if (webCtx) contextParts.push(webCtx)
-    } catch (e) {
-      console.warn("Live web context failed:", e)
-    }
-
     pyqContext = contextParts.join("\n\n===\n\n")
+
+    const topicsList = sectionData.topics.join(", ")
 
     const prompt = sectionData.isCoding
       ? `You are creating a ${companyName} coding assessment question.
