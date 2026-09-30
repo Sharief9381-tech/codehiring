@@ -78,6 +78,13 @@ const COMPANY_SECTION_OVERRIDES: Record<string, Record<string, Partial<typeof SE
     "basic-coding":      { topics: ["Basic programs","String operations","Array manipulation","Loops"], difficulty: "Easy" },
     "advanced-coding":   { topics: ["Arrays","Sorting","Hash Map","Recursion","Basic DP"], difficulty: "Easy-Medium" },
   },
+  hcl: {
+    "quantitative":      { topics: ["Percentages","Time & Work","Speed & Distance","Averages","Number Series","Profit & Loss","Ratio & Proportion"], difficulty: "Easy-Medium" },
+    "advanced-aptitude": { topics: ["Blood Relations","Directions","Coding-Decoding","Series Completion","Analogies","Syllogisms","Puzzles"], difficulty: "Easy-Medium" },
+    "verbal":            { topics: ["Synonyms/Antonyms","Fill in the Blanks","Reading Comprehension","Error Detection","Sentence Completion"], difficulty: "Easy" },
+    "basic-coding":      { topics: ["Loops","Arrays","String Operations","Basic Math","Pattern Printing","Conditional Logic"], difficulty: "Easy" },
+    "advanced-coding":   { topics: ["Arrays","Strings","Sorting","Basic Recursion","Math Problems"], difficulty: "Easy-Medium" },
+  },
   capgemini: {
     "quantitative":      { topics: ["Number System","Averages","Time-Work","Mensuration"] },
     "advanced-aptitude": { topics: ["Series","Analogy","Odd One Out","Matrix","Puzzle"] },

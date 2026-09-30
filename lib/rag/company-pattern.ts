@@ -73,6 +73,17 @@ const FALLBACK_PATTERNS: Record<string, Omit<CompanyPattern, "company"|"companyN
     ],
     notes:"GenC Elevate track includes Technical MCQ section.",
   },
+  hcl: {
+    totalQuestions: 55, totalTime: 75,
+    notes: "HCL TechBee / GET. No negative marking. Sectional time limits apply.",
+    sections: [
+      { id:"quantitative",    name:"Quantitative Ability",  questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Percentages","Time & Work","Speed & Distance","Averages","Number Series","Simple Interest","Profit & Loss","Ratio & Proportion"], isCoding:false },
+      { id:"advanced-aptitude",name:"Logical Reasoning",   questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Blood Relations","Directions","Coding-Decoding","Series Completion","Analogies","Statement & Conclusion","Syllogisms","Puzzles"],   isCoding:false },
+      { id:"verbal",          name:"Verbal Ability",        questions:15, timeMinutes:15, difficulty:"Easy",        topics:["Synonyms/Antonyms","Fill in the Blanks","Reading Comprehension","Error Detection","Sentence Completion","Idioms & Phrases"],    isCoding:false },
+      { id:"basic-coding",    name:"Basic Programming",     questions:5,  timeMinutes:10, difficulty:"Easy",        topics:["Loops","Arrays","String Operations","Basic Math","Pattern Printing","Conditional Logic"],                                         isCoding:false },
+      { id:"advanced-coding", name:"Coding",                questions:1,  timeMinutes:30, difficulty:"Easy-Medium", topics:["Arrays","Strings","Sorting","Basic Recursion","Math Problems","Hash Map"],                                                       isCoding:true  },
+    ],
+  },
   capgemini: {
     totalQuestions: 60, totalTime: 90,
     sections: [

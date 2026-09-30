@@ -85,6 +85,7 @@ const COMPANY_SECTION_QTY: Record<string, Record<string, number>> = {
   infosys:   { "advanced-coding": 2 },
   wipro:     { "advanced-coding": 2 },
   cognizant: { "advanced-coding": 2 },
+  hcl:       { "basic-coding": 5, "advanced-coding": 1 },
   amazon:    { "basic-coding": 1, "advanced-coding": 1 },
   google:    { "advanced-coding": 2 },
   microsoft: { "advanced-coding": 2 },
