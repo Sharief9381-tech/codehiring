@@ -22,7 +22,7 @@ async function callAI(prompt: string, maxTokens = 6000): Promise<string> {
         headers: { "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type": "application/json" },
         body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
       })
-      if (res.ok) { const d = await res.json(); const c = d.choices?.[0]?.message?.content?.trim(); if (c) return c }
+      if (res.ok) { const d = await res.json(); const c = d.choices?.[0]?.message?.content?.trim(); if (c) return stripThinkTags(c) }
     } catch {}
   }
   if (process.env.GROQ_API_KEY) {
@@ -31,9 +31,14 @@ async function callAI(prompt: string, maxTokens = 6000): Promise<string> {
       headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: "qwen/qwen3.8-27b", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
     })
-    if (res.ok) { const d = await res.json(); return d.choices?.[0]?.message?.content?.trim() ?? "" }
+    if (res.ok) { const d = await res.json(); return stripThinkTags(d.choices?.[0]?.message?.content?.trim() ?? "") }
   }
   throw new Error("No AI provider available")
+}
+
+// Strip <think>...</think> tags that some models include before their response
+function stripThinkTags(text: string): string {
+  return text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
 }
 
 // -- Section definitions ------------------------------------------------------

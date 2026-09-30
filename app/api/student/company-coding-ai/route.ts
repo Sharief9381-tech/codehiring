@@ -25,6 +25,8 @@ const OPENAI_API = "https://api.openai.com/v1/chat/completions"
 async function callAI(systemPrompt: string, userPrompt: string, maxTokens = 6000): Promise<string> {
   const msgs = [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }]
 
+  const stripThink = (t: string) => t.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
+
   if (process.env.OPENAI_API_KEY) {
     try {
       const r = await fetch(OPENAI_API, {
@@ -32,7 +34,7 @@ async function callAI(systemPrompt: string, userPrompt: string, maxTokens = 6000
         headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type": "application/json" },
         body: JSON.stringify({ model: "gpt-4o-mini", messages: msgs, temperature: 0.85, max_tokens: maxTokens }),
       })
-      if (r.ok) { const d = await r.json(); const t = d.choices?.[0]?.message?.content?.trim(); if (t) return t }
+      if (r.ok) { const d = await r.json(); const t = d.choices?.[0]?.message?.content?.trim(); if (t) return stripThink(t) }
     } catch {}
   }
 
@@ -42,7 +44,7 @@ async function callAI(systemPrompt: string, userPrompt: string, maxTokens = 6000
       headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: "qwen/qwen3.8-27b", messages: msgs, temperature: 0.85, max_tokens: maxTokens }),
     })
-    if (r.ok) { const d = await r.json(); return d.choices?.[0]?.message?.content?.trim() ?? "" }
+    if (r.ok) { const d = await r.json(); return stripThink(d.choices?.[0]?.message?.content?.trim() ?? "") }
   }
   throw new Error("No AI provider available")
 }
