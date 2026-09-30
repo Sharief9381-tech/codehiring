@@ -585,6 +585,8 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   // Live pattern from web search — overrides static company data
   const [livePattern, setLivePattern] = useState<LivePattern | null>(null)
   const [patternLoading, setPatternLoading] = useState(true)
+  // Snapshot of pattern used for the current assessment — locked at startAssessment
+  const patternSnapshot = useRef<LivePattern | null>(null)
 
   // Derived: use live pattern sections if available, else fall back to static
   const activeSections = livePattern?.sections?.map(s => s.id) ?? company.sections
@@ -646,11 +648,12 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
 
   const formatTime = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`
 
-  const loadSection = async (sectionKey: string) => {
+  const loadSection = async (sectionKey: string, patternOverride?: typeof livePattern) => {
     setLoading(true)
+    const pattern = patternOverride ?? livePattern
     try {
       // Get question count and topics from live pattern if available
-      const liveSection = livePattern?.sections?.find(s => s.id === sectionKey)
+      const liveSection = pattern?.sections?.find(s => s.id === sectionKey)
       const liveCount = liveSection?.questions
       const liveTopics = liveSection?.topics?.length ? liveSection.topics : undefined
       const count = liveCount ?? COMPANY_SECTION_QTY[company.id]?.[sectionKey] ?? SECTION_QTY[sectionKey] ?? 5
@@ -674,14 +677,20 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   }
 
   const startAssessment = () => {
+    // Snapshot the live pattern at start time — guarantees counts/duration
+    // match exactly what was shown on the info screen
+    const snapshot = livePattern
+    patternSnapshot.current = snapshot
+    const duration = snapshot?.totalTime ?? company.duration
     setCurSection(0)
     setSectionScores({})
     setAllQuestions([])
     setAllAnswers([])
-    setTimeLeft(activeDuration * 60)
+    setTimeLeft(duration * 60)
     setTimeTaken(0)
     setProctorActive(true)
-    loadSection(activeSections[0])
+    const firstSection = snapshot?.sections?.map(s => s.id)?.[0] ?? activeSections[0]
+    loadSection(firstSection, snapshot)
   }
 
   const generateReport = async (finalScore: number, finalScores: Record<string, number>, qs: MCQ[], ans: number[]) => {
@@ -750,10 +759,12 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     setAllQuestions(newQs)
     setAllAnswers(newAnswers)
 
+    const snap = patternSnapshot.current
+    const snapSections = snap?.sections?.map(s => s.id) ?? activeSections
     const next = curSection + 1
-    if (next < activeSections.length) {
+    if (next < snapSections.length) {
       setCurSection(next)
-      loadSection(activeSections[next])
+      loadSection(snapSections[next], snap ?? undefined)
     } else {
       if (timerRef.current) clearInterval(timerRef.current)
       const nonCoding = newQs.filter(q => q.options?.length > 0)
@@ -768,12 +779,14 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   }
 
   const codingDone = () => {
+    const snap = patternSnapshot.current
+    const snapSections = snap?.sections?.map(s => s.id) ?? activeSections
     const next = curSection + 1
     const newScores = { ...sectionScores, coding: 75 }
     setSectionScores(newScores)
-    if (next < activeSections.length) {
+    if (next < snapSections.length) {
       setCurSection(next)
-      loadSection(activeSections[next])
+      loadSection(snapSections[next], snap ?? undefined)
     } else {
       if (timerRef.current) clearInterval(timerRef.current)
       const finalScore = Math.round(Object.values(newScores).reduce((a, b) => a + b, 0) / Object.values(newScores).length)
@@ -1047,13 +1060,13 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
             {company.abbr}
           </div>
           <div>
-            <p className="text-xs" style={{ color: "#71717A" }}>{company.name} . Section {curSection + 1}/{activeSections.length}</p>
+            <p className="text-xs" style={{ color: "#71717A" }}>{company.name} . Section {curSection + 1}/{(patternSnapshot.current?.sections?.length ?? activeSections.length)}</p>
             <p className="font-semibold text-sm" style={{ color: "#FAFAFA" }}>{SECTION_LABELS[section]}</p>
           </div>
         </div>
         {/* Section progress dots */}
         <div className="hidden sm:flex items-center gap-1.5">
-          {activeSections.map((s, i) => (
+          {(patternSnapshot.current?.sections?.map(s => s.id) ?? activeSections).map((s, i) => (
             <div key={s} className="h-2 rounded-full transition-all"
               style={{
                 width: i === curSection ? 24 : 8,
