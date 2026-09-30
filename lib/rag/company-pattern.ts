@@ -143,6 +143,219 @@ const FALLBACK_PATTERNS: Record<string, Omit<CompanyPattern, "company"|"companyN
     ],
     notes:"Code for Good contest or OA coding challenge. Financial aptitude may be tested.",
   },
+  // ── Additional IT Services ──────────────────────────────────────────────────
+  "tech-mahindra": {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Aptitude",          questions:18, timeMinutes:18, difficulty:"Easy-Medium", topics:["Percentages","Time & Work","Speed & Distance","Number Series","Averages","Profit & Loss"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning", questions:18, timeMinutes:18, difficulty:"Easy-Medium", topics:["Coding-Decoding","Blood Relations","Directions","Series","Analogies","Statement & Conclusion"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",    questions:9,  timeMinutes:9,  difficulty:"Easy",        topics:["Synonyms","Antonyms","Fill in Blanks","Error Detection","Idioms"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",            questions:1,  timeMinutes:45, difficulty:"Easy-Medium", topics:["Arrays","Strings","Sorting","Basic Recursion","Math Problems"], isCoding:true },
+    ],
+    notes:"SmartHire test. No negative marking. Online proctored.",
+  },
+  mphasis: {
+    totalQuestions: 50, totalTime: 70,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Percentages","Averages","Time & Work","Number Series","Algebra","Probability"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Puzzles","Series","Blood Relations","Directions","Analogies"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Comprehension","Grammar","Vocabulary","Sentence Correction"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Strings","Hash Map","Sorting","Basic DP"], isCoding:true },
+    ],
+    notes:"Mphasis hiring test. Good problem-solving focus.",
+  },
+  hexaware: {
+    totalQuestions: 50, totalTime: 65,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Percentages","Time & Work","Averages","Number Series","Profit & Loss"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Easy-Medium", topics:["Series","Blood Relations","Directions","Puzzles","Syllogisms"], isCoding:false },
+      { id:"verbal",            name:"English Ability",       questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Comprehension","Error Detection"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Easy-Medium", topics:["Arrays","Strings","Sorting","Loops","Basic Math"], isCoding:true },
+    ],
+    notes:"Hexaware TechBee. Fresh graduate hiring test.",
+  },
+  ltimindtree: {
+    totalQuestions: 55, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Percentages","Time & Work","Speed & Distance","Averages","Number Series","Probability"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Syllogisms","Puzzles","Series","Blood Relations","Seating Arrangement"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Easy-Medium", topics:["Reading Comprehension","Vocabulary","Grammar","Error Detection"], isCoding:false },
+      { id:"basic-coding",      name:"Basic Coding",          questions:1,  timeMinutes:20, difficulty:"Easy",        topics:["Basic Arrays","String Operations","Simple Loops","Math Programs"], isCoding:true },
+      { id:"advanced-coding",   name:"Advanced Coding",       questions:1,  timeMinutes:30, difficulty:"Medium",      topics:["Sorting","Hash Map","Recursion","Trees","Linked Lists"], isCoding:true },
+    ],
+    notes:"LTIMindtree campus. Sectional time limits. No negative marking.",
+  },
+  persistent: {
+    totalQuestions: 55, totalTime: 70,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Percentages","Time & Work","Averages","Number Series","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:20, difficulty:"Medium",      topics:["Puzzles","Series","Directions","Blood Relations","Syllogisms"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Easy-Medium", topics:["Reading Comprehension","Vocabulary","Grammar","Para Jumbles"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",               questions:2,  timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","String Manipulation","Binary Search","DP"], isCoding:true },
+    ],
+    notes:"Persistent Systems campus. Medium difficulty. OOPs knowledge helpful.",
+  },
+  // ── Product companies ───────────────────────────────────────────────────────
+  meta: {
+    totalQuestions: 2, totalTime: 60,
+    sections: [
+      { id:"advanced-coding", name:"Coding Interview", questions:2, timeMinutes:60, difficulty:"Very Hard", topics:["Dynamic Programming","Graphs","Tree Algorithms","Sliding Window","Advanced DS","Recursion"], isCoding:true },
+    ],
+    notes:"System design + coding. Focus on scale and efficiency.",
+  },
+  apple: {
+    totalQuestions: 2, totalTime: 60,
+    sections: [
+      { id:"advanced-coding", name:"Coding Assessment", questions:2, timeMinutes:60, difficulty:"Very Hard", topics:["System Design","Algorithms","Data Structures","Concurrency","Performance Optimization"], isCoding:true },
+    ],
+    notes:"Very hard. Focus on system design and low-level programming.",
+  },
+  adobe: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","String Manipulation","Sorting","Binary Search"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Medium-Hard", topics:["DP","Graphs","Trees","Greedy Algorithms"], isCoding:true },
+    ],
+    notes:"Adobe MTS hiring. Strong focus on DSA and problem solving.",
+  },
+  atlassian: {
+    totalQuestions: 3, totalTime: 75,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","Two Pointers","Binary Search","String Algorithms"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Medium-Hard", topics:["Graph BFS/DFS","Dynamic Programming","Trees","Sorting"], isCoding:true },
+    ],
+    notes:"Atlassian OA. Emphasis on code quality and edge cases.",
+  },
+  salesforce: {
+    totalQuestions: 3, totalTime: 70,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Strings","Hash Map","Binary Search","Two Pointers"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Medium-Hard", topics:["Dynamic Programming","Graphs","Trees","Recursion"], isCoding:true },
+    ],
+    notes:"Salesforce Associate MTS. OA followed by interviews.",
+  },
+  qualcomm: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",    name:"Technical Aptitude",  questions:20, timeMinutes:30, difficulty:"Hard", topics:["Digital Electronics","Computer Architecture","Signal Processing","Probability","Algorithm Analysis"], isCoding:false },
+      { id:"advanced-coding", name:"Coding",              questions:2,  timeMinutes:60, difficulty:"Hard", topics:["Arrays","Graphs","DP","Bit Manipulation","Optimization","Embedded C"], isCoding:true },
+    ],
+    notes:"Strong technical depth. Embedded systems knowledge an advantage.",
+  },
+  // ── Startups ────────────────────────────────────────────────────────────────
+  flipkart: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:75, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Sliding Window","Two Pointers","BFS/DFS"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:45, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","Tree DP","Greedy"], isCoding:true },
+    ],
+    notes:"Flipkart SDE-1. Hackerearth OA platform. Strong DSA required.",
+  },
+  swiggy: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Hash Map","Strings","Two Pointers","Sorting"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","Priority Queue"], isCoding:true },
+    ],
+    notes:"Swiggy SDE. Focus on practical problem-solving.",
+  },
+  zomato: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium",      topics:["Arrays","Strings","Hash Map","Binary Search","Sorting"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:30, difficulty:"Hard",        topics:["Dynamic Programming","Graphs","Trees","Greedy"], isCoding:true },
+    ],
+    notes:"Zomato SDE. HackerRank platform. Good aptitude helps too.",
+  },
+  razorpay: {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"basic-coding",    name:"Coding Round 1",  questions:2, timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Two Pointers","Binary Search","Strings"], isCoding:true },
+      { id:"advanced-coding", name:"Coding Round 2",  questions:1, timeMinutes:45, difficulty:"Hard",        topics:["Dynamic Programming","Graph Algorithms","System Design","Concurrency"], isCoding:true },
+    ],
+    notes:"Razorpay SDE. Strong emphasis on backend/system design.",
+  },
+  freshworks: {
+    totalQuestions: 55, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Aptitude",          questions:15, timeMinutes:15, difficulty:"Medium",      topics:["Percentages","Time & Work","Averages","Data Interpretation","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning", questions:10, timeMinutes:10, difficulty:"Medium",      topics:["Puzzles","Series","Blood Relations","Directions"], isCoding:false },
+      { id:"advanced-coding",   name:"Coding",            questions:2,  timeMinutes:60, difficulty:"Medium-Hard", topics:["Arrays","Hash Map","Sliding Window","Recursion","DP"], isCoding:true },
+    ],
+    notes:"Freshworks SDE OA. Good focus on product thinking + coding.",
+  },
+  zoho: {
+    totalQuestions: 3, totalTime: 180,
+    sections: [
+      { id:"quantitative",      name:"Aptitude Test",         questions:30, timeMinutes:30,  difficulty:"Medium", topics:["Number System","Averages","Time-Work","Mensuration","Probability","Algebra"], isCoding:false },
+      { id:"advanced-aptitude", name:"Technical MCQ",         questions:20, timeMinutes:30,  difficulty:"Medium", topics:["C Programming","Data Structures","OS","DBMS","Networks","OOP"], isCoding:false },
+      { id:"advanced-coding",   name:"Programming Contest",   questions:3,  timeMinutes:120, difficulty:"Hard",   topics:["Complex Algorithms","DP","Graphs","Recursion","Math","String Algorithms"], isCoding:true },
+    ],
+    notes:"Very long test (3h). Multiple rounds. Logic-heavy. C programming preferred.",
+  },
+  // ── Consulting ──────────────────────────────────────────────────────────────
+  pwc: {
+    totalQuestions: 45, totalTime: 70,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Data Interpretation","Business Math","Percentages","Ratios","Profit & Loss","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:25, difficulty:"Medium", topics:["Diagrammatic Reasoning","Abstract Patterns","Sequences","Inductive Reasoning"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Medium", topics:["Reading Comprehension","True/False/Cannot Say","Grammar","Vocabulary"], isCoding:false },
+    ],
+    notes:"PwC Campus Assessment. No coding. Focus on analytical and verbal ability.",
+  },
+  kpmg: {
+    totalQuestions: 50, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Number Systems","Averages","Percentages","Data Interpretation","Algebra","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:25, difficulty:"Medium", topics:["Seating Arrangement","Blood Relations","Coding-Decoding","Syllogisms","Puzzles"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:15, timeMinutes:20, difficulty:"Medium", topics:["Synonyms/Antonyms","Reading Comprehension","Fill in the Blanks","Error Detection"], isCoding:false },
+    ],
+    notes:"KPMG Graduate Hiring. No coding for most roles. Strong aptitude focus.",
+  },
+  ey: {
+    totalQuestions: 45, totalTime: 70,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:30, difficulty:"Medium", topics:["Time & Work","Speed & Distance","Permutations","Probability","Data Interpretation"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:15, timeMinutes:25, difficulty:"Medium", topics:["Visual Reasoning","Pattern Recognition","Logical Deduction","Critical Reasoning"], isCoding:false },
+      { id:"verbal",            name:"Verbal Ability",        questions:10, timeMinutes:15, difficulty:"Medium", topics:["Para Jumbles","Reading Comprehension","Sentence Correction","Vocabulary"], isCoding:false },
+    ],
+    notes:"EY Campus Assessment. Global format. Strong verbal and reasoning.",
+  },
+  // ── BFSI ───────────────────────────────────────────────────────────────────
+  "goldman-sachs": {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",    name:"Quantitative Aptitude",  questions:20, timeMinutes:30, difficulty:"Hard", topics:["Probability","Statistics","Financial Math","Data Interpretation","Combinatorics"], isCoding:false },
+      { id:"advanced-coding", name:"Coding Assessment",      questions:2,  timeMinutes:75, difficulty:"Hard", topics:["Dynamic Programming","Graph Algorithms","Binary Search","Advanced Data Structures","Math"], isCoding:true },
+    ],
+    notes:"Goldman Sachs OA. Very hard quant + DSA. HackerRank platform.",
+  },
+  "morgan-stanley": {
+    totalQuestions: 3, totalTime: 90,
+    sections: [
+      { id:"quantitative",    name:"Quantitative Aptitude",  questions:20, timeMinutes:30, difficulty:"Hard", topics:["Data Interpretation","Financial Math","Statistics","Probability","Algebra"], isCoding:false },
+      { id:"advanced-coding", name:"Coding Assessment",      questions:2,  timeMinutes:60, difficulty:"Hard", topics:["Dynamic Programming","Graph Algorithms","Trees","Hash Map","Sorting"], isCoding:true },
+    ],
+    notes:"Morgan Stanley campus. Competitive quant + coding. HackerRank.",
+  },
+  barclays: {
+    totalQuestions: 50, totalTime: 75,
+    sections: [
+      { id:"quantitative",      name:"Numerical Reasoning",  questions:20, timeMinutes:25, difficulty:"Medium", topics:["Data Interpretation","Financial Math","Percentages","Ratios","Statistics"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",    questions:20, timeMinutes:25, difficulty:"Medium", topics:["Deductive Reasoning","Abstract Patterns","Verbal Reasoning","Critical Thinking"], isCoding:false },
+      { id:"verbal",            name:"Verbal Reasoning",     questions:10, timeMinutes:15, difficulty:"Medium", topics:["Reading Comprehension","True/False","Vocabulary","Grammar"], isCoding:false },
+    ],
+    notes:"Barclays Graduate Associate. Focus on numerical and logical reasoning.",
+  },
+  icici: {
+    totalQuestions: 50, totalTime: 60,
+    sections: [
+      { id:"quantitative",      name:"Quantitative Aptitude", questions:20, timeMinutes:25, difficulty:"Easy-Medium", topics:["Data Interpretation","Arithmetic","Percentages","Ratios","Time & Work"], isCoding:false },
+      { id:"advanced-aptitude", name:"Logical Reasoning",     questions:20, timeMinutes:20, difficulty:"Easy-Medium", topics:["Syllogisms","Blood Relations","Series","Directions","Puzzles"], isCoding:false },
+      { id:"verbal",            name:"English Language",      questions:10, timeMinutes:15, difficulty:"Easy",        topics:["Grammar","Vocabulary","Reading Comprehension","Error Detection"], isCoding:false },
+    ],
+    notes:"ICICI Bank PO Tech. Standard banking aptitude pattern.",
+  },
 }
 
 // ── Category-based fallback patterns (used for companies without specific fallback) ──
