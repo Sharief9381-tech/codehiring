@@ -359,14 +359,14 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
           <button key={i} onClick={() => choose(i)}
             className="w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left bg-card border border-border hover:border-violet-500/40"
             style={selected === i
-              ? { borderColor: "#7c3aed", background: "rgba(124,58,237,0.25)", color: "#e6e4ff" }
+              ? { borderColor: "#7c3aed", background: "#4c1d95", color: "#ffffff" }
               : {}}
             onMouseEnter={e => { if (selected !== i) e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)" }}
             onMouseLeave={e => { if (selected !== i) e.currentTarget.style.borderColor = "" }}>
-            <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors ${selected === i ? "bg-violet-500/40 text-white" : "bg-muted text-muted-foreground"}`}>
+            <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors ${selected === i ? "bg-violet-400 text-white" : "bg-muted text-muted-foreground"}`}>
               {["A", "B", "C", "D"][i]}
             </span>
-            <span className="text-sm font-medium" style={selected === i ? { color: "#e6e4ff" } : {}}>{opt}</span>
+            <span className="text-sm font-medium" style={selected === i ? { color: "#ffffff" } : {}}>{opt}</span>
           </button>
         ))}
       </div>
