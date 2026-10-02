@@ -1,343 +1,104 @@
 /**
  * POST /api/student/generate-assessment
- * Body: { company: string, section: string, count: number }
- * Handles all section types: quantitative, advanced-aptitude, verbal, basic-coding, advanced-coding
+ * Unified question generation endpoint using the CodeHiring QGen pipeline.
+ *
+ * Body: {
+ *   company:    string   — company id e.g. "tcs"
+ *   section:    string   — section id e.g. "quantitative"
+ *   count:      number   — number of questions
+ *   topics?:    string[] — topic overrides from live pattern
+ *   difficulty? string   — difficulty override
+ * }
  */
-import { NextResponse } from "next/server"
-import { getPYQContext } from "@/lib/question-bank"
-import { ALL_COMPANIES } from "@/lib/companies-data"
-import { retrieveSimilarPYQs, formatPYQsAsContext } from "@/lib/rag/vector-store"
-import { getCompanyPattern, patternToTopicOverrides } from "@/lib/rag/company-pattern"
-import { queryPatternForSection } from "@/lib/rag/pattern-search"
 
-const GROQ_API   = "https://api.groq.com/openai/v1/chat/completions"
-const OPENAI_API = "https://api.openai.com/v1/chat/completions"
+import { NextResponse }       from "next/server"
+import { generateQuestions }  from "@/lib/question-gen"
+import { ALL_COMPANIES }      from "@/lib/companies-data"
+import { getCompanyPatternSections } from "@/lib/rag/pattern-search"
 
-async function callAI(prompt: string, maxTokens = 6000): Promise<string> {
-  if (process.env.OPENAI_API_KEY) {
-    try {
-      const res = await fetch(OPENAI_API, {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
-      })
-      if (res.ok) { const d = await res.json(); const c = d.choices?.[0]?.message?.content?.trim(); if (c) return stripThinkTags(c) }
-    } catch {}
-  }
-  if (process.env.GROQ_API_KEY) {
-    const res = await fetch(GROQ_API, {
-      method: "POST",
-      headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "qwen/qwen3.8-27b", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: maxTokens }),
-    })
-    if (res.ok) { const d = await res.json(); return stripThinkTags(d.choices?.[0]?.message?.content?.trim() ?? "") }
-  }
-  throw new Error("No AI provider available")
+// ── Section metadata ──────────────────────────────────────────────────────────
+const SECTION_META: Record<string, { name: string; difficulty: string; topics: string[] }> = {
+  "quantitative":     { name:"Quantitative Aptitude",             difficulty:"Medium",     topics:["Percentages","Profit & Loss","Time & Work","Speed & Distance","Number Series","Averages","Probability"] },
+  "advanced-aptitude":{ name:"Advanced Aptitude",                 difficulty:"Medium",     topics:["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Puzzles","Series","Directions"] },
+  "verbal":           { name:"Verbal Ability",                    difficulty:"Easy-Medium",topics:["Reading Comprehension","Vocabulary","Grammar","Para Jumbles","Error Detection","Idioms & Phrases"] },
+  "basic-coding":     { name:"Basic Coding",                      difficulty:"Easy",       topics:["Arrays","Strings","Basic Math","Pattern Printing","Loops","Conditional Logic"] },
+  "advanced-coding":  { name:"Advanced Coding",                   difficulty:"Medium",     topics:["Binary Search","Hash Map","Sliding Window","Trees","Dynamic Programming","Graphs","Stack"] },
+  "logical":          { name:"Logical Reasoning",                 difficulty:"Medium",     topics:["Syllogisms","Blood Relations","Directions","Series","Analogies"] },
+  "coding":           { name:"Coding",                            difficulty:"Medium",     topics:["Arrays","Strings","Sorting","Recursion","Hash Map"] },
 }
 
-// Strip <think>...</think> tags that some models include before their response
-function stripThinkTags(text: string): string {
-  return text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
+// ── Company-specific section quantity overrides ───────────────────────────────
+const COMPANY_SECTION_QTY: Record<string, Record<string, number>> = {
+  tcs:       { "advanced-coding": 3 },
+  infosys:   { "advanced-coding": 2 },
+  wipro:     { "advanced-coding": 2 },
+  cognizant: { "advanced-coding": 2 },
+  hcl:       { "basic-coding": 5, "advanced-coding": 1 },
+  amazon:    { "basic-coding": 1, "advanced-coding": 1 },
+  google:    { "advanced-coding": 2 },
+  microsoft: { "advanced-coding": 2 },
 }
-
-// -- Section definitions ------------------------------------------------------
-
-const SECTION_CONFIG: Record<string, { name: string; isCoding: boolean; difficulty: string; topics: string[]; lang?: string }> = {
-  "quantitative":       { name: "Quantitative Aptitude",  isCoding: false, difficulty: "Medium",      topics: ["Percentages","Profit & Loss","Time & Work","Speed & Distance","Number Series","Averages","Probability","Permutation & Combination"] },
-  "advanced-aptitude":  { name: "Advanced Aptitude",      isCoding: false, difficulty: "Medium-Hard",  topics: ["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Data Interpretation","Critical Reasoning","Puzzles","Series Completion","Statement & Conclusion"] },
-  "verbal":             { name: "Verbal Ability",          isCoding: false, difficulty: "Easy-Medium",  topics: ["Reading Comprehension","Sentence Correction","Fill in the Blanks","Para Jumbles","Vocabulary","Error Detection","Idioms","Grammar"] },
-  "basic-coding":       { name: "Basic Coding",            isCoding: true,  difficulty: "Easy",         topics: ["Array Traversal","String Manipulation","Basic Math","Counting/Frequency","Simple Loops","Pattern Printing","Number Properties","Basic Recursion"], lang: "Any" },
-  "advanced-coding":    { name: "Advanced Coding",         isCoding: true,  difficulty: "Medium",       topics: ["Binary Search","Sliding Window","Hash Map","Stack","Queue","Linked List","Tree DFS","Tree BFS","Dynamic Programming","Greedy","Sorting Algorithms"], lang: "Any" },
-  // legacy
-  "logical":            { name: "Logical Reasoning",       isCoding: false, difficulty: "Medium",       topics: ["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Series Completion","Directions"] },
-  "coding":             { name: "Coding",                  isCoding: true,  difficulty: "Medium",       topics: ["Arrays","Strings","Sorting","Recursion","Basic DP","Math Problems"], lang: "Any" },
-}
-
-// -- Company-specific section overrides ---------------------------------------
-
-const COMPANY_SECTION_OVERRIDES: Record<string, Record<string, Partial<typeof SECTION_CONFIG[string]>>> = {
-  tcs: {
-    "quantitative":      { topics: ["Percentages","Profit & Loss","Time & Work","Speed & Distance","Probability","Number Series","Averages"] },
-    "advanced-aptitude": { topics: ["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Data Sufficiency","Puzzles","Input-Output"] },
-    // TCS NQT 2025: NO basic-coding MCQ. 3 actual coding problems in Advanced Coding section.
-    "advanced-coding":   { topics: ["Array Manipulation","String Operations","Basic DP / Recursion","Hash Map","Greedy","Sorting","Binary Search"], difficulty: "Medium" },
-  },
-  infosys: {
-    "quantitative":      { topics: ["Ratios","Averages","Mixtures","Algebra","Geometry","Probability"] },
-    "advanced-aptitude": { topics: ["Puzzles","Series Completion","Directions","Analogy","Data Interpretation"] },
-    "basic-coding":      { topics: ["Array operations","String handling","Basic sorting","Math programs","Loops"], lang: "Java/Python" },
-    "advanced-coding":   { topics: ["Sorting","String ops","Basic DP","Recursion","Trees","Hash Map"], lang: "Java/Python" },
-  },
-  wipro: {
-    "quantitative":      { topics: ["Simple Interest","Permutation & Combination","Mensuration","Time & Distance"], difficulty: "Easy-Medium" },
-    "advanced-aptitude": { topics: ["Visual Reasoning","Statement & Assumption","Course of Action","Analogy","Series"], difficulty: "Easy-Medium" },
-    "verbal":            { topics: ["Synonyms/Antonyms","Sentence Rearrangement","Cloze Test","Grammar"], difficulty: "Easy" },
-    "basic-coding":      { topics: ["Array reversal","String operations","Pattern printing","Math calculations","Simple loops"], difficulty: "Easy" },
-    "advanced-coding":   { topics: ["Sorting","Arrays","Strings","Basic recursion","Hash Map"], difficulty: "Easy-Medium" },
-  },
-  cognizant: {
-    "quantitative":      { topics: ["Arithmetic","Algebra","Data Interpretation"], difficulty: "Easy-Medium" },
-    "advanced-aptitude": { topics: ["Puzzles","Sequences","Directions","Statement-Conclusion"], difficulty: "Easy" },
-    "verbal":            { topics: ["Grammar","Comprehension","Vocabulary","Error Detection"], difficulty: "Easy" },
-    "basic-coding":      { topics: ["Basic programs","String operations","Array manipulation","Loops"], difficulty: "Easy" },
-    "advanced-coding":   { topics: ["Arrays","Sorting","Hash Map","Recursion","Basic DP"], difficulty: "Easy-Medium" },
-  },
-  hcl: {
-    "quantitative":      { topics: ["Percentages","Time & Work","Speed & Distance","Averages","Number Series","Profit & Loss","Ratio & Proportion"], difficulty: "Easy-Medium" },
-    "advanced-aptitude": { topics: ["Blood Relations","Directions","Coding-Decoding","Series Completion","Analogies","Syllogisms","Puzzles"], difficulty: "Easy-Medium" },
-    "verbal":            { topics: ["Synonyms/Antonyms","Fill in the Blanks","Reading Comprehension","Error Detection","Sentence Completion"], difficulty: "Easy" },
-    "basic-coding":      { topics: ["Loops","Arrays","String Operations","Basic Math","Pattern Printing","Conditional Logic"], difficulty: "Easy" },
-    "advanced-coding":   { topics: ["Arrays","Strings","Sorting","Basic Recursion","Math Problems"], difficulty: "Easy-Medium" },
-  },
-  capgemini: {
-    "quantitative":      { topics: ["Number System","Averages","Time-Work","Mensuration"] },
-    "advanced-aptitude": { topics: ["Series","Analogy","Odd One Out","Matrix","Puzzle"] },
-    "verbal":            { topics: ["Fill Blanks","Error Correction","Reading Comprehension"], difficulty: "Easy" },
-    "basic-coding":      { topics: ["Algorithm tracing","Code completion","Array operations","Basic logic"] },
-    "advanced-coding":   { topics: ["Binary Search","Sorting","Hash Map","Stack","Two Pointers","Recursion"] },
-  },
-  accenture: {
-    "quantitative":      { topics: ["Data Interpretation","Number Systems","Profit/Loss","Ages","Percentages"] },
-    "advanced-aptitude": { topics: ["Critical Reasoning","Logical Deduction","Input-Output","Puzzles"] },
-    "basic-coding":      { topics: ["Arrays","Strings","Basic loops","Simple patterns"], difficulty: "Easy-Medium", lang: "C++/Java/Python" },
-    "advanced-coding":   { topics: ["Linked Lists","Stacks","Sorting","Hash Map","Basic DP","Recursion"], lang: "C++/Java/Python" },
-  },
-  amazon: {
-    "basic-coding":      { topics: ["Sliding Window","Two Pointers","Hash Map","Arrays","Priority Queue"], difficulty: "Medium" },
-    "advanced-coding":   { topics: ["Dynamic Programming","Graphs BFS/DFS","Binary Search on Answer","Interval Merging","Monotonic Stack"], difficulty: "Hard" },
-  },
-  google: {
-    "basic-coding":      { topics: ["Arrays","Hash Map","Two Pointers","Binary Search","String Algorithms"], difficulty: "Medium" },
-    "advanced-coding":   { topics: ["Dynamic Programming","Graph Algorithms","Tree DP","Bitmask DP","Topological Sort"], difficulty: "Hard" },
-  },
-  microsoft: {
-    "basic-coding":      { topics: ["Arrays","Hash Map","String Manipulation","Binary Search","Stack"], difficulty: "Easy-Medium" },
-    "advanced-coding":   { topics: ["Tree DFS/BFS","Dynamic Programming","Recursion","Linked List","Graphs"], difficulty: "Medium-Hard" },
-  },
-  deloitte: {
-    "quantitative":      { topics: ["Data Tables","Charts","Business Math","Percentages","Ratios"], difficulty: "Medium" },
-    "advanced-aptitude": { topics: ["Deductive Reasoning","Inductive Reasoning","Abstract Patterns","Syllogisms"], difficulty: "Medium" },
-    "verbal":            { topics: ["Comprehension","Critical Reasoning","Sentence Completion"], difficulty: "Medium" },
-  },
-  pwc: {
-    "quantitative":      { topics: ["Data Interpretation","Business Math","Percentages","Ratios","Profit & Loss"], difficulty: "Medium" },
-    "advanced-aptitude": { topics: ["Diagrammatic reasoning","Abstract patterns","Sequences","Inductive reasoning"], difficulty: "Medium" },
-    "verbal":            { topics: ["Reading Comprehension","True/False/Cannot Say","Grammar","Vocabulary"], difficulty: "Medium" },
-  },
-  kpmg: {
-    "quantitative":      { topics: ["Number Systems","Averages","Percentages","Data Interpretation","Algebra"], difficulty: "Medium" },
-    "advanced-aptitude": { topics: ["Seating Arrangement","Blood Relations","Coding-Decoding","Syllogisms","Puzzles"], difficulty: "Medium" },
-    "verbal":            { topics: ["Synonyms/Antonyms","Reading Comprehension","Fill in the Blanks","Error Detection"], difficulty: "Medium" },
-  },
-  ey: {
-    "quantitative":      { topics: ["Time & Work","Speed & Distance","Permutations","Probability","Data Interpretation"], difficulty: "Medium" },
-    "advanced-aptitude": { topics: ["Visual reasoning","Pattern recognition","Logical deduction","Critical reasoning"], difficulty: "Medium" },
-    "verbal":            { topics: ["Para Jumbles","Reading Comprehension","Sentence Correction","Vocabulary"], difficulty: "Medium" },
-  },
-}
-
-// -- Pattern lookup ------------------------------------------------------------
-
-function getSectionData(companyId: string, sectionId: string) {
-  const base = SECTION_CONFIG[sectionId]
-  if (!base) return null
-  const override = COMPANY_SECTION_OVERRIDES[companyId]?.[sectionId] ?? {}
-  return { ...base, ...override }
-}
-
-function getCompanyName(companyId: string): string {
-  return ALL_COMPANIES.find(c => c.id === companyId)?.name ?? companyId
-}
-
-// -- POST handler --------------------------------------------------------------
 
 export async function POST(req: Request) {
-  let company = "", section = "", count = 5
   try {
     const body = await req.json()
-    company = body.company ?? ""
-    section = body.section ?? ""
-    count   = body.count ?? 5
-    // Optional: caller can pass live topics from the pattern fetch
-    const liveTopics: string[] | undefined = body.topics
+    const company  = String(body.company  ?? "")
+    const section  = String(body.section  ?? "")
+    const liveTopics: string[] | undefined = body.topics?.length ? body.topics : undefined
 
-    const sectionData = getSectionData(company, section)
-    if (!sectionData) return NextResponse.json({ error: "Unknown section" }, { status: 400 })
+    // Resolve count: body → company override → section default → 5
+    const defaultCount =
+      COMPANY_SECTION_QTY[company]?.[section] ??
+      (section.includes("coding") ? 2 : 12)
+    const count = Number(body.count ?? defaultCount)
 
-    // If caller supplied live topics (from company-assessment-pattern), use them
-    if (liveTopics?.length) sectionData.topics = liveTopics
+    if (!company) return NextResponse.json({ error: "company required" }, { status: 400 })
+    if (!section) return NextResponse.json({ error: "section required" }, { status: 400 })
 
-    const companyName = getCompanyName(company)
+    // Resolve company name
+    const companyEntry = ALL_COMPANIES.find(c => c.id === company)
+    const companyName  = companyEntry?.name ?? company
 
-    if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
-      return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
-    }
+    // Resolve section metadata
+    const meta       = SECTION_META[section] ?? { name: section, difficulty: "Medium", topics: [] }
+    let   difficulty = String(body.difficulty ?? meta.difficulty)
+    let   topics     = liveTopics ?? meta.topics
 
-    // -- Try to get live company pattern from RAG (7-day cache) ----------------
-    try {
-      // 1. Semantic search in pattern_embeddings � fastest, richest context
-      const sectionConfig = SECTION_CONFIG[section]
-      if (sectionConfig && process.env.OPENAI_API_KEY) {
-        const semanticDoc = await queryPatternForSection(
-          company, companyName, section, sectionConfig.name
-        )
-        if (semanticDoc && semanticDoc.topics?.length > 0) {
-          sectionData.topics = semanticDoc.topics
-          if (semanticDoc.difficulty) sectionData.difficulty = semanticDoc.difficulty
-        }
-      }
-
-      // 2. Fallback: full company pattern via web+AI (uses company-pattern.ts)
-      if (sectionData.topics === SECTION_CONFIG[section]?.topics) {
-        const livePattern = await getCompanyPattern(company, companyName)
-        if (livePattern) {
-          const topicOverrides = patternToTopicOverrides(livePattern)
-          const sectionOverride = topicOverrides[section]
-          if (sectionOverride?.topics?.length > 0) {
-            sectionData.topics = sectionOverride.topics
-          }
-          if (sectionOverride?.difficulty) {
-            sectionData.difficulty = sectionOverride.difficulty
-          }
-        }
-      }
-    } catch (e) {
-      console.warn("Pattern fetch failed, using defaults:", e)
-    }
-
-    // -- For coding sections: use company-coding-ai model first ----------------
-    // NOTE: We skip the self-HTTP-call to company-coding-ai to avoid timeout overhead.
-    // AI generation below handles coding sections directly.
-
-    // -- Skip web scraping (sites block Node.js fetches, wastes 15s timeout) ---
-
-    // -- AI generation with RAG context ---------------------------------------
-
-    // Build context from PYQ bank only (web/vector context skipped for speed)
-    let pyqContext = ""
-    const contextParts: string[] = []
-
-    // Static PYQ bank context
-    const staticCtx = getPYQContext(company, section, 5)
-    if (staticCtx) contextParts.push(staticCtx)
-
-    // MongoDB vector store (only if OpenAI embeddings available)
-    if (process.env.OPENAI_API_KEY) {
+    // Try to enrich topics from pattern_embeddings vector store
+    if (!liveTopics) {
       try {
-        const queryText = `${sectionData.name} ${sectionData.topics.join(", ")} ${sectionData.difficulty}`
-        const [retrieved, dbPYQs] = await Promise.allSettled([
-          retrieveSimilarPYQs(company, section, queryText, 6),
-          import("@/lib/models/pyq").then(m => m.getApprovedPYQs(company, section, 4)),
-        ])
-        const allPYQs: any[] = []
-        if (retrieved.status === "fulfilled") allPYQs.push(...retrieved.value)
-        if (dbPYQs.status === "fulfilled") allPYQs.push(...dbPYQs.value)
-        if (allPYQs.length > 0) {
-          const ragCtx = formatPYQsAsContext(allPYQs.slice(0, 8), company, section)
-          if (ragCtx) contextParts.push(ragCtx)
+        const patternDocs = await getCompanyPatternSections(company)
+        const sectionDoc  = patternDocs.find(d => d.sectionId === section)
+        if (sectionDoc?.topics?.length) {
+          topics     = sectionDoc.topics
+          difficulty = sectionDoc.difficulty ?? difficulty
         }
-      } catch (e) {
-        console.warn("RAG vector retrieval failed:", e)
-      }
+      } catch {}
     }
 
-    pyqContext = contextParts.join("\n\n===\n\n")
+    // Generate via the QGen pipeline
+    const result = await generateQuestions({
+      company,
+      companyName,
+      section,
+      sectionName: meta.name,
+      count,
+      difficulty,
+      topics,
+      liveTopics,
+    })
 
-    const topicsList = sectionData.topics.join(", ")
+    return NextResponse.json({
+      questions: result.questions,
+      company:   result.company,
+      section:   result.section,
+      source:    result.source,
+      model:     result.model,
+      count:     result.questions.length,
+    })
 
-    const prompt = sectionData.isCoding
-      ? `You are creating a ${companyName} coding assessment question.
-${pyqContext ? pyqContext + "\n\n" : ""}Section: ${sectionData.name}
-Topics: ${topicsList}
-Difficulty: ${sectionData.difficulty}
-Count: ${count}
-
-Generate ${count} ORIGINAL coding problems that feel like real ${companyName} OA questions.
-
-CRITICAL RULES FOR EXAMPLE INPUT/OUTPUT:
-- example.input MUST be plain numbers only � NO variable names, NO brackets, NO "nums=", NO "target="
-- Format: first line = array elements space-separated, second line = single value if needed
-- Good: "2 7 11 15\\n9"  Bad: "nums=[2,7,11,15], target=9"
-- Good: "0 1 0 3 12"    Bad: "[0,1,0,3,12]"
-- The student writes a complete stdin program that reads these plain numbers
-
-Return ONLY valid JSON array:
-[{"id":1,"title":"...","difficulty":"${sectionData.difficulty}","statement":"...","constraints":"...","example":{"input":"PLAIN NUMBERS e.g. 2 7 11 15\\n9","output":"0 1","explanation":"..."},"hints":["..."],"topic":"..."}]`
-      : `You are creating a ${companyName} ${sectionData.name} test.
-${pyqContext ? pyqContext + "\n\n" : ""}Section: ${sectionData.name}
-Topics: ${topicsList}
-Difficulty: ${sectionData.difficulty}
-Count needed: ${count}
-
-Generate ${count} MCQ questions matching real ${companyName} exam style.
-Return ONLY valid JSON array:
-[{"id":1,"question":"...","options":["A","B","C","D"],"correct":0,"explanation":"...","topic":"...","difficulty":"${sectionData.difficulty}"}]`
-
-    try {
-      const raw = await callAI(prompt, 6000)
-      const json = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
-      const parsed = JSON.parse(json)
-      const questions = Array.isArray(parsed) ? parsed : parsed.questions ?? parsed
-      if (!Array.isArray(questions) || questions.length === 0) throw new Error("No questions")
-      return NextResponse.json({ questions, company: companyName, section: sectionData.name })
-    } catch (aiErr) {
-      console.error("AI generation error:", aiErr)
-      return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
-    }
-  } catch (err) {
+  } catch (err: any) {
     console.error("generate-assessment error:", err)
-    return NextResponse.json({ questions: getFallbackQuestions(company, section, count) })
+    return NextResponse.json({ error: "Failed to generate questions", detail: err.message }, { status: 500 })
   }
-}
-
-// -- Fallback questions --------------------------------------------------------
-
-function getFallbackQuestions(company: string, section: string, count: number) {
-  const isCoding = section === "coding" || section === "basic-coding" || section === "advanced-coding"
-
-  // For coding sections � NEVER fall back to aptitude questions
-  if (isCoding) {
-    return [
-      { id:1, title:"Two Sum", difficulty:"Easy", statement:"Given an array of integers nums and an integer target, return indices of the two numbers that add up to target. You may assume each input has exactly one solution.", constraints:"2<=nums.length<=10^4, -10^9<=nums[i]<=10^9", example:{input:"2 7 11 15\n9",output:"0 1",explanation:"nums[0]+nums[1]=9"}, hints:["Use a hash map to store complement","Single pass O(n) solution possible"], topic:"Arrays & Hashing" },
-      { id:2, title:"Reverse String", difficulty:"Easy", statement:"Write a function that reverses a string. The input string is given as an array of characters s. Modify the array in-place.", constraints:"1<=s.length<=10^5, s[i] is a printable ASCII character", example:{input:"hello",output:"olleh",explanation:"Reversed in place"}, hints:["Use two pointers from both ends","Swap characters until pointers meet"], topic:"Two Pointers" },
-      { id:3, title:"Maximum Subarray", difficulty:"Medium", statement:"Given an integer array nums, find the subarray with the largest sum, and return its sum.", constraints:"1<=nums.length<=10^5, -10^4<=nums[i]<=10^4", example:{input:"-2 1 -3 4 -1 2 1 -5 4",output:"6",explanation:"The subarray [4,-1,2,1] has the largest sum 6"}, hints:["Use Kadane's algorithm","Track current sum and max sum"], topic:"Dynamic Programming" },
-    ].slice(0, count)
-  }
-
-  // For aptitude sections � use company-specific PYQ bank if available,
-  // then try same section from similar companies, then generate generic questions
-  const { QUESTION_BANK } = require("@/lib/question-bank")
-
-  // Try exact company + section
-  let bank = QUESTION_BANK[company]?.[section]
-
-  // Try same section from any company (pick randomly to avoid always showing TCS)
-  if (!bank?.length) {
-    const allCompanies = Object.keys(QUESTION_BANK)
-    // Shuffle to get variety
-    const shuffled = allCompanies.sort(() => Math.random() - 0.5)
-    for (const co of shuffled) {
-      if (QUESTION_BANK[co]?.[section]?.length >= 3) {
-        bank = QUESTION_BANK[co][section]
-        break
-      }
-    }
-  }
-
-  // Final fallback: any section from TCS
-  if (!bank?.length) {
-    bank = QUESTION_BANK["tcs"]?.["quantitative"] ?? []
-  }
-
-  if (bank.length > 0) {
-    const shuffled = [...bank].sort(() => Math.random() - 0.5)
-    return shuffled.slice(0, Math.min(count, shuffled.length)).map((q: any, i: number) => ({ ...q, id: i + 1 }))
-  }
-
-  // Absolute last resort: generic aptitude questions
-  return [
-    { id:1, question:"A train 240m long passes a pole in 24 seconds. How long to pass a 650m platform?", options:["89 sec","85 sec","90 sec","80 sec"], correct:0, explanation:"Speed=240/24=10m/s. Time=(240+650)/10=89sec", topic:"Speed & Distance", difficulty:"Medium" },
-    { id:2, question:"If 20% of a number is 120, what is 35% of that number?", options:["200","210","205","195"], correct:1, explanation:"Number=120/0.20=600. 35% of 600=210", topic:"Percentages", difficulty:"Medium" },
-    { id:3, question:"Find the missing: 3, 7, 15, 31, 63, ?", options:["127","125","128","124"], correct:0, explanation:"Each term = previous�2+1. 63�2+1=127", topic:"Number Series", difficulty:"Medium" },
-  ].slice(0, count)
 }
