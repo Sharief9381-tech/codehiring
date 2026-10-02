@@ -19,14 +19,13 @@ function getClientPromise(): Promise<MongoClient> | null {
     }
     if (!globalWithMongo._mongoClientPromise) {
       const c = new MongoClient(uri, {
-        serverSelectionTimeoutMS: 30000,
-        connectTimeoutMS: 30000,
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
         socketTimeoutMS: 30000,
         maxPoolSize: 10,
       })
       globalWithMongo._mongoClient = c
       globalWithMongo._mongoClientPromise = c.connect().catch(err => {
-        // Clear on failure so next request retries
         delete (global as any)._mongoClientPromise
         delete (global as any)._mongoClient
         throw err
@@ -34,15 +33,23 @@ function getClientPromise(): Promise<MongoClient> | null {
     }
     return globalWithMongo._mongoClientPromise
   } else {
-    // Production - single module-level promise
+    // Production — lazy singleton, reused across warm invocations
     if (!clientPromise) {
       client = new MongoClient(uri, {
-        serverSelectionTimeoutMS: 30000,
-        connectTimeoutMS: 30000,
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
         socketTimeoutMS: 30000,
         maxPoolSize: 10,
+        // Critical for Vercel serverless: keep connections alive between invocations
+        maxIdleTimeMS: 270000,
+        heartbeatFrequencyMS: 10000,
       })
-      clientPromise = client.connect()
+      clientPromise = client.connect().catch(err => {
+        // Reset on failure so next request retries
+        clientPromise = null
+        client = null
+        throw err
+      })
     }
     return clientPromise
   }
@@ -79,4 +86,5 @@ export function isDatabaseAvailable(): boolean {
   return !!uri
 }
 
-export default getClientPromise()
+// DO NOT call getClientPromise() at module load time — keep lazy for serverless
+export default null
