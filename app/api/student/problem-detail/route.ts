@@ -1,12 +1,9 @@
 /**
  * POST /api/student/problem-detail
  * Returns problem data. Flow:
- * 1. Check static problem-bank - if fully detailed (has testCases), return instantly
- * 2. Check MongoDB cache - if cached full version exists, return it
+ * 1. Check static problem-bank (instant, no AI needed)
+ * 2. Check MongoDB cache
  * 3. Generate via Groq/OpenAI, cache in MongoDB, return
- *
- * This means stub problems auto-generate the first time any student opens them,
- * then are cached forever - no manual work needed.
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -27,66 +24,74 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
   const groqKey   = process.env.GROQ_API_KEY
   const openaiKey = process.env.OPENAI_API_KEY
 
-  const prompt = [
-    "Generate a coding problem for: " + title + " (" + difficulty + " difficulty).",
-    "",
-    "STRICT RULES FOR STDIN/STDOUT:",
-    "1. Input must be plain numbers only � NO variable names like 'nums =', NO brackets like '[1,2,3]'",
-    "2. Each input value or group goes on its own line as plain space-separated numbers",
-    "3. Example for Two Sum: line 1 = '2 7 11 15' (the array), line 2 = '9' (target)",
-    "4. Example for single array: '0 1 0 3 12' (just the array on one line)",
-    "5. The student writes a complete stdin/stdout program � no class, no function signature",
-    "6. inputFormat MUST describe exactly how to read the stdin (e.g. 'First line: n space-separated integers. Second line: integer target.')",
-    "7. outputFormat MUST describe exactly what to print",
-    "",
-    "Return ONLY valid JSON:",
-    "{",
-    '  "desc": "Problem description. Use backtick for `variable` names.",',
-    '  "inputFormat": "Exact description of stdin. E.g. \'First line: n space-separated integers. Second line: integer target.\'",',
-    '  "outputFormat": "Exact description of stdout. E.g. \'Print two space-separated indices.\' or \'Print n space-separated integers.\'",',
-    '  "examples": [',
-    '    {"input": "PLAIN NUMBERS ONLY � e.g. \'2 7 11 15\\n9\' for Two Sum", "output": "0 1", "explanation": "brief"},',
-    '    {"input": "second test PLAIN NUMBERS e.g. \'3 2 4\\n6\'", "output": "1 2", "explanation": "brief"}',
-    "  ],",
-    '  "constraints": ["constraint 1", "constraint 2"],',
-    '  "pythonStarter": "# Read input according to Input Format above\\n# Write your solution here\\n# Print output according to Output Format above\\n",',
-    '  "jsStarter": "const lines = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\'\\\\n\');\\n// Write your solution here\\n",',
-    '  "tsStarter": "const lines = require(\'fs\').readFileSync(\'/dev/stdin\',\'utf8\').trim().split(\'\\\\n\');\\n// Write your solution here\\n",',
-    '  "javaStarter": "import java.util.*;\\npublic class Main {\\n    public static void main(String[] args) {\\n        Scanner sc = new Scanner(System.in);\\n        // Write your solution here\\n    }\\n}",',
-    '  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    // Write your solution here\\n    return 0;\\n}",',
-    '  "testCases": [',
-    '    {"stdin": "PLAIN NUMBERS matching inputFormat e.g. \'2 7 11 15\\n9\'", "expected": "0 1", "isPublic": true},',
-    '    {"stdin": "second public test plain numbers", "expected": "expected", "isPublic": true},',
-    '    {"stdin": "edge case plain numbers", "expected": "expected", "isPublic": false},',
-    '    {"stdin": "larger input plain numbers", "expected": "expected", "isPublic": false},',
-    '    {"stdin": "boundary plain numbers", "expected": "expected", "isPublic": false}',
-    "  ]",
-    "}",
-    "",
-    "CRITICAL: stdin values must be PLAIN NUMBERS ONLY. Never write 'nums = [...]' or 'target = 9'. Just the numbers.",
-  ].join("\n")
+  const prompt = `Generate a complete coding problem for: ${title} (${difficulty} difficulty).
+
+FORMAT: stdin/stdout (no LeetCode function signatures — students write full programs).
+
+RULES:
+- Input is plain numbers only. No "nums =" or "[1,2,3]" notation.
+- Arrays on one line space-separated. Multiple values on separate lines.
+- Two Sum example: line1="2 7 11 15" (array), line2="9" (target) -> output="0 1"
+- Single array example: line1="4 1 2 1 2" -> output="4"
+- inputFormat: describe exactly how to read stdin
+- outputFormat: describe exactly what to print
+
+Return ONLY valid JSON (no markdown, no explanation):
+{
+  "desc": "Clear problem description using backticks for variable names like \`nums\`.",
+  "inputFormat": "First line: n space-separated integers.",
+  "outputFormat": "Print the answer on a single line.",
+  "examples": [
+    {"input": "4 1 2 1 2", "output": "4", "explanation": "4 appears only once"},
+    {"input": "2 2 1", "output": "1", "explanation": "1 appears only once"}
+  ],
+  "constraints": ["1 <= n <= 3*10^4", "Each element appears twice except one"],
+  "pythonStarter": "nums = list(map(int, input().split()))\\n# Write your solution here\\n",
+  "jsStarter": "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\\n// Write your solution here\\n",
+  "tsStarter": "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\\n// Write your solution here\\n",
+  "javaStarter": "import java.util.*;\\npublic class Main {\\n    public static void main(String[] args) {\\n        Scanner sc = new Scanner(System.in);\\n        int[] nums = Arrays.stream(sc.nextLine().split(\\" \\")).mapToInt(Integer::parseInt).toArray();\\n        // Write your solution here\\n    }\\n}",
+  "cppStarter": "#include<bits/stdc++.h>\\nusing namespace std;\\nint main(){\\n    int x; vector<int> nums;\\n    while(cin>>x) nums.push_back(x);\\n    // Write your solution here\\n    return 0;\\n}",
+  "testCases": [
+    {"stdin": "4 1 2 1 2", "expected": "4", "isPublic": true},
+    {"stdin": "2 2 1", "expected": "1", "isPublic": true},
+    {"stdin": "1", "expected": "1", "isPublic": false},
+    {"stdin": "4 2 3 3 2", "expected": "4", "isPublic": false},
+    {"stdin": "7 3 5 3 5 7 9", "expected": "9", "isPublic": false}
+  ]
+}
+
+CRITICAL: Use the actual correct test cases for "${title}", not the Single Number examples above.
+All stdin values must be plain numbers only.`
+
+  const stripThink = (s: string) => s.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
 
   const call = async (key: string, url: string, model: string) => {
     const r = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
-      body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], temperature: 0.2, max_tokens: 1000 }),
-      signal: AbortSignal.timeout(20000),
+      body: JSON.stringify({
+        model,
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.2,
+        max_tokens: 1200,
+      }),
+      signal: AbortSignal.timeout(25000),
     })
     if (!r.ok) throw new Error("HTTP " + r.status)
     const d = await r.json()
     let raw: string = d.choices?.[0]?.message?.content?.trim() ?? ""
+    raw = stripThink(raw)
     raw = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
     const p = JSON.parse(raw)
-    // Unescape \\n -> real newlines
+    // Unescape \\n -> real newlines in starter code
     for (const k of ["pythonStarter","jsStarter","tsStarter","javaStarter","cppStarter"]) {
       if (typeof p[k] === "string") p[k] = p[k].replace(/\\n/g, "\n").replace(/\\t/g, "    ")
     }
     if (p.testCases) {
       p.testCases = p.testCases.map((tc: any) => ({
-        stdin:    String(tc.stdin ?? tc.script ?? "").replace(/\\n/g, "\n"),
+        stdin:    String(tc.stdin ?? "").replace(/\\n/g, "\n"),
         expected: String(tc.expected ?? ""),
-        isPublic: tc.isPublic !== false,  // default public unless explicitly false
+        isPublic: tc.isPublic !== false,
       }))
     }
     return p
@@ -94,29 +99,31 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
 
   let data: any = null
   if (groqKey) {
-    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.6-27b") } catch {}
+    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.6-27b") } catch (e) {
+      console.error("Groq problem-detail failed:", e)
+    }
   }
   if (!data && openaiKey) {
-    try { data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch {}
+    try { data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch (e) {
+      console.error("OpenAI problem-detail failed:", e)
+    }
   }
   return data
 }
 
-// -- Convert static bank entry + AI data to wire format -----------------------
+// -- Convert static bank entry to wire format ----------------------------------
 function bankToWire(sp: any, title: string, difficulty: string) {
-    // Support both old pythonTest (script) format and new stdin format
-    const tc = (i: number) => sp.testCases?.[i]
+  const tc = (i: number) => sp.testCases?.[i]
   return {
     title,
     difficulty,
     badge: difficulty,
-    desc:          sp.desc          ?? "Solve the " + title + " problem.",
-    inputFormat:   sp.inputFormat   ?? "",
-    outputFormat:  sp.outputFormat  ?? "",
-    constraints:   sp.constraints   ?? [],
-    examples:      sp.examples      ?? [],
-    starters:      sp.starters      ?? {},
-    // 2 public + 3 hidden test cases
+    desc:         sp.desc         ?? "Solve the " + title + " problem.",
+    inputFormat:  sp.inputFormat  ?? "",
+    outputFormat: sp.outputFormat ?? "",
+    constraints:  sp.constraints  ?? [],
+    examples:     sp.examples     ?? [],
+    starters:     sp.starters     ?? {},
     stdin1:    tc(0)?.stdin ?? sp.examples?.[0]?.input ?? "",
     expected1: tc(0)?.expected ?? sp.examples?.[0]?.output ?? "",
     public1:   tc(0)?.isPublic !== false,
@@ -125,7 +132,7 @@ function bankToWire(sp: any, title: string, difficulty: string) {
     public2:   tc(1)?.isPublic !== false,
     stdin3:    tc(2)?.stdin ?? "",
     expected3: tc(2)?.expected ?? "",
-    public3:   tc(2)?.isPublic === true,   // default hidden
+    public3:   tc(2)?.isPublic === true,
     stdin4:    tc(3)?.stdin ?? "",
     expected4: tc(3)?.expected ?? "",
     public4:   tc(3)?.isPublic === true,
@@ -152,7 +159,6 @@ export async function POST(req: Request) {
         title      = meta.title
         difficulty = meta.difficulty
       } else if (body.problemId.startsWith("daily-")) {
-        // Synthetic daily challenge ID - convert back to title
         title = body.problemId
           .replace(/^daily-/, "")
           .replace(/-/g, " ")
@@ -164,59 +170,67 @@ export async function POST(req: Request) {
     }
     if (!title) return NextResponse.json({ error: "title or problemId required" }, { status: 400 })
 
-    // -- 1. Check static bank --------------------------------------------------
+    // -- 1. Static bank --------------------------------------------------------
     const sp = getProblem(title)
-    if (sp && sp.testCases && sp.testCases.length > 0) {
-      // Fully detailed static entry - return immediately
+    if (sp?.testCases?.length) {
       return NextResponse.json({ problem: bankToWire(sp, title, difficulty), fromCache: false, source: "static" })
     }
 
-    // -- 2. Check MongoDB cache ------------------------------------------------
+    // -- 2. MongoDB cache ------------------------------------------------------
     const db = await getDatabase()
     const cacheKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
     const cached = await db.collection("problem_details_v8").findOne({ cacheKey })
-    if (cached?.problem?.stdin1?.trim() && cached?.problem?.stdin3?.trim() &&
-        cached?.problem?.inputFormat?.trim() && cached?.problem?.outputFormat?.trim()) {
+    if (
+      cached?.problem?.stdin1?.trim() &&
+      cached?.problem?.inputFormat?.trim() &&
+      cached?.problem?.outputFormat?.trim()
+    ) {
       return NextResponse.json({ problem: cached.problem, fromCache: true, source: "db" })
     }
 
-    // -- 3. Generate via AI ----------------------------------------------------
+    // -- 3. AI generation ------------------------------------------------------
     const aiData = await generateProblem(title, difficulty)
 
     if (!aiData) {
-      // AI unavailable - return stub with whatever static data we have
-      const stubProblem = sp ? bankToWire(sp, title, difficulty) : {
+      // Return a helpful stub so the editor at least shows something
+      const stub = {
         title, difficulty, badge: difficulty,
-        desc: "Solve the " + title + " problem.",
-        inputFormat: "", outputFormat: "", constraints: [],
-        input: "", output: "", explain: "", input2: "", output2: "",
-        examples: [], starters: {},
-        pythonTest1: "", expectedTest1: "",
-        pythonTest2: "", expectedTest2: "",
-        pythonTest3: "", expectedTest3: "",
-        pythonTest4: "", expectedTest4: "",
+        desc: `Given a ${difficulty.toLowerCase()} problem: ${title}. Read the input, compute the answer, and print it.`,
+        inputFormat: "Read input from stdin as described in the problem.",
+        outputFormat: "Print the answer on a single line.",
+        constraints: [],
+        examples: [],
+        starters: {
+          Python:     "# Read input\n# Write your solution\n# Print output\n",
+          JavaScript: "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\n// Write your solution here\n",
+          TypeScript: "const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n');\n// Write your solution here\n",
+          Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Write your solution here\n    }\n}",
+          "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    // Write your solution here\n    return 0;\n}",
+        },
+        stdin1: "", expected1: "", public1: true,
+        stdin2: "", expected2: "", public2: false,
+        stdin3: "", expected3: "", public3: false,
         static: false,
       }
-      return NextResponse.json({ problem: stubProblem, fromCache: false, source: "stub" })
+      return NextResponse.json({ problem: stub, fromCache: false, source: "stub" })
     }
 
-    // Merge AI data with any existing static data
+    // -- Merge and cache -------------------------------------------------------
     const tc = (i: number) => aiData.testCases?.[i]
     const merged = {
       title, difficulty, badge: difficulty,
-      desc:          aiData.desc          ?? sp?.desc ?? "Solve the " + title + " problem.",
-      inputFormat:   aiData.inputFormat   ?? "",
-      outputFormat:  aiData.outputFormat  ?? aiData.outputDescription ?? "",
-      constraints:   aiData.constraints   ?? sp?.constraints ?? [],
-      examples:      aiData.examples ?? sp?.examples ?? [],
+      desc:         aiData.desc         ?? sp?.desc ?? title,
+      inputFormat:  aiData.inputFormat  ?? "",
+      outputFormat: aiData.outputFormat ?? "",
+      constraints:  aiData.constraints  ?? sp?.constraints ?? [],
+      examples:     aiData.examples     ?? sp?.examples     ?? [],
       starters: {
-        Python:     aiData.pythonStarter ?? sp?.starters?.Python     ?? "arr = list(map(int, input().split()))\n# Write your solution here\n",
-        JavaScript: aiData.jsStarter     ?? sp?.starters?.JavaScript ?? "const arr = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
-        TypeScript: aiData.tsStarter     ?? sp?.starters?.TypeScript ?? "const arr = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
-        Java:       aiData.javaStarter   ?? sp?.starters?.Java       ?? "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] arr = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
-        "C++":      aiData.cppStarter    ?? sp?.starters?.["C++"]    ?? "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> arr;\n    while(cin>>x) arr.push_back(x);\n    // Write your solution here\n    return 0;\n}",
+        Python:     aiData.pythonStarter ?? "nums = list(map(int, input().split()))\n# Write your solution here\n",
+        JavaScript: aiData.jsStarter     ?? "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+        TypeScript: aiData.tsStarter     ?? "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+        Java:       aiData.javaStarter   ?? "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Write your solution here\n    }\n}",
+        "C++":      aiData.cppStarter    ?? "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    // Write your solution here\n    return 0;\n}",
       },
-    // Stdin-based test cases � 2 public + 3 hidden
       stdin1:    tc(0)?.stdin ?? aiData.examples?.[0]?.input ?? "",
       expected1: tc(0)?.expected ?? aiData.examples?.[0]?.output ?? "",
       public1:   tc(0)?.isPublic !== false,
@@ -235,7 +249,6 @@ export async function POST(req: Request) {
       static: false,
     }
 
-    // Cache in MongoDB
     await db.collection("problem_details_v8").updateOne(
       { cacheKey },
       { $set: { cacheKey, problem: merged, generatedAt: new Date() } },

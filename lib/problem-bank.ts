@@ -6994,7 +6994,294 @@ export const PROBLEM_BANK: Record<string, StaticProblem> = {
   testCases: [],
 },
 
-} // end PROBLEM_BANK
+} // end PROBLEM_BANK (stub entries above for LeetCode-style problems)
+
+// -----------------------------------------------------------------------------
+// STDIN/STDOUT STATIC ENTRIES — complete problems with test cases
+// These are returned instantly without any AI call
+// -----------------------------------------------------------------------------
+
+const STDIN_BANK: Record<string, any> = {
+
+"Single Number": {
+  title: "Single Number",
+  difficulty: "Easy",
+  desc: "Given a non-empty array of integers `nums`, every element appears twice except for one. Find that single one. You must implement a solution with linear runtime complexity and use only constant extra space.",
+  inputFormat: "A single line of space-separated integers.",
+  outputFormat: "Print the single number that appears only once.",
+  examples: [
+    { input: "4 1 2 1 2", output: "4", explanation: "4 appears once, all others appear twice." },
+    { input: "2 2 1",     output: "1", explanation: "1 appears once." },
+  ],
+  constraints: ["1 <= nums.length <= 3 * 10^4", "nums.length is odd", "Each element appears twice except one"],
+  starters: {
+    Python:     "nums = list(map(int, input().split()))\n# XOR all numbers — pairs cancel out\nresult = 0\nfor n in nums:\n    result ^= n\nprint(result)\n",
+    JavaScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    TypeScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] nums = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x, res = 0;\n    while(cin >> x) res ^= x;\n    cout << res << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "4 1 2 1 2",           expected: "4",  isPublic: true  },
+    { stdin: "2 2 1",               expected: "1",  isPublic: true  },
+    { stdin: "1",                   expected: "1",  isPublic: false },
+    { stdin: "4 2 3 3 2",           expected: "4",  isPublic: false },
+    { stdin: "7 3 5 3 5 7 9",       expected: "9",  isPublic: false },
+  ],
+},
+
+"Contains Duplicate": {
+  title: "Contains Duplicate",
+  difficulty: "Easy",
+  desc: "Given an integer array `nums`, return `true` if any value appears at least twice in the array, and return `false` if every element is distinct.",
+  inputFormat: "A single line of space-separated integers.",
+  outputFormat: "Print true if any value appears more than once, false otherwise.",
+  examples: [
+    { input: "1 2 3 1", output: "true",  explanation: "1 appears twice." },
+    { input: "1 2 3 4", output: "false", explanation: "All values are distinct." },
+  ],
+  constraints: ["1 <= nums.length <= 10^5", "-10^9 <= nums[i] <= 10^9"],
+  starters: {
+    Python:     "nums = list(map(int, input().split()))\nprint('true' if len(nums) != len(set(nums)) else 'false')\n",
+    JavaScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    TypeScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] nums = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> nums;\n    while(cin >> x) nums.push_back(x);\n    set<int> s(nums.begin(), nums.end());\n    cout << (s.size() < nums.size() ? \"true\" : \"false\") << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "1 2 3 1",         expected: "true",  isPublic: true  },
+    { stdin: "1 2 3 4",         expected: "false", isPublic: true  },
+    { stdin: "1 1 1 3 3 4 3 2 4 2", expected: "true", isPublic: false },
+    { stdin: "5",               expected: "false", isPublic: false },
+    { stdin: "7 7",             expected: "true",  isPublic: false },
+  ],
+},
+
+"Missing Number": {
+  title: "Missing Number",
+  difficulty: "Easy",
+  desc: "Given an array `nums` containing `n` distinct numbers in the range `[0, n]`, return the only number in the range that is missing from the array.",
+  inputFormat: "A single line of space-separated integers.",
+  outputFormat: "Print the missing number.",
+  examples: [
+    { input: "3 0 1",       output: "2", explanation: "n = 3, missing is 2." },
+    { input: "0 1",         output: "2", explanation: "n = 2, missing is 2." },
+    { input: "9 6 4 2 3 5 7 0 1", output: "8", explanation: "n = 9, missing is 8." },
+  ],
+  constraints: ["n == nums.length", "1 <= n <= 10^4", "All numbers are unique"],
+  starters: {
+    Python:     "nums = list(map(int, input().split()))\nn = len(nums)\nprint(n*(n+1)//2 - sum(nums))\n",
+    JavaScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    TypeScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] nums = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> nums;\n    while(cin >> x) nums.push_back(x);\n    int n = nums.size();\n    int expected = n*(n+1)/2;\n    for(int v : nums) expected -= v;\n    cout << expected << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "3 0 1",             expected: "2", isPublic: true  },
+    { stdin: "0 1",               expected: "2", isPublic: true  },
+    { stdin: "9 6 4 2 3 5 7 0 1", expected: "8", isPublic: false },
+    { stdin: "0",                 expected: "1", isPublic: false },
+    { stdin: "1",                 expected: "0", isPublic: false },
+  ],
+},
+
+"Move Zeroes": {
+  title: "Move Zeroes",
+  difficulty: "Easy",
+  desc: "Given an integer array `nums`, move all `0`s to the end of it while maintaining the relative order of the non-zero elements. You must do this in-place without making a copy of the array.",
+  inputFormat: "A single line of space-separated integers.",
+  outputFormat: "Print the rearranged array as space-separated integers.",
+  examples: [
+    { input: "0 1 0 3 12", output: "1 3 12 0 0", explanation: "Zeros moved to end, order preserved." },
+    { input: "0",          output: "0",           explanation: "Single zero." },
+  ],
+  constraints: ["1 <= nums.length <= 10^4", "Integer values in range"],
+  starters: {
+    Python:     "nums = list(map(int, input().split()))\npos = 0\nfor n in nums:\n    if n != 0:\n        nums[pos] = n\n        pos += 1\nfor i in range(pos, len(nums)):\n    nums[i] = 0\nprint(*nums)\n",
+    JavaScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\nconsole.log(nums.join(' '));\n",
+    TypeScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\nconsole.log(nums.join(' '));\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] nums = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n        System.out.println(Arrays.stream(nums).mapToObj(String::valueOf).collect(java.util.stream.Collectors.joining(\" \")));\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> nums;\n    while(cin >> x) nums.push_back(x);\n    // Write your solution here\n    for(int i=0;i<nums.size();i++) cout << nums[i] << (i+1<nums.size()?' ':'\\n');\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "0 1 0 3 12",         expected: "1 3 12 0 0", isPublic: true  },
+    { stdin: "0",                  expected: "0",           isPublic: true  },
+    { stdin: "1 2 3",              expected: "1 2 3",       isPublic: false },
+    { stdin: "0 0 0 1",            expected: "1 0 0 0",     isPublic: false },
+    { stdin: "5 0 3 0 2 0",        expected: "5 3 2 0 0 0", isPublic: false },
+  ],
+},
+
+"Best Time to Buy and Sell Stock": {
+  title: "Best Time to Buy and Sell Stock",
+  difficulty: "Easy",
+  desc: "You are given an array `prices` where `prices[i]` is the price of a given stock on the i-th day. You want to maximize your profit by choosing a single day to buy and a single day in the future to sell. Return the maximum profit. If no profit is possible, return `0`.",
+  inputFormat: "A single line of space-separated integers representing daily prices.",
+  outputFormat: "Print the maximum profit.",
+  examples: [
+    { input: "7 1 5 3 6 4", output: "5", explanation: "Buy on day 2 (price=1), sell on day 5 (price=6). Profit = 6-1 = 5." },
+    { input: "7 6 4 3 1",   output: "0", explanation: "Prices only decrease, no profit possible." },
+  ],
+  constraints: ["1 <= prices.length <= 10^5", "0 <= prices[i] <= 10^4"],
+  starters: {
+    Python:     "prices = list(map(int, input().split()))\nmin_price = float('inf')\nmax_profit = 0\nfor p in prices:\n    min_price = min(min_price, p)\n    max_profit = max(max_profit, p - min_price)\nprint(max_profit)\n",
+    JavaScript: "const prices = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    TypeScript: "const prices = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] prices = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> prices;\n    while(cin >> x) prices.push_back(x);\n    int minP = INT_MAX, profit = 0;\n    for(int p : prices){ minP = min(minP, p); profit = max(profit, p - minP); }\n    cout << profit << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "7 1 5 3 6 4",   expected: "5", isPublic: true  },
+    { stdin: "7 6 4 3 1",     expected: "0", isPublic: true  },
+    { stdin: "2 4 1",         expected: "2", isPublic: false },
+    { stdin: "1 2",           expected: "1", isPublic: false },
+    { stdin: "3 3 3",         expected: "0", isPublic: false },
+  ],
+},
+
+"Climbing Stairs": {
+  title: "Climbing Stairs",
+  difficulty: "Easy",
+  desc: "You are climbing a staircase. It takes `n` steps to reach the top. Each time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?",
+  inputFormat: "A single integer n.",
+  outputFormat: "Print the number of distinct ways to climb to the top.",
+  examples: [
+    { input: "2", output: "2",  explanation: "1+1 or 2. Two ways." },
+    { input: "3", output: "3",  explanation: "1+1+1, 1+2, 2+1. Three ways." },
+  ],
+  constraints: ["1 <= n <= 45"],
+  starters: {
+    Python:     "n = int(input())\nif n <= 2:\n    print(n)\nelse:\n    a, b = 1, 2\n    for _ in range(3, n+1):\n        a, b = b, a+b\n    print(b)\n",
+    JavaScript: "const n = parseInt(require('fs').readFileSync('/dev/stdin','utf8').trim());\n// Write your solution here\n",
+    TypeScript: "const n = parseInt(require('fs').readFileSync('/dev/stdin','utf8').trim());\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int n; cin >> n;\n    if(n <= 2){ cout << n; return 0; }\n    long long a=1, b=2;\n    for(int i=3;i<=n;i++){ long long c=a+b; a=b; b=c; }\n    cout << b << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "2",  expected: "2",  isPublic: true  },
+    { stdin: "3",  expected: "3",  isPublic: true  },
+    { stdin: "1",  expected: "1",  isPublic: false },
+    { stdin: "5",  expected: "8",  isPublic: false },
+    { stdin: "10", expected: "89", isPublic: false },
+  ],
+},
+
+"Maximum Subarray": {
+  title: "Maximum Subarray",
+  difficulty: "Medium",
+  desc: "Given an integer array `nums`, find the subarray with the largest sum, and return its sum. (Kadane's algorithm)",
+  inputFormat: "A single line of space-separated integers.",
+  outputFormat: "Print the maximum subarray sum.",
+  examples: [
+    { input: "-2 1 -3 4 -1 2 1 -5 4", output: "6",  explanation: "Subarray [4,-1,2,1] has the largest sum = 6." },
+    { input: "1",                      output: "1",  explanation: "Only one element." },
+    { input: "5 4 -1 7 8",            output: "23", explanation: "The whole array sums to 23." },
+  ],
+  constraints: ["1 <= nums.length <= 10^5", "-10^4 <= nums[i] <= 10^4"],
+  starters: {
+    Python:     "nums = list(map(int, input().split()))\nmax_sum = cur = nums[0]\nfor n in nums[1:]:\n    cur = max(n, cur + n)\n    max_sum = max(max_sum, cur)\nprint(max_sum)\n",
+    JavaScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    TypeScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] nums = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> nums;\n    while(cin >> x) nums.push_back(x);\n    int maxS = nums[0], cur = nums[0];\n    for(int i=1;i<nums.size();i++){ cur = max(nums[i], cur+nums[i]); maxS = max(maxS, cur); }\n    cout << maxS << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "-2 1 -3 4 -1 2 1 -5 4", expected: "6",   isPublic: true  },
+    { stdin: "1",                      expected: "1",   isPublic: true  },
+    { stdin: "5 4 -1 7 8",            expected: "23",  isPublic: false },
+    { stdin: "-1",                     expected: "-1",  isPublic: false },
+    { stdin: "-2 -1",                  expected: "-1",  isPublic: false },
+  ],
+},
+
+"House Robber": {
+  title: "House Robber",
+  difficulty: "Medium",
+  desc: "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money. You cannot rob two adjacent houses. Given an integer array `nums` representing the amount of money in each house, return the maximum amount you can rob tonight without alerting the police.",
+  inputFormat: "A single line of space-separated non-negative integers.",
+  outputFormat: "Print the maximum amount you can rob.",
+  examples: [
+    { input: "1 2 3 1", output: "4", explanation: "Rob house 1 (1) + house 3 (3) = 4." },
+    { input: "2 7 9 3 1", output: "12", explanation: "Rob house 1 (2) + house 3 (9) + house 5 (1) = 12." },
+  ],
+  constraints: ["1 <= nums.length <= 100", "0 <= nums[i] <= 400"],
+  starters: {
+    Python:     "nums = list(map(int, input().split()))\nif len(nums) == 1:\n    print(nums[0])\nelse:\n    prev2, prev1 = 0, 0\n    for n in nums:\n        prev2, prev1 = prev1, max(prev1, prev2 + n)\n    print(prev1)\n",
+    JavaScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    TypeScript: "const nums = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ').map(Number);\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] nums = Arrays.stream(sc.nextLine().split(\" \")).mapToInt(Integer::parseInt).toArray();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> nums;\n    while(cin >> x) nums.push_back(x);\n    int prev2=0, prev1=0;\n    for(int n : nums){ int cur=max(prev1, prev2+n); prev2=prev1; prev1=cur; }\n    cout << prev1 << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "1 2 3 1",   expected: "4",  isPublic: true  },
+    { stdin: "2 7 9 3 1", expected: "12", isPublic: true  },
+    { stdin: "0",         expected: "0",  isPublic: false },
+    { stdin: "5 3",       expected: "5",  isPublic: false },
+    { stdin: "2 1 1 2",   expected: "4",  isPublic: false },
+  ],
+},
+
+"Reverse Linked List": {
+  title: "Reverse Linked List",
+  difficulty: "Easy",
+  desc: "Given the head of a singly linked list represented as space-separated integers, reverse the list and print the result.",
+  inputFormat: "A single line of space-separated integers representing the linked list values.",
+  outputFormat: "Print the reversed list as space-separated integers.",
+  examples: [
+    { input: "1 2 3 4 5", output: "5 4 3 2 1", explanation: "Reversed linked list." },
+    { input: "1 2",       output: "2 1",         explanation: "Reversed." },
+  ],
+  constraints: ["0 <= number of nodes <= 5000", "-5000 <= Node.val <= 5000"],
+  starters: {
+    Python:     "vals = list(map(int, input().split()))\nprint(*reversed(vals))\n",
+    JavaScript: "const vals = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ');\nconsole.log(vals.reverse().join(' '));\n",
+    TypeScript: "const vals = require('fs').readFileSync('/dev/stdin','utf8').trim().split(' ');\nconsole.log(vals.reverse().join(' '));\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] parts = sc.nextLine().trim().split(\" \");\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    int x; vector<int> v;\n    while(cin >> x) v.push_back(x);\n    reverse(v.begin(), v.end());\n    for(int i=0;i<v.size();i++) cout << v[i] << (i+1<v.size()?' ':'\\n');\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "1 2 3 4 5", expected: "5 4 3 2 1", isPublic: true  },
+    { stdin: "1 2",       expected: "2 1",         isPublic: true  },
+    { stdin: "1",         expected: "1",            isPublic: false },
+    { stdin: "5 4 3 2 1", expected: "1 2 3 4 5",   isPublic: false },
+    { stdin: "0 0 0",     expected: "0 0 0",        isPublic: false },
+  ],
+},
+
+"Valid Parentheses": {
+  title: "Valid Parentheses",
+  difficulty: "Easy",
+  desc: "Given a string `s` containing just the characters `(`, `)`, `{`, `}`, `[` and `]`, determine if the input string is valid. An input string is valid if: open brackets must be closed by the same type of brackets, and open brackets must be closed in the correct order.",
+  inputFormat: "A single line containing the bracket string.",
+  outputFormat: "Print true if valid, false otherwise.",
+  examples: [
+    { input: "()", output: "true", explanation: "Matched pair." },
+    { input: "()[]{}", output: "true", explanation: "All pairs matched." },
+    { input: "(]", output: "false", explanation: "Mismatched brackets." },
+  ],
+  constraints: ["1 <= s.length <= 10^4", "s consists of parentheses only '()[]{}'"],
+  starters: {
+    Python:     "s = input().strip()\nstack = []\nmap_ = {')':'(', '}':'{', ']':'['}\nfor c in s:\n    if c in '([{':\n        stack.append(c)\n    elif not stack or stack[-1] != map_[c]:\n        print('false')\n        exit()\n    else:\n        stack.pop()\nprint('true' if not stack else 'false')\n",
+    JavaScript: "const s = require('fs').readFileSync('/dev/stdin','utf8').trim();\n// Write your solution here\n",
+    TypeScript: "const s = require('fs').readFileSync('/dev/stdin','utf8').trim();\n// Write your solution here\n",
+    Java:       "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s = sc.nextLine().trim();\n        // Write your solution here\n    }\n}",
+    "C++":      "#include<bits/stdc++.h>\nusing namespace std;\nint main(){\n    string s; cin >> s;\n    stack<char> st;\n    for(char c : s){\n        if(c=='('||c=='['||c=='{') st.push(c);\n        else {\n            if(st.empty()) { cout << \"false\"; return 0; }\n            char t = st.top(); st.pop();\n            if((c==')'&&t!='(')||(c==']'&&t!='[')||(c=='}'&&t!='{')){ cout << \"false\"; return 0; }\n        }\n    }\n    cout << (st.empty() ? \"true\" : \"false\") << endl;\n    return 0;\n}",
+  },
+  testCases: [
+    { stdin: "()",       expected: "true",  isPublic: true  },
+    { stdin: "()[]{}", expected: "true",  isPublic: true  },
+    { stdin: "(]",       expected: "false", isPublic: false },
+    { stdin: "([)]",     expected: "false", isPublic: false },
+    { stdin: "{[]}",     expected: "true",  isPublic: false },
+  ],
+},
+
+} // end STDIN_BANK
+
+// Merge STDIN_BANK into PROBLEM_BANK at runtime
+Object.assign(PROBLEM_BANK, STDIN_BANK)
+
+
 
 // -----------------------------------------------------------------------------
 // Lookup helper - returns problem by title (case-insensitive)
