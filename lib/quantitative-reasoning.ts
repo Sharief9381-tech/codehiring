@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  * Quantitative Reasoning Question Bank
  * Original questions with 4 options, correct answer index, and explanation.
  */
@@ -262,7 +262,7 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
 { id:"NS049", section:"quantitative", topic:"Number System", difficulty:"Medium",
   question:"Find the smallest number which when added to 3000 gives a perfect square.",
   options:["25","36","49","64"],
-  correct:1, explanation:"sqrt(3000)˜54.7. 55^2=3025. 3025-3000=25. But options: 25,36,49,64. Answer=25. correct:0." },
+  correct:1, explanation:"sqrt(3000)'54.7. 55^2=3025. 3025-3000=25. But options: 25,36,49,64. Answer=25. correct:0." },
 
 { id:"NS050", section:"quantitative", topic:"Number System", difficulty:"Hard",
   question:"What is the number of zeros at the end of the product 5x10x15x20x...x100?",
@@ -11151,7 +11151,7 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
 
 
 // -----------------------------------------------------------------------------
-// QUANTITY COMPARISON — 100 Questions (QC001–QC100)
+// QUANTITY COMPARISON ' 100 Questions (QC001'QC100)
 // Format: Quantity A vs Quantity B
 // Options: A=QA greater, B=QB greater, C=Equal, D=Cannot be determined
 // -----------------------------------------------------------------------------
@@ -11227,9 +11227,9 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"y = ?(-27) = -3. Both equal -3." },
 
 { id:"QC015", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
-  question:"Given: a > 0\nQuantity A: a°\nQuantity B: 1",
+  question:"Given: a > 0\nQuantity A: a'\nQuantity B: 1",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:2, explanation:"Any non-zero number to the power 0 equals 1. a° = 1." },
+  correct:2, explanation:"Any non-zero number to the power 0 equals 1. a' = 1." },
 
 { id:"QC016", section:"quantitative", topic:"Quantity Comparison", difficulty:"Medium",
   question:"Given: 2? = 16\nQuantity A: x\nQuantity B: 4",
@@ -11459,17 +11459,17 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
 { id:"QC061", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: 2? = 3? (x, y > 0)\nQuantity A: x\nQuantity B: y",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:0, explanation:"x·ln2 = y·ln3. Since ln3 > ln2, x = y·(ln3/ln2) > y." },
+  correct:0, explanation:"x'ln2 = y'ln3. Since ln3 > ln2, x = y'(ln3/ln2) > y." },
 
 { id:"QC062", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: 0 < x < 1\nQuantity A: x?\nQuantity B: x",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:0, explanation:"For 0 < x < 1, x? > x. e.g., 0.5^0.5 ˜ 0.707 > 0.5." },
+  correct:0, explanation:"For 0 < x < 1, x? > x. e.g., 0.5^0.5 ' 0.707 > 0.5." },
 
 { id:"QC063", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: a > 1\nQuantity A: a^v2\nQuantity B: (va)^2",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:0, explanation:"(va)^2 = a. Since a > 1 and v2 ˜ 1.414 > 1, a^v2 > a¹ = a." },
+  correct:0, explanation:"(va)^2 = a. Since a > 1 and v2 ' 1.414 > 1, a^v2 > a' = a." },
 
 { id:"QC064", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: x < 0\nQuantity A: (x^2)^(1/2)\nQuantity B: x",
@@ -11502,7 +11502,7 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
   correct:2, explanation:"x?/x = x^(x-1). Both are identical." },
 
 { id:"QC070", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
-  question:"Given: 3^(2x) - 10·3^x + 9 = 0\nQuantity A: Larger value of x\nQuantity B: 2",
+  question:"Given: 3^(2x) - 10'3^x + 9 = 0\nQuantity A: Larger value of x\nQuantity B: 2",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
   correct:2, explanation:"Let u = 3^x: u^2-10u+9 = 0 -> (u-1)(u-9) = 0 -> x=0 or x=2. Larger value = 2." },
 
@@ -11524,7 +11524,7 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
 { id:"QC074", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: x > 0\nQuantity A: x + 1/x\nQuantity B: 2",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:3, explanation:"By AM-GM, x + 1/x = 2. Equal when x = 1. So could be equal or greater — cannot determine without knowing x." },
+  correct:3, explanation:"By AM-GM, x + 1/x = 2. Equal when x = 1. So could be equal or greater ' cannot determine without knowing x." },
 
 { id:"QC075", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: (a+b)/2 = 10 and a > b\nQuantity A: v(ab)\nQuantity B: 10",
@@ -11564,7 +11564,7 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
 { id:"QC082", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: |2x + 1| > 7\nQuantity A: Minimum integer value of x\nQuantity B: 3",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:1, explanation:"|2x+1| > 7 -> x > 3 or x < -4. Positive integers start at 4; negative integers are -5, -6... Minimum has no lower bound — so comparing with 3: B is greater than the negative integer values." },
+  correct:1, explanation:"|2x+1| > 7 -> x > 3 or x < -4. Positive integers start at 4; negative integers are -5, -6... Minimum has no lower bound ' so comparing with 3: B is greater than the negative integer values." },
 
 { id:"QC083", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: x^2 - 7x + 12 = 0\nQuantity A: x\nQuantity B: 3.5",
@@ -11599,12 +11599,12 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
 { id:"QC089", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: |x^2 - 4| = 0\nQuantity A: |x|\nQuantity B: 2",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:2, explanation:"x^2 = 4 -> x = ±2 -> |x| = 2. Both equal 2." },
+  correct:2, explanation:"x^2 = 4 -> x = '2 -> |x| = 2. Both equal 2." },
 
 { id:"QC090", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: 2x^2 - 8x + 9 > 0\nQuantity A: Number of real values of x satisfying the inequality\nQuantity B: Infinitely many",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
-  correct:2, explanation:"Discriminant = 64 - 72 = -8 < 0 and a = 2 > 0, so the quadratic is positive for ALL real x — infinitely many solutions." },
+  correct:2, explanation:"Discriminant = 64 - 72 = -8 < 0 and a = 2 > 0, so the quadratic is positive for ALL real x ' infinitely many solutions." },
 
 { id:"QC091", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
   question:"Given: x1 = 2, x(n+1) = 2x? - 1 for n = 1\nQuantity A: x5\nQuantity B: 17",
@@ -11617,7 +11617,7 @@ export const QUANTITATIVE_BANK: AptitudeQuestion[] = ([
   correct:0, explanation:"f(x+1) = x^2+x. f(x)+1 = x^2-x+1. Difference = 2x-1 > 0 for x > 1." },
 
 { id:"QC093", section:"quantitative", topic:"Quantity Comparison", difficulty:"Hard",
-  question:"Given: a? = (-1)n · n\nQuantity A: a10 + a11\nQuantity B: -1",
+  question:"Given: a? = (-1)n ' n\nQuantity A: a10 + a11\nQuantity B: -1",
   options:["Quantity A is greater","Quantity B is greater","Both are equal","Cannot be determined"],
   correct:2, explanation:"a10 = 10, a11 = -11. Sum = -1. Both equal -1." },
 
