@@ -169,7 +169,7 @@ Return ONLY valid JSON:
       method: "POST",
       headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "qwen/qwen3.8-27b",
+        model: "qwen/qwen3.6-27b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.4,
         max_tokens: 4000,

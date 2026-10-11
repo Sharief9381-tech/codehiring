@@ -69,7 +69,7 @@ Evaluate the code and respond ONLY with a valid JSON object (no markdown, no exp
     // 2. Groq fallback
     if (!data && groqKey) {
       try {
-        data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.8-27b")
+        data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.6-27b")
       } catch { /* fall through */ }
     }
 

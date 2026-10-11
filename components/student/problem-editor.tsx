@@ -282,6 +282,13 @@ export default function ProblemEditor({ problemId }: Props) {
       }
     } catch {}
 
+    // Synthetic IDs (prep-*, daily-*) that aren't in PROBLEM_MAP should not hit the API
+    // — their data must come from sessionStorage. If missing, show a placeholder.
+    if (problemId.startsWith("prep-")) {
+      setProblem({ title: "Loading problem…", desc: "Problem data not found. Please go back and try again.", difficulty: "Medium", constraints: [], examples: [], static: true })
+      return
+    }
+
     fetch("/api/student/problem-detail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -1,10 +1,10 @@
 /**
- * Groq AI client - uses qwen/qwen3.8-27b (free, fast)
+ * Groq AI client - uses qwen/qwen3.6-27b (free, fast)
  * Get your free key at https://console.groq.com
  */
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-const MODEL = "qwen/qwen3.8-27b"
+const MODEL = "qwen/qwen3.6-27b"
 
 export async function groqChat(
   systemPrompt: string,

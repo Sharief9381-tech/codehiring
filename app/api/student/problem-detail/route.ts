@@ -94,7 +94,7 @@ async function generateProblem(title: string, difficulty: string): Promise<any> 
 
   let data: any = null
   if (groqKey) {
-    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.8-27b") } catch {}
+    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.6-27b") } catch {}
   }
   if (!data && openaiKey) {
     try { data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch {}

@@ -1,6 +1,6 @@
 /**
  * LLM Caller for Question Generation
- * Tries OpenAI first, falls back to Groq qwen/qwen3.8-27b.
+ * Tries OpenAI first, falls back to Groq qwen/qwen3.6-27b.
  */
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
@@ -39,14 +39,14 @@ export async function callLLM(
     } catch {}
   }
 
-  // Groq: qwen/qwen3.8-27b (free, works well for structured JSON)
+  // Groq: qwen/qwen3.6-27b (free, works well for structured JSON)
   const groqKey = process.env.GROQ_API_KEY
   if (groqKey) {
     const res = await fetch(GROQ_URL, {
       method:  "POST",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
       body:    JSON.stringify({
-        model:       "qwen/qwen3.8-27b",
+        model:       "qwen/qwen3.6-27b",
         messages,
         temperature: 0.7,
         max_tokens:  maxTokens,
@@ -56,7 +56,7 @@ export async function callLLM(
     if (res.ok) {
       const d    = await res.json()
       const text = d.choices?.[0]?.message?.content?.trim()
-      if (text && text.length > 20) return { content: text, model: "qwen/qwen3.8-27b" }
+      if (text && text.length > 20) return { content: text, model: "qwen/qwen3.6-27b" }
     }
     const err = await res.text().catch(() => "unknown")
     throw new Error(`Groq API error: ${err.slice(0, 100)}`)

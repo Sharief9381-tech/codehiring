@@ -1139,18 +1139,35 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     const syntheticId = `prep-${company.id}-${curSection}-q${codingIdx}`
     if (q) {
       try {
+        // Build inputFormat / outputFormat from the example if not provided by AI
+        const exIn  = q.example?.input  ?? ""
+        const exOut = q.example?.output ?? ""
+        const exExp = q.example?.explanation ?? ""
+
+        // Derive a readable inputFormat hint from the example input
+        const derivedInputFormat = exIn
+          ? `Read input as described in the problem. Example input: ${exIn}`
+          : "Read input from stdin as described in the problem statement."
+        const derivedOutputFormat = exOut
+          ? `Print the result. Example output: ${exOut}`
+          : "Print the answer on a single line."
+
         const problemData = {
-          title:       q.title,
-          difficulty:  q.difficulty,
-          badge:       q.difficulty,
-          desc:        q.statement,
-          inputFormat: "",
-          outputFormat: "",
-          constraints: q.constraints ? [q.constraints] : [],
-          examples:    q.example ? [{ input: q.example.input, output: q.example.output, explanation: q.example.explanation }] : [],
-          // stdin-based test cases — clean display format to plain stdin numbers
-          stdin1:    cleanStdin(q.example?.input  ?? ""),
-          expected1: cleanStdin(q.example?.output ?? ""),
+          title:        q.title,
+          difficulty:   q.difficulty,
+          badge:        q.difficulty,
+          desc:         q.statement ?? q.title,
+          inputFormat:  derivedInputFormat,
+          outputFormat: derivedOutputFormat,
+          constraints:  q.constraints
+            ? (Array.isArray(q.constraints) ? q.constraints : [q.constraints])
+            : [],
+          examples: exIn
+            ? [{ input: exIn, output: exOut, explanation: exExp }]
+            : [],
+          // stdin-based test cases — cleaned to plain numbers for execution
+          stdin1:    cleanStdin(exIn),
+          expected1: cleanStdin(exOut),
           public1:   true,
           stdin2: "", expected2: "", public2: false,
           stdin3: "", expected3: "", public3: false,

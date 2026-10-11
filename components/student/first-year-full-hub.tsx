@@ -106,25 +106,9 @@ function TopicCodingProblems({ completedChallenges }: { completedChallenges: str
       const data = await res.json()
       const p    = data.problem
       if (p) {
-        // Store in sessionStorage - so the editor page can read it
-        const key = `problem_${q.id}`
-        sessionStorage.setItem(key, JSON.stringify({
-          title:        p.title        ?? q.title,
-          desc:         p.desc         ?? "",
-          inputFormat:  p.inputFormat  ?? "",
-          outputFormat: p.outputFormat ?? "",
-          constraints:  p.constraints  ?? [],
-          input:        p.input        ?? "",
-          output:       p.output       ?? "",
-          input2:       p.input2       ?? "",
-          output2:      p.output2      ?? "",
-          input3:       p.input3       ?? "",
-          output3:      p.output3      ?? "",
-          input4:       p.input4       ?? "",
-          output4:      p.output4      ?? "",
-          explain:      p.explain      ?? "",
-          badge:        q.difficulty,
-        }))
+        // Store in sessionStorage using the v10 key so ProblemEditor can read it directly
+        const key = `problem_v10_${q.id}`
+        sessionStorage.setItem(key, JSON.stringify(p))
       }
     } catch {}
 // Navigate to clean URL: /student/problems/two-sum

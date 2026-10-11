@@ -11,7 +11,7 @@ for (const line of env.split("\n")) {
 }
 
 const GROQ_KEY = process.env.GROQ_API_KEY
-const MODEL = "qwen/qwen3.8-27b"
+const MODEL = "qwen/qwen3.6-27b"
 
 const prompt = `Generate 3 MCQ questions for Xoriant Quantitative Aptitude test.
 Topics: Percentages, Time & Work, Speed & Distance
