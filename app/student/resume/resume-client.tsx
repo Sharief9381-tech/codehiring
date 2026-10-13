@@ -293,7 +293,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                   </div>
                 </div>
                 <div className="space-y-1.5 mb-4">
-                  {["ATS score + keyword gaps", "Bullet-by-bullet grading + rewrites", "Section scores (A-F)", "Job match % for 3 roles"].map(f => (
+                  {["Resume-only ATS readability estimate", "Bullet-by-bullet grading + rewrites", "Section scores (A–F)", "Evidence-based improvement plan"].map(f => (
                     <div key={f} className="flex items-center gap-2 text-xs text-muted-foreground">
                       <CheckCircle2 className="h-3.5 w-3.5 text-violet-400 shrink-0" />{f}
                     </div>
@@ -318,7 +318,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                   <Brain className="h-8 w-8 text-primary" />
                 </div>
                 <p className="font-bold text-foreground text-lg mb-1">Smart Resume Analysis</p>
-                <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">Upload your resume and click "Analyse Resume" to get a deep ResumeWorded-style report - ATS score, bullet grading, job match, and more.</p>
+                <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">Upload your resume and click "Analyse Resume" to get a resume-only report with a quality score, ATS readability estimate, bullet grading, and practical improvements. No job description is needed.</p>
               </div>
             )}
 
@@ -329,7 +329,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                   <Sparkles className="absolute inset-0 m-auto h-7 w-7 text-primary" />
                 </div>
                 <p className="font-bold text-foreground text-lg mb-1">Analysing your resume…</p>
-                <p className="text-sm text-muted-foreground">ATS check . Section grading . Bullet rewrites . Job matching</p>
+                <p className="text-sm text-muted-foreground">Resume quality . ATS readability . Bullet rewrites . Priority improvements</p>
               </div>
             )}
 
@@ -340,7 +340,7 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                   {[
                     { label: "Overall", value: a.overallScore ?? 0 },
                     { label: "ATS Score", value: a.atsScore ?? 0 },
-                    { label: "Interview Ready", value: a.interviewReadiness ?? 0 },
+                    { label: "Resume Readiness", value: a.interviewReadiness ?? 0 },
                   ].map(s => {
                     const c = s.value >= 80 ? "#10b981" : s.value >= 60 ? "#f59e0b" : "#ef4444"
                     return (
@@ -394,11 +394,12 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
 
                 {/* ATS Keywords */}
                 <div className="rounded-xl border border-border bg-card/50 p-4">
-                  <p className="text-sm font-semibold text-foreground mb-1">ATS Keywords</p>
+                  <p className="text-sm font-semibold text-foreground mb-1">Resume Keywords</p>
+                  <p className="text-[10px] text-muted-foreground mb-3">No job description was provided. These are text observations, not required keywords or a role-match score. Add a term only if it accurately describes your skills.</p>
                   {a.atsReason && <p className="text-xs text-muted-foreground mb-3 italic">{a.atsReason}</p>}
                   <div className="space-y-2">
                     <div><p className="text-[10px] font-bold text-emerald-400 mb-1.5">v FOUND IN RESUME</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.found ?? []).map((k: string) => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{k}</span>)}</div></div>
-                    <div><p className="text-[10px] font-bold text-red-400 mb-1.5">✗ MISSING - ADD THESE</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.missing ?? []).map((k: string) => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">{k}</span>)}</div></div>
+                    <div><p className="text-[10px] font-bold text-red-400 mb-1.5">✗ OPTIONAL TERMS TO REVIEW</p><div className="flex flex-wrap gap-1.5">{(a.atsKeywords?.missing ?? []).map((k: string) => <span key={k} className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">{k}</span>)}</div></div>
                   </div>
                 </div>
 
@@ -472,29 +473,6 @@ export function ResumeClient({ student: init, autoAnalyze = false }: { student: 
                                 <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-white/5 text-muted-foreground border border-border">{w.effort} effort</span>
                               </div>
                             </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                {/* Job matches */}
-                {(a.jobMatches ?? []).length > 0 && (
-                  <div className="rounded-xl border border-border bg-card/50 p-4">
-                    <p className="text-sm font-semibold text-foreground mb-3">Job Match</p>
-                    <div className="space-y-3">
-                      {a.jobMatches.map((j: any, i: number) => {
-                        const c = j.match >= 80 ? "#10b981" : j.match >= 60 ? "#f59e0b" : "#ef4444"
-                        return (
-                          <div key={i} className="rounded-xl border border-border bg-card/30 p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <div><p className="text-sm font-semibold text-foreground">{j.role}</p><p className="text-xs text-muted-foreground">{j.company}</p></div>
-                              <span className="text-2xl font-black tabular-nums" style={{ color: c }}>{j.match}%</span>
-                            </div>
-                            <div className="h-1.5 rounded-full bg-white/10 mb-2"><div className="h-full rounded-full" style={{ width: `${j.match}%`, background: c }} /></div>
-                            <p className="text-xs text-muted-foreground">{j.reason}</p>
-                            {j.howToClose && <p className="text-[10px] text-violet-400 mt-1 italic">{"->"} {j.howToClose}</p>}
                           </div>
                         )
                       })}
