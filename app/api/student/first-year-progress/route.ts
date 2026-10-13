@@ -233,13 +233,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, newStreak, totalXP: progress.totalXP ?? 0 })
     }
 
-    // Clear all dailyActivity (fresh start — keeps XP, badges, solved problems)
+    // Clear all dailyActivity (fresh start — keeps XP, badges, solved problems, streak)
     if (action === "reset-activity") {
       await db.collection(COLLECTION).updateOne(
         { userId: uid },
-        { $set: { dailyActivity: {}, streak: 0, lastActivity: null, updatedAt: new Date() } }
+        { $set: { dailyActivity: {}, updatedAt: new Date() } }
       )
-      return NextResponse.json({ success: true, message: "Activity cleared. Fresh start from today." })
+      return NextResponse.json({ success: true, message: "Coding activity cleared. Fresh start from today." })
     }
 
     return NextResponse.json({ success: true })
