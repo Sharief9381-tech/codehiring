@@ -11,6 +11,7 @@ interface ActivityHeatmapProps {
   recentActivity?: { platform: string; timestamp: string | Date; type: string }[]
   streak?: number
   ghContributions?: number
+  dailyActivity?: Record<string, number>   // "YYYY-MM-DD" -> count from CodeHiring
 }
 
 interface DayData {
@@ -31,6 +32,7 @@ const PLATFORM_COLORS: Record<string, string> = {
   atcoder:      "#8b5cf6",
   spoj:         "#f97316",
   kattis:       "#a855f7",
+  codehiring:   "#7c3aed",    // internal platform
 }
 
 const PLATFORM_LABELS: Record<string, string> = {
@@ -44,6 +46,7 @@ const PLATFORM_LABELS: Record<string, string> = {
   atcoder:      "AtCoder",
   spoj:         "SPOJ",
   kattis:       "Kattis",
+  codehiring:   "CodeHiring",  // internal platform
 }
 
 const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -67,7 +70,8 @@ function buildMap(
   linkedPlatforms: Record<string, any>,
   lcCalendar?: Record<string, number>,
   cfSubmissions?: { creationTimeSeconds: number; verdict: string }[],
-  recentActivity?: { platform: string; timestamp: string | Date; type: string }[]
+  recentActivity?: { platform: string; timestamp: string | Date; type: string }[],
+  dailyActivity?: Record<string, number>
 ): Record<string, DayData> {
 
   // Build Jan 1 -> Dec 31 of current year
@@ -171,6 +175,17 @@ function buildMap(
     })
   }
 
+  // Internal CodeHiring activity: problems solved, challenges, assessments
+  if (dailyActivity) {
+    Object.entries(dailyActivity).forEach(([dateStr, cnt]) => {
+      const k = dateStr.slice(0, 10)
+      if (map[k] && cnt > 0) {
+        map[k].platforms.codehiring = (map[k].platforms.codehiring || 0) + cnt
+        map[k].total += cnt
+      }
+    })
+  }
+
   return map
 }
 
@@ -180,11 +195,12 @@ export function ActivityHeatmap({
   cfSubmissions,
   recentActivity = [],
   streak = 0,
+  dailyActivity = {},
 }: ActivityHeatmapProps) {
   const [tooltip, setTooltip] = useState<{ day: DayData; x: number; y: number } | null>(null)
 
   const { weeks, months, totalActive, totalSubmissions } = useMemo(() => {
-    const map = buildMap(linkedPlatforms, lcCalendar, cfSubmissions, recentActivity)
+    const map = buildMap(linkedPlatforms, lcCalendar, cfSubmissions, recentActivity, dailyActivity)
     const allDays = Object.values(map).sort((a, b) => a.date.getTime() - b.date.getTime())
 
     // Pad the first week so Jan 1 starts on the correct weekday

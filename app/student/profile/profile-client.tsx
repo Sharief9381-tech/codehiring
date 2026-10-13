@@ -147,9 +147,9 @@ function SkillRadar({ skills }: { skills: string[] }) {
 // --- Profile View -------------------------------------------------------------
 function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
   const [ranking, setRanking] = useState<any>(null)
+  const [dailyActivity, setDailyActivity] = useState<Record<string, number>>({})
 
   const agg      = user?.aggregatedStats ?? user?.stats ?? {}
-  // Compute total problems directly from live platform stats
   const total    = Object.values(user?.linkedPlatforms ?? {}).reduce((sum: number, pd: any) => {
     if (!pd?.stats) return sum
     return sum + (pd.stats.totalSolved || pd.stats.problemsSolved || pd.stats.completedExercises || 0)
@@ -171,6 +171,11 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
 
   useEffect(() => {
     fetch("/api/student/ranking").then(r => r.json()).then(setRanking).catch(() => {})
+    // Fetch internal activity for the heatmap
+    fetch("/api/student/first-year-progress")
+      .then(r => r.json())
+      .then(d => { if (d.dailyActivity) setDailyActivity(d.dailyActivity) })
+      .catch(() => {})
   }, [])
 
   const placementProb = Math.min(95, Math.round(
@@ -345,6 +350,7 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
           <ActivityHeatmap
             linkedPlatforms={user?.linkedPlatforms ?? {}}
             streak={str}
+            dailyActivity={dailyActivity}
           />
         </motion.div>
 
