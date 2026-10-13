@@ -345,7 +345,25 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
           className="rounded-2xl border border-border bg-card p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-semibold text-foreground">Coding Activity</h3>
-            <span className="text-xs border border-border rounded-lg px-2 py-1 text-muted-foreground">365 Days</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs border border-border rounded-lg px-2 py-1 text-muted-foreground">365 Days</span>
+              <button
+                onClick={async () => {
+                  if (!confirm("This will clear all your CodeHiring activity data and start fresh from today. External platform data (LeetCode, GitHub etc.) is unaffected. Continue?")) return
+                  await fetch("/api/student/first-year-progress", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "reset-activity" }),
+                  })
+                  setDailyActivity({})
+                  toast.success("Activity cleared. Fresh start from today!")
+                }}
+                className="text-xs text-muted-foreground hover:text-red-400 border border-border hover:border-red-400/40 rounded-lg px-2 py-1 transition-colors"
+                title="Clear activity data and start fresh"
+              >
+                Reset
+              </button>
+            </div>
           </div>
           <ActivityHeatmap
             linkedPlatforms={user?.linkedPlatforms ?? {}}

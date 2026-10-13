@@ -11,6 +11,8 @@
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 import { UserModel } from "@/lib/models/user"
+import pdf from "pdf-parse"
+import mammoth from "mammoth"
 // pdf-parse and mammoth are loaded dynamically to avoid build-time file-system errors
 
 const APILAYER_URL = "https://api.apilayer.com/resume_parser/upload"

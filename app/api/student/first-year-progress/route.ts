@@ -233,6 +233,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, newStreak, totalXP: progress.totalXP ?? 0 })
     }
 
+    // Clear all dailyActivity (fresh start — keeps XP, badges, solved problems)
+    if (action === "reset-activity") {
+      await db.collection(COLLECTION).updateOne(
+        { userId: uid },
+        { $set: { dailyActivity: {}, streak: 0, lastActivity: null, updatedAt: new Date() } }
+      )
+      return NextResponse.json({ success: true, message: "Activity cleared. Fresh start from today." })
+    }
+
     return NextResponse.json({ success: true })
   } catch (err) {
     console.error("first-year-progress POST error:", err)
