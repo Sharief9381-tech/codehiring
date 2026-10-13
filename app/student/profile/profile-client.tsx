@@ -302,21 +302,36 @@ function ProfileView({ user, onEdit }: { user: any; onEdit: () => void }) {
             {[
               { icon: Mail,        label: "Email",        val: user?.email },
               { icon: Phone,       label: "Phone",        val: user?.phone },
-              { icon: Linkedin,    label: "LinkedIn",     val: user?.linkedinUrl,  link: true },
-              { icon: Github,      label: "GitHub",       val: user?.githubUrl,    link: true },
+              { icon: Linkedin,    label: "LinkedIn",     val: user?.linkedinUrl,  link: true, base: "https://linkedin.com/in/" },
+              { icon: Github,      label: "GitHub",       val: user?.githubUrl,    link: true, base: "https://github.com/" },
               { icon: CheckCircle2,label: "Open to Work", val: user?.isOpenToWork === true ? "Yes" : user?.isOpenToWork === false ? "No" : undefined },
               { icon: Briefcase,   label: "Top Skills",   val: (user?.skills ?? []).slice(0, 2).join(" / ") || undefined },
               { icon: MapPin,      label: "Location",     val: user?.location },
-            ].filter(r => r.val).map(({ icon: Icon, label, val, link }: any) => (
+            ].filter(r => r.val).map(({ icon: Icon, label, val, link, base }: any) => {
+              // Build a proper href: if val is already a full URL use it,
+              // otherwise prepend the base domain (e.g. github.com/)
+              const buildHref = (v: string, b?: string) => {
+                const s = String(v).trim()
+                if (s.startsWith("http://") || s.startsWith("https://")) return s
+                if (b) {
+                  // strip any accidental domain prefix the user may have typed
+                  const clean = s.replace(/^(https?:\/\/)?(www\.)?(linkedin\.com\/in\/|github\.com\/)/i, "")
+                  return b + clean
+                }
+                return "https://" + s
+              }
+              const displayVal = String(val).replace(/^https?:\/\/(www\.)?/i, "")
+              return (
               <div key={label} className="flex items-start gap-2.5 text-xs">
                 <Icon className="h-3.5 w-3.5 text-muted-foreground mt-0.5 shrink-0" />
                 <span className="text-muted-foreground w-20 shrink-0">{label}</span>
                 {link
-                  ? <a href={String(val)} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate flex-1">{String(val).replace("https://", "")}</a>
+                  ? <a href={buildHref(val, base)} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate flex-1">{displayVal}</a>
                   : <span className="text-foreground font-medium flex-1">{String(val)}</span>
                 }
               </div>
-            ))}
+              )
+            })}
           </div>
         </motion.div>
 
