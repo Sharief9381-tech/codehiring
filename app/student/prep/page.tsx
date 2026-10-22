@@ -12,7 +12,7 @@ import {
 } from "lucide-react"
 import { HiringReport } from "@/components/student/hiring-report"
 import { ProctoredShell, type ViolationLog } from "@/components/student/proctor"
-import { AssessmentLeaderboard, AssessmentHistoryPage } from "@/components/student/assessment-history"
+import { AssessmentLeaderboard } from "@/components/student/assessment-history"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
 import { VoiceCoach } from "@/components/student/voice-coach"
@@ -1792,7 +1792,6 @@ export default function PrepHubPage() {
   const [activeTopic, setActiveTopic] = useState<{ id: string; name: string } | null>(null)
   const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock" | "voice">("home")
   const [aptCategory, setAptCategory] = useState<string | null>(null)   // for aptitude category drill-down
-  const [showHistory, setShowHistory] = useState(false)
   const [showLearningPaths, setShowLearningPaths] = useState(false)
   const [showSmartResume, setShowSmartResume] = useState(false)
   const [showPracticeMenu, setShowPracticeMenu] = useState(false)
@@ -1845,7 +1844,7 @@ export default function PrepHubPage() {
 
   // Lock body scroll when any overlay is open
   useEffect(() => {
-    const anyOpen = showHistory || showLearningPaths || showSmartResume
+    const anyOpen = showLearningPaths || showSmartResume
     if (anyOpen) {
       // Compensate for scrollbar width to prevent layout shift
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
@@ -1859,7 +1858,7 @@ export default function PrepHubPage() {
       document.body.style.overflow = ""
       document.body.style.paddingRight = ""
     }
-  }, [showHistory, showLearningPaths, showSmartResume])
+  }, [showLearningPaths, showSmartResume])
 
   // null = loading, 1 = first year (no company grids), 2-4 = show company grids
   const isFirstYear = studentYear === 1
@@ -2520,22 +2519,6 @@ export default function PrepHubPage() {
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full space-y-6">
 
-      {/* History overlay */}
-      {showHistory && (
-        <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
-          <div className="pt-14 max-w-4xl mx-auto px-4 py-6 space-y-5">
-            <div className="flex items-center gap-3 sticky top-14 z-10 py-3 border-b border-border" style={{ background: "var(--background)" }}>
-              <button onClick={() => setShowHistory(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
-                <ArrowLeft className="h-4 w-4" /> Back to Prep
-              </button>
-              <div className="w-px h-4 bg-border" />
-              <h2 className="text-lg font-bold text-foreground">Assessment History</h2>
-            </div>
-            <AssessmentHistoryPage />
-          </div>
-        </div>
-      )}
-
       {/* Learning Paths overlay */}
       {showLearningPaths && (
         <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
@@ -2598,7 +2581,7 @@ export default function PrepHubPage() {
               style={{ background:"rgba(236,72,153,0.22)", color:"#f9a8d4", border:"1.5px solid rgba(236,72,153,0.55)" }}>
               <Sparkles className="h-5 w-5" /> Smart Resume
             </button>
-            <button onClick={() => setShowHistory(true)}
+            <button onClick={() => router.push("/student/prep/history")}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
               style={{ background:"rgba(245,158,11,0.22)", color:"#fcd34d", border:"1.5px solid rgba(245,158,11,0.55)" }}>
               <Trophy className="h-5 w-5" /> History
