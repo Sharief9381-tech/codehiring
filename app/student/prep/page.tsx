@@ -1767,32 +1767,13 @@ function CompanyAssessmentGrid({ onSelect, onBack }: { onSelect: (c: any) => voi
   )
 }
 
-// -- Learning Paths placeholder (full paths are in /student/learn) -------------
-function LearningPathsPlaceholder() {
-  return (
-    <div className="text-center py-16 space-y-4">
-      <p className="text-lg font-bold text-foreground">Learning Paths</p>
-      <p className="text-sm text-muted-foreground max-w-md mx-auto">
-        Your full learning roadmap is available on the <strong>Learn</strong> page.
-        It includes step-by-step paths for Python, DSA, Web Dev, Git, and CS fundamentals.
-      </p>
-      <a href="/student/learn#learning"
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white"
-        style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
-        Go to Learning Paths &rarr;
-      </a>
-    </div>
-  )
-}
-
 // --- MAIN PAGE ----------------------------------------------------------------
 export default function PrepHubPage() {
   const [activePath, setActivePath] = useState<Path | null>(null)
   const [activeCompany, setActiveCompany] = useState<typeof ALL_COMPANIES[0] | null>(null)
   const [activeTopic, setActiveTopic] = useState<{ id: string; name: string } | null>(null)
   const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock" | "voice">("home")
-  const [aptCategory, setAptCategory] = useState<string | null>(null)   // for aptitude category drill-down
-  const [showLearningPaths, setShowLearningPaths] = useState(false)
+  const [aptCategory, setAptCategory] = useState<string | null>(null)
   const [showSmartResume, setShowSmartResume] = useState(false)
   const [showPracticeMenu, setShowPracticeMenu] = useState(false)
   const [studentYear, setStudentYear] = useState<number | null>(null)
@@ -1844,7 +1825,7 @@ export default function PrepHubPage() {
 
   // Lock body scroll when any overlay is open
   useEffect(() => {
-    const anyOpen = showLearningPaths || showSmartResume
+    const anyOpen = showSmartResume
     if (anyOpen) {
       // Compensate for scrollbar width to prevent layout shift
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
@@ -1858,7 +1839,7 @@ export default function PrepHubPage() {
       document.body.style.overflow = ""
       document.body.style.paddingRight = ""
     }
-  }, [showLearningPaths, showSmartResume])
+  }, [showSmartResume])
 
   // null = loading, 1 = first year (no company grids), 2-4 = show company grids
   const isFirstYear = studentYear === 1
@@ -2519,22 +2500,6 @@ export default function PrepHubPage() {
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full space-y-6">
 
-      {/* Learning Paths overlay */}
-      {showLearningPaths && (
-        <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
-          <div className="pt-14 max-w-5xl mx-auto px-4 py-6 space-y-5">
-            <div className="flex items-center gap-3 sticky top-14 z-10 py-3 border-b border-border" style={{ background: "var(--background)" }}>
-              <button onClick={() => setShowLearningPaths(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
-                <ArrowLeft className="h-4 w-4" /> Back to Prep
-              </button>
-              <div className="w-px h-4 bg-border" />
-              <h2 className="text-lg font-bold text-foreground">Learning Paths</h2>
-            </div>
-            <LearningPathsPlaceholder />
-          </div>
-        </div>
-      )}
-
       {/* Smart Resume overlay */}
       {showSmartResume && (
         <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
@@ -2571,10 +2536,10 @@ export default function PrepHubPage() {
             <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments . company patterns . real results</p>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
-            <button onClick={() => setShowLearningPaths(true)}
+            <button onClick={() => router.push("/student/drives")}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
               style={{ background:"rgba(96,165,250,0.22)", color:"#93c5fd", border:"1.5px solid rgba(96,165,250,0.55)" }}>
-              <BookOpen className="h-5 w-5" /> Learning Paths
+              <BookOpen className="h-5 w-5" /> Hiring Drives
             </button>
             <button onClick={() => setShowSmartResume(true)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
