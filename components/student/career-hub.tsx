@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
@@ -178,7 +178,7 @@ const trendingSkills: SkillCard[] = [
 
 const yearContent: Record<number, { label: string; emoji: string; tagline: string; color: string; sections: Section[] }> = {
   1: {
-    label: "1st Year", emoji: "🌱", tagline: "Learn & Build Foundation", color: "from-blue-600 to-cyan-600",
+    label: "1st Year", emoji: "??", tagline: "Learn & Build Foundation", color: "from-blue-600 to-cyan-600",
     sections: [
       {
         id: "learning", title: "Learning Paths", icon: <BookOpen className="h-4 w-4" />,
@@ -300,7 +300,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
     ],
   },
   2: {
-    label: "2nd Year", emoji: "📘", tagline: "Skill + Internship Mode", color: "from-violet-600 to-purple-600",
+    label: "2nd Year", emoji: "??", tagline: "Skill + Internship Mode", color: "from-violet-600 to-purple-600",
     sections: [
       {
         id: "skills", title: "Trending Skills", icon: <TrendingUp className="h-4 w-4" />,
@@ -314,7 +314,7 @@ const yearContent: Record<number, { label: string; emoji: string; tagline: strin
     ],
   },
   3: {
-    label: "3rd Year", emoji: "📘", tagline: "Placement Preparation", color: "from-orange-600 to-amber-600",
+    label: "3rd Year", emoji: "??", tagline: "Placement Preparation", color: "from-orange-600 to-amber-600",
     sections: [
       {
         id: "placement", title: "Placement Tools", icon: <Trophy className="h-4 w-4" />,
@@ -405,7 +405,7 @@ function SkillsView({ skills }: { skills: SkillCard[] }) {
             className="w-full pl-4 pr-8 py-2 rounded-full border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-all"
           />
           {search && (
-            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs">✕</button>
+            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs">?</button>
           )}
         </div>
         <div className="relative">
@@ -413,7 +413,7 @@ function SkillsView({ skills }: { skills: SkillCard[] }) {
             className="appearance-none pl-4 pr-8 py-2 rounded-full border border-border bg-card text-sm font-medium text-foreground cursor-pointer focus:outline-none focus:border-primary/50 transition-all">
             {categories.map(c => <option key={c} value={c}>{c === "All" ? "All Categories" : c}</option>)}
           </select>
-          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none text-xs">▼</span>
+          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none text-xs">?</span>
         </div>
         <span className="text-xs text-muted-foreground shrink-0">{filtered.length} skills</span>
       </div>
@@ -579,7 +579,6 @@ interface CareerHubProps {
 }
 
 export function CareerHub({ graduationYear, student }: CareerHubProps) {
-  const [hubTab, setHubTab] = useState<"drives" | "roadmap">("roadmap")
   const [year, setYear] = useState<number | null>(null)
   const [activeSection, setActiveSection] = useState(0)
   const [jobTab, setJobTab] = useState<"on" | "off">("on")
@@ -622,7 +621,6 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
     const sections = yearContent[year]?.sections ?? []
     const idx = sections.findIndex(s => s.id === "smart-resume")
     if (idx !== -1) {
-      setHubTab("roadmap")
       setActiveSection(idx)
       // Small delay so the section renders before scrolling
       setTimeout(() => {
@@ -646,241 +644,12 @@ export function CareerHub({ graduationYear, student }: CareerHubProps) {
 
   return (
     <div className="space-y-4">
-      {/* Top-level tab: Drives | Roadmap - hidden for 1st year */}
-      {year !== 1 && (
-        <div className="flex gap-1 border-b border-border pb-px">
-          {[
-            { id: "drives",  label: "Hiring Drives" },
-            { id: "roadmap", label: "Career Roadmap" },
-          ].map(t => (
-            <button key={t.id} onClick={() => setHubTab(t.id as any)}
-              className={`px-5 py-2 text-sm font-semibold border-b-2 -mb-px transition-all ${
-                hubTab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-      )}
-
       {/* DRIVES TAB . on-campus + off-campus - not shown for 1st year */}
-      {hubTab === "drives" && year !== 1 && (
+      {year !== 1 && (
         <StudentDrivesInline student={student} />
       )}
 
-      {/* ROADMAP TAB . existing career hub content */}
-      {hubTab === "roadmap" && (
-      <div className="space-y-4">
 
-      {/* Banner */}
-      <div className={`rounded-xl border border-white/10 bg-gradient-to-r ${content.color} p-5 text-white`}>
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{content.emoji}</span>
-          <div>
-            <p className="font-semibold text-base">{content.label} &mdash; {content.tagline}</p>
-            <p className="text-white/70 text-xs mt-0.5">
-              {graduationYear
-                ? `Graduating ${graduationYear} . Year ${year} detected automatically`
-                : "Set your graduation year in profile for personalised content"}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-0.5 mt-3 border-t border-white/10 pt-3 overflow-x-auto">
-          {content.sections.map((s, i) => (
-            <button key={s.id} onClick={() => setActiveSection(i)}
-              className={`relative flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-all whitespace-nowrap ${activeSection === i ? "bg-white/20 text-white" : "text-white/60 hover:text-white hover:bg-white/10"}`}>
-              {s.icon}
-              {s.title}
-            </button>
-          ))}
-          {/* Practice dropdown */}
-          <div className="relative group ml-1">
-            <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-              Practice
-              <svg viewBox="0 0 24 24" className="h-3 w-3 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
-            <div className="absolute left-0 top-full mt-1.5 z-50 w-56 rounded-xl border border-white/10 bg-background shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 pointer-events-none group-hover:pointer-events-auto">
-              {[
-                { label: "Aptitude",      sub: "Quant . Logical . Data Interp.", color: "#f59e0b", href: "/student/practice/aptitude" },
-                { label: "Coding / DSA",  sub: "Arrays . Trees . DP . Graphs",   color: "#6366f1", href: "/student/prep?track=coding" },
-                { label: "Communication", sub: "Grammar . Vocab . Reading",       color: "#10b981", href: "/student/practice/communication" },
-              ].map(opt => (
-                <a key={opt.label} href={opt.href}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors border-b border-border/50 last:border-0">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
-                    style={{ background: `${opt.color}20`, color: opt.color }}>
-                    {opt.label[0]}
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-foreground">{opt.label}</p>
-                    <p className="text-[10px] text-muted-foreground">{opt.sub}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      {isSmartResumeSection ? (
-        <div id="smart-resume">
-          <SmartResume />
-        </div>
-      ) : isSkillsSection ? (
-        <SkillsView skills={section.skills ?? []} />
-      ) : isLiveJobsSection ? (
-        <div className="space-y-4">
-          {/* On / Off Campus buttons */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setJobTab("on")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${
-                jobTab === "on"
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-background text-muted-foreground border-border hover:border-blue-400 hover:text-foreground"
-              }`}
-            >
-              <Building2 className="h-4 w-4" />
-              On Campus
-              <span className={`text-xs px-1.5 py-0.5 rounded-full ${jobTab === "on" ? "bg-white/20" : "bg-secondary"}`}>
-                {onCampusJobs.length}
-              </span>
-            </button>
-            <button
-              onClick={() => setJobTab("off")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${
-                jobTab === "off"
-                  ? "bg-emerald-600 text-white border-emerald-600"
-                  : "bg-background text-muted-foreground border-border hover:border-emerald-400 hover:text-foreground"
-              }`}
-            >
-              <Globe className="h-4 w-4" />
-              Off Campus
-              <span className={`text-xs px-1.5 py-0.5 rounded-full ${jobTab === "off" ? "bg-white/20" : "bg-secondary"}`}>
-                {offCampusJobs.length}
-              </span>
-            </button>
-            <p className="text-xs text-muted-foreground ml-1">
-              {jobTab === "on" ? "Posted by your college" : "Posted by recruiters"}
-            </p>
-          </div>
-
-          {jobTab === "on" ? (
-            <LiveJobsGrid jobs={onCampusJobs} loading={jobsLoading} type="on" search="" />
-          ) : (
-            <div className="space-y-2">
-              {jobsLoading ? (
-                <div className="flex items-center justify-center py-8 text-muted-foreground text-sm gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" /> Loading jobs...
-                </div>
-              ) : offCampusJobs.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm gap-2">
-                  <Briefcase className="h-8 w-8 opacity-30" />
-                  <p>No off-campus jobs posted yet</p>
-                  <p className="text-xs opacity-70">Recruiters haven't posted any jobs on this platform yet</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">Posted by Recruiters on this Platform</p>
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {offCampusJobs.filter(j => !j.deadline || new Date(j.deadline) >= new Date()).map(job => <LiveJobCard key={job._id} job={job} type="off" />)}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      ) : isInternSection ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {(section.internships ?? []).map(intern => <InternCard key={intern.company} intern={intern} />)}
-        </div>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {(section.items ?? []).map(item => {
-            const isOnCampusItem  = item.label.includes("On-Campus")
-            const isOffCampusItem = item.label.includes("Off-Campus")
-            const cleanLabel = item.label
-              .replace(/^[]\s*/, "")
-              .replace(/^On-Campus\s*[-]\s*/i, "")
-              .replace(/^Off-Campus\s*[-]\s*/i, "")
-            return (
-              <div key={item.label} className={`rounded-xl bg-card border flex flex-col gap-2.5 p-4 ${
-                isOnCampusItem ? "border-l-4 border-l-emerald-500 border-border" :
-                isOffCampusItem ? "border-l-4 border-l-blue-500 border-border" :
-                "border-border"}`}>
-                <div className="flex items-start gap-2">
-                  {isOnCampusItem && <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">On-Campus</span>}
-                  {isOffCampusItem && <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">Off-Campus</span>}
-                  <p className="text-base font-semibold">{cleanLabel}</p>
-                </div>
-                {item.description && <p className="text-sm text-muted-foreground">{item.description}</p>}
-                {item.tags && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {item.tags.map(tag => <Badge key={tag} variant="secondary" className="text-xs px-2 py-0.5">{tag}</Badge>)}
-                  </div>
-                )}
-                {item.links && (
-                  <div className="flex flex-wrap gap-2 pt-2 mt-auto border-t border-border/50">
-                    {item.links.map(link => {
-                      const isYT    = link.type === "youtube" || link.url.includes("youtube.com") || link.url.includes("youtu.be")
-                      const isNotes = link.type === "notes" || link.text.toLowerCase().includes("note") || link.text.toLowerCase().includes("cheat") || link.text.toLowerCase().includes("sheet")
-                      const isPrac  = link.type === "practice"
-
-                      const logo = isYT ? (
-                        // YouTube logo SVG
-                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="#FF0000">
-                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                      ) : isNotes ? (
-                        // Notes icon SVG
-                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                          <polyline points="14,2 14,8 20,8"/>
-                          <line x1="16" y1="13" x2="8" y2="13"/>
-                          <line x1="16" y1="17" x2="8" y2="17"/>
-                          <polyline points="10,9 9,9 8,9"/>
-                        </svg>
-                      ) : isPrac ? (
-                        // Code icon
-                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="16,18 22,12 16,6"/>
-                          <polyline points="8,6 2,12 8,18"/>
-                        </svg>
-                      ) : (
-                        // External link icon
-                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                          <polyline points="15,3 21,3 21,9"/>
-                          <line x1="10" y1="14" x2="21" y2="3"/>
-                        </svg>
-                      )
-
-                      const btnColor = isYT
-                        ? "bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20"
-                        : isNotes
-                        ? "bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20"
-                        : isPrac
-                        ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20"
-                        : "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20"
-
-                      return (
-                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
-                          className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-all ${btnColor}`}>
-                          {logo}
-                          {link.text}
-                        </a>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      )}
-    </div>
-    )} {/* end roadmap tab */}
     </div>
   )
 }
@@ -964,7 +733,7 @@ function StudentDrivesInline({ student }: { student?: any }) {
                   ? "border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/5"
                   : "border-blue-500/30 text-blue-600 hover:bg-blue-500/5"
               }`}>
-              Apply †'
+              Apply �'
             </a>
           </div>
         ))}
@@ -1040,7 +809,7 @@ function StudentDrivesInline({ student }: { student?: any }) {
 
   return (
     <div className="space-y-4">
-      {/* Tab switcher €" removed "Live Jobs", kept On-Campus / Off-Campus / My Applications */}
+      {/* Tab switcher �" removed "Live Jobs", kept On-Campus / Off-Campus / My Applications */}
       <div className="flex gap-1 border-b border-border pb-px">
         {[
           { id: "campus",    label: `On-Campus (${campusDrives.length + onCampusJobs.filter(j => !j.deadline || new Date(j.deadline) >= new Date()).length})` },
