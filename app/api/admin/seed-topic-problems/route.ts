@@ -19,27 +19,59 @@ import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
 const GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
 // ---------------------------------------------------------------------------
-// AI caller
+// AI caller — Gemini → OpenAI → Groq
 // ---------------------------------------------------------------------------
 async function callAI(prompt: string): Promise<string> {
   const stripThink = (s: string) => s.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
 
+  // 1. Gemini 2.0 Flash
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
+  if (geminiKey) {
+    try {
+      const r = await fetch(`${GEMINI_URL}?key=${geminiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 3000, temperature: 0.2 },
+        }),
+        signal: AbortSignal.timeout(30000),
+      })
+      if (r.ok) {
+        const d = await r.json()
+        const t = d.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? ""
+        if (t) return t
+      }
+    } catch {}
+  }
+
+  // 2. OpenAI
+  if (process.env.OPENAI_API_KEY) {
+    try {
+      const r = await fetch(OPENAI_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
+        body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: prompt }], temperature: 0.2, max_tokens: 3000 }),
+        signal: AbortSignal.timeout(30000),
+      })
+      if (r.ok) {
+        const d = await r.json()
+        const t = d.choices?.[0]?.message?.content?.trim() ?? ""
+        if (t) return t
+      }
+    } catch {}
+  }
+
+  // 3. Groq
   if (process.env.GROQ_API_KEY) {
     try {
       const r = await fetch(GROQ_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "qwen/qwen3.6-27b",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.2,
-          max_tokens: 3000,
-        }),
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.GROQ_API_KEY}` },
+        body: JSON.stringify({ model: "qwen/qwen3.6-27b", messages: [{ role: "user", content: prompt }], temperature: 0.2, max_tokens: 3000 }),
         signal: AbortSignal.timeout(30000),
       })
       if (r.ok) {
@@ -48,27 +80,6 @@ async function callAI(prompt: string): Promise<string> {
         if (t) return stripThink(t)
       }
     } catch {}
-  }
-
-  if (process.env.OPENAI_API_KEY) {
-    const r = await fetch(OPENAI_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.2,
-        max_tokens: 3000,
-      }),
-      signal: AbortSignal.timeout(30000),
-    })
-    if (r.ok) {
-      const d = await r.json()
-      return d.choices?.[0]?.message?.content?.trim() ?? ""
-    }
   }
 
   throw new Error("No AI provider available")

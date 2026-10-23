@@ -23,6 +23,7 @@ for (const topic of TOPIC_QUESTIONS) {
 async function generateProblem(title: string, difficulty: string): Promise<any> {
   const groqKey   = process.env.GROQ_API_KEY
   const openaiKey = process.env.OPENAI_API_KEY
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
 
   const prompt = `Generate a complete coding problem for: ${title} (${difficulty} difficulty).
 
@@ -65,25 +66,44 @@ All stdin values must be plain numbers only.`
 
   const stripThink = (s: string) => s.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
 
-  const call = async (key: string, url: string, model: string) => {
+  // Standard OpenAI-compatible call
+  const callOpenAI = async (key: string, url: string, model: string) => {
     const r = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
-      body: JSON.stringify({
-        model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.2,
-        max_tokens: 1200,
-      }),
+      body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], temperature: 0.2, max_tokens: 1400 }),
       signal: AbortSignal.timeout(25000),
     })
     if (!r.ok) throw new Error("HTTP " + r.status)
     const d = await r.json()
-    let raw: string = d.choices?.[0]?.message?.content?.trim() ?? ""
-    raw = stripThink(raw)
+    let raw = stripThink(d.choices?.[0]?.message?.content?.trim() ?? "")
     raw = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
+    return parseResult(raw)
+  }
+
+  // Gemini call
+  const callGemini = async (key: string) => {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 1400, temperature: 0.2 },
+        }),
+        signal: AbortSignal.timeout(25000),
+      }
+    )
+    if (!r.ok) throw new Error("Gemini HTTP " + r.status)
+    const d = await r.json()
+    let raw = d.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? ""
+    raw = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim()
+    return parseResult(raw)
+  }
+
+  const parseResult = (raw: string) => {
     const p = JSON.parse(raw)
-    // Unescape \\n -> real newlines in starter code
     for (const k of ["pythonStarter","jsStarter","tsStarter","javaStarter","cppStarter"]) {
       if (typeof p[k] === "string") p[k] = p[k].replace(/\\n/g, "\n").replace(/\\t/g, "    ")
     }
@@ -97,18 +117,23 @@ All stdin values must be plain numbers only.`
     return p
   }
 
-  let data: any = null
+  // Try in order: Gemini → OpenAI → Groq
+  if (geminiKey) {
+    try { return await callGemini(geminiKey) } catch (e) {
+      console.error("[problem-detail] Gemini failed:", (e as Error).message)
+    }
+  }
+  if (openaiKey) {
+    try { return await callOpenAI(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch (e) {
+      console.error("[problem-detail] OpenAI failed:", (e as Error).message)
+    }
+  }
   if (groqKey) {
-    try { data = await call(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.6-27b") } catch (e) {
-      console.error("Groq problem-detail failed:", e)
+    try { return await callOpenAI(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.6-27b") } catch (e) {
+      console.error("[problem-detail] Groq failed:", (e as Error).message)
     }
   }
-  if (!data && openaiKey) {
-    try { data = await call(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch (e) {
-      console.error("OpenAI problem-detail failed:", e)
-    }
-  }
-  return data
+  return null
 }
 
 // -- Convert static bank entry to wire format ----------------------------------
