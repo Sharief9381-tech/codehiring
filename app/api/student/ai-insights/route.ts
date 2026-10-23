@@ -1,7 +1,7 @@
 /**
  * GET /api/student/ai-insights
  * Returns AI-generated career insights for the logged-in student.
- * Tries Groq compound-mini first, falls back to OpenAI gpt-4o-mini.
+ * AI order: Gemini 2.0 Flash → OpenAI gpt-4o-mini → Groq qwen3.6-27b
  */
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
@@ -9,6 +9,7 @@ import { UserModel } from "@/lib/models/user"
 
 const GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
 function buildStudentSummary(student: any): string {
   const platforms = Object.keys(student.linkedPlatforms || {})
@@ -38,10 +39,62 @@ function buildStudentSummary(student: any): string {
 }
 
 async function callAI(messages: any[], maxTokens: number): Promise<string> {
-  const groqKey   = process.env.GROQ_API_KEY
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
   const openaiKey = process.env.OPENAI_API_KEY
+  const groqKey   = process.env.GROQ_API_KEY
 
-  // Try Groq first
+  const stripThink = (s: string) => s.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
+
+  // 1. Gemini 2.0 Flash
+  if (geminiKey) {
+    try {
+      // Convert messages to Gemini format
+      const systemMsg = messages.find(m => m.role === "system")
+      const userMsg   = messages.find(m => m.role === "user")
+      const body: any = {
+        contents: [{ role: "user", parts: [{ text: userMsg?.content ?? "" }] }],
+        generationConfig: { maxOutputTokens: maxTokens, temperature: 0.3 },
+      }
+      if (systemMsg) body.systemInstruction = { parts: [{ text: systemMsg.content }] }
+
+      const res = await fetch(`${GEMINI_URL}?key=${geminiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(20000),
+      })
+      if (res.ok) {
+        const d = await res.json()
+        const content = d.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? ""
+        if (content) return content
+      } else {
+        console.error("Gemini insights error:", res.status, await res.text().catch(() => ""))
+      }
+    } catch (e) {
+      console.error("Gemini insights failed:", e)
+    }
+  }
+
+  // 2. OpenAI
+  if (openaiKey) {
+    try {
+      const res = await fetch(OPENAI_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${openaiKey}` },
+        body: JSON.stringify({ model: "gpt-4o-mini", messages, max_tokens: maxTokens, temperature: 0.3 }),
+        signal: AbortSignal.timeout(20000),
+      })
+      if (res.ok) {
+        const d = await res.json()
+        const content = d.choices?.[0]?.message?.content?.trim() ?? ""
+        if (content) return content
+      }
+    } catch (e) {
+      console.error("OpenAI insights failed:", e)
+    }
+  }
+
+  // 3. Groq
   if (groqKey) {
     try {
       const res = await fetch(GROQ_URL, {
@@ -52,27 +105,13 @@ async function callAI(messages: any[], maxTokens: number): Promise<string> {
       })
       if (res.ok) {
         const d = await res.json()
-        const content = d.choices?.[0]?.message?.content?.trim() ?? ""
+        const content = stripThink(d.choices?.[0]?.message?.content?.trim() ?? "")
         if (content) return content
       } else {
-        console.error("Groq insights error:", res.status, await res.text())
+        console.error("Groq insights error:", res.status, await res.text().catch(() => ""))
       }
     } catch (e) {
       console.error("Groq insights fetch failed:", e)
-    }
-  }
-
-  // Fallback to OpenAI
-  if (openaiKey) {
-    const res = await fetch(OPENAI_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${openaiKey}` },
-      body: JSON.stringify({ model: "gpt-4o-mini", messages, max_tokens: maxTokens, temperature: 0.3 }),
-      signal: AbortSignal.timeout(20000),
-    })
-    if (res.ok) {
-      const d = await res.json()
-      return d.choices?.[0]?.message?.content?.trim() ?? ""
     }
   }
 
@@ -84,10 +123,12 @@ export async function GET() {
     const user = await getCurrentUser()
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
-    if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
+    const hasAI = !!(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY ||
+                     process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY)
+    if (!hasAI) {
       return NextResponse.json({
         available: false,
-        message: "Add GROQ_API_KEY to .env to enable AI insights.",
+        message: "Set GEMINI_API_KEY, GROQ_API_KEY, or OPENAI_API_KEY to enable AI insights.",
       })
     }
 
@@ -114,19 +155,16 @@ Use exactly this structure:
       { role: "user", content: summary },
     ]
 
-    const raw = await callAI(messages, 500)
+    const raw = await callAI(messages, 600)
 
-    // Extract JSON — strip any surrounding text
     const jsonMatch = raw.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error(`No JSON in response: ${raw.slice(0, 100)}`)
 
     const insights = JSON.parse(jsonMatch[0])
-
-    // Ensure required fields
     insights.estimatedPlacementReadiness = Number(insights.estimatedPlacementReadiness) || 50
-    insights.strengths   = insights.strengths   || []
+    insights.strengths    = insights.strengths    || []
     insights.improvements = insights.improvements || []
-    insights.skillGaps   = insights.skillGaps   || []
+    insights.skillGaps    = insights.skillGaps    || []
 
     return NextResponse.json({ available: true, insights })
   } catch (error) {
