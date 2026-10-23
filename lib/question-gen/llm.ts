@@ -5,7 +5,7 @@
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 const GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
 export interface LLMResponse {
   content: string
@@ -59,7 +59,7 @@ export async function callLLM(
   if (geminiKey) {
     try {
       const text = await callGemini(messages, maxTokens)
-      if (text.length > 20) return { content: text, model: "gemini-2.0-flash" }
+      if (text.length > 20) return { content: text, model: "gemini-2.5-flash" }
     } catch {}
   }
 

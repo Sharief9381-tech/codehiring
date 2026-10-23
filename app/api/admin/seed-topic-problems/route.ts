@@ -19,7 +19,7 @@ import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
 
 const GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
 // ---------------------------------------------------------------------------
 // AI caller — Gemini → OpenAI → Groq
