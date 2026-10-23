@@ -13,21 +13,19 @@ import {
 } from "lucide-react"
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: any; step: number }> = {
-  pending_review: { label: "Pending Review",  color: "bg-amber-500/10 text-amber-600 dark:text-amber-400",   icon: Clock,         step: 1 },
-  verified:       { label: "Verified",        color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",      icon: CheckCircle2,  step: 2 },
-  active:         { label: "Active",          color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400", icon: CheckCircle2, step: 3 },
-  assessment:     { label: "Assessment Live", color: "bg-violet-500/10 text-violet-600 dark:text-violet-400", icon: FileText,      step: 6 },
-  evaluating:     { label: "Evaluating",      color: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",       icon: Loader2,       step: 7 },
-  shortlisted:    { label: "Shortlisted",     color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400", icon: Users,         step: 8 },
-  screening:      { label: "Screening",       color: "bg-pink-500/10 text-pink-600 dark:text-pink-400",       icon: Target,        step: 9 },
-  interviews:     { label: "Interviews",      color: "bg-purple-500/10 text-purple-600 dark:text-purple-400", icon: Calendar,      step: 10 },
-  completed:      { label: "Completed",       color: "bg-green-500/10 text-green-600 dark:text-green-400",    icon: CheckCircle2,  step: 11 },
-  cancelled:      { label: "Cancelled",       color: "bg-muted text-muted-foreground",                        icon: XCircle,       step: 0 },
+  active:       { label: "Active",          color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400", icon: CheckCircle2, step: 1 },
+  assessment:   { label: "Assessment Live", color: "bg-violet-500/10 text-violet-600 dark:text-violet-400",   icon: FileText,     step: 4 },
+  evaluating:   { label: "Evaluating",      color: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",         icon: Loader2,      step: 5 },
+  shortlisted:  { label: "Shortlisted",     color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",   icon: Users,        step: 6 },
+  screening:    { label: "Screening",       color: "bg-pink-500/10 text-pink-600 dark:text-pink-400",         icon: Target,       step: 7 },
+  interviews:   { label: "Interviews",      color: "bg-purple-500/10 text-purple-600 dark:text-purple-400",   icon: Calendar,     step: 8 },
+  completed:    { label: "Completed",       color: "bg-green-500/10 text-green-600 dark:text-green-400",      icon: CheckCircle2, step: 9 },
+  cancelled:    { label: "Cancelled",       color: "bg-muted text-muted-foreground",                          icon: XCircle,      step: 0 },
 }
 
 const STEPS = [
-  "Hiring Request", "Verification", "Drive Created", "Candidates Notified",
-  "Applications", "Assessment", "AI Evaluation", "Shortlist",
+  "Drive Created", "Candidates Notified", "Applications",
+  "Assessment", "AI Evaluation", "Shortlist",
   "Screening", "Interviews", "Final Selection"
 ]
 
@@ -77,7 +75,7 @@ export function RecruiterDrivesClient() {
         }),
       })
       if (res.ok) {
-        toast.success("Hiring request submitted! Pending CodeHiring review.")
+        toast.success("Drive created! It is now live and visible to students.")
         setShowForm(false)
         setForm({ title:"",type:"Full-time",description:"",location:"",salary:"",openPositions:"1",hiringTimeline:"",applicationDeadline:"",selectionProcess:"Online Assessment, Technical Interview, HR Interview",graduationYears:"",branches:"",minCGPA:"",requiredSkills:"",minProblems:"" })
         fetchDrives()
@@ -115,13 +113,7 @@ export function RecruiterDrivesClient() {
               <button onClick={() => setShowForm(false)} className="text-muted-foreground hover:text-foreground">✕</button>
             </div>
 
-            {/* Workflow notice */}
-            <div className="flex items-start gap-3 rounded-xl bg-blue-500/8 border border-blue-500/20 p-3">
-              <AlertCircle className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
-              <p className="text-xs text-muted-foreground">
-                After submission, CodeHiring will review your request and activate the drive within 24 hours.
-              </p>
-            </div>
+            {/* No review notice needed — drives go live immediately */}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>

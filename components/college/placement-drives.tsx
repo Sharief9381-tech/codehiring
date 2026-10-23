@@ -12,12 +12,11 @@ import {
 } from "lucide-react"
 
 const STATUS: Record<string, { label: string; color: string; icon: any }> = {
-  pending_review: { label: "Pending Review",   color: "bg-amber-500/10 text-amber-600 dark:text-amber-400",        icon: Clock },
-  active:         { label: "Applications Open", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400", icon: CheckCircle2 },
-  assessment:     { label: "Assessment",        color: "bg-violet-500/10 text-violet-600 dark:text-violet-400",    icon: FileText },
-  shortlisted:    { label: "Shortlisted",       color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",          icon: Users },
-  completed:      { label: "Completed",         color: "bg-muted text-muted-foreground",                           icon: CheckCircle2 },
-  cancelled:      { label: "Cancelled",         color: "bg-muted text-muted-foreground",                           icon: XCircle },
+  active:      { label: "Applications Open", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400", icon: CheckCircle2 },
+  assessment:  { label: "Assessment",        color: "bg-violet-500/10 text-violet-600 dark:text-violet-400",   icon: FileText     },
+  shortlisted: { label: "Shortlisted",       color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",         icon: Users        },
+  completed:   { label: "Completed",         color: "bg-muted text-muted-foreground",                          icon: CheckCircle2 },
+  cancelled:   { label: "Cancelled",         color: "bg-muted text-muted-foreground",                          icon: XCircle      },
 }
 
 export function PlacementDrives() {
@@ -76,7 +75,7 @@ export function PlacementDrives() {
         }),
       })
       if (res.ok) {
-        toast.success("Drive created! Pending CodeHiring verification.")
+        toast.success("Drive created! It is now live and visible to students.")
         setShowForm(false)
         setForm({ title:"", type:"Full-time", description:"", location:"", salary:"", openPositions:"1", applicationDeadline:"", selectionProcess:"Applications Review, Interview", branches:"", graduationYears:"", minCGPA:"" })
         fetchDrives()

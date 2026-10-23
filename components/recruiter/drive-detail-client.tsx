@@ -13,20 +13,18 @@ import {
 } from "lucide-react"
 
 const STEP_LABELS = [
-  "Hiring Request","Verification","Drive Active","Candidates Notified",
-  "Applications","Assessment","AI Evaluation","Shortlist",
-  "Screening","Interviews","Final Selection"
+  "Drive Created", "Candidates Notified", "Applications",
+  "Assessment", "AI Evaluation", "Shortlist",
+  "Screening", "Interviews", "Final Selection"
 ]
 const STATUS_NEXT: Record<string, { label: string; next: string; color: string }> = {
-  pending_review: { label: "Waiting for CodeHiring review", next: "", color: "text-amber-500" },
-  verified:       { label: "Activate Drive",   next: "active",      color: "text-blue-500" },
-  active:         { label: "Start Assessment", next: "assessment",   color: "text-violet-500" },
-  assessment:     { label: "Mark Evaluating",  next: "evaluating",  color: "text-cyan-500" },
-  evaluating:     { label: "Generate Shortlist",next: "shortlisted", color: "text-indigo-500" },
-  shortlisted:    { label: "Begin Screening",  next: "screening",   color: "text-pink-500" },
-  screening:      { label: "Start Interviews", next: "interviews",  color: "text-purple-500" },
-  interviews:     { label: "Complete Drive",   next: "completed",   color: "text-green-500" },
-  completed:      { label: "Drive Completed",  next: "", color: "text-green-500" },
+  active:      { label: "Start Assessment", next: "assessment",  color: "text-violet-500" },
+  assessment:  { label: "Mark Evaluating",  next: "evaluating",  color: "text-cyan-500"   },
+  evaluating:  { label: "Generate Shortlist",next:"shortlisted", color: "text-indigo-500" },
+  shortlisted: { label: "Begin Screening",  next: "screening",   color: "text-pink-500"   },
+  screening:   { label: "Start Interviews", next: "interviews",  color: "text-purple-500" },
+  interviews:  { label: "Complete Drive",   next: "completed",   color: "text-green-500"  },
+  completed:   { label: "Drive Completed",  next: "",            color: "text-green-500"  },
 }
 
 interface Tab { id: string; label: string; icon: any }
@@ -108,16 +106,10 @@ export function DriveDetailClient({ driveId }: { driveId: string }) {
   )
   if (!drive) return <div className="text-center py-20 text-muted-foreground">Drive not found</div>
 
-  const stepNum = STEP_LABELS.indexOf(
-    drive.status === "active" ? "Drive Active" :
-    drive.status === "pending_review" ? "Hiring Request" :
-    drive.status === "assessment" ? "Assessment" :
-    drive.status === "evaluating" ? "AI Evaluation" :
-    drive.status === "shortlisted" ? "Shortlist" :
-    drive.status === "screening" ? "Screening" :
-    drive.status === "interviews" ? "Interviews" :
-    drive.status === "completed" ? "Final Selection" : "Hiring Request"
-  )
+  const stepNum = Math.max(0, [
+    "active", "assessment", "evaluating",
+    "shortlisted", "screening", "interviews", "completed"
+  ].indexOf(drive.status))
 
   const applicants = drive.applicants || []
   const shortlisted = applicants.filter((a: any) => a.status === "shortlisted")
