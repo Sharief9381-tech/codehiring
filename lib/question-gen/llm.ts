@@ -54,21 +54,12 @@ export async function callLLM(
     { role: "user"   as const, content: user   },
   ]
 
-  // 1. Groq (free, fast)
-  const groqKey = process.env.GROQ_API_KEY
-  if (groqKey) {
+  // 1. Gemini 2.0 Flash
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
+  if (geminiKey) {
     try {
-      const res = await fetch(GROQ_URL, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
-        body:    JSON.stringify({ model: "qwen/qwen3.6-27b", messages, temperature: 0.7, max_tokens: maxTokens }),
-        signal:  AbortSignal.timeout(30000),
-      })
-      if (res.ok) {
-        const d    = await res.json()
-        const text = stripThink(d.choices?.[0]?.message?.content?.trim() ?? "")
-        if (text.length > 20) return { content: text, model: "qwen/qwen3.6-27b" }
-      }
+      const text = await callGemini(messages, maxTokens)
+      if (text.length > 20) return { content: text, model: "gemini-2.0-flash" }
     } catch {}
   }
 
@@ -90,14 +81,23 @@ export async function callLLM(
     } catch {}
   }
 
-  // 3. Gemini (fallback)
-  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
-  if (geminiKey) {
+  // 3. Groq (last resort)
+  const groqKey = process.env.GROQ_API_KEY
+  if (groqKey) {
     try {
-      const text = await callGemini(messages, maxTokens)
-      if (text.length > 20) return { content: text, model: "gemini-2.0-flash" }
+      const res = await fetch(GROQ_URL, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
+        body:    JSON.stringify({ model: "qwen/qwen3.6-27b", messages, temperature: 0.7, max_tokens: maxTokens }),
+        signal:  AbortSignal.timeout(30000),
+      })
+      if (res.ok) {
+        const d    = await res.json()
+        const text = stripThink(d.choices?.[0]?.message?.content?.trim() ?? "")
+        if (text.length > 20) return { content: text, model: "qwen/qwen3.6-27b" }
+      }
     } catch {}
   }
 
-  throw new Error("No AI provider available. Set GROQ_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY.")
+  throw new Error("No AI provider available. Set GEMINI_API_KEY, OPENAI_API_KEY, or GROQ_API_KEY.")
 }

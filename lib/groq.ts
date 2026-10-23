@@ -33,28 +33,11 @@ export async function groqChat(
   userMessage: string,
   maxTokens = 800
 ): Promise<string> {
-  // 1. Groq
-  const groqKey = process.env.GROQ_API_KEY
-  if (groqKey) {
-    try {
-      const res = await fetch(GROQ_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
-        body: JSON.stringify({
-          model: "qwen/qwen3.6-27b",
-          messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userMessage }],
-          max_tokens: maxTokens,
-          temperature: 0.7,
-        }),
-        signal: AbortSignal.timeout(25000),
-      })
-      if (res.ok) {
-        const d = await res.json()
-        const text = stripThink(d.choices?.[0]?.message?.content ?? "")
-        if (text) return text
-      }
-    } catch {}
-  }
+  // 1. Gemini 2.0 Flash
+  try {
+    const text = await callGemini(systemPrompt, userMessage, maxTokens)
+    if (text) return text
+  } catch {}
 
   // 2. OpenAI
   const openaiKey = process.env.OPENAI_API_KEY
@@ -79,13 +62,30 @@ export async function groqChat(
     } catch {}
   }
 
-  // 3. Gemini
-  try {
-    const text = await callGemini(systemPrompt, userMessage, maxTokens)
-    if (text) return text
-  } catch {}
+  // 3. Groq (last resort)
+  const groqKey = process.env.GROQ_API_KEY
+  if (groqKey) {
+    try {
+      const res = await fetch(GROQ_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
+        body: JSON.stringify({
+          model: "qwen/qwen3.6-27b",
+          messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userMessage }],
+          max_tokens: maxTokens,
+          temperature: 0.7,
+        }),
+        signal: AbortSignal.timeout(25000),
+      })
+      if (res.ok) {
+        const d = await res.json()
+        const text = stripThink(d.choices?.[0]?.message?.content ?? "")
+        if (text) return text
+      }
+    } catch {}
+  }
 
-  throw new Error("No AI provider available. Set GROQ_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY.")
+  throw new Error("No AI provider available. Set GEMINI_API_KEY, OPENAI_API_KEY, or GROQ_API_KEY.")
 }
 
 export function isGroqAvailable(): boolean {
