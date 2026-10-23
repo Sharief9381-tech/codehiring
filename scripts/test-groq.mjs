@@ -11,7 +11,7 @@ for (const line of env.split("\n")) {
 }
 
 const GROQ_KEY = process.env.GROQ_API_KEY
-const models = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.6-27b"]
+const models = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "openai/gpt-oss-20b"]
 
 for (const model of models) {
   try {

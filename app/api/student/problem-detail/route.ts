@@ -129,7 +129,7 @@ All stdin values must be plain numbers only.`
     }
   }
   if (groqKey) {
-    try { return await callOpenAI(groqKey, "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.6-27b") } catch (e) {
+    try { return await callOpenAI(groqKey, "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b") } catch (e) {
       console.error("[problem-detail] Groq failed:", (e as Error).message)
     }
   }

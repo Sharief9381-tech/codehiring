@@ -146,7 +146,7 @@ ${studentContext}`
         const res = await fetch(GROQ_API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
-          body: JSON.stringify({ model: "qwen/qwen3.6-27b", messages, max_tokens: 600, temperature: 0.7 }),
+          body: JSON.stringify({ model: "openai/gpt-oss-20b", messages, max_tokens: 600, temperature: 0.7 }),
           signal: AbortSignal.timeout(20000),
         })
         if (res.ok) {

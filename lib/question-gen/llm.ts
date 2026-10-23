@@ -88,13 +88,13 @@ export async function callLLM(
       const res = await fetch(GROQ_URL, {
         method:  "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
-        body:    JSON.stringify({ model: "qwen/qwen3.6-27b", messages, temperature: 0.7, max_tokens: maxTokens }),
+        body:    JSON.stringify({ model: "openai/gpt-oss-20b", messages, temperature: 0.7, max_tokens: maxTokens }),
         signal:  AbortSignal.timeout(30000),
       })
       if (res.ok) {
         const d    = await res.json()
         const text = stripThink(d.choices?.[0]?.message?.content?.trim() ?? "")
-        if (text.length > 20) return { content: text, model: "qwen/qwen3.6-27b" }
+        if (text.length > 20) return { content: text, model: "openai/gpt-oss-20b" }
       }
     } catch {}
   }

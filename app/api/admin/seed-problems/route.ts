@@ -46,7 +46,7 @@ async function callAI(prompt: string, maxTokens = 8000): Promise<string> {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "qwen/qwen3.6-27b",
+        model: "openai/gpt-oss-20b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.9,
         max_tokens: maxTokens,

@@ -71,7 +71,7 @@ async function callAI(prompt: string): Promise<string> {
       const r = await fetch(GROQ_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.GROQ_API_KEY}` },
-        body: JSON.stringify({ model: "qwen/qwen3.6-27b", messages: [{ role: "user", content: prompt }], temperature: 0.2, max_tokens: 3000 }),
+        body: JSON.stringify({ model: "openai/gpt-oss-20b", messages: [{ role: "user", content: prompt }], temperature: 0.2, max_tokens: 3000 }),
         signal: AbortSignal.timeout(30000),
       })
       if (r.ok) {
