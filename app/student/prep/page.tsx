@@ -2500,19 +2500,23 @@ export default function PrepHubPage() {
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full space-y-6">
 
-      {/* Smart Resume overlay */}
+      {/* Smart Resume / ResumeMetric overlay */}
       {showSmartResume && (
-        <div className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "var(--background)" }}>
-          <div className="pt-14 max-w-4xl mx-auto px-4 py-6 space-y-5">
-            <div className="flex items-center gap-3 sticky top-14 z-10 py-3 border-b border-border" style={{ background: "var(--background)" }}>
-              <button onClick={() => setShowSmartResume(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
-                <ArrowLeft className="h-4 w-4" /> Back to Prep
-              </button>
-              <div className="w-px h-4 bg-border" />
-              <h2 className="text-lg font-bold text-foreground">Smart Resume</h2>
-            </div>
-            <SmartResume />
+        <div className="fixed inset-0 z-[60] flex flex-col" style={{ background: "#090d16" }}>
+          {/* Top bar */}
+          <div className="flex items-center gap-3 px-4 py-3 border-b border-border shrink-0" style={{ background: "#0f172a" }}>
+            <button onClick={() => setShowSmartResume(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
+              <ArrowLeft className="h-4 w-4" /> Back to Prep
+            </button>
+            <div className="w-px h-4 bg-border" />
+            <h2 className="text-lg font-bold text-foreground">Resume Analyzer</h2>
           </div>
+          {/* Full screen iframe */}
+          <iframe
+            src="/resume-analyzer.html"
+            className="flex-1 w-full border-0"
+            title="ResumeMetric ATS Analyzer"
+          />
         </div>
       )}
 
