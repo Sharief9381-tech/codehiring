@@ -119,20 +119,33 @@ All stdin values must be plain numbers only.`
 
   // Try in order: Gemini → OpenAI → Groq
   if (geminiKey) {
-    try { return await callGemini(geminiKey) } catch (e) {
+    try {
+      const result = await callGemini(geminiKey)
+      console.log("[problem-detail] Gemini succeeded for:", title)
+      return result
+    } catch (e) {
       console.error("[problem-detail] Gemini failed:", (e as Error).message)
     }
   }
   if (openaiKey) {
-    try { return await callOpenAI(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini") } catch (e) {
+    try {
+      const result = await callOpenAI(openaiKey, "https://api.openai.com/v1/chat/completions", "gpt-4o-mini")
+      console.log("[problem-detail] OpenAI succeeded for:", title)
+      return result
+    } catch (e) {
       console.error("[problem-detail] OpenAI failed:", (e as Error).message)
     }
   }
   if (groqKey) {
-    try { return await callOpenAI(groqKey, "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b") } catch (e) {
+    try {
+      const result = await callOpenAI(groqKey, "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b")
+      console.log("[problem-detail] Groq succeeded for:", title)
+      return result
+    } catch (e) {
       console.error("[problem-detail] Groq failed:", (e as Error).message)
     }
   }
+  console.error("[problem-detail] ALL providers failed for:", title)
   return null
 }
 
@@ -196,8 +209,10 @@ export async function POST(req: Request) {
     if (!title) return NextResponse.json({ error: "title or problemId required" }, { status: 400 })
 
     // -- 1. Static bank --------------------------------------------------------
+    // Only use static bank if it has STDIN-format test cases (not old script-based ones)
     const sp = getProblem(title)
-    if (sp?.testCases?.length) {
+    const hasStdinTests = sp?.testCases?.some((tc: any) => tc.stdin !== undefined && String(tc.stdin).trim() !== "")
+    if (sp && hasStdinTests) {
       return NextResponse.json({ problem: bankToWire(sp, title, difficulty), fromCache: false, source: "static" })
     }
 
