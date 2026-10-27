@@ -1774,7 +1774,6 @@ export default function PrepHubPage() {
   const [activeTopic, setActiveTopic] = useState<{ id: string; name: string } | null>(null)
   const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock" | "voice">("home")
   const [aptCategory, setAptCategory] = useState<string | null>(null)
-  const [showSmartResume, setShowSmartResume] = useState(false)
   const [showPracticeMenu, setShowPracticeMenu] = useState(false)
   const [studentYear, setStudentYear] = useState<number | null>(null)
   const [fromPractice, setFromPractice] = useState(false)  // came from Practice flyout
@@ -1804,7 +1803,7 @@ export default function PrepHubPage() {
   // Open Smart Resume overlay if navigated here with #smart-resume hash
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hash === "#smart-resume") {
-      setShowSmartResume(true)
+      router.push("/student/resume-analyzer")
       window.history.replaceState(null, "", window.location.pathname)
     }
     // Auto-open track if ?track= param is present OR if navigated to /student/practice/{track}
@@ -1823,11 +1822,10 @@ export default function PrepHubPage() {
     }
   }, [])
 
-  // Lock body scroll when any overlay is open
+  // Lock body scroll when any overlay is open — nothing to lock now
   useEffect(() => {
-    const anyOpen = showSmartResume
+    const anyOpen = false
     if (anyOpen) {
-      // Compensate for scrollbar width to prevent layout shift
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
       document.body.style.overflow = "hidden"
       document.body.style.paddingRight = `${scrollbarWidth}px`
@@ -1839,7 +1837,7 @@ export default function PrepHubPage() {
       document.body.style.overflow = ""
       document.body.style.paddingRight = ""
     }
-  }, [showSmartResume])
+  }, [])
 
   // null = loading, 1 = first year (no company grids), 2-4 = show company grids
   const isFirstYear = studentYear === 1
@@ -2500,26 +2498,6 @@ export default function PrepHubPage() {
   return (
     <div className="flex-1 p-4 md:p-6 max-w-screen-2xl mx-auto w-full space-y-6">
 
-      {/* Smart Resume / ResumeMetric overlay */}
-      {showSmartResume && (
-        <div className="fixed inset-0 z-[60] flex flex-col" style={{ background: "#090d16" }}>
-          {/* Top bar */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-border shrink-0" style={{ background: "#0f172a" }}>
-            <button onClick={() => setShowSmartResume(false)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="h-4 w-4" /> Back to Prep
-            </button>
-            <div className="w-px h-4 bg-border" />
-            <h2 className="text-lg font-bold text-foreground">Resume Analyzer</h2>
-          </div>
-          {/* Full screen iframe */}
-          <iframe
-            src="/resume-analyzer.html"
-            className="flex-1 w-full border-0"
-            title="ResumeMetric ATS Analyzer"
-          />
-        </div>
-      )}
-
       {/* 3D Hero Header */}
       <div className="relative overflow-hidden rounded-3xl p-8"
         style={{
@@ -2545,7 +2523,7 @@ export default function PrepHubPage() {
               style={{ background:"rgba(96,165,250,0.22)", color:"#93c5fd", border:"1.5px solid rgba(96,165,250,0.55)" }}>
               <BookOpen className="h-5 w-5" /> Hiring Drives
             </button>
-            <button onClick={() => setShowSmartResume(true)}
+            <button onClick={() => router.push("/student/resume-analyzer")}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
               style={{ background:"rgba(236,72,153,0.22)", color:"#f9a8d4", border:"1.5px solid rgba(236,72,153,0.55)" }}>
               <Sparkles className="h-5 w-5" /> Smart Resume
