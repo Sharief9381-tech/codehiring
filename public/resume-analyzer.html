@@ -1,2 +1,679 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ResumeMetric - AI Resume Analyzer</title><script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script><script>if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:{50:'#eef2ff',100:'#e0e7ff',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca'},surface:{900:'#090d16',850:'#0f172a',800:'#131d33',750:'#1a2642',700:'#233254',600:'#334155'}},fontFamily:{sans:['Inter','system-ui','-apple-system','Segoe UI','Roboto','sans-serif'],mono:['JetBrains Mono','Menlo','Consolas','monospace']}}}};</script><style>::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:#090d16}::-webkit-scrollbar-thumb{background:#233254;border-radius:9999px}::-webkit-scrollbar-thumb:hover{background:#4f46e5}.glow-ring{filter:drop-shadow(0 0 16px rgba(99,102,241,0.4))}.badge-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .55rem;border-radius:.375rem;font-size:.72rem;font-weight:600}@media print{body{background:#fff!important;color:#000!important}header,.no-print{display:none!important}.bg-surface-850,.bg-surface-800,.bg-surface-750,.bg-surface-900{background:#fff!important;border:1px solid #e2e8f0!important;color:#0f172a!important}.text-white,.text-slate-100,.text-slate-200,.text-slate-300{color:#0f172a!important}}</style></head><body class="bg-surface-900 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand-500 selection:text-white"><header class="border-b border-surface-700 bg-surface-850/90 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 py-3.5 transition-all no-print"><div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4"><div class="flex items-center space-x-3"><div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/25"><i data-lucide="gauge" class="w-5 h-5 text-white"></i></div><div><div class="flex items-center gap-2"><span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">ResumeMetric</span><span class="text-[10px] font-bold uppercase tracking-wider bg-brand-500/20 text-brand-300 px-2 py-0.5 rounded-full border border-brand-500/30">Resume Worded Standard</span></div><p class="text-[11px] text-slate-400 hidden sm:block">Entry-Level ATS Scoring for Campus Placements: Impact 35% • Projects 25% • Style 25% • Relevancy 15%</p></div></div><div class="flex items-center gap-2.5"><button id="modalRulesBtn" type="button" class="px-3 py-1.5 rounded-lg bg-surface-800 hover:bg-surface-750 border border-surface-700 text-xs text-slate-300 hover:text-white flex items-center gap-1.5 transition"><i data-lucide="help-circle" class="w-4 h-4 text-brand-400"></i><span class="hidden md:inline">How Scoring Works</span></button><button id="newUploadBtn" type="button" class="px-3 py-1.5 rounded-lg bg-surface-800 hover:bg-surface-750 border border-surface-700 text-xs text-slate-300 hover:text-white flex items-center gap-1.5 transition"><i data-lucide="upload-cloud" class="w-4 h-4 text-brand-400"></i><span class="hidden sm:inline">Upload File</span></button><button id="exportReportBtn" type="button" class="px-3 py-1.5 rounded-lg bg-surface-800 hover:bg-surface-750 border border-surface-700 text-xs text-slate-300 hover:text-white flex items-center gap-1.5 transition"><i data-lucide="printer" class="w-4 h-4 text-emerald-400"></i><span>Print / Export</span></button><button id="triggerAnalyzeTopBtn" type="button" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-brand-600 to-indigo-500 hover:from-brand-500 hover:to-indigo-400 text-white text-xs font-semibold flex items-center gap-2 shadow-md shadow-indigo-600/30 transition transform active:scale-95"><i data-lucide="sparkles" class="w-4 h-4"></i><span>Score Resume</span></button></div></div></header><main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 space-y-6"><div class="bg-surface-850 border border-surface-700/80 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg no-print"><div class="flex items-center gap-2"><i data-lucide="file-code" class="w-4 h-4 text-brand-400"></i><span class="text-xs font-semibold text-slate-200">Load Benchmark Demos:</span><span class="text-[11px] text-slate-400 hidden sm:inline">Test instant scoring heuristics against real resume profiles.</span></div><div class="flex flex-wrap items-center gap-2"><button id="loadWeakDemo" type="button" class="px-3 py-1 text-xs rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i><span>Sample Junior (~52 Needs Work)</span></button><button id="loadStrongDemo" type="button" class="px-3 py-1 text-xs rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i><span>Sample Good Fresher Resume (~78)</span></button><button id="clearInputsBtn" type="button" class="px-3 py-1 text-xs rounded-lg bg-surface-750 hover:bg-surface-700 text-slate-400 hover:text-slate-200 transition">Clear</button></div></div><div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"><div class="lg:col-span-5 space-y-4 no-print"><div class="bg-surface-850 border border-surface-700 rounded-2xl p-5 shadow-xl space-y-3"><div class="flex items-center justify-between"><span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5"><i data-lucide="file-up" class="w-4 h-4 text-brand-400"></i><span>Upload Resume File</span></span><span class="text-[10px] text-slate-400 bg-surface-750 px-2 py-0.5 rounded-full border border-surface-700">PDF, DOCX, TXT</span></div><div id="dropZone" class="group relative border-2 border-dashed border-surface-600 hover:border-brand-500 rounded-xl p-6 text-center transition-all duration-200 bg-surface-900/60 hover:bg-brand-500/5 cursor-pointer"><input type="file" id="fileUploadInput" accept=".pdf,.docx,.txt,.md,.rtf" class="hidden"><div class="flex flex-col items-center justify-center space-y-2 pointer-events-none"><div class="w-12 h-12 rounded-xl bg-surface-800 group-hover:bg-brand-500/20 text-brand-400 flex items-center justify-center transition"><i data-lucide="upload" class="w-6 h-6"></i></div><div><p class="text-xs font-semibold text-slate-200 group-hover:text-brand-300 transition">Click to browse or drop your resume here</p><p class="text-[11px] text-slate-500 mt-0.5">Supports PDF, DOCX (Word), TXT, Markdown</p></div></div><div id="uploadLoader" class="hidden absolute inset-0 bg-surface-900/90 rounded-xl backdrop-blur-sm flex flex-col items-center justify-center space-y-2"><div class="w-7 h-7 border-2 border-brand-500 border-t-transparent rounded-full animate-spin"></div><p id="loaderMessage" class="text-xs font-medium text-slate-300">Extracting resume text...</p></div></div><div id="activeFileInfo" class="hidden items-center justify-between p-2.5 rounded-xl bg-surface-900 border border-brand-500/40 text-xs text-slate-300"><div class="flex items-center gap-2 truncate"><i data-lucide="file-check" class="w-4 h-4 text-emerald-400 shrink-0"></i><div class="truncate"><span id="activeFileName" class="font-semibold text-white truncate block">resume.pdf</span><span id="activeFileSize" class="text-[10px] text-slate-400 block font-mono">0 KB</span></div></div><button id="removeFileBtn" type="button" class="p-1 hover:bg-surface-750 text-slate-400 hover:text-rose-300 rounded-lg transition" title="Remove file"><i data-lucide="x" class="w-4 h-4"></i></button></div><div class="pt-1"><button id="toggleTextPreviewBtn" type="button" class="text-[11px] text-brand-400 hover:text-brand-300 font-medium flex items-center gap-1 transition"><i id="previewChevronIcon" data-lucide="chevron-right" class="w-3.5 h-3.5 transition-transform duration-200"></i><span id="previewToggleLabel">View / Edit Extracted Resume Text</span></button><div id="textPreviewContainer" class="hidden pt-2 space-y-2"><div class="flex items-center justify-between text-[11px] text-slate-400 font-mono"><span id="resumeWordCounter">0 words</span><span id="resumeCharCounter">0 chars</span></div><textarea id="resumeInput" rows="10" placeholder="Extracted resume text appears here..." class="w-full bg-surface-900 border border-surface-700 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-brand-500 transition font-mono leading-relaxed resize-y"></textarea></div></div></div><div class="bg-surface-850 border border-surface-700 rounded-2xl shadow-xl overflow-hidden transition-all"><button id="toggleJdBtn" type="button" class="w-full p-4 flex items-center justify-between text-left hover:bg-surface-800 transition"><div class="flex items-center gap-2"><i data-lucide="target" class="w-4 h-4 text-amber-400"></i><span class="text-xs font-bold uppercase tracking-wider text-slate-300">Target Job Description</span><span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold">For Relevancy Match</span></div><i id="jdChevronIcon" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-200"></i></button><div id="jdBodyContainer" class="p-4 pt-1 space-y-2 border-t border-surface-700/60 hidden"><div class="flex justify-between items-center text-[11px] text-slate-400"><span>Paste target requirements to benchmark skill match & keyword coverage.</span><span id="jdWordCounter" class="font-mono">0 words</span></div><textarea id="jdInput" rows="5" placeholder="Paste target requirements (e.g., React, Docker, Python, AWS)..." class="w-full bg-surface-900 border border-surface-700 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-brand-500 transition font-mono leading-relaxed"></textarea></div></div><button id="analyzeButton" type="button" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-600 via-indigo-600 to-indigo-500 hover:from-brand-500 hover:to-indigo-400 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition transform active:scale-[0.99]"><i data-lucide="sparkles" class="w-4 h-4"></i><span>Analyze Uploaded Resume</span></button></div><div class="lg:col-span-7 space-y-6"><div class="bg-surface-850 border border-surface-700 rounded-2xl p-5 md:p-6 shadow-xl relative overflow-hidden"><div class="absolute -top-16 -right-16 w-48 h-48 bg-brand-600/10 rounded-full blur-3xl pointer-events-none"></div><div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center"><div class="md:col-span-5 flex flex-col items-center justify-center text-center"><div class="relative w-36 h-36 flex items-center justify-center"><svg class="w-full h-full -rotate-90" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" class="text-surface-700" stroke-width="10" stroke="currentColor" fill="transparent"/><circle id="scoreRadialCircle" cx="60" cy="60" r="50" class="text-brand-500 glow-ring transition-all duration-1000 ease-out" stroke-width="10" stroke-linecap="round" stroke="currentColor" fill="transparent" stroke-dasharray="314.15" stroke-dashoffset="314.15"/></svg><div class="absolute flex flex-col items-center justify-center"><span id="scoreValueDisplay" class="text-4xl font-extrabold text-white tracking-tight font-mono">0</span><span class="text-[9px] text-slate-400 font-semibold tracking-wider uppercase">Score / 100</span></div></div><div id="scoreRatingBadge" class="mt-2.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-surface-750 text-slate-300 border border-surface-700 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-400"></span><span id="scoreRatingText">Awaiting Resume</span></div></div><div class="md:col-span-7 space-y-3 border-t md:border-t-0 md:border-l border-surface-700/80 pt-4 md:pt-0 md:pl-5"><div><div class="flex justify-between items-center text-xs mb-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-indigo-500"></span><span class="font-semibold text-slate-200">Impact</span><span class="text-[10px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 font-mono">40% wt</span></div><span id="impactScoreVal" class="font-mono font-bold text-slate-300">0%</span></div><div class="w-full bg-surface-700 rounded-full h-2 overflow-hidden"><div id="impactBar" class="h-full bg-indigo-500 rounded-full transition-all duration-700" style="width:0%"></div></div></div><div><div class="flex justify-between items-center text-xs mb-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="font-semibold text-slate-200">Brevity</span><span class="text-[10px] px-1 py-0.2 rounded bg-emerald-950 text-emerald-300 font-mono">25% wt</span></div><span id="brevityScoreVal" class="font-mono font-bold text-slate-300">0%</span></div><div class="w-full bg-surface-700 rounded-full h-2 overflow-hidden"><div id="brevityBar" class="h-full bg-emerald-500 rounded-full transition-all duration-700" style="width:0%"></div></div></div><div><div class="flex justify-between items-center text-xs mb-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500"></span><span class="font-semibold text-slate-200">Style & ATS</span><span class="text-[10px] px-1 py-0.2 rounded bg-sky-950 text-sky-300 font-mono">20% wt</span></div><span id="styleScoreVal" class="font-mono font-bold text-slate-300">0%</span></div><div class="w-full bg-surface-700 rounded-full h-2 overflow-hidden"><div id="styleBar" class="h-full bg-sky-500 rounded-full transition-all duration-700" style="width:0%"></div></div></div><div><div class="flex justify-between items-center text-xs mb-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span><span class="font-semibold text-slate-200">Relevancy</span><span class="text-[10px] px-1 py-0.2 rounded bg-amber-950 text-amber-300 font-mono">15% wt</span></div><span id="relevancyScoreVal" class="font-mono font-bold text-slate-300">0%</span></div><div class="w-full bg-surface-700 rounded-full h-2 overflow-hidden"><div id="relevancyBar" class="h-full bg-amber-500 rounded-full transition-all duration-700" style="width:0%"></div></div></div></div></div><div class="mt-4 pt-3.5 border-t border-surface-700/70 flex flex-wrap gap-2 text-xs text-slate-400"><span class="text-[11px] text-slate-400 self-center">Instant Signals:</span><span id="sigMetrics" class="badge-chip bg-surface-900 border border-surface-700 text-slate-400">Metrics: 0%</span><span id="sigVerbs" class="badge-chip bg-surface-900 border border-surface-700 text-slate-400">Power Verbs: 0%</span><span id="sigLength" class="badge-chip bg-surface-900 border border-surface-700 text-slate-400">Length: 0 words</span><span id="sigHeaders" class="badge-chip bg-surface-900 border border-surface-700 text-slate-400">ATS Headers: 0/4</span></div></div><div class="flex items-center space-x-1 border-b border-surface-700 pb-2 text-xs font-semibold overflow-x-auto"><button type="button" class="nav-tab active-tab px-3.5 py-1.5 rounded-lg bg-brand-600 text-white flex items-center gap-1.5 transition" data-view="sectionsView"><i data-lucide="layout-list" class="w-4 h-4"></i><span>Section Breakdown</span></button><button type="button" class="nav-tab px-3.5 py-1.5 rounded-lg bg-surface-800 hover:bg-surface-750 text-slate-300 flex items-center gap-1.5 transition" data-view="checklistView"><i data-lucide="check-check" class="w-4 h-4"></i><span>Action Checklist</span></button><button type="button" class="nav-tab px-3.5 py-1.5 rounded-lg bg-surface-800 hover:bg-surface-750 text-slate-300 flex items-center gap-1.5 transition" data-view="skillsView"><i data-lucide="cpu" class="w-4 h-4"></i><span>Skill & Keyword Match</span></button></div><div id="sectionsView" class="view-panel space-y-4"><div id="sectionsContainer" class="space-y-4"><div class="p-8 text-center text-slate-500 text-xs bg-surface-850 rounded-2xl border border-surface-700">Upload a resume or load a demo to see section-by-section breakdown.</div></div></div><div id="checklistView" class="view-panel hidden space-y-4"><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="bg-surface-850 border border-rose-500/30 rounded-2xl p-4 flex flex-col shadow-lg"><div class="flex items-center justify-between pb-2 mb-2 border-b border-surface-700"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><h4 class="text-xs font-bold text-rose-300">Critical Fixes</h4></div><span id="criticalCountBadge" class="text-[11px] font-mono px-2 py-0.2 rounded-full bg-rose-500/20 text-rose-300">0</span></div><div id="criticalList" class="space-y-2 text-xs text-slate-300 flex-1 overflow-y-auto max-h-[380px]"><p class="text-slate-500 italic text-[11px]">Run analysis to view critical flags.</p></div></div><div class="bg-surface-850 border border-amber-500/30 rounded-2xl p-4 flex flex-col shadow-lg"><div class="flex items-center justify-between pb-2 mb-2 border-b border-surface-700"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><h4 class="text-xs font-bold text-amber-300">Recommended</h4></div><span id="warningCountBadge" class="text-[11px] font-mono px-2 py-0.2 rounded-full bg-amber-500/20 text-amber-300">0</span></div><div id="warningList" class="space-y-2 text-xs text-slate-300 flex-1 overflow-y-auto max-h-[380px]"><p class="text-slate-500 italic text-[11px]">Run analysis to view warnings.</p></div></div><div class="bg-surface-850 border border-emerald-500/30 rounded-2xl p-4 flex flex-col shadow-lg"><div class="flex items-center justify-between pb-2 mb-2 border-b border-surface-700"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><h4 class="text-xs font-bold text-emerald-300">Passed Checks</h4></div><span id="passedCountBadge" class="text-[11px] font-mono px-2 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300">0</span></div><div id="passedList" class="space-y-2 text-xs text-slate-300 flex-1 overflow-y-auto max-h-[380px]"><p class="text-slate-500 italic text-[11px]">Run analysis to view strengths.</p></div></div></div></div><div id="skillsView" class="view-panel hidden space-y-4"><div class="bg-surface-850 border border-surface-700 rounded-2xl p-5 shadow-xl space-y-4"><div><h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5"><i data-lucide="contact" class="w-4 h-4 text-sky-400"></i><span>ATS Contact Information Parsing</span></h4><div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs"><div id="contactEmail" class="p-2.5 rounded-xl bg-surface-900 border border-surface-700 flex items-center justify-between"><span class="text-slate-300">Email</span><i data-lucide="x-circle" class="w-4 h-4 text-slate-500"></i></div><div id="contactPhone" class="p-2.5 rounded-xl bg-surface-900 border border-surface-700 flex items-center justify-between"><span class="text-slate-300">Phone</span><i data-lucide="x-circle" class="w-4 h-4 text-slate-500"></i></div><div id="contactLinkedIn" class="p-2.5 rounded-xl bg-surface-900 border border-surface-700 flex items-center justify-between"><span class="text-slate-300">LinkedIn</span><i data-lucide="x-circle" class="w-4 h-4 text-slate-500"></i></div><div id="contactGitHub" class="p-2.5 rounded-xl bg-surface-900 border border-surface-700 flex items-center justify-between"><span class="text-slate-300">GitHub/Web</span><i data-lucide="x-circle" class="w-4 h-4 text-slate-500"></i></div></div></div><div class="pt-3 border-t border-surface-700/70"><h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5"><i data-lucide="folder-tree" class="w-4 h-4 text-indigo-400"></i><span>Canonical ATS Headings Found</span></h4><div id="headingsList" class="flex flex-wrap gap-2 text-xs"><span class="text-slate-500 text-xs">No analysis yet.</span></div></div><div class="pt-3 border-t border-surface-700/70"><div class="flex items-center justify-between mb-2"><h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5"><i data-lucide="cpu" class="w-4 h-4 text-amber-400"></i><span>Technical Skills Coverage</span></h4><span id="skillsMatchPercentage" class="text-xs font-mono font-bold text-amber-300">0% Matched</span></div><div class="space-y-3"><div><span class="text-[11px] text-slate-400 block mb-1">Found in Resume:</span><div id="matchedSkillsPills" class="flex flex-wrap gap-1.5 min-h-[30px] items-center"><span class="text-xs text-slate-500">None detected.</span></div></div><div><span class="text-[11px] text-rose-300 block mb-1">Missing Target Keywords:</span><div id="missingSkillsPills" class="flex flex-wrap gap-1.5 min-h-[30px] items-center"><span class="text-xs text-slate-500">Add a Job Description to discover missing skills.</span></div></div></div></div></div></div></div></div></main><div id="rulesModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print"><div class="bg-surface-850 border border-surface-700 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto"><div class="flex items-center justify-between pb-3 border-b border-surface-700"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center"><i data-lucide="sliders" class="w-4 h-4"></i></div><div><h3 class="text-sm font-bold text-white">How ResumeMetric Calculates Your ATS Score</h3><p class="text-[11px] text-slate-400">Modeled directly after Resume Worded standard</p></div></div><button type="button" id="closeModalBtn" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button></div><div class="space-y-4 text-xs text-slate-300 leading-relaxed"><div class="p-3 rounded-xl bg-surface-900 border border-surface-750"><div class="flex items-center justify-between text-indigo-300 font-bold mb-1"><span>1. Impact (40% Weight)</span><span>Heaviest Factor</span></div><p class="text-slate-400">Measures if your bullets describe business accomplishments instead of passive duties. Rewards quantifiable metrics (%, $, scale) in ≥40% of bullets and strong action verbs, while penalizing verb repetition and clichés.</p></div><div class="p-3 rounded-xl bg-surface-900 border border-surface-750"><div class="flex items-center justify-between text-emerald-300 font-bold mb-1"><span>2. Brevity (25% Weight)</span><span>Scan Optimization</span></div><p class="text-slate-400">Evaluates total word count (250-500 words optimal for 1 page fresher resume) and flags bullet lengths that are too short (&lt;9 words) or run-ons (&gt;34 words).</p></div><div class="p-3 rounded-xl bg-surface-900 border border-surface-750"><div class="flex items-center justify-between text-sky-300 font-bold mb-1"><span>3. Style & ATS Compatibility (20% Weight)</span><span>Robot Readability</span></div><p class="text-slate-400">Checks for direct contact info (Email, Phone, LinkedIn, GitHub) and canonical section headers (Experience, Education, Skills, Projects).</p></div><div class="p-3 rounded-xl bg-surface-900 border border-surface-750"><div class="flex items-center justify-between text-amber-300 font-bold mb-1"><span>4. Relevancy (15% Weight)</span><span>Role Alignment</span></div><p class="text-slate-400">Compares technical skills and keywords from your target job description against your resume text.</p></div></div><div class="pt-2 flex justify-end"><button type="button" id="closeModalBtn2" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold">Got It, Start Optimizing</button></div></div></div><div id="toastMessage" class="fixed bottom-5 right-5 z-50 bg-surface-800 border border-surface-600 text-white text-xs px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span id="toastText">Action completed</span></div><footer class="border-t border-surface-700/80 mt-12 py-5 text-center text-xs text-slate-500 bg-surface-850 no-print"><div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3"><div>ResumeMetric — Interactive ATS Heuristic Engine. Modeled after Resume Worded standard.</div><div class="flex items-center gap-3 text-slate-400 font-mono text-[11px]"><span>Impact 40%</span><span>•</span><span>Brevity 25%</span><span>•</span><span>Style 20%</span><span>•</span><span>Relevancy 15%</span></div></div></footer><script>const STRONG_POWER_VERBS=new Set(["accelerated","accomplished","achieved","acquired","administered","advised","advocated","amplified","analyzed","architected","audited","automated","boosted","built","centralized","championed","coached","collaborated","compiled","composed","conceived","consolidated","constructed","converted","created","cultivated","debugged","decreased","delivered","deployed","designed","developed","devised","directed","doubled","drafted","drove","eliminated","enabled","engineered","enhanced","established","evaluated","executed","expanded","expedited","fabricated","facilitated","formulated","founded","generated","guided","implemented","improved","increased","initiated","innovated","inspected","instituted","integrated","invented","launched","led","managed","maximized","mentored","migrated","minimized","modernized","monitored","negotiated","optimized","orchestrated","organized","outperformed","overhauled","pioneered","planned","produced","programmed","promoted","reduced","refactored","remodeled","reorganized","resolved","restructured","revamped","revitalized","saved","scaled","secured","simplified","slashed","spearheaded","standardized","streamlined","strengthened","surpassed","trained","transformed","tripled","unified","upgraded","yielded"]);const WEAK_PASSIVE_OPENERS=["responsible for","duties included","helped with","assisted in","assisted with","worked on","worked with","handled","participated in","served as","contributed to","was involved in","supported","attempted to","daily tasks included"];const BUZZWORDS_CLICHES=["synergy","hardworking","hard worker","go-getter","team player","detail-oriented","results-driven","fast-paced","out-of-the-box","self-starter","thought leader","dynamic","proactive","multi-tasker","guru","ninja","rockstar"];const FILLER_PHRASES=["in order to","successfully","duties included","on a daily basis","due to the fact that","with a view to","as a matter of fact","for the purpose of"];const CANONICAL_HEADERS={experience:["experience","work experience","professional experience","employment history","work history"],education:["education","academic background","academic history"],skills:["skills","technical skills","core competencies","technologies","expertise"],projects:["projects","personal projects","key projects","notable projects","technical projects"]};const CORE_TECH_SKILLS=["javascript","typescript","python","java","c++","c#","golang","go","ruby","php","swift","kotlin","rust","react","react.js","next.js","angular","vue","vue.js","node.js","express","django","fastapi","spring boot","sql","postgresql","mysql","mongodb","redis","elasticsearch","graphql","rest api","restful","microservices","aws","amazon web services","azure","gcp","google cloud","docker","kubernetes","ci/cd","terraform","git","linux","machine learning","deep learning","nlp","llm","tensorflow","pytorch","agile","scrum","devops"];const BENCHMARK_JUNIOR_RESUME=`Alex Miller\nalex.miller@example.com | 555-123-4567 | San Francisco, CA\n\nProfessional Summary\nPassionate and hardworking team player looking for a developer role. Detail-oriented self-starter who works well in fast-paced environments.\n\nExperience\nJunior Developer - TechCorp\n2023 - Present\n• Responsible for working on backend bug fixes with the engineering team.\n• Helped with developing new API routes for customers.\n• Handled customer support tickets on a daily basis in order to satisfy clients.\n• Worked with team members to create good user interfaces.\n• Assisted with testing features before deployment.\n\nEducation\nB.S. in Computer Science - State University\nGraduated 2023\n\nSkills\nJavaScript, HTML, CSS, Git`;const BENCHMARK_SENIOR_RESUME=`Sarah Chen\nsarah.chen@techmail.com | (415) 890-4321 | San Francisco, CA\nlinkedin.com/in/sarahchen-dev | github.com/sarahchen\n\nPROFESSIONAL EXPERIENCE\nStaff Software Engineer | ScaleFlow Systems | 2022 – Present\n• Architected a high-throughput event processing pipeline using Go and Kafka, slashing data latency by 45% across 12M daily events.\n• Engineered distributed Redis caching clusters that reduced database query load by 60% and improved P99 API response times from 340ms to 85ms.\n• Spearheaded the cloud migration of 18 legacy microservices to Kubernetes on AWS, cutting monthly infrastructure expenditures by $120,000.\n• Automated end-to-end CI/CD testing pipelines with GitHub Actions, reducing release failure rates by 38% for a team of 45 engineers.\n\nSenior Full-Stack Engineer | Nexus Cloud Inc | 2019 – 2022\n• Deployed full-stack analytics dashboards with React, TypeScript, and Python FastAPI, adopted by over 80,000 active business users.\n• Optimized PostgreSQL query execution plans and index partitioning, boosting search query throughput by 3.5x during peak traffic.\n• Mentored 8 junior and mid-level software engineers, driving code review turnaround times down by 25%.\n\nEDUCATION\nB.S. in Computer Science | University of California, Berkeley\n\nTECHNICAL SKILLS\nLanguages: Python, Go, TypeScript, JavaScript, SQL\nFrameworks & Tools: React, Next.js, Node.js, FastAPI, Docker, Kubernetes, AWS, PostgreSQL, Redis, Kafka, Git, CI/CD`;const SAMPLE_JOB_DESCRIPTION=`Senior Full Stack Software Engineer\nWe are seeking an experienced Senior Full Stack Engineer proficient in:\n- React, TypeScript, Next.js for frontend architecture\n- Node.js or Python (FastAPI/Django) or Go for backend microservices\n- Cloud platforms (AWS, GCP) and containerization with Docker and Kubernetes\n- Database optimization with PostgreSQL and Redis\n- CI/CD automation and high availability distributed systems design\nExperience optimizing latency and building for large-scale user traffic is highly required.`;let currentAnalysis=null,activeBulletFilter='all',currentUploadedFileName=null;document.addEventListener('DOMContentLoaded',()=>{if(window.lucide&&window.lucide.createIcons)window.lucide.createIcons();initEventListeners();initDragAndDrop();updateCounters();loadSeniorDemo();});function initEventListeners(){const ri=document.getElementById('resumeInput'),ji=document.getElementById('jdInput');if(ri)ri.addEventListener('input',updateCounters);if(ji)ji.addEventListener('input',updateCounters);document.getElementById('analyzeButton')?.addEventListener('click',runFullAnalysis);document.getElementById('triggerAnalyzeTopBtn')?.addEventListener('click',runFullAnalysis);document.getElementById('loadWeakDemo')?.addEventListener('click',loadJuniorDemo);document.getElementById('loadStrongDemo')?.addEventListener('click',loadSeniorDemo);document.getElementById('clearInputsBtn')?.addEventListener('click',clearAll);document.getElementById('newUploadBtn')?.addEventListener('click',()=>document.getElementById('fileUploadInput')?.click());document.getElementById('fileUploadInput')?.addEventListener('change',handleFileInputChange);document.getElementById('removeFileBtn')?.addEventListener('click',clearUploadedFile);document.getElementById('toggleTextPreviewBtn')?.addEventListener('click',()=>{const c=document.getElementById('textPreviewContainer'),ch=document.getElementById('previewChevronIcon');if(!c||!ch)return;const h=c.classList.contains('hidden');if(h){c.classList.remove('hidden');ch.classList.add('rotate-90');}else{c.classList.add('hidden');ch.classList.remove('rotate-90');}});document.getElementById('toggleJdBtn')?.addEventListener('click',()=>{const b=document.getElementById('jdBodyContainer'),i=document.getElementById('jdChevronIcon');if(!b||!i)return;const h=b.classList.contains('hidden');if(h){b.classList.remove('hidden');i.classList.add('rotate-180');}else{b.classList.add('hidden');i.classList.remove('rotate-180');}});document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>{const target=tab.dataset.view;document.querySelectorAll('.nav-tab').forEach(t=>{t.classList.remove('bg-brand-600','text-white','active-tab');t.classList.add('bg-surface-800','text-slate-300');});tab.classList.remove('bg-surface-800','text-slate-300');tab.classList.add('bg-brand-600','text-white','active-tab');document.querySelectorAll('.view-panel').forEach(p=>p.classList.add('hidden'));document.getElementById(target)?.classList.remove('hidden');});});document.querySelectorAll('.bullet-filter-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.bullet-filter-btn').forEach(b=>{b.classList.remove('bg-brand-600','text-white');b.classList.add('bg-surface-800','text-slate-300');});btn.classList.remove('bg-surface-800','text-slate-300');btn.classList.add('bg-brand-600','text-white');activeBulletFilter=btn.dataset.filter;renderBulletsFeed();});});document.getElementById('modalRulesBtn')?.addEventListener('click',()=>document.getElementById('rulesModal')?.classList.remove('hidden'));document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.getElementById('rulesModal')?.classList.add('hidden'));document.getElementById('closeModalBtn2')?.addEventListener('click',()=>document.getElementById('rulesModal')?.classList.add('hidden'));document.getElementById('closeRewriteDrawer')?.addEventListener('click',()=>document.getElementById('rewriteDrawer')?.classList.add('hidden'));document.getElementById('copyRewriteBtn')?.addEventListener('click',copySuggestedRewrite);document.getElementById('exportReportBtn')?.addEventListener('click',()=>{if(!currentAnalysis)runFullAnalysis();window.print();});}function initDragAndDrop(){const dz=document.getElementById('dropZone');if(!dz)return;['dragenter','dragover'].forEach(e=>{dz.addEventListener(e,(ev)=>{ev.preventDefault();ev.stopPropagation();dz.classList.add('border-brand-500','bg-brand-500/10');});});['dragleave','drop'].forEach(e=>{dz.addEventListener(e,(ev)=>{ev.preventDefault();ev.stopPropagation();dz.classList.remove('border-brand-500','bg-brand-500/10');});});dz.addEventListener('drop',(e)=>{const f=e.dataTransfer?.files;if(f&&f.length>0)processResumeFile(f[0]);});}function handleFileInputChange(e){const f=e.target.files?.[0];if(f)processResumeFile(f);}async function processResumeFile(file){if(!file)return;const loader=document.getElementById('uploadLoader'),lm=document.getElementById('loaderMessage');if(loader)loader.classList.remove('hidden');const ext=file.name.split('.').pop().toLowerCase(),kb=Math.round(file.size/1024);try{let txt='';if(ext==='pdf'){if(lm)lm.innerText='Extracting PDF text...';txt=await extractTextFromPDF(file);}else if(ext==='docx'){if(lm)lm.innerText='Extracting DOCX text...';txt=await extractTextFromDOCX(file);}else{if(lm)lm.innerText='Reading document text...';txt=await file.text();}if(!txt?.trim())throw new Error('Unable to parse text. Ensure the file is not scanned/image-only.');const ri=document.getElementById('resumeInput');if(ri)ri.value=txt;setUploadedFileInfo(file.name,`${kb} KB`);updateCounters();if(loader)loader.classList.add('hidden');showToast(`Extracted ${file.name} successfully!`);runFullAnalysis();}catch(err){if(loader)loader.classList.add('hidden');showToast(err.message||'Error processing file');}}async function extractTextFromPDF(file){if(!window.pdfjsLib)throw new Error('PDF library not loaded.');const ab=await file.arrayBuffer(),pdf=await pdfjsLib.getDocument({data:ab}).promise;let txt='';for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i),tc=await page.getTextContent();txt+=tc.items.map(x=>x.str).join(' ')+'\n\n';}return txt;}async function extractTextFromDOCX(file){if(!window.mammoth)throw new Error('DOCX library not loaded.');const ab=await file.arrayBuffer(),r=await mammoth.extractRawText({arrayBuffer:ab});return r.value||'';}function setUploadedFileInfo(name,size){currentUploadedFileName=name;const fi=document.getElementById('activeFileInfo'),fn=document.getElementById('activeFileName'),fs=document.getElementById('activeFileSize');if(fi&&fn&&fs){fn.innerText=name;fs.innerText=size;fi.classList.remove('hidden');fi.classList.add('flex');}}function clearUploadedFile(){const fi=document.getElementById('fileUploadInput'),fc=document.getElementById('activeFileInfo'),ri=document.getElementById('resumeInput');if(fi)fi.value='';if(fc){fc.classList.add('hidden');fc.classList.remove('flex');}if(ri)ri.value='';currentUploadedFileName=null;updateCounters();resetUI();showToast('File removed');}function showToast(text){const t=document.getElementById('toastMessage'),l=document.getElementById('toastText');if(!t||!l)return;l.innerText=text;t.classList.remove('translate-y-20','opacity-0');setTimeout(()=>t.classList.add('translate-y-20','opacity-0'),2400);}function updateCounters(){const r=document.getElementById('resumeInput')?.value||'',j=document.getElementById('jdInput')?.value||'';const rw=r.trim()?r.trim().split(/\s+/).length:0,jw=j.trim()?j.trim().split(/\s+/).length:0;const rwc=document.getElementById('resumeWordCounter'),rcc=document.getElementById('resumeCharCounter'),jwc=document.getElementById('jdWordCounter');if(rwc)rwc.innerText=`${rw} words`;if(rcc)rcc.innerText=`${r.length} chars`;if(jwc)jwc.innerText=`${jw} words`;}function loadJuniorDemo(){const ri=document.getElementById('resumeInput'),ji=document.getElementById('jdInput'),jb=document.getElementById('jdBodyContainer'),jic=document.getElementById('jdChevronIcon');if(ri)ri.value=BENCHMARK_JUNIOR_RESUME;if(ji)ji.value=SAMPLE_JOB_DESCRIPTION;if(jb)jb.classList.remove('hidden');if(jic)jic.classList.add('rotate-180');setUploadedFileInfo('Sample_Junior_Dev_Resume.docx','14 KB');updateCounters();runFullAnalysis();showToast('Loaded Sample Junior Resume (~52 score)');}function loadSeniorDemo(){const ri=document.getElementById('resumeInput'),ji=document.getElementById('jdInput'),jb=document.getElementById('jdBodyContainer'),jic=document.getElementById('jdChevronIcon');if(ri)ri.value=BENCHMARK_SENIOR_RESUME;if(ji)ji.value=SAMPLE_JOB_DESCRIPTION;if(jb)jb.classList.remove('hidden');if(jic)jic.classList.add('rotate-180');setUploadedFileInfo('Sarah_Chen_Staff_Engineer_Resume.pdf','32 KB');updateCounters();runFullAnalysis();showToast('Loaded Sample Good Fresher Resume (~78 score)');}function clearAll(){clearUploadedFile();const ji=document.getElementById('jdInput');if(ji)ji.value='';updateCounters();currentAnalysis=null;resetUI();showToast('All inputs cleared');}function resetUI(){updateRadialGauge(0);['scoreValueDisplay','impactScoreVal','brevityScoreVal','styleScoreVal','relevancyScoreVal'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerText=id==='scoreValueDisplay'?'0':'0%';});['impactBar','brevityBar','styleBar','relevancyBar'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.width='0%';});const rt=document.getElementById('scoreRatingText');if(rt)rt.innerText='Awaiting Resume';const bc=document.getElementById('bulletsFoundCount');if(bc)bc.innerText='0';const blc=document.getElementById('bulletsListContainer');if(blc)blc.innerHTML='<div class="p-8 text-center text-slate-500 text-xs bg-surface-850 rounded-2xl border border-surface-700">Upload a resume or load a demo to inspect line-by-line bullets.</div>';['criticalList','warningList','passedList'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<p class="text-slate-500 italic text-[11px]">No data yet.</p>';});}function runFullAnalysis(){const rt=document.getElementById('resumeInput')?.value?.trim()||'',jt=document.getElementById('jdInput')?.value?.trim()||'';if(!rt){showToast('Please upload or provide resume text to analyze.');return;}const lines=rt.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);const bullets=[];lines.forEach(line=>{const m=/^([•\-\*▪\u2022\u2023\u25E6\u2043\u2219]|\d+\.)\s+(.+)$/.exec(line);if(m)bullets.push(m[2].trim());else if(line.length>35&&!line.endsWith(':')&&!isHeaderCandidate(line))bullets.push(line);});const fb=bullets.length>0?bullets:rt.split(/(?<=[.?!])\s+/).filter(b=>b.length>25);const imp=analyzeImpact(fb,rt),brev=analyzeBrevity(fb,rt),sty=analyzeStyleATS(rt,lines),rel=analyzeRelevancy(rt,jt);const overall=Math.round(imp.score*.4+brev.score*.25+sty.score*.2+rel.score*.15);currentAnalysis={overallScore:overall,impact:imp,brevity:brev,style:sty,relevancy:rel,bullets:imp.diagnosedBullets,checklist:buildChecklist(imp,brev,sty,rel)};renderScorecard();renderSectionsView();renderChecklist();renderSkillsMatrix();showToast(`Analysis complete! Score: ${overall}/100`);}function isHeaderCandidate(line){if(line.length>40)return false;const lower=line.toLowerCase().replace(/[^a-z]/g,'');return Object.values(CANONICAL_HEADERS).flat().some(h=>lower===h.replace(/[^a-z]/g,''));}function analyzeImpact(bs,ft){const mp=/(\b\d+(\.\d+)?%|\$[\d,]+(\.\d+)?|\b\d+x\b|\b\d{1,3}(,\d{3})*(\+)?\b|\b\d+\s?(k|m|b|million|billion)\b)/i;let mc=0,sv=0;const svf={},wv=[],bzf=new Set(),diag=[];BUZZWORDS_CLICHES.forEach(w=>{if(new RegExp(`\\b${w}\\b`,'i').test(ft))bzf.add(w);});bs.forEach((b,i)=>{const words=b.split(/\s+/).filter(Boolean),fw=words[0]?words[0].toLowerCase().replace(/[^a-z]/g,''):'',lb=b.toLowerCase(),hm=mp.test(b);if(hm)mc++;let vt='neutral';const iw=WEAK_PASSIVE_OPENERS.some(w=>lb.startsWith(w)),is_=STRONG_POWER_VERBS.has(fw);if(is_){vt='strong';sv++;}else if(iw){vt='weak';wv.push({index:i,phrase:words.slice(0,3).join(' ')});}if(fw)svf[fw]=(svf[fw]||0)+1;let ls='optimal';if(words.length<9)ls='short';else if(words.length>34)ls='long';diag.push({id:i,text:b,wordCount:words.length,hasMetric:hm,verbType:vt,firstWord:fw,lengthStatus:ls,suggestedRewrite:generateXYZSuggestion(b,fw,hm)});});const tot=bs.length||1,mr=mc/tot,svr=sv/tot;const rv=Object.entries(svf).filter(([v,c])=>c>=3&&v.length>2).map(([v,c])=>({verb:v,count:c}));let ms=Math.min(40,(mr/.4)*40),vs=Math.min(35,(svr/.75)*35),ps=25-rv.length*5-bzf.size*4-wv.length*3;if(ps<0)ps=0;return{score:Math.min(100,Math.max(10,Math.round(ms+vs+ps))),metricRatio:mr,strongVerbRatio:svr,metricCount:mc,strongVerbCount:sv,totalBullets:bs.length,repeatedVerbs:rv,weakVerbInstances:wv,buzzwordsFound:Array.from(bzf),diagnosedBullets:diag};}function analyzeBrevity(bs,ft){const words=ft.split(/\s+/).filter(Boolean),tw=words.length;let ls=100,lst='optimal';if(tw<150){ls=40;lst='too-short';}else if(tw<250){ls=70;lst='slightly-short';}else if(tw>700){ls=55;lst='too-long';}else if(tw>550){ls=80;lst='slightly-long';}let sb=0,lb2=0,ob=0;bs.forEach(b=>{const c=b.split(/\s+/).length;if(c<9)sb++;else if(c>34)lb2++;else ob++;});const ff=FILLER_PHRASES.filter(f=>new RegExp(`\\b${f}\\b`,'i').test(ft));let bbs=100;if(bs.length>0){const nor=(sb+lb2)/bs.length;bbs=Math.max(30,Math.round(100-nor*50-ff.length*5));}return{score:Math.round(ls*.5+bbs*.5),totalWords:tw,lengthState:lst,shortBullets:sb,longBullets:lb2,optimalBullets:ob,foundFillers:ff};}function analyzeStyleATS(ft,lines){const em=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(ft),ph=/(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/.test(ft),li=/linkedin\.com\/(in\/)?[a-zA-Z0-9_-]+/i.test(ft),gh=/(github\.com\/[a-zA-Z0-9_-]+|gitlab\.com|portfolio|\.dev|\.io)/i.test(ft);const cs=(em?30:0)+(ph?30:0)+(li?20:0)+(gh?20:0);const lf=ft.toLowerCase();const dh={};let hc=0;Object.entries(CANONICAL_HEADERS).forEach(([s,a])=>{const f=a.some(al=>new RegExp(`(^|\\n)\\s*${al}\\s*($|\\n|:)`,'i').test(lf));dh[s]=f;if(f)hc++;});const hs=(hc/4)*100;return{score:Math.min(100,Math.max(20,Math.round(cs*.5+hs*.5))),contacts:{email:em,phone:ph,linkedin:li,github:gh},detectedHeaders:dh,headersFoundCount:hc};}function analyzeRelevancy(rt,jt){const lr=rt.toLowerCase();if(jt&&jt.trim().length>30){const lj=jt.toLowerCase();const ejs=CORE_TECH_SKILLS.filter(s=>new RegExp(`\\b${escapeRegExp(s)}\\b`,'i').test(lj));const ts=ejs.length>=4?ejs:CORE_TECH_SKILLS.slice(0,10);const m=[],ms2=[];ts.forEach(s=>{new RegExp(`\\b${escapeRegExp(s)}\\b`,'i').test(lr)?m.push(s):ms2.push(s);});const mr=ts.length>0?m.length/ts.length:.5;return{score:Math.min(100,Math.max(25,Math.round(mr*100))),isTargeted:true,targetSkills:ts,matched:m,missing:ms2,matchPercentage:Math.round(mr*100)};}else{const m=CORE_TECH_SKILLS.filter(s=>new RegExp(`\\b${escapeRegExp(s)}\\b`,'i').test(lr));return{score:Math.min(100,Math.max(30,Math.round((m.length/7)*100))),isTargeted:false,matched:m,missing:["react","typescript","python","docker","aws","sql"].filter(s=>!m.includes(s)),matchPercentage:Math.min(100,Math.round((m.length/7)*100))};}}function escapeRegExp(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}function generateXYZSuggestion(orig,fw,hm){const vc=["Architected","Engineered","Optimized","Automated","Spearheaded","Streamlined"];const cv=STRONG_POWER_VERBS.has(fw)?fw.charAt(0).toUpperCase()+fw.slice(1):vc[Math.floor(Math.random()*vc.length)];return hm?`${cv} high-scale component architecture, delivering quantifiable performance gains while eliminating system friction.`:`${cv} core backend service workflows, improving processing throughput by 35% and saving 10+ hours per engineering sprint using modern automation.`;}function buildChecklist(imp,brev,sty,rel){const c=[],w=[],p=[];if(imp.metricRatio<.1)c.push(`Only ${Math.round(imp.metricRatio*100)}% of bullets include metrics. Even internships should have numbers (e.g. "reduced load time by 30%").`);else if(imp.metricRatio>=.25)p.push(`Good quantification: ${Math.round(imp.metricRatio*100)}% of bullets include measurable outcomes.`);else w.push(`Low metrics (${Math.round(imp.metricRatio*100)}%). Try to quantify at least 1-2 bullets with impact numbers.`);if(imp.weakVerbInstances.length>0)c.push(`${imp.weakVerbInstances.length} weak passive opener(s). Replace with ownership action verbs.`);else p.push('Zero weak passive openers detected.');if(imp.repeatedVerbs.length>0)w.push(`Verb repetition: "${imp.repeatedVerbs[0].verb}" used ${imp.repeatedVerbs[0].count} times.`);else p.push('Action verbs are varied — no repetition.');if(imp.buzzwordsFound.length>0)w.push(`Buzzwords found: "${imp.buzzwordsFound.join(', ')}". Replace with concrete skills.`);else p.push('Free of unsubstantiated clichés.');if(brev.lengthState==='too-short')c.push(`Very brief (${brev.totalWords} words). Target 250–500 words for a fresher resume.`);else if(brev.lengthState==='too-long')w.push(`Long for a fresher resume (${brev.totalWords} words). Keep to 1 page, under 500 words.`);else p.push(`Good word count for a fresher resume (${brev.totalWords} words).`);if(brev.longBullets>1)w.push(`${brev.longBullets} run-on bullet(s) exceed 34 words.`);else p.push('Bullet length discipline is clean.');if(!sty.contacts.email||!sty.contacts.phone)c.push('Missing essential contact info (Email or Phone).');else p.push('Email and Phone clearly detected.');if(!sty.contacts.linkedin)w.push('No LinkedIn URL detected. 85%+ of recruiters cross-check.');else p.push('LinkedIn URL verified.');if(sty.headersFoundCount<3)c.push(`Only ${sty.headersFoundCount}/4 canonical headers found.`);else p.push(`${sty.headersFoundCount}/4 standard ATS headers recognized.`);if(rel.isTargeted){if(rel.matchPercentage<60)c.push(`Low JD match: ${rel.matchPercentage}% keyword coverage.`);else p.push(`High JD alignment: ${rel.matchPercentage}% coverage.`);}else{if(rel.score>=70)p.push(`Dense technical footprint: ${rel.matched.length} key frameworks identified.`);else w.push('Technical stack mentions are sparse.');}return{critical:c,warnings:w,passed:p};}function renderScorecard(){if(!currentAnalysis)return;const{overallScore:os,impact:imp,brevity:brev,style:sty,relevancy:rel}=currentAnalysis;const sv=document.getElementById('scoreValueDisplay');if(sv)sv.innerText=os;updateRadialGauge(os);const rb=document.getElementById('scoreRatingBadge'),rt=document.getElementById('scoreRatingText');if(rb&&rt){if(os>=85){rb.className='mt-2.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5';rt.innerText='Exceptional (Interview Ready)';}else if(os>=70){rb.className='mt-2.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5';rt.innerText='Competitive (Minor Fixes)';}else{rb.className='mt-2.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center gap-1.5';rt.innerText='Needs Work (ATS At Risk)';}}[['impactScoreVal','impactBar',imp.score],['brevityScoreVal','brevityBar',brev.score],['styleScoreVal','styleBar',sty.score],['relevancyScoreVal','relevancyBar',rel.score]].forEach(([vi,bi,sc])=>{const ve=document.getElementById(vi),be=document.getElementById(bi);if(ve)ve.innerText=`${sc}%`;if(be)be.style.width=`${sc}%`;});const sm=document.getElementById('sigMetrics');if(sm){sm.innerText=`Metrics: ${Math.round(imp.metricRatio*100)}%`;sm.className=`badge-chip ${imp.metricRatio>=.4?'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30':'bg-rose-500/10 text-rose-300 border border-rose-500/30'}`;}const sv2=document.getElementById('sigVerbs');if(sv2){sv2.innerText=`Power Verbs: ${Math.round(imp.strongVerbRatio*100)}%`;sv2.className=`badge-chip ${imp.strongVerbRatio>=.75?'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30':'bg-amber-500/10 text-amber-300 border border-amber-500/30'}`;}const sl=document.getElementById('sigLength');if(sl){sl.innerText=`Length: ${brev.totalWords} words`;sl.className=`badge-chip ${brev.lengthState==='optimal'?'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30':'bg-surface-800 text-slate-400 border border-surface-700'}`;}const sh=document.getElementById('sigHeaders');if(sh){sh.innerText=`ATS Headers: ${sty.headersFoundCount}/4`;sh.className=`badge-chip ${sty.headersFoundCount>=3?'bg-sky-500/10 text-sky-300 border border-sky-500/30':'bg-rose-500/10 text-rose-300 border border-rose-500/30'}`;}}function updateRadialGauge(s){const c=document.getElementById('scoreRadialCircle');if(!c)return;c.style.strokeDashoffset=314.15-(s/100)*314.15;c.setAttribute('class',s>=85?'text-emerald-500 glow-ring transition-all duration-1000 ease-out':s>=70?'text-amber-500 glow-ring transition-all duration-1000 ease-out':'text-rose-500 glow-ring transition-all duration-1000 ease-out');}function renderBulletsFeed(){const con=document.getElementById('bulletsListContainer');if(!con||!currentAnalysis)return;const bs=currentAnalysis.bullets;if(!bs?.length){con.innerHTML='<div class="p-6 text-center text-slate-500 text-xs">No bullet points extracted.</div>';return;}let f=bs;if(activeBulletFilter==='needs-work')f=bs.filter(b=>!b.hasMetric||b.verbType==='weak'||b.lengthStatus!=='optimal');else if(activeBulletFilter==='optimal')f=bs.filter(b=>b.hasMetric&&b.verbType==='strong'&&b.lengthStatus==='optimal');if(!f.length){con.innerHTML='<div class="p-6 text-center text-slate-400 text-xs bg-surface-850 rounded-xl border border-surface-700">No bullets match the selected filter.</div>';return;}con.innerHTML=f.map(b=>{const hi=!b.hasMetric||b.verbType==='weak'||b.lengthStatus!=='optimal';const bc2=hi?'border-surface-700 hover:border-amber-500/60':'border-surface-700 hover:border-emerald-500/60';const mb2=b.hasMetric?'<span class="badge-chip bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">Metric Included</span>':'<span class="badge-chip bg-rose-500/10 text-rose-300 border border-rose-500/30">Missing Metric</span>';const vb=b.verbType==='strong'?`<span class="badge-chip bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">Power Verb: ${b.firstWord}</span>`:b.verbType==='weak'?'<span class="badge-chip bg-rose-500/10 text-rose-300 border border-rose-500/30">Weak Opener</span>':`<span class="badge-chip bg-surface-750 text-slate-400 border border-surface-700">Opener: ${b.firstWord||'None'}</span>`;const lb3=b.lengthStatus==='short'?`<span class="badge-chip bg-amber-500/10 text-amber-300 border border-amber-500/30">Too Short (${b.wordCount}w)</span>`:b.lengthStatus==='long'?`<span class="badge-chip bg-amber-500/10 text-amber-300 border border-amber-500/30">Rambling (${b.wordCount}w)</span>`:`<span class="badge-chip bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">${b.wordCount} words (Optimal)</span>`;return`<div onclick="openRewriteAssistant(${b.id})" class="p-3.5 rounded-xl bg-surface-850 hover:bg-surface-800 border ${bc2} cursor-pointer transition space-y-2 shadow-sm"><div class="flex items-start justify-between gap-3"><p class="text-xs text-slate-200 leading-relaxed font-mono flex-1">• ${escapeHtml(b.text)}</p><i data-lucide="sparkles" class="w-4 h-4 text-brand-400 shrink-0 mt-0.5"></i></div><div class="flex flex-wrap gap-1.5 pt-1">${mb2}${vb}${lb3}</div></div>`;}).join('');if(window.lucide?.createIcons)window.lucide.createIcons();}window.openRewriteAssistant=function(id){if(!currentAnalysis)return;const b=currentAnalysis.bullets.find(x=>x.id===id);if(!b)return;const d=document.getElementById('rewriteDrawer');if(d)d.classList.remove('hidden');const ob=document.getElementById('drawerOriginalBullet'),sr=document.getElementById('drawerSuggestedRewrite');if(ob)ob.innerText=`• ${b.text}`;if(sr)sr.innerText=`• ${b.suggestedRewrite}`;const pc=document.getElementById('drawerIssuePills');const iss=[];if(!b.hasMetric)iss.push('<span class="badge-chip bg-rose-500/20 text-rose-300 border border-rose-500/30">Missing Quantifiable Metric</span>');if(b.verbType==='weak')iss.push('<span class="badge-chip bg-rose-500/20 text-rose-300 border border-rose-500/30">Weak / Passive Phrase</span>');if(b.verbType==='neutral')iss.push('<span class="badge-chip bg-amber-500/20 text-amber-300 border border-amber-500/30">Neutral Verb</span>');if(b.lengthStatus==='short')iss.push('<span class="badge-chip bg-amber-500/20 text-amber-300 border border-amber-500/30">Lacks Context (&lt;9 words)</span>');if(b.lengthStatus==='long')iss.push('<span class="badge-chip bg-amber-500/20 text-amber-300 border border-amber-500/30">Rambling Sentence (&gt;34 words)</span>');if(!iss.length)iss.push('<span class="badge-chip bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">No major issues! Strong bullet.</span>');if(pc)pc.innerHTML=iss.join('');d?.scrollIntoView({behavior:'smooth',block:'nearest'});};function copySuggestedRewrite(){const el=document.getElementById('drawerSuggestedRewrite');if(!el)return;const txt=el.innerText.replace(/^[•\s]+/,'');const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast('Rewrite copied!');}catch{showToast('Copy failed.');}document.body.removeChild(ta);}function renderSectionsView(){if(!currentAnalysis)return;const{impact:imp,brevity:brev,style:sty,relevancy:rel}=currentAnalysis;const rt=document.getElementById('resumeInput')?.value||'';const con=document.getElementById('sectionsContainer');if(!con)return;const sections=[{name:'Work Experience',icon:'briefcase',color:'#6366f1',desc:analyzeExperienceSection(rt,imp),score:Math.round(imp.score*0.6+brev.score*0.4),grade:scoreToGrade(Math.round(imp.score*0.6+brev.score*0.4))},{name:'Education',icon:'graduation-cap',color:'#10b981',desc:analyzeEducationSection(rt,sty),score:sty.detectedHeaders.education?75:30,grade:sty.detectedHeaders.education?'B':'D'},{name:'Skills',icon:'cpu',color:'#f59e0b',desc:analyzeSkillsSection(rt,rel),score:Math.round(rel.score*0.8+30),grade:scoreToGrade(Math.min(100,Math.round(rel.score*0.8+30)))},{name:'Projects',icon:'folder-open',color:'#ec4899',desc:analyzeProjectsSection(rt,sty),score:sty.detectedHeaders.projects?70:25,grade:sty.detectedHeaders.projects?'B':'D'},{name:'Summary / Objective',icon:'align-left',color:'#8b5cf6',desc:analyzeSummarySection(rt,imp),score:imp.buzzwordsFound.length>2?40:70,grade:imp.buzzwordsFound.length>2?'C':'B'}];con.innerHTML=sections.map(s=>`<div class="bg-surface-850 border border-surface-700 rounded-2xl p-4 space-y-3"><div class="flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:${s.color}18;color:${s.color}"><i data-lucide="${s.icon}" class="w-4 h-4"></i></div><div><p class="text-sm font-bold text-white">${s.name}</p><p class="text-[10px] text-slate-400">${s.desc.subtitle}</p></div></div><div class="flex items-center gap-3 shrink-0"><div class="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-black" style="background:${gradeColor(s.grade)}20;color:${gradeColor(s.grade)};border:2px solid ${gradeColor(s.grade)}40">${s.grade}</div></div></div><div class="w-full bg-surface-700 rounded-full h-2"><div class="h-2 rounded-full transition-all" style="width:${s.score}%;background:${s.color}"></div></div><div class="space-y-1.5">${s.desc.points.map(p=>`<div class="flex items-start gap-2 text-xs"><span class="shrink-0 mt-0.5" style="color:${p.ok?'#10b981':'#f87171'}">${p.ok?'✓':'✗'}</span><span class="${p.ok?'text-slate-300':'text-rose-300'}">${p.text}</span></div>`).join('')}</div></div>`).join('');if(window.lucide?.createIcons)window.lucide.createIcons();}function scoreToGrade(s){if(s>=90)return'A+';if(s>=80)return'A';if(s>=70)return'B';if(s>=60)return'C';if(s>=50)return'D';return'F';}function gradeColor(g){if(g.startsWith('A'))return'#10b981';if(g==='B')return'#6366f1';if(g==='C')return'#f59e0b';return'#ef4444';}function analyzeExperienceSection(rt,imp){const has=/(experience|work experience|professional experience)/i.test(rt);const pts=[];if(has)pts.push({ok:true,text:'Work Experience section detected'});else pts.push({ok:false,text:'No Work Experience section found — add it'});if(imp.metricRatio>=0.4)pts.push({ok:true,text:`${Math.round(imp.metricRatio*100)}% of bullets have quantifiable results`});else pts.push({ok:false,text:`Only ${Math.round(imp.metricRatio*100)}% of bullets have metrics — aim for 40%+`});if(imp.weakVerbInstances.length===0)pts.push({ok:true,text:'No weak passive openers (Responsible for, Helped with)'});else pts.push({ok:false,text:`${imp.weakVerbInstances.length} weak opener(s) found — use action verbs`});if(imp.repeatedVerbs.length===0)pts.push({ok:true,text:'Action verbs are varied'});else pts.push({ok:false,text:`Verb "${imp.repeatedVerbs[0].verb}" repeated ${imp.repeatedVerbs[0].count} times`});return{subtitle:`${imp.totalBullets} bullets • ${imp.metricCount} with metrics`,points:pts};}function analyzeEducationSection(rt,sty){const has=sty.detectedHeaders.education;const pts=[];if(has)pts.push({ok:true,text:'Education section detected with standard heading'});else pts.push({ok:false,text:'Education section missing or not labeled clearly'});const hasDegree=/(b\.?tech|b\.?e|bachelor|master|m\.?tech|b\.?sc|m\.?sc|phd|degree)/i.test(rt);if(hasDegree)pts.push({ok:true,text:'Degree type mentioned'});else pts.push({ok:false,text:'Add your degree name (B.Tech, B.E., etc.)'});const hasYear=/20(1[5-9]|2[0-9])/.test(rt);if(hasYear)pts.push({ok:true,text:'Graduation year present'});else pts.push({ok:false,text:'Add graduation year'});return{subtitle:has?'Section found':'Section missing',points:pts};}function analyzeSkillsSection(rt,rel){const has=sty.detectedHeaders?.skills??(/(skills|technologies|tech stack)/i.test(rt));const pts=[];if(has)pts.push({ok:true,text:'Skills section detected'});else pts.push({ok:false,text:'Add a dedicated Skills section'});if(rel.matched.length>=5)pts.push({ok:true,text:`${rel.matched.length} technical skills listed`});else pts.push({ok:false,text:`Only ${rel.matched.length} key skills found — list more frameworks & tools`});if(rel.missing.length>0)pts.push({ok:false,text:`Missing keywords: ${rel.missing.slice(0,3).join(', ')}`});else pts.push({ok:true,text:'Good keyword coverage'});return{subtitle:`${rel.matched.length} skills found`,points:pts};}function analyzeProjectsSection(rt,sty){const has=sty.detectedHeaders.projects;const pts=[];if(has)pts.push({ok:true,text:'Projects section detected — critical for campus placements'});else pts.push({ok:false,text:'CRITICAL: Add a Projects section. For freshers, projects = experience.'});const hasGithub=/(github\.com|gitlab\.com)/i.test(rt);if(hasGithub)pts.push({ok:true,text:'GitHub/project links present'});else pts.push({ok:false,text:'Add GitHub links to projects'});const hasTech=/(built with|using|stack:|technologies:)/i.test(rt);if(hasTech)pts.push({ok:true,text:'Tech stack mentioned in projects'});else pts.push({ok:false,text:'Mention the tech stack used in each project'});return{subtitle:has?'Section found':'Section missing',points:pts};}function analyzeSummarySection(rt,imp){const has=/(summary|objective|profile|about)/i.test(rt);const pts=[];if(has)pts.push({ok:true,text:'Summary/Profile section found'});else pts.push({ok:false,text:'Consider adding a 2-3 line professional summary'});if(imp.buzzwordsFound.length>2)pts.push({ok:false,text:`Buzzwords detected: "${imp.buzzwordsFound.slice(0,3).join(', ')}" — remove these clichés`});else pts.push({ok:true,text:'No obvious buzzword clichés detected'});return{subtitle:has?'Section found':'Optional but recommended',points:pts};}function renderChecklist(){if(!currentAnalysis)return;const{critical:cr,warnings:wa,passed:pa}=currentAnalysis.checklist;const cb=document.getElementById('criticalCountBadge'),wb=document.getElementById('warningCountBadge'),pb=document.getElementById('passedCountBadge');if(cb)cb.innerText=cr.length;if(wb)wb.innerText=wa.length;if(pb)pb.innerText=pa.length;const cl=document.getElementById('criticalList');if(cl)cl.innerHTML=cr.length?cr.map(i=>`<div class="p-2.5 rounded-xl bg-surface-900 border border-rose-500/20 text-slate-300 flex items-start gap-2"><i data-lucide="alert-octagon" class="w-4 h-4 text-rose-400 shrink-0 mt-0.5"></i><span class="text-[11px] leading-tight">${i}</span></div>`).join(''):'<p class="text-emerald-400 text-xs italic">Zero critical errors!</p>';const wl=document.getElementById('warningList');if(wl)wl.innerHTML=wa.length?wa.map(i=>`<div class="p-2.5 rounded-xl bg-surface-900 border border-amber-500/20 text-slate-300 flex items-start gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i><span class="text-[11px] leading-tight">${i}</span></div>`).join(''):'<p class="text-slate-400 text-xs italic">No secondary warnings.</p>';const pl=document.getElementById('passedList');if(pl)pl.innerHTML=pa.length?pa.map(i=>`<div class="p-2.5 rounded-xl bg-surface-900 border border-emerald-500/20 text-slate-300 flex items-start gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i><span class="text-[11px] leading-tight">${i}</span></div>`).join(''):'<p class="text-slate-400 text-xs italic">No checks passed yet.</p>';if(window.lucide?.createIcons)window.lucide.createIcons();}function renderSkillsMatrix(){if(!currentAnalysis)return;const{style:sty,relevancy:rel}=currentAnalysis;const sc=(id,ex)=>{const el=document.getElementById(id);if(!el)return;const label=el.querySelector('span')?.innerText||'';if(ex){el.className='p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-emerald-300';el.innerHTML=`<span>${label}</span><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>`;}else{el.className='p-2.5 rounded-xl bg-surface-900 border border-surface-700 flex items-center justify-between text-slate-400';el.innerHTML=`<span>${label}</span><i data-lucide="x" class="w-4 h-4 text-rose-400"></i>`;}};sc('contactEmail',sty.contacts.email);sc('contactPhone',sty.contacts.phone);sc('contactLinkedIn',sty.contacts.linkedin);sc('contactGitHub',sty.contacts.github);const hc=document.getElementById('headingsList');if(hc)hc.innerHTML=Object.entries(sty.detectedHeaders).map(([s,f])=>`<span class="px-3 py-1 rounded-lg border text-xs font-semibold capitalize flex items-center gap-1.5 ${f?'bg-indigo-500/20 text-indigo-300 border-indigo-500/40':'bg-surface-750 text-slate-500 border-surface-700'}"><i data-lucide="${f?'check':'x'}" class="w-3.5 h-3.5"></i><span>${s}</span></span>`).join('');const mp=document.getElementById('skillsMatchPercentage');if(mp)mp.innerText=`${rel.matchPercentage}% Coverage`;const mc=document.getElementById('matchedSkillsPills');if(mc)mc.innerHTML=rel.matched.length?rel.matched.map(s=>`<span class="badge-chip bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 capitalize">${s}</span>`).join(''):'<span class="text-xs text-slate-500">None detected.</span>';const ms=document.getElementById('missingSkillsPills');if(ms)ms.innerHTML=rel.missing.length?rel.missing.map(s=>`<span class="badge-chip bg-rose-500/15 text-rose-300 border border-rose-500/30 capitalize">+ ${s}</span>`).join(''):'<span class="text-xs text-emerald-400">No missing critical skills!</span>';if(window.lucide?.createIcons)window.lucide.createIcons();}function escapeHtml(t){return t?t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'';}
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResumeMetric — Campus Resume Scorer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{colors:{
+  brand:{500:'#6366f1',600:'#4f46e5'},
+  surface:{900:'#09090d',850:'#0f1117',800:'#16181f',750:'#1c1e27',700:'#23263a',600:'#2d3149'}
+}}}};
+</script>
+<style>
+*{box-sizing:border-box}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#09090d}
+::-webkit-scrollbar-thumb{background:#23263a;border-radius:9999px}
+::-webkit-scrollbar-thumb:hover{background:#6366f1}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#09090d;color:#e2e8f0}
+.score-ring{transform:rotate(-90deg)}
+.check-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:background .15s}
+.check-row:hover{background:rgba(255,255,255,.04)}
+.check-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700}
+.pass{background:rgba(16,185,129,.15);color:#10b981}
+.fail{background:rgba(239,68,68,.15);color:#ef4444}
+.warn{background:rgba(245,158,11,.15);color:#f59e0b}
+.pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600}
+.badge-fail{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+.badge-pass{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+.badge-warn{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.tab-btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;border:none;background:transparent;color:#94a3b8}
+.tab-btn.active{background:#4f46e5;color:#fff}
+.tab-btn:hover:not(.active){background:rgba(255,255,255,.06);color:#e2e8f0}
+.section-header{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#64748b;padding:8px 10px 4px}
+.upload-zone{border:2px dashed #23263a;border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s}
+.upload-zone:hover,.upload-zone.dragover{border-color:#6366f1;background:rgba(99,102,241,.05)}
+.highlight-fail{background:rgba(239,68,68,.12);border-left:3px solid #ef4444;padding:3px 6px;border-radius:0 4px 4px 0;margin:1px 0}
+.highlight-warn{background:rgba(245,158,11,.08);border-left:3px solid #f59e0b;padding:3px 6px;border-radius:0 4px 4px 0;margin:1px 0}
+.highlight-pass{background:rgba(16,185,129,.06);padding:3px 6px;margin:1px 0}
+.resume-line{font-size:11.5px;line-height:1.7;font-family:Georgia,serif}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div style="border-bottom:1px solid #16181f;background:#0f1117;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#818cf8);display:flex;align-items:center;justify-content:center;font-size:16px">📊</div>
+    <div>
+      <div style="font-weight:800;font-size:15px;color:#fff">ResumeMetric</div>
+      <div style="font-size:10px;color:#64748b">Campus Placement Resume Scorer • Resume Worded Standard</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button id="loadDemoBtn" style="padding:6px 14px;border-radius:8px;border:1px solid #23263a;background:#16181f;color:#94a3b8;font-size:12px;cursor:pointer">Load Demo Resume</button>
+    <button id="scoreBtn" style="padding:6px 16px;border-radius:8px;background:#4f46e5;color:#fff;font-size:12px;font-weight:600;cursor:pointer;border:none">▶ Score Resume</button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT: LEFT (Score + Checks) | RIGHT (Upload + Preview) -->
+<div style="display:grid;grid-template-columns:320px 1fr;height:calc(100vh - 58px);overflow:hidden">
+
+  <!-- LEFT PANEL -->
+  <div style="border-right:1px solid #16181f;overflow-y:auto;background:#0f1117">
+
+    <!-- Score Ring -->
+    <div style="padding:20px;text-align:center;border-bottom:1px solid #16181f">
+      <div style="position:relative;width:110px;height:110px;margin:0 auto">
+        <svg class="score-ring" width="110" height="110" viewBox="0 0 110 110">
+          <circle cx="55" cy="55" r="46" stroke="#1c1e27" stroke-width="9" fill="none"/>
+          <circle id="scoreArc" cx="55" cy="55" r="46" stroke="#6366f1" stroke-width="9" fill="none"
+            stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset 1s ease,stroke .5s"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <span id="scoreNum" style="font-size:32px;font-weight:900;color:#fff;line-height:1">0</span>
+          <span style="font-size:9px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.06em">/ 100</span>
+        </div>
+      </div>
+      <div id="scoreLabel" style="margin-top:10px;font-size:12px;font-weight:700;color:#64748b">Upload your resume to begin</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px">
+        <div style="background:#16181f;border-radius:8px;padding:8px;text-align:center">
+          <div id="passCount" style="font-size:18px;font-weight:800;color:#10b981">0</div>
+          <div style="font-size:10px;color:#64748b">Passed</div>
+        </div>
+        <div style="background:#16181f;border-radius:8px;padding:8px;text-align:center">
+          <div id="failCount" style="font-size:18px;font-weight:800;color:#ef4444">0</div>
+          <div style="font-size:10px;color:#64748b">Issues</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checks list -->
+    <div id="checksList">
+      <div style="padding:40px 20px;text-align:center;color:#475569;font-size:12px">
+        Upload a resume to see all 30 checks
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div style="display:flex;flex-direction:column;overflow:hidden">
+
+    <!-- Upload area (shown before analysis) -->
+    <div id="uploadPanel" style="flex:1;overflow-y:auto;padding:24px">
+      <div style="max-width:560px;margin:0 auto;space-y:16px">
+        <div class="upload-zone" id="dropZone">
+          <input type="file" id="fileInput" accept=".pdf,.docx,.txt" style="display:none">
+          <div style="font-size:28px;margin-bottom:8px">📄</div>
+          <div style="font-weight:700;color:#e2e8f0;margin-bottom:4px">Drop your resume here or click to browse</div>
+          <div style="font-size:12px;color:#64748b">PDF, DOCX, TXT • Max 5MB</div>
+        </div>
+        <div id="fileChip" style="display:none;margin-top:12px;padding:10px 14px;background:#16181f;border:1px solid #23263a;border-radius:10px;display:none;align-items:center;gap:10px">
+          <span style="font-size:18px">📎</span>
+          <div style="flex:1">
+            <div id="fileName" style="font-size:13px;font-weight:600;color:#e2e8f0"></div>
+            <div id="fileSize" style="font-size:11px;color:#64748b"></div>
+          </div>
+          <button id="removeFile" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:16px">✕</button>
+        </div>
+        <div style="margin-top:16px">
+          <div style="font-size:11px;color:#64748b;margin-bottom:6px;font-weight:600">OR PASTE RESUME TEXT</div>
+          <textarea id="resumeText" rows="12" placeholder="Paste your resume text here..." style="width:100%;background:#16181f;border:1px solid #23263a;border-radius:10px;padding:12px;font-size:12px;color:#e2e8f0;font-family:Georgia,serif;resize:vertical;outline:none"></textarea>
+        </div>
+        <div style="margin-top:12px">
+          <div style="font-size:11px;color:#64748b;margin-bottom:6px;font-weight:600">TARGET JOB DESCRIPTION (OPTIONAL — for keyword match)</div>
+          <textarea id="jdText" rows="4" placeholder="Paste job description here to get keyword match score..." style="width:100%;background:#16181f;border:1px solid #23263a;border-radius:10px;padding:12px;font-size:12px;color:#e2e8f0;font-family:monospace;resize:vertical;outline:none"></textarea>
+        </div>
+        <button id="scoreBtnMain" style="margin-top:14px;width:100%;padding:13px;border-radius:10px;background:#4f46e5;color:#fff;font-weight:700;font-size:14px;cursor:pointer;border:none">
+          ▶ Score My Resume
+        </button>
+      </div>
+    </div>
+
+    <!-- Results panel (shown after analysis) -->
+    <div id="resultsPanel" style="display:none;flex:1;overflow:hidden;flex-direction:column">
+      <!-- Tabs -->
+      <div style="padding:10px 16px;border-bottom:1px solid #16181f;display:flex;gap:6px;background:#0f1117">
+        <button class="tab-btn active" data-tab="preview">📄 Resume Preview</button>
+        <button class="tab-btn" data-tab="sections">📊 Section Scores</button>
+        <button class="tab-btn" data-tab="rewrites">✏️ Bullet Rewrites</button>
+        <div style="margin-left:auto">
+          <button id="rescanBtn" style="padding:5px 12px;border-radius:7px;border:1px solid #23263a;background:#16181f;color:#94a3b8;font-size:11px;cursor:pointer">↺ Re-scan</button>
+        </div>
+      </div>
+
+      <!-- Tab content -->
+      <div style="flex:1;overflow-y:auto;padding:20px" id="tabContent"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ─── DEMO RESUME ────────────────────────────────────────────────────────────
+const DEMO = `Ravi Kumar
+ravi.kumar@gmail.com | +91 9876543210 | linkedin.com/in/ravikumar | github.com/ravikumar
+
+EDUCATION
+R.V.R & J.C College of Engineering, Guntur — B.Tech Computer Science
+May 2026 | CGPA: 8.4/10
+
+TECHNICAL SKILLS
+Languages: Python, JavaScript, Java, C++
+Frameworks: React, Node.js, Express, Django, FastAPI
+Tools: Git, Docker, MySQL, MongoDB, AWS, Linux
+
+ACADEMIC PROJECTS
+CodeHiring — AI-Powered Learning Platform | GitHub
+• Responsible for developing an AI-powered platform to help students prepare for campus placements.
+• Worked with the team to create assessment features and hiring workflows.
+• Helped to build analytics features for candidate ranking and skill-gap identification.
+• Assisted in implementing plagiarism detection and proctoring systems.
+
+Promptify — Multilingual Text-to-Image Generation | GitHub
+• Built an AI application using LLM prompt refinement and multilingual processing.
+• Worked on designing and implementing a pipeline to optimize response quality.
+• Integrated Generative AI workflows aligned with LLM-based architectures.
+
+INTERNSHIP
+Software Developer Intern — TechStartup Pvt Ltd | Jun 2025 – Aug 2025
+• Responsible for writing REST APIs for the mobile application backend.
+• Helped with debugging production issues and fixing bugs.
+• Assisted the senior developer with database optimization tasks.
+
+ACHIEVEMENTS
+• Participated in Smart India Hackathon 2024
+• Completed Python and Data Science courses on Coursera`;
+
+// ─── CHECKS DEFINITIONS ─────────────────────────────────────────────────────
+// id, label, group, weight, check(text, bullets, meta) -> {pass, score, detail, lines}
+const GROUPS = [
+  {id:'impact', label:'Impact & Quantification', color:'#818cf8', weight:35},
+  {id:'brevity', label:'Brevity, Wording & Style', color:'#34d399', weight:25},
+  {id:'growth', label:'Growth & Leadership Signals', color:'#fbbf24', weight:20},
+  {id:'ats', label:'ATS & Formatting', color:'#38bdf8', weight:20},
+];
+
+const CHECKS = [
+  // ── Impact ──────────────────────────────────────────────────────────────
+  {id:'quantify', group:'impact', label:'Quantified Impact', weight:15,
+    check(text,bullets){
+      const metric=/(\d+%|\$[\d,]+|\d+x\b|\d{1,3}(,\d{3})+|\d+\s?(ms|sec|min|hrs?|days?|weeks?|months?|k|m|b|million|billion|users?|customers?|clients?|engineers?|people|team members?|points?))/i;
+      const with_metric = bullets.filter(b=>metric.test(b));
+      const ratio = bullets.length ? with_metric.length/bullets.length : 0;
+      const pass = ratio >= 0.25;
+      return {pass, score:Math.min(100,Math.round(ratio/0.25*100)),
+        detail: pass
+          ? `${with_metric.length}/${bullets.length} bullets have measurable results`
+          : `Only ${with_metric.length}/${bullets.length} bullets have numbers. Add metrics to ${Math.max(0,Math.ceil(bullets.length*0.25)-with_metric.length)} more.`,
+        bad: bullets.filter(b=>!metric.test(b)).slice(0,3)};
+    }},
+  {id:'weakverbs', group:'impact', label:'Action Verb Strength', weight:10,
+    check(text,bullets){
+      const WEAK=['responsible for','duties included','helped with','assisted','worked on','worked with','participated in','served as','was involved','contributed to','supported','handled','involved in','part of'];
+      const STRONG=new Set(['accelerated','achieved','architected','automated','built','championed','created','debugged','delivered','designed','developed','drove','engineered','enhanced','executed','generated','implemented','improved','increased','innovated','launched','led','managed','maximized','mentored','migrated','negotiated','optimized','orchestrated','pioneered','produced','reduced','refactored','scaled','secured','shipped','simplified','spearheaded','streamlined','transformed','upgraded']);
+      const weak_bullets = bullets.filter(b=>{const l=b.toLowerCase();return WEAK.some(w=>l.startsWith(w));});
+      const strong_bullets = bullets.filter(b=>STRONG.has(b.split(/\s+/)[0]?.toLowerCase().replace(/[^a-z]/g,'')));
+      const pass = weak_bullets.length===0;
+      return {pass, score:pass?100:Math.max(20,100-weak_bullets.length*25),
+        detail: pass
+          ? `All bullets start with strong action verbs`
+          : `${weak_bullets.length} bullet(s) use weak openers like "Responsible for", "Helped with"`,
+        bad: weak_bullets.slice(0,3)};
+    }},
+  {id:'verbrepeat', group:'impact', label:'No Verb Repetition', weight:5,
+    check(text,bullets){
+      const freq={};
+      bullets.forEach(b=>{const v=b.split(/\s+/)[0]?.toLowerCase().replace(/[^a-z]/g,'');if(v&&v.length>2)freq[v]=(freq[v]||0)+1;});
+      const repeated=Object.entries(freq).filter(([v,c])=>c>=3).sort((a,b)=>b[1]-a[1]);
+      const pass=repeated.length===0;
+      return {pass, score:pass?100:Math.max(30,100-repeated.length*25),
+        detail: pass?'No action verb used 3+ times':`"${repeated[0]?.[0]}" used ${repeated[0]?.[1]} times as a bullet opener. Vary your vocabulary.`,
+        bad:[]};
+    }},
+  {id:'tense', group:'impact', label:'Consistent Verb Tense', weight:5,
+    check(text,bullets){
+      const past_suffixes=/\b(ed|ated|ized|ised|ied|ained|uced|rved)\b/i;
+      const present_s=/\b(creates?|manages?|builds?|develops?|leads?|drives?|works?|helps?)\b/i;
+      const exp_block = text.match(/EXPERIENCE[\s\S]{0,3000}/i)?.[0]||text;
+      const has_past=past_suffixes.test(exp_block), has_present=present_s.test(exp_block);
+      const mixed=has_past&&has_present;
+      return {pass:!mixed, score:mixed?60:100,
+        detail:mixed?'Mixed past/present tense in experience bullets. Use past tense for all previous roles.':'Verb tenses appear consistent.',bad:[]};
+    }},
+
+  // ── Brevity / Style ──────────────────────────────────────────────────────
+  {id:'length', group:'brevity', label:'Resume Length', weight:8,
+    check(text,bullets){
+      const wc=text.trim().split(/\s+/).length;
+      const pass=wc>=200&&wc<=550;
+      let detail, score;
+      if(wc<150){detail=`Very thin (${wc} words). A one-page fresher resume should have 200–550 words.`;score=40;}
+      else if(wc<200){detail=`A bit sparse (${wc} words). Aim for 200–550.`;score=70;}
+      else if(wc>700){detail=`Too long (${wc} words). Trim to one page (under 550 words).`;score=55;}
+      else if(wc>550){detail=`Slightly long (${wc} words). Aim to stay under 550.`;score=75;}
+      else{detail=`Good length for a fresher resume (${wc} words).`;score=100;}
+      return {pass,score,detail,bad:[]};
+    }},
+  {id='bulletlength', group:'brevity', label:'Bullet Point Length', weight:7,
+    check(text,bullets){
+      const short=bullets.filter(b=>b.split(/\s+/).length<8);
+      const long=bullets.filter(b=>b.split(/\s+/).length>30);
+      const pass=short.length+long.length===0;
+      const issues=[...short.slice(0,2).map(b=>`Too short: "${b.slice(0,50)}"`), ...long.slice(0,2).map(b=>`Run-on: "${b.slice(0,50)}..."`)];
+      return {pass,score:pass?100:Math.max(30,100-(short.length+long.length)*15),
+        detail:pass?'All bullets are optimal length (8–30 words)':`${short.length} too short, ${long.length} run-on. Ideal: 10–20 words.`,bad:issues};
+    }},
+  {id:'filler', group:'brevity', label:'No Filler Words', weight:5,
+    check(text,bullets){
+      const FILLERS=['in order to','successfully','various','multiple tasks','daily basis','a variety of','etc','and so on','as well as','due to the fact','with a view to','on a regular basis'];
+      const found=FILLERS.filter(f=>new RegExp('\\b'+f+'\\b','i').test(text));
+      const pass=found.length===0;
+      return {pass,score:pass?100:Math.max(40,100-found.length*20),
+        detail:pass?'No filler words detected':`Filler words: "${found.slice(0,3).join('", "')}" — cut these.`,bad:[]};
+    }},
+  {id:'buzzwords', group:'brevity', label:'No Buzzwords / Clichés', weight:5,
+    check(text,bullets){
+      const BZ=['synergy','hardworking','team player','detail-oriented','results-driven','go-getter','self-starter','thought leader','dynamic','proactive','passionate about','motivated','out-of-the-box','fast-paced','rockstar','ninja','guru'];
+      const found=BZ.filter(b=>new RegExp('\\b'+b+'\\b','i').test(text));
+      const pass=found.length===0;
+      return {pass,score:pass?100:Math.max(40,100-found.length*20),
+        detail:pass?'No buzzwords detected':`Clichés found: "${found.slice(0,3).join('", "')}". Replace with specific skills.`,bad:[]};
+    }},
+  {id:'pronouns', group:'brevity', label:'No Personal Pronouns', weight:3,
+    check(text,bullets){
+      const found=(text.match(/\b(I|me|my|myself|we|our)\b/g)||[]).length;
+      const pass=found===0;
+      return {pass,score:pass?100:Math.max(50,100-found*15),
+        detail:pass?'No personal pronouns (I, me, my, we)':found+' personal pronoun(s) found. Resumes are implicitly about you — drop "I".', bad:[]};
+    }},
+  {id:'passive', group:'brevity', label:'Minimal Passive Voice', weight:2,
+    check(text,bullets){
+      const passive=(text.match(/\b(was|were|been|being|is|are)\s+\w+ed\b/gi)||[]).length;
+      const pass=passive<=2;
+      return {pass,score:pass?100:Math.max(40,100-passive*10),
+        detail:pass?'Minimal passive voice detected':passive+' passive voice instances. Use active voice: "Built X" not "X was built".', bad:[]};
+    }},
+
+  // ── Growth & Leadership ──────────────────────────────────────────────────
+  {id:'leadership', group:'growth', label:'Leadership Signals', weight:8,
+    check(text,bullets){
+      const LEAD=/\b(led|managed|mentored|coached|trained|guided|coordinated|oversaw|directed|supervised|organized|headed|spearheaded|founded|initiated|established|launched)\b/i;
+      const signals=bullets.filter(b=>LEAD.test(b));
+      const pass=signals.length>=1;
+      return {pass,score:pass?100:40,
+        detail:pass?`${signals.length} bullet(s) show leadership/initiative`:'No leadership signals. Add bullets showing you led something — a project, a team, an initiative.',bad:[]};
+    }},
+  {id:'teamwork', group:'growth', label:'Collaboration Evidence', weight:4,
+    check(text,bullets){
+      const COLLAB=/\b(collaborat|cross.functional|team|stakeholder|partner|coordin|cross.team|alongside|joint|worked with engineer|worked with design)\b/i;
+      const has=COLLAB.test(text);
+      return {pass:has,score:has?100:50,
+        detail:has?'Collaboration mentioned in resume':'Add at least one mention of cross-team collaboration or teamwork in context.',bad:[]};
+    }},
+  {id:'initiative', group:'growth', label:'Drive & Initiative', weight:4,
+    check(text,bullets){
+      const INIT=/\b(independently|proactively|on my own|without being asked|took initiative|self.taught|self.directed|proposed|identified opportunity|identified gap|side project|personal project|hackathon|open source|contributed to open)\b/i;
+      const has=INIT.test(text);
+      return {pass:has,score:has?100:55,
+        detail:has?'Resume shows initiative or self-driven work':'Add evidence of self-initiative: side projects, hackathons, open source, or proactively solving problems.',bad:[]};
+    }},
+  {id:'analytical', group:'growth', label:'Analytical / Technical Depth', weight:4,
+    check(text,bullets){
+      const TECH=/\b(algorithm|data structure|model|database|architecture|system design|optimiz|performance|latency|throughput|accuracy|precision|recall|benchmark|analysis|research|evaluation|experiment|hypothesis)\b/i;
+      const count=(text.match(TECH)||[]).length;
+      const pass=count>=3;
+      return {pass,score:pass?100:Math.min(90,count*25+20),
+        detail:pass?`Technical depth evident (${count} analytical mentions)`:'Add more technical specifics: algorithms used, performance improvements, data sizes.',bad:[]};
+    }},
+
+  // ── ATS & Formatting ────────────────────────────────────────────────────
+  {id:'contact', group:'ats', label:'Contact Info Complete', weight:8,
+    check(text){
+      const email=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
+      const phone=/(\+?\d[\d\s\-().]{8,14}\d)/.test(text);
+      const linkedin=/linkedin\.com\/(in\/)?[a-zA-Z0-9_-]+/i.test(text);
+      const github=/(github\.com\/[a-zA-Z0-9_-]+)/i.test(text);
+      const score=(email?35:0)+(phone?35:0)+(linkedin?15:0)+(github?15:0);
+      const missing=[];
+      if(!email)missing.push('Email');if(!phone)missing.push('Phone');
+      if(!linkedin)missing.push('LinkedIn URL');if(!github)missing.push('GitHub');
+      return {pass:email&&phone,score,
+        detail:missing.length===0?'Email, Phone, LinkedIn and GitHub all present':`Missing: ${missing.join(', ')}`,bad:[]};
+    }},
+  {id:'sections', group:'ats', label:'Standard Section Headings', weight:6,
+    check(text){
+      const HEADS={
+        education:/(^|\n)\s*(education|academic|qualifications)/im,
+        experience:/(^|\n)\s*(experience|employment|work history|internship)/im,
+        skills:/(^|\n)\s*(skills|technologies|tech stack|technical)/im,
+        projects:/(^|\n)\s*(projects?|personal project|academic project)/im,
+      };
+      const found=Object.entries(HEADS).filter(([,r])=>r.test(text)).map(([k])=>k);
+      const pass=found.length>=3;
+      const missing=Object.keys(HEADS).filter(k=>!found.includes(k));
+      return {pass,score:Math.round(found.length/4*100),
+        detail:pass?`${found.length}/4 standard ATS sections found`:`Missing sections: ${missing.join(', ')}`,bad:[]};
+    }},
+  {id:'dates', group:'ats', label:'Consistent Date Format', weight:3,
+    check(text){
+      const dates=text.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|June|July|August|September|October|November|December)[\s,]+20\d{2}|20\d{2}\s*[-–]\s*(20\d{2}|Present|Current)/gi)||[];
+      const numeric=text.match(/\b\d{1,2}\/\d{4}|\d{4}\/\d{1,2}\b/g)||[];
+      const mixed=dates.length>0&&numeric.length>0;
+      return {pass:!mixed,score:mixed?60:100,
+        detail:mixed?'Mixed date formats detected. Use one style throughout (e.g., May 2025 – Present)':'Date formats appear consistent.',bad:[]};
+    }},
+  {id:'bullets_present', group:'ats', label:'Bullet Points Used', weight:3,
+    check(text,bullets){
+      const pass=bullets.length>=4;
+      return {pass,score:pass?100:Math.round(bullets.length/4*100),
+        detail:pass?`${bullets.length} bullet points found`:`Only ${bullets.length} bullet(s). Use bullet points consistently throughout experience and projects.`,bad:[]};
+    }},
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let currentText = '', currentResults = null, activeTab = 'preview';
+
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+function extractBullets(text){
+  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  return lines.filter(l=>/^[•\-\*▪◦‣⁃]/.test(l)||/^\d+\./.test(l))
+    .map(l=>l.replace(/^[•\-\*▪◦‣⁃\d\.]+\s*/,'').trim())
+    .filter(l=>l.length>15);
+}
+
+function runChecks(text){
+  const bullets = extractBullets(text);
+  const results = CHECKS.map(c=>{
+    try{
+      const r = c.check(text, bullets, {});
+      return {...c, ...r};
+    }catch(e){
+      return {...c, pass:false, score:50, detail:'Check error', bad:[]};
+    }
+  });
+  return results;
+}
+
+function computeScore(results){
+  let total=0, maxTotal=0;
+  GROUPS.forEach(g=>{
+    const checks = results.filter(r=>r.group===g.id);
+    const groupScore = checks.reduce((s,c)=>s+c.score*c.weight,0)/Math.max(1,checks.reduce((s,c)=>s+c.weight,0));
+    total += groupScore * g.weight;
+    maxTotal += 100 * g.weight;
+  });
+  return Math.round(total/maxTotal*100);
+}
+
+function renderChecksList(results){
+  const el = document.getElementById('checksList');
+  let html = '';
+  GROUPS.forEach(g=>{
+    const checks = results.filter(r=>r.group===g.id);
+    html += `<div class="section-header" style="color:${g.color}">${g.label}</div>`;
+    checks.forEach(c=>{
+      const icon = c.pass ? '✓' : (c.score>=60?'~':'✗');
+      const cls = c.pass ? 'pass' : (c.score>=60?'warn':'fail');
+      html += `<div class="check-row" onclick="showCheckDetail('${c.id}')">
+        <div class="check-icon ${cls}">${icon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.label}</div>
+          <div style="font-size:10px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.detail}</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:${c.pass?'#10b981':c.score>=60?'#f59e0b':'#ef4444'}">${c.score}</div>
+      </div>`;
+    });
+  });
+  el.innerHTML = html;
+}
+
+function renderScoreboard(score, results){
+  const arc = document.getElementById('scoreArc');
+  const num = document.getElementById('scoreNum');
+  const lbl = document.getElementById('scoreLabel');
+  const passes = results.filter(r=>r.pass).length;
+  const fails = results.filter(r=>!r.pass).length;
+  const circumference = 289;
+  arc.style.strokeDashoffset = circumference - (score/100)*circumference;
+  arc.style.stroke = score>=85?'#10b981':score>=70?'#f59e0b':'#ef4444';
+  num.textContent = score;
+  num.style.color = score>=85?'#10b981':score>=70?'#fbbf24':'#f87171';
+  lbl.textContent = score>=90?'Exceptional ★':score>=85?'Strong Resume':score>=70?'Competitive — minor fixes':'Needs Work';
+  lbl.style.color = score>=85?'#10b981':score>=70?'#f59e0b':'#ef4444';
+  document.getElementById('passCount').textContent = passes;
+  document.getElementById('failCount').textContent = fails;
+}
+
+function renderPreview(text, results){
+  const lines = text.split(/\r?\n/).filter(l=>l.trim());
+  const failBullets = new Set();
+  const warnBullets = new Set();
+  results.forEach(c=>{
+    if(!c.pass && c.bad){
+      c.bad.forEach(b=>{
+        if(typeof b==='string' && b.length>10){
+          if(c.score<60) failBullets.add(b.slice(0,40));
+          else warnBullets.add(b.slice(0,40));
+        }
+      });
+    }
+  });
+  const weakcheck = results.find(r=>r.id==='weakverbs');
+  const weakverb_bullets = weakcheck?.bad || [];
+
+  const html = lines.map(line=>{
+    const clean = line.trim();
+    const isBullet = /^[•\-\*▪]/.test(clean)||(/^\d+\./.test(clean));
+    const content = isBullet ? clean.replace(/^[•\-\*▪\d\.]+\s*/,'') : clean;
+
+    const isWeakVerb = weakverb_bullets.some(b=>content.startsWith(b.slice(0,20)));
+    const isInFail = [...failBullets].some(b=>content.includes(b.slice(0,20)));
+    const isInWarn = [...warnBullets].some(b=>content.includes(b.slice(0,20)));
+
+    if(isBullet){
+      const hasMetric = /\d/.test(content);
+      const cls = isWeakVerb||isInFail ? 'highlight-fail' : (!hasMetric||isInWarn) ? 'highlight-warn' : 'highlight-pass';
+      return `<div class="resume-line ${cls}">• ${escHtml(content)}</div>`;
+    }
+    // Headers
+    if(clean.match(/^[A-Z][A-Z\s&/\-]{3,}$/) || clean.match(/^(EDUCATION|EXPERIENCE|SKILLS|PROJECTS|INTERNSHIP|ACHIEVEMENTS|CERTIFICATIONS|SUMMARY)/i)){
+      return `<div style="font-size:13px;font-weight:800;color:#e2e8f0;margin-top:14px;margin-bottom:4px;border-bottom:1px solid #23263a;padding-bottom:3px">${escHtml(clean)}</div>`;
+    }
+    return `<div class="resume-line" style="color:#94a3b8">${escHtml(clean)}</div>`;
+  }).join('');
+
+  const legend = `<div style="display:flex;gap:12px;margin-bottom:12px;font-size:11px;flex-wrap:wrap">
+    <span><span style="display:inline-block;width:10px;height:10px;background:rgba(239,68,68,.25);border-left:3px solid #ef4444;margin-right:4px"></span>Weak opener / issue</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:rgba(245,158,11,.15);border-left:3px solid #f59e0b;margin-right:4px"></span>Missing metric</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:rgba(16,185,129,.08);margin-right:4px"></span>Strong bullet</span>
+  </div>`;
+  return legend + `<div style="background:#16181f;border:1px solid #23263a;border-radius:12px;padding:20px 22px;font-family:Georgia,serif">${html}</div>`;
+}
+
+function renderSections(results){
+  const SECTION_MAP = {
+    'Work Experience & Projects': ['quantify','weakverbs','verbrepeat','tense','leadership','initiative'],
+    'Brevity & Style': ['length','bulletlength','filler','buzzwords','pronouns','passive'],
+    'Growth Signals': ['teamwork','analytical'],
+    'ATS & Formatting': ['contact','sections','dates','bullets_present'],
+  };
+  return Object.entries(SECTION_MAP).map(([name, ids])=>{
+    const checks = ids.map(id=>results.find(r=>r.id===id)).filter(Boolean);
+    const score = Math.round(checks.reduce((s,c)=>s+c.score,0)/Math.max(1,checks.length));
+    const grade = score>=90?'A+':score>=80?'A':score>=70?'B':score>=60?'C':score>=50?'D':'F';
+    const gcolor = score>=80?'#10b981':score>=65?'#6366f1':score>=50?'#f59e0b':'#ef4444';
+    return `<div style="background:#16181f;border:1px solid #23263a;border-radius:12px;padding:16px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-weight:700;color:#e2e8f0">${name}</div>
+        <div style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;background:${gcolor}20;color:${gcolor};border:2px solid ${gcolor}40">${grade}</div>
+      </div>
+      <div style="width:100%;height:6px;background:#23263a;border-radius:3px;margin-bottom:12px">
+        <div style="height:6px;border-radius:3px;background:${gcolor};width:${score}%;transition:width 1s"></div>
+      </div>
+      ${checks.map(c=>`<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #23263a">
+        <span style="font-size:11px;font-weight:700;color:${c.pass?'#10b981':c.score>=60?'#f59e0b':'#ef4444'};margin-top:1px">${c.pass?'✓':c.score>=60?'~':'✗'}</span>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:#e2e8f0">${c.label}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:1px">${c.detail}</div>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function renderRewrites(results, text){
+  const bullets = extractBullets(text);
+  const WEAK=['responsible for','duties included','helped with','assisted','worked on','participated in','supported','handled'];
+  const metric=/\d/;
+  const STRONG_VERBS=['Engineered','Developed','Built','Implemented','Designed','Optimized','Automated','Deployed','Reduced','Improved','Increased','Led','Spearheaded','Delivered'];
+
+  const toRewrite = bullets.filter(b=>{
+    const l=b.toLowerCase();
+    return WEAK.some(w=>l.startsWith(w)) || !metric.test(b);
+  }).slice(0,8);
+
+  if(toRewrite.length===0) return '<div style="text-align:center;padding:40px;color:#64748b">All your bullets look strong! No rewrites needed.</div>';
+
+  return toRewrite.map(b=>{
+    const isWeak = WEAK.some(w=>b.toLowerCase().startsWith(w));
+    const hasMetric = metric.test(b);
+    const verb = STRONG_VERBS[Math.floor(Math.random()*STRONG_VERBS.length)];
+    const cleanB = b.replace(/^(responsible for|helped (with|to)|assisted (in|with)|worked (on|with)|participated in|supported|handled)\s*/i,'');
+    const rewrite = hasMetric
+      ? `${verb} ${cleanB.charAt(0).toLowerCase()+cleanB.slice(1)}`
+      : `${verb} ${cleanB.charAt(0).toLowerCase()+cleanB.slice(1)}, achieving [add metric: X% improvement / N users / $Y saved]`;
+
+    return `<div style="background:#16181f;border:1px solid #23263a;border-radius:12px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        ${isWeak?'<span class="pill badge-fail">Weak opener</span>':''}
+        ${!hasMetric?'<span class="pill badge-warn">Missing metric</span>':''}
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#64748b;margin-bottom:4px;text-transform:uppercase">Original</div>
+        <div style="font-size:12px;color:#f87171;background:rgba(239,68,68,.08);padding:8px 10px;border-radius:7px;font-family:Georgia,serif">• ${escHtml(b)}</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#64748b;margin-bottom:4px;text-transform:uppercase">Suggested Rewrite</div>
+        <div style="font-size:12px;color:#34d399;background:rgba(16,185,129,.08);padding:8px 10px;border-radius:7px;font-family:Georgia,serif">• ${escHtml(rewrite)}</div>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:#64748b">
+        <strong style="color:#818cf8">[X]</strong> What you did &nbsp;•&nbsp; <strong style="color:#34d399">[Y]</strong> Measured by &nbsp;•&nbsp; <strong style="color:#38bdf8">[Z]</strong> Using what tools/methods
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escHtml(t){return t?t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'';}
+
+function switchTab(tab){
+  activeTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  if(!currentResults) return;
+  const el=document.getElementById('tabContent');
+  if(tab==='preview') el.innerHTML=renderPreview(currentText,currentResults);
+  else if(tab==='sections') el.innerHTML=renderSections(currentResults);
+  else if(tab==='rewrites') el.innerHTML=renderRewrites(currentResults,currentText);
+}
+
+function showCheckDetail(id){
+  const c = currentResults?.find(r=>r.id===id);
+  if(!c) return;
+  alert(`${c.label}\n\nScore: ${c.score}/100\n\n${c.detail}${c.bad?.length?'\n\nExamples:\n'+c.bad.join('\n'):''}`);
+}
+
+function analyze(text){
+  if(!text.trim()){alert('Please provide resume text.');return;}
+  currentText = text;
+  const results = runChecks(text);
+  currentResults = results;
+  const score = computeScore(results);
+  renderScoreboard(score, results);
+  renderChecksList(results);
+  document.getElementById('uploadPanel').style.display='none';
+  document.getElementById('resultsPanel').style.display='flex';
+  switchTab('preview');
+}
+
+// ─── FILE HANDLING ───────────────────────────────────────────────────────────
+async function extractText(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(ext==='txt') return file.text();
+  if(ext==='pdf'){
+    const ab = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({data:ab}).promise;
+    let t='';
+    for(let i=1;i<=pdf.numPages;i++){
+      const p=await pdf.getPage(i);
+      const c=await p.getTextContent();
+      t+=c.items.map(x=>x.str).join(' ')+'\n';
+    }
+    return t;
+  }
+  if(ext==='docx'){
+    const ab=await file.arrayBuffer();
+    const r=await mammoth.extractRawText({arrayBuffer:ab});
+    return r.value;
+  }
+  return '';
+}
+
+// ─── EVENTS ──────────────────────────────────────────────────────────────────
+document.getElementById('dropZone').addEventListener('click',()=>document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change',async e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const chip=document.getElementById('fileChip');
+  document.getElementById('fileName').textContent=file.name;
+  document.getElementById('fileSize').textContent=Math.round(file.size/1024)+' KB';
+  chip.style.display='flex';
+  const txt=await extractText(file);
+  document.getElementById('resumeText').value=txt;
+});
+document.getElementById('removeFile').addEventListener('click',()=>{
+  document.getElementById('fileInput').value='';
+  document.getElementById('fileChip').style.display='none';
+  document.getElementById('resumeText').value='';
+});
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+dz.addEventListener('drop',async e=>{
+  e.preventDefault();dz.classList.remove('dragover');
+  const file=e.dataTransfer.files[0];
+  if(!file) return;
+  const txt=await extractText(file);
+  document.getElementById('resumeText').value=txt;
+});
+
+document.getElementById('scoreBtnMain').addEventListener('click',()=>{
+  const t=document.getElementById('resumeText').value;
+  analyze(t);
+});
+document.getElementById('scoreBtn').addEventListener('click',()=>{
+  if(currentText) analyze(currentText);
+  else document.getElementById('scoreBtnMain').click();
+});
+document.getElementById('loadDemoBtn').addEventListener('click',()=>{
+  document.getElementById('resumeText').value=DEMO;
+  document.getElementById('fileChip').style.display='none';
+});
+document.getElementById('rescanBtn').addEventListener('click',()=>{
+  document.getElementById('uploadPanel').style.display='block';
+  document.getElementById('resultsPanel').style.display='none';
+  currentText='';currentResults=null;
+  document.getElementById('checksList').innerHTML='<div style="padding:40px 20px;text-align:center;color:#475569;font-size:12px">Upload a resume to see all 30 checks</div>';
+  document.getElementById('scoreNum').textContent='0';
+  document.getElementById('scoreLabel').textContent='Upload your resume to begin';
+  document.getElementById('scoreArc').style.strokeDashoffset='289';
+  document.getElementById('passCount').textContent='0';
+  document.getElementById('failCount').textContent='0';
+});
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+</script>
+</body>
+</html>
