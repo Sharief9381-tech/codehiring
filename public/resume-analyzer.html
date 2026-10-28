@@ -260,7 +260,7 @@ const CHECKS = [
       else{detail=`Good length for a fresher resume (${wc} words).`;score=100;}
       return {pass,score,detail,bad:[]};
     }},
-  {id:'bulletlength', group:'brevity', label:'Bullet Point Length', weight:7,
+  {id='bulletlength', group:'brevity', label:'Bullet Point Length', weight:7,
     check(text,bullets){
       const short=bullets.filter(b=>b.split(/\s+/).length<8);
       const long=bullets.filter(b=>b.split(/\s+/).length>30);
