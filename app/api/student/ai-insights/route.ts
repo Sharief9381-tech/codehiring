@@ -118,7 +118,7 @@ async function callAI(messages: any[], maxTokens: number): Promise<string> {
   throw new Error("No AI provider available")
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     const user = await getCurrentUser()
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
@@ -135,6 +135,26 @@ export async function GET() {
     const student = await UserModel.findById(user._id as string).catch(() => null)
     if (!student) return NextResponse.json({ error: "Not found" }, { status: 404 })
 
+    // -- Check cache (24h TTL) — avoids burning AI quota on repeat visits -----
+    const { getDatabase } = await import("@/lib/database")
+    const db = await getDatabase()
+    const userId = user._id?.toString() ?? ""
+    const cacheAge = 24 * 60 * 60 * 1000 // 24 hours
+
+    // Force refresh param: /api/student/ai-insights?refresh=1
+    const forceRefresh = new URL(req.url).searchParams.get("refresh") === "1"
+
+    if (!forceRefresh) {
+      const cached = await db.collection("ai_insights_cache").findOne({ userId })
+      if (cached?.insights && cached.generatedAt) {
+        const age = Date.now() - new Date(cached.generatedAt).getTime()
+        if (age < cacheAge) {
+          return NextResponse.json({ available: true, insights: cached.insights, fromCache: true })
+        }
+      }
+    }
+
+    // -- Generate fresh insights ----------------------------------------------
     const summary = buildStudentSummary(student)
 
     const messages = [
@@ -166,7 +186,14 @@ Use exactly this structure:
     insights.improvements = insights.improvements || []
     insights.skillGaps    = insights.skillGaps    || []
 
-    return NextResponse.json({ available: true, insights })
+    // -- Save to cache --------------------------------------------------------
+    await db.collection("ai_insights_cache").updateOne(
+      { userId },
+      { $set: { userId, insights, generatedAt: new Date() } },
+      { upsert: true }
+    )
+
+    return NextResponse.json({ available: true, insights, fromCache: false })
   } catch (error) {
     console.error("AI insights error:", error)
     return NextResponse.json({
