@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -32,6 +32,30 @@ export function PlatformsPageClient({ student: initialStudent }: PlatformsPageCl
 
   const linkedPlatforms: Record<string, any> = student?.linkedPlatforms || {}
   const connectedIds = Object.keys(linkedPlatforms).filter(k => linkedPlatforms[k])
+
+  // Auto-sync on mount if any platform has no stats yet
+  useEffect(() => {
+    const hasEmptyStats = connectedIds.some(id => {
+      const p = linkedPlatforms[id]
+      return p && (!p.stats || Object.keys(p.stats).length === 0)
+    })
+    if (hasEmptyStats && !syncing) {
+      setSyncing(true)
+      fetch("/api/platforms/sync", { method: "POST" })
+        .then(r => r.json())
+        .then(data => {
+          if (data.linkedPlatforms) {
+            setStudent((prev: any) => ({ ...prev, linkedPlatforms: data.linkedPlatforms }))
+          } else {
+            refreshStudent()
+          }
+          router.refresh()
+        })
+        .catch(() => {})
+        .finally(() => setSyncing(false))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const refreshStudent = useCallback(async () => {
     const res = await fetch("/api/auth/user", { cache: "no-store" })
