@@ -1007,7 +1007,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
     if (typeof window !== "undefined") {
       const applyHash = () => {
         const hash = window.location.hash.replace("#", "")
-        const validTabs = ["progress","learning","practice","challenges","resources","soft","quizzes","community","leaderboard","library","resume"]
+        const validTabs = ["progress","learning","practice","challenges","platforms","resources","soft","quizzes","community","leaderboard","library","resume"]
         if (hash && validTabs.includes(hash)) {
           setActiveTab(hash)
           if (hash === "learning" || hash === "resume") setStandaloneMode(true)
@@ -1326,6 +1326,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
   const TABS = [
     { id: "progress",    label: "My Progress",  icon: <TrendingUp className="h-4 w-4" /> },
     { id: "challenges",  label: "Challenges",   icon: <Code2 className="h-4 w-4" /> },
+    { id: "platforms",   label: "Platforms",    icon: <ExternalLink className="h-4 w-4" /> },
     { id: "soft",        label: "Soft Skills",  icon: <MessageCircle className="h-4 w-4" /> },
     { id: "community",   label: "Community",    icon: <Users className="h-4 w-4" /> },
   ]
@@ -2050,6 +2051,21 @@ export function FirstYearFullHub({ student }: { student: any }) {
           </button>
           <div className="rounded-2xl border border-border bg-card p-5">
             <TopicQuiz topic={quizTopic} onComplete={() => { setCompletedQuizzes(p => p.includes(quizTopic) ? p : [...p, quizTopic]); setTimeout(() => setQuizTopic(null), 2000) }} />
+          </div>
+        </div>
+      )}
+
+      {/* Platforms */}
+      {activeTab === "platforms" && (
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <p className="text-sm font-bold text-foreground mb-1">Link Your Coding Platforms</p>
+            <p className="text-xs text-muted-foreground mb-4">Connect LeetCode, GitHub, CodeChef, Codeforces and more to track your progress and boost your CodeHiring score.</p>
+            <a href="/student/platforms"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105"
+              style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
+              <ExternalLink className="h-4 w-4" /> Go to Platforms
+            </a>
           </div>
         </div>
       )}
