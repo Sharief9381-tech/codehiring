@@ -27,9 +27,13 @@ const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemi
 async function callAI(prompt: string): Promise<string> {
   const stripThink = (s: string) => s.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
 
-  // 1. Gemini 2.0 Flash
-  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
-  if (geminiKey) {
+  // 1. Gemini — try both keys with rotation
+  const geminiKeys = [
+    process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
+    process.env.GEMINI_API_KEY_2,
+  ].filter(Boolean) as string[]
+
+  for (const geminiKey of geminiKeys) {
     try {
       const r = await fetch(`${GEMINI_URL}?key=${geminiKey}`, {
         method: "POST",
@@ -44,6 +48,9 @@ async function callAI(prompt: string): Promise<string> {
         const d = await r.json()
         const t = d.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? ""
         if (t) return t
+      } else if (r.status === 429 || r.status === 403) {
+        // Quota hit — try next key
+        continue
       }
     } catch {}
   }
