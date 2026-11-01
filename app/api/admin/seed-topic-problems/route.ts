@@ -31,6 +31,7 @@ async function callAI(prompt: string): Promise<string> {
   const geminiKeys = [
     process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
     process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3,
   ].filter(Boolean) as string[]
 
   for (const geminiKey of geminiKeys) {

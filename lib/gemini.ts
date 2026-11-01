@@ -14,6 +14,7 @@ export async function geminiChat(
   const keys = [
     process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
     process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3,
   ].filter(Boolean) as string[]
 
   if (keys.length === 0) throw new Error("No GEMINI_API_KEY set")
