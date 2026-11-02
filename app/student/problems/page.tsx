@@ -38,6 +38,12 @@ const ALL_PROBLEMS = ALL_PROBLEMS_RAW.filter(p => {
   return true
 })
 
+// Map topic label → track + color for daily new problems
+const LABEL_TO_TRACK: Record<string, { track: string; color: string }> = {}
+for (const t of TOPIC_QUESTIONS) {
+  LABEL_TO_TRACK[t.label.toLowerCase()] = { track: t.track, color: t.color }
+}
+
 const TOPICS = TOPIC_QUESTIONS.map(t => ({ track: t.track, label: t.label, color: t.color, count: t.questions.length }))
 const DIFFICULTIES = ["Easy", "Medium", "Hard"] as const
 
@@ -116,7 +122,7 @@ export default function ProblemsPage() {
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set())
   const [showBookmarked, setShowBookmarked] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
-  const [newProblems, setNewProblems] = useState<Array<{id: string; title: string; difficulty: string; topic: string; slug: string}>>([])
+  const [newProblems, setNewProblems] = useState<Array<{id: string; title: string; difficulty: string; topic: string; slug: string; track: string; color: string; dateKey: string; isNew: boolean}>>([])
 
   // Load solved + bookmarks from localStorage + fetch new daily problems on mount
   useEffect(() => {
@@ -133,7 +139,14 @@ export default function ProblemsPage() {
     fetch("/api/student/new-problems")
       .then(r => r.json())
       .then(data => {
-        if (data.problems?.length) setNewProblems(data.problems)
+        if (data.problems?.length) {
+          // Map each problem's topic label → track + color from TOPIC_QUESTIONS
+          const mapped = data.problems.map((p: any) => {
+            const lookup = LABEL_TO_TRACK[p.topic?.toLowerCase() ?? ""] ?? { track: "daily-new", color: "#6366f1" }
+            return { ...p, track: lookup.track, color: lookup.color, isNew: true }
+          })
+          setNewProblems(mapped)
+        }
       })
       .catch(() => {})
 
@@ -158,18 +171,13 @@ export default function ProblemsPage() {
   }
 
   const filtered = useMemo(() => {
-    // Merge new daily problems (at top) with static problems
-    const newOnes = newProblems.map(p => ({
-      ...p,
-      track: "daily-new",
-      color: "#6366f1",
-      isNew: true,
-    }))
+    // New problems mapped to their correct topic track
+    const newOnes = newProblems.map(p => ({ ...p, isNew: true as const }))
+    // Static problems (already deduped)
     const merged = [...newOnes, ...ALL_PROBLEMS]
 
     return merged.filter(p => {
-      // New problems don't have a track from TOPIC_QUESTIONS, handle topic filter
-      if (topic && p.track !== topic && !(topic === "daily-new" && p.isNew)) return false
+      if (topic && p.track !== topic) return false
       if (diff && p.difficulty !== diff) return false
       if (showBookmarked && !bookmarks.has(p.id)) return false
       if (search) {
@@ -356,6 +364,7 @@ export default function ProblemsPage() {
             </button>
             {TOPICS.map(t => {
               const topicSolved = ALL_PROBLEMS.filter(p => p.track === t.track && solved.has(p.id)).length
+              const topicNew = newProblems.filter(p => p.track === t.track).length
               const isActive = topic === t.track
               return (
                 <button key={t.track} onClick={() => setTopic(isActive ? null : t.track)}
@@ -367,8 +376,14 @@ export default function ProblemsPage() {
                     opacity: isActive ? 1 : 0.8,
                   }}>
                   <span className="font-medium truncate">{t.label}</span>
-                  <span className="text-xs shrink-0 ml-1">
-                    {topicSolved > 0 ? `${topicSolved}/` : ""}{t.count}
+                  <span className="flex items-center gap-1 text-xs shrink-0 ml-1">
+                    {topicSolved > 0 ? `${topicSolved}/` : ""}{t.count + topicNew}
+                    {topicNew > 0 && (
+                      <span className="text-[9px] font-bold px-1 py-0.5 rounded-full"
+                        style={{ background: "rgba(99,102,241,0.2)", color: "#a5b4fc" }}>
+                        +{topicNew}
+                      </span>
+                    )}
                   </span>
                 </button>
               )
