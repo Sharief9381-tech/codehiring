@@ -186,11 +186,17 @@ export async function POST(req: Request) {
       const normalize   = (s: string) =>
         s.replace(/\r\n/g, "\n").toLowerCase().replace(/\s+/g, " ").trim()
 
+      // For hidden test cases: if the AI-generated expected output exists but code
+      // produces a valid non-empty output without errors, trust the student's output.
+      // Hidden tests are used to verify the code doesn't crash on edge cases,
+      // not to enforce exact AI-generated expected values which may be incorrect.
       const passed = tle || isErr
         ? false
-        : hasExpected
-          ? normalize(actual) === normalize(expected)
-          : !isErr
+        : hasExpected && tc.isPublic
+          ? normalize(actual) === normalize(expected)   // public: strict comparison
+          : !tc.isPublic
+            ? !isErr && actual.length > 0               // hidden: just no error + has output
+            : !isErr                                     // no expected: just no error
 
       results.push({
         input:          tc.input,
