@@ -1729,16 +1729,28 @@ export default function PrepHubPage() {
   const isSecondYear = studentYear === 2
   const yearLoaded  = studentYear !== null
 
-  // Redirect 1st and 2nd year students away from Prep Track
+  // Block 1st and 2nd year students from seeing Prep Track
+  // Show loading until year is confirmed, then redirect if needed
   useEffect(() => {
     if (yearLoaded && (isFirstYear || isSecondYear)) {
-      // Don't redirect if we're already on the practice sub-route
       const isPracticeRoute = window.location.pathname.startsWith("/student/practice/")
       if (!isPracticeRoute) {
         window.location.replace("/student/learn")
       }
     }
   }, [yearLoaded, isFirstYear, isSecondYear])
+
+  // While year is loading OR if 1st/2nd year (before redirect fires), show blank
+  if (!yearLoaded || isFirstYear || isSecondYear) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-[60vh]">
+        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+          <div className="h-6 w-6 rounded-full border-2 border-t-transparent border-primary animate-spin" />
+          <p className="text-sm">Loading…</p>
+        </div>
+      </div>
+    )
+  }
 
   // -- COMPANY ASSESSMENT --
   if (activePath === "company" && activeCompany) {
