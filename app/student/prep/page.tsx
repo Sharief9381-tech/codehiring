@@ -17,6 +17,7 @@ import { ALL_COMPANIES } from "@/lib/companies-data"
 import { SmartResume } from "@/components/student/smart-resume"
 import { VoiceCoach } from "@/components/student/voice-coach"
 import { CommunicationVoiceModel } from "@/components/student/communication-voice-model"
+import { VoiceConversation } from "@/components/student/voice-conversation"
 
 // Full problem editor — loaded dynamically to avoid SSR issues
 const ProblemEditor = dynamic(
@@ -1656,7 +1657,7 @@ export default function PrepHubPage() {
   const [activeCompany, setActiveCompany] = useState<typeof ALL_COMPANIES[0] | null>(null)
   const [activeTopic, setActiveTopic] = useState<{ id: string; name: string } | null>(null)
   const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock" | "voice">("home")
-  const [voiceTab, setVoiceTab] = useState<"comm" | "general">("comm")
+  const [voiceTab, setVoiceTab] = useState<"comm" | "general" | "chat">("chat")
   const [aptCategory, setAptCategory] = useState<string | null>(null)
   const [showPracticeMenu, setShowPracticeMenu] = useState(false)
   const [studentYear, setStudentYear] = useState<number | null>(null)
@@ -1909,24 +1910,26 @@ export default function PrepHubPage() {
         {subView === "voice" && activePath === "communication" && (
           <div className="space-y-5">
             {/* Tab switcher */}
-            <div className="flex gap-2 p-1 rounded-xl"
+            <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl"
               style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
               {[
-                { id: "comm" as const,    label: "🎙️ Communication Model", desc: "Grammar · Vocabulary · Fluency" },
-                { id: "general" as const, label: "🤝 AI Voice Coach",       desc: "HR · GD · Mock Interview" },
+                { id: "chat" as const,    label: "🗣️ Voice Chat",            desc: "Natural conversation" },
+                { id: "comm" as const,    label: "🎙️ Communication",         desc: "Grammar · Vocab · Fluency" },
+                { id: "general" as const, label: "🤝 Voice Coach",            desc: "HR · GD · Interview" },
               ].map(tab => (
                 <button key={tab.id} onClick={() => setVoiceTab(tab.id)}
-                  className="flex-1 py-2.5 px-3 rounded-lg text-xs font-semibold transition-all text-left"
+                  className="py-2 px-2 rounded-lg text-[11px] font-semibold transition-all text-center"
                   style={
                     voiceTab === tab.id
-                      ? { background: "rgba(99,102,241,0.15)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.3)" }
+                      ? { background: "rgba(99,102,241,0.18)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.35)" }
                       : { color: "var(--muted-foreground)" }
                   }>
                   <p>{tab.label}</p>
-                  <p className="text-[10px] opacity-60 font-normal mt-0.5">{tab.desc}</p>
+                  <p className="text-[9px] opacity-55 font-normal mt-0.5">{tab.desc}</p>
                 </button>
               ))}
             </div>
+            {voiceTab === "chat"    && <VoiceConversation />}
             {voiceTab === "comm"    && <CommunicationVoiceModel />}
             {voiceTab === "general" && <VoiceCoach />}
           </div>
