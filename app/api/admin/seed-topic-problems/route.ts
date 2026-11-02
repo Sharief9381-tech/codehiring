@@ -199,6 +199,7 @@ export async function POST(req: Request) {
     const topicFilter: string | undefined = body.topic
     const batchSize = Math.min(body.batchSize ?? 5, 10)
     const overwrite = body.overwrite === true
+    const fixBad    = body.fixBad === true
 
     if (secret !== process.env.NEXTAUTH_SECRET && secret !== process.env.SEED_SECRET) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -230,17 +231,24 @@ export async function POST(req: Request) {
     // Check which already have good cached data
     const existingKeys = new Set<string>()
     if (!overwrite) {
+      // Fetch ALL existing docs for our keys — then check desc quality in JS
       const existing = await col
         .find(
-          {
-            cacheKey: { $in: allProblems.map(p => p.cacheKey) },
-            "problem.desc": { $exists: true, $not: /^Solve the /i },
-            "problem.inputFormat": { $exists: true, $ne: "" },
-          },
-          { projection: { cacheKey: 1 } }
+          { cacheKey: { $in: allProblems.map(p => p.cacheKey) } },
+          { projection: { cacheKey: 1, "problem.desc": 1, "problem.inputFormat": 1 } }
         )
         .toArray()
-      existing.forEach(e => existingKeys.add(e.cacheKey))
+
+      for (const e of existing) {
+        const desc = e.problem?.desc ?? ""
+        const inp  = e.problem?.inputFormat ?? ""
+        // Good doc: has desc that isn't placeholder AND has inputFormat
+        if (desc && !/^Solve the /i.test(desc) && inp) {
+          if (!fixBad) existingKeys.add(e.cacheKey)
+        }
+        // If fixBad mode: only skip truly good docs, re-seed the rest
+        // (if fixBad, bad docs won't be in existingKeys, so they'll be in toSeed)
+      }
     }
 
     const toSeed = allProblems.filter(p => !existingKeys.has(p.cacheKey))
@@ -330,28 +338,40 @@ export async function GET(req: Request) {
   const db  = await getDatabase()
   const col = db.collection("problem_details_v8")
 
-  const total   = TOPIC_QUESTIONS.reduce((s, t) => s + t.questions.length, 0)
-  const seeded  = await col.countDocuments({ "problem.seeded": true })
-  const hasDesc = await col.countDocuments({
-    "problem.desc": { $exists: true, $not: { $regex: "^Solve the " } },
-  })
+  const allKeys = TOPIC_QUESTIONS.flatMap(t =>
+    t.questions.map(q => q.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"))
+  )
+  const total = allKeys.length
+
+  // Count docs that belong to our 720 problems AND have a proper description
+  const goodDocs = await col.find(
+    { cacheKey: { $in: allKeys }, "problem.desc": { $exists: true } },
+    { projection: { cacheKey: 1, "problem.desc": 1 } }
+  ).toArray()
+
+  const goodKeys = new Set(
+    goodDocs
+      .filter(d => d.problem?.desc && !/^Solve the /i.test(d.problem.desc))
+      .map(d => d.cacheKey)
+  )
+  const hasDesc = goodKeys.size
 
   const byTopic: Record<string, { total: number; seeded: number }> = {}
   for (const t of TOPIC_QUESTIONS) {
     const keys = t.questions.map(q => q.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"))
-    const count = await col.countDocuments({
-      cacheKey: { $in: keys },
-      "problem.desc": { $exists: true, $not: { $regex: "^Solve the " } },
-    })
-    byTopic[t.label] = { total: t.questions.length, seeded: count }
+    byTopic[t.label] = { total: keys.length, seeded: keys.filter(k => goodKeys.has(k)).length }
   }
+
+  // Find missing cacheKeys for debugging
+  const missing = allKeys.filter(k => !goodKeys.has(k))
 
   return NextResponse.json({
     total,
-    seeded,
     hasDesc,
     percent: Math.round((hasDesc / total) * 100),
     byTopic,
     remaining: total - hasDesc,
+    missingCount: missing.length,
+    missingSample: missing.slice(0, 10),
   })
 }
