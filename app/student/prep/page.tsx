@@ -330,9 +330,21 @@ function MCQQuiz({ questions, onComplete }: { questions: MCQ[]; onComplete: (sco
       {/* Progress */}
       <div className="flex items-center justify-between text-sm text-muted-foreground">
         <span>Question {cur + 1} of {questions.length}</span>
-        <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-violet-500/15 text-violet-500">
-          {q.topic}
-        </span>
+        <div className="flex items-center gap-2">
+          {(q as any).difficulty && (() => {
+            const d = (q as any).difficulty as string
+            const dColor = d === "Easy" ? "#10b981" : d === "Medium" ? "#f59e0b" : "#ef4444"
+            return (
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-bold"
+                style={{ background: `${dColor}15`, color: dColor, border: `1px solid ${dColor}40` }}>
+                {d}
+              </span>
+            )
+          })()}
+          <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-violet-500/15 text-violet-500">
+            {q.topic}
+          </span>
+        </div>
       </div>
       <div className="h-1.5 rounded-full bg-black/10 dark:bg-white/10">
         <div className="h-full rounded-full transition-all" style={{ width: `${((cur + 1) / questions.length) * 100}%`, background: "linear-gradient(90deg,#7c3aed,#6366f1)" }} />
@@ -1311,253 +1323,123 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
 
   useEffect(() => {
     ;(async () => {
-    // Use local aptitude bank for number-system, simplification and percentages topics
-    const LOCAL_TOPIC_MAP: Record<string, string> = {
-      "number-system": "Number System",
-      "simplification": "Simplification",
-      "percentages": "Percentages",
-      "profit-loss": "Profit & Loss",
-      "si-ci": "Simple & Compound Interest",
-      "ratio-prop": "Ratio & Proportion",
-      "averages": "Averages",
-      "mixture": "Mixture & Alligation",
-      "time-work": "Time & Work",
-      "pipes-cisterns": "Pipes & Cisterns",
-      "boats-streams": "Boats & Streams",
-      "ages": "Problems on Ages",
-      "mensuration": "Mensuration",
-      "geometry": "Geometry",
-      "algebra": "Algebra",
-      "coord-geo": "Coordinate Geometry",
-      "permcomb": "Permutation & Combination",
-      "probability": "Probability",
-      "data-interp": "Data Interpretation",
-      "data-suff": "Data Sufficiency",
-      "quad-eq": "Quadratic Equations",
-      "num-series": "Number Series",
-      "quantity-comp": "Quantity Comparison",
-      "coding-decoding": "Coding-Decoding",
-      "blood-relations": "Blood Relations",
-      "direction-sense": "Direction Sense",
-      "ranking-ordering": "Ranking & Ordering",
-      "syllogism": "Syllogism",
-      "seating-arrangement": "Seating Arrangement",
-      "puzzles": "Puzzles",
-      "inequality": "Inequality",
-      "input-output": "Input-Output",
-      "data-sufficiency": "Data Sufficiency",
-      "statement-assumptions": "Statement & Assumptions",
-      "cause-effect": "Cause & Effect",
-      "assertion-reasoning": "Assertion & Reasoning",
-      "analogy": "Analogy",
-      "classification": "Classification",
-      "course-of-action": "Course of Action",
-      "mirror-water-images": "Mirror & Water Images",
-      "paper-folding": "Paper Folding & Cutting",
-      "cubes-dice": "Cubes & Dice",
-      "calendar-clock": "Calendar & Clock",
-      "venn-diagrams": "Venn Diagrams",
+    // ── Map topic IDs to canonical topic names + section ─────────────────────
+    const TOPIC_NAME_MAP: Record<string, { name: string; section: string }> = {
+      // Quantitative
+      "number-system": { name: "Number System", section: "aptitude" },
+      "simplification": { name: "Simplification", section: "aptitude" },
+      "percentages": { name: "Percentages", section: "aptitude" },
+      "profit-loss": { name: "Profit & Loss", section: "aptitude" },
+      "si-ci": { name: "Simple & Compound Interest", section: "aptitude" },
+      "ratio-prop": { name: "Ratio & Proportion", section: "aptitude" },
+      "averages": { name: "Averages", section: "aptitude" },
+      "mixture": { name: "Mixture & Alligation", section: "aptitude" },
+      "time-work": { name: "Time & Work", section: "aptitude" },
+      "pipes-cisterns": { name: "Pipes & Cisterns", section: "aptitude" },
+      "boats-streams": { name: "Boats & Streams", section: "aptitude" },
+      "ages": { name: "Problems on Ages", section: "aptitude" },
+      "mensuration": { name: "Mensuration", section: "aptitude" },
+      "geometry": { name: "Geometry", section: "aptitude" },
+      "algebra": { name: "Algebra", section: "aptitude" },
+      "coord-geo": { name: "Coordinate Geometry", section: "aptitude" },
+      "permcomb": { name: "Permutation & Combination", section: "aptitude" },
+      "probability": { name: "Probability", section: "aptitude" },
+      "data-interp": { name: "Data Interpretation", section: "aptitude" },
+      "data-suff": { name: "Data Sufficiency", section: "aptitude" },
+      "quad-eq": { name: "Quadratic Equations", section: "aptitude" },
+      "num-series": { name: "Number Series", section: "aptitude" },
+      "quantity-comp": { name: "Quantity Comparison", section: "aptitude" },
+      // Logical Reasoning
+      "coding-decoding": { name: "Coding-Decoding", section: "logical" },
+      "blood-relations": { name: "Blood Relations", section: "logical" },
+      "direction-sense": { name: "Direction Sense", section: "logical" },
+      "ranking-ordering": { name: "Ranking & Ordering", section: "logical" },
+      "syllogism": { name: "Syllogism", section: "logical" },
+      "seating-arrangement": { name: "Seating Arrangement", section: "logical" },
+      "puzzles": { name: "Puzzles", section: "logical" },
+      "inequality": { name: "Inequality", section: "logical" },
+      "input-output": { name: "Input-Output", section: "logical" },
+      "data-sufficiency": { name: "Data Sufficiency", section: "logical" },
+      "statement-assumptions": { name: "Statement & Assumptions", section: "logical" },
+      "cause-effect": { name: "Cause & Effect", section: "logical" },
+      "assertion-reasoning": { name: "Assertion & Reasoning", section: "logical" },
+      "analogy": { name: "Analogy", section: "logical" },
+      "classification": { name: "Classification", section: "logical" },
+      "course-of-action": { name: "Course of Action", section: "logical" },
+      "mirror-water-images": { name: "Mirror & Water Images", section: "logical" },
+      "paper-folding": { name: "Paper Folding & Cutting", section: "logical" },
+      "cubes-dice": { name: "Cubes & Dice", section: "logical" },
+      "calendar-clock": { name: "Calendar & Clock", section: "logical" },
+      "venn-diagrams": { name: "Venn Diagrams", section: "logical" },
+      // Communication / Verbal
+      "direct-indirect": { name: "Direct & Indirect Speech", section: "verbal" },
+      "active-passive": { name: "Active & Passive Voice", section: "verbal" },
+      "sentence-improvement": { name: "Sentence Improvement", section: "verbal" },
+      "idioms-phrases": { name: "Idioms & Phrases", section: "verbal" },
+      "cloze-test": { name: "Cloze Test", section: "verbal" },
+      "para-jumbles": { name: "Para Jumbles", section: "verbal" },
+      "grammar": { name: "Grammar", section: "verbal" },
+      "reading-comprehension": { name: "Reading Comprehension", section: "verbal" },
+      "vocabulary": { name: "Vocabulary", section: "verbal" },
     }
 
-    // Logical reasoning topics — served from LOGICAL_REASONING_BANK
-    const LOGICAL_TOPIC_MAP: Record<string, string> = {
-      "coding-decoding": "Coding-Decoding",
-      "blood-relations": "Blood Relations",
-      "direction-sense": "Direction Sense",
-      "ranking-ordering": "Ranking & Ordering",
-      "syllogism": "Syllogism",
-      "seating-arrangement": "Seating Arrangement",
-      "puzzles": "Puzzles",
-      "inequality": "Inequality",
-      "input-output": "Input-Output",
-      "data-sufficiency": "Data Sufficiency",
-      "statement-assumptions": "Statement & Assumptions",
-      "cause-effect": "Cause & Effect",
-      "assertion-reasoning": "Assertion & Reasoning",
-      "analogy": "Analogy",
-      "classification": "Classification",
-      "course-of-action": "Course of Action",
-      "mirror-water-images": "Mirror & Water Images",
-      "paper-folding": "Paper Folding & Cutting",
-      "cubes-dice": "Cubes & Dice",
-      "calendar-clock": "Calendar & Clock",
-      "venn-diagrams": "Venn Diagrams",
-    }
-    // ── Full Aptitude Mock: 1 Medium/Hard question per topic from the bank ──
+    // ── Full Aptitude Mock: use static bank (unchanged) ───────────────────────
     if (topic.id === "mock-aptitude") {
       const { QUANTITATIVE_BANK } = await import("@/lib/quantitative-reasoning")
-      const seenKey = "aptitude_mock_seen"
-      let seenIds: string[] = []
-      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
-
-      const allTopics = Object.values(LOCAL_TOPIC_MAP)
+      const allTopicNames = [
+        "Number System","Simplification","Percentages","Profit & Loss",
+        "Simple & Compound Interest","Ratio & Proportion","Averages","Mixture & Alligation",
+        "Time & Work","Probability","Data Interpretation","Number Series",
+      ]
       const picked: any[] = []
-
-      for (const topicName of allTopics) {
-        // Prefer Hard, then Medium, exclude seen
+      for (const topicName of allTopicNames) {
         const pool = QUANTITATIVE_BANK.filter(q =>
-          q.topic === topicName &&
-          (q.difficulty === "Hard" || q.difficulty === "Medium") &&
-          !seenIds.includes(q.id)
+          q.topic === topicName && (q.difficulty === "Hard" || q.difficulty === "Medium")
         )
-        // Reset seen for this topic if exhausted
-        const available = pool.length > 0
-          ? pool
-          : QUANTITATIVE_BANK.filter(q => q.topic === topicName && (q.difficulty === "Hard" || q.difficulty === "Medium"))
-
-        // Shuffle and pick 1
-        const shuffled = available.sort(() => Math.random() - 0.5)
+        const shuffled = pool.sort(() => Math.random() - 0.5)
         if (shuffled[0]) picked.push(shuffled[0])
       }
-
-      const newSeen = [...seenIds, ...picked.map(q => q.id)]
-      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
-
       const qs = picked.map((q, i) => ({
-        id: i + 1,
-        question: q.question,
-        options: q.options,
-        correct: q.correct,
-        explanation: q.explanation,
-        topic: q.topic,
-        difficulty: q.difficulty,
+        id: i + 1, question: q.question, options: q.options,
+        correct: q.correct, explanation: q.explanation, topic: q.topic, difficulty: q.difficulty,
       }))
-      setQuestions(qs)
-      setStage("quiz")
-      return
+      setQuestions(qs); setStage("quiz"); return
     }
 
-    if (topic.id in LOCAL_TOPIC_MAP) {
-      const { QUANTITATIVE_BANK } = await import("@/lib/quantitative-reasoning")
-      const topicName = LOCAL_TOPIC_MAP[topic.id]
-      const seenKey = `aptitude_seen_${topic.id}`
-      let seenIds: string[] = []
-      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
-
-      const allForTopic = QUANTITATIVE_BANK.filter(q => q.topic === topicName)
-      let pool = allForTopic.filter(q => !seenIds.includes(q.id))
-
-      // Reset if not enough unseen questions
-      if (pool.length < 20) {
-        seenIds = []
-        localStorage.removeItem(seenKey)
-        pool = allForTopic
-      }
-
-      const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 20)
-      const newSeen = [...seenIds, ...shuffled.map(q => q.id)]
-      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
-
-      const qs = shuffled.map((q, i) => ({
-        id: i + 1,
-        question: q.question,
-        options: q.options,
-        correct: q.correct,
-        explanation: q.explanation,
-        topic: q.topic,
-        difficulty: q.difficulty,
-      }))
-      setQuestions(qs)
-      setStage("quiz")
-      return
+    // ── Individual topic: AI-generated questions Easy → Medium → Hard ─────────
+    const mapped = TOPIC_NAME_MAP[topic.id]
+    if (mapped) {
+      try {
+        const res = await fetch("/api/student/generate-practice-questions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: mapped.name, section: mapped.section, count: 5 }),
+        })
+        const data = await res.json()
+        if (data.questions?.length) {
+          const qs = data.questions.map((q: any, i: number) => ({
+            id: i + 1,
+            question:    q.question,
+            options:     q.options,
+            correct:     q.correct,
+            explanation: q.explanation,
+            topic:       q.topic ?? mapped.name,
+            difficulty:  q.difficulty,
+            passage:     q.passage,
+          }))
+          setQuestions(qs); setStage("quiz"); return
+        }
+      } catch {}
     }
 
-    // ── Logical Reasoning local bank ──────────────────────────────────────────
-    if (topic.id in LOGICAL_TOPIC_MAP) {
-      const { LOGICAL_REASONING_BANK } = await import("@/lib/logical-reasoning-bank")
-      const topicName = LOGICAL_TOPIC_MAP[topic.id]
-      const seenKey = `logical_seen_${topic.id}`
-      let seenIds: string[] = []
-      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
-
-      const allForTopic = LOGICAL_REASONING_BANK.filter((q: any) => q.topic === topicName)
-      let pool = allForTopic.filter((q: any) => !seenIds.includes(q.id))
-
-      if (pool.length < 20) {
-        seenIds = []
-        localStorage.removeItem(seenKey)
-        pool = allForTopic
-      }
-
-      const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 20)
-      const newSeen = [...seenIds, ...shuffled.map((q: any) => q.id)]
-      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
-
-      const qs = shuffled.map((q: any, i: number) => ({
-        id: i + 1,
-        question: q.question,
-        options: q.options,
-        correct: q.correct,
-        explanation: q.explanation,
-        topic: q.topic,
-        difficulty: q.difficulty,
-      }))
-      setQuestions(qs)
-      setStage("quiz")
-      return
-    }
-
-    // ── Communication local bank ──────────────────────────────────────────────
-    const COMM_LOCAL_TOPIC_MAP: Record<string, string> = {
-      "direct-indirect":       "Direct & Indirect Speech",
-      "active-passive":        "Active & Passive Voice",
-      "sentence-improvement":  "Sentence Improvement",
-      "idioms-phrases":        "Idioms & Phrases",
-      "cloze-test":            "Cloze Test",
-      "para-jumbles":          "Para Jumbles",
-      "grammar":               "Grammar",
-      "reading-comprehension": "Reading Comprehension",
-      "vocabulary":            "Vocabulary",
-    }
-
-    if (topic.id in COMM_LOCAL_TOPIC_MAP) {
-      const { COMMUNICATION_BANK } = await import("@/lib/communication-bank")
-      const topicName = COMM_LOCAL_TOPIC_MAP[topic.id]
-      const seenKey = `comm_seen_${topic.id}`
-      // v2: clear old cache that didn't have passage data
-      const versionKey = `comm_seen_v_${topic.id}`
-      if (localStorage.getItem(versionKey) !== "2") {
-        localStorage.removeItem(seenKey)
-        localStorage.setItem(versionKey, "2")
-      }
-      let seenIds: string[] = []
-      try { seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]") } catch {}
-
-      const allForTopic = COMMUNICATION_BANK.filter(q => q.topic === topicName)
-      let pool = allForTopic.filter(q => !seenIds.includes(q.id))
-
-      if (pool.length < 20) {
-        seenIds = []
-        localStorage.removeItem(seenKey)
-        pool = allForTopic
-      }
-
-      const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 20)
-      const newSeen = [...seenIds, ...shuffled.map(q => q.id)]
-      try { localStorage.setItem(seenKey, JSON.stringify(newSeen)) } catch {}
-
-      const qs = shuffled.map((q, i) => ({
-        id: i + 1,
-        question: q.question,
-        options: q.options,
-        correct: q.correct,
-        explanation: q.explanation,
-        topic: q.topic,
-        difficulty: q.difficulty,
-        passage: (q as any).passage,
-      }))
-      setQuestions(qs)
-      setStage("quiz")
-      return
-    }
-
+    // ── Fallback: company-style assessment for unmapped topics ────────────────
     fetch("/api/student/generate-assessment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         company: companyMap[pathId],
         section: sectionMap[pathId],
-        count: 5,
+        count: 15,
         topic: topic.name,
       }),
     })
