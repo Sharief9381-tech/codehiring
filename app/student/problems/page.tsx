@@ -346,48 +346,59 @@ export default function ProblemsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-          {/* Topic sidebar */}
-          <div className="lg:col-span-1 space-y-2">
+          {/* Topic sidebar — 2 cols × 12 rows */}
+          <div className="lg:col-span-1">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-1 mb-3">Topics</p>
+            {/* All Topics button — full width */}
             <button
               onClick={() => setTopic(null)}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-all"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all mb-2"
               style={{
-                background: !topic ? "rgba(99,102,241,0.15)" : "transparent",
-                border: `1px solid ${!topic ? "rgba(99,102,241,0.3)" : "transparent"}`,
+                background: !topic ? "rgba(99,102,241,0.15)" : "rgba(255,255,255,0.03)",
+                border: `1px solid ${!topic ? "rgba(99,102,241,0.3)" : "rgba(255,255,255,0.07)"}`,
                 color: !topic ? "#a5b4fc" : "#6b7280",
               }}>
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-1.5">
                 <BookOpen className="h-3.5 w-3.5" /> All Topics
               </span>
               <span className="text-xs">{stats.total}</span>
             </button>
-            {TOPICS.map(t => {
-              const topicSolved = ALL_PROBLEMS.filter(p => p.track === t.track && solved.has(p.id)).length
-              const topicNew = newProblems.filter(p => p.track === t.track).length
-              const isActive = topic === t.track
-              return (
-                <button key={t.track} onClick={() => setTopic(isActive ? null : t.track)}
-                  className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-all hover:opacity-100"
-                  style={{
-                    background: isActive ? `${t.color}12` : "transparent",
-                    border: `1px solid ${isActive ? t.color + "30" : "transparent"}`,
-                    color: isActive ? t.color : "#6b7280",
-                    opacity: isActive ? 1 : 0.8,
-                  }}>
-                  <span className="font-medium truncate">{t.label}</span>
-                  <span className="flex items-center gap-1 text-xs shrink-0 ml-1">
-                    {topicSolved > 0 ? `${topicSolved}/` : ""}{t.count + topicNew}
-                    {topicNew > 0 && (
-                      <span className="text-[9px] font-bold px-1 py-0.5 rounded-full"
-                        style={{ background: "rgba(99,102,241,0.2)", color: "#a5b4fc" }}>
-                        +{topicNew}
+            {/* 2-column grid of topics */}
+            <div className="grid grid-cols-2 gap-1.5">
+              {TOPICS.map(t => {
+                const topicSolved = ALL_PROBLEMS.filter(p => p.track === t.track && solved.has(p.id)).length
+                const topicNew = newProblems.filter(p => p.track === t.track).length
+                const isActive = topic === t.track
+                return (
+                  <button key={t.track} onClick={() => setTopic(isActive ? null : t.track)}
+                    className="flex flex-col items-start px-2.5 py-2 rounded-xl text-left transition-all hover:opacity-100"
+                    style={{
+                      background: isActive ? `${t.color}15` : "rgba(255,255,255,0.03)",
+                      border: `1px solid ${isActive ? t.color + "40" : "rgba(255,255,255,0.07)"}`,
+                      color: isActive ? t.color : "#6b7280",
+                      opacity: isActive ? 1 : 0.85,
+                    }}>
+                    {/* Color dot + name */}
+                    <div className="flex items-center gap-1.5 w-full min-w-0">
+                      <div className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: t.color }} />
+                      <span className="text-[11px] font-semibold truncate leading-tight">{t.label}</span>
+                    </div>
+                    {/* Count row */}
+                    <div className="flex items-center gap-1 mt-0.5 ml-3">
+                      <span className="text-[10px]">
+                        {topicSolved > 0 ? `${topicSolved}/` : ""}{t.count + topicNew}
                       </span>
-                    )}
-                  </span>
-                </button>
-              )
-            })}
+                      {topicNew > 0 && (
+                        <span className="text-[8px] font-bold px-1 py-0.5 rounded-full"
+                          style={{ background: "rgba(99,102,241,0.2)", color: "#a5b4fc" }}>
+                          +{topicNew}
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
           {/* Problem list */}
