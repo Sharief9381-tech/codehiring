@@ -1,8 +1,19 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { Suspense } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { BookOpen, Code2, MessageCircle, ChevronRight, Zap, Target, Brain } from "lucide-react"
+import { TOPIC_QUESTIONS } from "@/lib/topic-questions"
+
+// Count unique problems from topic-questions (deduplicated by title)
+const seen = new Set<string>()
+let STATIC_PROBLEM_COUNT = 0
+for (const topic of TOPIC_QUESTIONS) {
+  for (const q of topic.questions) {
+    const key = q.title.toLowerCase()
+    if (!seen.has(key)) { seen.add(key); STATIC_PROBLEM_COUNT++ }
+  }
+}
 
 const PRACTICE_MODES = [
   {
@@ -21,13 +32,13 @@ const PRACTICE_MODES = [
     id: "coding",
     label: "Coding / DSA",
     subtitle: "Arrays · Trees · DP · Graphs",
-    desc: "Practice Data Structures & Algorithms with 750+ problems organized by topic and difficulty. From Easy arrays to Hard graph problems.",
+    desc: "Practice Data Structures & Algorithms with problems organized by topic and difficulty. From Easy arrays to Hard graph problems. New problem added daily.",
     icon: "C",
     iconBg: "#6366f1",
     color: "#6366f1",
     href: "/student/problems",
     topics: ["Arrays", "Strings", "Trees", "Graphs", "Dynamic Programming", "Heaps", "Backtracking", "Sorting"],
-    count: "750+ problems",
+    count: null, // will be loaded dynamically
   },
   {
     id: "communication",
@@ -45,6 +56,19 @@ const PRACTICE_MODES = [
 
 function PracticeContent() {
   const router = useRouter()
+  const [codingCount, setCodingCount] = useState(STATIC_PROBLEM_COUNT)
+
+  // Fetch real count including daily new problems
+  useEffect(() => {
+    fetch("/api/student/new-problems")
+      .then(r => r.json())
+      .then(d => {
+        if (typeof d.count === "number") {
+          setCodingCount(STATIC_PROBLEM_COUNT + d.count)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,7 +98,11 @@ function PracticeContent() {
 
         {/* 3 big cards */}
         <div className="grid gap-4 sm:grid-cols-3">
-          {PRACTICE_MODES.map(mode => (
+          {PRACTICE_MODES.map(mode => {
+            const displayCount = mode.id === "coding"
+              ? `${codingCount}+ problems`
+              : mode.count ?? ""
+            return (
             <button key={mode.id}
               onClick={() => router.push(mode.href)}
               className="group relative text-left rounded-3xl p-6 transition-all hover:scale-[1.02] hover:shadow-xl
@@ -113,7 +141,7 @@ function PracticeContent() {
               {/* CTA */}
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Zap className="h-3 w-3 text-yellow-500" /> {mode.count}
+                  <Zap className="h-3 w-3 text-yellow-500" /> {displayCount}
                 </span>
                 <span className="flex items-center gap-1 text-sm font-semibold transition-all group-hover:gap-2"
                   style={{ color: mode.color }}>
@@ -121,14 +149,15 @@ function PracticeContent() {
                 </span>
               </div>
             </button>
-          ))}
+            )
+          })}
         </div>
 
         {/* Quick stats */}
         <div className="grid grid-cols-3 gap-4 pt-2">
           {[
             { icon: <Brain className="h-4 w-4 text-yellow-500" />, label: "Aptitude", value: "200+", sub: "questions" },
-            { icon: <Code2 className="h-4 w-4 text-indigo-400" />, label: "Coding", value: "750+", sub: "problems" },
+            { icon: <Code2 className="h-4 w-4 text-indigo-400" />, label: "Coding", value: `${codingCount}+`, sub: "problems" },
             { icon: <MessageCircle className="h-4 w-4 text-emerald-500" />, label: "Communication", value: "900", sub: "questions + voice" },
           ].map(s => (
             <div key={s.label} className="rounded-2xl p-4 text-center bg-card border border-border">
