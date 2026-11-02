@@ -1,11 +1,11 @@
 /**
  * LLM Caller for Question Generation
- * Priority: Groq (free, fast) → OpenAI → Gemini (fallback)
+ * Priority: Gemini (3 keys with rotation) → OpenAI → Groq
  */
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 const GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
 export interface LLMResponse {
   content: string
@@ -14,10 +14,7 @@ export interface LLMResponse {
 
 const stripThink = (s: string) => s.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
 
-async function callGemini(messages: { role: string; content: string }[], maxTokens: number): Promise<string> {
-  const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
-  if (!key) throw new Error("No GEMINI_API_KEY")
-
+async function callGemini(messages: { role: string; content: string }[], maxTokens: number, key: string): Promise<string> {
   let systemInstruction: string | undefined
   const contents: { role: string; parts: { text: string }[] }[] = []
   for (const m of messages) {
@@ -54,13 +51,23 @@ export async function callLLM(
     { role: "user"   as const, content: user   },
   ]
 
-  // 1. Gemini 2.0 Flash
-  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
-  if (geminiKey) {
+  // 1. Gemini — try all 3 keys with rotation
+  const geminiKeys = [
+    process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
+    process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3,
+  ].filter(Boolean) as string[]
+
+  for (const key of geminiKeys) {
     try {
-      const text = await callGemini(messages, maxTokens)
-      if (text.length > 20) return { content: text, model: "gemini-3.1-flash-lite" }
-    } catch {}
+      const text = await callGemini(messages, maxTokens, key)
+      if (text.length > 20) return { content: text, model: "gemini-2.0-flash" }
+    } catch (e: any) {
+      // 429 = quota, 403 = key issue — try next key
+      if (e.message?.includes("429") || e.message?.includes("403")) continue
+      // Other errors — also try next key
+      continue
+    }
   }
 
   // 2. OpenAI
@@ -81,7 +88,7 @@ export async function callLLM(
     } catch {}
   }
 
-  // 3. Groq (last resort)
+  // 3. Groq
   const groqKey = process.env.GROQ_API_KEY
   if (groqKey) {
     try {
