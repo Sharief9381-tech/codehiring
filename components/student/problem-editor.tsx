@@ -963,8 +963,21 @@ export default function ProblemEditor({ problemId }: Props) {
                       {/* Selected test case detail */}
                       {runResults[selCase] && (() => {
                         const r = runResults[selCase]
+                        // Reveal conditions
+                        const reveal = r.isPublic || allPassed || failCount >= 3
+                        // For hidden tests that passed: use actualOutput as expected (it was correct)
+                        const shownExpected = r.expectedOutput && r.expectedOutput !== "(hidden)"
+                          ? r.expectedOutput
+                          : (allPassed && r.actualOutput ? r.actualOutput : null)
                         return (
                           <div className="space-y-2">
+                            {/* Hidden badge on the test tab when revealed */}
+                            {!r.isPublic && reveal && (
+                              <div className="flex items-center gap-1.5 text-[10px] font-semibold px-2 py-1 rounded-md w-fit"
+                                style={{ background: "rgba(245,158,11,0.1)", color: "#f59e0b", border: "1px solid rgba(245,158,11,0.25)" }}>
+                                🔓 Hidden Test Case — Revealed
+                              </div>
+                            )}
                             {/* Input */}
                             <div>
                               <div className="flex items-center gap-1.5 mb-1">
@@ -973,9 +986,9 @@ export default function ProblemEditor({ problemId }: Props) {
                               </div>
                               <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
                                 style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.string, minHeight: "32px" }}>
-                                {r.isPublic || allPassed || failCount >= 3
+                                {reveal
                                   ? (r.input?.replace(/^# -- test harness --\n[\s\S]*/,'').trim() || <span style={{color:T.lineNum}}>—</span>)
-                                  : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden test case — fails {3 - failCount} more time{3 - failCount !== 1 ? "s" : ""} to reveal</span>
+                                  : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden test case — fail {3 - failCount} more time{3 - failCount !== 1 ? "s" : ""} to reveal</span>
                                 }
                               </div>
                             </div>
@@ -988,8 +1001,8 @@ export default function ProblemEditor({ problemId }: Props) {
                               </div>
                               <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
                                 style={{ background: T.panel, border: `1px solid ${T.border}`, color: "#3fb950", minHeight: "32px" }}>
-                                {r.isPublic || allPassed || failCount >= 3
-                                  ? (r.expectedOutput && r.expectedOutput !== "(hidden)" ? r.expectedOutput : <span style={{color:T.lineNum}}>—</span>)
+                                {reveal
+                                  ? (shownExpected || <span style={{color:T.lineNum}}>—</span>)
                                   : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden</span>
                                 }
                               </div>
