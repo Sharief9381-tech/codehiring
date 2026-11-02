@@ -2,17 +2,18 @@
 
 /**
  * AI Voice Communication Coach
- * Helps students improve spoken English, HR interview skills,
- * technical communication and group discussion abilities.
+ * Opens directly into the VoiceConversation (ChatGPT-style) on load.
+ * Tabs: Voice Chat | Practice & Feedback | Mock Interview
  */
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import {
   ArrowLeft, Mic, MicOff, Volume2, VolumeX, RotateCcw,
-  CheckCircle2, AlertCircle, Trophy, ChevronRight, Play,
-  MessageSquare, BookOpen, Users, Zap,
+  CheckCircle2, AlertCircle, ChevronRight, BookOpen,
+  MessageSquare, Zap,
 } from "lucide-react"
+import { VoiceConversation } from "@/components/student/voice-conversation"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Feedback {
@@ -86,7 +87,7 @@ function ScoreRing({ score, size = 80, color }: { score: number; size?: number; 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function CommunicationCoachPage() {
   const router = useRouter()
-  const [view, setView] = useState<"home" | "practice" | "interview">("home")
+  const [tab, setTab] = useState<"chat" | "practice" | "interview">("chat")
   const [scenario, setScenario] = useState<typeof SCENARIOS[0] | null>(null)
   const [mode, setMode] = useState<"practice" | "interview">("practice")
 
@@ -253,7 +254,7 @@ export default function CommunicationCoachPage() {
     setMessages([])
     setInterviewStarted(false)
     setCurrentQuestion("")
-    setView(m)
+    setTab(m)
     if (m === "practice") getQuestion(sc)
     if (m === "interview") startInterview(sc)
   }
@@ -266,112 +267,99 @@ export default function CommunicationCoachPage() {
     }
   }, [])
 
-  // ─── HOME VIEW ──────────────────────────────────────────────────────────────
-  if (view === "home") {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="max-w-5xl mx-auto px-4 py-6">
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-8">
-            <button onClick={() => router.back()}
-              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="h-4 w-4" /> Back
-            </button>
-          </div>
+  // ─── MAIN LAYOUT — always show tabs ──────────────────────────────────────────
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="max-w-2xl mx-auto px-4 py-4">
 
-          <div className="text-center mb-10">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl mx-auto mb-4 text-3xl"
-              style={{ background: "linear-gradient(135deg,#7c3aed20,#6366f120)", border: "1px solid #7c3aed30" }}>
-              🎙️
-            </div>
-            <h1 className="text-3xl font-bold text-foreground">AI Voice Communication Coach</h1>
-            <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-              Speak, get instant AI feedback and improve your communication for campus placements
-            </p>
-            <div className="flex items-center justify-center gap-6 mt-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1"><Mic className="h-3.5 w-3.5" /> Voice powered</span>
-              <span className="flex items-center gap-1"><Zap className="h-3.5 w-3.5 text-yellow-500" /> AI feedback</span>
-              <span className="flex items-center gap-1"><Volume2 className="h-3.5 w-3.5 text-blue-400" /> Speaks to you</span>
-            </div>
-          </div>
-
-          {/* Scenario cards */}
-          <div className="grid gap-5 sm:grid-cols-2">
-            {SCENARIOS.map(sc => (
-              <div key={sc.id} className="rounded-2xl border overflow-hidden bg-card"
-                style={{ borderColor: `${sc.color}25` }}>
-                {/* Card top */}
-                <div className="p-5 pb-4" style={{ background: `${sc.color}08` }}>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl text-xl"
-                      style={{ background: `${sc.color}20` }}>{sc.icon}</div>
-                    <div>
-                      <p className="font-bold text-foreground">{sc.name}</p>
-                      <p className="text-xs text-muted-foreground">{sc.topics.length} topic areas</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{sc.desc}</p>
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {sc.topics.map(t => (
-                      <span key={t} className="text-[10px] px-2 py-0.5 rounded-full"
-                        style={{ background: `${sc.color}15`, color: `${sc.color}cc` }}>{t}</span>
-                    ))}
-                  </div>
-                </div>
-                {/* Buttons */}
-                <div className="p-4 grid grid-cols-2 gap-2.5">
-                  <button onClick={() => enterScenario(sc, "practice")}
-                    className="h-9 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-all hover:opacity-90"
-                    style={{ background: `linear-gradient(135deg,${sc.color},${sc.color}bb)` }}>
-                    <BookOpen className="h-3.5 w-3.5" /> Practice
-                  </button>
-                  <button onClick={() => enterScenario(sc, "interview")}
-                    className="h-9 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all hover:opacity-90"
-                    style={{ border: `1px solid ${sc.color}40`, color: sc.color, background: `${sc.color}08` }}>
-                    <MessageSquare className="h-3.5 w-3.5" /> Mock Interview
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Tips */}
-          <div className="mt-8 rounded-2xl border border-border p-5 bg-card">
-            <p className="text-sm font-semibold text-foreground mb-3">💡 How to use</p>
-            <div className="grid sm:grid-cols-3 gap-4 text-xs text-muted-foreground">
-              <div><span className="font-semibold text-foreground">1. Choose a scenario</span> — Pick what you want to practise: HR, Technical, GD or Spoken English.</div>
-              <div><span className="font-semibold text-foreground">2. Speak your answer</span> — Press the mic button and answer the AI's question out loud.</div>
-              <div><span className="font-semibold text-foreground">3. Get AI feedback</span> — Receive scores on grammar, fluency, content and confidence with tips to improve.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // ─── PRACTICE VIEW ──────────────────────────────────────────────────────────
-  if (view === "practice" && scenario) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="max-w-2xl mx-auto px-4 py-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <button onClick={() => { stopSpeaking(); stopListening(); setView("home") }}
-              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="h-4 w-4" /> Back
-            </button>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <button onClick={() => router.back()}
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="h-4 w-4" /> Back
+          </button>
+          {(tab === "practice" || tab === "interview") && scenario && (
             <div className="flex items-center gap-2">
               <span className="text-xs px-2.5 py-1 rounded-full"
                 style={{ background: `${scenario.color}15`, color: scenario.color }}>
                 {scenario.icon} {scenario.name}
               </span>
               <button onClick={() => setSpeechEnabled(v => !v)}
-                className="h-8 w-8 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground transition-colors">
+                className="h-8 w-8 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground">
                 {speechEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
               </button>
             </div>
-          </div>
+          )}
+        </div>
 
+        {/* Tab bar */}
+        <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl mb-5"
+          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          {[
+            { id: "chat" as const,      icon: "🗣️", label: "Voice Chat",   desc: "Free conversation" },
+            { id: "practice" as const,  icon: "🎯", label: "Practice",     desc: "Question + feedback" },
+            { id: "interview" as const, icon: "🤝", label: "Mock Interview", desc: "Live session" },
+          ].map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className="py-2 px-1 rounded-lg text-[11px] font-semibold transition-all text-center"
+              style={tab === t.id
+                ? { background: "rgba(99,102,241,0.18)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.35)" }
+                : { color: "var(--muted-foreground)" }}>
+              <p>{t.icon} {t.label}</p>
+              <p className="text-[9px] opacity-50 font-normal mt-0.5">{t.desc}</p>
+            </button>
+          ))}
+        </div>
+
+        {/* ── Tab: Voice Chat — open immediately ────────────────────────────── */}
+        {tab === "chat" && (
+          <VoiceConversation />
+        )}
+
+        {/* ── Tab: Practice — scenario picker then practice ─────────────────── */}
+        {tab === "practice" && !scenario && (
+          <div className="space-y-4">
+            <p className="text-sm font-semibold text-foreground">Choose a scenario to practise</p>
+            {SCENARIOS.map(sc => (
+              <button key={sc.id} onClick={() => enterScenario(sc, "practice")}
+                className="w-full rounded-2xl border p-4 text-left transition-all hover:scale-[1.01] hover:shadow-lg"
+                style={{ borderColor: `${sc.color}25`, background: `${sc.color}06` }}>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{sc.icon}</span>
+                  <div>
+                    <p className="font-bold text-sm text-foreground">{sc.name}</p>
+                    <p className="text-xs text-muted-foreground">{sc.desc}</p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* ── Tab: Interview — scenario picker then interview ───────────────── */}
+        {tab === "interview" && !scenario && (
+          <div className="space-y-4">
+            <p className="text-sm font-semibold text-foreground">Choose an interview type</p>
+            {SCENARIOS.map(sc => (
+              <button key={sc.id} onClick={() => enterScenario(sc, "interview")}
+                className="w-full rounded-2xl border p-4 text-left transition-all hover:scale-[1.01] hover:shadow-lg"
+                style={{ borderColor: `${sc.color}25`, background: `${sc.color}06` }}>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{sc.icon}</span>
+                  <div>
+                    <p className="font-bold text-sm text-foreground">{sc.name}</p>
+                    <p className="text-xs text-muted-foreground">{sc.desc}</p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* ── Practice view ───────────────────────────────────────────────── */}
+        {tab === "practice" && scenario && (
           <div className="space-y-5">
             {/* Question card */}
             <div className="rounded-2xl p-5" style={{ border: `1px solid ${scenario.color}25`, background: `${scenario.color}06` }}>
@@ -523,122 +511,82 @@ export default function CommunicationCoachPage() {
               </div>
             )}
           </div>
-        </div>
-      </div>
-    )
-  }
+        )}
 
-  // ─── INTERVIEW VIEW ─────────────────────────────────────────────────────────
-  if (view === "interview" && scenario) {
-
-    return (
-      <div className="min-h-screen flex flex-col bg-background">
-        {/* Header */}
-        <div className="sticky top-0 z-10 px-4 py-3 border-b border-border flex items-center justify-between bg-background">
-          <button onClick={() => { stopSpeaking(); stopListening(); setView("home") }}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" /> End Session
-          </button>
-          <div className="flex items-center gap-2">
-            <span className="text-xs px-2.5 py-1 rounded-full"
-              style={{ background: `${scenario.color}15`, color: scenario.color }}>
-              {scenario.icon} {scenario.name} — Mock Interview
-            </span>
-            <button onClick={() => setSpeechEnabled(v => !v)}
-              className="h-8 w-8 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground transition-colors">
-              {speechEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 max-w-2xl mx-auto w-full">
-          {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                msg.role === "user"
-                  ? "text-white"
-                  : "text-foreground"
-              }`}
-                style={msg.role === "user"
-                  ? { background: `linear-gradient(135deg,${scenario.color},${scenario.color}bb)` }
-                  : undefined}
-                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                  msg.role === "user" ? "text-white" : "text-foreground bg-card border border-border"
-                }`}>
-                {msg.role === "assistant" && (
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <span className="text-[10px] font-bold" style={{ color: scenario.color }}>🤖 AI Interviewer</span>
-                    {speechEnabled && (
-                      <button onClick={() => speak(msg.content)}
-                        className="opacity-60 hover:opacity-100 transition-opacity">
-                        <Volume2 className="h-3 w-3" style={{ color: scenario.color }} />
-                      </button>
-                    )}
+        {/* ── Interview view ───────────────────────────────────────────────── */}
+        {tab === "interview" && scenario && (
+          <div className="space-y-4">
+            {/* Messages */}
+            <div className="rounded-2xl overflow-hidden border border-border bg-card"
+              style={{ height: 320, overflowY: "auto" }}>
+              <div className="p-4 space-y-3">
+                {messages.map((msg, i) => (
+                  <div key={i} className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+                      style={{
+                        background: msg.role === "assistant" ? `${scenario.color}20` : "rgba(99,102,241,0.2)",
+                        color: msg.role === "assistant" ? scenario.color : "#a5b4fc",
+                      }}>
+                      {msg.role === "assistant" ? "AI" : "You"}
+                    </div>
+                    <div className="max-w-[80%] rounded-xl px-3 py-2 text-sm leading-relaxed"
+                      style={{
+                        background: msg.role === "user" ? `${scenario.color}15` : "rgba(255,255,255,0.04)",
+                        border: `1px solid ${msg.role === "user" ? scenario.color + "30" : "rgba(255,255,255,0.08)"}`,
+                        color: "var(--foreground)",
+                      }}>
+                      {msg.content}
+                    </div>
+                  </div>
+                ))}
+                {loadingReply && (
+                  <div className="flex gap-2">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+                      style={{ background: `${scenario.color}20`, color: scenario.color }}>AI</div>
+                    <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl"
+                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      {[0,1,2].map(i => (
+                        <div key={i} className="h-1.5 w-1.5 rounded-full animate-bounce"
+                          style={{ background: scenario.color, animationDelay: `${i*0.15}s` }} />
+                      ))}
+                    </div>
                   </div>
                 )}
-                {msg.content}
+                <div ref={messagesEndRef} />
               </div>
             </div>
-          ))}
 
-          {loadingReply && (
-            <div className="flex justify-start">
-              <div className="rounded-2xl px-4 py-3 flex items-center gap-2 bg-card border border-border">
-                <div className="flex gap-1">
-                  {[0, 1, 2].map(i => (
-                    <div key={i} className="h-2 w-2 rounded-full animate-bounce"
-                      style={{ background: scenario.color, animationDelay: `${i * 0.15}s` }} />
-                  ))}
-                </div>
-                <span className="text-xs text-muted-foreground">Interviewer is responding...</span>
-              </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input area */}
-        <div className="sticky bottom-0 border-t border-border px-4 py-4 bg-background">
-          <div className="max-w-2xl mx-auto space-y-3">
-            {/* Transcript preview */}
+            {/* Mic + send */}
             {transcript && (
-              <div className="rounded-xl px-3 py-2 text-sm text-muted-foreground bg-muted/50 border border-border">
+              <div className="rounded-xl px-3 py-2 text-sm text-muted-foreground border border-border">
                 {transcript}
               </div>
             )}
-
-            <div className="flex items-center gap-3">
-              {/* Mic */}
-              <button
-                onClick={isListening ? stopListening : startListening}
+            <div className="flex gap-3">
+              <button onClick={isListening ? stopListening : startListening}
                 className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-all active:scale-95"
                 style={{
                   background: isListening ? "#ef4444" : `${scenario.color}20`,
                   border: `2px solid ${isListening ? "#ef4444" : scenario.color}`,
                 }}>
                 {isListening ? <MicOff className="h-5 w-5 text-white" /> : <Mic className="h-5 w-5" style={{ color: scenario.color }} />}
-                {isListening && <span className="absolute inset-0 rounded-full animate-ping bg-red-500/30" />}
+                {isListening && <span className="absolute inset-0 rounded-full animate-ping bg-red-400/20" />}
               </button>
-
-              {/* Send */}
-              <button
-                onClick={() => sendInterviewMessage(transcript)}
+              <button onClick={() => sendInterviewMessage(transcript)}
                 disabled={!transcript.trim() || loadingReply || isListening}
-                className="flex-1 h-12 rounded-xl font-semibold text-white disabled:opacity-40 transition-all flex items-center justify-center gap-2"
+                className="flex-1 h-12 rounded-xl font-semibold text-white disabled:opacity-40 flex items-center justify-center gap-2"
                 style={{ background: `linear-gradient(135deg,${scenario.color},${scenario.color}bb)` }}>
-                <Play className="h-4 w-4" />
-                {isListening ? "Listening..." : "Send Response"}
+                Send Response
               </button>
             </div>
-            <p className="text-center text-[10px] text-muted-foreground">
-              Press mic → speak → press mic again → send your response
-            </p>
+            <button onClick={() => { stopSpeaking(); stopListening(); setScenario(null) }}
+              className="w-full py-2 text-xs text-muted-foreground hover:text-foreground transition-colors">
+              ← Choose different scenario
+            </button>
           </div>
-        </div>
-      </div>
-    )
-  }
+        )}
 
-  return null
+      </div>
+    </div>
+  )
 }
