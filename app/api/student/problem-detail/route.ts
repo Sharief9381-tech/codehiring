@@ -202,6 +202,13 @@ export async function POST(req: Request) {
           .replace(/-/g, " ")
           .replace(/\b\w/g, (c: string) => c.toUpperCase())
         difficulty = body.difficulty ?? "Medium"
+      } else if (body.problemId.startsWith("new-")) {
+        // Daily new problem — slug is the cacheKey
+        title = body.problemId
+          .replace(/^new-/, "")
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (c: string) => c.toUpperCase())
+        difficulty = body.difficulty ?? "Medium"
       } else {
         return NextResponse.json({ error: "Unknown problemId" }, { status: 404 })
       }

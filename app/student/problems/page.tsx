@@ -116,8 +116,9 @@ export default function ProblemsPage() {
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set())
   const [showBookmarked, setShowBookmarked] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
+  const [newProblems, setNewProblems] = useState<Array<{id: string; title: string; difficulty: string; topic: string; slug: string}>>([])
 
-  // Load solved + bookmarks from localStorage on mount
+  // Load solved + bookmarks from localStorage + fetch new daily problems on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem("completedChallenges")
@@ -127,6 +128,15 @@ export default function ProblemsPage() {
       const bm = localStorage.getItem("bookmarkedProblems")
       if (bm) setBookmarks(new Set(JSON.parse(bm)))
     } catch {}
+
+    // Fetch daily new problems
+    fetch("/api/student/new-problems")
+      .then(r => r.json())
+      .then(data => {
+        if (data.problems?.length) setNewProblems(data.problems)
+      })
+      .catch(() => {})
+
     const onFocus = () => {
       try {
         const stored = localStorage.getItem("completedChallenges")
@@ -148,8 +158,18 @@ export default function ProblemsPage() {
   }
 
   const filtered = useMemo(() => {
-    return ALL_PROBLEMS.filter(p => {
-      if (topic && p.track !== topic) return false
+    // Merge new daily problems (at top) with static problems
+    const newOnes = newProblems.map(p => ({
+      ...p,
+      track: "daily-new",
+      color: "#6366f1",
+      isNew: true,
+    }))
+    const merged = [...newOnes, ...ALL_PROBLEMS]
+
+    return merged.filter(p => {
+      // New problems don't have a track from TOPIC_QUESTIONS, handle topic filter
+      if (topic && p.track !== topic && !(topic === "daily-new" && p.isNew)) return false
       if (diff && p.difficulty !== diff) return false
       if (showBookmarked && !bookmarks.has(p.id)) return false
       if (search) {
@@ -158,15 +178,18 @@ export default function ProblemsPage() {
       }
       return true
     })
-  }, [search, topic, diff, showBookmarked, bookmarks])
+  }, [search, topic, diff, showBookmarked, bookmarks, newProblems])
 
-  const stats = useMemo(() => ({
-    total: ALL_PROBLEMS.length,
-    easy:   ALL_PROBLEMS.filter(p => p.difficulty === "Easy").length,
-    medium: ALL_PROBLEMS.filter(p => p.difficulty === "Medium").length,
-    hard:   ALL_PROBLEMS.filter(p => p.difficulty === "Hard").length,
-    solvedCount: ALL_PROBLEMS.filter(p => solved.has(p.id)).length,
-  }), [solved])
+  const stats = useMemo(() => {
+    const total = ALL_PROBLEMS.length + newProblems.length
+    return {
+      total,
+      easy:   ALL_PROBLEMS.filter(p => p.difficulty === "Easy").length   + newProblems.filter(p => p.difficulty === "Easy").length,
+      medium: ALL_PROBLEMS.filter(p => p.difficulty === "Medium").length + newProblems.filter(p => p.difficulty === "Medium").length,
+      hard:   ALL_PROBLEMS.filter(p => p.difficulty === "Hard").length   + newProblems.filter(p => p.difficulty === "Hard").length,
+      solvedCount: ALL_PROBLEMS.filter(p => solved.has(p.id)).length,
+    }
+  }, [solved, newProblems])
 
   const handleProblem = (slug: string) => router.push(`/student/problems/${slug}`)
 
@@ -406,8 +429,14 @@ export default function ProblemsPage() {
                       </div>
 
                       {/* Title */}
-                      <span className="flex-1 text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
+                      <span className="flex-1 text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate flex items-center gap-2">
                         {problem.title}
+                        {(problem as any).isNew && (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0"
+                            style={{ background: "rgba(99,102,241,0.2)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.4)" }}>
+                            NEW
+                          </span>
+                        )}
                       </span>
 
                       {/* Company tags */}
