@@ -137,7 +137,7 @@ buildTopic("deque","Deque","#f59e0b",
 ),
 
 // -- HEAP ----------------------------------------------------------------------
-buildTopic("heap","Heap (Priority Queue)","#f59e0b",
+buildTopic("heap","Heap & Priority Queue","#f59e0b",
   [["Kth Largest Element in a Stream","kth-largest-element-in-a-stream"],["Last Stone Weight","last-stone-weight"],["Relative Ranks","relative-ranks"],["Maximum Product of Two Elements","maximum-product-of-two-elements-in-an-array"],["Minimum Cost to Connect Sticks","minimum-cost-to-connect-sticks"]],
   [["Sort Array by Increasing Frequency","sort-array-by-increasing-frequency"],["Find Subsequence of Length K With the Largest Sum","find-subsequence-of-length-k-with-the-largest-sum"],["Remove Stones to Minimize the Total","remove-stones-to-minimize-the-total"],["Smallest Number in Infinite Set","smallest-number-in-infinite-set"],["Minimum Operations to Halve Array Sum","minimum-operations-to-halve-array-sum"]],
   [["Kth Largest Element in Array","kth-largest-element-in-an-array"],["Top K Frequent Elements","top-k-frequent-elements"],["K Closest Points to Origin","k-closest-points-to-origin"],["Task Scheduler","task-scheduler"],["Reorganize String","reorganize-string"]],
@@ -167,7 +167,7 @@ buildTopic("binary-tree","Binary Tree","#f59e0b",
 ),
 
 // -- BST -----------------------------------------------------------------------
-buildTopic("bst","Binary Search Tree (BST)","#f59e0b",
+buildTopic("bst","Binary Search Tree","#f59e0b",
   [["Search in a Binary Search Tree","search-in-a-binary-search-tree"],["Find Mode in BST","find-mode-in-binary-search-tree"],["Range Sum of BST","range-sum-of-bst"],["Minimum Absolute Difference in BST","minimum-absolute-difference-in-bst"],["Increasing Order Search Tree","increasing-order-search-tree"]],
   [["Two Sum IV - BST","two-sum-iv-input-is-a-bst"],["Minimum Distance Between BST Nodes","minimum-distance-between-bst-nodes"],["Trim a BST","trim-a-binary-search-tree"],["Convert Sorted Array to BST","convert-sorted-array-to-binary-search-tree"],["Univalued Binary Tree","univalued-binary-tree"]],
   [["Validate Binary Search Tree","validate-binary-search-tree"],["Kth Smallest Element in BST","kth-smallest-element-in-a-bst"],["LCA of BST","lowest-common-ancestor-of-a-binary-search-tree"],["Insert into a BST","insert-into-a-binary-search-tree"],["Delete Node in BST","delete-node-in-a-bst"]],
@@ -195,7 +195,7 @@ buildTopic("graph","Graph","#f59e0b",
 ),
 
 // -- GREEDY --------------------------------------------------------------------
-buildTopic("greedy","Greedy Algorithms","#f59e0b",
+buildTopic("greedy","Greedy","#f59e0b",
   [["Lemonade Change","lemonade-change"],["Assign Cookies","assign-cookies"],["Can Place Flowers","can-place-flowers"],["Buy Two Chocolates","buy-two-chocolates"],["Minimum Operations to Make the Array Increasing","minimum-operations-to-make-the-array-increasing"]],
   [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Walking Robot Simulation","walking-robot-simulation"],["Maximum Units on a Truck","maximum-units-on-a-truck"],["Minimum Number of Moves to Seat Everyone","minimum-number-of-moves-to-seat-everyone"],["Divide a String Into Groups of Size k","divide-a-string-into-groups-of-size-k"]],
   [["Jump Game","jump-game"],["Gas Station","gas-station"],["Hand of Straights","hand-of-straights"],["Partition Labels","partition-labels"],["Valid Parenthesis String","valid-parenthesis-string"]],
@@ -204,7 +204,7 @@ buildTopic("greedy","Greedy Algorithms","#f59e0b",
   [["Minimum Cost to Hire K Workers","minimum-cost-to-hire-k-workers"],["Split Array Into Consecutive Subsequences","split-array-into-consecutive-subsequences"],["Maximize Score After N Operations","maximize-score-after-n-operations"],["Maximum Profit in Job Scheduling","maximum-profit-in-job-scheduling"],["Minimum Number of Taps to Open to Water a Garden","minimum-number-of-taps-to-open-to-water-a-garden"]]
 ),
 // -- DYNAMIC PROGRAMMING -------------------------------------------------------
-buildTopic("dp","Dynamic Programming (DP)","#ef4444",
+buildTopic("dp","Dynamic Programming","#ef4444",
   [["Climbing Stairs","climbing-stairs"],["Fibonacci Number","fibonacci-number"],["N-th Tribonacci Number","n-th-tribonacci-number"],["Min Cost Climbing Stairs","min-cost-climbing-stairs"],["Pascal's Triangle","pascals-triangle"]],
   [["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock"],["Maximum Subarray","maximum-subarray"],["Range Sum Query - Immutable","range-sum-query-immutable"],["Counting Bits","counting-bits"],["Is Subsequence","is-subsequence"]],
   [["House Robber","house-robber"],["Longest Common Subsequence","longest-common-subsequence"],["Word Break","word-break"],["Coin Change","coin-change"],["Unique Paths","unique-paths"]],
