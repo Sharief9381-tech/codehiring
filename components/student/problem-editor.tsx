@@ -300,6 +300,11 @@ export default function ProblemEditor({ problemId }: Props) {
         const lang = langRef.current
         const savedCode = localStorage.getItem(`accepted_code_${problemId}_${lang}`)
         if (savedCode) { setCode(savedCode); setDone(true) }
+        // Load fail count for this problem
+        try {
+          const fc = localStorage.getItem(`fail_count_${problemId}`)
+          if (fc) setFailCount(parseInt(fc, 10) || 0)
+        } catch {}
         // else leave editor empty
       }
     }).catch(() => {})
@@ -322,6 +327,7 @@ export default function ProblemEditor({ problemId }: Props) {
   const [timeLimit, setTL]      = useState(5000)
   const [error, setError]       = useState("")
   const [completed, setDone]    = useState(false)
+  const [failCount, setFailCount] = useState(0)   // failed submit attempts for this problem
   const [leftTab, setLeftTab]   = useState<"desc"|"editorial">("desc")
   const [bottomTab, setBot]     = useState<"sample"|"custom"|"results">("sample")
   const [selCase, setSelCase]   = useState(0)
@@ -459,6 +465,14 @@ export default function ProblemEditor({ problemId }: Props) {
             }
           } catch {}
           fetch("/api/student/first-year-progress", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"problem-solved", problemId }) }).catch(()=>{})
+        }
+        // Track failed submits — after 3 failures reveal hidden tests
+        if (mode === "submit" && !data.allPassed) {
+          try {
+            const newCount = failCount + 1
+            setFailCount(newCount)
+            localStorage.setItem(`fail_count_${problemId}`, String(newCount))
+          } catch {}
         }
       } else {
         setError(data.error ?? "Failed"); setBot("results")
@@ -899,6 +913,23 @@ export default function ProblemEditor({ problemId }: Props) {
                         </span>
                       </div>
 
+                      {/* Hidden tests unlocked banner */}
+                      {failCount >= 3 && runResults.some(r => !r.isPublic) && (
+                        <div className="rounded-lg px-3 py-2 flex items-center gap-2 text-xs"
+                          style={{ background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.25)", color: "#f59e0b" }}>
+                          <span>🔓</span>
+                          <span><strong>Hidden test cases revealed</strong> — after {failCount} failed attempts</span>
+                        </div>
+                      )}
+                      {/* Hint: how many attempts left */}
+                      {failCount > 0 && failCount < 3 && runResults.some(r => !r.isPublic) && (
+                        <div className="rounded-lg px-3 py-2 flex items-center gap-2 text-xs"
+                          style={{ background: "rgba(88,166,255,0.06)", border: "1px solid rgba(88,166,255,0.18)", color: "#58a6ff" }}>
+                          <span>💡</span>
+                          <span>Hidden tests revealed after <strong>3 failed submits</strong> — {3 - failCount} attempt{3 - failCount !== 1 ? "s" : ""} left</span>
+                        </div>
+                      )}
+
                       {/* Test tabs */}
                       <div className="flex flex-wrap gap-2">
                         {runResults.map((r: any, i: number) => {
@@ -942,9 +973,9 @@ export default function ProblemEditor({ problemId }: Props) {
                               </div>
                               <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
                                 style={{ background: T.panel, border: `1px solid ${T.border}`, color: T.string, minHeight: "32px" }}>
-                                {r.isPublic || allPassed
+                                {r.isPublic || allPassed || failCount >= 3
                                   ? (r.input?.replace(/^# -- test harness --\n[\s\S]*/,'').trim() || <span style={{color:T.lineNum}}>—</span>)
-                                  : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden test case</span>
+                                  : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden test case — fails {3 - failCount} more time{3 - failCount !== 1 ? "s" : ""} to reveal</span>
                                 }
                               </div>
                             </div>
@@ -957,7 +988,7 @@ export default function ProblemEditor({ problemId }: Props) {
                               </div>
                               <div className="rounded-lg px-3 py-2.5 font-mono text-xs whitespace-pre-wrap"
                                 style={{ background: T.panel, border: `1px solid ${T.border}`, color: "#3fb950", minHeight: "32px" }}>
-                                {r.isPublic || allPassed
+                                {r.isPublic || allPassed || failCount >= 3
                                   ? (r.expectedOutput && r.expectedOutput !== "(hidden)" ? r.expectedOutput : <span style={{color:T.lineNum}}>—</span>)
                                   : <span style={{ color: T.lineNum, fontStyle: "italic" }}>Hidden</span>
                                 }
