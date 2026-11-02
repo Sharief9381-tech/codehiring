@@ -498,7 +498,13 @@ export default function ProblemEditor({ problemId }: Props) {
         style={{ background: T.panel, borderColor: T.border }}>
 
         {/* Back */}
-        <button onClick={() => window.history.back()}
+        <button onClick={() => {
+          if (window.history.length > 1) {
+            window.history.back()
+          } else {
+            router.push("/student/problems")
+          }
+        }}
           className="flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors hover:opacity-80"
           style={{ color: T.muted }}>
           <ArrowLeft className="h-3.5 w-3.5" />
