@@ -89,25 +89,36 @@ export async function POST(req: Request) {
     // Determine question type — coding sections don't need batching
     const isCodingSection = section.includes("coding") || section === "coding"
 
-    // For large question counts, generate in batches of 10 to avoid token limits
-    const BATCH_SIZE = 10
+    // For large question counts, generate in batches of 8 to avoid token limits
+    const BATCH_SIZE = 8
     if (count > BATCH_SIZE && !isCodingSection) {
-      const batches = Math.ceil(count / BATCH_SIZE)
       const allQuestions: any[] = []
+      let remaining = count
 
-      for (let b = 0; b < batches; b++) {
-        const batchCount = Math.min(BATCH_SIZE, count - allQuestions.length)
-        if (batchCount <= 0) break
+      // Generate batches until we have enough or exhaust retries
+      let attempts = 0
+      const maxAttempts = Math.ceil(count / BATCH_SIZE) + 1
+
+      while (remaining > 0 && attempts < maxAttempts) {
+        const batchCount = Math.min(BATCH_SIZE, remaining)
+        attempts++
 
         try {
           const result = await generateQuestions({
             company, companyName, section,
             sectionName, count: batchCount,
             difficulty, topics, liveTopics, pyqContext,
-            skipCache: true, // don't cache partial batches
+            skipCache: true,
           })
-          allQuestions.push(...result.questions)
-        } catch {}
+          if (result.questions.length > 0) {
+            allQuestions.push(...result.questions)
+            remaining -= result.questions.length
+          } else {
+            break // AI returned nothing, stop batching
+          }
+        } catch {
+          break
+        }
       }
 
       if (allQuestions.length > 0) {
@@ -120,12 +131,20 @@ export async function POST(req: Request) {
           return true
         })
 
+        // If we still don't have enough, pad with fallback questions
+        const finalQuestions = deduped.slice(0, count)
+        if (finalQuestions.length < count) {
+          const { getFallbackQuestions } = await import("@/lib/question-gen/fallback")
+          const fallback = getFallbackQuestions({ company, companyName, section, sectionName, type: "aptitude", topics, difficulty, count: count - finalQuestions.length })
+          finalQuestions.push(...fallback.slice(0, count - finalQuestions.length))
+        }
+
         return NextResponse.json({
-          questions: deduped.slice(0, count),
+          questions: finalQuestions,
           company:   companyName,
           section:   sectionName,
-          source:    "ai+rag",
-          count:     Math.min(deduped.length, count),
+          source:    deduped.length >= count ? "ai+rag" : "ai+fallback",
+          count:     finalQuestions.length,
           pattern:   sectionPattern ? { topics, difficulty, count } : undefined,
         })
       }
