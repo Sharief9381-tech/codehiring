@@ -29,17 +29,29 @@ export async function POST(req: Request) {
       company,
       companyName,
       targetRole,
-      scores,          // { overall, sections: {quantitative,logical,verbal,coding} }
-      candidateRatings, // { aptitude, coding, dsa, csFoundations, communication }
-      testHistory,     // array of { company, score, date }
-      violations,      // { tabSwitches, fullscreenExits, copyAttempts, pasteAttempts }
-      timeStats,       // { totalTime, avgTimePerQ, sectionTimes }
-      topicScores,     // { topic: score }
+      scores,
+      candidateRatings,
+      testHistory,
+      violations,
+      timeStats,
+      topicScores,
+      activeSections = [], // which sections were actually in the assessment
     } = body
 
     const meta = COMPANY_BENCHMARKS[company] || COMPANY_BENCHMARKS.tcs
     const overallScore = scores?.overall ?? 0
     const sectionScores = scores?.sections ?? {}
+
+    // Derive actual rounds from activeSections
+    const hasCoding   = activeSections.some((s: string) => s.includes("coding"))
+    const hasAptitude = activeSections.some((s: string) => s === "quantitative" || s === "advanced-aptitude" || s === "logical")
+    const hasVerbal   = activeSections.some((s: string) => s === "verbal" || s === "communication")
+
+    const actualRounds: string[] = []
+    if (hasAptitude) actualRounds.push("Online Aptitude Test")
+    if (hasCoding)   actualRounds.push("Coding Round")
+    if (hasVerbal)   actualRounds.push("Communication Round")
+
     const readiness = Math.min(100, Math.round(
       (overallScore * 0.5) +
       ((candidateRatings?.coding ?? 50) * 0.2) +
@@ -48,117 +60,114 @@ export async function POST(req: Request) {
     ))
 
     if (!process.env.GROQ_API_KEY) {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal }) })
     }
 
-    const prompt = `You are the Hiring Simulation Intelligence Engine for CodeHiring - acting as both Senior HR Manager and Technical Evaluator.
+    // Build section analysis only for sections that were tested
+    const testedSections = Object.entries(sectionScores)
+      .filter(([, v]) => typeof v === "number")
+      .map(([k, v]) => `- ${k}: ${v}%`)
+      .join("\n")
 
-Generate a comprehensive Company Hiring Simulation & Recruitment Report for the following candidate:
+    const prompt = `You are the Hiring Simulation Intelligence Engine for CodeHiring.
+
+Generate a Company Hiring Assessment Report.
 
 COMPANY: ${companyName || company.toUpperCase()}
 TARGET ROLE: ${targetRole || "Software Engineer"}
-TEST SCORE: ${overallScore}/100
-COMPANY BENCHMARK: ${meta.benchmark}%
-DIFFICULTY LEVEL: ${meta.difficulty}
-SELECTION CUTOFF: ${meta.cutoff}
+OVERALL SCORE: ${overallScore}/100
+BENCHMARK: ${meta.benchmark}%
 
-SECTION SCORES:
-${Object.entries(sectionScores).map(([k, v]) => `- ${k}: ${v}%`).join("\n") || "- Overall: " + overallScore + "%"}
+SECTIONS TESTED (ONLY these were in the assessment):
+${testedSections || "- Overall: " + overallScore + "%"}
 
-CANDIDATE SELF-RATINGS (0-100):
+CANDIDATE PERFORMANCE:
 - Aptitude: ${candidateRatings?.aptitude ?? "N/A"}
 - Coding: ${candidateRatings?.coding ?? "N/A"}
-- DSA: ${candidateRatings?.dsa ?? "N/A"}
+${hasVerbal ? `- Communication: ${candidateRatings?.communication ?? "N/A"}` : ""}
 - CS Fundamentals: ${candidateRatings?.csFoundations ?? "N/A"}
-- Communication: ${candidateRatings?.communication ?? "N/A"}
 
-COMPANY FOCUS AREAS: ${meta.focusAreas.join(", ")}
-INTERVIEW ROUNDS: ${meta.rounds.join(" -> ")}
+ACTUAL ROUNDS IN THIS ASSESSMENT: ${actualRounds.join(" → ")}
 
-VIOLATION LOG:
-- Tab Switches: ${violations?.tabSwitches ?? 0}
-- Fullscreen Exits: ${violations?.fullscreenExits ?? 0}
-- Copy Attempts: ${violations?.copyAttempts ?? 0}
-- Paste Attempts: ${violations?.pasteAttempts ?? 0}
+INTEGRITY: Tab switches: ${violations?.tabSwitches ?? 0}, Fullscreen exits: ${violations?.fullscreenExits ?? 0}
+TIME: ${timeStats?.totalTime ?? "N/A"} min total, avg ${timeStats?.avgTimePerQ ?? "N/A"}s/question
 
-TIME STATISTICS:
-- Total time taken: ${timeStats?.totalTime ?? "N/A"} minutes
-- Average time per question: ${timeStats?.avgTimePerQ ?? "N/A"} seconds
+IMPORTANT RULES:
+1. selectionProbability should be REALISTIC percentages (0-100, NOT 0-1). If score is 7%, probability is 2-5% not 0.05%.
+2. roundPredictions MUST only include rounds that were actually tested: ${actualRounds.join(", ")}
+3. sectionAnalysis MUST only include sections that were tested: ${Object.keys(sectionScores).join(", ")}
+4. If communication was NOT tested, do NOT include communication in strengths/weaknesses
+5. Selection probabilities should be on a 0-100 scale where:
+   - Score 0-20%: Round1 probability 5-15%
+   - Score 21-40%: Round1 probability 15-30%
+   - Score 41-60%: Round1 probability 30-50%
+   - Score 61-75%: Round1 probability 50-70%
+   - Score 76-100%: Round1 probability 70-90%
 
-TOPIC SCORES:
-${Object.entries(topicScores ?? {}).map(([k, v]) => `- ${k}: ${v}%`).join("\n") || "- Not available"}
-
-PREVIOUS TEST HISTORY:
-${(testHistory ?? []).map((h: any) => `- ${h.company}: ${h.score}% (${h.date})`).join("\n") || "- No previous history"}
-
----
-
-Generate a FULL RECRUITMENT REPORT in this EXACT JSON format (no markdown, no explanation, just JSON):
-
+Return ONLY valid JSON:
 {
   "companyName": "${companyName || company.toUpperCase()}",
   "targetRole": "${targetRole || "Software Engineer"}",
   "overallScore": ${overallScore},
   "companyBenchmark": ${meta.benchmark},
-  "readinessScore": <number 0-100>,
+  "readinessScore": <0-100>,
   "readinessLabel": "<Not Ready|Needs Improvement|Moderately Ready|Ready|Highly Ready>",
   "benchmarkStatus": "<Above Benchmark|At Benchmark|Below Benchmark>",
   "selectionProbability": {
-    "round1": <number>,
-    "round2": <number>,
-    "technicalRound": <number>,
-    "hrRound": <number>,
-    "overall": <number>
+    ${hasCoding || hasAptitude ? '"round1": <realistic 0-100 percentage>,' : ''}
+    ${hasCoding ? '"technicalRound": <realistic 0-100 percentage>,' : ''}
+    ${hasVerbal ? '"hrRound": <realistic 0-100 percentage>,' : ''}
+    "overall": <realistic 0-100 percentage>
   },
   "roundPredictions": {
-    "round1": "<Pass|Fail>",
-    "technicalRound": "<Pass|Fail>",
-    "hrRound": "<Pass|Fail>"
+    ${hasCoding || hasAptitude ? '"round1": "<Pass|Fail>",' : ''}
+    ${hasCoding ? '"technicalRound": "<Pass|Fail>",' : ''}
+    ${hasVerbal ? '"hrRound": "<Pass|Fail>"' : '"overall": "<Pass|Fail>"'}
   },
   "sectionAnalysis": [
-    { "section": "section name", "score": <number>, "benchmark": <number>, "status": "<Strong|Average|Weak>", "feedback": "specific feedback" }
+    ${Object.keys(sectionScores).map(k => `{ "section": "${k}", "score": ${sectionScores[k]}, "benchmark": ${meta.benchmark}, "status": "<Strong|Average|Weak>", "feedback": "specific feedback" }`).join(",\n    ")}
   ],
   "hrReport": {
-    "candidateSummary": "2-3 sentence professional summary",
-    "strengths": ["strength 1", "strength 2", "strength 3"],
-    "weaknesses": ["weakness 1", "weakness 2", "weakness 3"],
-    "riskAreas": ["risk 1", "risk 2"],
-    "behaviorIndicators": "assessment of candidate behavior and consistency",
+    "candidateSummary": "2-3 sentence professional summary based only on tested sections",
+    "strengths": ["strength based on actual scores"],
+    "weaknesses": ["weakness based on actual scores"],
+    "riskAreas": ["risk 1"],
+    "behaviorIndicators": "assessment",
     "learningAbility": "assessment",
     "problemSolvingAbility": "assessment",
-    "communicationAssessment": "assessment",
+    ${hasVerbal ? '"communicationAssessment": "assessment",' : ''}
     "technicalAssessment": "assessment",
-    "overallImpression": "detailed hiring impression",
+    "overallImpression": "honest hiring impression",
     "verdict": "<Strongly Recommended|Recommended|Borderline|Needs Improvement|Not Recommended>",
-    "verdictReason": "specific reason for verdict"
+    "verdictReason": "specific reason"
   },
   "crackTheCompany": {
-    "whyMayFail": ["reason 1", "reason 2", "reason 3"],
-    "whyMaySucceed": ["reason 1", "reason 2"],
+    "whyMayFail": ["reason 1", "reason 2"],
+    "whyMaySucceed": ["reason 1"],
     "top5Improvements": [
-      { "area": "improvement area", "action": "specific action to take", "impact": "expected impact" }
+      { "area": "area", "action": "specific action", "impact": "expected impact" }
     ],
-    "topicsToRevise": ["topic 1", "topic 2", "topic 3", "topic 4", "topic 5"],
+    "topicsToRevise": ["topic 1", "topic 2", "topic 3"],
     "expectedImprovement": "Current: ${overallScore}% -> After improvement: XX%"
   },
   "preparationPlan": {
-    "oneDay": ["task 1", "task 2", "task 3"],
-    "threeDays": ["day 1 focus", "day 2 focus", "day 3 focus"],
-    "sevenDays": ["week plan item 1", "week plan item 2", "week plan item 3", "week plan item 4"],
-    "fourteenDays": ["fortnight plan item 1", "fortnight plan item 2", "fortnight plan item 3"],
-    "thirtyDays": ["month plan item 1", "month plan item 2", "month plan item 3", "month plan item 4"]
+    "oneDay": ["task 1", "task 2"],
+    "threeDays": ["focus 1", "focus 2", "focus 3"],
+    "sevenDays": ["plan 1", "plan 2", "plan 3", "plan 4"],
+    "fourteenDays": ["plan 1", "plan 2", "plan 3"],
+    "thirtyDays": ["plan 1", "plan 2", "plan 3"]
   },
   "integrityAnalysis": {
-    "integrityScore": <number 0-100>,
-    "riskLevel": "<Low Risk|Medium Risk|High Risk|Critical Risk>",
+    "integrityScore": <0-100>,
+    "riskLevel": "<Low Risk|Medium Risk|High Risk>",
     "violations": [],
-    "reasoning": "reasoning about integrity"
+    "reasoning": "reasoning"
   },
   "companyInsights": {
-    "hiringProcess": "description of ${companyName || company} hiring process",
-    "whatTheyLookFor": "what ${companyName || company} specifically looks for",
-    "commonMistakes": ["mistake 1", "mistake 2", "mistake 3"],
-    "insiderTips": ["tip 1", "tip 2", "tip 3"]
+    "hiringProcess": "description",
+    "whatTheyLookFor": "what they look for",
+    "commonMistakes": ["mistake 1", "mistake 2"],
+    "insiderTips": ["tip 1", "tip 2"]
   }
 }`
 
@@ -172,12 +181,12 @@ Generate a FULL RECRUITMENT REPORT in this EXACT JSON format (no markdown, no ex
         model: "openai/gpt-oss-20b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.6,
-        max_tokens: 3000,
+        max_tokens: 4000,
       }),
     })
 
     if (!res.ok) {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal }) })
     }
 
     const data = await res.json()
@@ -188,7 +197,7 @@ Generate a FULL RECRUITMENT REPORT in this EXACT JSON format (no markdown, no ex
       const report = JSON.parse(json)
       return NextResponse.json({ report })
     } catch {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal }) })
     }
   } catch (err) {
     console.error("Hiring report error:", err)
@@ -196,9 +205,31 @@ Generate a FULL RECRUITMENT REPORT in this EXACT JSON format (no markdown, no ex
   }
 }
 
-function buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole }: any) {
+function buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections = [], hasCoding = false, hasVerbal = false }: any) {
   const above = overallScore >= meta.benchmark
-  const prob = Math.min(95, Math.max(20, overallScore + (above ? 5 : -10)))
+  // Realistic probabilities — 0-100 scale, not fractions
+  const baseProb = overallScore < 20 ? 5 :
+                   overallScore < 40 ? 20 :
+                   overallScore < 60 ? 35 :
+                   overallScore < 75 ? 55 :
+                   overallScore < 85 ? 70 : 85
+  const prob = Math.min(95, Math.max(5, baseProb))
+  const roundPreds: any = {}
+  const selProb: any = { overall: prob }
+
+  if (hasCoding || activeSections.length > 0) {
+    selProb.round1 = Math.min(95, prob + 8)
+    roundPreds.round1 = prob >= 40 ? "Pass" : "Fail"
+  }
+  if (hasCoding) {
+    selProb.technicalRound = Math.max(5, prob - 5)
+    roundPreds.technicalRound = prob >= 50 ? "Pass" : "Fail"
+  }
+  if (hasVerbal) {
+    selProb.hrRound = Math.min(90, prob + 10)
+    roundPreds.hrRound = prob >= 35 ? "Pass" : "Fail"
+  }
+
   return {
     companyName: companyName || company.toUpperCase(),
     targetRole: targetRole || "Software Engineer",
@@ -207,8 +238,8 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
     readinessScore: readiness,
     readinessLabel: readiness >= 91 ? "Highly Ready" : readiness >= 76 ? "Ready" : readiness >= 61 ? "Moderately Ready" : readiness >= 41 ? "Needs Improvement" : "Not Ready",
     benchmarkStatus: above ? "Above Benchmark" : overallScore === meta.benchmark ? "At Benchmark" : "Below Benchmark",
-    selectionProbability: { round1: Math.min(95, prob + 10), round2: prob, technicalRound: Math.max(20, prob - 5), hrRound: Math.min(90, prob + 8), overall: prob },
-    roundPredictions: { round1: prob >= 60 ? "Pass" : "Fail", technicalRound: prob >= 65 ? "Pass" : "Fail", hrRound: "Pass" },
+    selectionProbability: selProb,
+    roundPredictions: roundPreds,
     sectionAnalysis: meta.focusAreas.map((s: string) => ({ section: s, score: overallScore, benchmark: meta.benchmark, status: above ? "Strong" : "Average", feedback: `Focus on ${s} practice sets.` })),
     hrReport: {
       candidateSummary: `Candidate demonstrated ${above ? "above average" : "below average"} performance in ${companyName || company} simulation.`,
@@ -218,10 +249,10 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
       behaviorIndicators: "Candidate showed consistent engagement throughout the test.",
       learningAbility: "Moderate - responds well to structured practice.",
       problemSolvingAbility: above ? "Good - above company benchmark." : "Developing - below company benchmark.",
-      communicationAssessment: "Not evaluated in this simulation.",
+      communicationAssessment: hasVerbal ? "Evaluated through verbal section." : "Not evaluated in this simulation.",
       technicalAssessment: `Score of ${overallScore}% against ${meta.benchmark}% benchmark.`,
       overallImpression: above ? "Candidate shows promise and is worth moving forward." : "Candidate needs targeted improvement before the actual exam.",
-      verdict: above ? "Recommended" : "Needs Improvement",
+      verdict: above ? "Recommended" : overallScore >= meta.benchmark * 0.7 ? "Borderline" : "Needs Improvement",
       verdictReason: above ? "Score exceeds company benchmark." : "Score is below company selection cutoff.",
     },
     crackTheCompany: {
