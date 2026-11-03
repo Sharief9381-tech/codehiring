@@ -240,7 +240,7 @@ export function LandingPage() {
     <div className="bg-background">
 
       {/* ══ HERO ════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-12 overflow-hidden bg-background">
+      <section className="relative min-h-[75vh] flex flex-col items-center justify-center px-6 pt-20 pb-6 overflow-hidden bg-background">
         <GridBg />
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(var(--sci),0.06), transparent)" }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_80%_60%,rgba(139,92,246,0.08),transparent)] pointer-events-none" />
