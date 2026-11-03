@@ -1,11 +1,16 @@
 /**
  * LLM Caller for Question Generation
- * Priority: Gemini (3 keys with rotation) → OpenAI → Groq
+ * Priority: Gemini (3 keys, high token budget for thinking models) → Groq → OpenAI
  */
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 const GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
 const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+
+// Gemini 3.5-flash is a "thinking" model — it uses thinking tokens BEFORE generating output.
+// Thinking tokens: ~500-800 per call. So for 8 questions × 400 tokens = 3200 output tokens needed.
+// Total required: 800 (think) + 3200 (output) = 4000 minimum. Set to 8000 for safety.
+const GEMINI_MIN_TOKENS = 8000
 
 export interface LLMResponse {
   content: string
@@ -14,7 +19,7 @@ export interface LLMResponse {
 
 const stripThink = (s: string) => s.replace(/<think>[\s\S]*?<\/think>/gi, "").trim()
 
-async function callGemini(messages: { role: string; content: string }[], maxTokens: number, key: string): Promise<string> {
+async function callGemini(messages: { role: string; content: string }[], key: string): Promise<string> {
   let systemInstruction: string | undefined
   const contents: { role: string; parts: { text: string }[] }[] = []
   for (const m of messages) {
@@ -24,8 +29,10 @@ async function callGemini(messages: { role: string; content: string }[], maxToke
 
   const body: any = {
     contents,
-    // Cap at 8192 — Gemini free tier limit
-    generationConfig: { maxOutputTokens: Math.min(maxTokens, 8192), temperature: 0.7 },
+    generationConfig: {
+      maxOutputTokens: GEMINI_MIN_TOKENS,  // high budget for thinking + output
+      temperature: 0.7,
+    },
   }
   if (systemInstruction) body.systemInstruction = { parts: [{ text: systemInstruction }] }
 
@@ -33,19 +40,26 @@ async function callGemini(messages: { role: string; content: string }[], maxToke
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(35000),
+    signal: AbortSignal.timeout(45000),  // longer timeout for thinking models
   })
-  if (!res.ok) throw new Error(`Gemini ${res.status}`)
-  const d = await res.json()
 
-  // Check for finish reason — if STOP or MAX_TOKENS, use what we got
+  if (!res.ok) {
+    const status = res.status
+    if (status === 503 || status === 429) throw new Error(`Gemini ${status} overload`)
+    throw new Error(`Gemini ${status}`)
+  }
+
+  const d = await res.json()
   const candidate = d.candidates?.[0]
   const finishReason = candidate?.finishReason
   const text = candidate?.content?.parts?.[0]?.text?.trim() ?? ""
 
-  if (!text) throw new Error("Gemini empty response")
+  if (!text) {
+    const thoughtTokens = d.usageMetadata?.thoughtsTokenCount ?? 0
+    throw new Error(`Gemini empty (finish: ${finishReason}, think: ${thoughtTokens})`)
+  }
 
-  // If truncated due to token limit, try to fix the JSON by appending closing brackets
+  // If still truncated despite high token budget, repair JSON
   if (finishReason === "MAX_TOKENS" && text.includes("[")) {
     return repairTruncatedJSON(text)
   }
@@ -53,52 +67,33 @@ async function callGemini(messages: { role: string; content: string }[], maxToke
   return text
 }
 
-// Attempt to repair truncated JSON arrays from token cutoffs
 function repairTruncatedJSON(text: string): string {
   const startIdx = text.indexOf("[")
   if (startIdx === -1) return text
-
-  let content = text.slice(startIdx)
-
-  // Count complete objects — find all complete {...} within the array
-  const completeObjects: string[] = []
-  let depth = 0
-  let objStart = -1
-  let inStr = false
-  let escape = false
+  const content = text.slice(startIdx)
+  const complete: string[] = []
+  let depth = 0, start = -1, inStr = false, esc = false
 
   for (let i = 0; i < content.length; i++) {
     const c = content[i]
-    if (escape) { escape = false; continue }
-    if (c === "\\") { escape = true; continue }
+    if (esc) { esc = false; continue }
+    if (c === "\\") { esc = true; continue }
     if (c === '"') { inStr = !inStr; continue }
     if (inStr) continue
-
-    if (c === "{") {
-      if (depth === 0) objStart = i
-      depth++
-    } else if (c === "}") {
+    if (c === "{") { if (depth === 0) start = i; depth++ }
+    else if (c === "}") {
       depth--
-      if (depth === 0 && objStart !== -1) {
-        completeObjects.push(content.slice(objStart, i + 1))
-        objStart = -1
-      }
+      if (depth === 0 && start !== -1) { complete.push(content.slice(start, i + 1)); start = -1 }
     }
   }
-
-  if (completeObjects.length === 0) return text
-  return "[" + completeObjects.join(",") + "]"
+  return complete.length > 0 ? "[" + complete.join(",") + "]" : text
 }
 
 export async function callLLM(
   system: string,
   user:   string,
-  maxTokens = 4000
+  _maxTokens = 4000  // ignored — we use GEMINI_MIN_TOKENS for Gemini
 ): Promise<LLMResponse> {
-  // Each MCQ needs ~300-400 tokens; each coding problem ~400-500 tokens
-  // Ensure we request enough tokens for the full output
-  const effectiveTokens = Math.max(maxTokens, 6000)
-
   const messages = [
     { role: "system" as const, content: system },
     { role: "user"   as const, content: user   },
@@ -113,46 +108,51 @@ export async function callLLM(
 
   for (const key of geminiKeys) {
     try {
-      const text = await callGemini(messages, effectiveTokens, key)
+      const text = await callGemini(messages, key)
       if (text.length > 20) return { content: text, model: "gemini-3.5-flash" }
     } catch (e: any) {
-      if (e.message?.includes("429") || e.message?.includes("403")) continue
+      console.warn(`Gemini key failed: ${e.message?.slice(0, 60)}`)
       continue
     }
   }
 
-  // 2. OpenAI
+  // 2. Groq — fast, free fallback
+  const groqKey = process.env.GROQ_API_KEY
+  if (groqKey) {
+    try {
+      const res = await fetch(GROQ_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
+        body: JSON.stringify({
+          model: "openai/gpt-oss-20b",
+          messages,
+          temperature: 0.7,
+          max_tokens: 8000,
+        }),
+        signal: AbortSignal.timeout(35000),
+      })
+      if (res.ok) {
+        const d = await res.json()
+        const text = stripThink(d.choices?.[0]?.message?.content?.trim() ?? "")
+        if (text.length > 20) return { content: text, model: "openai/gpt-oss-20b" }
+      }
+    } catch {}
+  }
+
+  // 3. OpenAI
   const openaiKey = process.env.OPENAI_API_KEY
   if (openaiKey) {
     try {
       const res = await fetch(OPENAI_URL, {
         method:  "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${openaiKey}` },
-        body:    JSON.stringify({ model: "gpt-4o-mini", messages, temperature: 0.7, max_tokens: effectiveTokens }),
+        body:    JSON.stringify({ model: "gpt-4o-mini", messages, temperature: 0.7, max_tokens: 8000 }),
         signal:  AbortSignal.timeout(30000),
       })
       if (res.ok) {
         const d    = await res.json()
         const text = d.choices?.[0]?.message?.content?.trim() ?? ""
         if (text.length > 20) return { content: text, model: "gpt-4o-mini" }
-      }
-    } catch {}
-  }
-
-  // 3. Groq
-  const groqKey = process.env.GROQ_API_KEY
-  if (groqKey) {
-    try {
-      const res = await fetch(GROQ_URL, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
-        body:    JSON.stringify({ model: "openai/gpt-oss-20b", messages, temperature: 0.7, max_tokens: Math.min(effectiveTokens, 4000) }),
-        signal:  AbortSignal.timeout(35000),
-      })
-      if (res.ok) {
-        const d    = await res.json()
-        const text = stripThink(d.choices?.[0]?.message?.content?.trim() ?? "")
-        if (text.length > 20) return { content: text, model: "openai/gpt-oss-20b" }
       }
     } catch {}
   }
