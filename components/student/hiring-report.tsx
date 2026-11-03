@@ -160,14 +160,15 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
       {/* ── SELECTION PROBABILITY ── */}
       <Card title="Selection Probability" emoji="🎯">
         <div className="pt-4 grid grid-cols-3 gap-3">
+          {/* Dynamically show only rounds that have data */}
           {[
-            { label: "Round 1",   val: report.selectionProbability?.round1 ?? 0 },
-            { label: "Technical", val: report.selectionProbability?.technicalRound ?? 0 },
-            { label: "HR Round",  val: report.selectionProbability?.hrRound ?? 0 },
-          ].map(r => {
-            const c = scoreColor(r.val)
+            { label: "Round 1",   key: "round1",        val: report.selectionProbability?.round1 },
+            { label: "Technical", key: "technicalRound", val: report.selectionProbability?.technicalRound },
+            { label: "HR Round",  key: "hrRound",        val: report.selectionProbability?.hrRound },
+          ].filter(r => r.val !== undefined && r.val !== null).map(r => {
+            const c = scoreColor(r.val!)
             return (
-              <div key={r.label} className="rounded-xl p-4 text-center" style={{ background: `${c}08`, border: `1px solid ${c}20` }}>
+              <div key={r.key} className="rounded-xl p-4 text-center" style={{ background: `${c}08`, border: `1px solid ${c}20` }}>
                 <p className="text-2xl font-black tabular-nums" style={{ color: c }}>{r.val}%</p>
                 <p className="text-xs text-white/50 mt-0.5">{r.label}</p>
               </div>

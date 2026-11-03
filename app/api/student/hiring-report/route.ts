@@ -3,23 +3,57 @@
  * Generates a full Company Hiring Simulation & Recruitment Report via Groq AI.
  */
 import { NextResponse } from "next/server"
+import { ALL_COMPANIES } from "@/lib/companies-data"
+import { COMPANY_ASSESSMENT_PATTERNS } from "@/lib/company-assessment-patterns"
 
 const GROQ_API = "https://api.groq.com/openai/v1/chat/completions"
 
-const COMPANY_BENCHMARKS: Record<string, {
-  benchmark: number; rounds: string[]; focusAreas: string[];
-  difficulty: string; cutoff: string
-}> = {
-  tcs:       { benchmark: 75, rounds: ["NQT Online","Technical Interview","HR Round"],            focusAreas: ["Quantitative Aptitude","Logical Reasoning","Verbal Ability"],            difficulty: "Easy-Medium",  cutoff: "75%" },
-  infosys:   { benchmark: 65, rounds: ["InfyTQ Test","Technical Interview","HR Round"],           focusAreas: ["Aptitude","Reasoning","Pseudocode","Technical MCQs"],                  difficulty: "Medium",        cutoff: "65%" },
-  wipro:     { benchmark: 60, rounds: ["NLTH Online","Technical Interview","HR Round"],           focusAreas: ["Aptitude","Verbal","Basic Coding"],                                    difficulty: "Easy-Medium",  cutoff: "60%" },
-  cognizant: { benchmark: 60, rounds: ["GenC Test","Technical Interview","HR Round"],             focusAreas: ["Aptitude","Reasoning","Verbal","Basic Coding"],                        difficulty: "Easy",          cutoff: "60%" },
-  capgemini: { benchmark: 65, rounds: ["Online Test","Technical Interview","HR Round"],           focusAreas: ["Aptitude","Pseudocode","Technical"],                                   difficulty: "Medium",        cutoff: "65%" },
-  accenture: { benchmark: 70, rounds: ["Cognitive Test","Coding Round","Technical","HR"],         focusAreas: ["Quantitative","Analytical","Verbal","Coding"],                         difficulty: "Medium",        cutoff: "70%" },
-  deloitte:  { benchmark: 70, rounds: ["Aptitude Test","Group Discussion","Technical","HR"],      focusAreas: ["Analytical Thinking","Aptitude","Communication"],                      difficulty: "Medium",        cutoff: "70%" },
-  amazon:    { benchmark: 85, rounds: ["Online Assessment","Technical Round 1","Technical Round 2","Bar Raiser","HR"], focusAreas: ["DSA","Coding","Problem Solving","System Design"], difficulty: "Hard",          cutoff: "85%" },
-  microsoft: { benchmark: 82, rounds: ["Coding Screen","Technical Round 1","Technical Round 2","Technical Round 3","HR"], focusAreas: ["DSA","Coding","System Thinking"],             difficulty: "Hard",          cutoff: "82%" },
-  google:    { benchmark: 90, rounds: ["Phone Screen","Technical 1","Technical 2","Technical 3","Googliness","Team Match"], focusAreas: ["Advanced DSA","Algorithms","Optimization"], difficulty: "Very Hard",     cutoff: "90%" },
+// Derive benchmark from COMPANY_ASSESSMENT_PATTERNS (single source of truth)
+// Fallback tier based on category
+const CATEGORY_BENCHMARKS: Record<string, number> = {
+  "IT Services":      70,
+  "Product":          82,
+  "Consulting":       72,
+  "BFSI":             70,
+  "Core Engineering": 68,
+  "Telecom":          65,
+  "Analytics":        72,
+  "Pharma":           65,
+  "FMCG":             65,
+  "EV/Auto":          65,
+  "Defence":          68,
+}
+
+function getCompanyMeta(companyId: string) {
+  const entry = ALL_COMPANIES.find(c => c.id === companyId)
+  const pattern = COMPANY_ASSESSMENT_PATTERNS[companyId]
+
+  // Benchmark from pattern difficulty or category
+  const diffToBenchmark: Record<string, number> = {
+    "Very Hard": 90, "Hard": 82, "Medium-Hard": 75, "Medium": 68, "Easy-Medium": 62, "Easy": 55
+  }
+  const benchmark = diffToBenchmark[entry?.difficulty ?? "Medium"] 
+    ?? CATEGORY_BENCHMARKS[entry?.category ?? "IT Services"] 
+    ?? 70
+
+  // Focus areas from pattern sections
+  const focusAreas = pattern
+    ? Object.values(pattern.sections).map(s => s.name)
+    : entry?.sections?.map(s => s.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())) ?? []
+
+  // Rounds from pattern
+  const rounds = pattern
+    ? Object.values(pattern.sections).map(s => s.name)
+    : ["Online Assessment", "Technical Interview", "HR Round"]
+
+  return {
+    benchmark,
+    rounds,
+    focusAreas,
+    difficulty: entry?.difficulty ?? "Medium",
+    cutoff: `${benchmark}%`,
+    category: entry?.category ?? "IT Services",
+  }
 }
 
 export async function POST(req: Request) {
@@ -38,7 +72,7 @@ export async function POST(req: Request) {
       activeSections = [], // which sections were actually in the assessment
     } = body
 
-    const meta = COMPANY_BENCHMARKS[company] || COMPANY_BENCHMARKS.tcs
+    const meta = getCompanyMeta(company)
     const overallScore = scores?.overall ?? 0
     const sectionScores = scores?.sections ?? {}
 
