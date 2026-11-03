@@ -693,15 +693,22 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     setLoading(true)
     const pattern = patternOverride ?? livePattern
     try {
-      // Get question count and topics from live pattern if available
+      // Get question count, topics AND difficulty from live pattern
       const liveSection = pattern?.sections?.find(s => s.id === sectionKey)
-      const liveCount = liveSection?.questions
-      const liveTopics = liveSection?.topics?.length ? liveSection.topics : undefined
+      const liveCount      = liveSection?.questions
+      const liveTopics     = liveSection?.topics?.length ? liveSection.topics : undefined
+      const liveDifficulty = liveSection?.difficulty
       const count = liveCount ?? COMPANY_SECTION_QTY[company.id]?.[sectionKey] ?? SECTION_QTY[sectionKey] ?? 5
       const res = await fetch("/api/student/generate-assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ company: company.id, section: sectionKey, count, ...(liveTopics ? { topics: liveTopics } : {}) }),
+        body: JSON.stringify({
+          company:    company.id,
+          section:    sectionKey,
+          count,
+          ...(liveTopics     ? { topics:     liveTopics     } : {}),
+          ...(liveDifficulty ? { difficulty: liveDifficulty } : {}),
+        }),
       })
       const data = await res.json()
       if (isCodingSection(sectionKey)) {
