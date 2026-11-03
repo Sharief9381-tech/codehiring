@@ -830,7 +830,24 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     const snap = patternSnapshot.current
     const snapSections = snap?.sections?.map(s => s.id) ?? activeSections
     const next = curSection + 1
-    const newScores = { ...sectionScores, coding: 75 }
+
+    // Calculate actual coding score based on problems attempted/submitted
+    // Check localStorage for accepted code — if code saved = problem was submitted
+    let solvedCount = 0
+    const total = codingQs.length || 1
+    codingQs.forEach(q => {
+      const syntheticId = `prep-${(q.title ?? "problem").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 30)}`
+      // Check if any language has accepted code saved (means they submitted)
+      const langs = ["Python", "JavaScript", "TypeScript", "Java", "C++", "C"]
+      const attempted = langs.some(lang => {
+        try { return !!localStorage.getItem(`accepted_code_${syntheticId}_${lang}`) } catch { return false }
+      })
+      if (attempted) solvedCount++
+    })
+
+    // Score = (solved / total) * 100, minimum 0 if nothing attempted
+    const codingScore = total > 0 ? Math.round((solvedCount / total) * 100) : 0
+    const newScores = { ...sectionScores, coding: codingScore }
     setSectionScores(newScores)
     if (next < snapSections.length) {
       setCurSection(next)
@@ -1296,8 +1313,8 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           />
         ) : (
           <div className="space-y-5">
-            <ScoreBadge score={75} />
-            <p className="text-center text-sm text-muted-foreground">Coding assessment submitted. Great work!</p>
+            <ScoreBadge score={totalScore || 0} />
+            <p className="text-center text-sm text-muted-foreground">Assessment complete. Score based on your submissions.</p>
             <button onClick={onBack}
               className="w-full h-12 rounded-xl font-semibold text-white"
               style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)" }}>
