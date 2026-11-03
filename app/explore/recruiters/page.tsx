@@ -43,9 +43,7 @@ export default function ExploreRecruitersPage() {
       {/* Nav */}
       <div className="border-b border-border/60 bg-background/80 backdrop-blur-md sticky top-0 z-10">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center gap-3">
-          <Link href="/#stats">
-            <Button variant="ghost" size="icon-sm"><ArrowLeft className="h-4 w-4" /></Button>
-          </Link>
+          <Button variant="ghost" size="icon-sm" onClick={() => window.history.length > 1 ? window.history.back() : window.location.href = '/'}><ArrowLeft className="h-4 w-4" /></Button>
           <div>
             <h1 className="text-lg font-bold text-foreground tracking-tight">Companies Hiring</h1>
             <p className="text-xs text-muted-foreground">{filtered.length} hiring actively</p>

@@ -3,8 +3,8 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft } from "lucide-react"
 import { FeedbackForm } from "@/components/feedback/feedback-form"
+import { BackButton } from "@/components/layout/back-button"
 
 export default function FeedbackPage() {
   const [done, setDone] = useState(false)
@@ -18,9 +18,7 @@ export default function FeedbackPage() {
             <Image src="/codehiring-logo.svg" alt="CodeHiring" width={140} height={32} className="h-8 w-auto block dark:hidden" />
             <Image src="/codehiring-logo-dark.svg" alt="CodeHiring" width={140} height={32} className="h-8 w-auto hidden dark:block" />
           </Link>
-          <Link href="/" className="ml-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Back
-          </Link>
+          <BackButton fallback="/" />
         </div>
       </div>
 

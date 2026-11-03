@@ -1,7 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Target, Heart, Zap, Users } from "lucide-react"
+import { Target, Heart, Zap, Users } from "lucide-react"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
+import { BackButton } from "@/components/layout/back-button"
 
 export const metadata = {
   title: "About - CodeHiring",
@@ -42,9 +43,7 @@ export default function AboutPage() {
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">About</span>
-          <Link href="/" className="ml-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Back
-          </Link>
+          <BackButton fallback="/" />
         </div>
       </div>
 

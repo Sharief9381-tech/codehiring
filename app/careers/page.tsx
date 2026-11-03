@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, ArrowRight, Clock, Loader2, MapPin } from "lucide-react"
+import { ArrowRight, Clock, Loader2, MapPin } from "lucide-react"
 import { SpotlightCard } from "@/components/landing/spotlight-card"
+import { BackButton } from "@/components/layout/back-button"
 
 interface CareerPosting {
   _id: string
@@ -65,9 +66,7 @@ export default function CareersPage() {
           </Link>
           <span className="text-muted-foreground">/</span>
           <span className="text-sm text-muted-foreground">Careers</span>
-          <Link href="/" className="ml-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Back
-          </Link>
+          <BackButton fallback="/" />
         </div>
       </div>
 

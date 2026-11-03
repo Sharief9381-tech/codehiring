@@ -54,9 +54,7 @@ export default function ExploreCollegesPage() {
     <div className="min-h-screen bg-background">
       <div className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center gap-4">
-          <Link href="/#stats">
-            <Button variant="ghost" size="icon"><ArrowLeft className="h-4 w-4" /></Button>
-          </Link>
+          <Button variant="ghost" size="icon" onClick={() => window.history.length > 1 ? window.history.back() : window.location.href = '/'}><ArrowLeft className="h-4 w-4" /></Button>
           <div>
             <h1 className="text-xl font-bold text-foreground">Colleges</h1>
             <p className="text-xs text-muted-foreground">{filtered.length} onboarded</p>

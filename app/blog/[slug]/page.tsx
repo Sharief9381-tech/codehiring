@@ -1,12 +1,13 @@
 import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import { ArrowLeft, Clock, Tag } from "lucide-react"
+import { Clock, Tag } from "lucide-react"
 import { isDatabaseAvailable } from "@/lib/database"
 import { BlogModel } from "@/lib/models/blog"
 import { blogPosts, getPostBySlug } from "@/lib/blog-posts"
 import type { Metadata } from "next"
 import React from "react"
+import { BackButton } from "@/components/layout/back-button"
 
 export const dynamic = "force-dynamic"
 
@@ -111,9 +112,7 @@ export default async function BlogPostPage(
           </Link>
           <span className="text-muted-foreground">/</span>
           <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link>
-          <Link href="/blog" className="ml-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" /> All posts
-          </Link>
+          <BackButton fallback="/blog" label="All posts" className="ml-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors" />
         </div>
       </div>
 
