@@ -956,10 +956,15 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           className="h-12 rounded-xl border border-border bg-card/40 font-semibold text-sm text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all flex items-center justify-center gap-2">
           <TrendingUp className="h-4 w-4 text-primary" /> Prepare First
         </button>
-        <button onClick={() => setStage("instructions")}
-          className="h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-2"
+        <button
+          onClick={() => setStage("instructions")}
+          disabled={patternLoading}
+          className="h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
           style={{ background: `linear-gradient(135deg,${company.color},${company.color}cc)` }}>
-          <Play className="h-4 w-4" /> Start Assessment
+          {patternLoading
+            ? <><Loader2 className="h-4 w-4 animate-spin" /> Fetching Pattern…</>
+            : <><Play className="h-4 w-4" /> Start Assessment</>
+          }
         </button>
       </div>
     </div>

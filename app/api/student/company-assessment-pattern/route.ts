@@ -14,14 +14,13 @@
 import { NextResponse } from "next/server"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { getDatabase } from "@/lib/database"
-import { getCompanyPattern, type CompanyPattern } from "@/lib/rag/company-pattern"
 import {
   semanticPatternSearch,
   getCompanyPatternSections,
   upsertPatternDocsBulk,
-  buildPatternText,
   type PatternDoc,
 } from "@/lib/rag/pattern-search"
+import { getPatternForCompany } from "@/lib/company-assessment-patterns"
 
 const CACHE_TTL = 7 * 24 * 60 * 60 * 1000 // 7 days
 
@@ -151,8 +150,8 @@ ${text.slice(0, 4000)}`
   return null
 }
 
-// ── Convert PatternDocs (from vector store) → CompanyPattern ─────────────────
-function docsToPattern(docs: PatternDoc[], companyId: string, companyName: string): CompanyPattern {
+// ── Convert PatternDocs (from vector store) → plain pattern object ────────────
+function docsToPattern(docs: PatternDoc[], companyId: string, companyName: string) {
   return {
     company:        companyId,
     companyName,
@@ -176,15 +175,15 @@ function docsToPattern(docs: PatternDoc[], companyId: string, companyName: strin
 // ── Main handler ──────────────────────────────────────────────────────────────
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
-  return handleRequest(searchParams.get("company") ?? "")
+  return handleRequest(searchParams.get("company") ?? "", searchParams.get("force") === "1")
 }
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}))
-  return handleRequest(body.company ?? "")
+  return handleRequest(body.company ?? "", body.force === true)
 }
 
-async function handleRequest(companyId: string) {
+async function handleRequest(companyId: string, force = false) {
   if (!companyId) return NextResponse.json({ error: "company required" }, { status: 400 })
 
   const companyEntry = ALL_COMPANIES.find(c => c.id === companyId)
@@ -192,9 +191,22 @@ async function handleRequest(companyId: string) {
 
   const companyName = companyEntry.name
 
-  // ── Step 1: Semantic search in pattern_embeddings (vector store) ──────────
-  // This is the fastest and richest path when embeddings have been seeded
-  if (process.env.OPENAI_API_KEY) {
+  // ── Always use our hardcoded accurate patterns first (fastest + most accurate) ──
+  // Skip vector store / web search — our patterns ARE the source of truth
+  const builtPattern = getPatternForCompany(companyId, companyName)
+  if (builtPattern && !force) {
+    return NextResponse.json({
+      pattern: {
+        company: companyId, companyName, fetchedAt: new Date(),
+        source: "hardcoded", ...builtPattern,
+      },
+      fresh: true,
+      source: "hardcoded",
+    })
+  }
+
+  // ── Semantic search (only used if no hardcoded pattern) ──────────────────
+  if (!force && process.env.OPENAI_API_KEY) {
     try {
       const semanticQuery = `${companyName} campus placement exam 2025 sections questions topics`
       const docs = await getCompanyPatternSections(companyId)
@@ -243,7 +255,7 @@ async function handleRequest(companyId: string) {
   } catch {}
 
   // ── Step 3: Live web search + AI extraction ───────────────────────────────
-  let webPattern: Partial<CompanyPattern> | null = null
+  let webPattern: { sections?: any[]; totalQuestions?: number; totalTime?: number; notes?: string } | null = null
   try {
     const query = `${companyName} campus recruitment test pattern 2025 sections questions time`
     const { urls, snippets } = await googleSearch(query)
@@ -265,23 +277,23 @@ async function handleRequest(companyId: string) {
     console.warn("Web search failed:", e)
   }
 
-  // ── Step 4: Fallback ──────────────────────────────────────────────────────
-  const basePattern = await getCompanyPattern(companyId, companyName)
+  // ── Step 4: Use our hardcoded accurate patterns (single source of truth) ──
+  const hardcodedPattern = getPatternForCompany(companyId, companyName)
 
-  const finalPattern: CompanyPattern = {
+  const finalPattern = {
     company:        companyId,
     companyName,
     fetchedAt:      new Date(),
-    source:         webPattern?.sections?.length ? "web+ai" : (basePattern?.source ?? "fallback"),
-    totalQuestions: webPattern?.totalQuestions ?? basePattern?.totalQuestions ?? companyEntry.questions,
-    totalTime:      webPattern?.totalTime      ?? basePattern?.totalTime      ?? companyEntry.duration,
-    sections:       (webPattern?.sections?.length ? webPattern.sections : basePattern?.sections) ?? [],
-    notes:          (webPattern as any)?.notes ?? basePattern?.notes ?? "",
+    source:         webPattern?.sections?.length ? "web+ai" : "fallback",
+    totalQuestions: webPattern?.totalQuestions ?? hardcodedPattern?.totalQuestions ?? companyEntry.questions,
+    totalTime:      webPattern?.totalTime      ?? hardcodedPattern?.totalTime      ?? companyEntry.duration,
+    sections:       (webPattern?.sections?.length ? webPattern.sections : hardcodedPattern?.sections) ?? [],
+    notes:          (webPattern as any)?.notes ?? hardcodedPattern?.notes ?? "",
   }
 
   // Fill in missing sections from companies-data
   if (finalPattern.sections.length === 0) {
-    finalPattern.sections = companyEntry.sections.map(s => ({
+    finalPattern.sections = hardcodedPattern?.sections ?? companyEntry.sections.map((s: string) => ({
       id: s, topics: [],
       ...(DEFAULT_SECTION[s] ?? { name: s, questions: 5, timeMinutes: 15, difficulty: "Medium", isCoding: false }),
     }))
@@ -313,7 +325,7 @@ async function handleRequest(companyId: string) {
 function embedPatternInBackground(
   companyId: string,
   companyName: string,
-  pattern: CompanyPattern
+  pattern: { sections: any[]; notes?: string; source?: string }
 ) {
   const docs = pattern.sections.map(s => ({
     company:     companyId,
