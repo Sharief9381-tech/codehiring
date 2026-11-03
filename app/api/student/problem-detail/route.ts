@@ -209,6 +209,20 @@ export async function POST(req: Request) {
           .replace(/-/g, " ")
           .replace(/\b\w/g, (c: string) => c.toUpperCase())
         difficulty = body.difficulty ?? "Medium"
+      } else if (body.problemId.startsWith("prep-")) {
+        // Assessment coding problem — title comes from sessionStorage (already set)
+        // If we reach here, sessionStorage data wasn't found — derive title from ID
+        title = body.problemId
+          .replace(/^prep-[a-z0-9-]+-\d+-q\d+$/, "")  // strip company-section-idx
+          || body.problemId
+              .replace(/^prep-/, "")
+              .replace(/-\d+-q\d+$/, "")
+              .replace(/-/g, " ")
+              .replace(/\b\w/g, (c: string) => c.toUpperCase())
+        difficulty = body.difficulty ?? "Medium"
+        if (!title || title.length < 3) {
+          title = "Coding Problem"
+        }
       } else {
         return NextResponse.json({ error: "Unknown problemId" }, { status: 404 })
       }
