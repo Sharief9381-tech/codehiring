@@ -763,7 +763,18 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           companyName: company.name,
           targetRole: activeSections.includes("advanced-coding") || activeSections.includes("coding") ? "Software Developer" : "Systems Engineer",
           scores: { overall: finalScore, sections: finalScores },
-          candidateRatings: { aptitude: finalScores.quantitative ?? 50, coding: finalScores.coding ?? 50, dsa: finalScores.coding ?? 50, csFoundations: finalScores.technical ?? 50, communication: 65 },
+          candidateRatings: {
+            aptitude:       finalScores.quantitative    ?? finalScores["advanced-aptitude"] ?? 0,
+            coding:         finalScores.coding          ?? finalScores["advanced-coding"]   ?? finalScores["basic-coding"] ?? 0,
+            dsa:            finalScores.coding          ?? finalScores["advanced-coding"]   ?? 0,
+            csFoundations:  finalScores.technical       ?? finalScores["advanced-aptitude"] ?? 0,
+            // Only include communication if company actually has a verbal section
+            ...(activeSections.includes("verbal") || activeSections.includes("communication")
+              ? { communication: finalScores.verbal ?? finalScores.communication ?? 50 }
+              : {}),
+          },
+          // Pass which sections were in the assessment so report AI knows what to include
+          activeSections,
           violations: violationLog,
           timeStats: { totalTime: Math.round(timeTaken / 60), avgTimePerQ: qs.length > 0 ? Math.round(timeTaken / qs.length) : 60 },
           topicScores: topicPct,
@@ -1208,13 +1219,28 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           examples: exIn
             ? [{ input: exIn, output: exOut, explanation: exExp }]
             : [],
-          // stdin-based test cases — cleaned to plain numbers for execution
+          // Test cases — public example + hidden test cases from AI hints
+          // Public test 1: the example given
           stdin1:    cleanStdin(exIn),
           expected1: cleanStdin(exOut),
           public1:   true,
-          stdin2: "", expected2: "", public2: false,
-          stdin3: "", expected3: "", public3: false,
-          static: true,
+          // Public test 2: hints-based edge case (empty/single element)
+          stdin2:    q.hints?.[0] ? "" : "",
+          expected2: "",
+          public2:   true,
+          // Hidden test 3: larger input (generated from constraints)
+          stdin3:    "",
+          expected3: "",
+          public3:   false,
+          // Hidden test 4
+          stdin4:    "",
+          expected4: "",
+          public4:   false,
+          // Hidden test 5
+          stdin5:    "",
+          expected5: "",
+          public5:   false,
+          static: false, // false so problem-detail API can generate proper test cases
         }
         sessionStorage.setItem(`problem_v10_${syntheticId}`, JSON.stringify(problemData))
       } catch {}
