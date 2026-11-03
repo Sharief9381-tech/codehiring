@@ -74,7 +74,7 @@ CODING PROBLEM RULES:
 
 // ── User prompt for aptitude/communication MCQ ────────────────────────────────
 function buildMCQPrompt(req: QuestionRequest, ctx: RetrievedContext): string {
-  const pyqCtx     = formatPYQContext([...ctx.pyqs, ...ctx.staticSamples])
+  const pyqCtx     = req.pyqContext || formatPYQContext([...ctx.pyqs, ...ctx.staticSamples])
   const patternCtx = formatPatternContext(ctx.patterns)
 
   return `Generate ${req.count} ${req.sectionName} MCQ questions for ${req.companyName} assessment.
@@ -88,6 +88,9 @@ GENERATION PARAMETERS:
 - Topics: ${(req.liveTopics ?? req.topics).join(", ")}
 - Difficulty: ${req.difficulty}
 - Count: ${req.count}
+
+IMPORTANT: Match the EXACT style, difficulty level, and topic distribution of ${req.companyName}'s real exam.
+Questions must be solvable in 1-2 minutes. Explanations must show step-by-step working.
 
 OUTPUT FORMAT — Return ONLY this valid JSON array, nothing else:
 [
@@ -107,7 +110,7 @@ IMPORTANT: Generate EXACTLY ${req.count} questions. Each must be unique. Return 
 
 // ── User prompt for verbal/communication (may include passages) ───────────────
 function buildVerbalPrompt(req: QuestionRequest, ctx: RetrievedContext): string {
-  const pyqCtx     = formatPYQContext([...ctx.pyqs, ...ctx.staticSamples])
+  const pyqCtx     = req.pyqContext || formatPYQContext([...ctx.pyqs, ...ctx.staticSamples])
   const patternCtx = formatPatternContext(ctx.patterns)
 
   return `Generate ${req.count} Verbal Ability / Communication questions for ${req.companyName} assessment.
@@ -142,7 +145,7 @@ Return ONLY the JSON array. No markdown, no explanation text.`
 
 // ── User prompt for coding problems ──────────────────────────────────────────
 function buildCodingPrompt(req: QuestionRequest, ctx: RetrievedContext): string {
-  const pyqCtx     = formatPYQContext(ctx.pyqs)
+  const pyqCtx     = req.pyqContext || formatPYQContext(ctx.pyqs)
   const patternCtx = formatPatternContext(ctx.patterns)
 
   return `Generate ${req.count} coding problem(s) for ${req.companyName} ${req.sectionName}.
@@ -152,7 +155,7 @@ ${pyqCtx}
 
 GENERATION PARAMETERS:
 - Company: ${req.companyName}
-- Section: ${req.sectionName}
+- Section: ${req.sectionName} — Match EXACT difficulty of ${req.companyName}'s real coding round
 - Topics: ${(req.liveTopics ?? req.topics).join(", ")}
 - Difficulty: ${req.difficulty}
 - Count: ${req.count}

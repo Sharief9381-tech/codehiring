@@ -14,16 +14,16 @@ export type SectionId =
   | "coding"
 
 export interface QuestionRequest {
-  company:      string       // "tcs"
-  companyName:  string       // "TCS"
-  section:      SectionId   // "quantitative"
-  sectionName:  string       // "Numerical Ability"
-  type:         QuestionType // "aptitude"
-  topics:       string[]     // ["Percentages", "Time & Work"]
-  difficulty:   string       // "Medium"
-  count:        number       // 15
-  // Optional extra context passed from prep/page.tsx live pattern
+  company:      string
+  companyName:  string
+  section:      SectionId
+  sectionName:  string
+  type:         QuestionType
+  topics:       string[]
+  difficulty:   string
+  count:        number
   liveTopics?:  string[]
+  pyqContext?:  string   // pre-built PYQ examples string
 }
 
 export interface MCQQuestion {

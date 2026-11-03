@@ -63,6 +63,7 @@ export async function generateQuestions(params: {
   topics?:      string[]
   liveTopics?:  string[]
   skipCache?:   boolean
+  pyqContext?:  string   // pre-built PYQ examples injected into prompt
 }): Promise<GenerationResult> {
   const section     = params.section as SectionId
   const type        = getQuestionType(section)
@@ -80,6 +81,7 @@ export async function generateQuestions(params: {
     difficulty,
     count:      params.count,
     liveTopics: params.liveTopics,
+    pyqContext: params.pyqContext,
   }
 
   // ── Step 1: Cache check ────────────────────────────────────────────────────
