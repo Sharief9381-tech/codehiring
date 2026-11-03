@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Email utility - Gmail SMTP only via nodemailer
  * Setup:
  *   GMAIL_USER=yourname@gmail.com

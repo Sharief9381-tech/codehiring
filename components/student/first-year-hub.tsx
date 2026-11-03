@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import {
@@ -21,20 +21,20 @@ interface Progress {
 }
 
 const SKILL_LEVELS = [
-  { id: "beginner",    label: "Complete Beginner",  desc: "I've never written code before",      icon: "🌱" },
-  { id: "some-coding", label: "Tried Some Coding",  desc: "I've done a tutorial or two",         icon: "📖" },
-  { id: "knows-basics",label: "Know the Basics",    desc: "I can write simple programs",         icon: "💻" },
+  { id: "beginner",    label: "Complete Beginner",  desc: "I've never written code before",      icon: "??" },
+  { id: "some-coding", label: "Tried Some Coding",  desc: "I've done a tutorial or two",         icon: "??" },
+  { id: "knows-basics",label: "Know the Basics",    desc: "I can write simple programs",         icon: "??" },
 ]
 
 const ROADMAP_STEPS = [
-  { id: "py-basics",    title: "Learn Programming Basics",  icon: "🐍", color: "#3b82f6", milestone: "py-basics" },
-  { id: "git-basics",   title: "Master Git & GitHub",       icon: "🔧", color: "#10b981", milestone: "git-basics" },
-  { id: "web-basics",   title: "Web Dev Intro",             icon: "🌐", color: "#f59e0b", milestone: "web-basics" },
-  { id: "arrays",       title: "DSA: Arrays & Strings",     icon: "📊", color: "#8b5cf6", milestone: "arrays" },
-  { id: "lc-10",        title: "Solve 10 Easy Problems",    icon: "🧩", color: "#ef4444", milestone: "lc-10" },
-  { id: "dsa-track",    title: "Start a DSA Course",        icon: "📚", color: "#6366f1", milestone: "dsa-track" },
+  { id: "py-basics",    title: "Learn Programming Basics",  icon: "??", color: "#3b82f6", milestone: "py-basics" },
+  { id: "git-basics",   title: "Master Git & GitHub",       icon: "??", color: "#10b981", milestone: "git-basics" },
+  { id: "web-basics",   title: "Web Dev Intro",             icon: "??", color: "#f59e0b", milestone: "web-basics" },
+  { id: "arrays",       title: "DSA: Arrays & Strings",     icon: "??", color: "#8b5cf6", milestone: "arrays" },
+  { id: "lc-10",        title: "Solve 10 Easy Problems",    icon: "??", color: "#ef4444", milestone: "lc-10" },
+  { id: "dsa-track",    title: "Start a DSA Course",        icon: "??", color: "#6366f1", milestone: "dsa-track" },
   { id: "lc-25",        title: "Reach 25 Problems",         icon: "*", color: "#f59e0b", milestone: "lc-25" },
-  { id: "project-1",    title: "Build Your First Project",  icon: "🚀", color: "#10b981", milestone: "project-1" },
+  { id: "project-1",    title: "Build Your First Project",  icon: "??", color: "#10b981", milestone: "project-1" },
 ]
 
 export function FirstYearHub() {
@@ -110,11 +110,11 @@ export function FirstYearHub() {
   const completedCount = progress?.completed.length ?? 0
   const totalXP = progress?.totalXP ?? 0
   const streak = progress?.streak ?? 0
-  const level = totalXP < 100 ? { name: "Seedling", icon: "🌱", next: 100 }
-    : totalXP < 300 ? { name: "Explorer", icon: "🔍", next: 300 }
-    : totalXP < 600 ? { name: "Builder", icon: "🔨", next: 600 }
-    : totalXP < 1000 ? { name: "Coder", icon: "💻", next: 1000 }
-    : { name: "Developer", icon: "🚀", next: 9999 }
+  const level = totalXP < 100 ? { name: "Seedling", icon: "??", next: 100 }
+    : totalXP < 300 ? { name: "Explorer", icon: "??", next: 300 }
+    : totalXP < 600 ? { name: "Builder", icon: "??", next: 600 }
+    : totalXP < 1000 ? { name: "Coder", icon: "??", next: 1000 }
+    : { name: "Developer", icon: "??", next: 9999 }
   const levelPct = Math.min(Math.round((totalXP / level.next) * 100), 100)
 
   return (
@@ -125,7 +125,7 @@ export function FirstYearHub() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="w-full max-w-md rounded-2xl border border-primary/30 bg-card shadow-2xl p-7 space-y-5">
             <div className="text-center">
-              <div className="text-4xl mb-3">👋</div>
+              <div className="text-4xl mb-3">??</div>
               <h2 className="text-xl font-bold text-foreground">Welcome to your 1st Year Hub!</h2>
               <p className="text-sm text-muted-foreground mt-1.5">Quick question - what's your coding experience right now?</p>
             </div>
@@ -261,7 +261,7 @@ export function FirstYearHub() {
 
       {/* Unlock next year nudge */}
       <div className="rounded-xl border border-border bg-card/30 p-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary text-sm">🔓</div>
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary text-sm">??</div>
         <div className="flex-1">
           <p className="text-sm font-semibold text-foreground">Looking Ahead</p>
           <p className="text-xs text-muted-foreground mt-0.5">In 2nd year you'll unlock company assessments, internship tracking, hiring drives, and trending skill labs.</p>

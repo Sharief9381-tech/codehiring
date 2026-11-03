@@ -12,7 +12,7 @@
 import { NextResponse } from "next/server"
 import { getDatabase } from "@/lib/database"
 
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
 
 // ── Topic + difficulty rotation ───────────────────────────────────────────────
 const TOPICS = [

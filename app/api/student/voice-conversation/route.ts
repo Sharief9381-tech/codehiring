@@ -13,7 +13,7 @@
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
 
 const SYSTEM_PROMPT = `You are a friendly English conversation partner for Indian engineering students. Your job is to have NATURAL, FLOWING conversations on any everyday topic.
 

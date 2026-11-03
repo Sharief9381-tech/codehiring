@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import {
@@ -501,7 +501,7 @@ function ThreadView({
               <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${TAG_COLORS[localPost.tag] ?? TAG_COLORS.General}`}>
                 {localPost.tag}
               </span>
-              {localPost.pinned && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-500/15 text-amber-400 border-amber-500/20">📌 Pinned</span>}
+              {localPost.pinned && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-500/15 text-amber-400 border-amber-500/20">?? Pinned</span>}
               <span className="text-[10px] text-muted-foreground ml-auto">{timeAgo(localPost.createdAt)}</span>
             </div>
             <h2 className="text-base font-bold text-foreground mt-1">{localPost.title}</h2>
@@ -792,7 +792,7 @@ function CommunityDiscussions({ student }: { student: any }) {
                 </div>
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    {post.pinned && <span className="text-[10px] text-amber-400">📌</span>}
+                    {post.pinned && <span className="text-[10px] text-amber-400">??</span>}
                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${TAG_COLORS[post.tag] ?? TAG_COLORS.General}`}>
                       {post.tag}
                     </span>
@@ -1102,7 +1102,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                 "badge-str-1":"String Starter","badge-str-2":"String Wizard","badge-str-3":"String Legend",
                 "badge-git-1":"Git Starter","badge-git-2":"Git Committer","badge-git-3":"Open Source Hero",
               }
-              setTimeout(() => showXpPop(`🏆 ${titles[id] ?? id} badge earned!`), i * 2800)
+              setTimeout(() => showXpPop(`?? ${titles[id] ?? id} badge earned!`), i * 2800)
             })
           }
         })
@@ -1510,7 +1510,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                     </div>
                     {todayProblem.hint && (
                       <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-[11px] text-amber-400">
-                        💡 Hint: {todayProblem.hint}
+                        ?? Hint: {todayProblem.hint}
                       </div>
                     )}
                     <div className="flex items-center justify-between gap-3">
@@ -1637,7 +1637,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className={`text-xs font-semibold ${b.earned ? "text-foreground" : "text-muted-foreground"}`}>{b.label}</p>
-                        <p className="text-[10px] text-muted-foreground truncate">{b.earned ? "✓ Earned" : b.how}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{b.earned ? "? Earned" : b.how}</p>
                       </div>
                       {b.earned && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400" />}
                     </div>
@@ -1795,7 +1795,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                   className={`w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary/10 ${debugLang === lang ? "text-primary font-semibold bg-primary/5" : "text-foreground"}`}
                                 >
                                   {lang}
-                                  {debugLang === lang && <span className="ml-1 text-primary">✓</span>}
+                                  {debugLang === lang && <span className="ml-1 text-primary">?</span>}
                                 </button>
                               ))}
                           </div>
@@ -1848,7 +1848,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                             {/* Answer input + result */}
                             {result?.correct ? (
                               <div className="rounded-lg p-3 text-xs space-y-1 bg-emerald-500/10 border border-emerald-500/20">
-                                <p className="font-bold text-emerald-400">✓ Correct! +{c.xp} XP earned</p>
+                                <p className="font-bold text-emerald-400">? Correct! +{c.xp} XP earned</p>
                                 {result.explanation && <p className="text-muted-foreground">{result.explanation}</p>}
                                 <p className="text-[10px] text-emerald-400/70">Replacing with next challenge...</p>
                               </div>
@@ -1864,7 +1864,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                 {/* Wrong answer feedback */}
                                 {result && !result.correct && (
                                   <div className="rounded-lg p-2.5 bg-red-500/10 border border-red-500/20 space-y-1">
-                                    <p className="text-xs text-red-400 font-semibold">✗- Not quite - try again</p>
+                                    <p className="text-xs text-red-400 font-semibold">?- Not quite - try again</p>
                                     {result.correctAnswer && (
                                       <p className="text-[10px] text-muted-foreground">
                                         Answer: <span className="text-amber-400 font-medium">{result.correctAnswer}</span>
@@ -1887,7 +1887,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                 {/* Revealed answer panel */}
                                 {revealedAnswers[c.id] && (
                                   <div className="rounded-lg p-2.5 bg-amber-500/10 border border-amber-500/20 space-y-1">
-                                    <p className="text-[10px] font-bold text-amber-400">💡 Answer Revealed</p>
+                                    <p className="text-[10px] font-bold text-amber-400">?? Answer Revealed</p>
                                     <p className="text-xs text-foreground font-medium">{revealedAnswers[c.id].answer}</p>
                                     {revealedAnswers[c.id].explanation && (
                                       <p className="text-[10px] text-muted-foreground">{revealedAnswers[c.id].explanation}</p>
@@ -1912,7 +1912,7 @@ export function FirstYearFullHub({ student }: { student: any }) {
                                       }}
                                       className="flex items-center gap-1 text-[10px] text-amber-400/80 hover:text-amber-400 transition-colors font-medium"
                                     >
-                                      {revealing === c.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : "💡"} Reveal
+                                      {revealing === c.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : "??"} Reveal
                                     </button>
                                   )}
                                   <button

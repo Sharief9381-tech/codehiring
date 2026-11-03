@@ -22,7 +22,7 @@ const GEMINI_KEYS = () => [
   process.env.GEMINI_API_KEY_3,
 ].filter(Boolean) as string[]
 
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
 
 // ── Call AI with key rotation ─────────────────────────────────────────────────
 async function callAI(prompt: string): Promise<string> {

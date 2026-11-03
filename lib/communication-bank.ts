@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // COMMUNICATION BANK ' 400 Questions across 4 topics
 // Topics: Direct & Indirect Speech, Active & Passive Voice,
 //         Sentence Improvement, Idioms & Phrases

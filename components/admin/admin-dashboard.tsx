@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -593,7 +593,7 @@ export function AdminDashboard() {
                             <span className="font-medium text-sm">{fb.name}</span>
                             <span className="text-xs text-muted-foreground">{fb.role}</span>
                             <StatusBadge status={fb.status ?? "pending"} />
-                            {fb.type === "general" && fb.rating && <span className="text-xs text-amber-500">{"★".repeat(fb.rating)}{"☆".repeat(5 - fb.rating)}</span>}
+                            {fb.type === "general" && fb.rating && <span className="text-xs text-amber-500">{"?".repeat(fb.rating)}{"?".repeat(5 - fb.rating)}</span>}
                           </div>
                           {fb.type === "general" && fb.text && <p className="text-sm text-muted-foreground mt-0.5 truncate">"{fb.text}"</p>}
                           {fb.type === "specific" && <p className="text-xs text-muted-foreground mt-0.5">Survey - {fb.answers?.length ?? 0} answers</p>}

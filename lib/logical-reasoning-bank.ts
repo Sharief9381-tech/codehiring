@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Logical Reasoning Question Bank
  * All 19 Logical Reasoning topics ' 1900 questions
  * Topics: Coding-Decoding, Blood Relations, Direction Sense, Ranking & Ordering,

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Quantitative Reasoning Question Bank
  * Original questions with 4 options, correct answer index, and explanation.
  */

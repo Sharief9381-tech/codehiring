@@ -3,7 +3,7 @@
  * Tries GEMINI_API_KEY first, falls back to GEMINI_API_KEY_2 on quota/error
  */
 
-const GEMINI_MODEL = "gemini-3.1-flash-lite"
+const GEMINI_MODEL = "gemini-3.5-flash"
 const GEMINI_BASE  = "https://generativelanguage.googleapis.com/v1beta/models"
 
 export async function geminiChat(
