@@ -193,7 +193,13 @@ async function handleRequest(companyId: string, force = false) {
 
   // ── Always use our hardcoded accurate patterns first (fastest + most accurate) ──
   // Skip vector store / web search — our patterns ARE the source of truth
-  const builtPattern = getPatternForCompany(companyId, companyName)
+  const builtPattern = getPatternForCompany(
+    companyId, companyName,
+    companyEntry.sections,       // pass ALL_COMPANIES sections
+    companyEntry.category,       // pass category for fallback
+    companyEntry.difficulty,     // pass company difficulty
+    companyEntry.duration        // pass duration
+  )
   if (builtPattern && !force) {
     return NextResponse.json({
       pattern: {
@@ -278,7 +284,13 @@ async function handleRequest(companyId: string, force = false) {
   }
 
   // ── Step 4: Use our hardcoded accurate patterns (single source of truth) ──
-  const hardcodedPattern = getPatternForCompany(companyId, companyName)
+  const hardcodedPattern = getPatternForCompany(
+    companyId, companyName,
+    companyEntry.sections,
+    companyEntry.category,
+    companyEntry.difficulty,
+    companyEntry.duration
+  )
 
   const finalPattern = {
     company:        companyId,

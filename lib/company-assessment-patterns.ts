@@ -182,10 +182,117 @@ export function getCompanySectionConfig(company: string, section: string): Secti
   return COMPANY_ASSESSMENT_PATTERNS[company]?.sections[section] ?? null
 }
 
+// ── Category-based defaults for companies without explicit patterns ────────────
+const CATEGORY_SECTION_DEFAULTS: Record<string, Record<string, Partial<SectionConfig>>> = {
+  "IT Services": {
+    "quantitative":      { difficulty: "Hard",        topics: ["Percentages","Time & Work","Speed & Distance","Profit & Loss","Number Series","Averages","Probability","Simple Interest","Ratio & Proportion","Permutation & Combination"] },
+    "advanced-aptitude": { difficulty: "Medium-Hard", topics: ["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Puzzles","Series Completion","Direction Sense","Statement & Conclusion","Analogy","Venn Diagrams"] },
+    "verbal":            { difficulty: "Medium",      topics: ["Synonyms","Antonyms","Reading Comprehension","Error Detection","Fill in the Blanks","Para Jumbles","Idioms & Phrases","Sentence Improvement"] },
+    "basic-coding":      { difficulty: "Medium",      topics: ["Arrays","Strings","Basic Math","Pattern Printing","Loops","Conditional Logic","Output-Based Questions"] },
+    "advanced-coding":   { difficulty: "Medium-Hard", topics: ["Arrays","Strings","Sorting","Hash Map","Recursion","Binary Search","Stack","Two Pointers"] },
+    "logical":           { difficulty: "Medium",      topics: ["Puzzles","Series","Blood Relations","Directions","Coding-Decoding","Syllogisms","Analogies"] },
+  },
+  "Product": {
+    "quantitative":      { difficulty: "Hard",        topics: ["Data Interpretation","Statistics","Probability","Combinatorics","Algebra","Number Theory"] },
+    "advanced-aptitude": { difficulty: "Hard",        topics: ["Logical Deduction","Pattern Recognition","Abstract Reasoning","Critical Thinking","Spatial Reasoning"] },
+    "basic-coding":      { difficulty: "Hard",        topics: ["Arrays","Hash Map","Two Pointers","Sliding Window","Binary Search","Recursion","String Algorithms"] },
+    "advanced-coding":   { difficulty: "Hard",        topics: ["Dynamic Programming","Graph Algorithms","Trees","Advanced Data Structures","Bit Manipulation","Optimization"] },
+    "logical":           { difficulty: "Hard",        topics: ["Algorithmic Thinking","Pattern Recognition","Logical Deduction","Abstract Reasoning"] },
+    "coding":            { difficulty: "Hard",        topics: ["Dynamic Programming","Graph Algorithms","Trees","Binary Search","Hash Map"] },
+  },
+  "Consulting": {
+    "quantitative":      { difficulty: "Hard",        topics: ["Data Interpretation","Business Math","Percentages","Ratios","Statistics","Financial Analysis"] },
+    "advanced-aptitude": { difficulty: "Medium-Hard", topics: ["Logical Deduction","Critical Reasoning","Syllogisms","Sequence","Abstract Patterns"] },
+    "verbal":            { difficulty: "Medium",      topics: ["Reading Comprehension","Critical Reasoning","Vocabulary","Grammar","Sentence Correction","Para Jumbles"] },
+    "logical":           { difficulty: "Medium",      topics: ["Deductive Reasoning","Inductive Reasoning","Critical Thinking","Data Sufficiency"] },
+  },
+  "BFSI": {
+    "quantitative":      { difficulty: "Hard",        topics: ["Data Interpretation","Financial Math","Percentages","Ratios","Statistics","Probability","Time Value of Money"] },
+    "advanced-aptitude": { difficulty: "Medium-Hard", topics: ["Logical Reasoning","Blood Relations","Seating Arrangement","Puzzles","Syllogisms","Data Sufficiency"] },
+    "verbal":            { difficulty: "Medium",      topics: ["Reading Comprehension","Grammar","Vocabulary","Error Detection","Para Jumbles"] },
+    "advanced-coding":   { difficulty: "Hard",        topics: ["Dynamic Programming","Graph Algorithms","Trees","Arrays","Hash Map"] },
+    "logical":           { difficulty: "Medium",      topics: ["Puzzles","Syllogisms","Series","Blood Relations","Directions"] },
+    "coding":            { difficulty: "Hard",        topics: ["Arrays","Dynamic Programming","Graph Algorithms","Hash Map","Trees"] },
+  },
+  "Core Engineering": {
+    "quantitative":      { difficulty: "Hard",        topics: ["Engineering Math","Digital Logic","Data Structures","Algorithms","Probability","Statistics"] },
+    "advanced-aptitude": { difficulty: "Medium-Hard", topics: ["Technical Reasoning","Circuit Analysis","System Design","Digital Electronics"] },
+    "basic-coding":      { difficulty: "Medium",      topics: ["C Programming","Arrays","Functions","Pointers","Basic Algorithms"] },
+    "advanced-coding":   { difficulty: "Hard",        topics: ["Embedded Systems","Algorithms","Data Structures","Optimization","Bit Manipulation"] },
+    "logical":           { difficulty: "Medium",      topics: ["Logical Deduction","Pattern Recognition","Sequence","Abstract Reasoning"] },
+  },
+}
+
+// Default when category not found
+const UNIVERSAL_DEFAULTS: Record<string, Partial<SectionConfig>> = {
+  "quantitative":      { count: 15, timeMinutes: 20, difficulty: "Hard",        isCoding: false, topics: ["Percentages","Time & Work","Speed & Distance","Profit & Loss","Number Series","Averages","Probability"] },
+  "advanced-aptitude": { count: 12, timeMinutes: 20, difficulty: "Medium-Hard", isCoding: false, topics: ["Syllogisms","Blood Relations","Seating Arrangement","Coding-Decoding","Puzzles","Directions","Series"] },
+  "verbal":            { count: 10, timeMinutes: 15, difficulty: "Medium",      isCoding: false, topics: ["Reading Comprehension","Vocabulary","Grammar","Para Jumbles","Error Detection"] },
+  "basic-coding":      { count: 2,  timeMinutes: 30, difficulty: "Medium",      isCoding: true,  topics: ["Arrays","Strings","Basic Math","Sorting","Loops"] },
+  "advanced-coding":   { count: 2,  timeMinutes: 45, difficulty: "Hard",        isCoding: true,  topics: ["Arrays","Hash Map","Dynamic Programming","Binary Search","Trees"] },
+  "logical":           { count: 10, timeMinutes: 15, difficulty: "Medium",      isCoding: false, topics: ["Syllogisms","Blood Relations","Directions","Series","Analogies"] },
+  "coding":            { count: 2,  timeMinutes: 45, difficulty: "Hard",        isCoding: true,  topics: ["Arrays","Hash Map","Dynamic Programming","Binary Search","Trees"] },
+}
+
 /**
- * Convert COMPANY_ASSESSMENT_PATTERNS to CompanyPattern format for the pattern API
+ * Get section config for ANY company — uses specific pattern if available,
+ * else derives from category + ALL_COMPANIES data.
  */
-export function getPatternForCompany(company: string, companyName: string): {
+export function getCompanySectionConfigForAny(
+  companyId: string,
+  section: string,
+  category?: string,
+  companyDifficulty?: string
+): SectionConfig | null {
+  // 1. Specific pattern
+  const specific = COMPANY_ASSESSMENT_PATTERNS[companyId]?.sections[section]
+  if (specific) return specific
+
+  // 2. Category-based
+  const categoryDefaults = CATEGORY_SECTION_DEFAULTS[category ?? ""] ?? {}
+  const catSection = categoryDefaults[section]
+  const universal = UNIVERSAL_DEFAULTS[section]
+
+  if (!universal) return null
+
+  // Merge category overrides onto universal defaults
+  const result: SectionConfig = {
+    name:        getSectionDisplayName(section),
+    count:       universal.count ?? 10,
+    timeMinutes: universal.timeMinutes ?? 20,
+    difficulty:  catSection?.difficulty ?? companyDifficulty ?? universal.difficulty ?? "Medium",
+    isCoding:    universal.isCoding ?? false,
+    topics:      catSection?.topics ?? universal.topics ?? [],
+  }
+
+  return result
+}
+
+function getSectionDisplayName(section: string): string {
+  const map: Record<string, string> = {
+    "quantitative":      "Quantitative Aptitude",
+    "advanced-aptitude": "Logical Reasoning",
+    "verbal":            "Verbal Ability",
+    "basic-coding":      "Basic Coding",
+    "advanced-coding":   "Advanced Coding",
+    "logical":           "Logical Reasoning",
+    "coding":            "Coding",
+  }
+  return map[section] ?? section
+}
+
+/**
+ * Convert COMPANY_ASSESSMENT_PATTERNS to CompanyPattern format for the pattern API.
+ * Works for ALL companies — uses specific pattern if available, else derives from category.
+ */
+export function getPatternForCompany(
+  company: string,
+  companyName: string,
+  companySections?: string[],
+  category?: string,
+  companyDifficulty?: string,
+  companyDuration?: number
+): {
   totalQuestions: number
   totalTime: number
   sections: Array<{
@@ -194,23 +301,35 @@ export function getPatternForCompany(company: string, companyName: string): {
   }>
   notes: string
 } | null {
+  // Use specific pattern first
   const p = COMPANY_ASSESSMENT_PATTERNS[company]
-  if (!p) return null
-
-  const sections = Object.entries(p.sections).map(([id, s]) => ({
-    id,
-    name:        s.name,
-    questions:   s.count,
-    timeMinutes: s.timeMinutes,
-    difficulty:  s.difficulty,
-    topics:      s.topics,
-    isCoding:    s.isCoding,
-  }))
-
-  return {
-    totalQuestions: sections.reduce((sum, s) => sum + s.questions, 0),
-    totalTime:      p.totalTime,
-    sections,
-    notes:          p.notes,
+  if (p) {
+    const sections = Object.entries(p.sections).map(([id, s]) => ({
+      id, name: s.name, questions: s.count, timeMinutes: s.timeMinutes,
+      difficulty: s.difficulty, topics: s.topics, isCoding: s.isCoding,
+    }))
+    return { totalQuestions: sections.reduce((sum, s) => sum + s.questions, 0), totalTime: p.totalTime, sections, notes: p.notes }
   }
+
+  // Derive from ALL_COMPANIES sections + category
+  if (!companySections?.length) return null
+
+  const sections = companySections.map(sectionId => {
+    const config = getCompanySectionConfigForAny(company, sectionId, category, companyDifficulty)
+    if (!config) return null
+    return {
+      id:          sectionId,
+      name:        config.name,
+      questions:   config.count,
+      timeMinutes: config.timeMinutes,
+      difficulty:  config.difficulty,
+      topics:      config.topics,
+      isCoding:    config.isCoding,
+    }
+  }).filter(Boolean) as Array<{id: string; name: string; questions: number; timeMinutes: number; difficulty: string; topics: string[]; isCoding: boolean}>
+
+  if (sections.length === 0) return null
+
+  const totalTime = companyDuration ?? sections.reduce((sum, s) => sum + s.timeMinutes, 0)
+  return { totalQuestions: sections.reduce((sum, s) => sum + s.questions, 0), totalTime, sections, notes: "" }
 }

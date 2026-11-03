@@ -19,7 +19,7 @@ import { NextResponse } from "next/server"
 import { generateQuestions } from "@/lib/question-gen"
 import { ALL_COMPANIES } from "@/lib/companies-data"
 import { QUESTION_BANK, type PYQ } from "@/lib/question-bank"
-import { COMPANY_ASSESSMENT_PATTERNS, getCompanySectionConfig } from "@/lib/company-assessment-patterns"
+import { COMPANY_ASSESSMENT_PATTERNS, getCompanySectionConfigForAny } from "@/lib/company-assessment-patterns"
 
 // Use the shared COMPANY_PATTERNS — single source of truth
 const COMPANY_PATTERNS = COMPANY_ASSESSMENT_PATTERNS
@@ -68,9 +68,11 @@ export async function POST(req: Request) {
     const companyEntry = ALL_COMPANIES.find(c => c.id === company)
     const companyName  = companyEntry?.name ?? company.toUpperCase()
 
-    // Get company-specific section pattern
+    // Get company-specific section pattern — works for ALL 190 companies
     const companyPattern = COMPANY_PATTERNS[company]
+    // Use specific pattern section if available, else derive from category
     const sectionPattern = companyPattern?.sections[section]
+      ?? getCompanySectionConfigForAny(company, section, companyEntry?.category, companyEntry?.difficulty)
 
     // Resolve count, difficulty, topics — company-specific first
     const defaultCount = sectionPattern?.count
