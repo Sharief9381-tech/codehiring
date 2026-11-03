@@ -112,7 +112,9 @@ export async function generateQuestions(params: {
   let raw  = ""
   let model = "unknown"
   try {
-    const result = await callLLM(system, user, 4000)
+    // Use higher token limit for large batches (20+ questions need ~300 tokens each)
+    const tokenLimit = Math.max(4000, req.count * 350)
+    const result = await callLLM(system, user, tokenLimit)
     raw   = result.content
     model = result.model
   } catch (e: any) {

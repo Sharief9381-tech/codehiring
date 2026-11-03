@@ -84,7 +84,52 @@ export async function POST(req: Request) {
     // Build PYQ context for the AI prompt
     const pyqContext = getPYQContext(company, section)
 
-    // Generate via pipeline — passes pyqContext as extra context
+    // Determine question type — coding sections don't need batching
+    const isCodingSection = section.includes("coding") || section === "coding"
+
+    // For large question counts, generate in batches of 10 to avoid token limits
+    const BATCH_SIZE = 10
+    if (count > BATCH_SIZE && !isCodingSection) {
+      const batches = Math.ceil(count / BATCH_SIZE)
+      const allQuestions: any[] = []
+
+      for (let b = 0; b < batches; b++) {
+        const batchCount = Math.min(BATCH_SIZE, count - allQuestions.length)
+        if (batchCount <= 0) break
+
+        try {
+          const result = await generateQuestions({
+            company, companyName, section,
+            sectionName, count: batchCount,
+            difficulty, topics, liveTopics, pyqContext,
+            skipCache: true, // don't cache partial batches
+          })
+          allQuestions.push(...result.questions)
+        } catch {}
+      }
+
+      if (allQuestions.length > 0) {
+        // Deduplicate by question text
+        const seen = new Set<string>()
+        const deduped = allQuestions.filter(q => {
+          const key = q.question?.toLowerCase().slice(0, 40) ?? q.title?.toLowerCase().slice(0, 40) ?? ""
+          if (seen.has(key)) return false
+          seen.add(key)
+          return true
+        })
+
+        return NextResponse.json({
+          questions: deduped.slice(0, count),
+          company:   companyName,
+          section:   sectionName,
+          source:    "ai+rag",
+          count:     Math.min(deduped.length, count),
+          pattern:   sectionPattern ? { topics, difficulty, count } : undefined,
+        })
+      }
+    }
+
+    // Generate via pipeline (single batch for small counts or coding)
     const result = await generateQuestions({
       company,
       companyName,

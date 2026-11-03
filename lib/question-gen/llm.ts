@@ -24,7 +24,8 @@ async function callGemini(messages: { role: string; content: string }[], maxToke
 
   const body: any = {
     contents,
-    generationConfig: { maxOutputTokens: maxTokens, temperature: 0.7 },
+    // Cap at 8192 — Gemini free tier limit
+    generationConfig: { maxOutputTokens: Math.min(maxTokens, 8192), temperature: 0.7 },
   }
   if (systemInstruction) body.systemInstruction = { parts: [{ text: systemInstruction }] }
 
@@ -32,13 +33,61 @@ async function callGemini(messages: { role: string; content: string }[], maxToke
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(25000),
+    signal: AbortSignal.timeout(35000),
   })
   if (!res.ok) throw new Error(`Gemini ${res.status}`)
   const d = await res.json()
-  const text = d.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? ""
+
+  // Check for finish reason — if STOP or MAX_TOKENS, use what we got
+  const candidate = d.candidates?.[0]
+  const finishReason = candidate?.finishReason
+  const text = candidate?.content?.parts?.[0]?.text?.trim() ?? ""
+
   if (!text) throw new Error("Gemini empty response")
+
+  // If truncated due to token limit, try to fix the JSON by appending closing brackets
+  if (finishReason === "MAX_TOKENS" && text.includes("[")) {
+    return repairTruncatedJSON(text)
+  }
+
   return text
+}
+
+// Attempt to repair truncated JSON arrays from token cutoffs
+function repairTruncatedJSON(text: string): string {
+  const startIdx = text.indexOf("[")
+  if (startIdx === -1) return text
+
+  let content = text.slice(startIdx)
+
+  // Count complete objects — find all complete {...} within the array
+  const completeObjects: string[] = []
+  let depth = 0
+  let objStart = -1
+  let inStr = false
+  let escape = false
+
+  for (let i = 0; i < content.length; i++) {
+    const c = content[i]
+    if (escape) { escape = false; continue }
+    if (c === "\\") { escape = true; continue }
+    if (c === '"') { inStr = !inStr; continue }
+    if (inStr) continue
+
+    if (c === "{") {
+      if (depth === 0) objStart = i
+      depth++
+    } else if (c === "}") {
+      depth--
+      if (depth === 0 && objStart !== -1) {
+        completeObjects.push(content.slice(objStart, i + 1))
+        objStart = -1
+      }
+    }
+  }
+
+  if (completeObjects.length === 0) return text
+  return "[" + completeObjects.join(",") + "]"
 }
 
 export async function callLLM(
@@ -46,6 +95,10 @@ export async function callLLM(
   user:   string,
   maxTokens = 4000
 ): Promise<LLMResponse> {
+  // Each MCQ needs ~300-400 tokens; each coding problem ~400-500 tokens
+  // Ensure we request enough tokens for the full output
+  const effectiveTokens = Math.max(maxTokens, 6000)
+
   const messages = [
     { role: "system" as const, content: system },
     { role: "user"   as const, content: user   },
@@ -60,12 +113,10 @@ export async function callLLM(
 
   for (const key of geminiKeys) {
     try {
-      const text = await callGemini(messages, maxTokens, key)
+      const text = await callGemini(messages, effectiveTokens, key)
       if (text.length > 20) return { content: text, model: "gemini-3.5-flash" }
     } catch (e: any) {
-      // 429 = quota, 403 = key issue — try next key
       if (e.message?.includes("429") || e.message?.includes("403")) continue
-      // Other errors — also try next key
       continue
     }
   }
@@ -77,8 +128,8 @@ export async function callLLM(
       const res = await fetch(OPENAI_URL, {
         method:  "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${openaiKey}` },
-        body:    JSON.stringify({ model: "gpt-4o-mini", messages, temperature: 0.7, max_tokens: maxTokens }),
-        signal:  AbortSignal.timeout(25000),
+        body:    JSON.stringify({ model: "gpt-4o-mini", messages, temperature: 0.7, max_tokens: effectiveTokens }),
+        signal:  AbortSignal.timeout(30000),
       })
       if (res.ok) {
         const d    = await res.json()
@@ -95,8 +146,8 @@ export async function callLLM(
       const res = await fetch(GROQ_URL, {
         method:  "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
-        body:    JSON.stringify({ model: "openai/gpt-oss-20b", messages, temperature: 0.7, max_tokens: maxTokens }),
-        signal:  AbortSignal.timeout(30000),
+        body:    JSON.stringify({ model: "openai/gpt-oss-20b", messages, temperature: 0.7, max_tokens: Math.min(effectiveTokens, 4000) }),
+        signal:  AbortSignal.timeout(35000),
       })
       if (res.ok) {
         const d    = await res.json()
