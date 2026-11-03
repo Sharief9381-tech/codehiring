@@ -299,21 +299,6 @@ export function LandingPage() {
                 </Link>
               </motion.div>
 
-              {/* mini status bar */}
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-                className="flex items-center gap-6 mt-10 pt-6 border-t border-[rgb(var(--sci))]/8">
-                {[
-                  { label: "STATUS", val: "OPTIMAL", color: "text-emerald-400" },
-                  { label: "NODE", val: "US-EAST-1", color: "text-[var(--sci-fg)]" },
-                  { label: "LATENCY", val: "12.3MS", color: "text-amber-400" },
-                  { label: "UPTIME", val: "99.97%", color: "text-violet-400" },
-                ].map(({ label, val, color }) => (
-                  <div key={label} className="text-center">
-                    <p className="text-[10px] font-medium text-muted-foreground/60">{label}</p>
-                    <p className={`text-[11px] font-bold ${color}`}>{val}</p>
-                  </div>
-                ))}
-              </motion.div>
             </div>
 
             {/* RIGHT - terminal mockup */}
