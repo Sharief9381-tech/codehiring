@@ -46,7 +46,13 @@ APTITUDE QUESTION RULES:
 - Each question must be unique, solvable in 1-2 minutes
 - Options must be plausible — avoid obviously wrong choices
 - Explanation must show the exact calculation step-by-step
-- Do NOT generate questions that require external data or tables unless provided`,
+- Do NOT generate questions that require external data or tables unless provided
+- DIFFICULTY ENFORCEMENT: When difficulty is "Hard" or "Medium-Hard", questions MUST involve:
+  * Multi-step calculations (at least 2-3 steps)
+  * Non-trivial formulas or logical deductions
+  * Tricky phrasing or commonly confused concepts
+  * Distractor options that are close to the correct answer
+  * No direct formula substitution — student must actually think`,
 
     communication: `
 COMMUNICATION QUESTION RULES:
