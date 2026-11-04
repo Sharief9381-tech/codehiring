@@ -13,7 +13,7 @@
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/auth"
 
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
 const SYSTEM_PROMPT = `You are a friendly English conversation partner for Indian engineering students. Your job is to have NATURAL, FLOWING conversations on any everyday topic.
 
@@ -96,7 +96,7 @@ async function callAI(history: any[], userText: string): Promise<string> {
       const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.GROQ_API_KEY}` },
-        body: JSON.stringify({ model: "openai/gpt-oss-20b", messages, temperature: 0.85, max_tokens: 200 }),
+        body: JSON.stringify({ model: "llama-3.1-8b-instant", messages, temperature: 0.85, max_tokens: 200 }),
         signal: AbortSignal.timeout(25000),
       })
       if (r.ok) {

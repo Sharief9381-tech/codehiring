@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server"
+import { getCurrentUser } from "@/lib/auth"
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+const GROQ_MODEL   = "llama-3.1-8b-instant"
 
 export async function POST(request: Request) {
   try {
+    const user = await getCurrentUser()
+    if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+
     const body = await request.json()
     const { mode, scenario, question, userSpeech, conversationHistory } = body
 
@@ -30,7 +35,7 @@ export async function POST(request: Request) {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "openai/gpt-oss-20b",
+          model: GROQ_MODEL,
           messages: [{ role: "user", content: prompt }],
           max_tokens: 100,
           temperature: 0.8,
@@ -65,7 +70,7 @@ Analyze and return JSON feedback.`
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "openai/gpt-oss-20b",
+          model: GROQ_MODEL,
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt },
@@ -111,7 +116,7 @@ Be encouraging but professional. After 8 exchanges, provide a brief performance 
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({
-          model: "openai/gpt-oss-20b",
+          model: GROQ_MODEL,
           messages,
           max_tokens: 200,
           temperature: 0.7,

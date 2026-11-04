@@ -104,6 +104,12 @@ function SpeakerWave() {
 export function VoiceConversation({ onClose }: { onClose?: () => void }) {
   const [voiceState, setVoiceState] = useState<VoiceState>("idle")
   const [messages, setMessages]     = useState<Message[]>([])
+  const messagesRef                  = useRef<Message[]>([])
+  const addMessage = (role: "user" | "assistant", text: string) => {
+    const msg: Message = { role, text, timestamp: Date.now() }
+    messagesRef.current = [...messagesRef.current, msg]
+    setMessages(messagesRef.current)
+  }
   const [transcript, setTranscript] = useState("")
   const [interim, setInterim]       = useState("")
   const [error, setError]           = useState("")
@@ -172,11 +178,7 @@ export function VoiceConversation({ onClose }: { onClose?: () => void }) {
     synthRef.current.speak(utt)
   }, [muted])
 
-  const addMessage = (role: "user" | "assistant", text: string) => {
-    setMessages(prev => [...prev, { role, text, timestamp: Date.now() }])
-  }
-
-  // ── Start listening ───────────────────────────────────────────────────────
+  
   const startListening = useCallback(() => {
     if (isListening.current) return
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
@@ -238,8 +240,8 @@ export function VoiceConversation({ onClose }: { onClose?: () => void }) {
     setVoiceState("thinking")
 
     try {
-      // Build conversation history (last 10 messages for context)
-      const history = messages.slice(-10).map(m => ({ role: m.role, content: m.text }))
+      // Build conversation history from ref (always fresh, no stale closure)
+      const history = messagesRef.current.slice(-10).map(m => ({ role: m.role, content: m.text }))
 
       const res = await fetch("/api/student/voice-conversation", {
         method: "POST",
@@ -258,7 +260,7 @@ export function VoiceConversation({ onClose }: { onClose?: () => void }) {
       setVoiceState("idle")
       if (!muted) speakText(fallback)
     }
-  }, [messages, muted, speakText])
+  }, [muted, speakText])
 
   // ── Orb tap ───────────────────────────────────────────────────────────────
   const handleOrbTap = () => {

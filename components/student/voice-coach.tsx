@@ -47,8 +47,8 @@ function ScoreRing({ score, color, size = 56 }: { score: number; color: string; 
         strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
         style={{ transition: "stroke-dashoffset 0.8s ease" }} />
       <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle"
-        className="rotate-90" fill={color}
-        style={{ fontSize: size * 0.22, fontWeight: 700, transform: `rotate(90deg)`, transformOrigin: "50% 50%", transition: "none" }}>
+        fill={color}
+        style={{ fontSize: size * 0.22, fontWeight: 700 }}>
         {score}
       </text>
     </svg>
@@ -614,6 +614,9 @@ export function VoiceCoach() {
   // STAGE: interview (Mock Interview mode)
   // ─────────────────────────────────────────────────────────────────────────
   if (stage === "interview" || (mode === "interview" && stage === "processing")) {
+    // In the interview block, TypeScript narrows stage to "interview"|"processing",
+    // so use a derived boolean for recording detection
+    const isRecording = (stage as string) === "recording"
     return (
       <div className="space-y-4">
         {/* Header */}
@@ -677,7 +680,7 @@ export function VoiceCoach() {
         </div>
 
         {/* Transcript preview */}
-        {(transcript || interim) && stage === "recording" && (
+        {(transcript || interim) && isRecording && (
           <div className="rounded-xl p-3"
             style={{ background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.15)" }}>
             <p className="text-xs text-muted-foreground leading-relaxed">
@@ -697,9 +700,9 @@ export function VoiceCoach() {
 
         {/* Mic control */}
         <div className="flex flex-col items-center gap-3">
-          <Waveform active={stage === "recording"} />
+          <Waveform active={isRecording} />
 
-          {stage === "recording" ? (
+          {isRecording ? (
             <button onClick={stopRecording}
               className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-red-500 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all active:scale-95">
               <Square className="h-6 w-6 fill-current" />
@@ -716,7 +719,7 @@ export function VoiceCoach() {
           )}
 
           <p className="text-xs text-muted-foreground">
-            {stage === "recording" ? "Tap to send your answer" :
+            {isRecording ? "Tap to send your answer" :
              stage === "processing" ? "Sending…" :
              isSpeaking ? "Interviewer is speaking…" : "Tap the mic to respond"}
           </p>
