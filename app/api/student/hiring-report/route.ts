@@ -94,7 +94,7 @@ export async function POST(req: Request) {
     ))
 
     if (!process.env.GROQ_API_KEY) {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations }) })
     }
 
     // Build section analysis only for sections that were tested
@@ -220,7 +220,7 @@ Return ONLY valid JSON:
     })
 
     if (!res.ok) {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations }) })
     }
 
     const data = await res.json()
@@ -231,7 +231,7 @@ Return ONLY valid JSON:
       const report = JSON.parse(json)
       return NextResponse.json({ report })
     } catch {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations }) })
     }
   } catch (err) {
     console.error("Hiring report error:", err)
@@ -239,9 +239,8 @@ Return ONLY valid JSON:
   }
 }
 
-function buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections = [], hasCoding = false, hasVerbal = false }: any) {
+function buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections = [], hasCoding = false, hasVerbal = false, violations = {} }: any) {
   const above = overallScore >= meta.benchmark
-  // Realistic probabilities — 0-100 scale, not fractions
   const baseProb = overallScore < 20 ? 5 :
                    overallScore < 40 ? 20 :
                    overallScore < 60 ? 35 :
@@ -263,6 +262,15 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
     selProb.hrRound = Math.min(90, prob + 10)
     roundPreds.hrRound = prob >= 35 ? "Pass" : "Fail"
   }
+
+  // Calculate integrity score from actual violations
+  const tabSwitches     = violations?.tabSwitches     ?? 0
+  const fullscreenExits = violations?.fullscreenExits ?? 0
+  const copyAttempts    = violations?.copyAttempts    ?? 0
+  const pasteAttempts   = violations?.pasteAttempts   ?? 0
+  const totalViolations = tabSwitches + fullscreenExits + copyAttempts + pasteAttempts
+  const integrityScore  = Math.max(0, Math.min(100, 100 - (tabSwitches * 5) - (fullscreenExits * 8) - (copyAttempts * 10) - (pasteAttempts * 10)))
+  const riskLevel       = integrityScore >= 85 ? "Low Risk" : integrityScore >= 65 ? "Medium Risk" : "High Risk"
 
   return {
     companyName: companyName || company.toUpperCase(),
@@ -304,10 +312,17 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
       thirtyDays: ["Week 1-2: Topic mastery", "Week 3: Mock tests", "Week 4: Company-specific simulations", "Daily: Track improvement"],
     },
     integrityAnalysis: {
-      integrityScore: 90,
-      riskLevel: "Low Risk",
+      integrityScore,
+      riskLevel,
       violations: [],
-      reasoning: "No significant integrity violations detected.",
+      reasoning: totalViolations === 0
+        ? "No integrity violations detected. Clean test-taking behavior."
+        : `${totalViolations} violation(s) detected: ${[
+            tabSwitches > 0 ? `${tabSwitches} tab switch(es)` : "",
+            fullscreenExits > 0 ? `${fullscreenExits} fullscreen exit(s)` : "",
+            copyAttempts > 0 ? `${copyAttempts} copy attempt(s)` : "",
+            pasteAttempts > 0 ? `${pasteAttempts} paste attempt(s)` : "",
+          ].filter(Boolean).join(", ")}.`,
     },
     companyInsights: {
       hiringProcess: `${companyName || company} follows a ${meta.rounds.join(" -> ")} process.`,
