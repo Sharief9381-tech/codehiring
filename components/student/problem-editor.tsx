@@ -525,7 +525,8 @@ export default function ProblemEditor({ problemId }: Props) {
 
         <div className="flex-1" />
 
-        {/* Prev / Next — left of theme selector */}
+        {/* Prev / Next — only shown for practice problems, not assessment */}
+        {!problemId.startsWith("prep-") && (
         <div className="flex items-center gap-1">
           <button
             onClick={() => prevProblem && goToProblem(prevProblem.slug)}
@@ -550,6 +551,7 @@ export default function ProblemEditor({ problemId }: Props) {
             <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
+        )}
         <div className="w-px h-4" style={{ background: T.border }} />
         {/* Theme selector — dark, light, monokai only */}
         <div className="flex items-center gap-1.5 rounded-md border px-2 py-1"
