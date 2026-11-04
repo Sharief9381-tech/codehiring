@@ -198,7 +198,8 @@ async function handleRequest(companyId: string, force = false) {
     companyEntry.sections,       // pass ALL_COMPANIES sections
     companyEntry.category,       // pass category for fallback
     companyEntry.difficulty,     // pass company difficulty
-    companyEntry.duration        // pass duration
+    companyEntry.duration,       // pass duration
+    companyEntry.questions       // pass total question count for proportional distribution
   )
   if (builtPattern && !force) {
     return NextResponse.json({
@@ -289,7 +290,8 @@ async function handleRequest(companyId: string, force = false) {
     companyEntry.sections,
     companyEntry.category,
     companyEntry.difficulty,
-    companyEntry.duration
+    companyEntry.duration,
+    companyEntry.questions
   )
 
   const finalPattern = {

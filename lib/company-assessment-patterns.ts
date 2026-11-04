@@ -281,9 +281,44 @@ function getSectionDisplayName(section: string): string {
   return map[section] ?? section
 }
 
+// Section weights for distributing total questions proportionally across section types
+// These weights reflect real-world exam distributions
+const SECTION_WEIGHTS: Record<string, number> = {
+  "quantitative":      3,   // Aptitude gets the most
+  "advanced-aptitude": 2.5, // Logical reasoning second
+  "verbal":            2,   // Verbal third
+  "basic-coding":      0.5, // MCQ coding light
+  "advanced-coding":   1,   // Actual coding problems are few
+  "logical":           2.5,
+  "coding":            1,
+}
+
+// Per-section time per question (minutes) — used to apportion duration
+const SECTION_TIME_PER_Q: Record<string, number> = {
+  "quantitative":      1.3,
+  "advanced-aptitude": 1.5,
+  "verbal":            1.2,
+  "basic-coding":      2,
+  "advanced-coding":   20,  // coding problems take much longer
+  "logical":           1.5,
+  "coding":            20,
+}
+
+// Minimum and maximum counts per section type
+const SECTION_MIN_MAX: Record<string, [number, number]> = {
+  "quantitative":      [10, 40],
+  "advanced-aptitude": [8,  30],
+  "verbal":            [8,  25],
+  "basic-coding":      [1,  10],
+  "advanced-coding":   [1,  5],
+  "logical":           [8,  25],
+  "coding":            [1,  5],
+}
+
 /**
  * Convert COMPANY_ASSESSMENT_PATTERNS to CompanyPattern format for the pattern API.
- * Works for ALL companies — uses specific pattern if available, else derives from category.
+ * Works for ALL companies — uses specific pattern if available, else derives from
+ * category + actual question count from ALL_COMPANIES.
  */
 export function getPatternForCompany(
   company: string,
@@ -291,7 +326,8 @@ export function getPatternForCompany(
   companySections?: string[],
   category?: string,
   companyDifficulty?: string,
-  companyDuration?: number
+  companyDuration?: number,
+  companyTotalQuestions?: number  // actual total from ALL_COMPANIES
 ): {
   totalQuestions: number
   totalTime: number
@@ -301,7 +337,7 @@ export function getPatternForCompany(
   }>
   notes: string
 } | null {
-  // Use specific pattern first
+  // Use specific hardcoded pattern first — most accurate
   const p = COMPANY_ASSESSMENT_PATTERNS[company]
   if (p) {
     const sections = Object.entries(p.sections).map(([id, s]) => ({
@@ -314,22 +350,70 @@ export function getPatternForCompany(
   // Derive from ALL_COMPANIES sections + category
   if (!companySections?.length) return null
 
+  // Separate coding vs non-coding sections
+  const codingSections    = companySections.filter(s => s === "advanced-coding" || s === "basic-coding" || s === "coding")
+  const nonCodingSections = companySections.filter(s => !codingSections.includes(s))
+
+  // Coding problems are ALWAYS fixed (1–3 actual problems, not scaled by total)
+  const codingCounts: Record<string, number> = {}
+  for (const s of codingSections) {
+    if (s === "basic-coding") codingCounts[s] = 1
+    else if (s === "advanced-coding") codingCounts[s] = companyDifficulty === "Hard" || companyDifficulty === "Very Hard" ? 2 : 1
+    else codingCounts[s] = companyDifficulty === "Hard" || companyDifficulty === "Very Hard" ? 2 : 1
+  }
+  const totalCodingQs = Object.values(codingCounts).reduce((a, b) => a + b, 0)
+
+  // Distribute the remaining questions across non-coding sections proportionally
+  const targetTotal = companyTotalQuestions ?? 50  // fallback if not provided
+  const aptitudeTotal = Math.max(targetTotal - totalCodingQs, nonCodingSections.length * 5)
+
+  // Compute weights for non-coding sections
+  const totalWeight = nonCodingSections.reduce((sum, s) => sum + (SECTION_WEIGHTS[s] ?? 2), 0)
+  const nonCodingCounts: Record<string, number> = {}
+  let remaining = aptitudeTotal
+  nonCodingSections.forEach((s, i) => {
+    if (i === nonCodingSections.length - 1) {
+      // Last section gets the remainder
+      nonCodingCounts[s] = remaining
+    } else {
+      const weight = SECTION_WEIGHTS[s] ?? 2
+      const raw = Math.round((weight / totalWeight) * aptitudeTotal)
+      const [min, max] = SECTION_MIN_MAX[s] ?? [5, 30]
+      const count = Math.max(min, Math.min(max, raw))
+      nonCodingCounts[s] = count
+      remaining -= count
+    }
+    // Clamp last section too
+    const [min, max] = SECTION_MIN_MAX[s] ?? [5, 30]
+    nonCodingCounts[s] = Math.max(min, Math.min(max, nonCodingCounts[s] ?? 5))
+  })
+
+  // Build final sections array
   const sections = companySections.map(sectionId => {
     const config = getCompanySectionConfigForAny(company, sectionId, category, companyDifficulty)
     if (!config) return null
+
+    const questions = codingCounts[sectionId] ?? nonCodingCounts[sectionId] ?? config.count
+    // Time: coding gets fixed per-problem time; aptitude gets proportional time
+    const isCoding = codingSections.includes(sectionId)
+    const timeMinutes = isCoding
+      ? questions * (SECTION_TIME_PER_Q[sectionId] ?? 20)
+      : Math.max(10, Math.round(questions * (SECTION_TIME_PER_Q[sectionId] ?? 1.4)))
+
     return {
       id:          sectionId,
       name:        config.name,
-      questions:   config.count,
-      timeMinutes: config.timeMinutes,
+      questions,
+      timeMinutes,
       difficulty:  config.difficulty,
       topics:      config.topics,
-      isCoding:    config.isCoding,
+      isCoding,
     }
   }).filter(Boolean) as Array<{id: string; name: string; questions: number; timeMinutes: number; difficulty: string; topics: string[]; isCoding: boolean}>
 
   if (sections.length === 0) return null
 
   const totalTime = companyDuration ?? sections.reduce((sum, s) => sum + s.timeMinutes, 0)
-  return { totalQuestions: sections.reduce((sum, s) => sum + s.questions, 0), totalTime, sections, notes: "" }
+  const totalQuestions = sections.reduce((sum, s) => sum + s.questions, 0)
+  return { totalQuestions, totalTime, sections, notes: "" }
 }
