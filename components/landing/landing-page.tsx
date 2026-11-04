@@ -368,9 +368,9 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Scroll arrow — centered between hero and trusted-by */}
+      {/* Scroll arrow — centered in existing gap, no extra space */}
       <motion.a href="#stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-        className="flex justify-center py-4 text-[var(--sci-fg)]/40 hover:text-[var(--sci-fg)]/70 transition-colors animate-bounce">
+        className="flex justify-center -mt-8 mb-0 text-[var(--sci-fg)]/40 hover:text-[var(--sci-fg)]/70 transition-colors animate-bounce">
         <ChevronDown className="h-6 w-6" />
       </motion.a>
 
