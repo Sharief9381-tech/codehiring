@@ -30,8 +30,8 @@ const STEPS = [
   {
     id: "college",
     tag: "03 / College",
-    headline: "College tracks every placement",
-    sub: "TPOs see real-time analytics - who's placed, who's interviewing, which branch is leading. No spreadsheets.",
+    headline: "Placement insights from historical data",
+    sub: "TPOs see year-over-year placement trends, top hiring companies, branch-wise performance, and package distributions — all from real verified data.",
     accent: "teal",
     icon: GraduationCap,
     visual: <CollegeVisual />,
@@ -308,49 +308,62 @@ function CollegeVisual() {
       <div className="rounded-2xl border border-teal-500/20 bg-card overflow-hidden shadow-2xl shadow-teal-500/10">
         <div className="bg-gradient-to-r from-teal-500/12 to-emerald-500/5 px-4 py-3">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-bold text-teal-400">🏫 College Analytics</p>
-            <span className="text-[10px] text-zinc-600">RVR & JC College</span>
+            <p className="text-xs font-bold text-teal-400">📊 Placement History</p>
+            <span className="text-[10px] text-zinc-600">RVR & JC College . 2021–2025</span>
           </div>
         </div>
-        <div className="p-4 space-y-3">
-          {/* Placement rate */}
-          <div className="flex items-center justify-between py-2 border-b border-white/5">
-            <span className="text-xs text-zinc-500">Placement Rate</span>
-            <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-              className="text-lg font-black text-emerald-400">78%</motion.span>
-          </div>
-          {/* Student breakdown */}
-          <div className="space-y-2">
-            {[
-              { label: "Placed",       val: 234, color: "bg-emerald-500", text: "text-emerald-400" },
-              { label: "Interviewing", val: 45,  color: "bg-amber-500",   text: "text-amber-400" },
-              { label: "Searching",    val: 67,  color: "bg-blue-500",    text: "text-blue-400" },
-            ].map(({ label, val, color, text }) => (
-              <div key={label} className="flex items-center gap-3">
-                <span className="text-[10px] text-zinc-600 w-20 shrink-0">{label}</span>
-                <div className="flex-1 h-1.5 rounded-full bg-white/5">
-                  <motion.div initial={{ width: 0 }} whileInView={{ width: `${(val / 346) * 100}%` }}
-                    viewport={{ once: true }} transition={{ duration: 1.2, ease: "easeOut" }}
-                    className={`h-full rounded-full ${color}`} />
+        <div className="p-4 space-y-4">
+          {/* Year-over-year bars */}
+          <div>
+            <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-2">Placement Rate by Year</p>
+            <div className="space-y-1.5">
+              {[
+                { year: "2021", rate: 62, color: "bg-zinc-500" },
+                { year: "2022", rate: 71, color: "bg-teal-600" },
+                { year: "2023", rate: 75, color: "bg-teal-500" },
+                { year: "2024", rate: 81, color: "bg-emerald-500" },
+                { year: "2025", rate: 87, color: "bg-emerald-400" },
+              ].map(({ year, rate, color }) => (
+                <div key={year} className="flex items-center gap-2">
+                  <span className="text-[10px] text-zinc-500 w-8">{year}</span>
+                  <div className="flex-1 h-2 rounded-full bg-white/5">
+                    <motion.div initial={{ width: 0 }} whileInView={{ width: `${rate}%` }}
+                      viewport={{ once: true }} transition={{ duration: 1, ease: "easeOut" }}
+                      className={`h-full rounded-full ${color}`} />
+                  </div>
+                  <span className="text-[10px] font-bold text-zinc-400 w-8 text-right">{rate}%</span>
                 </div>
-                <span className={`text-[10px] font-bold ${text} w-8 text-right tabular-nums`}>{val}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-          {/* Branch performance */}
-          <div className="pt-2 space-y-1.5">
-            <p className="text-[10px] text-zinc-600 uppercase tracking-widest">Branch Performance</p>
-            {[["CSE","92%"],["IT","85%"],["ECE","71%"]].map(([branch, rate]) => (
-              <div key={branch} className="flex items-center gap-2 text-[10px]">
-                <span className="text-zinc-500 w-8">{branch}</span>
-                <div className="flex-1 h-1 rounded-full bg-white/5">
-                  <motion.div initial={{ width: 0 }} whileInView={{ width: rate }} viewport={{ once: true }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="h-full rounded-full bg-teal-500" />
-                </div>
-                <span className="text-zinc-400 w-8 text-right">{rate}</span>
-              </div>
-            ))}
+
+          {/* Top companies */}
+          <div className="border-t border-white/5 pt-3">
+            <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-2">Top Hiring Companies</p>
+            <div className="flex flex-wrap gap-1.5">
+              {["TCS","Infosys","Wipro","Capgemini","Cognizant","HCL"].map(c => (
+                <span key={c} className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">{c}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Avg package */}
+          <div className="border-t border-white/5 pt-3 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] text-zinc-600">Avg Package</p>
+              <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                className="text-lg font-black text-emerald-400">₹5.2 LPA</motion.p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-zinc-600">Highest</p>
+              <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                className="text-lg font-black text-teal-400">₹18 LPA</motion.p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-zinc-600">YoY Growth</p>
+              <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                className="text-lg font-black text-amber-400">+23%</motion.p>
+            </div>
           </div>
         </div>
       </div>
@@ -358,10 +371,10 @@ function CollegeVisual() {
       <motion.div initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         transition={{ delay: 0.4 }}
         className="flex items-center gap-3 rounded-xl border border-teal-500/20 bg-teal-500/6 px-4 py-3">
-        <span className="text-xl shrink-0">*</span>
+        <span className="text-xl shrink-0">📈</span>
         <div>
-          <p className="text-xs font-bold text-white">Drive completed</p>
-          <p className="text-[10px] text-zinc-500">12 students placed . Data auto-updated</p>
+          <p className="text-xs font-bold text-white">87% placed in 2025</p>
+          <p className="text-[10px] text-zinc-500">+6% from 2024 · Best year on record</p>
         </div>
       </motion.div>
     </div>
