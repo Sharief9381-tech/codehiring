@@ -64,12 +64,13 @@ export async function POST(req: Request) {
       companyName,
       targetRole,
       scores,
+      sectionRaw = {},  // { sectionKey: { correct: number; total: number } }
       candidateRatings,
       testHistory,
       violations,
       timeStats,
       topicScores,
-      activeSections = [], // which sections were actually in the assessment
+      activeSections = [],
     } = body
 
     const meta = getCompanyMeta(company)
@@ -94,13 +95,18 @@ export async function POST(req: Request) {
     ))
 
     if (!process.env.GROQ_API_KEY) {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations, sectionScores, sectionRaw }) })
     }
 
     // Build section analysis only for sections that were tested
+    // Include raw marks (correct/total) if available
     const testedSections = Object.entries(sectionScores)
       .filter(([, v]) => typeof v === "number")
-      .map(([k, v]) => `- ${k}: ${v}%`)
+      .map(([k, v]) => {
+        const raw = sectionRaw[k]
+        const marksStr = raw ? ` (${raw.correct}/${raw.total} correct)` : ""
+        return `- ${k}: ${v}%${marksStr}`
+      })
       .join("\n")
 
     const prompt = `You are the Hiring Simulation Intelligence Engine for CodeHiring.
@@ -150,7 +156,10 @@ Return ONLY valid JSON:
     "overall": <realistic 0-100 percentage>
   },
   "sectionAnalysis": [
-    ${Object.keys(sectionScores).map(k => `{ "section": "${k}", "score": ${sectionScores[k]}, "benchmark": ${meta.benchmark}, "status": "<Strong|Average|Weak>", "feedback": "specific feedback" }`).join(",\n    ")}
+    ${Object.keys(sectionScores).map(k => {
+      const raw = sectionRaw[k]
+      return `{ "section": "${k}", "score": ${sectionScores[k]}, "correct": ${raw?.correct ?? Math.round((sectionScores[k]/100) * (raw?.total ?? 10))}, "total": ${raw?.total ?? 10}, "benchmark": ${meta.benchmark}, "status": "<Strong|Average|Weak>", "feedback": "specific feedback" }`
+    }).join(",\n    ")}
   ],
   "hrReport": {
     "candidateSummary": "2-3 sentence professional summary based only on tested sections",
@@ -211,7 +220,7 @@ Return ONLY valid JSON:
     })
 
     if (!res.ok) {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations, sectionScores, sectionRaw }) })
     }
 
     const data = await res.json()
@@ -222,7 +231,7 @@ Return ONLY valid JSON:
       const report = JSON.parse(json)
       return NextResponse.json({ report })
     } catch {
-      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations }) })
+      return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations, sectionScores, sectionRaw }) })
     }
   } catch (err) {
     console.error("Hiring report error:", err)
@@ -230,7 +239,7 @@ Return ONLY valid JSON:
   }
 }
 
-function buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections = [], hasCoding = false, hasVerbal = false, violations = {} }: any) {
+function buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections = [], hasCoding = false, hasVerbal = false, violations = {}, sectionScores = {}, sectionRaw = {} }: any) {
   const above = overallScore >= meta.benchmark
   const baseProb = overallScore < 20 ? 5 :
                    overallScore < 40 ? 20 :
@@ -239,7 +248,6 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
                    overallScore < 85 ? 70 : 85
   const prob = Math.min(95, Math.max(5, baseProb))
 
-  return {
   const tabSwitches     = violations?.tabSwitches     ?? 0
   const fullscreenExits = violations?.fullscreenExits ?? 0
   const copyAttempts    = violations?.copyAttempts    ?? 0
@@ -247,6 +255,21 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
   const totalViolations = tabSwitches + fullscreenExits + copyAttempts + pasteAttempts
   const integrityScore  = Math.max(0, Math.min(100, 100 - (tabSwitches * 5) - (fullscreenExits * 8) - (copyAttempts * 10) - (pasteAttempts * 10)))
   const riskLevel       = integrityScore >= 85 ? "Low Risk" : integrityScore >= 65 ? "Medium Risk" : "High Risk"
+
+  // Build sectionAnalysis from actual section scores if available, else use focusAreas
+  const sectionAnalysis = Object.keys(sectionScores).length > 0
+    ? Object.entries(sectionScores).map(([k, v]: any) => {
+        const raw = sectionRaw[k]
+        return {
+          section: k, score: v,
+          correct: raw?.correct ?? Math.round((v / 100) * (raw?.total ?? 10)),
+          total:   raw?.total   ?? 10,
+          benchmark: meta.benchmark,
+          status: v >= meta.benchmark ? "Strong" : v >= meta.benchmark * 0.7 ? "Average" : "Weak",
+          feedback: `Focus on ${k} practice sets.`,
+        }
+      })
+    : meta.focusAreas.map((s: string) => ({ section: s, score: overallScore, correct: null, total: null, benchmark: meta.benchmark, status: above ? "Strong" : "Average", feedback: `Focus on ${s} practice sets.` }))
 
   return {
     companyName: companyName || company.toUpperCase(),
@@ -257,7 +280,7 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
     readinessLabel: readiness >= 91 ? "Highly Ready" : readiness >= 76 ? "Ready" : readiness >= 61 ? "Moderately Ready" : readiness >= 41 ? "Needs Improvement" : "Not Ready",
     benchmarkStatus: above ? "Above Benchmark" : overallScore === meta.benchmark ? "At Benchmark" : "Below Benchmark",
     selectionProbability: { overall: prob },
-    sectionAnalysis: meta.focusAreas.map((s: string) => ({ section: s, score: overallScore, benchmark: meta.benchmark, status: above ? "Strong" : "Average", feedback: `Focus on ${s} practice sets.` })),
+    sectionAnalysis,
     hrReport: {
       candidateSummary: `Candidate demonstrated ${above ? "above average" : "below average"} performance in ${companyName || company} simulation.`,
       strengths: ["Completed all sections", "Consistent attempt rate", "Technical awareness"],

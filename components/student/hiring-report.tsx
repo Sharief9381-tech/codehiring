@@ -18,7 +18,7 @@ interface Report {
   benchmarkStatus: string
   selectionProbability: { overall: number; [key: string]: number }
   roundPredictions?: Record<string, string>
-  sectionAnalysis: Array<{ section: string; score: number; benchmark: number; status: string; feedback: string }>
+  sectionAnalysis: Array<{ section: string; score: number; correct?: number; total?: number; benchmark: number; status: string; feedback: string }>
   hrReport: {
     candidateSummary: string; strengths: string[]; weaknesses: string[];
     riskAreas: string[]; behaviorIndicators: string; learningAbility: string;
@@ -175,15 +175,26 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
           <div className="space-y-4 pt-4">
             {report.sectionAnalysis.map((s, i) => {
               const c = scoreColor(s.score)
+              const sectionLabel = s.section
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, ch => ch.toUpperCase())
+              const hasRaw = s.correct !== undefined && s.correct !== null && s.total
               return (
                 <div key={i} className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-bold text-white">{s.section}</span>
+                    <span className="text-sm font-bold text-white">{sectionLabel}</span>
                     <div className="flex items-center gap-2">
                       <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: `${c}15`, color: c }}>
                         {scoreLabel(s.score)}
                       </span>
-                      <span className="text-lg font-black tabular-nums" style={{ color: c }}>{s.score}%</span>
+                      {hasRaw ? (
+                        <span className="text-sm font-black tabular-nums" style={{ color: c }}>
+                          {s.correct}/{s.total}
+                          <span className="text-xs text-white/40 font-medium ml-1">({s.score}%)</span>
+                        </span>
+                      ) : (
+                        <span className="text-lg font-black tabular-nums" style={{ color: c }}>{s.score}%</span>
+                      )}
                     </div>
                   </div>
                   <Bar value={s.score} benchmark={s.benchmark} color={c} />

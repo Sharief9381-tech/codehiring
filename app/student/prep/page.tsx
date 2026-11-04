@@ -615,6 +615,8 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   const [stage, setStage] = useState<AssessStage>("info")
   const [curSection, setCurSection] = useState(0)
   const [sectionScores, setSectionScores] = useState<Record<string, number>>({})
+  // Raw marks per section: { sectionKey: { correct: number; total: number } }
+  const [sectionRaw, setSectionRaw] = useState<Record<string, { correct: number; total: number }>>({})
   const [questions, setQuestions] = useState<MCQ[]>([])
   const [codingQs, setCodingQs] = useState<CodingQ[]>([])
   const [codingIdx, setCodingIdx] = useState(0)
@@ -732,6 +734,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     const duration = snapshot?.totalTime ?? company.duration
     setCurSection(0)
     setSectionScores({})
+    setSectionRaw({})
     setAllQuestions([])
     setAllAnswers([])
     setTimeLeft(duration * 60)
@@ -741,7 +744,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     loadSection(firstSection, snapshot)
   }
 
-  const generateReport = async (finalScore: number, finalScores: Record<string, number>, qs: MCQ[], ans: number[]) => {
+  const generateReport = async (finalScore: number, finalScores: Record<string, number>, qs: MCQ[], ans: number[], rawMarks?: Record<string, { correct: number; total: number }>) => {
     setProctorActive(false)
     setReportLoading(true)
     try {
@@ -763,6 +766,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           companyName: company.name,
           targetRole: activeSections.includes("advanced-coding") || activeSections.includes("coding") ? "Software Developer" : "Systems Engineer",
           scores: { overall: finalScore, sections: finalScores },
+          sectionRaw: rawMarks ?? sectionRaw,
           candidateRatings: {
             aptitude:       finalScores.quantitative    ?? finalScores["advanced-aptitude"] ?? 0,
             coding:         finalScores.coding          ?? finalScores["advanced-coding"]   ?? finalScores["basic-coding"] ?? 0,
@@ -811,6 +815,11 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
   }
 
   const sectionDone = (score: number, ans: number[], qs: MCQ[]) => {
+    // Track raw correct/total for this section
+    const correct = ans.filter((a, i) => a === qs[i]?.correct).length
+    const newRaw = { ...sectionRaw, [section]: { correct, total: qs.length } }
+    setSectionRaw(newRaw)
+
     const newScores = { ...sectionScores, [section]: score }
     const newQs = [...allQuestions, ...qs]
     const newAnswers = [...allAnswers, ...ans]
@@ -833,7 +842,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
         : Math.round(Object.values(newScores).reduce((a, b) => a + b, 0) / Object.values(newScores).length)
       setAnswers(newAnswers)
       setQuestions(newQs)
-      generateReport(finalScore, newScores, newQs, newAnswers)
+      generateReport(finalScore, newScores, newQs, newAnswers, newRaw)
     }
   }
 
@@ -858,6 +867,8 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
 
     // Score = (solved / total) * 100, minimum 0 if nothing attempted
     const codingScore = total > 0 ? Math.round((solvedCount / total) * 100) : 0
+    const newRaw = { ...sectionRaw, coding: { correct: solvedCount, total } }
+    setSectionRaw(newRaw)
     const newScores = { ...sectionScores, coding: codingScore }
     setSectionScores(newScores)
     if (next < snapSections.length) {
@@ -866,7 +877,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
     } else {
       if (timerRef.current) clearInterval(timerRef.current)
       const finalScore = Math.round(Object.values(newScores).reduce((a, b) => a + b, 0) / Object.values(newScores).length)
-      generateReport(finalScore, newScores, allQuestions, allAnswers)
+      generateReport(finalScore, newScores, allQuestions, allAnswers, newRaw)
     }
   }
 
