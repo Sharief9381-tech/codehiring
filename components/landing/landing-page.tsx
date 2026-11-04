@@ -368,7 +368,7 @@ export function LandingPage() {
         </div>
 
         <motion.a href="#stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-          className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[var(--sci-fg)]/30 hover:text-[var(--sci-fg)]/60 transition-colors animate-bounce">
+          className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 text-[var(--sci-fg)]/30 hover:text-[var(--sci-fg)]/60 transition-colors animate-bounce z-10">
           <ChevronDown className="h-6 w-6" />
         </motion.a>
       </section>
