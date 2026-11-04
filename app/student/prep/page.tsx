@@ -1267,12 +1267,15 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
             <span>·</span>
             <span>Problem {codingIdx + 1} of {codingQs.length}</span>
           </div>
-          <button
-            onClick={() => { if (codingIdx + 1 < codingQs.length) { setCodingIdx(i => i + 1) } else { codingDone() } }}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold text-white transition-all"
-            style={{ background: isLast ? "#238636" : "#7c3aed", border: `1px solid ${isLast ? "#2ea043" : "#6d28d9"}` }}>
-            {isLast ? "Finish Section" : "Next Problem →"}
-          </button>
+          {/* Only show Next/Finish button when there are multiple problems */}
+          {codingQs.length > 1 && (
+            <button
+              onClick={() => { if (codingIdx + 1 < codingQs.length) { setCodingIdx(i => i + 1) } else { codingDone() } }}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold text-white transition-all"
+              style={{ background: isLast ? "#238636" : "#7c3aed", border: `1px solid ${isLast ? "#2ea043" : "#6d28d9"}` }}>
+              {isLast ? "Finish Section" : "Next Problem →"}
+            </button>
+          )}
         </div>
         {/* Full problem editor fills remaining space */}
         <div className="flex-1 min-h-0">
