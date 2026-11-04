@@ -16,8 +16,8 @@ interface Report {
   readinessScore: number
   readinessLabel: string
   benchmarkStatus: string
-  selectionProbability: { round1: number; round2?: number; technicalRound: number; hrRound: number; overall: number }
-  roundPredictions: { round1: string; technicalRound: string; hrRound: string }
+  selectionProbability: { overall: number; [key: string]: number }
+  roundPredictions?: Record<string, string>
   sectionAnalysis: Array<{ section: string; score: number; benchmark: number; status: string; feedback: string }>
   hrReport: {
     candidateSummary: string; strengths: string[]; weaknesses: string[];
@@ -159,41 +159,13 @@ export function HiringReport({ report, companyColor = "#7c3aed", onRetry, onBack
 
       {/* ── SELECTION PROBABILITY ── */}
       <Card title="Selection Probability" emoji="🎯">
-        <div className="pt-4 grid grid-cols-3 gap-3">
-          {/* Dynamically show only rounds that have data */}
-          {[
-            { label: "Round 1",   key: "round1",        val: report.selectionProbability?.round1 },
-            { label: "Technical", key: "technicalRound", val: report.selectionProbability?.technicalRound },
-            { label: "HR Round",  key: "hrRound",        val: report.selectionProbability?.hrRound },
-          ].filter(r => r.val !== undefined && r.val !== null).map(r => {
-            const c = scoreColor(r.val!)
-            return (
-              <div key={r.key} className="rounded-xl p-4 text-center" style={{ background: `${c}08`, border: `1px solid ${c}20` }}>
-                <p className="text-2xl font-black tabular-nums" style={{ color: c }}>{r.val}%</p>
-                <p className="text-xs text-white/50 mt-0.5">{r.label}</p>
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Overall probability */}
         <div className="mt-3 rounded-xl p-4 flex items-center gap-4" style={{ background: `${companyColor}12`, border: `1px solid ${companyColor}25` }}>
-          <Ring value={report.selectionProbability?.overall ?? 0} size={64} color={companyColor} />
+          <Ring value={report.selectionProbability?.overall ?? 0} size={72} color={companyColor} />
           <div>
-            <p className="font-black text-white text-lg">{report.selectionProbability?.overall ?? 0}% Overall</p>
-            <p className="text-xs text-white/50">Probability of selection</p>
+            <p className="font-black text-white text-2xl">{report.selectionProbability?.overall ?? 0}%</p>
+            <p className="text-sm font-semibold text-white/70">Overall selection probability</p>
+            <p className="text-xs text-white/40 mt-0.5">Based on your assessment performance</p>
           </div>
-        </div>
-
-        {/* Round predictions */}
-        <div className="flex gap-2 flex-wrap mt-3">
-          {Object.entries(report.roundPredictions ?? {}).map(([round, pred]) => (
-            <span key={round} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
-              pred === "Pass" ? "bg-emerald-500/12 text-emerald-400" : "bg-red-500/12 text-red-400"
-            }`}>
-              {pred === "Pass" ? "✓" : "✗"} {round.replace(/([A-Z])/g, " $1").trim()}: {pred}
-            </span>
-          ))}
         </div>
       </Card>
 

@@ -128,15 +128,14 @@ TIME: ${timeStats?.totalTime ?? "N/A"} min total, avg ${timeStats?.avgTimePerQ ?
 
 IMPORTANT RULES:
 1. selectionProbability should be REALISTIC percentages (0-100, NOT 0-1). If score is 7%, probability is 2-5% not 0.05%.
-2. roundPredictions MUST only include rounds that were actually tested: ${actualRounds.join(", ")}
-3. sectionAnalysis MUST only include sections that were tested: ${Object.keys(sectionScores).join(", ")}
-4. If communication was NOT tested, do NOT include communication in strengths/weaknesses
-5. Selection probabilities should be on a 0-100 scale where:
-   - Score 0-20%: Round1 probability 5-15%
-   - Score 21-40%: Round1 probability 15-30%
-   - Score 41-60%: Round1 probability 30-50%
-   - Score 61-75%: Round1 probability 50-70%
-   - Score 76-100%: Round1 probability 70-90%
+2. sectionAnalysis MUST only include sections that were tested: ${Object.keys(sectionScores).join(", ")}
+3. If communication was NOT tested, do NOT include communication in strengths/weaknesses
+4. Selection probability should be on a 0-100 scale where:
+   - Score 0-20%: probability 5-15%
+   - Score 21-40%: probability 15-30%
+   - Score 41-60%: probability 30-50%
+   - Score 61-75%: probability 50-70%
+   - Score 76-100%: probability 70-90%
 
 Return ONLY valid JSON:
 {
@@ -148,15 +147,7 @@ Return ONLY valid JSON:
   "readinessLabel": "<Not Ready|Needs Improvement|Moderately Ready|Ready|Highly Ready>",
   "benchmarkStatus": "<Above Benchmark|At Benchmark|Below Benchmark>",
   "selectionProbability": {
-    ${hasCoding || hasAptitude ? '"round1": <realistic 0-100 percentage>,' : ''}
-    ${hasCoding ? '"technicalRound": <realistic 0-100 percentage>,' : ''}
-    ${hasVerbal ? '"hrRound": <realistic 0-100 percentage>,' : ''}
     "overall": <realistic 0-100 percentage>
-  },
-  "roundPredictions": {
-    ${hasCoding || hasAptitude ? '"round1": "<Pass|Fail>",' : ''}
-    ${hasCoding ? '"technicalRound": "<Pass|Fail>",' : ''}
-    ${hasVerbal ? '"hrRound": "<Pass|Fail>"' : '"overall": "<Pass|Fail>"'}
   },
   "sectionAnalysis": [
     ${Object.keys(sectionScores).map(k => `{ "section": "${k}", "score": ${sectionScores[k]}, "benchmark": ${meta.benchmark}, "status": "<Strong|Average|Weak>", "feedback": "specific feedback" }`).join(",\n    ")}
@@ -247,23 +238,8 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
                    overallScore < 75 ? 55 :
                    overallScore < 85 ? 70 : 85
   const prob = Math.min(95, Math.max(5, baseProb))
-  const roundPreds: any = {}
-  const selProb: any = { overall: prob }
 
-  if (hasCoding || activeSections.length > 0) {
-    selProb.round1 = Math.min(95, prob + 8)
-    roundPreds.round1 = prob >= 40 ? "Pass" : "Fail"
-  }
-  if (hasCoding) {
-    selProb.technicalRound = Math.max(5, prob - 5)
-    roundPreds.technicalRound = prob >= 50 ? "Pass" : "Fail"
-  }
-  if (hasVerbal) {
-    selProb.hrRound = Math.min(90, prob + 10)
-    roundPreds.hrRound = prob >= 35 ? "Pass" : "Fail"
-  }
-
-  // Calculate integrity score from actual violations
+  return {
   const tabSwitches     = violations?.tabSwitches     ?? 0
   const fullscreenExits = violations?.fullscreenExits ?? 0
   const copyAttempts    = violations?.copyAttempts    ?? 0
@@ -280,8 +256,7 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
     readinessScore: readiness,
     readinessLabel: readiness >= 91 ? "Highly Ready" : readiness >= 76 ? "Ready" : readiness >= 61 ? "Moderately Ready" : readiness >= 41 ? "Needs Improvement" : "Not Ready",
     benchmarkStatus: above ? "Above Benchmark" : overallScore === meta.benchmark ? "At Benchmark" : "Below Benchmark",
-    selectionProbability: selProb,
-    roundPredictions: roundPreds,
+    selectionProbability: { overall: prob },
     sectionAnalysis: meta.focusAreas.map((s: string) => ({ section: s, score: overallScore, benchmark: meta.benchmark, status: above ? "Strong" : "Average", feedback: `Focus on ${s} practice sets.` })),
     hrReport: {
       candidateSummary: `Candidate demonstrated ${above ? "above average" : "below average"} performance in ${companyName || company} simulation.`,
