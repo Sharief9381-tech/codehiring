@@ -366,11 +366,13 @@ export function LandingPage() {
             </motion.div>
           </div>
         </div>
+      </section>
 
-        <motion.a href="#stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[var(--sci-fg)]/40 hover:text-[var(--sci-fg)]/70 transition-colors animate-bounce">
-          <ChevronDown className="h-6 w-6" />
-        </motion.a>      </section>
+      {/* Scroll arrow — centered between hero and trusted-by */}
+      <motion.a href="#stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
+        className="flex justify-center py-4 text-[var(--sci-fg)]/40 hover:text-[var(--sci-fg)]/70 transition-colors animate-bounce">
+        <ChevronDown className="h-6 w-6" />
+      </motion.a>
 
       {/* ══ TRUSTED BY ══════════════════════════════════════════════ */}
       {topColleges.length > 0 && (
