@@ -9,7 +9,7 @@ import type { GeneratedQuestion, QuestionRequest } from "./types"
 
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 const COLLECTION   = "questions_cache"
-const CACHE_VERSION = "v2" // bump to invalidate old easy questions
+const CACHE_VERSION = "v3" // bumped: Groq now primary, stale questions cleared
 
 function cacheKey(req: QuestionRequest): string {
   const roundedCount = Math.ceil(req.count / 5) * 5

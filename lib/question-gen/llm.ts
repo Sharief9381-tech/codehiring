@@ -110,28 +110,7 @@ export async function callLLM(
   const key3 = process.env.GEMINI_API_KEY_3 || ""
   const key4 = process.env.GEMINI_API_KEY_4 || ""
 
-  // ── 1. gemini-3.8-flash with KEY4 (freshest quota) ────────────────────────
-  if (key4) {
-    try {
-      const text = await callGeminiModel(GEMINI_38, messages, key4)
-      if (text.length > 20) return { content: text, model: "gemini-3.8-flash" }
-    } catch (e: any) {
-      console.warn("gemini-3.8-flash KEY4:", e.message?.slice(0, 60))
-    }
-  }
-
-  // ── 2. gemini-3.5-flash with all 4 keys ───────────────────────────────────
-  for (const [key, label] of [[key4, "K4"], [key1, "K1"], [key2, "K2"], [key3, "K3"]] as [string, string][]) {
-    if (!key) continue
-    try {
-      const text = await callGeminiModel(GEMINI_35, messages, key)
-      if (text.length > 20) return { content: text, model: "gemini-3.5-flash" }
-    } catch (e: any) {
-      console.warn(`gemini-3.5-flash ${label}:`, e.message?.slice(0, 60))
-    }
-  }
-
-  // ── 3. Groq ────────────────────────────────────────────────────────────────
+  // ── 1. Groq — PRIMARY (fast, reliable, no thinking overhead) ─────────────
   const groqKey = process.env.GROQ_API_KEY
   if (groqKey) {
     try {
@@ -147,6 +126,27 @@ export async function callLLM(
         if (text.length > 20) return { content: text, model: "openai/gpt-oss-20b" }
       }
     } catch {}
+  }
+
+  // ── 2. gemini-3.8-flash with KEY4 ────────────────────────────────────────
+  if (key4) {
+    try {
+      const text = await callGeminiModel(GEMINI_38, messages, key4)
+      if (text.length > 20) return { content: text, model: "gemini-3.8-flash" }
+    } catch (e: any) {
+      console.warn("gemini-3.8-flash KEY4:", e.message?.slice(0, 60))
+    }
+  }
+
+  // ── 3. gemini-3.5-flash with all 4 keys ──────────────────────────────────
+  for (const [key, label] of [[key4, "K4"], [key1, "K1"], [key2, "K2"], [key3, "K3"]] as [string, string][]) {
+    if (!key) continue
+    try {
+      const text = await callGeminiModel(GEMINI_35, messages, key)
+      if (text.length > 20) return { content: text, model: "gemini-3.5-flash" }
+    } catch (e: any) {
+      console.warn(`gemini-3.5-flash ${label}:`, e.message?.slice(0, 60))
+    }
   }
 
   // ── 4. OpenAI ──────────────────────────────────────────────────────────────
