@@ -293,7 +293,7 @@ function HiredVisual() {
         className="flex items-center gap-3 rounded-xl border border-amber-500/20 bg-amber-500/6 px-4 py-3">
         <Zap className="h-5 w-5 text-amber-400 shrink-0" />
         <div>
-          <p className="text-xs font-bold text-white">Hired in 4 hours</p>
+          <p className="text-xs font-bold text-white">Get Hired</p>
           <p className="text-[10px] text-zinc-500">From problem solved &rarr; interview booked</p>
         </div>
         <Star className="h-4 w-4 text-amber-400 ml-auto fill-amber-400" />
@@ -567,7 +567,7 @@ export function ProductShowcase() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/12 border border-emerald-500/25 text-emerald-400 text-xs font-bold">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Zero fake data
+                  Verified data
                 </span>
               </div>
             </div>

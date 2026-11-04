@@ -286,14 +286,14 @@ export function LandingPage() {
                 <Link href="/signup?role=student">
                   <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}>
                     <Button size="lg" className="gap-2 bg-[rgb(var(--sci))]/10 hover:bg-[rgb(var(--sci))]/20 text-[var(--sci-fg)] border border-[rgb(var(--sci))]/40 hover:border-[rgb(var(--sci))]/70 shadow-[0_0_20px_rgba(var(--sci),0.15)] hover:shadow-[0_0_30px_rgba(var(--sci),0.3)] font-semibold tracking-wide rounded-full text-sm transition-all">
-                      <Sparkles className="h-4 w-4" /> Initialize Profile
+                      <Sparkles className="h-4 w-4" /> Create my free profile
                     </Button>
                   </motion.div>
                 </Link>
                 <Link href="/login">
                   <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}>
                     <Button size="lg" variant="outline" className="border-white/15 text-zinc-400 hover:text-white hover:bg-white/5 font-semibold tracking-wide rounded-full text-sm">
-                      Access System
+                      Sign in
                     </Button>
                   </motion.div>
                 </Link>
@@ -430,7 +430,7 @@ export function LandingPage() {
           <FadeUp>
             <TermLabel>Powered by AI</TermLabel>
             <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-3">
-              Make It Feel Like<br />an AI Product
+              How our AI works for you<br />
             </h2>
             <p className="text-muted-foreground text-sm mb-10">Every feature runs on verified data - not guesswork, not keywords.</p>
           </FadeUp>
@@ -440,7 +440,7 @@ export function LandingPage() {
               { icon: Brain,      label: "AI Candidate\nMatching",   color: "text-violet-400",  border: "border-violet-500/20",  glow: "hover:border-violet-500/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]", tag: "Matching",       desc: "Neural networks scanning 50M+ data points to find your exact technical match." },
               { icon: FileText,   label: "AI Resume\nVerification",  color: "text-blue-400",    border: "border-blue-500/20",    glow: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",    tag: "Authenticating", desc: "Zero trust verification against real-world commits and problem solving logs." },
               { icon: Target,     label: "AI Skill Gap\nAnalysis",   color: "text-cyan-400",    border: "border-cyan-500/20",    glow: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(var(--sci),0.15)]",      tag: "Mapping Gaps",   desc: "Identifying missing competencies using vector-space proficiency mapping." },
-              { icon: TrendingUp, label: "AI Placement\nInsights",   color: "text-emerald-400", border: "border-emerald-500/20", glow: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]",  tag: "Predicting",     desc: "Predicting hiring velocity and offer probability with 95% accuracy." },
+              { icon: TrendingUp, label: "AI Placement\nInsights",   color: "text-emerald-400", border: "border-emerald-500/20", glow: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]",  tag: "Predicting",     desc: "Placement insights based on your colleges historical data." },
             ].map(({ icon: Icon, label, color, border, glow, tag, desc }, i) => (
               <motion.div key={label} variants={fadeUp}
                 whileHover={{ y: -8, transition: { type: "spring", stiffness: 300 } }}
@@ -650,7 +650,7 @@ export function LandingPage() {
         <div className="mx-auto max-w-5xl px-6">
           <FadeUp>
             <div className="text-center mb-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Get Started</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Sign up free</p>
               <h2 className="text-4xl sm:text-5xl font-black text-foreground tracking-tight mb-3">
                 Skills First.<br />
                 <span className="gradient-text">Hire Better.</span>
