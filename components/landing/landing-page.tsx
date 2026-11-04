@@ -240,7 +240,7 @@ export function LandingPage() {
     <div className="bg-background">
 
       {/* ══ HERO ════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[75vh] flex flex-col items-center justify-center px-6 pt-20 pb-6 overflow-hidden bg-background">
+      <section className="relative min-h-[75vh] flex flex-col items-center justify-center px-6 pt-20 pb-6 bg-background">
         <GridBg />
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(var(--sci),0.06), transparent)" }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_80%_60%,rgba(139,92,246,0.08),transparent)] pointer-events-none" />
@@ -368,10 +368,9 @@ export function LandingPage() {
         </div>
 
         <motion.a href="#stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-          className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 text-[var(--sci-fg)]/30 hover:text-[var(--sci-fg)]/60 transition-colors animate-bounce z-10">
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[var(--sci-fg)]/40 hover:text-[var(--sci-fg)]/70 transition-colors animate-bounce">
           <ChevronDown className="h-6 w-6" />
-        </motion.a>
-      </section>
+        </motion.a>      </section>
 
       {/* ══ TRUSTED BY ══════════════════════════════════════════════ */}
       {topColleges.length > 0 && (
