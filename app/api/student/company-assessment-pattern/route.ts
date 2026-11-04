@@ -22,7 +22,8 @@ import {
 } from "@/lib/rag/pattern-search"
 import { getPatternForCompany } from "@/lib/company-assessment-patterns"
 
-const CACHE_TTL = 7 * 24 * 60 * 60 * 1000 // 7 days
+const CACHE_TTL      = 7 * 24 * 60 * 60 * 1000 // 7 days
+const CACHE_VERSION  = "v2"  // bump this to invalidate all cached patterns
 
 // ── Default section config ────────────────────────────────────────────────────
 const DEFAULT_SECTION: Record<string, { name: string; questions: number; timeMinutes: number; difficulty: string; isCoding: boolean }> = {
@@ -247,7 +248,7 @@ async function handleRequest(companyId: string, force = false) {
     const cached = await db.collection("company_patterns").findOne({ company: companyId })
     if (cached) {
       const age = Date.now() - new Date(cached.fetchedAt ?? cached.updatedAt ?? 0).getTime()
-      if (age < CACHE_TTL && cached.sections?.length > 0) {
+      if (age < CACHE_TTL && cached.sections?.length > 0 && cached.cacheVersion === CACHE_VERSION) {
         // Fresh cache — embed into vector store for future semantic searches
         if (process.env.OPENAI_API_KEY) {
           embedPatternInBackground(companyId, companyName, cached as unknown as CompanyPattern)
@@ -318,7 +319,7 @@ async function handleRequest(companyId: string, force = false) {
     const db = await getDatabase()
     await db.collection("company_patterns").updateOne(
       { company: companyId },
-      { $set: { ...finalPattern, updatedAt: new Date() } },
+      { $set: { ...finalPattern, cacheVersion: CACHE_VERSION, updatedAt: new Date() } },
       { upsert: true }
     )
   } catch {}

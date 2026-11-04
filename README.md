@@ -10,7 +10,7 @@ A full-stack placement preparation platform for engineering students. Students p
 
 - **Framework:** Next.js 16 (App Router, TypeScript)
 - **Database:** MongoDB Atlas
-- **AI:** Gemini 3.8-flash (primary) → Gemini 3.5-flash (4 keys) → Groq → OpenAI
+- **AI:** Gemini 2.0-flash (KEY4→KEY3→KEY2→KEY1) → OpenAI (gpt-4o-mini) → Groq (llama-3.1-8b-instant)
 - **Code Execution:** Docker-based executor on Render.com
 - **Deployment:** Vercel
 - **Auth:** Custom JWT + session tokens
@@ -24,36 +24,47 @@ A full-stack placement preparation platform for engineering students. Students p
 - Each topic has 6 modules (2 Easy + 2 Medium + 2 Hard) × 5 problems = 30/topic
 - AI-generated descriptions, input/output formats, constraints, test cases, starter code (5 languages)
 - **Hidden test cases** — revealed after 3 failed attempts or on passing all tests
-- **Daily new problem** added every morning at 7 AM IST via Vercel cron
+- **Daily new problem** added every morning at 7 AM IST via Vercel cron (`/api/cron/add-daily-problem`)
 - Problems ordered Easy → Medium → Hard within each topic
 - "NEW" badge on daily problems in the sidebar
 
 ### 🏢 Company Assessments (190+ companies)
-- **Pattern-aware** — each company shows its real section structure (Quant, Logical, Verbal, Coding) before you start
-- **Start button disabled** until company pattern is fetched — no starting without data
-- Sections generated from actual hiring data: TCS (5 sections), Amazon (Coding + Work Simulation), Google (Hard coding only), etc.
-- **AI generates questions** using 4 Gemini keys with rotation, batch generation for large counts (TCS 20Q → 2 batches of 10)
-- Coding problems use the full problem editor with public + hidden test cases
-- **Scores calculated from actual answers** — coding score = problems submitted ÷ total × 100 (0% if not attempted)
+- **Pattern-aware** — each company shows its real section structure before starting; Start button disabled until loaded
+- **Dynamic question counts** — distributes total questions proportionally across sections (e.g. SBI 200Q: Quant 80, Logical 67, Verbal 53)
+- 35 companies have explicit patterns; 155 use category-based defaults (IT Services, Product, Consulting, BFSI, Core Engineering)
+- **AI generates questions** using Gemini KEY4→KEY3→KEY2→KEY1 → OpenAI → Groq fallback chain
+- Coding section uses full problem editor with public + hidden test cases
+- **Scores calculated from actual answers** — coding score = problems solved ÷ total × 100 (0% if not attempted)
+- Section keys stored per actual section ID (`advanced-coding`, `basic-coding`, `quantitative`, etc.)
+
+### 🔒 Proctored Assessment (Zero Tolerance)
+- Fullscreen mandatory — **exiting immediately terminates** the assessment
+- Tab switch / window blur → **immediate termination**
+- Copy (Ctrl+C) → **immediate termination** + −10 integrity
+- Paste (Ctrl+V) → **immediate termination**
+- Right-click, DevTools (F12), Ctrl+A/U/S → **immediate termination**
+- Camera feed monitored — brightness-based face detection (10s no-face → terminate)
+- Termination screen shows reason + 5s countdown before returning to assessments
 
 ### 📊 AI Hiring Report
-- Generated after each assessment using Groq AI
-- **Dynamic** — only shows rounds/sections that were actually in the assessment
-- Probabilities on realistic 0-100 scale (not 0.001%)
+- Generated after each assessment using Groq AI (with OpenAI + Gemini fallback)
+- **Marks per section** — shows correct/total (e.g. `18/29` with percentage)
+- Section names shown as proper display names (not raw keys like `advanced-aptitude`)
+- **Dynamic** — only shows sections that were actually in the assessment
+- Overall selection probability ring (no per-round breakdowns)
 - Benchmark derived from company difficulty/category for all 190 companies
-- Sections: Selection Probability, Section Scores, Crack the Company, AI HR Assessment, Study Plan, Insider Insights
 
 ### 🎤 Voice & Communication
-- **Voice Chat** (ChatGPT/Claude style) — natural conversation with AI, gentle grammar corrections
-- **Communication Model** — structured practice: Sentence Formation, Vocabulary, GD, HR Soft Skills, Pronunciation
-- **AI Voice Coach** — HR interview, technical, GD, spoken English with feedback on grammar/fluency/content/confidence
-- All three accessible via Communication → Voice tab
+- **Voice Chat** (ChatGPT/Claude style) — natural conversation orb, auto-listens after AI speaks, gentle grammar corrections
+- **AI Voice Coach** — HR interview, technical, GD, spoken English; feedback on grammar/fluency/content/confidence
+- **Communication Model** — Sentence Formation, Vocabulary, GD, HR Soft Skills, Pronunciation with Beginner/Intermediate/Advanced levels
+- AI chain: Gemini (KEY4→1) → OpenAI → Groq across all voice routes
 
 ### 📚 Practice Hub
-- **Aptitude** — 200+ questions: Quantitative, Logical Reasoning (Quantitative Bank + AI generation)
+- **Aptitude** — 200+ questions: Quantitative, Logical Reasoning
 - **Coding** — DSA problems by topic and difficulty
 - **Communication** — 900+ questions + voice practice
-- AI generates new questions Easy → Medium → Hard for every topic using static bank as style reference
+- AI generates Easy → Hard questions using existing bank as style reference
 - **1st and 2nd year students** only see Practice (no Prep Track)
 
 ### 🧠 AI Insights

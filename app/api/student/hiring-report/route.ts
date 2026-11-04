@@ -56,7 +56,21 @@ function getCompanyMeta(companyId: string) {
   }
 }
 
-export async function POST(req: Request) {
+// Section key → display name map (used in prompt and fallback)
+const SECTION_DISPLAY: Record<string, string> = {
+  "quantitative":      "Quantitative Aptitude",
+  "advanced-aptitude": "Logical Reasoning",
+  "verbal":            "Verbal Ability",
+  "basic-coding":      "Basic Coding",
+  "advanced-coding":   "Advanced Coding",
+  "logical":           "Logical Reasoning",
+  "coding":            "Coding",
+  "communication":     "Communication",
+  "technical":         "Technical",
+}
+function sectionDisplayName(key: string): string {
+  return SECTION_DISPLAY[key] ?? key.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())
+}
   try {
     const body = await req.json()
     const {
@@ -105,7 +119,7 @@ export async function POST(req: Request) {
       .map(([k, v]) => {
         const raw = sectionRaw[k]
         const marksStr = raw ? ` (${raw.correct}/${raw.total} correct)` : ""
-        return `- ${k}: ${v}%${marksStr}`
+        return `- ${sectionDisplayName(k)}: ${v}%${marksStr}`
       })
       .join("\n")
 
@@ -158,7 +172,8 @@ Return ONLY valid JSON:
   "sectionAnalysis": [
     ${Object.keys(sectionScores).map(k => {
       const raw = sectionRaw[k]
-      return `{ "section": "${k}", "score": ${sectionScores[k]}, "correct": ${raw?.correct ?? Math.round((sectionScores[k]/100) * (raw?.total ?? 10))}, "total": ${raw?.total ?? 10}, "benchmark": ${meta.benchmark}, "status": "<Strong|Average|Weak>", "feedback": "specific feedback" }`
+      const name = sectionDisplayName(k)
+      return `{ "section": "${name}", "score": ${sectionScores[k]}, "correct": ${raw?.correct ?? Math.round((sectionScores[k]/100) * (raw?.total ?? 10))}, "total": ${raw?.total ?? 10}, "benchmark": ${meta.benchmark}, "status": "<Strong|Average|Weak>", "feedback": "specific feedback for ${name}" }`
     }).join(",\n    ")}
   ],
   "hrReport": {
@@ -229,6 +244,13 @@ Return ONLY valid JSON:
 
     try {
       const report = JSON.parse(json)
+      // Normalise section names in case AI returned raw keys
+      if (Array.isArray(report.sectionAnalysis)) {
+        report.sectionAnalysis = report.sectionAnalysis.map((s: any) => ({
+          ...s,
+          section: sectionDisplayName(s.section ?? ""),
+        }))
+      }
       return NextResponse.json({ report })
     } catch {
       return NextResponse.json({ report: buildFallbackReport({ company, companyName, overallScore, readiness, meta, targetRole, activeSections, hasCoding, hasVerbal, violations, sectionScores, sectionRaw }) })
@@ -261,15 +283,16 @@ function buildFallbackReport({ company, companyName, overallScore, readiness, me
     ? Object.entries(sectionScores).map(([k, v]: any) => {
         const raw = sectionRaw[k]
         return {
-          section: k, score: v,
+          section: sectionDisplayName(k),
+          score: v,
           correct: raw?.correct ?? Math.round((v / 100) * (raw?.total ?? 10)),
           total:   raw?.total   ?? 10,
           benchmark: meta.benchmark,
           status: v >= meta.benchmark ? "Strong" : v >= meta.benchmark * 0.7 ? "Average" : "Weak",
-          feedback: `Focus on ${k} practice sets.`,
+          feedback: `Focus on ${sectionDisplayName(k)} practice sets.`,
         }
       })
-    : meta.focusAreas.map((s: string) => ({ section: s, score: overallScore, correct: null, total: null, benchmark: meta.benchmark, status: above ? "Strong" : "Average", feedback: `Focus on ${s} practice sets.` }))
+    : meta.focusAreas.map((s: string) => ({ section: sectionDisplayName(s), score: overallScore, correct: null, total: null, benchmark: meta.benchmark, status: above ? "Strong" : "Average", feedback: `Focus on ${sectionDisplayName(s)} practice sets.` }))
 
   return {
     companyName: companyName || company.toUpperCase(),

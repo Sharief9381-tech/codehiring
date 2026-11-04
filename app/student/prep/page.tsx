@@ -768,10 +768,10 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
           scores: { overall: finalScore, sections: finalScores },
           sectionRaw: rawMarks ?? sectionRaw,
           candidateRatings: {
-            aptitude:       finalScores.quantitative    ?? finalScores["advanced-aptitude"] ?? 0,
-            coding:         finalScores.coding          ?? finalScores["advanced-coding"]   ?? finalScores["basic-coding"] ?? 0,
-            dsa:            finalScores.coding          ?? finalScores["advanced-coding"]   ?? 0,
-            csFoundations:  finalScores.technical       ?? finalScores["advanced-aptitude"] ?? 0,
+            aptitude:       finalScores.quantitative    ?? finalScores["advanced-aptitude"] ?? finalScores.logical ?? 0,
+            coding:         finalScores["advanced-coding"] ?? finalScores["basic-coding"] ?? finalScores.coding ?? 0,
+            dsa:            finalScores["advanced-coding"] ?? finalScores.coding ?? 0,
+            csFoundations:  finalScores.technical       ?? finalScores["advanced-aptitude"] ?? finalScores.logical ?? 0,
             // Only include communication if company actually has a verbal section
             ...(activeSections.includes("verbal") || activeSections.includes("communication")
               ? { communication: finalScores.verbal ?? finalScores.communication ?? 50 }
@@ -867,9 +867,11 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
 
     // Score = (solved / total) * 100, minimum 0 if nothing attempted
     const codingScore = total > 0 ? Math.round((solvedCount / total) * 100) : 0
-    const newRaw = { ...sectionRaw, coding: { correct: solvedCount, total } }
+    // Use the actual section key (could be "coding", "advanced-coding", or "basic-coding")
+    const codingSectionKey = section
+    const newRaw = { ...sectionRaw, [codingSectionKey]: { correct: solvedCount, total } }
     setSectionRaw(newRaw)
-    const newScores = { ...sectionScores, coding: codingScore }
+    const newScores = { ...sectionScores, [codingSectionKey]: codingScore }
     setSectionScores(newScores)
     if (next < snapSections.length) {
       setCurSection(next)

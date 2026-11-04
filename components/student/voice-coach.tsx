@@ -86,8 +86,8 @@ function Waveform({ active }: { active: boolean }) {
 
 // ── Main VoiceCoach component ─────────────────────────────────────────────────
 
-export function VoiceCoach() {
-  const [mode, setMode]             = useState<Mode>("practice")
+export function VoiceCoach({ defaultMode = "practice" }: { defaultMode?: Mode }) {
+  const [mode, setMode]             = useState<Mode>(defaultMode)
   const [scenario, setScenario]     = useState<Scenario | null>(null)
   const [stage, setStage]           = useState<Stage>("select")
   const [question, setQuestion]     = useState("")
