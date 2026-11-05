@@ -64,67 +64,93 @@ export async function POST(request: Request) {
 
     try {
       if (role === "student") {
+        // ── Server-side college code resolution ──────────────────────
+        // NEVER trust the raw client value — always re-resolve canonically.
+        const rawCode = (additionalData.collegeCode || "").trim()
+        let resolvedCode = ""
+        let resolvedCollegeName = additionalData.collegeName || rawCode
+
+        if (rawCode) {
+          const { resolveCollegeCode, normalizeCode, invalidateCollegeCache } = await import("@/lib/colleges")
+          const doc = await resolveCollegeCode(rawCode)
+
+          if (doc) {
+            // Resolved to a verified (or pending) college — use canonical code
+            resolvedCode = doc.code
+            resolvedCollegeName = doc.name
+          } else {
+            // Code not found — create a pending college document
+            const { getDatabase } = await import("@/lib/database")
+            const db2 = await getDatabase()
+            const normalized = normalizeCode(rawCode)
+
+            if (normalized) {
+              // Check if the normalized code collides with a verified college
+              const existing = await db2.collection("colleges").findOne({ code: normalized })
+              if (existing && existing.status === "verified") {
+                // Silently use the verified college
+                resolvedCode = existing.code
+                resolvedCollegeName = existing.name
+              } else if (!existing) {
+                // Create pending entry
+                await db2.collection("colleges").insertOne({
+                  code:      normalized,
+                  name:      additionalData.collegeName?.trim() || normalized,
+                  short:     additionalData.collegeName?.trim() || normalized,
+                  aliases:   [],
+                  status:    "pending",
+                  createdAt: new Date(),
+                })
+                invalidateCollegeCache()
+                resolvedCode = normalized
+                resolvedCollegeName = additionalData.collegeName?.trim() || normalized
+              } else {
+                // Pending already exists — use it
+                resolvedCode = existing.code
+                resolvedCollegeName = existing.name
+              }
+            }
+          }
+        }
+
+        if (!resolvedCode) {
+          return NextResponse.json({ error: "Please select or enter a valid college code." }, { status: 400 })
+        }
+
         userData = {
           ...userData,
           role: "student",
-          collegeCode: (additionalData.collegeCode || "").trim().toUpperCase().replace(/[\s\-\.]+/g, "") || "",
+          collegeCode: resolvedCode,
+          collegeName: resolvedCollegeName,
           rollNumber: additionalData.rollNumber || "",
           graduationYear: parseInt(additionalData.graduationYear) || new Date().getFullYear() + 4,
           branch: additionalData.branch || "",
           linkedPlatforms: {},
           stats: {
-            totalProblems: 0,
-            easyProblems: 0,
-            mediumProblems: 0,
-            hardProblems: 0,
-            githubContributions: 0,
-            contestsParticipated: 0,
-            rating: 0,
+            totalProblems: 0, easyProblems: 0, mediumProblems: 0,
+            hardProblems: 0, githubContributions: 0, contestsParticipated: 0, rating: 0,
           },
           skills: [],
           isOpenToWork: true,
         }
         user = await createStudent(userData as any)
 
-        // Auto-register college if not already in the system
-        const collegeCode = (additionalData.collegeCode || "").trim().toUpperCase().replace(/[\s\-\.]+/g, "")
-        if (collegeCode) {
+        // Auto-register college in users collection if not present (legacy behaviour)
+        if (resolvedCode) {
           try {
             const { getDatabase } = await import("@/lib/database")
             const db = await getDatabase()
-            const existingCollege = await db.collection("users").findOne({ role: "college", collegeCode })
+            const existingCollege = await db.collection("users").findOne({ role: "college", collegeCode: resolvedCode })
             if (!existingCollege) {
-              // Try to fetch real college name from Hipolabs universities API
-              let resolvedName = collegeCode
-              let resolvedLocation = ""
-              let resolvedWebsite = null
-              try {
-                const apiRes = await fetch(
-                  `http://universities.hipolabs.com/search?name=${encodeURIComponent(collegeCode)}`,
-                  { signal: AbortSignal.timeout(4000) }
-                )
-                if (apiRes.ok) {
-                  const results = await apiRes.json()
-                  if (Array.isArray(results) && results.length > 0) {
-                    const indian = results.find((r: any) => r.country === "India") ?? results[0]
-                    resolvedName = indian.name ?? collegeCode
-                    resolvedLocation = indian.country ?? ""
-                    resolvedWebsite = indian.web_pages?.[0] ?? null
-                  }
-                }
-              } catch {
-                // API unavailable - use code as name
-              }
-
               await db.collection("users").insertOne({
-                name: resolvedName,
-                email: `auto-${collegeCode.toLowerCase()}@CodeHiring.internal`,
+                name: resolvedCollegeName,
+                email: `auto-${resolvedCode.toLowerCase()}@CodeHiring.internal`,
                 password: "",
                 role: "college",
-                collegeName: resolvedName,
-                collegeCode,
-                location: resolvedLocation,
-                website: resolvedWebsite,
+                collegeName: resolvedCollegeName,
+                collegeCode: resolvedCode,
+                location: "",
+                website: null,
                 departments: [],
                 totalStudents: 1,
                 placementOfficerName: null,
@@ -133,9 +159,8 @@ export async function POST(request: Request) {
                 updatedAt: new Date(),
               })
             } else {
-              // Increment student count
               await db.collection("users").updateOne(
-                { role: "college", collegeCode },
+                { role: "college", collegeCode: resolvedCode },
                 { $inc: { totalStudents: 1 }, $set: { updatedAt: new Date() } }
               )
             }

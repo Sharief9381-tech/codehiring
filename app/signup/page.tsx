@@ -1,10 +1,10 @@
 ﻿"use client"
 
-import React, { useState, useEffect, useRef, Suspense } from "react"
+import React, { useState, useEffect, useRef, useCallback, Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Loader2, GraduationCap, Building2, Briefcase, Award, Eye, EyeOff, Search, MapPin, Mail, CheckCircle2, ShieldCheck } from "lucide-react"
+import { Loader2, GraduationCap, Building2, Briefcase, Award, Eye, EyeOff, Search, MapPin, Mail, CheckCircle2, ShieldCheck, ChevronDown } from "lucide-react"
 import { searchColleges, type CollegeEntry } from "@/lib/colleges-data"
 import { SignupBackground } from "@/components/signup-background"
 
@@ -78,6 +78,164 @@ function GlassInput({ id, type = "text", placeholder, value, onChange, required,
   )
 }
 
+// ── College autocomplete ───────────────────────────────────────────────────────
+
+interface ApiCollege { code: string; name: string; short: string }
+
+function CollegeAutocomplete({
+  value, onSelect,
+}: {
+  value: { code: string; name: string } | null
+  onSelect: (code: string, name: string) => void
+}) {
+  const [q, setQ]               = useState(value?.name ?? "")
+  const [results, setResults]   = useState<ApiCollege[]>([])
+  const [open, setOpen]         = useState(false)
+  const [loading, setLoading]   = useState(false)
+  const [notListed, setNotListed] = useState(false)
+  const [manualCode, setManualCode] = useState("")
+  const [manualName, setManualName] = useState("")
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const wrapRef  = useRef<HTMLDivElement>(null)
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [])
+
+  const search = useCallback(async (raw: string) => {
+    if (raw.length < 2) { setResults([]); return }
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/public/colleges/search?q=${encodeURIComponent(raw)}`)
+      const data = await res.json()
+      setResults(data.colleges ?? [])
+    } catch { setResults([]) }
+    finally { setLoading(false) }
+  }, [])
+
+  const handleChange = (v: string) => {
+    setQ(v)
+    setOpen(true)
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => search(v), 250)
+  }
+
+  const pick = (c: ApiCollege) => {
+    setQ(c.name)
+    setOpen(false)
+    setNotListed(false)
+    onSelect(c.code, c.name)
+  }
+
+  const confirmManual = () => {
+    if (!manualCode.trim()) return
+    onSelect(manualCode.trim().toUpperCase(), manualName.trim() || manualCode.trim().toUpperCase())
+    setNotListed(false)
+    setQ(manualName.trim() || manualCode.trim().toUpperCase())
+  }
+
+  return (
+    <div ref={wrapRef} style={{ position: "relative" }}>
+      <label style={labelS}>College</label>
+      {!notListed ? (
+        <>
+          <div style={{ position: "relative" }}>
+            <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "rgba(167,139,250,0.6)", pointerEvents: "none" }}>
+              <Search style={{ width: 16, height: 16 }} />
+            </span>
+            <input
+              type="text" placeholder="Type college name or code…"
+              value={q} onChange={e => handleChange(e.target.value)}
+              onFocus={() => { if (q.length >= 2) setOpen(true) }}
+              autoComplete="off"
+              style={{ ...inputS, paddingLeft: 40, WebkitTextFillColor: "#ffffff" }}
+            />
+            {loading && (
+              <span style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)" }}>
+                <Loader2 style={{ width: 14, height: 14, color: "#a78bfa", animation: "spin 1s linear infinite" }} />
+              </span>
+            )}
+          </div>
+
+          {/* Dropdown */}
+          {open && (results.length > 0 || q.length >= 2) && (
+            <div style={{ position: "absolute", zIndex: 60, width: "100%", marginTop: 4, borderRadius: 12, border: "1px solid rgba(139,92,246,0.2)", overflow: "hidden", background: "rgba(12,8,28,0.97)", backdropFilter: "blur(20px)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+              {results.map(c => (
+                <button key={c.code} type="button" onMouseDown={() => pick(c)}
+                  style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(255,255,255,0.05)", cursor: "pointer", textAlign: "left" }}
+                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(124,58,237,0.10)")}
+                  onMouseLeave={e => (e.currentTarget.style.background = "none")}>
+                  <div style={{ width: 32, height: 32, borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(124,58,237,0.2)", color: "#a78bfa", fontSize: 11, fontWeight: 700 }}>
+                    {c.short?.slice(0, 2) ?? c.code.slice(0, 2)}
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 13, fontWeight: 500, color: "#ffffff", margin: 0 }}>{c.name}</p>
+                    <p style={{ fontSize: 11, color: "rgba(167,139,250,0.6)", margin: "2px 0 0" }}>{c.code} · {c.short}</p>
+                  </div>
+                </button>
+              ))}
+              {results.length === 0 && (
+                <p style={{ padding: "10px 16px", fontSize: 13, color: "rgba(255,255,255,0.3)", margin: 0 }}>No colleges found for "{q}"</p>
+              )}
+              {/* "Not listed" always shown at bottom */}
+              <button type="button" onMouseDown={() => { setOpen(false); setNotListed(true); setManualCode(""); setManualName("") }}
+                style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 16px", width: "100%", background: "none", border: "none", borderTop: "1px solid rgba(255,255,255,0.06)", cursor: "pointer", color: "#a78bfa", fontSize: 12, fontWeight: 600 }}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(124,58,237,0.08)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "none")}>
+                + My college isn&apos;t listed
+              </button>
+            </div>
+          )}
+
+          {/* Selected display */}
+          {value?.code && !open && (
+            <p style={{ marginTop: 4, fontSize: 11, color: "#a78bfa" }}>✓ {value.code}</p>
+          )}
+
+          <button type="button" onClick={() => { setNotListed(true); setOpen(false); setManualCode(""); setManualName("") }}
+            style={{ marginTop: 6, fontSize: 12, color: "rgba(167,139,250,0.6)", background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline" }}>
+            My college isn&apos;t listed
+          </button>
+        </>
+      ) : (
+        /* Manual entry */
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ padding: "10px 14px", fontSize: 12, color: "#fbbf24", background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 10 }}>
+            Your college will be added as "pending" and verified by our team.
+          </div>
+          <div>
+            <label style={{ ...labelS, marginBottom: 4 }}>College Code (e.g. RVRJC, IITD)</label>
+            <input type="text" placeholder="MYCOLLEGECODE" value={manualCode}
+              onChange={e => setManualCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}
+              style={{ ...inputS, WebkitTextFillColor: "#ffffff" }} />
+          </div>
+          <div>
+            <label style={{ ...labelS, marginBottom: 4 }}>College Full Name</label>
+            <input type="text" placeholder="My College of Engineering" value={manualName}
+              onChange={e => setManualName(e.target.value)}
+              style={{ ...inputS, WebkitTextFillColor: "#ffffff" }} />
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button type="button" onClick={() => setNotListed(false)}
+              style={{ flex: 1, height: 38, borderRadius: 10, border: "1px solid rgba(255,255,255,0.10)", background: "none", color: "rgba(255,255,255,0.5)", fontSize: 13, cursor: "pointer" }}>
+              Back to search
+            </button>
+            <button type="button" onClick={confirmManual} disabled={!manualCode.trim()}
+              style={{ flex: 1, height: 38, borderRadius: 10, background: "linear-gradient(135deg,#7c3aed,#6366f1)", border: "none", color: "#ffffff", fontSize: 13, fontWeight: 600, cursor: manualCode.trim() ? "pointer" : "not-allowed", opacity: manualCode.trim() ? 1 : 0.5 }}>
+              Use this college
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function SignupForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -102,9 +260,11 @@ function SignupForm() {
 
   const [formData, setFormData] = useState({
     name: "", email: "", password: "", confirmPassword: "",
-    collegeCode: "", rollNumber: "", branch: "", graduationYear: "",
-    collegeName: "", location: "", companyName: "", designation: "",
+    collegeCode: "", collegeName: "", rollNumber: "", branch: "", graduationYear: "",
+    location: "", companyName: "", designation: "",
   })
+  // Selected college from autocomplete — { code, name } or null
+  const [selectedCollege, setSelectedCollege] = useState<{ code: string; name: string } | null>(null)
 
   useEffect(() => {
     const rp = searchParams.get("role") as Role | null
@@ -384,10 +544,13 @@ function SignupForm() {
 
               {/* Student */}
               {selectedRole === "student" && <>
-                <div>
-                  <label style={labelS}>College Code</label>
-                  <GlassInput placeholder="e.g. IITD, NITK, BITS" value={formData.collegeCode} onChange={v => set("collegeCode")(v.toUpperCase())} required />
-                </div>
+                <CollegeAutocomplete
+                  value={selectedCollege}
+                  onSelect={(code, name) => {
+                    setSelectedCollege({ code, name })
+                    setFormData(p => ({ ...p, collegeCode: code, collegeName: name }))
+                  }}
+                />
                 <div>
                   <label style={labelS}>Roll Number</label>
                   <GlassInput placeholder="21CS001" value={formData.rollNumber} onChange={v => set("rollNumber")(v.toUpperCase())} required />
@@ -404,10 +567,13 @@ function SignupForm() {
                   <div><label style={labelS}>Branch</label><GlassInput placeholder="CSE" value={formData.branch} onChange={set("branch")} required /></div>
                   <div><label style={labelS}>Grad Year</label><GlassInput placeholder="2024" value={formData.graduationYear} onChange={set("graduationYear")} required /></div>
                 </div>
-                <div>
-                  <label style={labelS}>College Code</label>
-                  <GlassInput placeholder="IITD, VIT, BITS…" value={formData.collegeCode} onChange={v => set("collegeCode")(v.toUpperCase())} required />
-                </div>
+                <CollegeAutocomplete
+                  value={selectedCollege}
+                  onSelect={(code, name) => {
+                    setSelectedCollege({ code, name })
+                    setFormData(p => ({ ...p, collegeCode: code, collegeName: name }))
+                  }}
+                />
               </>}
 
               {/* College */}

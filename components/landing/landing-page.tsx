@@ -74,7 +74,29 @@ function formatNum(n: number) {
   return n > 0 ? `${n}+` : "0"
 }
 
-// --- static data -------------------------------------------------
+// --- top-colleges hook -------------------------------------------
+interface TopCollege { code: string; name: string; short: string; count: number }
+interface TopCollegesData {
+  colleges:      TopCollege[]
+  totalColleges: number
+  totalStudents: number
+}
+
+function useTopColleges() {
+  const [data, setData]     = useState<TopCollegesData | null>(null)
+  const [loaded, setLoaded] = useState(false)
+  const [error, setError]   = useState(false)
+
+  useEffect(() => {
+    fetch("/api/public/top-colleges")
+      .then(r => { if (!r.ok) throw new Error("fetch failed"); return r.json() })
+      .then(d => { setData(d); setLoaded(true) })
+      .catch(() => { setError(true); setLoaded(true) })
+  }, [])
+
+  return { data, loaded, error }
+}
+
 const PLATFORMS = [
   { name: "LeetCode",      icon: Code2,    color: "text-amber-400",   bg: "bg-amber-400/10",   desc: "Problems & contests" },
   { name: "GitHub",        icon: Github,   color: "text-slate-300",   bg: "bg-slate-300/10",   desc: "Contributions & repos" },
@@ -243,15 +265,24 @@ export function LandingPage() {
   const [fetchFailed, setFetchFailed] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
   const recentPosts               = useLivePosts()
+  const topCollegesResult         = useTopColleges()
 
   useEffect(() => {
     fetch("/api/landing").then(r => r.json()).then(d => { setData(d); setLoaded(true) }).catch(() => { setLoaded(true); setFetchFailed(true) })
   }, [])
 
-  const stats        = data?.stats ?? {}
+  const rawStats     = data?.stats ?? {}
   const testimonials = data?.siteConfig?.testimonials ?? []
   const openCareers  = data?.openCareers ?? 0
-  const topColleges: string[] = data?.topColleges ?? []
+
+  // Merge top-colleges counts into stats — override colleges/students when available
+  const stats: Record<string, number> = {
+    ...rawStats,
+    ...(topCollegesResult.data ? {
+      colleges: topCollegesResult.data.totalColleges || rawStats.colleges,
+      students: topCollegesResult.data.totalStudents || rawStats.students,
+    } : {}),
+  }
 
   return (
     <div className="bg-background">
@@ -386,34 +417,49 @@ export function LandingPage() {
         <ChevronDown className="h-6 w-6" />
       </motion.a>
 
-      {/* ══ TRUSTED BY — data from /api/landing topColleges ════════ */}
+      {/* ══ TRUSTED BY — data from /api/public/top-colleges ════════ */}
       {/* TODO: Only show this strip if topColleges comes from real verified data.
                Currently rendered only when the API returns non-empty topColleges array.
                If the API returns hardcoded names, remove this section or replace with
                a real query (e.g. colleges with at least N registered students). */}
-      {topColleges.length > 0 && (
+      {topCollegesResult.loaded && !topCollegesResult.error && (topCollegesResult.data?.colleges.length ?? 0) >= 3 && (
         <Section>
           <div className="mx-auto max-w-5xl px-6">
             <FadeUp>
-              <p className="text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-5">
+              <p className="text-center text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mb-5">
                 Trusted by Students from
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2.5">
-                {topColleges.map((c, i) => (
-                  <motion.div key={c}
+                {topCollegesResult.data!.colleges.map((c, i) => (
+                  <motion.div key={c.code}
                     initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.07 }}
                     whileHover={{ scale: 1.08, y: -2, transition: { type: "spring", stiffness: 400 } }}
+                    title={`${c.name} · ${c.count} student${c.count !== 1 ? "s" : ""}`}
                     className="relative group cursor-default">
                     <div className="absolute inset-0 rounded-full bg-violet-500/15 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="relative flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 group-hover:border-violet-500/40 group-hover:bg-violet-500/8 transition-all duration-300">
                       <span className="h-1.5 w-1.5 rounded-full bg-violet-400 group-hover:bg-violet-300 transition-colors" />
-                      <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground transition-colors">{c}</span>
+                      <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground transition-colors">{c.short}</span>
                     </div>
                   </motion.div>
                 ))}
               </div>
             </FadeUp>
+          </div>
+        </Section>
+      )}
+
+      {/* Shimmer while loading (only if not yet loaded) */}
+      {!topCollegesResult.loaded && (
+        <Section>
+          <div className="mx-auto max-w-5xl px-6">
+            <p className="text-center text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mb-5">Trusted by Students from</p>
+            <div className="flex flex-wrap items-center justify-center gap-2.5">
+              {[80, 96, 72, 110, 88, 76, 100, 84].map((w, i) => (
+                <div key={i} className="h-8 rounded-full bg-white/6 animate-pulse" style={{ width: w }} />
+              ))}
+            </div>
           </div>
         </Section>
       )}
@@ -434,7 +480,7 @@ export function LandingPage() {
             </div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border border-[rgb(var(--sci))]/10 bg-[rgb(var(--sci))]/2">
-              {STAT_META.map(s => <StatItem key={s.key} s={s} loaded={loaded} stats={stats} fetchFailed={fetchFailed} />)}
+              {STAT_META.map(s => <StatItem key={s.key} s={s} loaded={loaded && topCollegesResult.loaded} stats={stats} fetchFailed={fetchFailed} />)}
             </motion.div>
           </FadeUp>
         </div>
