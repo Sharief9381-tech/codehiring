@@ -71,6 +71,8 @@ const SECTION_DISPLAY: Record<string, string> = {
 function sectionDisplayName(key: string): string {
   return SECTION_DISPLAY[key] ?? key.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())
 }
+
+export async function POST(req: Request) {
   try {
     const body = await req.json()
     const {
@@ -227,7 +229,7 @@ Return ONLY valid JSON:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-oss-20b",
+        model: "llama-3.3-70b-versatile",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.6,
         max_tokens: 4000,
