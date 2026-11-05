@@ -24,17 +24,21 @@ if (!URI) { console.error("MONGODB_URI not set"); process.exit(1) }
 const HF_API    = "https://datasets-server.huggingface.co/rows"
 const HF_DS     = "suchandra17/preprocessed_aptitude"
 const COLL      = "aptitude_questions"
+const HF_TOKEN  = process.env.HF_TOKEN  // Add HF_TOKEN to .env — get free token at huggingface.co/settings/tokens
 
 // Parse CLI args
 const args      = process.argv.slice(2)
 const getArg    = (flag: string, def: number) => { const i = args.indexOf(flag); return i >= 0 ? Number(args[i+1]) : def }
-const BATCH     = Math.min(getArg("--batch", 500), 500)
+const BATCH     = Math.min(getArg("--batch", 100), 100)  // HF free tier max: 100 rows per request
 const START     = getArg("--start", 0)
 const LIMIT     = getArg("--limit", 117262)
+const DELAY_MS  = HF_TOKEN ? 200 : 1000  // authenticated = faster, unauthenticated = slower
 
 async function fetchBatch(offset: number, length: number): Promise<any[]> {
   const url = `${HF_API}?dataset=${encodeURIComponent(HF_DS)}&config=default&split=train&offset=${offset}&length=${length}`
-  const res = await fetch(url, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(30000) })
+  const headers: Record<string, string> = { Accept: "application/json" }
+  if (HF_TOKEN) headers["Authorization"] = `Bearer ${HF_TOKEN}`
+  const res = await fetch(url, { headers, signal: AbortSignal.timeout(30000) })
   if (!res.ok) throw new Error(`HF ${res.status}: ${await res.text()}`)
   const data = await res.json()
   return data.rows ?? []
@@ -94,6 +98,9 @@ async function main() {
     offset += batchSize
     const pct = ((offset / LIMIT) * 100).toFixed(1)
     process.stdout.write(`\r  ${offset}/${LIMIT} (${pct}%) — inserted ${inserted} total`)
+
+    // Respect rate limits: 200ms with token, 1000ms without
+    await new Promise(r => setTimeout(r, DELAY_MS))
   }
 
   const final = await col.countDocuments()
