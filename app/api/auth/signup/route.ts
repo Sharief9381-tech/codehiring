@@ -28,6 +28,20 @@ export async function POST(request: Request) {
       )
     }
 
+    // ── Server-side password validation ────────────────────────────────────────
+    const pwRules = [
+      { test: (p: string) => p.length >= 8,          msg: "at least 8 characters" },
+      { test: (p: string) => /[A-Z]/.test(p),         msg: "at least one uppercase letter" },
+      { test: (p: string) => /[a-z]/.test(p),         msg: "at least one lowercase letter" },
+      { test: (p: string) => /[0-9]/.test(p),         msg: "at least one number" },
+      { test: (p: string) => /[^A-Za-z0-9]/.test(p), msg: "at least one special character (!@#$…)" },
+    ]
+    for (const r of pwRules) {
+      if (!r.test(password)) {
+        return NextResponse.json({ error: `Password must contain ${r.msg}.` }, { status: 400 })
+      }
+    }
+
     const validRoles: UserRole[] = ["student", "college", "recruiter"]
     if (!validRoles.includes(role)) {
       return NextResponse.json(

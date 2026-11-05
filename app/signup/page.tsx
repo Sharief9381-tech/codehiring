@@ -236,6 +236,67 @@ function CollegeAutocomplete({
   )
 }
 
+// ── Password validation ───────────────────────────────────────────────────────
+
+interface PasswordRule { label: string; pass: (pw: string) => boolean }
+
+const PW_RULES: PasswordRule[] = [
+  { label: "At least 8 characters",          pass: pw => pw.length >= 8 },
+  { label: "One uppercase letter (A-Z)",     pass: pw => /[A-Z]/.test(pw) },
+  { label: "One lowercase letter (a-z)",     pass: pw => /[a-z]/.test(pw) },
+  { label: "One number (0-9)",               pass: pw => /[0-9]/.test(pw) },
+  { label: "One special character (!@#$…)",  pass: pw => /[^A-Za-z0-9]/.test(pw) },
+]
+
+/** Returns an error message if invalid, null if valid */
+export function validatePassword(pw: string): string | null {
+  for (const r of PW_RULES) {
+    if (!r.pass(pw)) return `Password must contain: ${r.label.toLowerCase()}`
+  }
+  return null
+}
+
+function PasswordStrength({ password }: { password: string }) {
+  if (!password) return null
+  const passed = PW_RULES.filter(r => r.pass(password)).length
+  const strength = passed <= 2 ? "Weak" : passed <= 3 ? "Fair" : passed <= 4 ? "Good" : "Strong"
+  const colors = ["", "#ef4444", "#ef4444", "#f59e0b", "#22c55e", "#22c55e"]
+  const color = colors[passed] ?? "#ef4444"
+
+  return (
+    <div style={{ marginTop: 8 }}>
+      {/* Strength bar */}
+      <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
+        {[1, 2, 3, 4, 5].map(i => (
+          <div key={i} style={{
+            flex: 1, height: 3, borderRadius: 99,
+            background: passed >= i ? color : "rgba(255,255,255,0.1)",
+            transition: "background 0.2s",
+          }} />
+        ))}
+      </div>
+      {/* Label */}
+      <p style={{ fontSize: 11, color, fontWeight: 600, marginBottom: 6 }}>{strength}</p>
+      {/* Individual rules */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        {PW_RULES.map(r => {
+          const ok = r.pass(password)
+          return (
+            <div key={r.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ fontSize: 10, color: ok ? "#22c55e" : "rgba(255,255,255,0.3)", lineHeight: 1 }}>
+                {ok ? "✓" : "○"}
+              </span>
+              <span style={{ fontSize: 11, color: ok ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.3)" }}>
+                {r.label}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function SignupForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -359,7 +420,9 @@ function SignupForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setError("")
     if (formData.password !== formData.confirmPassword) { setError("Passwords do not match"); return }
-    if (formData.password.length < 8)                  { setError("Password must be at least 8 characters"); return }
+    // Full password rules
+    const pwErr = validatePassword(formData.password)
+    if (pwErr) { setError(pwErr); return }
     setIsLoading(true)
     try {
       const res = await fetch("/api/auth/signup", {
@@ -630,7 +693,7 @@ function SignupForm() {
               {/* Password */}
               <div>
                 <label style={labelS}>Password</label>
-                <GlassInput type={showPassword ? "text" : "password"} placeholder="At least 8 characters"
+                <GlassInput type={showPassword ? "text" : "password"} placeholder="Min 8 chars, uppercase, number, symbol"
                   value={formData.password} onChange={set("password")} required
                   iconRight={
                     <button type="button" onClick={() => setShowPassword(!showPassword)}
@@ -641,6 +704,7 @@ function SignupForm() {
                     </button>
                   }
                 />
+                <PasswordStrength password={formData.password} />
               </div>
               <div>
                 <label style={labelS}>Confirm Password</label>
