@@ -161,14 +161,18 @@ export function NotificationBell() {
               notifications.map((n) => {
                 const Icon = TYPE_ICON[n.type] ?? Bell
                 const colorClass = TYPE_COLOR[n.type] ?? "bg-secondary text-muted-foreground"
-                const content = (
+
+                const handleClick = () => {
+                  if (!n.read) markRead(n._id)
+                  setOpen(false)
+                }
+
+                const inner = (
                   <div
-                    key={n._id}
                     className={cn(
                       "flex gap-3 px-4 py-3 hover:bg-secondary/50 transition-colors cursor-pointer border-b border-border/50 last:border-0",
                       !n.read && "bg-primary/5"
                     )}
-                    onClick={() => { if (!n.read) markRead(n._id); if (!n.href) setOpen(false) }}
                   >
                     <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", colorClass)}>
                       <Icon className="h-4 w-4" />
@@ -181,17 +185,25 @@ export function NotificationBell() {
                         <span className="text-[10px] text-muted-foreground shrink-0 mt-0.5">{timeAgo(n.createdAt)}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{n.message}</p>
+                      {n.href && (
+                        <p className="text-[10px] text-primary/70 mt-1">Tap to open →</p>
+                      )}
                     </div>
                     {!n.read && (
                       <span className="mt-1.5 h-2 w-2 rounded-full bg-primary shrink-0" />
                     )}
                   </div>
                 )
+
                 return n.href ? (
-                  <Link key={n._id} href={n.href} onClick={() => setOpen(false)}>
-                    {content}
+                  <Link key={n._id} href={n.href} onClick={handleClick}>
+                    {inner}
                   </Link>
-                ) : content
+                ) : (
+                  <div key={n._id} onClick={handleClick}>
+                    {inner}
+                  </div>
+                )
               })
             )}
           </div>

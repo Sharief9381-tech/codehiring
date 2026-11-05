@@ -2,12 +2,20 @@ import { getDatabase } from "@/lib/database"
 import { ObjectId } from "mongodb"
 
 export type NotificationType =
-  | "job_match"       // new job matches student profile
-  | "platform_sync"  // platform sync completed
-  | "shortlist"      // recruiter shortlisted student
-  | "application"    // application update
-  | "announcement"   // general platform announcement
-  | "welcome"        // welcome on signup
+  | "job_match"       // new job matches student profile → /student/jobs
+  | "platform_sync"  // platform sync completed → /student/platforms
+  | "shortlist"      // recruiter shortlisted student → /student/drives
+  | "application"    // application update → /student/drives
+  | "announcement"   // general platform announcement → no link
+  | "welcome"        // welcome on signup → role-specific
+
+/** Default href for each notification type when none is provided */
+export const NOTIFICATION_DEFAULT_HREF: Partial<Record<NotificationType, string>> = {
+  job_match:      "/student/jobs",
+  platform_sync:  "/student/platforms",
+  shortlist:      "/student/drives",
+  application:    "/student/drives",
+}
 
 export interface NotificationDocument {
   _id?: string | ObjectId
@@ -40,7 +48,13 @@ export const NotificationModel = {
 
   async create(data: Omit<NotificationDocument, "_id" | "read" | "createdAt">): Promise<NotificationDocument> {
     const db = await getDatabase()
-    const doc = { ...data, read: false, createdAt: new Date() }
+    const doc = {
+      ...data,
+      // Use provided href, then fall back to type default, then undefined
+      href: data.href ?? NOTIFICATION_DEFAULT_HREF[data.type as NotificationType],
+      read: false,
+      createdAt: new Date(),
+    }
     const result = await db.collection(COLLECTION).insertOne(doc)
     return { ...doc, _id: result.insertedId.toString() }
   },
