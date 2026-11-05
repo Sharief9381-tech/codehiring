@@ -2,6 +2,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { Mail, Twitter, Github, Linkedin } from "lucide-react"
 
+// Replace placeholder strings with real URLs before going live
+const SOCIAL = {
+  twitter:  "TWITTER_URL_HERE",
+  github:   "https://github.com/Sharief9381-tech/CodeHiring",
+  linkedin: "LINKEDIN_URL_HERE",
+}
+
 const links = {
   Company: [
     { label: "About", href: "/about" },
@@ -40,18 +47,24 @@ export function Footer() {
               Unifying coding performance tracking, placement analytics, and AI-powered recruitment - all in one platform.
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors">
-                <Twitter className="h-4 w-4" />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors">
-                <Github className="h-4 w-4" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors">
-                <Linkedin className="h-4 w-4" />
-              </a>
+              {!SOCIAL.twitter.includes("PLACEHOLDER") && SOCIAL.twitter !== "TWITTER_URL_HERE" && (
+                <a href={SOCIAL.twitter} target="_blank" rel="noopener noreferrer"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors">
+                  <Twitter className="h-4 w-4" />
+                </a>
+              )}
+              {SOCIAL.github && !SOCIAL.github.includes("PLACEHOLDER") && (
+                <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors">
+                  <Github className="h-4 w-4" />
+                </a>
+              )}
+              {!SOCIAL.linkedin.includes("PLACEHOLDER") && SOCIAL.linkedin !== "LINKEDIN_URL_HERE" && (
+                <a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors">
+                  <Linkedin className="h-4 w-4" />
+                </a>
+              )}
               <a href="mailto:support@codehiring.io"
                 className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors">
                 <Mail className="h-4 w-4" />

@@ -31,7 +31,7 @@ const STEPS = [
     id: "college",
     tag: "03 / College",
     headline: "Placement insights from historical data",
-    sub: "TPOs see year-over-year placement trends, top hiring companies, branch-wise performance, and package distributions — all from real verified data.",
+    sub: "TPOs see year-over-year placement trends, top hiring companies, branch-wise performance, and package distributions — built from your college's own placement records.",
     accent: "teal",
     icon: GraduationCap,
     visual: <CollegeVisual />,
@@ -49,7 +49,7 @@ const STEPS = [
     id: "hired",
     tag: "05 / Outcome",
     headline: "Interview scheduled",
-    sub: "The loop closes in hours, not weeks. Skills-first hiring works because the data is already verified.",
+    sub: "Skills-first hiring works because the data comes straight from the source platforms.",
     accent: "amber",
     icon: Calendar,
     visual: <HiredVisual />,
@@ -139,7 +139,10 @@ function ScoreVisual() {
       {/* Score card */}
       <div className="rounded-2xl border border-violet-500/20 bg-card shadow-2xl shadow-violet-500/10 overflow-hidden">
         <div className="bg-gradient-to-r from-violet-500/15 to-blue-500/8 px-5 pt-5 pb-4">
-          <p className="text-[10px] text-zinc-500 mb-1 uppercase tracking-widest">CodeHiring Score</p>
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-widest">CodeHiring Score</p>
+            <span className="text-[10px] font-semibold text-muted-foreground/40 bg-white/5 border border-white/8 rounded-full px-2 py-0.5">Sample data</span>
+          </div>
           <div className="flex items-end gap-3">
             <motion.span key={score} initial={{ scale: 1.2, color: "#a78bfa" }} animate={{ scale: 1, color: "#fff" }}
               transition={{ duration: 0.5 }}
@@ -194,9 +197,9 @@ function ScoreVisual() {
 
 function DiscoverVisual() {
   const candidates = [
-    { name: "Arjun Sharma", score: 742, solved: 442, match: 97, college: "IIT Delhi", highlight: true },
-    { name: "Priya Reddy",  score: 718, solved: 380, match: 91, college: "NIT Trichy", highlight: false },
-    { name: "Rahul Kumar",  score: 695, solved: 320, match: 86, college: "BITS Pilani", highlight: false },
+    { name: "Candidate A", score: 742, solved: 442, match: 97, college: "University 1", highlight: true },
+    { name: "Candidate B", score: 718, solved: 380, match: 91, college: "University 2", highlight: false },
+    { name: "Candidate C", score: 695, solved: 320, match: 86, college: "University 3", highlight: false },
   ]
 
   return (
@@ -205,7 +208,10 @@ function DiscoverVisual() {
         <div className="bg-gradient-to-r from-amber-500/12 to-orange-500/5 px-4 py-3">
           <div className="flex items-center justify-between">
             <p className="text-xs font-bold text-amber-400">🤖 AI Talent Match</p>
-            <span className="text-[10px] text-zinc-600">SDE Intern . Backend</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-zinc-600">SDE Intern · Backend</span>
+              <span className="text-[10px] font-semibold text-muted-foreground/40 bg-white/5 border border-white/8 rounded-full px-2 py-0.5">Sample data</span>
+            </div>
           </div>
         </div>
         <div className="p-3 space-y-2">
@@ -224,12 +230,12 @@ function DiscoverVisual() {
                   </div>
                   <div>
                     <p className={`text-[11px] font-bold ${c.highlight ? "text-white" : "text-zinc-300"}`}>{c.name}</p>
-                    <p className="text-[9px] text-zinc-600">{c.college} . {c.solved} solved</p>
+                    <p className="text-[11px] text-zinc-600">{c.college} . {c.solved} solved</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className={`text-xs font-black ${c.highlight ? "text-emerald-400" : "text-zinc-400"}`}>{c.match}%</p>
-                  <p className="text-[9px] text-zinc-600">match</p>
+                  <p className="text-[11px] text-zinc-600">match</p>
                 </div>
               </div>
             </motion.div>
@@ -242,8 +248,8 @@ function DiscoverVisual() {
         className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/6 px-4 py-3">
         <Users className="h-4 w-4 text-emerald-400 shrink-0" />
         <div>
-          <p className="text-xs font-bold text-white">Arjun Sharma shortlisted</p>
-          <p className="text-[10px] text-zinc-500">97% match . Verified skills . No resume needed</p>
+          <p className="text-xs font-bold text-white">Candidate A shortlisted</p>
+          <p className="text-[10px] text-zinc-500">97% match · Verified skills · No resume needed</p>
         </div>
       </motion.div>
     </div>
@@ -257,9 +263,12 @@ function HiredVisual() {
       <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         className="rounded-2xl border border-emerald-500/20 bg-card overflow-hidden shadow-2xl shadow-emerald-500/10">
         <div className="bg-gradient-to-r from-emerald-500/12 to-teal-500/5 px-4 py-3">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-emerald-400" />
-            <p className="text-xs font-bold text-emerald-400">Interview Scheduled</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-emerald-400" />
+              <p className="text-xs font-bold text-emerald-400">Interview Scheduled</p>
+            </div>
+            <span className="text-[10px] font-semibold text-muted-foreground/40 bg-white/5 border border-white/8 rounded-full px-2 py-0.5">Sample data</span>
           </div>
         </div>
         <div className="p-4 space-y-3">
@@ -268,18 +277,18 @@ function HiredVisual() {
               <Trophy className="h-5 w-5 text-emerald-400" />
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Technical Round - Arjun Sharma</p>
-              <p className="text-xs text-zinc-500 mt-0.5">Tomorrow . 10:00 AM . Google Meet</p>
+              <p className="text-sm font-bold text-white">Technical Round - Candidate A</p>
+              <p className="text-xs text-zinc-500 mt-0.5">Tomorrow · 10:00 AM · Google Meet</p>
             </div>
           </div>
           <div className="space-y-1.5 text-[11px]">
             {[
-              { label: "Role",       val: "SDE Intern - Backend" },
-              { label: "Company",    val: "TechCorp India" },
-              { label: "Verified by",val: "CodeHiring Score: 742" },
+              { label: "Role",        val: "SDE Intern - Backend" },
+              { label: "Company",     val: "Sample Company" },
+              { label: "Verified by", val: "CodeHiring Score: 742" },
             ].map(({ label, val }) => (
               <div key={label} className="flex items-center justify-between py-1 border-b border-white/4 last:border-0">
-                <span className="text-zinc-600">{label}</span>
+                <span className="text-zinc-500">{label}</span>
                 <span className="text-zinc-300 font-semibold">{val}</span>
               </div>
             ))}
@@ -309,7 +318,10 @@ function CollegeVisual() {
         <div className="bg-gradient-to-r from-teal-500/12 to-emerald-500/5 px-4 py-3">
           <div className="flex items-center justify-between">
             <p className="text-xs font-bold text-teal-400">📊 Placement History</p>
-            <span className="text-[10px] text-zinc-600">RVR & JC College . 2021–2025</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-zinc-600">Sample College · 2021–2025</span>
+              <span className="text-[10px] font-semibold text-muted-foreground/40 bg-white/5 border border-white/8 rounded-full px-2 py-0.5">Sample data</span>
+            </div>
           </div>
         </div>
         <div className="p-4 space-y-4">
@@ -342,7 +354,7 @@ function CollegeVisual() {
             <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-2">Top Hiring Companies</p>
             <div className="flex flex-wrap gap-1.5">
               {["TCS","Infosys","Wipro","Capgemini","Cognizant","HCL"].map(c => (
-                <span key={c} className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">{c}</span>
+                <span key={c} className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">{c}</span>
               ))}
             </div>
           </div>
@@ -446,7 +458,7 @@ export function ProductShowcase() {
                   <motion.button key={step.id} onClick={() => {
                     sectionRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" })
                   }}
-                    className={`relative z-10 w-6 h-6 rounded-full border-2 transition-all duration-300 flex items-center justify-center text-[9px] font-black
+                    className={`relative z-10 w-6 h-6 rounded-full border-2 transition-all duration-300 flex items-center justify-center text-[11px] font-black
                       ${activeStep === i ? `${acc.dot.replace("bg-","border-")} bg-background shadow-lg` : "border-white/15 bg-background"}`}>
                     <span className={activeStep >= i ? acc.text : "text-zinc-700"}>{i + 1}</span>
                   </motion.button>
@@ -513,7 +525,7 @@ export function ProductShowcase() {
                         transition={{ delay: 0.4 }}
                         className="flex items-center gap-3">
                         <div className="h-px flex-1 max-w-[48px] bg-white/10" />
-                        <span className={`text-sm font-bold ${acc.text}`}>The loop closes in hours, not weeks.</span>
+                        <span className={`text-sm font-bold ${acc.text}`}>From solved problem to scheduled interview, all in one place.</span>
                       </motion.div>
                     )}
                   </motion.div>
@@ -577,5 +589,6 @@ export function ProductShowcase() {
     </section>
   )
 }
+
 
 

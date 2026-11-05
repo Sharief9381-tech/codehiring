@@ -13,6 +13,13 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+// --- social links — replace placeholders before going live ----------------
+const SOCIAL = {
+  twitter:  "TWITTER_URL_HERE",
+  github:   "https://github.com/Sharief9381-tech/CodeHiring",
+  linkedin: "LINKEDIN_URL_HERE",
+}
+
 interface RecentPost {
   slug: string; title: string; tag: string; tagColor: string; date: string; readTime: string; excerpt: string
 }
@@ -128,10 +135,14 @@ const FEATURES = [
 ]
 
 // --- per-stat component (hook at top level) -----------------------
-function StatItem({ s, loaded, stats }: { s: typeof STAT_META[number]; loaded: boolean; stats: Record<string, number> }) {
+function StatItem({ s, loaded, stats, fetchFailed }: { s: typeof STAT_META[number]; loaded: boolean; stats: Record<string, number>; fetchFailed: boolean }) {
   const val   = stats[s.key] ?? 0
   const count = useCountUp(loaded ? val : 0)
   const Icon  = s.icon
+
+  // Hide the stat entirely if fetch failed and value is 0
+  if (fetchFailed && val === 0) return null
+
   return (
     <motion.div variants={fadeUp}
       whileHover={{ y: -6, scale: 1.05, transition: { type: "spring", stiffness: 400 } }}
@@ -140,10 +151,15 @@ function StatItem({ s, loaded, stats }: { s: typeof STAT_META[number]; loaded: b
       <div className="w-9 h-9 rounded-lg bg-[rgb(var(--sci))]/5 border border-[rgb(var(--sci))]/10 flex items-center justify-center group-hover:border-[rgb(var(--sci))]/30 transition-colors">
         <Icon className={`h-4 w-4 ${s.color}`} style={{ width: 16, height: 16 }} />
       </div>
-      <span className={`text-2xl font-black tabular-nums leading-none ${s.color}`}>
-        {loaded ? (val > 0 ? formatNum(count) : "-") : "-"}
-      </span>
-      <span className="text-[10px] text-[var(--sci-fg)]/30 font-semibold text-[10px]">{s.label}</span>
+      {/* Shimmer placeholder until loaded */}
+      {!loaded ? (
+        <div className="h-7 w-14 rounded bg-white/8 animate-pulse" />
+      ) : (
+        <span className={`text-2xl font-black tabular-nums leading-none ${s.color}`}>
+          {val > 0 ? formatNum(count) : "—"}
+        </span>
+      )}
+      <span className="text-xs text-[var(--sci-fg)]/40 font-semibold">{s.label}</span>
     </motion.div>
   )
 }
@@ -224,11 +240,12 @@ function TechCard({ children, className = "", glow = "cyan" }: { children: React
 export function LandingPage() {
   const [data, setData]           = useState<any>(null)
   const [loaded, setLoaded]       = useState(false)
+  const [fetchFailed, setFetchFailed] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
   const recentPosts               = useLivePosts()
 
   useEffect(() => {
-    fetch("/api/landing").then(r => r.json()).then(d => { setData(d); setLoaded(true) }).catch(() => setLoaded(true))
+    fetch("/api/landing").then(r => r.json()).then(d => { setData(d); setLoaded(true) }).catch(() => { setLoaded(true); setFetchFailed(true) })
   }, [])
 
   const stats        = data?.stats ?? {}
@@ -255,7 +272,7 @@ export function LandingPage() {
                   <motion.span
                     animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
                     className="h-1.5 w-1.5 rounded-full bg-[var(--sci-fg)]" />
-                  <span className="text-[var(--sci-fg)] text-[11px] font-semibold tracking-wide" style={{ fontFamily: "var(--font-brand)" }}>AI-Powered Skills-First Recruitment</span>
+                  <span className="text-[var(--sci-fg)] text-[11px] font-semibold tracking-wide" style={{ fontFamily: "var(--font-brand)" }}>Verified coding profiles for students, colleges and recruiters</span>
                 </div>
               </motion.div>
 
@@ -267,17 +284,11 @@ export function LandingPage() {
                 Not Resumes.
               </motion.h1>
 
-              {/* typewriter sub */}
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-                className="font-mono text-[var(--sci-fg)]/50 text-sm mb-6 flex items-center gap-2">
-                <span className="text-[var(--sci-fg)]/30">[</span>
-                <Typewriter text="DEPLOYING COGNITIVE SEARCH ALGORITHMS..." delay={0.8} />
-                <span className="text-[var(--sci-fg)]/30">]</span>
-              </motion.div>
+              {/* typewriter removed — was overclaiming */}
 
               <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-zinc-400 max-w-xl leading-relaxed mb-8 text-base">
-                Track coding performance across platforms, discover top talent, and hire with confidence - all backed by verified real-time data.
+                Practice DSA, take company-specific mock assessments, and build a verified coding profile that recruiters and colleges can trust.
               </motion.p>
 
               {/* CTAs */}
@@ -316,6 +327,7 @@ export function LandingPage() {
                     <div className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
                     <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/60" />
                     <span className="ml-3 text-[10px] font-medium text-muted-foreground/50">codehiring.io - student@dashboard</span>
+                    <span className="ml-auto text-[10px] font-semibold text-muted-foreground/40 bg-white/5 border border-white/8 rounded-full px-2 py-0.5">Sample data</span>
                   </div>
                   <div className="p-5 space-y-4 text-xs">
                     {/* score */}
@@ -357,8 +369,8 @@ export function LandingPage() {
                     {/* match */}
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
                       className="border border-[rgb(var(--sci))]/15 bg-[rgb(var(--sci))]/5 p-3">
-                      <p className="text-[var(--sci-fg)] text-[10px] font-bold">▶ 3 NEW JOB MATCHES DETECTED</p>
-                      <p className="text-zinc-600 text-[9px] mt-0.5">BASED ON VERIFIED CODING PROFILE</p>
+                      <p className="text-[var(--sci-fg)] text-xs font-bold">▶ 3 NEW JOB MATCHES DETECTED</p>
+                      <p className="text-zinc-400 text-[11px] mt-0.5">BASED ON VERIFIED CODING PROFILE</p>
                     </motion.div>
                   </div>
                 </div>
@@ -374,7 +386,11 @@ export function LandingPage() {
         <ChevronDown className="h-6 w-6" />
       </motion.a>
 
-      {/* ══ TRUSTED BY ══════════════════════════════════════════════ */}
+      {/* ══ TRUSTED BY — data from /api/landing topColleges ════════ */}
+      {/* TODO: Only show this strip if topColleges comes from real verified data.
+               Currently rendered only when the API returns non-empty topColleges array.
+               If the API returns hardcoded names, remove this section or replace with
+               a real query (e.g. colleges with at least N registered students). */}
       {topColleges.length > 0 && (
         <Section>
           <div className="mx-auto max-w-5xl px-6">
@@ -411,14 +427,14 @@ export function LandingPage() {
           <FadeUp>
             <div className="flex items-center gap-3 mb-6">
               <div className="h-px flex-1 bg-[rgb(var(--sci))]/10" />
-              <span className="text-[9px] font-semibold tracking-wide text-[var(--sci-fg)]/60">Live Platform Stats</span>
+              <span className="text-xs font-semibold tracking-wide text-[var(--sci-fg)]/60">Live Platform Stats</span>
               <motion.span animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.2, repeat: Infinity }}
                 className="h-1.5 w-1.5 bg-[var(--sci-fg)]" />
               <div className="h-px flex-1 bg-[rgb(var(--sci))]/10" />
             </div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-              className="flex border border-[rgb(var(--sci))]/10 bg-[rgb(var(--sci))]/2">
-              {STAT_META.map(s => <StatItem key={s.key} s={s} loaded={loaded} stats={stats} />)}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border border-[rgb(var(--sci))]/10 bg-[rgb(var(--sci))]/2">
+              {STAT_META.map(s => <StatItem key={s.key} s={s} loaded={loaded} stats={stats} fetchFailed={fetchFailed} />)}
             </motion.div>
           </FadeUp>
         </div>
@@ -435,11 +451,11 @@ export function LandingPage() {
             <p className="text-muted-foreground text-sm mb-10">Every feature runs on verified data - not guesswork, not keywords.</p>
           </FadeUp>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-            className="flex gap-4">
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: Brain,      label: "AI Candidate\nMatching",   color: "text-violet-400",  border: "border-violet-500/20",  glow: "hover:border-violet-500/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]", tag: "Matching",       desc: "Neural networks scanning 50M+ data points to find your exact technical match." },
-              { icon: FileText,   label: "AI Resume\nVerification",  color: "text-blue-400",    border: "border-blue-500/20",    glow: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",    tag: "Authenticating", desc: "Zero trust verification against real-world commits and problem solving logs." },
-              { icon: Target,     label: "AI Skill Gap\nAnalysis",   color: "text-cyan-400",    border: "border-cyan-500/20",    glow: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(var(--sci),0.15)]",      tag: "Mapping Gaps",   desc: "Identifying missing competencies using vector-space proficiency mapping." },
+              { icon: Brain,      label: "AI Candidate\nMatching",   color: "text-violet-400",  border: "border-violet-500/20",  glow: "hover:border-violet-500/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]", tag: "Matching",       desc: "Matches candidates using verified submissions, ratings and GitHub activity." },
+              { icon: FileText,   label: "AI Resume\nVerification",  color: "text-blue-400",    border: "border-blue-500/20",    glow: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",    tag: "Authenticating", desc: "Checks resume claims against your real commits and problem-solving history." },
+              { icon: Target,     label: "AI Skill Gap\nAnalysis",   color: "text-cyan-400",    border: "border-cyan-500/20",    glow: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(var(--sci),0.15)]",      tag: "Mapping Gaps",   desc: "Finds the topics you're weakest in and suggests what to practise next." },
               { icon: TrendingUp, label: "AI Placement\nInsights",   color: "text-emerald-400", border: "border-emerald-500/20", glow: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]",  tag: "Predicting",     desc: "Placement insights based on your college's historical data." },
             ].map(({ icon: Icon, label, color, border, glow, tag, desc }, i) => (
               <motion.div key={label} variants={fadeUp}
@@ -497,7 +513,7 @@ export function LandingPage() {
                     whileHover={{ backgroundColor: "rgba(var(--sci),0.05)" }}
                     whileTap={{ scale: 0.98 }}
                     className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold tracking-wide transition-all border-r border-[rgb(var(--sci))]/10 last:border-r-0
-                      ${active ? `bg-[rgb(var(--sci))]/8 ${tab.accent} border-b-2 border-b-current` : "text-zinc-600 hover:text-foreground/80"}`}>
+                      ${active ? `bg-[rgb(var(--sci))]/8 ${tab.accent} border-b-2 border-b-current` : "text-zinc-400 hover:text-foreground/80"}`}>
                     <Icon className="h-4 w-4" />{tab.role}
                   </motion.button>
                 )
@@ -530,7 +546,7 @@ export function LandingPage() {
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-bold text-foreground">{f.title}</p>
-                        <p className="text-[10px] text-zinc-500 mt-0.5">{f.sub}</p>
+                        <p className="text-xs text-zinc-400 mt-0.5">{f.sub}</p>
                       </div>
                       <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
                         className={`h-1.5 w-1.5 shrink-0 ${tab.accent.replace("text-","bg-")}`} />
@@ -554,7 +570,7 @@ export function LandingPage() {
             </div>
           </FadeUp>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-            className="flex gap-3">
+            className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
             {PLATFORMS.map((p) => (
               <motion.div key={p.name} variants={fadeUp}
                 whileHover={{ scale: 1.06, y: -6, transition: { type: "spring", stiffness: 400, damping: 15 } }}
@@ -564,7 +580,7 @@ export function LandingPage() {
                   <p.icon className={`h-5 w-5 ${p.color}`} />
                 </div>
                 <p className={`text-[11px] font-bold ${p.color} leading-tight text-center`}>{p.name}</p>
-                <p className="text-[9px] text-muted-foreground/60 leading-tight text-center">{p.desc}</p>
+                <p className="text-[11px] text-muted-foreground/60 leading-tight text-center">{p.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -669,7 +685,7 @@ export function LandingPage() {
           </FadeUp>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-            className="flex gap-4">
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { icon: GraduationCap, title: "I'm a Student",   href: "/signup?role=student",   spotlight: "rgba(167,139,250,0.15)", accent: "border-violet-500/30 hover:bg-violet-500/8",   iconBg: "bg-violet-500/15",  iconColor: "text-violet-400",  desc: "Build verified profile, get matched to jobs." },
               { icon: Award,         title: "I'm a Graduate",  href: "/signup?role=graduate",  spotlight: "rgba(99,102,241,0.15)",  accent: "border-indigo-500/30 hover:bg-indigo-500/8",   iconBg: "bg-indigo-500/15",  iconColor: "text-indigo-400",  desc: "Showcase skills, get hired without college code." },
