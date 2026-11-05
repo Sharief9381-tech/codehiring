@@ -35,6 +35,7 @@ const studentLinks = [
   { href: "/student/practice",   label: "Practice",     icon: Target },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
+  { href: "/student/drives",     label: "Drives",       icon: Briefcase },
   { href: "/student/prep",       label: "Prep Track",   icon: Flag },
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
 ]
@@ -45,6 +46,7 @@ const secondYearLinks = [
   { href: "/student/practice",   label: "Practice",     icon: Target },
   { href: "/student/analytics",  label: "Analytics",    icon: BarChart3 },
   { href: "/student/leaderboard",label: "Leaderboard",  icon: Trophy },
+  { href: "/student/drives",     label: "Drives",       icon: Briefcase },
   { href: "/student/ai",         label: "AI Insights",  icon: Sparkles },
 ]
 

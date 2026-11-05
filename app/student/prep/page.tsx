@@ -2510,11 +2510,6 @@ export default function PrepHubPage() {
             <p className="text-sm mt-1" style={{ color:"rgba(255,255,255,0.75)" }}>AI-powered assessments . company patterns . real results</p>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap shrink-0 ml-auto">
-            <button onClick={() => router.push("/student/drives")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
-              style={{ background:"rgba(96,165,250,0.22)", color:"#93c5fd", border:"1.5px solid rgba(96,165,250,0.55)" }}>
-              <BookOpen className="h-5 w-5" /> Hiring Drives
-            </button>
             <button onClick={() => router.push("/resume-analyzer")}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
               style={{ background:"rgba(236,72,153,0.22)", color:"#f9a8d4", border:"1.5px solid rgba(236,72,153,0.55)" }}>
