@@ -7,6 +7,7 @@ export interface SessionDocument {
   token: string
   userId: string
   role: UserRole
+  seq:   number      // matches users.sessionSeq — invalidated when a new login happens
   expiresAt: Date
   createdAt: Date
 }
@@ -14,13 +15,14 @@ export interface SessionDocument {
 export class SessionModel {
   private static collection = 'sessions'
 
-  static async create(token: string, userId: string, role: UserRole): Promise<SessionDocument> {
+  static async create(token: string, userId: string, role: UserRole, seq: number): Promise<SessionDocument> {
     const db = await getDatabase()
     const session = {
       _id: new ObjectId(),
       token,
       userId,
       role,
+      seq,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       createdAt: new Date(),
     } as SessionDocument

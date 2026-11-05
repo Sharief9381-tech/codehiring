@@ -21,6 +21,7 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { FeedbackForm } from "@/components/feedback/feedback-form"
 import { NotificationBell } from "@/components/dashboard/notification-bell"
+import { SessionWatcher } from "@/components/dashboard/session-watcher"
 import type { StudentProfile, CollegeProfile, RecruiterProfile, AdminProfile } from "@/lib/types"
 
 interface DashboardSidebarProps {
@@ -131,6 +132,8 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
   return (
     <>
+      {/* Session watcher — polls every 30s and redirects if logged out elsewhere */}
+      <SessionWatcher />
       <header className="fixed top-0 left-0 right-0 z-50 h-14 glass border-b border-border/50">
         <div className="flex h-full items-center justify-between px-4 md:px-5 max-w-screen-2xl mx-auto">
 

@@ -37,7 +37,23 @@ export async function generateToken(): Promise<string> {
 
 export async function createSession(userId: string, role: UserRole): Promise<string> {
   const token = await generateToken()
-  await SessionModel.create(token, userId, role)
+
+  // Increment the user's sessionSeq — this invalidates all previous sessions
+  const { getDatabase } = await import("./database")
+  const { ObjectId } = await import("mongodb")
+  const db = await getDatabase()
+
+  const result = await db.collection("users").findOneAndUpdate(
+    { _id: new ObjectId(userId) },
+    { $inc: { sessionSeq: 1 } },
+    { returnDocument: "after", projection: { sessionSeq: 1 } }
+  )
+  const seq: number = (result as any)?.sessionSeq ?? 1
+
+  // Optionally clean up old sessions for this user (fire-and-forget)
+  db.collection("sessions").deleteMany({ userId, seq: { $lt: seq } }).catch(() => {})
+
+  await SessionModel.create(token, userId, role, seq)
   return token
 }
 
@@ -102,6 +118,42 @@ export async function getUsers() {
 
 // -- Current user - uses dynamic import to avoid bundling next/headers in route handlers --
 
+export type SessionInvalidReason = "logged_out_elsewhere" | "session_expired" | "not_authenticated"
+
+export interface CurrentUserResult {
+  user: any | null
+  reason?: SessionInvalidReason
+}
+
+export async function getCurrentUserWithReason(): Promise<CurrentUserResult> {
+  try {
+    const { cookies } = await import("next/headers")
+    const cookieStore = await cookies()
+    const token = cookieStore.get("session_token")?.value
+    if (!token) return { user: null, reason: "not_authenticated" }
+
+    const session = await getSession(token)
+    if (!session) return { user: null, reason: "session_expired" }
+
+    const user = await UserModel.findById(session.userId)
+    if (!user) return { user: null, reason: "not_authenticated" }
+
+    // Check session sequence — if user has a newer session, this one was superseded
+    const currentSeq: number = user.sessionSeq ?? 0
+    if (session.seq !== undefined && session.seq < currentSeq) {
+      // This session was invalidated by a newer login elsewhere
+      await deleteSession(token)
+      return { user: null, reason: "logged_out_elsewhere" }
+    }
+
+    const { password, ...rest } = user
+    return { user: rest as any }
+  } catch (error) {
+    console.error("getCurrentUser error:", error)
+    return { user: null, reason: "not_authenticated" }
+  }
+}
+
 export async function getCurrentUser(): Promise<
   | Omit<StudentProfile, "password">
   | Omit<CollegeProfile, "password">
@@ -109,23 +161,6 @@ export async function getCurrentUser(): Promise<
   | Omit<AdminProfile, "password">
   | null
 > {
-  try {
-    // Dynamic import keeps next/headers out of the module graph for route handlers
-    const { cookies } = await import("next/headers")
-    const cookieStore = await cookies()
-    const token = cookieStore.get("session_token")?.value
-    if (!token) return null
-
-    const session = await getSession(token)
-    if (!session) return null
-
-    const user = await UserModel.findById(session.userId)
-    if (!user) return null
-
-    const { password, ...rest } = user
-    return rest as any
-  } catch (error) {
-    console.error("getCurrentUser error:", error)
-    return null
-  }
+  const { user } = await getCurrentUserWithReason()
+  return user
 }

@@ -1,12 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { LoginForm } from "@/components/auth/login-form"
 import { ClientOnly } from "@/components/client-only"
 import { SignupBackground } from "@/components/signup-background"
-import { Code2, GitBranch, Trophy, Zap, Shield, Users } from "lucide-react"
+import { Code2, GitBranch, Trophy, Zap, Shield, Users, AlertTriangle } from "lucide-react"
 
 const features = [
   { icon: Code2,     text: "Verified coding stats from 8+ platforms" },
@@ -88,6 +89,16 @@ function LiveIndicator() {
 }
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#050508" }} />}>
+      <LoginPageInner />
+    </Suspense>
+  )
+}
+
+function LoginPageInner() {
+  const searchParams  = useSearchParams()
+  const reason        = searchParams.get("reason")
   const [stats, setStats]   = useState<LiveStats | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -109,6 +120,21 @@ export default function LoginPage() {
     /* force dark background - immune to light/dark mode */
     <div style={{ minHeight: "100vh", position: "relative", overflow: "hidden", background: "#050508" }}>
       <SignupBackground />
+
+      {/* ── Logged out elsewhere banner ── */}
+      {reason === "logged_out_elsewhere" && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+          background: "rgba(234,88,12,0.95)", backdropFilter: "blur(8px)",
+          padding: "14px 24px",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+        }}>
+          <AlertTriangle style={{ width: 18, height: 18, color: "#ffffff", flexShrink: 0 }} />
+          <p style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", margin: 0 }}>
+            Your account was signed in from another device or browser. Please sign in again.
+          </p>
+        </div>
+      )}
 
       <div style={{
         position: "relative", zIndex: 10,
