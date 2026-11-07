@@ -193,7 +193,7 @@ const APT_CATEGORIES = [
     subtitle: "Arithmetic · Algebra · Geometry",
     tags: ["Number System", "Percentages", "Time & Work", "Profit & Loss"],
     extraCount: 17,
-    exerciseCount: "200+",
+    exerciseCount: "2,300+ questions",
     topicIds: ["number-system","simplification","percentages","profit-loss","si-ci","ratio-prop","averages","mixture","time-work","pipes-cisterns","boats-streams","ages","mensuration","geometry","algebra","coord-geo","permcomb","probability","quad-eq","quantity-comp","num-series"],
   },
   {
@@ -205,7 +205,7 @@ const APT_CATEGORIES = [
     subtitle: "Puzzles · Syllogism · Series",
     tags: ["Coding-Decoding", "Seating Arrangement", "Syllogism", "Venn Diagrams"],
     extraCount: 17,
-    exerciseCount: "190+",
+    exerciseCount: "2,000+ questions",
     topicIds: ["coding-decoding","blood-relations","direction-sense","ranking-ordering","syllogism","seating-arrangement","puzzles","inequality","input-output","data-sufficiency","statement-assumptions","cause-effect","assertion-reasoning","analogy","classification","course-of-action","mirror-water-images","paper-folding","cubes-dice","calendar-clock","venn-diagrams"],
   },
   {
@@ -1372,7 +1372,7 @@ function CompanyAssessment({ company, onBack }: { company: typeof ALL_COMPANIES[
 }
 
 // --- Topic Practice (Aptitude / CS / Coding) ---------------------------------
-function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: string; name: string }; onBack: () => void }) {
+function TopicPractice({ pathId, topic, onBack, aptDifficulty = "Medium+Hard" }: { pathId: Path; topic: { id: string; name: string }; onBack: () => void; aptDifficulty?: string }) {
   const [stage, setStage] = useState<"loading" | "quiz" | "results">("loading")
   const [questions, setQuestions] = useState<MCQ[]>([])
   const [score, setScore] = useState(0)
@@ -1456,37 +1456,64 @@ function TopicPractice({ pathId, topic, onBack }: { pathId: Path; topic: { id: s
       "vocabulary": { name: "Vocabulary", section: "verbal" },
     }
 
-    // ── Full Aptitude Mock: use static bank (unchanged) ───────────────────────
+    // ── Full Aptitude Mock: 60Q from all 3 banks (25 Quant + 20 Logic + 15 Verbal) ──
     if (topic.id === "mock-aptitude") {
-      const { QUANTITATIVE_BANK } = await import("@/lib/quantitative-reasoning")
-      const allTopicNames = [
-        "Number System","Simplification","Percentages","Profit & Loss",
-        "Simple & Compound Interest","Ratio & Proportion","Averages","Mixture & Alligation",
-        "Time & Work","Probability","Data Interpretation","Number Series",
-      ]
-      const picked: any[] = []
-      for (const topicName of allTopicNames) {
-        const pool = QUANTITATIVE_BANK.filter(q =>
-          q.topic === topicName && (q.difficulty === "Hard" || q.difficulty === "Medium")
-        )
-        const shuffled = pool.sort(() => Math.random() - 0.5)
-        if (shuffled[0]) picked.push(shuffled[0])
+      const { QUANTITATIVE_BANK, LOGICAL_REASONING_BANK } = await import("@/lib/quantitative-reasoning")
+      const { COMMUNICATION_BANK } = await import("@/lib/communication-bank")
+
+      const pickFromBank = (bank: any[], perTopic: number, topics: string[]) => {
+        const picked: any[] = []
+        for (const topicName of topics) {
+          const pool = bank.filter(q =>
+            q.topic === topicName && (q.difficulty === "Medium" || q.difficulty === "Hard")
+          ).sort(() => Math.random() - 0.5)
+          picked.push(...pool.slice(0, perTopic))
+        }
+        return picked.sort(() => Math.random() - 0.5)
       }
-      const qs = picked.map((q, i) => ({
+
+      // 25 Quant — 1 from each of 23 topics (+ 2 from highest-count topics)
+      const quantTopics = ["Percentages","Time & Work","Profit & Loss","Ratio & Proportion","Averages",
+        "Number System","Simplification","Simple & Compound Interest","Mixture & Alligation",
+        "Pipes & Cisterns","Boats & Streams","Problems on Ages","Mensuration","Geometry",
+        "Algebra","Coordinate Geometry","Permutation & Combination","Probability",
+        "Data Interpretation","Data Sufficiency","Quadratic Equations","Number Series","Quantity Comparison"]
+      const quantQs = pickFromBank(QUANTITATIVE_BANK, 1, quantTopics).slice(0, 25)
+
+      // 20 Logic — 1 from each of 20 topics
+      const logicTopics = ["Coding-Decoding","Blood Relations","Direction Sense","Ranking & Ordering",
+        "Syllogism","Seating Arrangement","Puzzles","Input-Output","Data Sufficiency","Cause & Effect",
+        "Mirror & Water Images","Paper Folding & Cutting","Cubes & Dice","Calendar & Clock",
+        "Venn Diagrams","Analogy","Classification","Course of Action","Statement & Assumptions","Number Series"]
+      const logicQs = pickFromBank(LOGICAL_REASONING_BANK, 1, logicTopics).slice(0, 20)
+
+      // 15 Verbal — from all 9 verbal topics (~2 each)
+      const verbalTopics = ["Direct & Indirect Speech","Active & Passive Voice","Sentence Improvement",
+        "Idioms & Phrases","Cloze Test","Para Jumbles","Grammar","Reading Comprehension","Vocabulary"]
+      const verbalQs = pickFromBank(COMMUNICATION_BANK, 2, verbalTopics).slice(0, 15)
+
+      const allQs = [...quantQs, ...logicQs, ...verbalQs].map((q, i) => ({
         id: i + 1, question: q.question, options: q.options,
         correct: q.correct, explanation: q.explanation, topic: q.topic, difficulty: q.difficulty,
+        passage: q.passage,
       }))
-      setQuestions(qs); setStage("quiz"); return
+
+      setQuestions(allQs); setStage("quiz"); return
     }
 
-    // ── Individual topic: AI-generated questions Easy → Medium → Hard ─────────
+    // ── Individual topic: questions from static bank ──────────────────────────
     const mapped = TOPIC_NAME_MAP[topic.id]
     if (mapped) {
       try {
         const res = await fetch("/api/student/generate-practice-questions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: mapped.name, section: mapped.section, count: 5 }),
+          body: JSON.stringify({
+            topic: mapped.name,
+            section: mapped.section,
+            count: 20,
+            difficulty: aptDifficulty,
+          }),
         })
         const data = await res.json()
         if (data.questions?.length) {
@@ -1730,6 +1757,7 @@ export default function PrepHubPage() {
   const [subView, setSubView] = useState<"home" | "topics" | "learn" | "mock" | "voice">("home")
   const [voiceTab, setVoiceTab] = useState<"comm" | "general" | "chat">("chat")
   const [aptCategory, setAptCategory] = useState<string | null>(null)
+  const [aptDifficulty, setAptDifficulty] = useState<"Medium+Hard"|"Medium"|"Hard"|"Easy">("Medium+Hard")
   const [showPracticeMenu, setShowPracticeMenu] = useState(false)
   const [studentYear, setStudentYear] = useState<number | null>(null)
   const [fromPractice, setFromPractice] = useState(false)  // came from Practice flyout
@@ -1836,7 +1864,7 @@ export default function PrepHubPage() {
   if (activeTopic) {
     return (
       <div className="flex-1 p-4 md:p-8 max-w-screen-xl mx-auto w-full">
-        <TopicPractice pathId={activePath!} topic={activeTopic} onBack={() => setActiveTopic(null)} />
+        <TopicPractice pathId={activePath!} topic={activeTopic} onBack={() => setActiveTopic(null)} aptDifficulty={aptDifficulty} />
       </div>
     )
   }
@@ -2409,13 +2437,30 @@ export default function PrepHubPage() {
               const catTopics = APT_TOPICS.filter(t => cat.topicIds.includes(t.id))
               return (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <button onClick={() => setAptCategory(null)}
-                      className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                      <ArrowLeft className="h-4 w-4" /> Back
-                    </button>
-                    <span className="text-muted-foreground">·</span>
-                    <p className="text-base font-semibold text-foreground">{cat.name}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <button onClick={() => setAptCategory(null)}
+                        className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                        <ArrowLeft className="h-4 w-4" /> Back
+                      </button>
+                      <span className="text-muted-foreground">·</span>
+                      <p className="text-base font-semibold text-foreground">{cat.name}</p>
+                    </div>
+                    {/* Difficulty filter */}
+                    <div className="flex items-center gap-1 rounded-xl border border-border bg-card/40 p-1">
+                      {(["Medium+Hard","Medium","Hard","Easy"] as const).map(d => (
+                        <button key={d}
+                          onClick={() => setAptDifficulty(d)}
+                          className="px-3 py-1 rounded-lg text-xs font-semibold transition-all"
+                          style={aptDifficulty === d ? {
+                            background: d === "Easy" ? "#10b98120" : d === "Medium" ? "#f59e0b20" : d === "Hard" ? "#ef444420" : "#7c3aed20",
+                            color: d === "Easy" ? "#10b981" : d === "Medium" ? "#f59e0b" : d === "Hard" ? "#ef4444" : "#a78bfa",
+                            border: `1px solid ${d === "Easy" ? "#10b98140" : d === "Medium" ? "#f59e0b40" : d === "Hard" ? "#ef444440" : "#7c3aed40"}`,
+                          } : { color: "var(--muted-foreground)" }}>
+                          {d === "Medium+Hard" ? "All" : d}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {catTopics.map((t: any) => (
@@ -2427,7 +2472,7 @@ export default function PrepHubPage() {
                         </div>
                         <p className="font-semibold text-foreground">{t.name}</p>
                         <p className="text-xs text-muted-foreground mt-1 group-hover:text-primary transition-colors flex items-center gap-1">
-                          Practice <ChevronRight className="h-3 w-3" />
+                          20 questions · {aptDifficulty === "Medium+Hard" ? "Med+Hard" : aptDifficulty} <ChevronRight className="h-3 w-3" />
                         </p>
                       </button>
                     ))}
@@ -2466,11 +2511,7 @@ export default function PrepHubPage() {
             </div>
             <div>
               <h3 className="text-xl font-bold text-foreground">Full {pathMeta.label} Mock</h3>
-              <p className="text-sm text-muted-foreground mt-2">1 Medium/Hard question from each topic · {Object.keys({
-                "Number System": 1, "Simplification": 1, "Percentages": 1, "Profit & Loss": 1,
-                "Simple & Compound Interest": 1, "Ratio & Proportion": 1, "Averages": 1,
-                "Mixture & Alligation": 1, "Time & Work": 1, "Pipes & Cisterns": 1
-              }).length} questions · No repeats</p>
+              <p className="text-sm text-muted-foreground mt-2">25 Quant · 20 Logical · 15 Verbal · All Medium/Hard · No repeats · ~45 min</p>
             </div>
             <button onClick={() => {
               const firstTopic = pathMeta.topics[0]

@@ -150,7 +150,7 @@ export async function POST(req: Request) {
     const body       = await req.json()
     const topic      = String(body.topic   ?? "").trim()
     const section    = String(body.section ?? "aptitude").trim()
-    const count      = Math.min(Number(body.count ?? 15), 50)
+    const count      = Math.min(Number(body.count ?? 20), 50)  // default 20, max 50
     const difficulty = String(body.difficulty ?? "Medium+Hard").trim()
 
     if (!topic) return NextResponse.json({ error: "topic required" }, { status: 400 })
